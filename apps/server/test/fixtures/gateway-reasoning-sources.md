@@ -39,7 +39,7 @@ Three authorized minimal synthetic requests were attempted against the configure
 | Model | Optional effort field | Max output tokens | HTTP result |
 | --- | --- | --- | --- |
 | `deepseek/deepseek-v4-flash` | `reasoning_effort: low` | 128 | 503, `system_error` |
-| `openai/gpt-5.5` | `reasoning_effort: low` | 64 | 503, `system_error` |
+| `openai/gpt-5.5` | `reasoning_effort: low` | 64 | 503; error type not separately recorded |
 | `deepseek/deepseek-v4-flash` | Omitted, same synthetic prompt as the first request | 128 | 503, `system_error` |
 
 The no-effort control also failed. Live gateway generation and acceptance of the reasoning control could therefore not be verified; real calls were stopped. The code fix is supported by native transport, capability-boundary and offline migration regressions, not a claim of a successful live gateway generation.
