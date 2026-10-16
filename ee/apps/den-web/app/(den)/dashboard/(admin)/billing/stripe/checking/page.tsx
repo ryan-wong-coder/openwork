@@ -90,27 +90,27 @@ export default function StripeCheckingPage() {
   return (
     <DashboardPageTemplate
       icon={CreditCard}
-      title="Confirming subscription"
-      description="Finishing your checkout and refreshing workspace access."
+      title="正在确认订阅"
+      description="正在完成结账并刷新工作区访问权限。"
     >
       <section className="flex min-h-72 flex-col items-center justify-center gap-4 rounded-2xl border border-violet-100 bg-white p-12 text-center shadow-[0_8px_30px_-20px_rgba(49,46,129,0.45)]">
         {failed ? (
           <>
             <AlertCircle className="h-10 w-10 text-red-500" aria-hidden="true" />
-            <p className="text-[17px] font-medium text-gray-950">We couldn&apos;t confirm the subscription yet</p>
+            <p className="text-[17px] font-medium text-gray-950">暂时无法确认订阅</p>
             <p className="max-w-[480px] text-[14px] leading-6 text-gray-600">
-              If your payment went through, refresh the billing page or contact{" "}
+              如果付款已完成，请刷新账单页面或联系{" "}
               <a className="font-medium text-blue-600 hover:underline" href="mailto:team@openworklabs.com">team@openworklabs.com</a>.
             </p>
             <DenButton onClick={() => router.replace(destinationRoute)}>
-              {returnTarget === "web" ? "Return to OpenWork Web" : "Return to Billing"}
+              {returnTarget === "web" ? "返回 OpenWork Web" : "返回账单"}
             </DenButton>
           </>
         ) : (
           <>
             <Loader2 className="h-9 w-9 animate-spin text-[#635BFF]" aria-hidden="true" />
-            <p className="text-[16px] font-medium text-gray-950">Your subscription is being confirmed</p>
-            <p className="max-w-sm text-[13px] leading-6 text-gray-500">This page updates automatically. You&apos;ll return to your workspace as soon as access is ready.</p>
+            <p className="text-[16px] font-medium text-gray-950">正在确认你的订阅</p>
+            <p className="max-w-sm text-[13px] leading-6 text-gray-500">此页面会自动更新，访问权限就绪后将返回工作区。</p>
           </>
         )}
       </section>

@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE } from "../../../../_lib/locale";
+
 import { Package, Plug, ScrollText } from "lucide-react";
 import { useEffect, useState } from "react";
 import { DenBrandMark } from "../../../_components/ui/brand-mark";
@@ -21,13 +23,13 @@ const focusClass = "focus-visible:outline-2 focus-visible:outline-offset-2 focus
 function relativeTime(occurredAt: string, now: number) {
   const timestamp = new Date(occurredAt).getTime();
   const minutes = Math.max(0, Math.floor((now - timestamp) / 60_000));
-  if (minutes === 0) return "Just now";
+  if (minutes === 0) return "刚刚";
   if (minutes < 60) return `${minutes}m`;
   const hours = Math.floor(minutes / 60);
   if (hours < 24) return `${hours}h`;
   const days = Math.floor(hours / 24);
-  if (days === 1) return "Yesterday";
-  return new Date(timestamp).toLocaleDateString(undefined, days < 7
+  if (days === 1) return "昨天";
+  return new Date(timestamp).toLocaleDateString(DEFAULT_DEN_LOCALE, days < 7
     ? { weekday: "short" }
     : { month: "short", day: "numeric" });
 }
@@ -44,7 +46,7 @@ function ActivityMark({ entry }: { entry: DashboardActivityEntry }) {
 }
 
 function ActivityRow({ entry, now }: { entry: DashboardActivityEntry; now: number }) {
-  const exactTime = new Date(entry.occurredAt).toLocaleString();
+  const exactTime = new Date(entry.occurredAt).toLocaleString(DEFAULT_DEN_LOCALE);
   return (
     <li className={rowClass} data-testid="dashboard-activity-row">
       <ActivityMark entry={entry} />
@@ -60,7 +62,7 @@ function ActivityRow({ entry, now }: { entry: DashboardActivityEntry; now: numbe
         <TooltipContent>{exactTime}</TooltipContent>
       </Tooltip>
       <span className="flex w-18 shrink-0 justify-end">
-        <LinkButton href={entry.href} variant="plain" size="inline" aria-label={`${entry.action}: ${entry.title}`} className={focusClass}>{entry.action}</LinkButton>
+        <LinkButton href={entry.href} variant="plain" size="inline" aria-label={`${entry.action === "Browse" ? "浏览" : "打开"}：${entry.title}`} className={focusClass}>{entry.action === "Browse" ? "浏览" : "打开"}</LinkButton>
       </span>
     </li>
   );
@@ -68,7 +70,7 @@ function ActivityRow({ entry, now }: { entry: DashboardActivityEntry; now: numbe
 
 function ActivityLoading() {
   return (
-    <div role="status" aria-label="Loading activity" data-testid="dashboard-activity-loading">
+    <div role="status" aria-label="正在加载活动" data-testid="dashboard-activity-loading">
       {[0, 1, 2, 3, 4].map((row) => (
         <div key={row} className={rowClass} aria-hidden="true">
           <DenSkeleton className="size-6 shrink-0 rounded-full" />
@@ -96,7 +98,7 @@ export function DashboardActivity() {
 
   return (
     <section className="mt-7" aria-labelledby="dashboard-activity-heading" data-testid="dashboard-activity">
-      <h2 id="dashboard-activity-heading" className="mb-3 text-base font-semibold leading-5.5 tracking-[-0.02em] text-gray-950">Activity</h2>
+      <h2 id="dashboard-activity-heading" className="mb-3 text-base font-semibold leading-5.5 tracking-[-0.02em] text-gray-950">活动</h2>
       <ItemPanel variant="inset">
         {isError ? (
           <DenNotice
@@ -104,21 +106,21 @@ export function DashboardActivity() {
             presentation="inline"
             icon={null}
             message={dataUpdatedAt > 0
-              ? `Couldn’t refresh. Showing activity from ${new Date(dataUpdatedAt).toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" })}.`
-              : "Couldn’t refresh."}
-            action={<DenButton variant="plain" size="inline" disabled={isFetching} onClick={() => void refetch()} className={focusClass}>Retry</DenButton>}
+              ? `无法刷新，正在显示 ${new Date(dataUpdatedAt).toLocaleTimeString(DEFAULT_DEN_LOCALE, { hour: "numeric", minute: "2-digit" })} 的活动记录。`
+              : "无法刷新。"}
+            action={<DenButton variant="plain" size="inline" disabled={isFetching} onClick={() => void refetch()} className={focusClass}>重试</DenButton>}
           />
         ) : null}
         {isPending ? <ActivityLoading /> : data && data.length > 0 ? (
           <TooltipProvider>
-            <ul aria-label="Recent activity">
+            <ul aria-label="近期活动">
               {data.map((entry) => <ActivityRow key={entry.id} entry={entry} now={now} />)}
             </ul>
           </TooltipProvider>
         ) : data && !isError ? (
           <div className="flex flex-col items-center gap-4 px-6 py-10">
-            <p className="text-sm font-medium leading-5 text-gray-900">Nothing new</p>
-            <LinkButton href={getAddConnectorRoute(orgSlug)} variant="secondary" size="compact" className={focusClass}>Add a connector</LinkButton>
+            <p className="text-sm font-medium leading-5 text-gray-900">暂无新动态</p>
+            <LinkButton href={getAddConnectorRoute(orgSlug)} variant="secondary" size="compact" className={focusClass}>添加连接器</LinkButton>
           </div>
         ) : null}
       </ItemPanel>

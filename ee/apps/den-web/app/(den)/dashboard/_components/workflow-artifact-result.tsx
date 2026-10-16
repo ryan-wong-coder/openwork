@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE, denStatusLabel } from "../../../_lib/locale";
+
 import type { ArtifactFreshness, WorkflowArtifactSnapshot } from "@openwork/types/workflows";
 import { DenChip } from "../../_components/ui/chip";
 import { DenNotice } from "../../_components/ui/notice";
@@ -46,14 +48,14 @@ export function WorkflowMarkdownPreview({ markdown }: { markdown: string }) {
 
 function runTime(value: string): string {
   const date = new Date(value);
-  return `${date.toLocaleDateString("en-US", { month: "short", day: "numeric" })} at ${date.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}`;
+  return `${date.toLocaleDateString(DEFAULT_DEN_LOCALE, { month: "short", day: "numeric" })} ${date.toLocaleTimeString(DEFAULT_DEN_LOCALE, { hour: "numeric", minute: "2-digit" })}`;
 }
 
 function statusLine(snapshot: WorkflowArtifactSnapshot, freshness: ArtifactFreshness | undefined, lastSuccessful: boolean | undefined): string {
   const parts = [
-    `From a ${snapshot.source} run on ${runTime(snapshot.finishedAt)}`,
-    lastSuccessful ? "Latest successful result" : null,
-    freshness?.state === "stale" ? "Last run was a while ago" : null,
+    `来自 ${runTime(snapshot.finishedAt)} 的${denStatusLabel(snapshot.source)}运行`,
+    lastSuccessful ? "上次成功结果" : null,
+    freshness?.state === "stale" ? "距上次运行已较久" : null,
   ];
   return parts.filter((part) => part !== null).join(" · ");
 }
@@ -70,29 +72,29 @@ export function WorkflowArtifactResult(props: {
       <p className="text-[12px] text-gray-500">{statusLine(snapshot, props.freshness, props.lastSuccessful)}</p>
       {props.freshness?.state === "needs_attention" ? <DenNotice tone="warning" message={props.freshness.reason} /> : null}
       {snapshot.contentDeletedAt ? (
-        <p className="rounded-xl border border-dashed border-gray-200 p-4 text-[13px] text-gray-400">This run&apos;s saved result was removed.</p>
+        <p className="rounded-xl border border-dashed border-gray-200 p-4 text-[13px] text-gray-400">此次运行保存的结果已移除。</p>
       ) : snapshot.value === null && snapshot.markdown ? (
         <WorkflowMarkdownPreview markdown={snapshot.markdown} />
       ) : <WorkflowFriendlyValue value={snapshot.value} />}
       {props.technical ? (
         <details className="border-t border-gray-100 pt-3">
-          <summary className="cursor-pointer text-[12px] font-medium text-gray-600">Technical details</summary>
+          <summary className="cursor-pointer text-[12px] font-medium text-gray-600">技术详情</summary>
           <div className="mt-3 space-y-4">
             <div className="flex flex-wrap gap-2">
-              <DenChip tone="neutral" mono>Workflow version {snapshot.configObjectVersionId.slice(0, 8)}</DenChip>
-              <DenChip tone="neutral">{snapshot.source === "scheduled" ? "Scheduled · OpenWork Cloud" : "Manual"}</DenChip>
+              <DenChip tone="neutral" mono>工作流版本 {snapshot.configObjectVersionId.slice(0, 8)}</DenChip>
+              <DenChip tone="neutral">{snapshot.source === "scheduled" ? "已安排 · OpenWork 云端" : "手动"}</DenChip>
             </div>
-            {snapshot.markdown ? <WorkflowMarkdownPreview markdown={snapshot.markdown} /> : <p className="text-[13px] text-gray-400">No rendered preview is retained.</p>}
+            {snapshot.markdown ? <WorkflowMarkdownPreview markdown={snapshot.markdown} /> : <p className="text-[13px] text-gray-400">未保留渲染预览。</p>}
             <pre className="max-h-96 overflow-auto whitespace-pre-wrap rounded-xl bg-gray-950 p-4 font-mono text-[12px] text-gray-100">{JSON.stringify(snapshot.value, null, 2)}</pre>
             <dl className="grid gap-3 rounded-xl border border-gray-100 p-4 text-[11px] sm:grid-cols-2">
-              <div><dt className="text-gray-400">Receipt</dt><dd className="break-all font-mono text-gray-700">{snapshot.receiptId}</dd></div>
-              <div><dt className="text-gray-400">Workflow version</dt><dd className="break-all font-mono text-gray-700">{snapshot.configObjectVersionId}</dd></div>
-              <div><dt className="text-gray-400">Code digest</dt><dd className="break-all font-mono">{snapshot.codeDigest}</dd></div>
-              <div><dt className="text-gray-400">Input schema digest</dt><dd className="break-all font-mono">{snapshot.inputSchemaDigest ?? "—"}</dd></div>
-              <div><dt className="text-gray-400">Output schema digest</dt><dd className="break-all font-mono">{snapshot.outputSchemaDigest ?? "—"}</dd></div>
-              <div><dt className="text-gray-400">Result digest</dt><dd className="break-all font-mono">{snapshot.resultDigest ?? "—"}</dd></div>
-              <div><dt className="text-gray-400">Renderer</dt><dd>{snapshot.rendererVersion ?? "—"}</dd></div>
-              <div><dt className="text-gray-400">Automation run</dt><dd className="break-all font-mono">{snapshot.automationRunId ?? "Manual"}</dd></div>
+              <div><dt className="text-gray-400">回执</dt><dd className="break-all font-mono text-gray-700">{snapshot.receiptId}</dd></div>
+              <div><dt className="text-gray-400">工作流版本</dt><dd className="break-all font-mono text-gray-700">{snapshot.configObjectVersionId}</dd></div>
+              <div><dt className="text-gray-400">代码摘要</dt><dd className="break-all font-mono">{snapshot.codeDigest}</dd></div>
+              <div><dt className="text-gray-400">输入结构摘要</dt><dd className="break-all font-mono">{snapshot.inputSchemaDigest ?? "—"}</dd></div>
+              <div><dt className="text-gray-400">输出结构摘要</dt><dd className="break-all font-mono">{snapshot.outputSchemaDigest ?? "—"}</dd></div>
+              <div><dt className="text-gray-400">结果摘要</dt><dd className="break-all font-mono">{snapshot.resultDigest ?? "—"}</dd></div>
+              <div><dt className="text-gray-400">渲染器</dt><dd>{snapshot.rendererVersion ?? "—"}</dd></div>
+              <div><dt className="text-gray-400">自动化运行</dt><dd className="break-all font-mono">{snapshot.automationRunId ?? "手动"}</dd></div>
             </dl>
           </div>
         </details>

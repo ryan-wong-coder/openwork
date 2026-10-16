@@ -27,16 +27,16 @@ function workbotName(metadata: string | null): string {
 
 function modelName(settings: WorkbotSettings, id: string | null): string {
   if (!id) return defaultLabel(settings);
-  return settings.models.find((entry) => entry.id === id)?.name ?? "Unavailable model";
+  return settings.models.find((entry) => entry.id === id)?.name ?? "模型不可用";
 }
 
 function defaultModelName(settings: WorkbotSettings): string {
-  if (!settings.defaultModel) return "the default model";
-  return settings.models.find((entry) => entry.id === settings.defaultModel)?.name ?? "the default model";
+  if (!settings.defaultModel) return "默认模型";
+  return settings.models.find((entry) => entry.id === settings.defaultModel)?.name ?? "默认模型";
 }
 
 function defaultLabel(settings: WorkbotSettings): string {
-  return settings.defaultModel ? `Default (${defaultModelName(settings)})` : "Default";
+  return settings.defaultModel ? `默认（${defaultModelName(settings)}）` : "默认";
 }
 
 function errorMessage(error: unknown, fallback: string): string {
@@ -86,7 +86,7 @@ export function WorkbotSettingsScreen() {
       await save.mutateAsync(model);
       setSaved({ previous });
     } catch (error) {
-      setSaveError(errorMessage(error, "Couldn't save the default model. Try again."));
+      setSaveError(errorMessage(error, "无法保存默认模型，请重试。"));
     }
   }
 
@@ -100,10 +100,10 @@ export function WorkbotSettingsScreen() {
           {settings && !settings.runnerReachable ? (
             <DenNotice
               tone="error"
-              message="Couldn't reach Workbot's models, so the model can't be changed right now."
+              message="无法连接 Workbot 模型，目前无法更改模型。"
               action={(
                 <DenButton variant="secondary" size="sm" loading={query.isFetching} onClick={() => void query.refetch()}>
-                  Try again
+                  重试
                 </DenButton>
               )}
             />
@@ -111,23 +111,23 @@ export function WorkbotSettingsScreen() {
           {settings && settings.runnerReachable && !settings.modelAvailable && settings.model ? (
             <DenNotice
               tone="warning"
-              message={`The saved model is no longer available. New messages use ${defaultModelName(settings)} until you choose another model.`}
+              message={`已保存的模型不再可用。在你选择其他模型前，新消息将使用 ${defaultModelName(settings)}。`}
             />
           ) : null}
 
           {query.isError ? (
             <DenNotice
               tone="error"
-              message={errorMessage(query.error, "Couldn't load Workbot settings.")}
+              message={errorMessage(query.error, "无法加载 Workbot 设置，请重试。")}
               action={(
                 <DenButton variant="secondary" size="sm" loading={query.isFetching} onClick={() => void query.refetch()}>
-                  Try again
+                  重试
                 </DenButton>
               )}
             />
           ) : (
             <div className="divide-y divide-gray-100 overflow-hidden rounded-2xl border border-gray-100 bg-white" data-section="workbot-default-model">
-              <SettingsRow label="Default model" labelId={labelId}>
+              <SettingsRow label="默认模型" labelId={labelId}>
                 {!settings ? (
                   <DenSkeleton className="h-10 w-72" data-testid="workbot-model-skeleton" />
                 ) : (
@@ -137,7 +137,7 @@ export function WorkbotSettingsScreen() {
                         aria-labelledby={labelId}
                         value={draft}
                         disabled={!canChoose}
-                        searchLabel={settings.models.length > 8 ? "Search models" : undefined}
+                        searchLabel={settings.models.length > 8 ? "搜索模型" : undefined}
                         onChange={(event) => {
                           setDraft(event.target.value);
                           setSaved(null);
@@ -147,7 +147,7 @@ export function WorkbotSettingsScreen() {
                         <option value="">{defaultLabel(settings)}</option>
                         {settings.model && !settings.models.some((entry) => entry.id === settings.model) ? (
                           <option value={settings.model} disabled>
-                            Unavailable model
+                            模型不可用
                           </option>
                         ) : null}
                         {settings.models.map((entry) => (
@@ -164,19 +164,19 @@ export function WorkbotSettingsScreen() {
                         disabled={!canChoose || !changed}
                         onClick={() => void store(draftModel, savedModel)}
                       >
-                        Save model
+                        保存模型
                       </DenButton>
                     ) : null}
                   </>
                 )}
               </SettingsRow>
-              <SettingsRow label="Name">
+              <SettingsRow label="名称">
                 <span className="text-[13px] text-gray-900" data-testid="workbot-name">{name}</span>
                 <Link
                   href={getBrandAppearanceRoute(orgSlug)}
                   className="rounded text-[13px] text-gray-500 underline-offset-2 hover:text-gray-900 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
                 >
-                  Change in Brand appearance
+                  在“品牌外观”中更改
                 </Link>
               </SettingsRow>
             </div>
@@ -187,21 +187,21 @@ export function WorkbotSettingsScreen() {
           ) : null}
           {saved && settings ? (
             <div role="status" className="flex items-center justify-between gap-3 px-1 text-[13px] text-gray-600">
-              <span className="min-w-0 [overflow-wrap:anywhere]">Saved. New messages use {modelName(settings, settings.model)}.</span>
+              <span className="min-w-0 [overflow-wrap:anywhere]">已保存，新消息将使用 {modelName(settings, settings.model)}.</span>
               <DenButton
                 variant="ghost"
                 size="xs"
                 loading={save.isPending}
                 onClick={() => void store(saved.previous, settings.model)}
               >
-                Undo
+                撤销
               </DenButton>
             </div>
           ) : null}
           {!canManage && settings ? (
             <p className="flex items-center gap-2 px-1 text-[13px] text-gray-500">
               <Lock size={16} strokeWidth={1.5} aria-hidden="true" className="shrink-0" />
-              {`Read only. ${permissionLockReason("inference.manage")}`}
+              {`只读。${permissionLockReason("inference.manage")}`}
             </p>
           ) : null}
         </div>

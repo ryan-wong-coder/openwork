@@ -24,7 +24,7 @@ function SsoTestStartContent() {
     if (startedRef.current) return;
     startedRef.current = true;
     if (!intentId || !organizationId) {
-      setError("This SSO authentication test link is invalid. Return to SSO settings and start a new test.");
+      setError("此 SSO 身份验证测试链接无效，请返回 SSO 设置重新测试。");
       return;
     }
 
@@ -48,12 +48,12 @@ function SsoTestStartContent() {
           ? payload.url
           : null;
         if (!response.ok || !url) {
-          throw new Error("The SSO authentication test could not be started. Return to SSO settings and try again.");
+          throw new Error("无法开始 SSO 身份验证测试，请返回 SSO 设置重试。");
         }
         if (!cancelled) window.location.assign(url);
       } catch (nextError) {
         if (cancelled) return;
-        setError(nextError instanceof Error ? nextError.message : "The SSO authentication test could not be started.");
+        setError(nextError instanceof Error ? nextError.message : "无法开始 SSO 身份验证测试。");
         window.setTimeout(() => window.location.assign(completionUrl(intentId, true)), 1200);
       }
     })();
@@ -64,14 +64,14 @@ function SsoTestStartContent() {
 
   return (
     <DenStatusScreen
-      title={error ? "We couldn’t start the test" : "Testing your SSO connection"}
-      description="This test does not enable SSO or replace your current OpenWork session."
-      status="Preparing your organization’s sign-in page…"
+      title={error ? "无法开始测试" : "正在测试 SSO 连接"}
+      description="此测试不会启用 SSO 或替换当前 OpenWork 会话。"
+      status="正在准备组织登录页面…"
       error={error}
     />
   );
 }
 
 export default function SsoTestStartPage() {
-  return <Suspense fallback={<DenStatusScreen title="Testing your SSO connection" description="Preparing your organization’s sign-in page…" />}><SsoTestStartContent /></Suspense>;
+  return <Suspense fallback={<DenStatusScreen title="正在测试 SSO 连接" description="正在准备组织登录页面…" />}><SsoTestStartContent /></Suspense>;
 }

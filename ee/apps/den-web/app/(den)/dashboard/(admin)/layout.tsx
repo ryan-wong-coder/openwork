@@ -44,8 +44,8 @@ export default function AdminDashboardLayout({
               <Loader2 className="size-4 animate-spin" aria-hidden="true" />
             </div>
             <div>
-              <p className="text-[15px] font-medium text-gray-950">Checking workspace access</p>
-              <p className="mt-1 text-[13px] leading-5 text-gray-500">We’re confirming which settings are available to your account.</p>
+              <p className="text-[15px] font-medium text-gray-950">正在检查工作区访问权限</p>
+              <p className="mt-1 text-[13px] leading-5 text-gray-500">正在确认账户可用的设置。</p>
             </div>
           </div>
         </div>
@@ -70,8 +70,8 @@ export default function AdminDashboardLayout({
               <ShieldCheck className="size-5" aria-hidden="true" />
             </div>
             <div>
-              <p className="text-[15px] font-medium text-gray-950">Your workspace is ready</p>
-              <p className="mt-1 text-[13px] leading-5 text-gray-500">This setting is managed by workspace admins. Taking you back to your dashboard.</p>
+              <p className="text-[15px] font-medium text-gray-950">工作区已就绪</p>
+              <p className="mt-1 text-[13px] leading-5 text-gray-500">此设置由工作区管理员管理，正在返回控制台。</p>
             </div>
           </div>
         </div>

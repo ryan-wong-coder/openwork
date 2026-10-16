@@ -339,32 +339,33 @@ function DiagnosticRow(props: { label: string; value: string }) {
 }
 
 function joinList(values: string[]): string {
-  return values.length ? values.join(", ") : "none";
+  return values.length ? values.join(", ") : t("connect.diagnostics_none");
 }
 
 function formatMaybe(value: string | number | boolean | null | undefined): string {
-  if (value === null || value === undefined || value === "") return "unknown";
+  if (value === null || value === undefined || value === "") return t("common.unknown");
+  if (typeof value === "boolean") return t(value ? "connect.diagnostics_yes" : "connect.diagnostics_no");
   return String(value);
 }
 
 function formatMetadataRecord(value: Record<string, string | number | boolean | null> | null | undefined): string {
-  if (!value || Object.keys(value).length === 0) return "none";
+  if (!value || Object.keys(value).length === 0) return t("connect.diagnostics_none");
   return Object.entries(value).map(([key, nested]) => `${key}=${formatMaybe(nested)}`).join(", ");
 }
 
 function formatSupportedFeatures(features: OpenworkCloudMcpHealth["compatibility"]["supportedFeatures"]): string {
-  return Object.entries(features).map(([key, enabled]) => `${key}:${enabled ? "yes" : "no"}`).join(", ");
+  return Object.entries(features).map(([key, enabled]) => `${key}:${t(enabled ? "connect.diagnostics_yes" : "connect.diagnostics_no")}`).join(", ");
 }
 
 function formatPluginHashes(hashes: OpenworkCloudMcpHealth["compatibility"]["pluginFileHashes"]): string {
-  if (hashes.length === 0) return "none";
-  return hashes.map((hash) => `${hash.name}=${hash.sha256 ? hash.sha256.slice(0, 12) : `unavailable${hash.error ? ` (${hash.error})` : ""}`}`).join(", ");
+  if (hashes.length === 0) return t("connect.diagnostics_none");
+  return hashes.map((hash) => `${hash.name}=${hash.sha256 ? hash.sha256.slice(0, 12) : `${t("config.unavailable")}${hash.error ? ` (${hash.error})` : ""}`}`).join(", ");
 }
 
 function formatMcpToolExposure(input: { checked: boolean; includesMcpTools: boolean | null; present: string[]; missing: string[]; limitation?: string }): string {
-  if (!input.checked) return "not checked";
-  const includes = input.includesMcpTools === null ? "unknown" : input.includesMcpTools ? "yes" : "no";
-  return `includes MCP tools: ${includes}; present ${joinList(input.present)}; missing ${joinList(input.missing)}${input.limitation ? `; limitation: ${input.limitation}` : ""}`;
+  if (!input.checked) return t("updates.not_checked");
+  const includes = input.includesMcpTools === null ? t("common.unknown") : t(input.includesMcpTools ? "connect.diagnostics_yes" : "connect.diagnostics_no");
+  return `包含工具：${includes}；已提供：${joinList(input.present)}；缺少：${joinList(input.missing)}${input.limitation ? `；限制：${input.limitation}` : ""}`;
 }
 
 interface AdvancedCloudMcpDiagnosticsSectionProps {
@@ -422,9 +423,9 @@ export function AdvancedCloudMcpDiagnosticsSection(props: AdvancedCloudMcpDiagno
         {props.cloudMcpHealth ? (
           <div className="space-y-2 rounded-xl border border-gray-6 bg-gray-1/60 p-3">
             <div className="grid gap-2">
-              <DiagnosticRow label={t("interface.active_workspace")} value={`${props.cloudMcpHealth.workspace.id} (${props.cloudMcpHealth.workspace.directory ?? "no directory"})`} />
-              <DiagnosticRow label={t("interface.desired_revision")} value={props.cloudMcpHealth.desired.revision ?? "none"} />
-              <DiagnosticRow label={t("interface.applied_revision")} value={props.cloudMcpHealth.delivery.appliedRevision ?? "none"} />
+              <DiagnosticRow label={t("interface.active_workspace")} value={`${props.cloudMcpHealth.workspace.id} (${props.cloudMcpHealth.workspace.directory ?? "未设置目录"})`} />
+              <DiagnosticRow label={t("interface.desired_revision")} value={props.cloudMcpHealth.desired.revision ?? t("connect.diagnostics_none")} />
+              <DiagnosticRow label={t("interface.applied_revision")} value={props.cloudMcpHealth.delivery.appliedRevision ?? t("connect.diagnostics_none")} />
               <DiagnosticRow label={t("interface.delivery")} value={`${props.cloudMcpHealth.delivery.state}${props.cloudMcpHealth.delivery.trigger ? ` / ${props.cloudMcpHealth.delivery.trigger}` : ""}`} />
               <DiagnosticRow label={t("interface.engine_status")} value={props.cloudMcpHealth.engine.status} />
               {props.cloudMcpHealth.engineInspection?.checked ? (
@@ -432,7 +433,7 @@ export function AdvancedCloudMcpDiagnosticsSection(props: AdvancedCloudMcpDiagno
                   label={t("interface.engine_mcp_servers")}
                   value={(props.cloudMcpHealth.engineInspection.servers ?? []).length
                     ? (props.cloudMcpHealth.engineInspection.servers ?? []).map((server) => `${server.name} ${server.status}${server.error ? ` (${server.error})` : ""}`).join("; ")
-                    : "none tracked"}
+                    : t("connect.diagnostics_none")}
                 />
               ) : null}
               <DiagnosticRow label={t("interface.provider_model")} value={projection?.checked ? `${projection.provider ?? "unknown"}/${projection.model ?? "unknown"}; source ${projection.source ?? "unknown"}; tool calling ${formatMaybe(projection.toolCalling)}; present ${joinList(projection.present)}; missing ${joinList(projection.missing)}${projection.limitation ? `; limitation: ${projection.limitation}` : ""}` : "not checked"} />
@@ -489,7 +490,7 @@ interface AdvancedRuntimeConfigSourcesSectionProps {
 }
 
 function formatKeys(keys: string[]) {
-  return keys.length ? keys.join(", ") : "none";
+  return keys.length ? keys.join(", ") : t("connect.diagnostics_none");
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -525,7 +526,7 @@ function RuntimeConfigSummary(props: { config: Record<string, unknown> }) {
   const mcps = countRecord(config.mcp);
   const permissions = countRecord(config.permission);
   const disabledProviders = countArray(config.disabled_providers);
-  const defaultAgent = typeof config.default_agent === "string" ? config.default_agent : "not set";
+  const defaultAgent = typeof config.default_agent === "string" ? config.default_agent : t("config.not_set");
 
   return (
     <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">

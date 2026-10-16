@@ -47,6 +47,9 @@ import { rejectedRecoveryFromMessage } from "@/react-app/domains/session/sync/re
 import { replyModelLabel } from "@/react-app/domains/session/sync/reply-model"
 import { openModelPickerEvent } from "@/react-app/shell/new-providers-listener"
 import { ApplyPatchTool } from "@/components/tools/apply-patch"
+import { GatewayImageTool } from "@/components/tools/gateway-image"
+import { gatewayImageMatchesWorkspace, gatewayImageResult } from "@/components/tools/gateway-image-result"
+import { localClientFeatureEnabled } from "@/app/lib/local-client-features"
 import { BashTool } from "@/components/tools/bash"
 import { EditTool } from "@/components/tools/edit"
 import { ReadFileTool, WriteFileTool } from "@/components/tools/file"
@@ -255,7 +258,7 @@ function isReservedConnectionQuestionPart(part: ToolUIPart | DynamicToolUIPart):
 }
 
 const ToolMessageInner = ({ part }: ToolMessageProps) => {
-  const { connectorIdentities, onMcpReconnect, onMcpReopenAuthorization, connectionQuestionToolCallId, getConnectionDecision } = useMessageList()
+  const { connectorIdentities, onMcpReconnect, onMcpReopenAuthorization, connectionQuestionToolCallId, getConnectionDecision, mcpAppOrigin } = useMessageList()
   const remoteThreads = useRemoteThreadsEnabled()
   const pinnedRemoteThreads = React.useContext(PinnedRemoteThreadsContext)
   // The agent following up on a task the chat shows makes it run again.
@@ -269,6 +272,9 @@ const ToolMessageInner = ({ part }: ToolMessageProps) => {
   if (appCreationParts.has(part.toolCallId)) return null
   if (part.toolCallId === connectionQuestionToolCallId || isReservedConnectionQuestionPart(part)) return null
   const promptCall = credentialPromptCall(part)
+  const generatedImage = localClientFeatureEnabled("gatewayImageGeneration") ? gatewayImageResult(part) : null
+  // Completed images are pinned below the work rail so folding steps never hides the result.
+  if (generatedImage && mcpAppOrigin && gatewayImageMatchesWorkspace(generatedImage, mcpAppOrigin.workspaceId)) return null
   const remoteStart = remoteThreads && part.type === "dynamic-tool" ? remoteThreadFromToolPart(part) : null
   const calls = part.type === "dynamic-tool" ? codeModeToolCalls(part) : null
   const remoteStarts = remoteThreads && calls && part.type === "dynamic-tool" ? (codeModeCallsWithResults(part) ?? []).flatMap((call) => {
@@ -1515,7 +1521,7 @@ function MessageGroup({
 }: AssistantMessageGroupProps) {
   React.useSyncExternalStore(subscribeLocale, currentLocale, currentLocale)
 
-  const { onRevertToUserMessage, onForkAtMessage, forkingMessageId, showThinking, readOnly, getConnectionDecision } = useMessageList()
+  const { onRevertToUserMessage, onForkAtMessage, forkingMessageId, showThinking, readOnly, getConnectionDecision, mcpAppOrigin } = useMessageList()
   const connectionCardParts = React.useMemo(() => connectionCardPartIds(items, getConnectionDecision), [items, getConnectionDecision])
   const newestAppCalls = React.useMemo(() => new Set(newestAppCallIds.split("\n")), [newestAppCallIds])
   const lastItem = items[items.length - 1]
@@ -1544,6 +1550,18 @@ function MessageGroup({
   const lastTextMessage = getLastTextPart(lastItem.message)
   const resolvedReplyModel = lastRealItem?.message.role === "assistant" ? replyModelLabel(lastRealItem.message) : null
   const mcpAppParts = collectMcpAppParts(items)
+  const gatewayImages: (DynamicToolUIPart | ToolUIPart)[] = []
+  if (localClientFeatureEnabled("gatewayImageGeneration") && mcpAppOrigin) {
+    const seen = new Set<string>()
+    for (const { message } of items) for (const part of message.parts) {
+      if (!isToolUIPart(part) || seen.has(part.toolCallId)) continue
+      const result = gatewayImageResult(part)
+      if (result && gatewayImageMatchesWorkspace(result, mcpAppOrigin.workspaceId)) {
+        seen.add(part.toolCallId)
+        gatewayImages.push(part)
+      }
+    }
+  }
 
   // Leading messages without prose (tool/reasoning steps) render inline and
   // rely on the transcript's one scroll container. Tool activity must never
@@ -1722,6 +1740,9 @@ function MessageGroup({
       ) : null}
       {creationRuns.map(run => <Message key={`creation-${run.id}`} className="mx-auto flex w-full max-w-3xl flex-col px-2 md:px-10"><AppBuilderStep run={run} startedAt={getMessageCreated(items[0]!.message)} completedAt={getMessageCompleted(lastItem.message)} activity={run === creationRuns.at(-1) ? panelActivity : null} active={creationLive && (run === creationRuns.at(-1) || Boolean(run.preparation && isToolPartInFlight(run.preparation)) || run.builds.some(isToolPartInFlight))} /></Message>)}
       {mcpAppParts.map(appFrame)}
+      {mcpAppOrigin && gatewayImages.map(part => <Message key={`gateway-image-${part.toolCallId}`} className="mx-auto flex w-full max-w-3xl flex-col px-2 md:px-10">
+        <GatewayImageTool part={part} origin={mcpAppOrigin} />
+      </Message>)}
       {pinnedRemoteThreads.map(({ start, part }) => (
         <Message key={`remote-thread-${start.key}`} className="mx-auto flex w-full max-w-3xl flex-col px-2 md:px-10">
           <RemoteThreadRunLine start={start} part={part} />

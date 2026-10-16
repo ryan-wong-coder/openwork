@@ -32,9 +32,9 @@ export function useLibraryUsage(kind: LibraryUsageKind, days: LibraryUsageWindow
     queryKey: ["library-usage", orgId, orgContext?.currentMember.id, kind, days],
     enabled,
     queryFn: async ({ signal }) => {
-      if (!orgId) throw new Error("Library usage needs a workspace.");
+      if (!orgId) throw new Error("查看资源库用量需要工作区。");
       const { response, payload } = await requestJson(libraryUsagePath(kind, days), { method: "GET", headers: { [ORG_SCOPE_HEADER]: orgId }, signal }, 20_000);
-      if (!response.ok) throw new Error(getErrorMessage(payload, `Could not load usage (${response.status}).`));
+      if (!response.ok) throw new Error(getErrorMessage(payload, `无法加载使用情况（${response.status}）。`));
       return libraryUsageReportSchema.parse(payload);
     },
     // Keep the last counts while switching range; never show another view's rows.
@@ -55,9 +55,9 @@ export function useLibraryUsageBreakdown(kind: LibraryUsageKind, days: LibraryUs
     queryKey: ["library-usage-breakdown", orgId, orgContext?.currentMember.id, kind, days, groupBy, scopeKey],
     enabled,
     queryFn: async ({ signal }) => {
-      if (!orgId) throw new Error("Library usage needs a workspace.");
+      if (!orgId) throw new Error("查看资源库用量需要工作区。");
       const { response, payload } = await requestJson(libraryUsageBreakdownPath(kind, days, groupBy, scope), { method: "GET", headers: { [ORG_SCOPE_HEADER]: orgId }, signal }, 20_000);
-      if (!response.ok) throw new Error(getErrorMessage(payload, `Could not load usage (${response.status}).`));
+      if (!response.ok) throw new Error(getErrorMessage(payload, `无法加载使用情况（${response.status}）。`));
       return { scopeKey, groupBy, ...libraryUsageBreakdownSchema.parse(payload) };
     },
     // Keep the last counts while switching range, never another item's, person's or grouping's.

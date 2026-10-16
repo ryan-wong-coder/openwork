@@ -45,18 +45,18 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: metadataBaseFromOrigin(metadataOrigin),
     title: "OpenWork Cloud",
     description:
-      "Share your OpenWork setup with your team, manage billing, and use OpenWork Cloud from app.openworklabs.com.",
+      "与团队共享 OpenWork 配置、管理账单，并通过 app.openworklabs.com 使用 OpenWork 云端。",
     openGraph: {
       title: "OpenWork Cloud",
       description:
-        "Share your OpenWork setup with your team and keep selected workflows available in OpenWork Cloud.",
+        "与团队共享 OpenWork 配置，并在 OpenWork 云端使用所选工作流。",
       images: ["/opengraph-image"]
     },
     twitter: {
       card: "summary_large_image",
       title: "OpenWork Cloud",
       description:
-        "Share your OpenWork setup with your team and manage OpenWork Cloud from app.openworklabs.com.",
+        "与团队共享 OpenWork 配置，并通过 app.openworklabs.com 管理 OpenWork 云端。",
       images: ["/opengraph-image"]
     },
     icons: {
@@ -69,7 +69,7 @@ export default function RootLayout({
   children
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${ibmPlexMono.variable}`}>
+    <html lang="zh-CN" className={`${inter.variable} ${ibmPlexMono.variable}`}>
       <head />
       <body>{children}</body>
     </html>

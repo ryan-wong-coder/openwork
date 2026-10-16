@@ -134,11 +134,13 @@ const APP_NAME = BLANK_SLATE_LAUNCH.appName;
 let currentDisplayAppName = APP_NAME;
 installStdioErrorHandlers();
 installSocketTypeOfServiceGuard();
-await initOpenworkSentry({
-  app,
-  distribution: DESKTOP_DISTRIBUTION,
-  packageMetadata: desktopPackageMetadata,
-});
+if (DESKTOP_DISTRIBUTION.flavor !== "public") {
+  await initOpenworkSentry({
+    app,
+    distribution: DESKTOP_DISTRIBUTION,
+    packageMetadata: desktopPackageMetadata,
+  });
+}
 const BASE_APP_IDENTIFIER = isDevMode ? DEV_APP_IDENTIFIER : TAURI_APP_IDENTIFIER;
 const APP_IDENTIFIER = resolveAppIdentifier({
   appIdentifierOverride: process.env.OPENWORK_ELECTRON_APP_IDENTIFIER,
@@ -1303,15 +1305,15 @@ const runtimeManager = createRuntimeManager({
   driveFileApproval: async ({ action, path: filePath, name, fileId, webViewLink, mode }) => {
     const win = await createMainWindow();
     const saving = action === "push";
-    const label = saving ? (mode === "copy" ? "Save a copy" : "Save to Drive") : action === "pull" ? "Download from Drive" : "Discard local edits";
-    const identity = `Google Drive: ${name}\nFile ID: ${fileId}${webViewLink ? `\n${webViewLink}` : ""}`;
+    const label = nativeText(saving ? (mode === "copy" ? "Save a copy" : "Save to Drive") : action === "pull" ? "Download from Drive" : "Discard local edits");
+    const identity = nativeTemplate("Google Drive: {name}\nFile ID: {fileId}{link}", { name, fileId, link: webViewLink ? `\n${webViewLink}` : "" });
     const { response } = await dialog.showMessageBox(win, {
       type: "question",
-      message: action === "overwrite" ? `Replace the local copy of ${name}?` : `${label}: ${name}`,
+      message: action === "overwrite" ? nativeTemplate("Replace the local copy of {name}?", { name }) : `${label}: ${name}`,
       detail: saving
-        ? `${identity}\n\n${filePath}\n\n${mode === "copy" ? "Creates a new file next to the original in Google Drive." : "Replaces the file in Google Drive. People with access to it will see your changes."}`
-        : `${identity}\n\n${filePath}\n\n${action === "pull" ? "Downloads this file from your connected account into the workspace." : "Discards the local edits and downloads the current Google Drive file."}`,
-      buttons: ["Cancel", label], defaultId: 0, cancelId: 0, noLink: true,
+        ? `${identity}\n\n${filePath}\n\n${nativeText(mode === "copy" ? "Creates a new file next to the original in Google Drive." : "Replaces the file in Google Drive. People with access to it will see your changes.")}`
+        : `${identity}\n\n${filePath}\n\n${nativeText(action === "pull" ? "Downloads this file from your connected account into the workspace." : "Discards the local edits and downloads the current Google Drive file.")}`,
+      buttons: [nativeText("Cancel"), label], defaultId: 0, cancelId: 0, noLink: true,
     });
     return response === 1;
   },
@@ -1320,7 +1322,7 @@ const runtimeManager = createRuntimeManager({
     desktop: {
       // app.getVersion() is Electron's own version in development builds.
       currentVersion: resolveAppVersion(app),
-      eligible: () => desktopFreeBootstrapEligible(DESKTOP_DISTRIBUTION, workspaceStore.readDesktopBootstrapConfigSync()),
+      eligible: () => DESKTOP_DISTRIBUTION.flavor !== "public" && desktopFreeBootstrapEligible(DESKTOP_DISTRIBUTION, workspaceStore.readDesktopBootstrapConfigSync()),
     },
   },
   // When OPENWORK_ENCRYPTION_KEY is set, skip the safeStorage provider so it does not shadow the documented env override used by CI/headless/enterprise.
@@ -2528,8 +2530,8 @@ async function createMainWindow() {
     },
     onRepeatedCrash: (details) => {
       dialog.showErrorBox(
-        `${APP_NAME} could not recover`,
-        `The app renderer stopped repeatedly (${details.reason ?? "unknown reason"}). Quit and reopen OpenWork. Your workspace files were not deleted.`,
+        nativeTemplate("{app} could not recover", { app: APP_NAME }),
+        nativeTemplate("The app renderer stopped repeatedly ({reason}). Quit and reopen OpenWork. Your workspace files were not deleted.", { reason: details.reason ?? nativeText("unknown reason") }),
       );
     },
   });
@@ -2829,7 +2831,7 @@ or use: pnpm dev:worktree`);
         type: "warning",
         message: nativeText("OpenWork could not prepare its default folder"),
         detail: nativeTemplate("OpenWork is open without a workspace. Use Add workspace in the sidebar to choose another folder.\n\n{error}", { error: firstLaunchWorkspaceFailure.error }),
-        buttons: ["Continue"],
+        buttons: [nativeText("Continue")],
       }));
     }
     if (process.platform === "linux" && !BLANK_SLATE_LAUNCH.enabled) {
@@ -2857,8 +2859,8 @@ or use: pnpm dev:worktree`);
     // would block the main thread, and the quit, until someone dismissed it.
     if (quitInProgress()) return;
     dialog.showErrorBox(
-      `${APP_NAME} could not start`,
-      "OpenWork hit an unexpected startup error. Quit and reopen the app. If it continues, switch to a Stable build and share the diagnostics with support.",
+      nativeTemplate("{app} could not start", { app: APP_NAME }),
+      nativeText("OpenWork hit an unexpected startup error. Quit and reopen the app. If it continues, switch to a Stable build and share the diagnostics with support."),
     );
     app.quit();
   });

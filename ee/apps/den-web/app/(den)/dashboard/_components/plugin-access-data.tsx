@@ -94,7 +94,7 @@ export function usePluginAccess(pluginId: string, { enabled = true }: { enabled?
         15000,
       );
       if (!response.ok) {
-        throw new Error(getErrorMessage(payload, `Failed to load plugin access (${response.status}).`));
+        throw new Error(getErrorMessage(payload, `无法加载插件访问权限（${response.status}）。`));
       }
       return parsePluginAccessGrants(isRecord(payload) ? payload.items : null);
     },
@@ -119,7 +119,7 @@ export function useGrantPluginAccess() {
           15000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to grant plugin access (${response.status}).`);
+          throw getRequestError(payload, response, `无法授予插件访问权限（${response.status}）。`);
         }
       });
       return input.pluginId;
@@ -143,7 +143,7 @@ export function useRevokePluginAccess() {
           15000,
         );
         if (response.status !== 204 && !response.ok) {
-          throw getRequestError(payload, response, `Failed to revoke plugin access (${response.status}).`);
+          throw getRequestError(payload, response, `无法撤销插件访问权限（${response.status}）。`);
         }
       });
       return input.pluginId;

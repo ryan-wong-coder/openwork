@@ -42,15 +42,15 @@ export function SkillEditorScreen({ pluginId, skillId }: { pluginId: string; ski
     if (submittingRef.current) return;
     const draft = { name: name.trim(), description: description.trim(), body: body.trim() };
     if (!SKILL_NAME_PATTERN.test(draft.name) || draft.name.length > 64) {
-      setValidationError("Name must use lowercase letters, numbers, and single hyphens only.");
+      setValidationError("名称只能包含小写字母、数字和单个连字符。");
       return;
     }
     if (!draft.description || draft.description.length > 1024) {
-      setValidationError("Description is required and must be 1,024 characters or fewer.");
+      setValidationError("请输入描述，长度不得超过 1,024 个字符。");
       return;
     }
     if (!draft.body) {
-      setValidationError("Skill body is required.");
+      setValidationError("请输入技能正文。");
       return;
     }
 
@@ -69,13 +69,13 @@ export function SkillEditorScreen({ pluginId, skillId }: { pluginId: string; ski
   }
 
   if (isEditing && (skillQuery.isLoading || loadedSkillId !== skillId)) {
-    return <EditorMessage>Loading skill…</EditorMessage>;
+    return <EditorMessage>正在加载技能…</EditorMessage>;
   }
 
   if (isEditing && !skillQuery.data) {
     return (
       <EditorMessage error>
-        {skillQuery.error instanceof Error ? skillQuery.error.message : "That skill could not be found."}
+        {skillQuery.error instanceof Error ? skillQuery.error.message : "未找到此技能。"}
       </EditorMessage>
     );
   }
@@ -89,7 +89,7 @@ export function SkillEditorScreen({ pluginId, skillId }: { pluginId: string; ski
         className="inline-flex items-center gap-1.5 text-[13px] text-gray-500 transition hover:text-gray-900"
       >
         <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-        Back to {isEditing ? "skill" : "plugin"}
+        返回 {isEditing ? "技能" : "插件"}
       </Link>
 
       <div className="mt-6 rounded-2xl border border-gray-100 bg-white p-6 md:p-8">
@@ -99,37 +99,37 @@ export function SkillEditorScreen({ pluginId, skillId }: { pluginId: string; ski
           </div>
           <div>
             <h1 className="text-[22px] font-semibold tracking-[-0.03em] text-gray-950">
-              {isEditing ? `Edit ${skillQuery.data?.name ?? "skill"}` : "Create a skill"}
+              {isEditing ? `编辑 ${skillQuery.data?.name ?? "技能"}` : "创建技能"}
             </h1>
-            <p className="mt-1 text-[14px] text-gray-500">Store the complete instructions agents should follow.</p>
+            <p className="mt-1 text-[14px] text-gray-500">保存代理应遵循的完整说明。</p>
           </div>
         </div>
 
         <form className="mt-8 space-y-5" onSubmit={(event) => void submit(event)}>
-          <Field label="Name" hint="Lowercase kebab-case, such as customer-research.">
+          <Field label="名称" hint="使用小写字母与连字符，例如 customer-research。">
             <DenInput
               value={name}
               onChange={(event) => setName(event.target.value)}
-              placeholder="e.g. customer-research"
+              placeholder="例如 customer-research"
               autoComplete="off"
               maxLength={64}
               required
             />
           </Field>
-          <Field label="Description" hint="Explain when an agent should load this skill.">
+          <Field label="说明" hint="说明智能体应在何时加载此技能。">
             <DenInput
               value={description}
               onChange={(event) => setDescription(event.target.value)}
-              placeholder="When should an agent use this skill?"
+              placeholder="智能体应在何时使用此技能？"
               maxLength={1024}
               required
             />
           </Field>
-          <Field label="Skill body" hint="Markdown is stored and displayed in full.">
+          <Field label="技能正文" hint="Markdown 内容将完整保存和显示。">
             <DenTextarea
               value={body}
               onChange={(event) => setBody(event.target.value)}
-              placeholder="# Instructions\n\nDescribe the complete workflow..."
+              placeholder="# 说明\\n\\n描述完整的工作流程…"
               rows={16}
               className="font-mono leading-6"
               required
@@ -144,10 +144,10 @@ export function SkillEditorScreen({ pluginId, skillId }: { pluginId: string; ski
 
           <div className="flex justify-end gap-3 pt-2">
             <Link href={getPluginRoute(orgSlug, pluginId)} className="inline-flex h-10 items-center rounded-lg px-4 text-[13px] font-medium text-gray-600 hover:bg-gray-50">
-              Cancel
+              取消
             </Link>
             <DenButton type="submit" loading={mutation.isPending}>
-              {isEditing ? "Save changes" : "Create skill"}
+              {isEditing ? "保存更改" : "创建技能"}
             </DenButton>
           </div>
         </form>

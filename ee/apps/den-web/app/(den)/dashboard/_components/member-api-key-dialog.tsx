@@ -81,20 +81,20 @@ function MemberApiKeyForm({ target, onClose, onSaved }: {
   return (
     <>
       <Dialog.Title className="text-[16px] font-semibold leading-6 text-gray-900">
-        {saved ? `${target.name}: key saved` : `${target.replacing ? "Replace" : "Add"} key for ${target.name}`}
+        {saved ? `${target.name}：密钥已保存` : `${target.name} 的 ${target.replacing ? "替换" : "添加"} 密钥`}
       </Dialog.Title>
       {saved ? (
         <div className="mt-5 flex justify-end">
-          <DenButton size="sm" onClick={onClose}>Done</DenButton>
+          <DenButton size="sm" onClick={onClose}>完成</DenButton>
         </div>
       ) : (
         <form className="mt-5 flex flex-col gap-4" onSubmit={(event) => void submit(event)}>
           <label className="flex flex-col gap-1.5">
-            <span className="text-[12px] font-medium text-gray-700">Personal access token or API key</span>
+            <span className="text-[12px] font-medium text-gray-700">个人访问令牌或 API 密钥</span>
             <McpCredentialInput
               kind="secret"
               name="member-mcp-api-key"
-              aria-label={`${target.name} key`}
+              aria-label={`${target.name} 密钥`}
               autoComplete="off"
               data-ph-no-capture
               maxLength={MEMBER_API_KEY_MAX_LENGTH}
@@ -106,8 +106,8 @@ function MemberApiKeyForm({ target, onClose, onSaved }: {
           </label>
           {error ? <p className="text-[12px] text-red-600" role="alert">{error}</p> : null}
           <div className="flex justify-end gap-2">
-            <Dialog.Close disabled={save.isPending} className={buttonVariants({ variant: "secondary", size: "sm" })}>Cancel</Dialog.Close>
-            <DenButton type="submit" size="sm" loading={save.isPending} disabled={!apiKey}>Save key</DenButton>
+            <Dialog.Close disabled={save.isPending} className={buttonVariants({ variant: "secondary", size: "sm" })}>取消</Dialog.Close>
+            <DenButton type="submit" size="sm" loading={save.isPending} disabled={!apiKey}>保存密钥</DenButton>
           </div>
         </form>
       )}

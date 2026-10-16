@@ -30,26 +30,26 @@ type BrandAssetDraft = {
 };
 
 async function createBrandAssetDraft(file: File, kind: BrandAssetKind): Promise<BrandAssetDraft> {
-  if (file.type !== "image/png" && file.type !== "image/jpeg") throw new Error("Use a PNG or JPEG image.");
-  if (file.size > BRAND_ASSET_MAX_BYTES) throw new Error("Use an image under 2 MB.");
+  if (file.type !== "image/png" && file.type !== "image/jpeg") throw new Error("请使用 PNG 或 JPEG 图像。");
+  if (file.size > BRAND_ASSET_MAX_BYTES) throw new Error("请使用小于 2 MB 的图像。");
 
   let image: ImageBitmap;
   try {
     image = await createImageBitmap(file);
   } catch {
-    throw new Error("OpenWork could not decode that image.");
+    throw new Error("OpenWork 无法读取此图像。");
   }
 
   const { width, height } = image;
   image.close();
-  if (width > 4096 || height > 4096) throw new Error("Use an image no larger than 4096×4096 pixels.");
+  if (width > 4096 || height > 4096) throw new Error("图像尺寸不得超过 4096×4096 像素。");
   if (kind === "icon") {
-    if (width < 64 || height < 64) throw new Error("Use a square icon at least 64×64 pixels.");
-    if (width !== height) throw new Error("Use a square image for the app icon.");
+    if (width < 64 || height < 64) throw new Error("请使用至少 64×64 像素的正方形图标。");
+    if (width !== height) throw new Error("应用图标需要使用正方形图像。");
   } else {
     const aspectRatio = width / height;
-    if (width < 128 || height < 32) throw new Error("Use a wordmark at least 128×32 pixels.");
-    if (aspectRatio < 1.5 || aspectRatio > 8) throw new Error("Use a horizontal wordmark between 1.5:1 and 8:1.");
+    if (width < 128 || height < 32) throw new Error("文字标识尺寸至少为 128×32 像素。");
+    if (aspectRatio < 1.5 || aspectRatio > 8) throw new Error("请使用宽高比为 1.5:1 至 8:1 的横向文字标识。");
   }
 
   return { file, previewUrl: URL.createObjectURL(file), width, height };
@@ -96,20 +96,20 @@ function BrandAssetUploadField({
         {previewUrl ? (
           <img
             src={previewUrl}
-            alt={`${title} preview`}
+            alt={`${title} 预览`}
             className={kind === "icon" ? "size-20 rounded-xl object-contain" : "max-h-20 max-w-full object-contain"}
             data-testid={`brand-${kind}-preview`}
           />
         ) : (
-          <span className="text-center text-[12px] text-gray-400">Default OpenWork {kind}</span>
+          <span className="text-center text-[12px] text-gray-400">默认 OpenWork {kind}</span>
         )}
       </div>
       <div className="min-h-9 min-w-0 break-words text-[11px] leading-5 text-gray-500" data-testid={`brand-${kind}-status`}>
-        {draft ? `Ready to upload: ${draft.file.name} · ${dimensions}` : null}
-        {!draft && clearPending ? "Will restore the default after saving." : null}
-        {!draft && !clearPending && managedAsset ? `Stored in this Den · ${dimensions} · version ${managedAsset.version.slice(0, 10)}` : null}
-        {!draft && !clearPending && !managedAsset && currentUrl ? "Current hosted image (legacy URL). Upload a file to move it into this Den." : null}
-        {!draft && !clearPending && !currentUrl ? "No custom image saved." : null}
+        {draft ? `待上传：${draft.file.name} · ${dimensions}` : null}
+        {!draft && clearPending ? "保存后将恢复默认设置。" : null}
+        {!draft && !clearPending && managedAsset ? `保存在此 Den 中 · ${dimensions} · 版本 ${managedAsset.version.slice(0, 10)}` : null}
+        {!draft && !clearPending && !managedAsset && currentUrl ? "当前使用旧版托管图像地址，上传文件可将其迁移至此 Den。" : null}
+        {!draft && !clearPending && !currentUrl ? "尚未保存自定义图像。" : null}
       </div>
       <div className="flex flex-wrap gap-2">
         <label
@@ -120,7 +120,7 @@ function BrandAssetUploadField({
           ].join(" ")}
         >
           <ImageUp size={13} aria-hidden="true" />
-          {previewUrl ? "Replace image" : "Choose image"}
+          {previewUrl ? "替换图像" : "选择图像"}
         </label>
         <input
           id={inputId}
@@ -132,7 +132,7 @@ function BrandAssetUploadField({
           onChange={(event) => onSelect(event.target.files?.item(0) ?? null)}
         />
         <DenButton type="button" variant="secondary" size="sm" icon={Trash2} disabled={disabled || !previewUrl} onClick={onClear}>
-          Clear
+          清除
         </DenButton>
       </div>
     </div>
@@ -191,11 +191,11 @@ export function BrandAppearanceScreen() {
   }, [iconDraft]);
 
   if (orgBusy && !orgContext) {
-    return <div className="mx-auto max-w-[860px] p-8 text-[14px] text-gray-500">Loading brand appearance...</div>;
+    return <div className="mx-auto max-w-[860px] p-8 text-[14px] text-gray-500">正在加载品牌外观…</div>;
   }
 
   if (!activeOrg || !orgContext) {
-    return <DenNotice message={orgError ?? "Brand appearance is not available right now."} className="m-8" />;
+    return <DenNotice message={orgError ?? "品牌外观暂时不可用。"} className="m-8" />;
   }
 
   async function handleAssetSelection(kind: BrandAssetKind, file: File | null) {
@@ -212,7 +212,7 @@ export function BrandAppearanceScreen() {
         setIconClearPending(false);
       }
     } catch (error) {
-      setPageError(error instanceof Error ? error.message : "Could not validate that image.");
+      setPageError(error instanceof Error ? error.message : "无法验证此图像。");
     }
   }
 
@@ -234,7 +234,7 @@ export function BrandAppearanceScreen() {
     setPageSuccess(null);
 
     if (!canManageBrandAppearance) {
-      setPageError("You don't have permission to change brand appearance.");
+      setPageError("你没有更改品牌外观的权限。");
       return;
     }
 
@@ -246,7 +246,7 @@ export function BrandAppearanceScreen() {
           if (logoDraft) body.set("logo", logoDraft.file);
           if (iconDraft) body.set("icon", iconDraft.file);
           const { response, payload } = await requestJson("/v1/org/brand-assets", { method: "POST", body }, 30000);
-          if (!response.ok) throw getRequestError(payload, response, `Could not upload brand images (${response.status}).`);
+          if (!response.ok) throw getRequestError(payload, response, `无法上传品牌图片（${response.status}）。`);
         });
       }
 
@@ -256,9 +256,9 @@ export function BrandAppearanceScreen() {
         ...(logoClearPending ? { brandLogoUrl: null } : {}),
         ...(iconClearPending ? { brandIconUrl: null } : {}),
       });
-      setPageSuccess("Brand appearance updated.");
+      setPageSuccess("品牌外观已更新。");
     } catch (error) {
-      setPageError(error instanceof Error ? error.message : "Could not update brand appearance.");
+      setPageError(error instanceof Error ? error.message : "无法更新品牌外观，请重试。");
     } finally {
       setUploadBusy(false);
     }
@@ -270,7 +270,7 @@ export function BrandAppearanceScreen() {
     <div data-testid="brand-appearance-screen">
       <AdvancedPageTemplate tab="brand-appearance">
         {!orgContext.entitlements.desktopPolicies ? (
-          <EnterprisePlanNotice feature="White-label brand appearance" />
+          <EnterprisePlanNotice feature="自有品牌外观" />
         ) : (
           <form className="grid gap-6" onSubmit={handleSave}>
             {pageError ? <DenNotice message={pageError} /> : null}
@@ -278,22 +278,22 @@ export function BrandAppearanceScreen() {
 
             <DenCard size="spacious" className="grid gap-6">
               <div className="grid gap-2">
-                <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-violet-500">Workspace brand</p>
-                <h2 className="text-[16px] font-semibold tracking-[-0.01em] text-gray-900">Desktop identity</h2>
-                <p className="text-[14px] text-gray-500">Set the desktop application name, wordmark, app icon, and accent color.</p>
+                <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-violet-500">工作区品牌</p>
+                <h2 className="text-[16px] font-semibold tracking-[-0.01em] text-gray-900">桌面标识</h2>
+                <p className="text-[14px] text-gray-500">设置桌面应用名称、文字标识、应用图标与强调色。</p>
               </div>
 
               <div className="grid gap-5" data-testid="brand-identity-fields">
                 <label className="grid gap-3">
-                  <span className="text-[14px] font-medium text-gray-700">Application name</span>
+                  <span className="text-[14px] font-medium text-gray-700">应用名称</span>
                   <DenInput type="text" value={appNameDraft} onChange={(event) => setAppNameDraft(event.target.value)} placeholder="OpenWork" maxLength={64} disabled={!canManageBrandAppearance} />
-                  <span className="text-[11px] text-gray-400">The signed application identity stays OpenWork.</span>
+                  <span className="text-[11px] text-gray-400">签名中的应用标识保持为 OpenWork。</span>
                 </label>
 
                 <label className="grid gap-3">
-                  <span className="text-[14px] font-medium text-gray-700">Accent color</span>
+                  <span className="text-[14px] font-medium text-gray-700">强调色</span>
                   <select value={accentColorDraft} onChange={(event) => setAccentColorDraft(event.target.value)} disabled={!canManageBrandAppearance} className="h-11 rounded-xl border border-gray-200 bg-white px-4 text-[14px] text-gray-900 outline-hidden">
-                    <option value="">Default (OpenWork)</option>
+                    <option value="">默认（OpenWork）</option>
                     {["blue", "violet", "purple", "indigo", "iris", "crimson", "red", "ruby", "pink", "plum", "orange", "tomato", "gold", "green", "grass", "jade", "teal", "cyan", "sky"].map((color) => (
                       <option key={color} value={color}>{color[0].toUpperCase() + color.slice(1)}</option>
                     ))}
@@ -302,14 +302,14 @@ export function BrandAppearanceScreen() {
               </div>
 
               <div className="grid min-w-0 gap-5 lg:grid-cols-2">
-                <BrandAssetUploadField kind="logo" title="Wordmark" description="Horizontal PNG or JPEG, 128×32 to 4096×4096, under 2 MB." currentUrl={currentLogoUrl} managedAsset={currentLogoAsset} draft={logoDraft} clearPending={logoClearPending} disabled={!canManageBrandAppearance || saveBusy} onSelect={(file) => void handleAssetSelection("logo", file)} onClear={() => handleAssetClear("logo")} />
-                <BrandAssetUploadField kind="icon" title="Square app icon" description="Square PNG or JPEG, 64×64 to 4096×4096, under 2 MB." currentUrl={currentIconUrl} managedAsset={currentIconAsset} draft={iconDraft} clearPending={iconClearPending} disabled={!canManageBrandAppearance || saveBusy} onSelect={(file) => void handleAssetSelection("icon", file)} onClear={() => handleAssetClear("icon")} />
+                <BrandAssetUploadField kind="logo" title="文字标识" description="横向 PNG 或 JPEG，尺寸为 128×32 至 4096×4096，小于 2 MB。" currentUrl={currentLogoUrl} managedAsset={currentLogoAsset} draft={logoDraft} clearPending={logoClearPending} disabled={!canManageBrandAppearance || saveBusy} onSelect={(file) => void handleAssetSelection("logo", file)} onClear={() => handleAssetClear("logo")} />
+                <BrandAssetUploadField kind="icon" title="正方形应用图标" description="正方形 PNG 或 JPEG，尺寸为 64×64 至 4096×4096，小于 2 MB。" currentUrl={currentIconUrl} managedAsset={currentIconAsset} draft={iconDraft} clearPending={iconClearPending} disabled={!canManageBrandAppearance || saveBusy} onSelect={(file) => void handleAssetSelection("icon", file)} onClear={() => handleAssetClear("icon")} />
               </div>
             </DenCard>
 
             <div className="flex items-center justify-between gap-3">
-              <p className="text-[13px] text-gray-500">{!canManageBrandAppearance ? `Read only. ${permissionLockReason("branding.update")}` : null}</p>
-              <DenButton type="submit" loading={saveBusy} disabled={!canManageBrandAppearance}>Save brand appearance</DenButton>
+              <p className="text-[13px] text-gray-500">{!canManageBrandAppearance ? `只读。${permissionLockReason("branding.update")}` : null}</p>
+              <DenButton type="submit" loading={saveBusy} disabled={!canManageBrandAppearance}>保存品牌外观</DenButton>
             </div>
           </form>
         )}

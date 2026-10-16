@@ -20,11 +20,11 @@ export function DownloadOpenWorkButton({
       href="/install"
       size="sm"
       icon={Download}
-      aria-label="Download OpenWork"
+      aria-label="下载 OpenWork"
       data-testid="den-download-openwork"
       className="shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
     >
-      <span className="hidden sm:inline">Download OpenWork</span>
+      <span className="hidden sm:inline">下载 OpenWork</span>
     </DenButton>
   );
 }
@@ -44,7 +44,7 @@ function OrganizationDownloadPopover({ organizationName }: { organizationName: s
     setError(null);
     const installWindow = window.open(installPageUrl(), "_blank");
     if (!installWindow) {
-      setError("Allow popups to open the install page, or copy the install link.");
+      setError("请允许弹出窗口以打开安装页面，或复制安装链接。");
       return;
     }
     installWindow.opener = null;
@@ -58,7 +58,7 @@ function OrganizationDownloadPopover({ organizationName }: { organizationName: s
       await navigator.clipboard.writeText(installPageUrl());
       setCopied(true);
     } catch {
-      setError("Your browser didn't give permission to copy. Allow clipboard access and try again, or open the install page.");
+      setError("浏览器未授予复制权限。请允许剪贴板访问后重试，或打开安装页面。");
     } finally {
       setCopying(false);
     }
@@ -68,11 +68,11 @@ function OrganizationDownloadPopover({ organizationName }: { organizationName: s
     <Popover.Root>
       <Popover.Trigger
         render={<DenButton size="sm" icon={Download} />}
-        aria-label="Download OpenWork"
+        aria-label="下载 OpenWork"
         data-testid="den-download-openwork"
         className="shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
       >
-        <span className="hidden sm:inline">Download OpenWork</span>
+        <span className="hidden sm:inline">下载 OpenWork</span>
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Positioner side="bottom" align="end" sideOffset={8} className="z-50">
@@ -80,9 +80,9 @@ function OrganizationDownloadPopover({ organizationName }: { organizationName: s
             className="w-[360px] max-w-[calc(100vw-2rem)] rounded-xl border border-gray-200 bg-white p-4 text-gray-900"
             data-testid="workspace-install-popover"
           >
-            <Popover.Title className="text-[13px] font-semibold">Download for this workspace</Popover.Title>
+            <Popover.Title className="text-[13px] font-semibold">下载此工作区的应用</Popover.Title>
             <Popover.Description className="mt-1 text-[13px] text-gray-500">
-              Teammates get OpenWork already connected to {organizationName}.
+              队友将获得已连接到以下工作区的 OpenWork： {organizationName}.
             </Popover.Description>
             {error ? (
               <p className="mt-3 text-[13px] text-red-600" role="alert">
@@ -96,7 +96,7 @@ function OrganizationDownloadPopover({ organizationName }: { organizationName: s
                 icon={ExternalLink}
                 onClick={handleOpenInstallPage}
               >
-                Open install page
+                打开安装页面
               </DenButton>
               <DenButton
                 className="w-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
@@ -107,7 +107,7 @@ function OrganizationDownloadPopover({ organizationName }: { organizationName: s
                 disabled={copying}
                 onClick={() => void handleCopyInstallLink()}
               >
-                {copied ? "Copied" : "Copy install link"}
+                {copied ? "已复制" : "复制安装链接"}
               </DenButton>
             </div>
           </Popover.Popup>

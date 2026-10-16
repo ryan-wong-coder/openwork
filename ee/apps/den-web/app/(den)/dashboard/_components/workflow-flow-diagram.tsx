@@ -1,3 +1,4 @@
+import { DEFAULT_DEN_LOCALE } from "../../../_lib/locale";
 import type { WorkflowGraph, WorkflowGraphNode } from "@openwork/types/workflows";
 import { CornerDownLeft, GitBranch, Play, Repeat, Search, Wrench } from "lucide-react";
 import {
@@ -198,10 +199,10 @@ function NodeIcon({ kind }: { kind: WorkflowGraphNode["kind"] }) {
 }
 
 function sourceLabel(node: WorkflowGraphNode): string {
-  if (node.kind === "branch") return "Decision";
+  if (node.kind === "branch") return "决策";
   if (node.kind === "tool") return describeToolStep(node).title;
-  if (node.kind === "return") return "Finish";
-  if (node.kind === "input") return "Start";
+  if (node.kind === "return") return "完成";
+  if (node.kind === "input") return "开始";
   return humanizeIdentifier(node.label);
 }
 
@@ -217,22 +218,22 @@ function toolTone(node: Extract<WorkflowGraphNode, { kind: "tool" }>): string {
 
 function nodeBadge(node: WorkflowGraphNode): { label: string; className: string } {
   if (node.kind === "tool") return { label: describeToolStep(node).service, className: toolTone(node) };
-  if (node.kind === "branch") return { label: "Decision", className: "bg-amber-100 text-amber-700" };
-  if (node.kind === "loop") return { label: "Repeat", className: "bg-violet-50 text-violet-700" };
-  if (node.kind === "return") return { label: "Finish", className: "bg-emerald-100 text-emerald-700" };
-  if (node.kind === "input") return { label: "Start", className: "bg-blue-100 text-blue-700" };
-  return { label: "Search", className: "bg-gray-100 text-gray-600" };
+  if (node.kind === "branch") return { label: "决策", className: "bg-amber-100 text-amber-700" };
+  if (node.kind === "loop") return { label: "重复", className: "bg-violet-50 text-violet-700" };
+  if (node.kind === "return") return { label: "完成", className: "bg-emerald-100 text-emerald-700" };
+  if (node.kind === "input") return { label: "开始", className: "bg-blue-100 text-blue-700" };
+  return { label: "搜索引擎", className: "bg-gray-100 text-gray-600" };
 }
 
 function nodeTitle(node: WorkflowGraphNode, technical: boolean): string {
   if (node.kind === "tool") return describeToolStep(node).title;
   if (node.kind === "branch") {
     const description = describeCondition(node.label);
-    return description.technical && !technical ? "Check a condition" : description.text;
+    return description.technical && !technical ? "检查条件" : description.text;
   }
   if (node.kind === "loop") return describeLoop(node.label);
   if (node.kind === "return") return describeReturn(node.label);
-  if (node.kind === "input") return "Start";
+  if (node.kind === "input") return "开始";
   return humanizeIdentifier(node.label);
 }
 
@@ -242,11 +243,11 @@ function inputFieldLabel(field: string): string {
 
 function inputValue(value: unknown): string | null {
   if (value === undefined) return null;
-  if (value === null || value === "") return "Empty";
-  if (typeof value === "boolean") return value ? "Yes" : "No";
+  if (value === null || value === "") return "空";
+  if (typeof value === "boolean") return value ? "是" : "否";
   if (typeof value === "string" || typeof value === "number") return String(value);
-  if (Array.isArray(value)) return `${value.length} item${value.length === 1 ? "" : "s"}`;
-  return "Provided";
+  if (Array.isArray(value)) return `${value.length} 项`;
+  return "已提供";
 }
 
 function FlowNode({
@@ -270,7 +271,7 @@ function FlowNode({
   const dataLabels = graph.edges.flatMap((edge) => {
     if (edge.kind !== "data" || edge.to !== node.id || !edge.label) return [];
     const label = humanizeIdentifier(edge.label.split(".").at(-1) ?? edge.label);
-    return [{ plain: sourceNodes.get(edge.from)?.kind === "input" ? label : `Uses ${label}`, raw: edge.label }];
+    return [{ plain: sourceNodes.get(edge.from)?.kind === "input" ? label : `使用 ${label}`, raw: edge.label }];
   });
   const badge = nodeBadge(node);
 
@@ -283,13 +284,13 @@ function FlowNode({
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-1.5">
               <span className={`rounded-md px-1.5 py-0.5 text-[10px] font-medium ${badge.className}`}>{badge.label}</span>
-              {runState === "ran" ? <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-1.5 py-0.5 text-[10px] text-emerald-700"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />This run: ✓ completed</span> : null}
-              {runState === "failed" ? <span className="rounded-full bg-red-50 px-1.5 py-0.5 text-[10px] text-red-700">This run: ✗ stopped here</span> : null}
-              {runState === "not_reached" ? <span className="rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] text-gray-600">This run: skipped</span> : null}
+              {runState === "ran" ? <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-1.5 py-0.5 text-[10px] text-emerald-700"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />此次运行：✓ 已完成</span> : null}
+              {runState === "failed" ? <span className="rounded-full bg-red-50 px-1.5 py-0.5 text-[10px] text-red-700">此次运行：✗ 在此停止</span> : null}
+              {runState === "not_reached" ? <span className="rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] text-gray-600">此次运行：已跳过</span> : null}
             </div>
             <p className="mt-1.5 break-words text-[12px] font-medium text-gray-800">{nodeTitle(node, technical)}</p>
-            {node.kind === "tool" && node.assignsTo ? <p className="mt-1 text-[11px] text-gray-500">Saves the result as <strong className="font-semibold">{humanizeIdentifier(node.assignsTo).toLowerCase()}</strong></p> : null}
-            {node.kind === "input" && node.fields.length > 0 ? <div className="mt-2"><p className="mb-1 text-[10px] text-gray-400">Runs with:</p><div className="flex flex-wrap gap-1">{node.fields.map((field) => {
+            {node.kind === "tool" && node.assignsTo ? <p className="mt-1 text-[11px] text-gray-500">将结果保存为 <strong className="font-semibold">{humanizeIdentifier(node.assignsTo).toLowerCase()}</strong></p> : null}
+            {node.kind === "input" && node.fields.length > 0 ? <div className="mt-2"><p className="mb-1 text-[10px] text-gray-400">运行输入：</p><div className="flex flex-wrap gap-1">{node.fields.map((field) => {
               const value = inputValue(inputValues?.[field]);
               return <span key={field} className="rounded-md bg-white px-1.5 py-0.5 text-[10px] text-gray-600">{inputFieldLabel(field)}{value ? ` · ${value}` : ""}</span>;
             })}</div></div> : null}
@@ -297,8 +298,8 @@ function FlowNode({
             {technical ? <div className="mt-2 space-y-1 break-all font-mono text-[10px] text-gray-400">
               {node.kind === "tool" ? <p>{node.scriptPath}</p> : null}
               {node.kind === "branch" ? <p>{node.label}</p> : null}
-              {node.kind === "input" && node.fields.length > 0 ? <p>Fields: {node.fields.join(", ")}</p> : null}
-              {dataLabels.map((label) => <p key={`technical:${label.raw}`}>Input: {label.raw}</p>)}
+              {node.kind === "input" && node.fields.length > 0 ? <p>字段： {node.fields.join(", ")}</p> : null}
+              {dataLabels.map((label) => <p key={`technical:${label.raw}`}>输入： {label.raw}</p>)}
             </div> : null}
           </div>
         </div>
@@ -332,13 +333,13 @@ function LaneColumn({
   inputValues: Record<string, unknown> | undefined;
 }) {
   return <div className="flex min-w-0 flex-1 flex-col items-center" data-lane={label}>
-    <p className="text-[9px] font-semibold uppercase tracking-wider text-gray-400">{label === "yes" ? "Yes" : "No"}</p>
+    <p className="text-[9px] font-semibold uppercase tracking-wider text-gray-400">{label === "yes" ? "是" : "否"}</p>
     {nodes.map((node) => <div key={node.id} className="flex w-full flex-col items-center"><FlowConnector /><FlowNode node={node} graph={graph} runState={states.get(node.id) ?? "neutral"} errorMessage={run?.errorMessage ?? null} stepNumber={stepNumbers.get(node.id) ?? 0} technical={technical} inputValues={inputValues} /></div>)}
   </div>;
 }
 
 function runDate(value: string): string {
-  return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(value));
+  return new Intl.DateTimeFormat(DEFAULT_DEN_LOCALE, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(value));
 }
 
 export function WorkflowFlowDiagram({
@@ -374,9 +375,9 @@ export function WorkflowFlowDiagram({
 
   return (
     <div className="mt-4" data-testid="den-workflow-flow-diagram">
-      {run ? <p className="mb-3 text-[11px] text-gray-500">Last run: {runDate(run.finishedAt)} · {run.status === "succeeded" ? "Succeeded" : "Failed"}</p> : null}
-      {graph.parseError ? <div className="mb-3 rounded-xl border border-[var(--dls-border)] bg-[var(--dls-hover)] px-3 py-2 text-[12px] text-[var(--dls-text-primary)]">We couldn&apos;t map every step of this version. The code still runs; only the picture is incomplete.{technical ? <p className="mt-1 font-mono text-[10px]">{graph.parseError}</p> : null}</div> : null}
-      {rows.length === 0 && !graph.parseError ? <p className="text-[12px] text-gray-400">No steps are available to show yet.</p> : null}
+      {run ? <p className="mb-3 text-[11px] text-gray-500">上次运行： {runDate(run.finishedAt)} · {run.status === "succeeded" ? "成功" : "失败"}</p> : null}
+      {graph.parseError ? <div className="mb-3 rounded-xl border border-[var(--dls-border)] bg-[var(--dls-hover)] px-3 py-2 text-[12px] text-[var(--dls-text-primary)]">无法映射此版本的全部步骤，代码仍可运行，仅示意图不完整。{technical ? <p className="mt-1 font-mono text-[10px]">{graph.parseError}</p> : null}</div> : null}
+      {rows.length === 0 && !graph.parseError ? <p className="text-[12px] text-gray-400">暂无可显示步骤。</p> : null}
       <div className="flex flex-col items-center">
         {rows.map((row, index) => {
           const rowIds = new Set(row.nodes.map((node) => node.id));
@@ -389,10 +390,10 @@ export function WorkflowFlowDiagram({
             <div key={row.nodes.map((node) => node.id).join(":")} className="flex w-full flex-col items-center" data-node-ids={row.nodes.map((node) => node.id).join(",")} data-parallel-group={row.parallelGroup ?? undefined}>
               {index > 0 ? incoming.length > 0 ? <div className="flex h-8 flex-col items-center justify-center" data-connector="flow"><div className="h-5 w-px bg-gray-200" />{labeledIncoming.length > 0 ? <div className="flex gap-1">{labeledIncoming.map((edge) => {
                 const source = sourceNodes.get(edge.from);
-                const label = `${edge.label}${!previousRowIds.has(edge.from) && source ? ` · from ${sourceLabel(source)}` : ""}`;
+                const label = `${edge.label}${!previousRowIds.has(edge.from) && source ? ` · 来自 ${sourceLabel(source)}` : ""}`;
                 return <span key={`${edge.from}:${edge.to}:${edge.label}`} className="rounded-full bg-gray-100 px-1.5 text-[9px] text-gray-500">{label}</span>;
               })}</div> : null}</div> : <div className="h-4" /> : null}
-              {row.parallelGroup ? <p className="mb-1 text-[9px] font-semibold uppercase tracking-wider text-gray-400">At the same time</p> : null}
+              {row.parallelGroup ? <p className="mb-1 text-[9px] font-semibold uppercase tracking-wider text-gray-400">同时执行</p> : null}
               <div className="flex w-full justify-center gap-3">{row.nodes.map((node) => <FlowNode key={node.id} node={node} graph={graph} runState={states.get(node.id) ?? "neutral"} errorMessage={run?.errorMessage ?? null} stepNumber={stepNumbers.get(node.id) ?? 0} technical={technical} inputValues={inputValues} />)}</div>
               {layout ? <div className="mt-1 flex w-full max-w-3xl gap-4 rounded-xl bg-gray-50/60 px-3 pb-3 pt-2"><LaneColumn label="yes" nodes={layout.yesNodes} graph={graph} states={states} run={run} stepNumbers={stepNumbers} technical={technical} inputValues={inputValues} /><LaneColumn label="no" nodes={layout.noNodes} graph={graph} states={states} run={run} stepNumbers={stepNumbers} technical={technical} inputValues={inputValues} /></div> : null}
             </div>

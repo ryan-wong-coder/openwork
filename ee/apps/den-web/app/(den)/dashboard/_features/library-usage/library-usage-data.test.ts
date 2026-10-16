@@ -37,7 +37,7 @@ test("Not used, Failing and the name filter each narrow the list; the name filte
 test("the summary adds uses and failures, and has no failure count for skills", () => {
   assert.deepEqual(summarizeLibraryUsage(connectors), { total: 3, used: 2, unused: 1, uses: 17, failures: 3 });
   assert.equal(summarizeLibraryUsage(skills).failures, null);
-  assert.equal(failureLabel(connectors[0]!), "3 of 12");
+  assert.equal(failureLabel(connectors[0]!), "3 / 12");
   assert.equal(failureLabel(connectors[1]!), "0");
   assert.equal(failureLabel(skills[0]!), null);
 });
@@ -45,14 +45,14 @@ test("the summary adds uses and failures, and has no failure count for skills", 
 test("the counting start shows only while it is inside the chosen window", () => {
   assert.equal(countingSinceLabel({ days: 30, trackingSince: null }, now), null);
   assert.equal(countingSinceLabel({ days: 30, trackingSince: new Date(now - 40 * day).toISOString() }, now), null);
-  assert.match(countingSinceLabel({ days: 30, trackingSince: new Date(now - 3 * day).toISOString() }, now) ?? "", /^Counting since /);
+  assert.match(countingSinceLabel({ days: 30, trackingSince: new Date(now - 3 * day).toISOString() }, now) ?? "", /^自 .* 开始统计$/);
 });
 
 test("last used reads as a short state", () => {
   assert.equal(lastUsedLabel(null, now), null);
-  assert.equal(lastUsedLabel(new Date(now - 60_000).toISOString(), now), "Today");
-  assert.equal(lastUsedLabel(new Date(now - day).toISOString(), now), "Yesterday");
-  assert.equal(lastUsedLabel(new Date(now - 3 * day).toISOString(), now), "3 days ago");
+  assert.equal(lastUsedLabel(new Date(now - 60_000).toISOString(), now), "今天");
+  assert.equal(lastUsedLabel(new Date(now - day).toISOString(), now), "昨天");
+  assert.equal(lastUsedLabel(new Date(now - 3 * day).toISOString(), now), "3 天前");
 });
 
 test("unknown views and ranges fall back to Plugins and 30 days", () => {
@@ -84,12 +84,12 @@ test("every day of the range is listed, oldest first, with zeros for days nobody
 
 test("sources add up across rows, most used first, and unused sources are left out", () => {
   const sources = sumLibraryUsageSources([{ sources: { agent: 2, automation: 1 } }, { sources: { agent: 1, workflow: 4 } }]);
-  assert.deepEqual(sources.map((entry) => [entry.label, entry.uses]), [["Workflows", 4], ["Agents", 3], ["Automations", 1]]);
+  assert.deepEqual(sources.map((entry) => [entry.label, entry.uses]), [["工作流", 4], ["智能体", 3], ["自动化", 1]]);
 });
 
 test("people are named from the organization; a removed member reads Former member", () => {
   const members = [{ id: "om_1", user: { name: "Alice Teammate", email: "alice@example.test" } }, { id: "om_2", user: { name: " ", email: "blair@example.test" } }];
   assert.deepEqual(libraryUsageMember(members, "om_1"), { name: "Alice Teammate", email: "alice@example.test" });
   assert.equal(libraryUsageMember(members, "om_2").name, "blair@example.test");
-  assert.deepEqual(libraryUsageMember(members, "om_gone"), { name: "Former member", email: null });
+  assert.deepEqual(libraryUsageMember(members, "om_gone"), { name: "前成员", email: null });
 });

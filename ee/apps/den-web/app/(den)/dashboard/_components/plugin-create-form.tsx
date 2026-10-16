@@ -45,16 +45,16 @@ export function pluginComponentBody(component: PluginDraftComponent): Record<str
 
 /** The first problem with a draft, in words a person can act on. */
 export function pluginDraftProblem(name: string, components: readonly PluginDraftComponent[]): string | null {
-  if (!name.trim()) return "Give your plugin a name.";
-  if (components.length === 0) return "Add a skill, a command or a connector.";
+  if (!name.trim()) return "请为插件命名。";
+  if (components.length === 0) return "添加技能、命令或连接器。";
   for (const component of components) {
     if (component.kind === "mcp") {
-      if (!component.connectionId) return "Pick a connector.";
+      if (!component.connectionId) return "请选择连接器。";
       continue;
     }
-    const noun = component.kind === "skill" ? "skill" : "command";
-    if (!component.name.trim()) return `Give the ${noun} a name.`;
-    if (!component.content.trim()) return `Write what the ${noun} should do.`;
+    const noun = component.kind === "skill" ? "技能" : "命令";
+    if (!component.name.trim()) return `为${noun}命名。`;
+    if (!component.content.trim()) return `描述${noun}应完成的工作。`;
   }
   return null;
 }
@@ -90,12 +90,12 @@ function ConnectorChoice({ connections, value, takenIds, onChange, addConnectorH
   if (connections.length === 0) {
     return (
       <p className="text-[13px] text-gray-500">
-        No connectors yet. <Link href={addConnectorHref} className="font-medium text-gray-700 underline underline-offset-2 hover:text-gray-900">Add one first</Link>
+        暂无连接器。 <Link href={addConnectorHref} className="font-medium text-gray-700 underline underline-offset-2 hover:text-gray-900">请先添加</Link>
       </p>
     );
   }
   return (
-    <div className="flex flex-col gap-1.5" role="radiogroup" aria-label="Connector">
+    <div className="flex flex-col gap-1.5" role="radiogroup" aria-label="连接器">
       {connections.map((connection) => {
         const selected = connection.id === value;
         const taken = takenIds.has(connection.id);
@@ -123,7 +123,7 @@ function ConnectorChoice({ connections, value, takenIds, onChange, addConnectorH
  * B1 and D2: one form for a member's plugin and an admin's. New plugins start
  * just for their maker; sharing happens on the plugin's page.
  */
-export function PluginCreateForm({ connections, startWith, cancelHref, addConnectorHref, onCreated, footnote = "Only you can use it until you share it." }: {
+export function PluginCreateForm({ connections, startWith, cancelHref, addConnectorHref, onCreated, footnote = "分享前仅供你使用。" }: {
   connections: readonly ExternalMcpConnection[];
   startWith?: PluginComponentKind;
   footnote?: string;
@@ -171,26 +171,26 @@ export function PluginCreateForm({ connections, startWith, cancelHref, addConnec
             orgWide: false,
           }),
         }, 20000);
-        if (!response.ok) throw getRequestError(payload, response, "The plugin was not created");
+        if (!response.ok) throw getRequestError(payload, response, "插件未创建");
         const item = typeof payload === "object" && payload !== null && "item" in payload ? payload.item : null;
         pluginId = typeof item === "object" && item !== null && "id" in item && typeof item.id === "string" ? item.id : null;
       });
-      if (!pluginId) throw new Error("The plugin was created, but OpenWork could not open it.");
+      if (!pluginId) throw new Error("插件已创建，但 OpenWork 无法打开，请刷新后重试。");
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: pluginQueryKeys.all }),
         queryClient.invalidateQueries({ queryKey: libraryQueryKeys.items }),
       ]);
       onCreated(pluginId);
     } catch (createError) {
-      setError(createError instanceof Error ? createError.message : "The plugin was not created.");
+      setError(createError instanceof Error ? createError.message : "插件未创建，请重试。");
       setSaving(false);
     }
   }
 
   const kinds: { kind: PluginComponentKind; label: string }[] = [
-    { kind: "skill", label: "Skill" },
-    { kind: "command", label: "Command" },
-    { kind: "mcp", label: "Connector" },
+    { kind: "skill", label: "技能" },
+    { kind: "command", label: "命令" },
+    { kind: "mcp", label: "连接器" },
   ];
 
   return (
@@ -204,18 +204,18 @@ export function PluginCreateForm({ connections, startWith, cancelHref, addConnec
     >
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="flex flex-col gap-1.5">
-          <span className="text-[13px] font-medium text-gray-900">Plugin name</span>
-          <DenInput value={name} onChange={(event) => setName(event.target.value)} placeholder="Sales call prep" disabled={saving} />
+          <span className="text-[13px] font-medium text-gray-900">插件名称</span>
+          <DenInput value={name} onChange={(event) => setName(event.target.value)} placeholder="销售通话准备" disabled={saving} />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[13px] font-medium text-gray-900">Description</span>
-          <DenInput value={description} onChange={(event) => setDescription(event.target.value)} placeholder="What it helps people do" disabled={saving} />
+          <span className="text-[13px] font-medium text-gray-900">说明</span>
+          <DenInput value={description} onChange={(event) => setDescription(event.target.value)} placeholder="帮助成员完成什么工作" disabled={saving} />
         </label>
       </div>
 
       <section className="flex flex-col gap-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-[15px] font-semibold leading-5 text-gray-900">What&apos;s inside</h2>
+          <h2 className="text-[15px] font-semibold leading-5 text-gray-900">包含内容</h2>
           <div className="flex items-center gap-1.5">
             {kinds.map((entry) => (
               <button
@@ -234,7 +234,7 @@ export function PluginCreateForm({ connections, startWith, cancelHref, addConnec
 
         {components.length === 0 ? (
           <p className="rounded-2xl border border-dashed border-gray-200 px-5 py-8 text-center text-[13px] text-gray-500">
-            Add a skill, a command or a connector.
+            添加技能、命令或连接器。
           </p>
         ) : null}
 
@@ -245,9 +245,9 @@ export function PluginCreateForm({ connections, startWith, cancelHref, addConnec
               <ComponentShell
                 key={component.key}
                 icon={<Plug className="h-4 w-4" aria-hidden />}
-                header={<p className="text-[13px] font-medium text-gray-900">Connector</p>}
+                header={<p className="text-[13px] font-medium text-gray-900">连接器</p>}
                 onRemove={() => remove(component.key)}
-                removeLabel="Remove connector"
+                removeLabel="移除连接器"
               >
                 <div>
                   <ConnectorChoice
@@ -267,13 +267,13 @@ export function PluginCreateForm({ connections, startWith, cancelHref, addConnec
               key={component.key}
               icon={isSkill ? <FileText className="h-4 w-4" aria-hidden /> : <SquareTerminal className="h-4 w-4" aria-hidden />}
               onRemove={() => remove(component.key)}
-              removeLabel={isSkill ? "Remove skill" : "Remove command"}
+              removeLabel={isSkill ? "移除技能" : "移除命令"}
               header={(
                 <input
                   value={component.name}
                   onChange={(event) => update(component.key, { name: event.target.value })}
-                  placeholder={isSkill ? "Name the skill, like Prep a sales call" : "Name the command, like /follow-up"}
-                  aria-label={isSkill ? "Skill name" : "Command name"}
+                  placeholder={isSkill ? "为技能命名，例如“销售通话准备”" : "为命令命名，例如 /follow-up"}
+                  aria-label={isSkill ? "技能名称" : "命令名称"}
                   disabled={saving}
                   className="-mx-1 w-full rounded-md bg-transparent px-1 text-[13px] font-medium text-gray-900 outline-none placeholder:font-normal placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-gray-200"
                 />
@@ -283,15 +283,15 @@ export function PluginCreateForm({ connections, startWith, cancelHref, addConnec
                 <DenInput
                   value={component.description}
                   onChange={(event) => update(component.key, { description: event.target.value })}
-                  placeholder={isSkill ? "When should the AI use it?" : "What it does, in a few words"}
-                  aria-label={isSkill ? "When to use it" : "What it does"}
+                  placeholder={isSkill ? "AI 应在什么情况下使用？" : "用几句话描述用途"}
+                  aria-label={isSkill ? "使用时机" : "用途"}
                   disabled={saving}
                 />
                 <DenTextarea
                   value={component.content}
                   onChange={(event) => update(component.key, { content: event.target.value })}
-                  placeholder={isSkill ? "Write the steps in plain words." : "Write what should happen when someone runs it."}
-                  aria-label={isSkill ? "Skill steps" : "Command steps"}
+                  placeholder={isSkill ? "用自然语言编写步骤。" : "描述运行时应执行的操作。"}
+                  aria-label={isSkill ? "技能步骤" : "命令步骤"}
                   rows={3}
                   disabled={saving}
                 />
@@ -306,8 +306,8 @@ export function PluginCreateForm({ connections, startWith, cancelHref, addConnec
       <div className="flex flex-wrap items-center justify-between gap-4 border-t border-gray-100 pt-5">
         <p className="text-[12px] leading-4 text-gray-500">{footnote}</p>
         <div className="flex items-center gap-2">
-          <LinkButton href={cancelHref}>Cancel</LinkButton>
-          <DenButton type="submit" loading={saving}>Create plugin</DenButton>
+          <LinkButton href={cancelHref}>取消</LinkButton>
+          <DenButton type="submit" loading={saving}>创建插件</DenButton>
         </div>
       </div>
     </form>

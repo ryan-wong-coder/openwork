@@ -29,7 +29,7 @@ import {
 } from "./llm-provider-data";
 
 function plural(count: number, noun: string) {
-  return `${count} ${noun}${count === 1 ? "" : "s"}`;
+  return `${count} ${noun}`;
 }
 
 function LlmProviderList({ providers, orgSlug }: { providers: DenLlmProvider[]; orgSlug: string | null }) {
@@ -39,8 +39,8 @@ function LlmProviderList({ providers, orgSlug }: { providers: DenLlmProvider[]; 
         const members = provider.access.memberCount;
         const teams = provider.access.teams.length;
         const accessText = provider.access.allMembers
-          ? "Everyone in the org"
-          : `${members} ${members === 1 ? "person" : "people"} · ${plural(teams, "team")}`;
+          ? "组织中的所有人"
+          : `${members} 人 · ${plural(teams, "个团队")}`;
         return (
           <DenListRow
             key={provider.id}
@@ -56,15 +56,15 @@ function LlmProviderList({ providers, orgSlug }: { providers: DenLlmProvider[]; 
             title={provider.name}
             chips={
               <>
-                <DenChip>{plural(provider.models.length, "model")}</DenChip>
+                <DenChip>{plural(provider.models.length, "个模型")}</DenChip>
                 {!provider.hasApiKey && !provider.configRedacted ? (
                   <DenChip tone="warning" icon={KeyRound}>
-                    Credential missing
+                    缺少凭据
                   </DenChip>
                 ) : null}
               </>
             }
-            meta={`${provider.providerId} · ${accessText} · Updated ${formatProviderTimestamp(provider.updatedAt)}`}
+            meta={`${provider.providerId} · ${accessText} · 更新于 ${formatProviderTimestamp(provider.updatedAt)}`}
             action={<ChevronRight aria-hidden className="h-4 w-4 text-gray-400" />}
           />
         );
@@ -78,10 +78,10 @@ export function LegacyProvidersSection({ orgId, orgSlug }: { orgId: string; orgS
   const legacyProviders = llmProviders.filter((provider) => provider.source !== "openwork" && provider.organizationId === orgId);
 
   return (
-    <section aria-label="Legacy Providers" data-testid="gateway-legacy-providers" className="mt-10 grid gap-4">
+    <section aria-label="旧版提供商" data-testid="gateway-legacy-providers" className="mt-10 grid gap-4">
       <DenSectionHeader
-        title="Legacy Providers"
-        description="Bring Your Own Key (Legacy System) providers send the API key directly to users’ desktop applications. Usage tracking and usage limit policies are not available with this feature. If you want usage tracking and usage limits, use the provider section above."
+        title="旧版提供商"
+        description="自有密钥旧版提供商会将 API 密钥直接发送到用户桌面应用，不支持用量跟踪或限额策略。若需跟踪与限制用量，请使用上方的提供商配置。"
       />
       <div>
         <Link
@@ -90,15 +90,15 @@ export function LegacyProvidersSection({ orgId, orgSlug }: { orgId: string; orgS
           className={buttonVariants({ variant: "secondary" })}
         >
           <Plus className="h-4 w-4" aria-hidden="true" />
-          Add legacy provider
+          添加旧版提供商
         </Link>
       </div>
       {busy ? (
-        <p role="status" className="text-sm text-gray-500">Loading legacy providers...</p>
+        <p role="status" className="text-sm text-gray-500">正在加载旧版提供商…</p>
       ) : error ? (
         <div className="flex flex-col items-start gap-4">
-          <DenNotice tone="error" message={`Could not load legacy providers: ${error}`} />
-          <DenButton variant="secondary" onClick={() => void reloadProviders()}>Retry legacy providers</DenButton>
+          <DenNotice tone="error" message={`无法加载旧版提供商：${error}`} />
+          <DenButton variant="secondary" onClick={() => void reloadProviders()}>重新加载旧版提供商</DenButton>
         </div>
       ) : legacyProviders.length > 0 ? (
         <LlmProviderList providers={legacyProviders} orgSlug={orgSlug} />
@@ -158,11 +158,11 @@ export function LlmProvidersScreen() {
 
   const accessOutcome = accessMode === "managed"
     ? modelCount > 0
-      ? `Members see exactly the ${plural(modelCount, "model")} from the ${plural(providerCount, "provider")} below${hasOpenWorkModels ? ", plus OpenWork Models" : ""}.`
-      : "Members see no models yet — add a provider below."
+      ? `成员只能看到下方${plural(providerCount, "个提供商")}中的${plural(modelCount, "个模型")}${hasOpenWorkModels ? "，以及 OpenWork 模型" : ""}。`
+      : "成员尚无可用模型，请在下方添加提供商。"
     : modelCount > 0
-      ? `Members may add their own providers alongside the ${plural(modelCount, "model")} below.`
-      : "Members may add their own providers. No org models are defined yet.";
+      ? `除下方${plural(modelCount, "个模型")}之外，成员还可以添加自己的提供商。`
+      : "成员可添加自己的提供商，组织尚未配置模型。";
   const accessFormDisabled = policiesBusy || accessSaving || !defaultPolicy;
 
   const saveModelAccessPolicy = async () => {
@@ -174,9 +174,9 @@ export function LlmProvidersScreen() {
         await saveModelAccess(accessState, { mode: accessMode, adminException: adminExceptionChecked, zenAllowed });
         await reloadPolicies();
       });
-      setAccessSaved("Model access saved.");
+      setAccessSaved("模型访问权限已保存。");
     } catch (error) {
-      setAccessError(error instanceof Error ? error.message : "Failed to save model access.");
+      setAccessError(error instanceof Error ? error.message : "保存模型访问权限失败，请重试。");
     } finally {
       setAccessSaving(false);
     }
@@ -185,13 +185,13 @@ export function LlmProvidersScreen() {
   return (
     <DashboardPageTemplate
       icon={KeyRound}
-      title="Bring your Own Keys"
-      description="Connect Anthropic, OpenAI, Azure or any models.dev provider with your own credentials, choose the exact models each one exposes, and grant access to the right people and teams."
+      title="使用自有密钥"
+      description="使用自有凭据连接 Anthropic、OpenAI、Azure 或 models.dev 提供商，选择各提供商提供的模型，并向人员与团队授权。"
     >
       <DenCard data-testid="models-access-card" className="mb-8 grid gap-5">
         <DenSectionHeader
-          title="Who can use models"
-          description="Choose whether members bring their own providers or use only the models managed here."
+          title="模型使用权限"
+          description="选择成员可添加自有提供商，还是仅使用此处管理的模型。"
           action={
             <DenButton
               type="button"
@@ -200,7 +200,7 @@ export function LlmProvidersScreen() {
               loading={accessSaving}
               disabled={accessFormDisabled}
             >
-              Save
+              保存
             </DenButton>
           }
         />
@@ -214,7 +214,7 @@ export function LlmProvidersScreen() {
         ) : null}
         {!policiesBusy && !defaultPolicy ? (
           <p className="rounded-[24px] border border-[var(--dls-border)] bg-[var(--dls-hover)] px-5 py-4 text-[14px] text-[var(--dls-text-primary)]">
-            Default desktop policy not found.
+            未找到默认桌面策略。
           </p>
         ) : null}
 
@@ -223,8 +223,8 @@ export function LlmProvidersScreen() {
             type="radio"
             name="models-access-mode"
             testId="models-access-open"
-            title="Open"
-            description="Members may add their own providers."
+            title="打开"
+            description="成员可添加自己的提供商。"
             checked={accessMode === "open"}
             disabled={accessFormDisabled}
             onChange={() => {
@@ -237,8 +237,8 @@ export function LlmProvidersScreen() {
             type="radio"
             name="models-access-mode"
             testId="models-access-managed"
-            title="Managed"
-            description="Members use exactly the models below."
+            title="托管"
+            description="成员仅使用下方模型。"
             checked={accessMode === "managed"}
             disabled={accessFormDisabled}
             onChange={() => {
@@ -254,7 +254,7 @@ export function LlmProvidersScreen() {
             <DenOptionCard
               type="checkbox"
               testId="models-access-admin-exception"
-              title="Admins may add their own providers"
+              title="管理员可添加自己的提供商"
               checked={adminExceptionChecked}
               disabled={accessFormDisabled}
               onChange={(checked) => {
@@ -266,7 +266,7 @@ export function LlmProvidersScreen() {
             <DenOptionCard
               type="checkbox"
               testId="models-access-zen"
-              title="Allow OpenCode Zen models"
+              title="允许 OpenCode Zen 模型"
               checked={zenAllowed}
               disabled={accessFormDisabled}
               onChange={(checked) => {
@@ -289,12 +289,12 @@ export function LlmProvidersScreen() {
           icon={Search}
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search providers or models..."
+          placeholder="搜索提供商或模型…"
         />
 
         <Link href={getNewLlmProviderRoute(orgSlug)} className={buttonVariants({ variant: "primary" })}>
           <Plus className="h-4 w-4" aria-hidden="true" />
-          Add Provider
+          添加提供商
         </Link>
       </div>
 
@@ -302,23 +302,23 @@ export function LlmProvidersScreen() {
 
       {providersBusy ? (
         <div className="rounded-[28px] border border-gray-200 bg-white px-6 py-10 text-[15px] text-gray-500">
-          Loading your provider library...
+          正在加载提供商资源库…
         </div>
       ) : (
       <section className="grid gap-4">
         <DenSectionHeader
-          title="Your providers"
-          description="One row per credential and the models it exposes."
+          title="你的提供商"
+          description="每行显示一组凭据及其提供的模型。"
         />
         {filteredProviders.length === 0 ? (
           <div className="rounded-[32px] border border-dashed border-gray-200 bg-white px-6 py-12 text-center">
             <p className="text-[16px] font-medium tracking-[-0.03em] text-gray-900">
-              {customProviders.length === 0 ? "No custom providers configured yet." : "No providers match that search yet."}
+              {customProviders.length === 0 ? "尚未配置自定义提供商。" : "没有符合搜索条件的提供商。"}
             </p>
             <p className="mx-auto mt-3 max-w-[560px] text-[15px] leading-8 text-gray-500">
               {customProviders.length === 0
-                ? "Pick a models.dev provider, choose the models to expose, add the credential, and grant access."
-                : "Try a broader search term, or create a new provider if this org needs a different stack."}
+                ? "选择 models.dev 提供商与可用模型，添加凭据并授予访问权限。"
+                : "请扩大搜索范围，或为组织创建新的提供商。"}
             </p>
           </div>
         ) : (

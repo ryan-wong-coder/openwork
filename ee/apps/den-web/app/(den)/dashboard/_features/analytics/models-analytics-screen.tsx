@@ -15,7 +15,7 @@ import { UsageLimitsCard } from "./usage-limits-card";
 
 export function ModelsAnalyticsScreen() {
   const { activeOrg, orgContext } = useOrgDashboard();
-  if (!orgContext) return <AnalyticsLoading label="Loading analytics" />;
+  if (!orgContext) return <AnalyticsLoading label="正在加载分析数据" />;
   if (!orgFeatureEnabled(orgContext, "modelsAnalyticsUi")) redirect(getAnalyticsRoute(activeOrg?.slug));
   return <EnabledModelsAnalyticsScreen />;
 }
@@ -30,28 +30,28 @@ function EnabledModelsAnalyticsScreen() {
     refetchInterval: 30_000,
     queryFn: async () => {
       const { response, payload } = await requestJson("/v1/inference/analytics/usage", { method: "GET" }, 12000);
-      if (!response.ok) throw new Error(getErrorMessage(payload, "Could not load model usage."));
+      if (!response.ok) throw new Error(getErrorMessage(payload, "无法加载模型用量，请重试。"));
       const parsed = parseInferencePayload(payload);
-      if (!parsed) throw new Error("Could not load model usage.");
+      if (!parsed) throw new Error("无法加载模型用量，请重试。");
       return parsed;
     },
   });
 
   return <div className={analyticsPageClass}>
-    <AnalyticsPageHeader orgSlug={activeOrg?.slug} active="models" title="Models & usage" />
-    {!runtimeConfigLoaded ? <AnalyticsLoading label="Loading model usage" /> : !hosted ? (
-      <div className={analyticsSurfaceClass}><AnalyticsEmptyState title="OpenWork Models is available on OpenWork Cloud">
-        Usage &amp; adoption covers activity across your connected providers.
+    <AnalyticsPageHeader orgSlug={activeOrg?.slug} active="models" title="模型与用量" />
+    {!runtimeConfigLoaded ? <AnalyticsLoading label="正在加载模型用量" /> : !hosted ? (
+      <div className={analyticsSurfaceClass}><AnalyticsEmptyState title="OpenWork 云端提供 OpenWork 模型">
+        “用量与采用率”包含已连接提供商的活动。
       </AnalyticsEmptyState></div>
     ) : <>
-      {status.isError ? !status.data ? <AnalyticsErrorState title="Couldn't load model usage" onRetry={() => void status.refetch()} retrying={status.isFetching} /> : <DenNotice tone="neutral" presentation="inline" message="Couldn't refresh. Showing the last usage." action={<DenButton variant="secondary" size="sm" disabled={status.isFetching} onClick={() => void status.refetch()}>Retry</DenButton>} /> : null}
-      {status.isPending ? <AnalyticsLoading label="Loading model usage" /> : null}
+      {status.isError ? !status.data ? <AnalyticsErrorState title="无法加载模型用量" onRetry={() => void status.refetch()} retrying={status.isFetching} /> : <DenNotice tone="neutral" presentation="inline" message="刷新失败，当前显示上次用量。" action={<DenButton variant="secondary" size="sm" disabled={status.isFetching} onClick={() => void status.refetch()}>重试</DenButton>} /> : null}
+      {status.isPending ? <AnalyticsLoading label="正在加载模型用量" /> : null}
       {status.data?.enabled && status.data.subscribed ? <>
         <UsageLimitsCard buckets={status.data.buckets} />
         <ModelsAnalyticsPanel key={orgContext?.organization.id} />
       </> : status.data ? <div className={analyticsSurfaceClass}>
-        <AnalyticsEmptyState title="Model insights are included with OpenWork Models"
-          action={<DenButton href={getInferenceRoute(activeOrg?.slug)}>Set up OpenWork Models</DenButton>} />
+        <AnalyticsEmptyState title="OpenWork 模型已包含模型洞察"
+          action={<DenButton href={getInferenceRoute(activeOrg?.slug)}>配置 OpenWork 模型</DenButton>} />
       </div> : null}
     </>}
   </div>;

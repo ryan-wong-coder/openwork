@@ -40,11 +40,11 @@ export function ToolArgumentsEditor({
   return (
     <>
       <div className="flex items-center justify-between gap-3">
-        <p className="text-[12px] font-medium text-gray-700">Arguments</p>
+        <p className="text-[12px] font-medium text-gray-700">参数</p>
         <DenSegmented
-          aria-label="Arguments editor mode"
+          aria-label="参数编辑模式"
           options={[
-            { value: "form", label: "Form", disabled: !supportsForm },
+            { value: "form", label: "表单", disabled: !supportsForm },
             { value: "json", label: "JSON" },
           ]}
           value={mode}
@@ -73,7 +73,7 @@ export function ToolArgumentsEditor({
                     value={value}
                     onChange={(event) => onFormValueChange(field.name, event.target.value)}
                   >
-                    {!field.required ? <option value="">Not set</option> : null}
+                    {!field.required ? <option value="">未设置</option> : null}
                     {field.enumValues.map((option) => <option key={`${typeof option}-${String(option)}`} value={String(option)}>{String(option)}</option>)}
                   </DenSelect>
                 ) : field.type === "boolean" ? (
@@ -82,7 +82,7 @@ export function ToolArgumentsEditor({
                     value={value}
                     onChange={(event) => onFormValueChange(field.name, event.target.value)}
                   >
-                    {!field.required ? <option value="">Not set</option> : null}
+                    {!field.required ? <option value="">未设置</option> : null}
                     <option value="true">true</option>
                     <option value="false">false</option>
                   </DenSelect>
@@ -104,7 +104,7 @@ export function ToolArgumentsEditor({
               onClick={onToggleOptionalFields}
             >
               <ChevronDown className={`h-3.5 w-3.5 transition ${showOptionalFields ? "rotate-180" : ""}`} aria-hidden="true" />
-              {showOptionalFields ? "Hide" : "Show"} {optionalFieldCount} optional fields
+              {showOptionalFields ? "隐藏" : "显示"} {optionalFieldCount} 个可选字段
             </button>
           ) : null}
         </div>
@@ -118,7 +118,7 @@ export function ToolArgumentsEditor({
             disabled={disabled}
             spellCheck={false}
           />
-          {!supportsForm ? <p className="mt-2 text-[11px] text-gray-500">This tool&apos;s schema can&apos;t be shown as a form — edit the JSON directly.</p> : null}
+          {!supportsForm ? <p className="mt-2 text-[11px] text-gray-500">此工具的参数结构暂无法显示为表单，请直接编辑 JSON。</p> : null}
         </div>
       )}
     </>

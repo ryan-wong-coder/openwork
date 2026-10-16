@@ -14,7 +14,7 @@ const ACTIVE_RUN_STATUSES = ["queued", "claimed", "running"];
 
 async function payload(path: string, init: RequestInit = { method: "GET" }) {
   const result = await requestJson(path, init, 170_000);
-  if (!result.response.ok) throw new Error(getErrorMessage(result.payload, `Automation request failed (${result.response.status}).`));
+  if (!result.response.ok) throw new Error(getErrorMessage(result.payload, `自动化请求失败（${result.response.status}）。`));
   return result.payload;
 }
 
@@ -39,7 +39,7 @@ export function useAutomationRuns(automationId: string | null) {
     queryKey: ["automations", "runs", automationId],
     queryFn: async () => {
       const value = await payload(`/v1/automations/${encodeURIComponent(automationId ?? "")}/runs?limit=100`);
-      if (typeof value !== "object" || value === null || !("items" in value) || !Array.isArray(value.items)) throw new Error("Automation run history was invalid.");
+      if (typeof value !== "object" || value === null || !("items" in value) || !Array.isArray(value.items)) throw new Error("自动化运行历史无效，请重试。");
       return value.items.map((item) => automationRunSchema.parse(item));
     },
     enabled: Boolean(automationId),
@@ -81,7 +81,7 @@ export function useCancelAutomationRun() {
   return useAutomationMutation<string, ReturnType<typeof automationRunSchema.parse>>(
     async (runId) => {
       const value = await payload(`/v1/automation-runs/${encodeURIComponent(runId)}/cancel`, { method: "POST" });
-      if (typeof value !== "object" || value === null || !("run" in value)) throw new Error("Automation cancellation response was invalid.");
+      if (typeof value !== "object" || value === null || !("run" in value)) throw new Error("自动化取消响应无效，请重试。");
       return automationRunSchema.parse(value.run);
     },
   );

@@ -17,8 +17,8 @@ export function DiagnosticsScreen() {
   return (
     <DashboardPageTemplate
       icon={Activity}
-      title="Diagnostics"
-      description="Run controlled support checks from the same network path used by enterprise connectors."
+      title="诊断"
+      description="通过企业连接器使用的相同网络路径执行受控支持检查。"
     >
       <EgressDiagnosticsCard canView={access.canViewEgressDiagnostics} canManage={access.canManageEgressDiagnostics} />
     </DashboardPageTemplate>

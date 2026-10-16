@@ -19,18 +19,18 @@ export function useGatewayAccessProviders(orgId: string, enabled = true) {
       const { response, payload } = await requestJson("/v1/inference-providers?scope=manageable", {
         method: "GET", headers: { [ORG_SCOPE_HEADER]: orgId }, cache: "no-store", signal,
       }, 15000);
-      if (!response.ok) throw new Error(getErrorMessage(payload, "Could not load provider access. Refresh to try again."));
+      if (!response.ok) throw new Error(getErrorMessage(payload, "无法加载提供商访问权限，请刷新后重试。"));
       const result = providerListSchema.safeParse(payload);
-      if (!result.success) throw new Error("Provider access could not be verified. Refresh to try again.");
+      if (!result.success) throw new Error("无法验证提供商访问权限，请刷新后重试。");
       return result.data.inferenceProviders.map((value) => {
         let provider: ReturnType<typeof asInferenceProvider>;
         try {
           provider = asInferenceProvider(value);
         } catch {
-          throw new Error("Provider access definitions are unavailable. Refresh or ask an administrator to update the Gateway API.");
+          throw new Error("提供商访问权限定义不可用，请刷新或联系管理员更新网关 API。");
         }
         if (!provider || !provider.modelGroups || !provider.credentialSets || !provider.accessGrants) {
-          throw new Error("Provider access definitions are unavailable. Refresh or ask an administrator to update the Gateway API.");
+          throw new Error("提供商访问权限定义不可用，请刷新或联系管理员更新网关 API。");
         }
         return { ...provider, modelGroups: provider.modelGroups, credentialSets: provider.credentialSets, accessGrants: provider.accessGrants };
       });

@@ -45,6 +45,7 @@ import { t } from "../../../../i18n";
 import { isSettingsTabAllowed } from "../../../../app/cloud/desktop-app-restrictions";
 import type { PlatformCapabilities } from "../../../../app/lib/platform-capabilities";
 import type { SettingsTab } from "../../../../app/types";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 import { cn } from "@/lib/utils";
 import { usePlatform } from "../../../kernel/platform";
 import { useCheckDesktopRestriction } from "../../cloud/desktop-config-provider";
@@ -106,7 +107,7 @@ export function getSettingsTabIcon(tab: SettingsTab) {
 export function getSettingsTabLabel(tab: SettingsTab) {
   switch (tab) {
     case "ai":
-      return t("interface.ai_providers");
+      return isLocalGatewayClient() ? "模型网关" : t("interface.ai_providers");
     case "ollama":
       return "Ollama";
     case "preferences":
@@ -151,7 +152,7 @@ export function getSettingsTabLabel(tab: SettingsTab) {
 export function getSettingsTabDescription(tab: SettingsTab) {
   switch (tab) {
     case "ai":
-      return t("settings_extra.connect_openai_anthropic_local_models_and_more");
+      return isLocalGatewayClient() ? "网关连接、模型与图片生成。" : t("settings_extra.connect_openai_anthropic_local_models_and_more");
     case "ollama":
       return t("settings_extra.connect_to_ollama_and_manage_local_models");
     case "preferences":
@@ -201,7 +202,9 @@ export function getGlobalSettingsTabs(
   developerMode: boolean,
   capabilities: Pick<PlatformCapabilities, "autoUpdate">,
 ): SettingsTab[] {
-  const tabs: SettingsTab[] = ["ai", "ollama", "appearance", "shortcuts", "environment"];
+  const tabs: SettingsTab[] = isLocalGatewayClient()
+    ? ["ai", "appearance", "shortcuts", "environment"]
+    : ["ai", "ollama", "appearance", "shortcuts", "environment"];
   if (capabilities.autoUpdate) tabs.push("updates");
   if (developerMode) tabs.push("debug");
   return tabs;
@@ -264,7 +267,7 @@ export function useSettingsNavGroups(developerMode: boolean): SettingsNavGroups 
     hub: allowed(["general"]),
     workspace: allowed(getWorkspaceSettingsTabs()),
     global: allowed(getGlobalSettingsTabs(developerMode, platform.capabilities)),
-    cloud: allowed(CLOUD_SETTINGS_TABS),
+    cloud: isLocalGatewayClient() ? [] : allowed(CLOUD_SETTINGS_TABS),
   };
 }
 

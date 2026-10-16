@@ -12,7 +12,7 @@ import { RolePicker } from "./role-picker";
  * both list the same roles (see memberRoleOptions). The menu is exactly as
  * wide as the field; long role names truncate and show in full on hover.
  */
-export function MemberRoleSelect({ value, onChange, options, label = "Role", searchable = false }: {
+export function MemberRoleSelect({ value, onChange, options, label = "角色", searchable = false }: {
   value: string;
   onChange: (value: string) => void;
   options: readonly MemberRoleOption[];
@@ -60,16 +60,16 @@ export function MemberRoleEditor({ memberName, value, onChange, options, teamRol
         }}
       >
         <div className="grid w-full min-w-0 grid-cols-[minmax(0,1fr)] gap-3 sm:w-[280px]" data-testid="member-role-select">
-          <span className="truncate text-[14px] font-medium text-gray-700" title={`Role for ${memberName}`}>
-            Role for {memberName}
+          <span className="truncate text-[14px] font-medium text-gray-700" title={`${memberName} 的角色`}>
+            角色所属 {memberName}
           </span>
-          <MemberRoleSelect value={value} onChange={onChange} options={options} label={`Role for ${memberName}`} searchable={searchable} />
+          <MemberRoleSelect value={value} onChange={onChange} options={options} label={`${memberName} 的角色`} searchable={searchable} />
         </div>
         {teamChoice}
         <div className="flex flex-wrap gap-2">
-          <DenButton variant="secondary" onClick={onCancel}>Cancel</DenButton>
+          <DenButton variant="secondary" onClick={onCancel}>取消</DenButton>
           <DenButton type="submit" loading={saving} disabled={blocked} data-testid="member-role-save">
-            Save member
+            保存成员
           </DenButton>
         </div>
         {teamRoles ? <div className="w-full min-w-0 text-[13px] text-gray-500">{teamRoles}</div> : null}

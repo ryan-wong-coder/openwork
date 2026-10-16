@@ -18,7 +18,7 @@ export function readConnectMcpLink(params: URLSearchParams): ConnectMcpLink | nu
   const connectionId = params.get("connectionId")?.trim() ?? "";
   const organizationId = params.get("org")?.trim() ?? "";
   if (!ID_PATTERN.test(connectionId) || !ID_PATTERN.test(organizationId)) return null;
-  const name = params.get("name")?.trim().slice(0, 120) || "this connection";
+  const name = params.get("name")?.trim().slice(0, 120) || "此连接";
   return { connectionId, organizationId, name };
 }
 
@@ -26,7 +26,7 @@ function readField(payload: unknown, key: string): unknown {
   return typeof payload === "object" && payload !== null ? Reflect.get(payload, key) : undefined;
 }
 
-export function readConnectStartResult(payload: unknown, ok: boolean, name = "The provider"): ConnectStartResult {
+export function readConnectStartResult(payload: unknown, ok: boolean, name = "提供商"): ConnectStartResult {
   if (ok) {
     const status = readField(payload, "status");
     const authorizeUrl = readField(payload, "authorizeUrl");
@@ -34,15 +34,15 @@ export function readConnectStartResult(payload: unknown, ok: boolean, name = "Th
     if (status === "needs_auth" && typeof authorizeUrl === "string" && authorizeUrl) {
       return { kind: "redirect", authorizeUrl };
     }
-    return { kind: "error", message: `${name} did not open a sign-in page. Try again.` };
+    return { kind: "error", message: `${name} 未打开登录页面，请重试。` };
   }
   const error = readField(payload, "error");
   if (error === "connection_not_found" || error === "forbidden") {
-    return { kind: "unavailable", message: "This connection was removed or is not shared with you. Ask your agent for a new link." };
+    return { kind: "unavailable", message: "此连接已移除或未与你共享，请让代理提供新链接。" };
   }
   const message = readField(payload, "message");
   if (typeof message === "string" && message.trim()) return { kind: "error", message: message.trim() };
-  return { kind: "error", message: "Could not start sign-in. Try again." };
+  return { kind: "error", message: "无法开始登录，请重试。" };
 }
 
 /** The workspace name for the link's organization, from GET /v1/me/orgs. */

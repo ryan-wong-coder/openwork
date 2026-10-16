@@ -26,7 +26,7 @@ export function useOrgInferenceProviders(orgId: string | null) {
     if (!orgId) {
       setInferenceProviders([]);
       setBusy(false);
-      setError("Organization not found.");
+      setError("未找到组织。");
       return;
     }
     setBusy(true);
@@ -35,12 +35,12 @@ export function useOrgInferenceProviders(orgId: string | null) {
       const { response, payload } = await requestJson(`/v1/inference-providers?scope=manageable`, { method: "GET", headers: { [ORG_SCOPE_HEADER]: orgId } }, 15000);
       if (request !== generation.current) return;
       if (!response.ok) {
-        throw new Error(getErrorMessage(payload, `Failed to load gateway providers (${response.status}).`));
+        throw new Error(getErrorMessage(payload, `无法加载网关提供商（${response.status}）。`));
       }
       setInferenceProviders(readInferenceProvidersFromPayload(payload));
     } catch (loadError) {
       if (request !== generation.current) return;
-      setError(loadError instanceof Error ? loadError.message : "Failed to load gateway providers.");
+      setError(loadError instanceof Error ? loadError.message : "无法加载网关提供商，请重试。");
     } finally {
       if (request === generation.current) setBusy(false);
     }
@@ -78,20 +78,20 @@ export function useInferenceProvider(orgId: string | null, inferenceProviderId: 
       );
       if (request !== generation.current) return;
       if (!response.ok) {
-        throw new Error(getErrorMessage(payload, `Failed to load the provider (${response.status}).`));
+        throw new Error(getErrorMessage(payload, `无法加载提供商（${response.status}）。`));
       }
       const catalog = await requestJson(`/v1/inference-providers/${encodeURIComponent(inferenceProviderId)}/models`, { method: "GET", headers: { [ORG_SCOPE_HEADER]: orgId } }, 15000);
       if (request !== generation.current) return;
-      if (!catalog.response.ok) throw new Error(getErrorMessage(catalog.payload, "Could not load configured catalog models."));
+      if (!catalog.response.ok) throw new Error(getErrorMessage(catalog.payload, "无法加载已配置的目录模型，请重试。"));
       const next = readInferenceProviderDetails(payload, catalog.payload);
       if (!next) {
-        throw new Error("The server did not return valid model groups, credential sets and access rules. Matrix editing is unavailable until the API is updated.");
+        throw new Error("服务器未返回有效的模型组、凭据集和访问规则。更新 API 后才可编辑权限矩阵。");
       }
       setProvider(next);
     } catch (loadError) {
       if (request !== generation.current) return;
       setProvider(null);
-      setError(loadError instanceof Error ? loadError.message : "Failed to load the provider.");
+      setError(loadError instanceof Error ? loadError.message : "无法加载提供商，请重试。");
     } finally {
       if (request === generation.current) setBusy(false);
     }
@@ -119,11 +119,11 @@ export async function saveInferenceProvider(input: {
     20000,
   );
   if (!response.ok) {
-    throw getRequestError(payload, response, `Failed to save the gateway provider (${response.status}).`);
+    throw getRequestError(payload, response, `无法保存网关提供商（${response.status}）。`);
   }
   const provider = readInferenceProviderFromPayload(payload);
   if (!provider) {
-    throw new Error("The provider was saved, but no provider was returned.");
+    throw new Error("提供商已保存，但未返回提供商信息，请刷新后重试。");
   }
   return provider;
 }
@@ -138,7 +138,7 @@ export async function saveGatewayResource(providerId: string, id: string | null,
   const { response, payload } = await requestJson(path, {
     method: id ? "PATCH" : "POST", body: JSON.stringify(input.body), headers: auditOperationHeaders(auditContext),
   }, 20000);
-  if (!response.ok) throw getRequestError(payload, response, `Could not save ${input.resource} (${response.status}).`);
+  if (!response.ok) throw getRequestError(payload, response, `无法保存 ${input.resource}（${response.status}）。`);
 }
 
 export async function deleteGatewayResource(providerId: string, resource: GatewayResourceWrite["resource"], id: string, auditContext?: AuditOperationContext) {
@@ -146,7 +146,7 @@ export async function deleteGatewayResource(providerId: string, resource: Gatewa
     `/v1/inference-providers/${encodeURIComponent(providerId)}/${resource}/${encodeURIComponent(id)}`,
     { method: "DELETE", headers: auditOperationHeaders(auditContext) }, 20000,
   );
-  if (!response.ok) throw getRequestError(payload, response, `Could not delete ${resource} (${response.status}).`);
+  if (!response.ok) throw getRequestError(payload, response, `无法删除 ${resource}（${response.status}）。`);
 }
 
 export async function deleteInferenceProvider(inferenceProviderId: string, auditContext?: AuditOperationContext) {
@@ -156,7 +156,7 @@ export async function deleteInferenceProvider(inferenceProviderId: string, audit
     12000,
   );
   if (response.status !== 204 && !response.ok) {
-    throw getRequestError(payload, response, `Failed to delete the gateway provider (${response.status}).`);
+    throw getRequestError(payload, response, `无法删除网关提供商（${response.status}）。`);
   }
 }
 
@@ -168,11 +168,11 @@ export async function migrateLlmProviderToGateway(llmProviderId: string): Promis
     20000,
   );
   if (!response.ok) {
-    throw getRequestError(payload, response, `Failed to move the provider to the gateway (${response.status}).`);
+    throw getRequestError(payload, response, `无法将提供商移至网关（${response.status}）。`);
   }
   const provider = readInferenceProviderFromPayload(payload);
   if (!provider) {
-    throw new Error("The provider was moved, but no gateway provider was returned.");
+    throw new Error("提供商已迁移，但未返回网关提供商信息，请刷新后重试。");
   }
   return provider;
 }

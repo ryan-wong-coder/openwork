@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { registerCloudSkillDiscovery, type CloudSkillContext } from "./openwork-cloud-skills-v2.js";
 import { server as browserTools } from "./openwork-chrome-devtools.js";
+import { createGatewayImageTools, GATEWAY_IMAGE_INSTRUCTION } from "./gateway-image-tools.js";
 
 const browserResult = z.object({
   content: z.array(z.union([z.object({ type: z.literal("text"), text: z.string() }),
@@ -16,16 +17,31 @@ type Tool = {
   execute(input: unknown, context: { signal: AbortSignal; sessionID: string }): Promise<z.infer<typeof browserResult>>;
 };
 type Context = CloudSkillContext & {
-  options: { url: string; token: string; browser?: { url: string; token: string } };
+  options: { url: string; token: string; browser?: { url: string; token: string }; image?: { url: string; token: string } };
   tool: { transform(callback: (editor: { add(tool: Tool): void }) => void): Promise<{ dispose(): Promise<void> }> };
 };
 
-// Separate credentials authorize app reads and conversation-scoped browser
-// operations. Neither grants arbitrary host APIs or OpenWork app commands.
+// Separate credentials authorize app reads, conversation-scoped browser
+// operations and image generation. None grants arbitrary host APIs.
 export default {
   id: "openwork.context",
   async setup(context: Context) {
     const browser = context.options.browser;
+    const image = context.options.image;
+    const imageDefinitions = image ? createGatewayImageTools(async (input, call: { signal: AbortSignal; sessionID: string }) => {
+      const response = await fetch(image.url, {
+        method: "POST", redirect: "error", signal: call.signal,
+        headers: { Authorization: `Bearer ${image.token}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ name: "openwork_image_generate", input, sessionId: call.sessionID }),
+      });
+      const payload: unknown = await response.json();
+      if (!response.ok) {
+        const message = payload && typeof payload === "object" && "error" in payload && typeof payload.error === "string"
+          ? payload.error : `图片生成未完成（${response.status}），请重试。`;
+        throw new Error(message);
+      }
+      return payload;
+    }) : undefined;
     const browserDefinitions = browser ? await browserTools() : undefined;
     const registration = await context.tool.transform(editor => {
       for (const name of ["openwork_context", "openwork_query"]) {
@@ -63,6 +79,18 @@ export default {
             });
             if (!response.ok) throw new Error(`Browser request failed (${response.status})`);
             return browserResult.parse(await response.json());
+          },
+        });
+      }
+      if (imageDefinitions) {
+        const definition = imageDefinitions.openwork_image_generate;
+        editor.add({
+          name: "openwork_image_generate",
+          description: `${definition.description}\n${GATEWAY_IMAGE_INSTRUCTION}`,
+          input: z.toJSONSchema(z.object(definition.args).strict()),
+          options: { codemode: false },
+          async execute(input, call) {
+            return { content: [{ type: "text", text: await definition.execute(input, call) }] };
           },
         });
       }

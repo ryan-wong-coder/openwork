@@ -8,6 +8,7 @@ import { uiBridgeRequest } from "./openwork-ui-bridge.js";
 import { createDriveFileTools, DRIVE_FILE_ACTIONS } from "./drive-file-tools.js";
 import { createGmailAttachmentFulfillment, type GmailAttachmentDependencies } from "./gmail-attachment-fulfillment.js";
 import { z } from "zod";
+import { createGatewayImageTools, GATEWAY_IMAGE_INSTRUCTION } from "./gateway-image-tools.js";
 import { sessionActivityFrom, type SessionActivity } from "./session-activity.js";
 import {
   openworkSessionModelSchema,
@@ -1383,9 +1384,14 @@ export const OpenWorkExtensionsPreview = async (factoryInput?: unknown, _options
       createInstructionSection("browser", OPENWORK_BROWSER_INSTRUCTION),
       createInstructionSection("routing", OPENWORK_EXTENSION_DISCOVERY_INSTRUCTION),
       createInstructionSection("discovery", OPENWORK_ON_DEMAND_DISCOVERY_INSTRUCTION),
+      createInstructionSection("gateway-images", GATEWAY_IMAGE_INSTRUCTION),
     );
   },
   tool: {
+    ...createGatewayImageTools((input, context: OpenCodeContext) => postJson("/gateway/images", {
+      ...input,
+      context: contextPayload({ ...factoryContext, ...normalizeOpenCodeContext(context) }),
+    }, driveToolSignal(context))),
     ...createDriveFileTools((action, args, context) => postJson("/experimental/drive-files/call", {
       action,
       args,

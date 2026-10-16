@@ -29,8 +29,8 @@ export function GatewayDashboardCapabilityGuard({ area, children }: { area: Gate
   if (access !== "enabled") {
     return (
       <div className="flex min-h-[320px] items-center justify-center px-6 text-[14px] text-gray-500" data-testid="gateway-access-state" data-access-state={access}>
-        {access === "checking" ? "Checking workspace access..."
-          : "This feature is not part of your deployment system, please ask an instance admin to configure deployment"}
+        {access === "checking" ? "正在检查工作区访问权限…"
+          : "此部署未启用该功能，请联系实例管理员配置。"}
       </div>
     );
   }

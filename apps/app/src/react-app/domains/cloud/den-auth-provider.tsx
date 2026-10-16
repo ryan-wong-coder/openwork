@@ -48,6 +48,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { t } from "@/i18n";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 
 export type DenAuthStatus =
   | "checking"
@@ -207,7 +208,7 @@ function pendingServerSwitchForDeepLink(input: {
  * on every refresh so subsequent requests resolve against the right org.
  */
 export function DenAuthProvider({ children }: DenAuthProviderProps) {
-  const [status, setStatus] = useState<DenAuthStatus>("checking");
+  const [status, setStatus] = useState<DenAuthStatus>(() => isLocalGatewayClient() ? "signed_out" : "checking");
   const [user, setUser] = useState<DenUser | null>(null);
   const [verifiedIdentity, setVerifiedIdentity] = useState<{
     principalId: string;
@@ -247,6 +248,14 @@ export function DenAuthProvider({ children }: DenAuthProviderProps) {
 
   const refresh = useCallback(async () => {
     const currentRun = ++refreshTokenRef.current;
+    if (isLocalGatewayClient()) {
+      verifiedCredentialRef.current = null;
+      setVerifiedIdentity(null);
+      setUser(null);
+      setError(null);
+      updateStatus("signed_out");
+      return;
+    }
     const settings = readDenSettings();
     const token = settings.authToken?.trim() ?? "";
     const organizationId = settings.activeOrgId?.trim() ?? "";
@@ -456,7 +465,7 @@ export function DenAuthProvider({ children }: DenAuthProviderProps) {
   }, []);
 
   const consumeBootstrapHandoff = useCallback(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || isLocalGatewayClient()) return;
 
     const bootstrap = readDenBootstrapConfig();
     const handoff = bootstrap.handoff;
@@ -535,6 +544,7 @@ export function DenAuthProvider({ children }: DenAuthProviderProps) {
     if (typeof window === "undefined") return;
 
     const handleUrls = (urls: readonly string[]) => {
+      if (isLocalGatewayClient()) return;
       for (const rawUrl of urls) {
         const parsed = parseDenAuthDeepLink(rawUrl);
         if (!parsed || handledGrantsRef.current.has(parsed.grant)) continue;

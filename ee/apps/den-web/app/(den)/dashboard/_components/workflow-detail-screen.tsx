@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE } from "../../../_lib/locale";
+
 import { ArrowLeft, CalendarClock } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { DenButton } from "../../_components/ui/button";
@@ -9,7 +11,7 @@ import { DenNotice } from "../../_components/ui/notice";
 import { DenPageHeader } from "../../_components/ui/page-header";
 import { type TabItem, UnderlineTabs } from "../../_components/ui/tabs";
 import { useDenFlow } from "../../_providers/den-flow-provider";
-import { getOrgAccessFlags } from "../../_lib/den-org";
+import { getOrgAccessFlags, orgFeatureEnabled } from "../../_lib/den-org";
 import { useOrgDashboard } from "../_providers/org-dashboard-provider";
 import { usePluginAccess } from "./plugin-access-data";
 import { PluginAccessSection } from "./plugin-access-section";
@@ -23,16 +25,16 @@ import { WorkflowSharingTab } from "./workflow-sharing-tab";
 type WorkflowDetailTab = "overview" | "runs" | "edit" | "sharing";
 
 function freshnessLabel(state: "never_run" | "fresh" | "stale" | "needs_attention"): string {
-  if (state === "fresh") return "Up to date";
-  if (state === "stale") return "Last run was a while ago";
-  if (state === "needs_attention") return "Needs attention";
-  return "Not run yet";
+  if (state === "fresh") return "已更新";
+  if (state === "stale") return "距上次运行已较久";
+  if (state === "needs_attention") return "需要处理";
+  return "尚未运行";
 }
 
 function stateLabel(state: "ready" | "needs_signin" | "needs_admin_setup") {
-  if (state === "needs_signin") return "Needs your sign-in";
-  if (state === "needs_admin_setup") return "Needs admin setup";
-  return "Ready";
+  if (state === "needs_signin") return "需要你登录";
+  if (state === "needs_admin_setup") return "需要管理员设置";
+  return "已就绪";
 }
 
 function stateTone(state: "ready" | "needs_signin" | "needs_admin_setup"): DenChipTone {
@@ -42,7 +44,7 @@ function stateTone(state: "ready" | "needs_signin" | "needs_admin_setup"): DenCh
 }
 
 function updatedDate(value: string): string {
-  return new Date(value).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  return new Date(value).toLocaleDateString(DEFAULT_DEN_LOCALE, { month: "short", day: "numeric", year: "numeric" });
 }
 
 function readTab(value: string | null, manager: boolean): WorkflowDetailTab {
@@ -70,7 +72,7 @@ export function WorkflowDetailScreen({ workflowId }: { workflowId: string }) {
   if (state.loading || !state.libraryDetail || !state.detail || !state.fields) {
     return (
       <div className="mx-auto max-w-[1180px] px-6 py-8 md:px-8" data-testid="den-workflow-detail">
-        <DenCard>{state.error ?? "Loading workflow…"}</DenCard>
+        <DenCard>{state.error ?? "正在加载工作流…"}</DenCard>
       </div>
     );
   }
@@ -81,15 +83,15 @@ export function WorkflowDetailScreen({ workflowId }: { workflowId: string }) {
   const activeTab = readTab(searchParams.get("tab"), manager);
   const tabs: readonly TabItem<WorkflowDetailTab>[] = manager
     ? [
-        { value: "overview", label: "Overview" },
-        { value: "runs", label: "Runs", count: state.snapshots.length },
-        { value: "edit", label: "Edit" },
-        { value: "sharing", label: "Sharing" },
+        { value: "overview", label: "概览" },
+        { value: "runs", label: "运行记录", count: state.snapshots.length },
+        { value: "edit", label: "编辑" },
+        { value: "sharing", label: "共享" },
       ]
     : [
-        { value: "overview", label: "Overview" },
-        { value: "runs", label: "Runs", count: state.snapshots.length },
-        { value: "sharing", label: "Sharing" },
+        { value: "overview", label: "概览" },
+        { value: "runs", label: "运行记录", count: state.snapshots.length },
+        { value: "sharing", label: "共享" },
       ];
   const automateHref = `${runtimeConfig.openworkWebUrl.replace(/\/$/, "")}/automations?create=1&workflow=${encodeURIComponent(workflowId)}&version=${encodeURIComponent(state.detail.currentVersion.id)}`;
 
@@ -118,36 +120,36 @@ export function WorkflowDetailScreen({ workflowId }: { workflowId: string }) {
         className="justify-self-start"
         href="/dashboard/library"
       >
-        Back to Library
+        返回资源库
       </DenButton>
 
       <DenPageHeader
         title={
           <span className="flex flex-wrap items-center gap-2">
             <span>{workflow.name}</span>
-            <DenChip tone="teal">Workflow</DenChip>
+            <DenChip tone="teal">工作流</DenChip>
             <DenChip tone={stateTone(workflow.state)}>{stateLabel(workflow.state)}</DenChip>
           </span>
         }
         description={
           <span>
-            {workflow.description || "A saved, repeatable workflow you can run, schedule, and share."}
-            {workflow.plugin ? <span className="mt-1 block text-[12px] text-gray-400">Shared through {workflow.plugin.name}.</span> : null}
+            {workflow.description || "已保存的可重复工作流，可运行、安排执行与共享。"}
+            {workflow.plugin ? <span className="mt-1 block text-[12px] text-gray-400">通过 {workflow.plugin.name} 共享。</span> : null}
           </span>
         }
         action={manager ? (
           <DenButton href={automateHref} target="_blank" rel="noopener noreferrer" icon={CalendarClock}>
-            Automate
+            自动执行
           </DenButton>
         ) : null}
-        caption={`${freshnessLabel(workflow.resultState)} · Updated ${updatedDate(state.detail.currentVersion.createdAt)}`}
+        caption={`${freshnessLabel(workflow.resultState)} · 更新于 ${updatedDate(state.detail.currentVersion.createdAt)}`}
       />
 
       {state.error ? <DenNotice tone="error" message={state.error} /> : null}
       {state.detail.freshness.state === "needs_attention" ? (
         <DenNotice
           tone="warning"
-          message={`${state.detail.freshness.reason} You can still open the last successful result.`}
+          message={`${state.detail.freshness.reason} 仍可打开上次成功的结果。`}
         />
       ) : null}
 
@@ -159,6 +161,7 @@ export function WorkflowDetailScreen({ workflowId }: { workflowId: string }) {
         {activeTab === "overview" ? (
           <WorkflowOverviewTab
             detail={state.detail}
+            visualConfiguration={orgFeatureEnabled(orgContext, "visualConfiguration")}
             fields={state.fields}
             views={state.views}
             technical={state.technical}
@@ -198,6 +201,7 @@ export function WorkflowDetailScreen({ workflowId }: { workflowId: string }) {
         {activeTab === "edit" && manager ? (
           <WorkflowEditTab
             detail={state.detail}
+            visualConfiguration={orgFeatureEnabled(orgContext, "visualConfiguration")}
             fields={state.fields}
             parsedInputSchema={state.parsedInputSchema}
             hasInputForm={state.hasInputForm}

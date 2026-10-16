@@ -12,23 +12,23 @@ export function teamPermissionDraft(policy?: { access?: TeamAccess; execution?: 
 }
 
 export function teamWebsiteSummary(execution: DesktopExecutionPolicy): string {
-  if (execution.browserOrigins === undefined) return "All websites";
-  return execution.browserOrigins.length ? `${execution.browserOrigins.length} approved ${execution.browserOrigins.length === 1 ? "site" : "sites"}` : "Browsing blocked";
+  if (execution.browserOrigins === undefined) return "所有网站";
+  return execution.browserOrigins.length ? `${execution.browserOrigins.length} 已批准 个网站` : "浏览已被阻止";
 }
 
 const executionLabels: Record<keyof DesktopExecutionPolicy, string> = {
-  commands: "Run computer commands",
-  blockedCommands: "Blocked command patterns",
-  browserOrigins: "Browse websites",
-  blockBrowserUploads: "Upload files & submit forms",
+  commands: "运行计算机命令",
+  blockedCommands: "已阻止的命令模式",
+  browserOrigins: "浏览网站",
+  blockBrowserUploads: "上传文件与提交表单",
 };
 
 function executionChoices(execution: DesktopExecutionPolicy): Record<keyof DesktopExecutionPolicy, string> {
   return {
-    commands: execution.commands === "allow" ? "Allowed" : "Blocked",
-    blockedCommands: [...new Set(execution.blockedCommands)].sort().join("\n") || "None",
+    commands: execution.commands === "allow" ? "允许" : "已阻止",
+    blockedCommands: [...new Set(execution.blockedCommands)].sort().join("\n") || "无",
     browserOrigins: execution.browserOrigins?.length ? [...new Set(execution.browserOrigins)].sort().join("\n") : teamWebsiteSummary(execution),
-    blockBrowserUploads: execution.blockBrowserUploads ? "Blocked" : "Allowed",
+    blockBrowserUploads: execution.blockBrowserUploads ? "已阻止" : "允许",
   };
 }
 
@@ -38,8 +38,8 @@ export function teamPermissionChanges(before: TeamPermissionDraft, after: TeamPe
   const execution = desktopExecutionPolicySchema.keyof().options.flatMap((key) => previous[key] === next[key] ? [] : [{ label: executionLabels[key], before: previous[key], after: next[key] }]);
   const capabilities = teamCapabilities.flatMap((entry) => before.access.capabilities[entry.id] === after.access.capabilities[entry.id] ? [] : [{
     label: entry.teamLabel,
-    before: before.access.capabilities[entry.id] ? "Allowed" : "Blocked",
-    after: after.access.capabilities[entry.id] ? "Allowed" : "Blocked",
+    before: before.access.capabilities[entry.id] ? "允许" : "已阻止",
+    after: after.access.capabilities[entry.id] ? "允许" : "已阻止",
   }]);
   return [...execution, ...capabilities];
 }

@@ -81,20 +81,20 @@ export default function OpenGraphImage() {
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 10, fontSize: 64, fontWeight: 600, letterSpacing: -2.8, lineHeight: 0.98 }}>
-              <div>Share your setup</div>
-              <div>with your team.</div>
+              <div>共享你的配置</div>
+              <div>给团队。</div>
             </div>
 
             <div style={{ fontSize: 24, lineHeight: 1.45, color: "#475569", display: "flex", maxWidth: 520 }}>
-              Share setups across your org, keep selected workflows available, and manage OpenWork Cloud from app.openworklabs.com.
+              在组织中共享配置、保留所选工作流，并通过 app.openworklabs.com 管理 OpenWork 云端。
             </div>
 
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
               {[
-                "Open source",
-                "50+ integrations and LLMs",
-                "Free first worker",
-                "Organization billing for scale"
+                "开源",
+                "50 多种集成与大语言模型",
+                "首个工作实例免费",
+                "支持规模化的组织计费"
               ].map((label) => (
                 <div
                   key={label}
@@ -151,14 +151,14 @@ export default function OpenGraphImage() {
             <div style={{ display: "flex", flexDirection: "column", gap: 18, padding: 22, color: "white" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, color: "#94a3b8", fontSize: 13, fontWeight: 700, textTransform: "uppercase", letterSpacing: 2.5 }}>
                 <div style={{ width: 10, height: 10, borderRadius: 999, background: "#3ddc97", boxShadow: "0 0 0 8px rgba(61, 220, 151, 0.14)" }} />
-                Running
+                正在运行
               </div>
 
               {[
-                ["9:41 AM", "GitHub", "Reviewed PR #247, approved"],
-                ["10:12 AM", "Slack", "Flagged invoice #1092 as duplicate"],
-                ["1:30 PM", "Linear", "Triaged 8 issues, 2 critical"],
-                ["3:15 PM", "Billing", "Subscription portal ready"]
+                ["上午 9:41", "GitHub", "已审查并批准 PR #247"],
+                ["上午 10:12", "Slack", "已将发票 #1092 标记为重复"],
+                ["下午 1:30", "Linear", "已分拣 8 个问题，其中 2 个严重"],
+                ["下午 3:15", "账单", "订阅门户已就绪"]
               ].map(([time, source, detail]) => (
                 <div
                   key={`${time}-${source}`}

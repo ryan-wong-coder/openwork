@@ -49,7 +49,7 @@ export function DesktopSuggestionsPanel({ team }: { team: { id: string; name: st
       const prompts = onboardingPromptsSchema.safeParse(suggestions.map((entry) => entry.prompt));
       const descriptions = onboardingPromptDescriptionsSchema.safeParse(suggestions.map((entry) => entry.description));
       if (!prompts.success || !descriptions.success) {
-        setSaveError("Add 2 or 3 prompts (up to 500 characters each), with descriptions up to 120 characters.");
+        setSaveError("添加 2 至 3 条提示词，每条最多 500 个字符，描述最多 120 个字符。");
         return;
       }
     }
@@ -57,11 +57,11 @@ export function DesktopSuggestionsPanel({ team }: { team: { id: string; name: st
     try {
       await runReauthableAction("save-desktop-suggestions", async () => {
         const latest = await requestJson("/v1/desktop-policies", { method: "GET" }, 12000);
-        if (!latest.response.ok) throw new Error("Could not verify current suggestions. Reload and try again.");
+        if (!latest.response.ok) throw new Error("无法验证当前建议，请重新加载后重试。");
         // Do not overwrite policy changes made in AI Gateway or another tab while this editor was open.
         if (JSON.stringify(parseDesktopPolicyList(latest.payload).desktopPolicies) !== JSON.stringify(desktopPolicies)) {
           await reloadPolicies();
-          throw new Error("Policies changed while you were editing. Reload and review the current suggestions before saving.");
+          throw new Error("编辑期间策略已更改，请重新加载并检查当前建议后保存。");
         }
         const fields = suggestions ? { onboardingPrompts: suggestions.map((entry) => entry.prompt.trim()), onboardingPromptDescriptions: suggestions.map((entry) => entry.description.trim()) } : { onboardingPrompts: null, onboardingPromptDescriptions: null };
         if (own) {
@@ -75,64 +75,64 @@ export function DesktopSuggestionsPanel({ team }: { team: { id: string; name: st
             roles: own.roles,
           });
         } else if (team && suggestions) {
-          await createDesktopPolicy({ policyName: `${team.name} prompt suggestions`, policy: fields, teamIds: [team.id], priority: 0, isEnabled: true });
+          await createDesktopPolicy({ policyName: `${team.name} 条提示词建议`, policy: fields, teamIds: [team.id], priority: 0, isEnabled: true });
         } else {
-          throw new Error("Everyone's default policy is unavailable. Reload and try again.");
+          throw new Error("所有人的默认策略不可用，请重新加载后重试。");
         }
         await reloadPolicies();
         setDraft(null);
       });
     } catch (cause) {
-      setSaveError(cause instanceof Error ? cause.message : "Could not save suggestions. Try again.");
+      setSaveError(cause instanceof Error ? cause.message : "无法保存建议，请重试。");
     } finally {
       setSaving(false);
     }
   }
 
-  if (!canView) return <DenNotice tone="neutral" message="Viewing prompt suggestions needs Desktop policies access. Ask an organization owner or admin." />;
-  if (busy && desktopPolicies.length === 0) return <ItemPanel><ItemRowsSkeleton label="Loading prompt suggestions" rows={2} /></ItemPanel>;
-  if (error) return <DenNotice tone="error" message={error} action={<DenButton variant="secondary" onClick={() => void reloadPolicies()}>Try again</DenButton>} />;
+  if (!canView) return <DenNotice tone="neutral" message="查看提示词建议需要桌面策略访问权限，请联系组织所有者或管理员。" />;
+  if (busy && desktopPolicies.length === 0) return <ItemPanel><ItemRowsSkeleton label="正在加载提示词建议" rows={2} /></ItemPanel>;
+  if (error) return <DenNotice tone="error" message={error} action={<DenButton variant="secondary" onClick={() => void reloadPolicies()}>重试</DenButton>} />;
   return (
     <div className="flex flex-col gap-4" data-testid="desktop-suggestions">
-      <ItemSection title="Prompt suggestions" meta={team ? inherited ? "Inherit from Everyone" : "Changed for team" : undefined}>
-        {blocked ? <DenNotice tone="neutral" message="Suggestions have shared or overlapping policy assignments. Editing is locked to preserve other teams and members. Ask an organization owner to separate these assignments before changing suggestions." /> : null}
-        {!access?.canManageDesktopPolicies ? <DenNotice tone="neutral" message="Read only. Ask an organization owner or admin for permission to manage desktop policies." /> : !orgContext?.entitlements.desktopPolicies ? <DenNotice tone="neutral" message="Changing prompt suggestions requires an Enterprise plan. Ask an organization owner." /> : null}
+      <ItemSection title="提示词建议" meta={team ? inherited ? "继承所有人的设置" : "已为团队单独设置" : undefined}>
+        {blocked ? <DenNotice tone="neutral" message="建议包含共享或重叠的策略分配。为保护其他团队与成员，编辑已锁定。请联系组织所有者拆分这些分配后更改建议。" /> : null}
+        {!access?.canManageDesktopPolicies ? <DenNotice tone="neutral" message="当前为只读，请联系组织所有者或管理员申请桌面策略管理权限。" /> : !orgContext?.entitlements.desktopPolicies ? <DenNotice tone="neutral" message="更改提示词建议需要企业版套餐，请联系组织所有者。" /> : null}
         <ItemPanel>
-          {shown.length === 0 ? <div className="px-5 py-4 text-[13px] text-gray-500">Built-in desktop suggestions</div> : shown.map((entry, index) => (
-            <ItemRow key={index} title={entry.prompt} description={entry.description} testId={`desktop-suggestion-${index}`} action={canManage && !inherited ? <ItemMenu label={`Actions for suggestion ${index + 1}`} entries={[
-              { label: "Edit", disabled: saving, onSelect: () => setDraft(shown) },
-              { label: shown.length <= 2 ? "Remove (minimum 2 suggestions)" : "Remove", destructive: true, disabled: saving || shown.length <= 2, confirm: { title: "Remove suggestion?", description: "This prompt will no longer appear for this audience. The remaining two suggestions stay.", action: "Remove" }, onSelect: () => save(shown.filter((_, position) => position !== index)) },
+          {shown.length === 0 ? <div className="px-5 py-4 text-[13px] text-gray-500">内置桌面建议</div> : shown.map((entry, index) => (
+            <ItemRow key={index} title={entry.prompt} description={entry.description} testId={`desktop-suggestion-${index}`} action={canManage && !inherited ? <ItemMenu label={`建议 ${index + 1} 的操作`} entries={[
+              { label: "编辑", disabled: saving, onSelect: () => setDraft(shown) },
+              { label: shown.length <= 2 ? "移除（至少保留 2 条建议）" : "移除", destructive: true, disabled: saving || shown.length <= 2, confirm: { title: "移除建议？", description: "此提示词将不再向目标成员显示，其余两条建议保留。", action: "Remove" }, onSelect: () => save(shown.filter((_, position) => position !== index)) },
             ]} /> : undefined} />
           ))}
         </ItemPanel>
       </ItemSection>
       {draft ? (
-        <form className="flex flex-col gap-4" aria-label="Edit prompt suggestions" onSubmit={(event) => { event.preventDefault(); void save(draft); }}>
+        <form className="flex flex-col gap-4" aria-label="编辑提示词建议" onSubmit={(event) => { event.preventDefault(); void save(draft); }}>
           {draft.map((entry, index) => (
             <div key={index} className="grid gap-2">
-              <label className="grid gap-1 text-[13px] text-gray-700">Prompt {index + 1}<DenTextarea rows={2} disabled={saving} aria-label={`Prompt ${index + 1}`} required maxLength={500} value={entry.prompt} onChange={(event) => setDraft(draft.map((value, position) => position === index ? { ...value, prompt: event.target.value } : value))} className="rounded-lg border border-gray-200 bg-white px-3 py-2" /></label>
-              <label className="grid gap-1 text-[13px] text-gray-700">Description {index + 1}<DenInput disabled={saving} aria-label={`Description ${index + 1}`} maxLength={120} value={entry.description} onChange={(event) => setDraft(draft.map((value, position) => position === index ? { ...value, description: event.target.value } : value))} className="rounded-lg border border-gray-200 bg-white px-3 py-2" /></label>
+              <label className="grid gap-1 text-[13px] text-gray-700">提示词 {index + 1}<DenTextarea rows={2} disabled={saving} aria-label={`提示词 ${index + 1}`} required maxLength={500} value={entry.prompt} onChange={(event) => setDraft(draft.map((value, position) => position === index ? { ...value, prompt: event.target.value } : value))} className="rounded-lg border border-gray-200 bg-white px-3 py-2" /></label>
+              <label className="grid gap-1 text-[13px] text-gray-700">说明 {index + 1}<DenInput disabled={saving} aria-label={`描述 ${index + 1}`} maxLength={120} value={entry.description} onChange={(event) => setDraft(draft.map((value, position) => position === index ? { ...value, description: event.target.value } : value))} className="rounded-lg border border-gray-200 bg-white px-3 py-2" /></label>
             </div>
           ))}
           <div className="flex gap-2">
-            {draft.length < 3 ? <DenButton variant="secondary" disabled={saving} onClick={() => setDraft([...draft, { prompt: "", description: "" }])}>Add suggestion</DenButton> : null}
-            <DenButton type="submit" loading={saving}>Save suggestions</DenButton>
-            <DenButton variant="secondary" disabled={saving} onClick={() => setDraft(null)}>Cancel</DenButton>
+            {draft.length < 3 ? <DenButton variant="secondary" disabled={saving} onClick={() => setDraft([...draft, { prompt: "", description: "" }])}>添加建议</DenButton> : null}
+            <DenButton type="submit" loading={saving}>保存建议</DenButton>
+            <DenButton variant="secondary" disabled={saving} onClick={() => setDraft(null)}>取消</DenButton>
           </div>
         </form>
       ) : canManage ? (
         <div className="flex items-center gap-3">
-          <DenButton variant="secondary" disabled={saving} onClick={() => setDraft(shown.length > 0 ? shown : emptySuggestions())}>{inherited ? "Change for team" : shown.length === 0 ? "Set suggestions" : "Edit suggestions"}</DenButton>
-          {!inherited && shown.length === 2 ? <DenButton variant="secondary" disabled={saving} onClick={() => setDraft([...shown, { prompt: "", description: "" }])}>Add suggestion</DenButton> : null}
-          {team && own ? <DenButton variant="secondary" loading={saving} onClick={() => void save(null)}>Use Everyone's</DenButton> : !team && shown.length > 0 ? <DenButton variant="secondary" loading={saving} onClick={() => void save(null)}>Use built-in suggestions</DenButton> : null}
+          <DenButton variant="secondary" disabled={saving} onClick={() => setDraft(shown.length > 0 ? shown : emptySuggestions())}>{inherited ? "为团队单独设置" : shown.length === 0 ? "设置建议" : "编辑建议"}</DenButton>
+          {!inherited && shown.length === 2 ? <DenButton variant="secondary" disabled={saving} onClick={() => setDraft([...shown, { prompt: "", description: "" }])}>添加建议</DenButton> : null}
+          {team && own ? <DenButton variant="secondary" loading={saving} onClick={() => void save(null)}>使用所有人的设置</DenButton> : !team && shown.length > 0 ? <DenButton variant="secondary" loading={saving} onClick={() => void save(null)}>使用内置建议</DenButton> : null}
         </div>
       ) : null}
       {retained.length > 0 ? (
         <details className="text-[13px] text-gray-700">
-          <summary className="cursor-pointer py-2">Other scoped suggestions ({retained.length})</summary>
+          <summary className="cursor-pointer py-2">其他定向建议（{retained.length})</summary>
           <div className="flex flex-col gap-4 pt-3">
             {retained.map((policy) => (
-              <ItemSection key={policy.id} title={policy.policyName} meta={`${policy.isEnabled ? "Enabled" : "Disabled"} · Priority ${policy.priority}`}>
+              <ItemSection key={policy.id} title={policy.policyName} meta={`${policy.isEnabled ? "已启用" : "已禁用"} · 优先级 ${policy.priority}`}>
                 <ItemPanel>{suggestionsFor(policy).map((entry, index) => <ItemRow key={index} title={entry.prompt} description={entry.description} />)}</ItemPanel>
               </ItemSection>
             ))}

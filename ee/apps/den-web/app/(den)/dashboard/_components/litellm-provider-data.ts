@@ -1,3 +1,4 @@
+import { DEFAULT_DEN_LOCALE } from "../../../_lib/locale";
 /**
  * LiteLLM gateway provider requests and display helpers. Request bodies mirror
  * den-api's /v1/inference-providers/litellm schemas; keys are write-only and
@@ -48,65 +49,65 @@ export function buildLiteLlmCreateBody(input: LiteLlmCreateInput) {
 /** Client-side check before the server verifies the key against the proxy. */
 export function liteLlmCreateError(input: LiteLlmCreateInput): string | null {
   const baseUrl = input.baseUrl.trim();
-  if (!baseUrl) return "Enter your LiteLLM proxy URL.";
+  if (!baseUrl) return "请输入 LiteLLM 代理地址。";
   try {
     const url = new URL(baseUrl);
-    if (url.protocol !== "https:" && url.protocol !== "http:") return "The LiteLLM URL must start with https://.";
-  } catch { return "Enter a full URL, for example https://litellm.example.com."; }
-  if (!input.apiKey.trim()) return input.mode === "org" ? "Paste the LiteLLM key everyone will share."
-    : input.mode === "issued" ? "Paste a LiteLLM admin key so OpenWork can create each person's key."
-      : "Paste a LiteLLM admin key so OpenWork can read your models and teams.";
+    if (url.protocol !== "https:" && url.protocol !== "http:") return "LiteLLM 地址必须以 https:// 开头。";
+  } catch { return "输入完整地址，例如 https://litellm.example.com。"; }
+  if (!input.apiKey.trim()) return input.mode === "org" ? "粘贴所有人共用的 LiteLLM 密钥。"
+    : input.mode === "issued" ? "粘贴 LiteLLM 管理员密钥，以便 OpenWork 为每人创建密钥。"
+      : "粘贴 LiteLLM 管理员密钥，以便 OpenWork 读取模型与团队。";
   return null;
 }
 
 export function liteLlmKeyLabel(mode: LiteLlmMode) {
-  return mode === "org" ? "Organization key" : "Admin key";
+  return mode === "org" ? "组织密钥" : "管理员密钥";
 }
 
 export function liteLlmModeLabel(mode: LiteLlmMode) {
-  return mode === "org" ? "One organization key" : mode === "issued" ? "OpenWork creates keys" : "Each person's own key";
+  return mode === "org" ? "一个组织密钥" : mode === "issued" ? "由 OpenWork 创建密钥" : "每人使用自己的密钥";
 }
 
 export function liteLlmIssueStrategyLabel(strategy: LiteLlmIssueStrategy) {
-  return strategy === "mirror" ? "Copy their existing key" : "One per LiteLLM team";
+  return strategy === "mirror" ? "复制已有密钥" : "每个 LiteLLM 团队一个";
 }
 
 export function liteLlmMirrorFallbackLabel(fallback: LiteLlmMirrorFallback) {
-  return fallback === "error" ? "Show an error" : "Use their teams";
+  return fallback === "error" ? "显示错误" : "使用所属团队";
 }
 
 export function liteLlmAttentionLabel(reason: GatewayLiteLlmAttentionReason) {
-  return reason === "not_in_litellm" ? "Not in LiteLLM"
-    : reason === "no_key_to_mirror" ? "No key to copy"
-      : reason === "no_models" ? "No models allowed"
-        : "Could not create key";
+  return reason === "not_in_litellm" ? "不在 LiteLLM 中"
+    : reason === "no_key_to_mirror" ? "没有可复制的密钥"
+      : reason === "no_models" ? "没有允许的模型"
+        : "无法创建密钥";
 }
 
 export function liteLlmSpendLabel(status: Pick<GatewayLiteLlmStatus, "spendTracking">) {
-  return status.spendTracking ? "Tracked, priced from LiteLLM" : "Not tracked, LiteLLM budgets each key";
+  return status.spendTracking ? "已跟踪，价格来自 LiteLLM" : "未跟踪，由 LiteLLM 为每个密钥设置预算";
 }
 
 export function liteLlmAccessTitle(mode: LiteLlmMode) {
-  return mode === "org" ? "Who can use it" : mode === "issued" ? "Who gets a key" : "Who can connect a key";
+  return mode === "org" ? "谁可以使用" : mode === "issued" ? "密钥分配人员" : "可连接密钥的人员";
 }
 
 export function liteLlmAccessGroupId(provider: Pick<DenInferenceProvider, "litellm" | "modelGroups">): string | null {
   const mode = provider.litellm ? liteLlmStatusMode(provider.litellm) : "org";
-  const name = mode === "issued" ? "Gets a LiteLLM key" : mode === "member" ? "Can connect a LiteLLM key" : "All LiteLLM models";
+  const name = mode === "issued" ? "获得 LiteLLM 密钥" : mode === "member" ? "可连接 LiteLLM 密钥" : "所有 LiteLLM 模型";
   return provider.modelGroups?.find((group) => group.name === name)?.id ?? provider.modelGroups?.[0]?.id ?? null;
 }
 
 /** "Synced 5 min ago", or "Never synced". */
 export function liteLlmSyncedLabel(lastSyncedAt: string | null, now = Date.now()) {
-  if (!lastSyncedAt) return "Never synced";
+  if (!lastSyncedAt) return "从未同步";
   const at = new Date(lastSyncedAt).getTime();
-  if (!Number.isFinite(at)) return "Never synced";
+  if (!Number.isFinite(at)) return "从未同步";
   const minutes = Math.max(0, Math.round((now - at) / 60_000));
-  if (minutes < 1) return "Synced just now";
-  if (minutes < 60) return `Synced ${minutes} min ago`;
+  if (minutes < 1) return "刚刚同步";
+  if (minutes < 60) return `${minutes} 分钟前同步`;
   const hours = Math.round(minutes / 60);
-  if (hours < 24) return `Synced ${hours} h ago`;
-  return `Synced ${new Date(at).toLocaleDateString()}`;
+  if (hours < 24) return `${hours} 小时前同步`;
+  return `已同步 ${new Date(at).toLocaleDateString(DEFAULT_DEN_LOCALE)}`;
 }
 
 const syncResultSchema: z.ZodType<GatewayLiteLlmSyncResult> = z.object({
@@ -119,7 +120,7 @@ const syncResultSchema: z.ZodType<GatewayLiteLlmSyncResult> = z.object({
 function readResult(payload: unknown) {
   const provider = readInferenceProviderFromPayload(payload);
   const sync = z.object({ sync: syncResultSchema }).safeParse(payload);
-  if (!provider || !sync.success) throw new Error("The server returned an unexpected LiteLLM response.");
+  if (!provider || !sync.success) throw new Error("服务器返回了无法识别的 LiteLLM 响应，请重试。");
   return { provider, sync: sync.data.sync };
 }
 
@@ -127,7 +128,7 @@ export async function createLiteLlmProvider(input: LiteLlmCreateInput, auditCont
   const { response, payload } = await requestJson("/v1/inference-providers/litellm", {
     method: "POST", body: JSON.stringify(buildLiteLlmCreateBody(input)), headers: auditOperationHeaders(auditContext),
   }, 30000);
-  if (!response.ok) throw getRequestError(payload, response, `Could not connect LiteLLM (${response.status}).`);
+  if (!response.ok) throw getRequestError(payload, response, `无法连接 LiteLLM（${response.status}）。`);
   return readResult(payload);
 }
 
@@ -135,7 +136,7 @@ export async function syncLiteLlmProvider(providerId: string, auditContext?: Aud
   const { response, payload } = await requestJson(`/v1/inference-providers/${encodeURIComponent(providerId)}/litellm/sync`, {
     method: "POST", headers: auditOperationHeaders(auditContext),
   }, 60000);
-  if (!response.ok) throw getRequestError(payload, response, `Could not sync LiteLLM (${response.status}).`);
+  if (!response.ok) throw getRequestError(payload, response, `无法同步 LiteLLM（${response.status}）。`);
   return readResult(payload);
 }
 
@@ -151,19 +152,19 @@ async function updateLiteLlm(providerId: string, body: Record<string, string>, a
   const { response, payload } = await requestJson(`/v1/inference-providers/${encodeURIComponent(providerId)}/litellm`, {
     method: "PATCH", body: JSON.stringify(body), headers: auditOperationHeaders(auditContext),
   }, 120000);
-  if (!response.ok) throw getRequestError(payload, response, `Could not replace the LiteLLM key (${response.status}).`);
+  if (!response.ok) throw getRequestError(payload, response, `无法替换 LiteLLM 密钥（${response.status}）。`);
   return readResult(payload);
 }
 
 export function liteLlmSyncSummary(sync: GatewayLiteLlmSyncResult) {
-  const parts = [`${sync.modelCount} ${sync.modelCount === 1 ? "model" : "models"}`];
+  const parts = [`${sync.modelCount} 个模型`];
   if (sync.issued) {
-    parts.push(`keys for ${sync.issued.people} ${sync.issued.people === 1 ? "person" : "people"}`);
+    parts.push(`${sync.issued.people} 人的密钥`);
     const missing = sync.issued.notInLiteLlm + sync.issued.noKeyToMirror + sync.issued.noModels + sync.issued.errors;
-    if (missing) parts.push(`${missing} need attention`);
-    if (sync.issued.removed) parts.push(`${sync.issued.removed} removed`);
+    if (missing) parts.push(`${missing} 项需要处理`);
+    if (sync.issued.removed) parts.push(`已移除 ${sync.issued.removed}`);
   }
-  if (sync.members.rejected) parts.push(`${sync.members.rejected} ${sync.members.rejected === 1 ? "key" : "keys"} rejected by LiteLLM`);
-  if (sync.members.removed) parts.push(`${sync.members.removed} ${sync.members.removed === 1 ? "person" : "people"} lost access`);
-  return `Synced ${parts.join(", ")}.`;
+  if (sync.members.rejected) parts.push(`${sync.members.rejected} 项密钥被 LiteLLM 拒绝`);
+  if (sync.members.removed) parts.push(`${sync.members.removed} 人已失去访问权限`);
+  return `已同步 ${parts.join(", ")}。`;
 }

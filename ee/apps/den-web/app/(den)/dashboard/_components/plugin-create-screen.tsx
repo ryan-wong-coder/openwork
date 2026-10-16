@@ -26,7 +26,7 @@ export function LibraryPluginCreateScreen() {
 
   return (
     <ItemPage testId="plugin-create">
-      <ItemHeader compact back={{ href: getLibraryRoute(orgSlug), label: "My Library" }} title={startWithSkill ? "Create a skill" : "Create a plugin"} />
+      <ItemHeader compact back={{ href: getLibraryRoute(orgSlug), label: "我的资源库" }} title={startWithSkill ? "创建技能" : "创建插件"} />
       <PluginCreateForm
         connections={ownConnections}
         startWith={startWithSkill ? "skill" : undefined}
@@ -47,12 +47,12 @@ export function AdminPluginCreateScreen() {
 
   return (
     <ItemPage testId="plugin-create">
-      <ItemHeader compact back={{ href: getPluginsRoute(orgSlug), label: "Plugins" }} title="Create a plugin" />
+      <ItemHeader compact back={{ href: getPluginsRoute(orgSlug), label: "插件" }} title="创建插件" />
       <PluginCreateForm
         connections={connections}
         cancelHref={getPluginsRoute(orgSlug)}
         addConnectorHref={getAddConnectorRoute(orgSlug)}
-        footnote="Nobody else gets it until you choose who can use it."
+        footnote="选择使用人员前，其他人无法获得此项。"
         onCreated={(pluginId) => router.push(getPluginRoute(orgSlug, pluginId))}
       />
     </ItemPage>

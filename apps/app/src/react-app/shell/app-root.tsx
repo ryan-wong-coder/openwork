@@ -62,6 +62,7 @@ import {
 import { StartupScreen } from "./startup-screen";
 import { WebStartupScreen } from "./workspace-startup-status";
 import { isOpenworkGatewayRuntime } from "../../app/lib/gateway-runtime";
+import { isLocalGatewayClient } from "../../app/lib/client-profile";
 
 
 type DenSigninGateProps = {
@@ -109,7 +110,7 @@ function DenSigninGate({ children }: DenSigninGateProps) {
   const path = location.pathname.toLowerCase();
   const onSignin = path === "/signin" || path.startsWith("/signin/");
   const onOnboarding = path === "/onboarding" || path.startsWith("/onboarding/");
-  const hasPreparedBootstrap = Boolean(bootstrap.prepared);
+  const hasPreparedBootstrap = !isLocalGatewayClient() && Boolean(bootstrap.prepared);
   const routeInput = {
     // Wait for the first auth check so we don't bounce the user between
     // `/session` and `/signin` every navigation while we figure out if
@@ -399,7 +400,7 @@ function useOutboundEgressAllowed() {
     readDenBootstrapSnapshot,
   );
   const desktopConfig = useDesktopConfig();
-  return outboundEgressAllowed(readDesktopDistributionInfo(), bootstrap, {
+  return !isLocalGatewayClient() && outboundEgressAllowed(readDesktopDistributionInfo(), bootstrap, {
     desktopConfigLoading: desktopConfig.loading,
   });
 }
@@ -443,7 +444,7 @@ export function AppRoot() {
           <OpenworkRouteControlActions />
           <ChatDeepLinkListener />
           <OpenworkContextPublisher />
-          <DenAuthControlActions />
+          {isLocalGatewayClient() ? null : <DenAuthControlActions />}
           <BrandThemeControlActions />
           <EnterpriseActivationGate>
             <DenSigninGate>
@@ -454,7 +455,7 @@ export function AppRoot() {
                 path="/signin"
                 element={
                   <DevProfiler id="SigninRoute">
-                    <ForcedSigninPage developerMode={false} />
+                    {isLocalGatewayClient() ? <Navigate to="/session" replace /> : <ForcedSigninPage developerMode={false} />}
                   </DevProfiler>
                 }
               />
@@ -462,7 +463,7 @@ export function AppRoot() {
                 path="/onboarding"
                 element={
                   <DevProfiler id="OrgOnboarding">
-                    <OrgOnboardingPage />
+                    {isLocalGatewayClient() ? <Navigate to="/session" replace /> : <OrgOnboardingPage />}
                   </DevProfiler>
                 }
               />
@@ -470,7 +471,7 @@ export function AppRoot() {
                 path="/welcome"
                 element={
                   <DevProfiler id="WelcomeRoute">
-                    {isDesktopRuntime() ? <Navigate to="/session" replace /> : <WelcomeRoute />}
+                    {isDesktopRuntime() || isLocalGatewayClient() ? <Navigate to="/session" replace /> : <WelcomeRoute />}
                   </DevProfiler>
                 }
               />

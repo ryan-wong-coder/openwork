@@ -57,10 +57,10 @@ function InvitationDetails({
 }) {
   return (
     <dl className="divide-y divide-slate-200/80 border-y border-slate-200/80" data-testid="join-org-invitation-details">
-      <DetailRow label="Organization">{preview.organization.name}</DetailRow>
-      <DetailRow label="Invited email">{preview.invitation.email}</DetailRow>
-      <DetailRow label="Role">{roleLabel}</DetailRow>
-      <DetailRow label="Account">{account ? account.email : "Not signed in"}</DetailRow>
+      <DetailRow label="组织">{preview.organization.name}</DetailRow>
+      <DetailRow label="受邀邮箱">{preview.invitation.email}</DetailRow>
+      <DetailRow label="角色">{roleLabel}</DetailRow>
+      <DetailRow label="账号">{account ? account.email : "未登录"}</DetailRow>
     </dl>
   );
 }
@@ -68,7 +68,7 @@ function InvitationDetails({
 function InvitationSummary({ preview }: { preview: DenInvitationPreview }) {
   return (
     <span data-testid="join-org-invitation-summary">
-      You&apos;ve been invited as <span className="font-medium text-slate-950">{preview.invitation.email}</span>
+      受邀身份 <span className="font-medium text-slate-950">{preview.invitation.email}</span>
     </span>
   );
 }
@@ -103,7 +103,7 @@ function NotNowButton({ onClick }: { onClick: () => void }) {
       className="inline-flex min-h-12 w-full items-center justify-center rounded-full px-3 text-sm font-medium text-slate-500 transition hover:text-slate-950 focus:outline-hidden focus:ring-4 focus:ring-slate-950/10"
       onClick={onClick}
     >
-      Not now
+      暂不迁移
     </button>
   );
 }
@@ -129,8 +129,8 @@ function getCardOrganization(preview: DenInvitationPreview | null) {
 
 function LoadingState({
   preview = null,
-  title = "Loading invite.",
-  copy = "Checking the invite details and your account state...",
+  title = "正在加载邀请。",
+  copy = "正在检查邀请详情与账户状态…",
 }: {
   preview?: DenInvitationPreview | null;
   title?: string;
@@ -153,19 +153,19 @@ function LoadingState({
 function statusMessage(preview: DenInvitationPreview | null) {
   switch (preview?.invitation.status) {
     case "accepted":
-      return "This invite has already been used.";
+      return "此邀请已被使用。";
     case "canceled":
-      return "This invite was canceled.";
+      return "此邀请已被取消。";
     case "expired":
-      return "This invite expired.";
+      return "此邀请已过期。";
     default:
-      return "This invite is no longer available.";
+      return "此邀请已失效。";
   }
 }
 
 function formatAllowedDomains(allowedEmailDomains: readonly string[] | null | undefined) {
   if (!allowedEmailDomains || allowedEmailDomains.length === 0) {
-    return "any invited email address";
+    return "任一受邀邮箱";
   }
 
   return allowedEmailDomains.length === 1
@@ -221,19 +221,19 @@ function InviteAuthPanel({
         emailFirstInvitationId={preview.invitation.id}
         resolveEmailFirstOnPrefill
         signUpContent={{
-          submitLabel: "Create account",
+          submitLabel: "创建账户",
         }}
         signInContent={{
-          title: "Sign in to continue.",
+          title: "登录后继续。",
           copy: initialMode === "sign-in"
-            ? `Sign in as ${preview.invitation.email} to open your workspace.`
-            : "Use the invited account to accept this invite.",
-          submitLabel: initialMode === "sign-in" ? "Sign in to open workspace" : "Sign in to join",
+            ? `以 ${preview.invitation.email} 身份登录以打开工作区。`
+            : "请使用受邀账户接受邀请。",
+          submitLabel: initialMode === "sign-in" ? "登录以打开工作区" : "登录以加入",
         }}
         verificationContent={{
-          title: "Check your inbox.",
-          copy: `Enter the six-digit code sent to ${preview.invitation.email}.`,
-          submitLabel: "Verify and join",
+          title: "请检查收件箱",
+          copy: `输入发送至 ${preview.invitation.email} 的六位验证码。`,
+          submitLabel: "验证并加入",
         }}
       />
     </div>
@@ -277,7 +277,7 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
     async function loadPreview() {
       if (!invitationId) {
         setPreview(null);
-        setPreviewError("Missing invitation link.");
+        setPreviewError("缺少邀请链接。");
         setPreviewBusy(false);
         return;
       }
@@ -302,14 +302,14 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
           }
 
           setPreview(null);
-          setPreviewError(getErrorMessage(payload, response.status === 404 ? "This invite is no longer available." : `Could not load the invite (${response.status}).`));
+          setPreviewError(getErrorMessage(payload, response.status === 404 ? "此邀请已失效。" : `无法加载邀请（${response.status}）。`));
           return;
         }
 
         const nextPreview = parseInvitationPreviewPayload(payload);
         if (!nextPreview) {
           setPreview(null);
-          setPreviewError("The invitation details were incomplete.");
+          setPreviewError("邀请详情不完整。");
           return;
         }
 
@@ -317,7 +317,7 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
       } catch (error) {
         if (!cancelled) {
           setPreview(null);
-          setPreviewError(error instanceof Error ? error.message : "Could not load the invite.");
+          setPreviewError(error instanceof Error ? error.message : "无法加载邀请，请重试。");
         }
       } finally {
         if (!cancelled) {
@@ -406,11 +406,11 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
 
   async function handleAcceptInvitation() {
     if (!invitationId) {
-      setJoinError("Missing invitation link.");
+      setJoinError("缺少邀请链接。");
       return;
     }
     if (!preview) {
-      setJoinError("The invitation details are still loading.");
+      setJoinError("邀请详情仍在加载。");
       return;
     }
 
@@ -435,12 +435,12 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
           setSessionEnded(true);
           return;
         }
-        setJoinError("Could not join the organization. Try again.");
+        setJoinError("无法加入组织，请重试。");
         return;
       }
 
       if (!response.ok) {
-        setJoinError(getErrorMessage(payload, response.status === 404 ? "This invite could not be accepted." : `Could not join the organization (${response.status}).`));
+        setJoinError(getErrorMessage(payload, response.status === 404 ? "无法接受此邀请。" : `无法加入组织（${response.status}）。`));
         return;
       }
 
@@ -452,7 +452,7 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
         router.replace("/install");
       }
     } catch (error) {
-      setJoinError(error instanceof Error ? error.message : "Could not join the organization.");
+      setJoinError(error instanceof Error ? error.message : "无法加入组织，请重试。");
     } finally {
       setJoinBusy(false);
     }
@@ -486,10 +486,10 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
     return (
       <OnboardingShell state="invalid" width="wide" background="surface">
         <OnboardingCard organization={getCardOrganization(preview)}>
-          <InvitationHeading title="This invite can't be opened." copy={previewError ?? "This invite could not be loaded."} />
+          <InvitationHeading title="无法打开此邀请。" copy={previewError ?? "无法加载此邀请。"} />
           <ActionGroup>
             <button type="button" className={primaryActionClassName} onClick={handleNotNow}>
-              Back to OpenWork Cloud
+              返回 OpenWork 云端
             </button>
           </ActionGroup>
         </OnboardingCard>
@@ -508,8 +508,8 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
     return (
       <LoadingState
         preview={preview}
-        title="Opening your workspace."
-        copy={`Confirming your membership in ${preview.organization.name}...`}
+        title="正在打开工作区。"
+        copy={`正在确认你在 ${preview.organization.name} 中的成员资格…`}
       />
     );
   }
@@ -519,12 +519,12 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
       <OnboardingShell state="membership-removed" width="wide" background="surface">
         <OnboardingCard organization={getCardOrganization(preview)}>
           <InvitationHeading
-            title="Your access was removed."
-            copy={`Your access to ${preview.organization.name} was removed. Ask a workspace admin for a new invite.`}
+            title="你的访问权限已被移除。"
+            copy={`你对 ${preview.organization.name} 的访问权限已移除，请联系工作区管理员重新邀请。`}
           />
           <ActionGroup>
             <button type="button" className={primaryActionClassName} onClick={handleNotNow}>
-              Back to OpenWork Cloud
+              返回 OpenWork 云端
             </button>
           </ActionGroup>
         </OnboardingCard>
@@ -538,8 +538,8 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
         <OnboardingCard organization={getCardOrganization(preview)}>
           <div className="grid gap-4">
             <InvitationHeading
-              title={`You've already joined ${preview.organization.name}.`}
-              copy={`This invite was already accepted. Sign in as ${preview.invitation.email} to open your workspace.`}
+              title={`你已加入 ${preview.organization.name}。`}
+              copy={`此邀请已接受。请以 ${preview.invitation.email} 身份登录以打开工作区。`}
             />
             <InvitationDetails preview={preview} account={account} roleLabel={roleLabel} />
           </div>
@@ -559,8 +559,8 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
       <OnboardingShell state="accepted-wrong-account" width="wide" background="surface">
         <OnboardingCard organization={getCardOrganization(preview)}>
           <InvitationHeading
-            title="Use the invited account."
-            copy={`This invite belongs to ${preview.invitation.email}. You are signed in as ${user.email}, so switch accounts to open this workspace.`}
+            title="请使用受邀账户。"
+            copy={`此邀请属于 ${preview.invitation.email}，你当前登录的账户为 ${user.email}。请切换账户以打开此工作区。`}
           />
           <InvitationDetails preview={preview} account={account} roleLabel={roleLabel} />
           <ActionGroup>
@@ -570,7 +570,7 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
               onClick={() => void handleSwitchAccount()}
               disabled={joinBusy}
             >
-              Use a different account
+              使用其他账户
             </button>
             <NotNowButton onClick={handleNotNow} />
           </ActionGroup>
@@ -583,11 +583,11 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
     return (
       <OnboardingShell state="unavailable" width="wide" background="surface">
         <OnboardingCard organization={getCardOrganization(preview)}>
-          <InvitationHeading title="This invite can't be used." copy={statusMessage(preview)} />
+          <InvitationHeading title="此邀请不可用。" copy={statusMessage(preview)} />
           <InvitationDetails preview={preview} account={account} roleLabel={roleLabel} />
           <ActionGroup>
             <button type="button" className={primaryActionClassName} onClick={handleNotNow}>
-              Back to OpenWork Cloud
+              返回 OpenWork 云端
             </button>
           </ActionGroup>
         </OnboardingCard>
@@ -600,13 +600,13 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
       <OnboardingShell state="domain-blocked" width="wide" background="surface">
         <OnboardingCard organization={getCardOrganization(preview)}>
           <InvitationHeading
-            title="This invite needs a different email domain."
-            copy={`${preview.organization.name} now only accepts accounts from ${allowedDomainsLabel}. Ask a workspace owner to update the allowlist or send a new invite.`}
+            title="此邀请要求使用其他邮箱域名。"
+            copy={`${preview.organization.name} 目前仅接受来自 ${allowedDomainsLabel} 的账户，请联系工作区所有者更新允许列表或重新邀请。`}
           />
           <InvitationDetails preview={preview} account={account} roleLabel={roleLabel} />
           <ActionGroup>
             <button type="button" className={primaryActionClassName} onClick={handleNotNow}>
-              Back to OpenWork Cloud
+              返回 OpenWork 云端
             </button>
           </ActionGroup>
         </OnboardingCard>
@@ -620,17 +620,17 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
         <OnboardingCard organization={getCardOrganization(preview)}>
           <div className="grid gap-4">
             <InvitationHeading
-              title={`Join ${preview.organization.name}`}
+              title={`加入 ${preview.organization.name}`}
               copy={<InvitationSummary preview={preview} />}
             />
             {preview.organization.allowedEmailDomains?.length ? (
               <p className="m-0 text-[15px] leading-[23px] text-slate-600">
-                This workspace only accepts {allowedDomainsLabel} accounts.
+                此工作区仅接受 {allowedDomainsLabel} 域名的账户。
               </p>
             ) : null}
           </div>
 
-          {sessionEnded ? <InlineAlert>Your session ended. Sign in again to join.</InlineAlert> : null}
+          {sessionEnded ? <InlineAlert>会话已结束，请重新登录后加入。</InlineAlert> : null}
 
           <InviteAuthPanel preview={preview} initialMode="sign-up" />
 
@@ -645,16 +645,16 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
   return (
     <OnboardingShell state="signed-in" width="wide" background="surface">
       <OnboardingCard organization={getCardOrganization(preview)}>
-        <InvitationHeading title={`Join ${preview.organization.name}.`} copy="Review the invitation and continue with the right account." />
+        <InvitationHeading title={`加入 ${preview.organization.name}。`} copy="请检查邀请并使用正确的账户继续。" />
         <InvitationDetails preview={preview} account={account} roleLabel={roleLabel} />
 
         {user && !signedInEmailAllowed ? (
           <div className="grid gap-4">
             <p className="m-0 text-[15px] leading-[23px] text-slate-600">
-              {preview.organization.name} only accepts accounts from <span className="font-medium text-slate-950">{allowedDomainsLabel}</span>. You are signed in as <span className="font-medium text-slate-950">{user.email}</span>, so this account cannot join.
+              {preview.organization.name} 仅接受来自以下域名的账户： <span className="font-medium text-slate-950">{allowedDomainsLabel}</span>。你当前登录的账户为 <span className="font-medium text-slate-950">{user.email}</span>，因此此账户无法加入。
             </p>
             <p className="m-0 text-[15px] leading-[23px] text-slate-500">
-              Log out, then create a new account or sign in with an allowed email address.
+              请退出登录后创建新账户，或使用允许的邮箱地址登录。
             </p>
             <ActionGroup>
               <button
@@ -663,7 +663,7 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
                 onClick={() => void handleSwitchAccount()}
                 disabled={joinBusy}
               >
-                Log out
+                退出登录
               </button>
               <NotNowButton onClick={handleNotNow} />
             </ActionGroup>
@@ -671,7 +671,7 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
         ) : !invitedEmailMatches ? (
           <div className="grid gap-4">
             <p className="m-0 text-[15px] leading-[23px] text-slate-600">
-              This invite is for <span className="font-medium text-slate-950">{preview.invitation.email}</span>. Switch accounts to continue.
+              此邀请发给 <span className="font-medium text-slate-950">{preview.invitation.email}</span>。请切换账户以继续。
             </p>
             <ActionGroup>
               <button
@@ -680,14 +680,14 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
                 onClick={() => void handleSwitchAccount()}
                 disabled={joinBusy}
               >
-                Use a different account
+                使用其他账户
               </button>
               <NotNowButton onClick={handleNotNow} />
             </ActionGroup>
           </div>
         ) : (
           <div className="grid gap-4">
-            <p className="m-0 text-[15px] leading-[23px] text-slate-600">You're one click away from the team workspace.</p>
+            <p className="m-0 text-[15px] leading-[23px] text-slate-600">继续即可进入团队工作区。</p>
             <ActionGroup>
               <button
                 type="button"
@@ -695,7 +695,7 @@ export function JoinOrgScreen({ invitationId }: { invitationId: string }) {
                 onClick={() => void handleAcceptInvitation()}
                 disabled={!showAcceptAction || joinBusy}
               >
-                {joinBusy ? "Joining..." : `Join ${preview.organization.name}`}
+                {joinBusy ? "正在加入…" : `加入 ${preview.organization.name}`}
               </button>
               <NotNowButton onClick={handleNotNow} />
             </ActionGroup>

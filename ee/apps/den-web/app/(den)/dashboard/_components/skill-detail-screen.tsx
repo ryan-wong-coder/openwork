@@ -16,25 +16,25 @@ export function SkillDetailScreen({ pluginId, skillId }: { pluginId: string; ski
   const deleteSkill = useDeleteSkill(pluginId);
 
   if (isLoading && !skill) {
-    return <ItemPage><ItemPanel><ItemRowsSkeleton label="Loading skill" /></ItemPanel></ItemPage>;
+    return <ItemPage><ItemPanel><ItemRowsSkeleton label="正在加载技能" /></ItemPanel></ItemPage>;
   }
 
   if (!skill) {
-    return <DetailMessage error>{error instanceof Error ? error.message : "That skill could not be found."}</DetailMessage>;
+    return <DetailMessage error>{error instanceof Error ? error.message : "未找到此技能。"}</DetailMessage>;
   }
 
   return (
     <ItemPage testId="skill-detail">
-      <ItemHeader compact back={{ href: getPluginRoute(orgSlug, pluginId), label: "Back to plugin" }} logo={<KindTile kind="skill" />} title={skillTitle(skill.name)} actions={<ItemMenu size="md" label={`More for ${skillTitle(skill.name)}`} entries={[
-        { label: "Edit", href: getEditPluginSkillRoute(orgSlug, pluginId, skill.id) },
+      <ItemHeader compact back={{ href: getPluginRoute(orgSlug, pluginId), label: "返回插件" }} logo={<KindTile kind="skill" />} title={skillTitle(skill.name)} actions={<ItemMenu size="md" label={`${skillTitle(skill.name)} 的更多操作`} entries={[
+        { label: "编辑", href: getEditPluginSkillRoute(orgSlug, pluginId, skill.id) },
         removeEntry(skillTitle(skill.name), async () => {
           await deleteSkill.mutateAsync(skill.id);
           router.push(getPluginRoute(orgSlug, pluginId));
         }),
       ]} />} />
-      {skill.description ? <DetailRows rows={[{ label: "When to use it", value: skill.description, wrap: true }]} /> : null}
+      {skill.description ? <DetailRows rows={[{ label: "使用时机", value: skill.description, wrap: true }]} /> : null}
       <section className="flex flex-col gap-3">
-        <SectionTitle title="Skill steps" />
+        <SectionTitle title="技能步骤" />
         <pre className="whitespace-pre-wrap break-words text-[13px] leading-6 text-[var(--dls-text-primary)]">{skill.body}</pre>
       </section>
     </ItemPage>

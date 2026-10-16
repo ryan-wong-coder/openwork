@@ -28,15 +28,15 @@ function ConnectorsEmpty({ orgSlug }: { orgSlug: string | null }) {
       <div className="flex w-full flex-col items-center gap-5 rounded-2xl border border-gray-100 bg-white px-6 pb-14 pt-16 text-center" data-testid="connectors-empty">
         <ConnectorLogoStrip size="md" />
         <div className="flex flex-col gap-1.5">
-          <p className="text-[15px] font-semibold leading-5 text-gray-900">No connectors yet</p>
-          <p className="text-[13px] leading-[18px] text-gray-500">Apps your organization&apos;s AI can use. You choose who gets each one.</p>
+          <p className="text-[15px] font-semibold leading-5 text-gray-900">暂无连接器</p>
+          <p className="text-[13px] leading-[18px] text-gray-500">管理组织 AI 可使用的应用，并分配使用权限。</p>
         </div>
         <LinkButton variant="primary" href={getAddConnectorRoute(orgSlug)} onPointerEnter={prefetchCatalog} onFocus={prefetchCatalog}>
           <Plus className="h-4 w-4" aria-hidden />
-          Add connector
+          添加连接器
         </LinkButton>
       </div>
-      <p className="text-[12px] leading-4 text-gray-400">Members can still add apps for themselves in My Library.</p>
+      <p className="text-[12px] leading-4 text-gray-400">成员仍可在“我的资源库”中添加自己的应用。</p>
     </div>
   );
 }
@@ -60,26 +60,26 @@ export function AdminConnectorsScreen() {
 
   async function remove(connection: ExternalMcpConnection) {
     await deleteConnection.mutateAsync(connection.id);
-    toast({ title: `${connection.name} is removed`, description: "Nobody can use it anymore." });
+    toast({ title: `已移除 ${connection.name}`, description: "此项已不再可供任何人使用。" });
   }
 
   return (
     <ItemPage testId="admin-connectors">
       <DenPageHeader
-        title="Connectors"
+        title="连接器"
         className={all.some((connection) => connection.readiness !== undefined) ? "[&>div:first-child]:basis-full sm:[&>div:first-child]:basis-0" : undefined}
-        description="Apps your organization's AI can use."
+        description="组织 AI 可使用的应用。"
         action={empty ? undefined : (
           <LinkButton variant="primary" href={getAddConnectorRoute(orgSlug)} onPointerEnter={prefetchCatalog} onFocus={prefetchCatalog}>
             <Plus className="h-4 w-4" aria-hidden />
-            Add connector
+            添加连接器
           </LinkButton>
         )}
       />
 
       {connections.error ? (
         <p className="rounded-2xl border border-gray-100 bg-white px-5 py-4 text-[13px] text-red-600">
-          {connections.error instanceof Error ? connections.error.message : "Connectors did not load."}
+          {connections.error instanceof Error ? connections.error.message : "连接器加载失败，请重试。"}
         </p>
       ) : null}
 
@@ -90,7 +90,7 @@ export function AdminConnectorsScreen() {
           <div className="-mt-1 flex justify-end">
             <FilterInput value={query} onChange={setQuery} className="w-[240px]" />
           </div>
-          {connections.isLoading ? <ItemPanel><ItemRowsSkeleton label="Loading connectors" /></ItemPanel> : null}
+          {connections.isLoading ? <ItemPanel><ItemRowsSkeleton label="正在加载连接器" /></ItemPanel> : null}
           {visible.length > 0 ? (
             <ItemPanel>
               {visible.map((connection) => {
@@ -98,13 +98,13 @@ export function AdminConnectorsScreen() {
                 const readinessState = connectorReadinessState(connection);
                 const unfinished = connectorSetupUnfinished(connection);
                 const status = unfinished
-                  ? "Setup not finished"
+                  ? "配置未完成"
                   : !connection.access && isNativeProviderConnectionId(connection.id, connection.nativeProviderKey)
-                    ? "Everyone"
+                    ? "所有人"
                     : orgContext ? managedAccessStatus(connection.access, orgContext, viewerId) : "";
                 const signInNote = connection.credentialMode === "per_member" && connection.authType === "oauth"
-                  ? "Each person signs in"
-                  : connection.authType === "none" ? "No sign-in needed" : connectorAccountReady(connection) ? "One account for everyone" : undefined;
+                  ? "每人分别登录"
+                  : connection.authType === "none" ? "无需登录" : connectorAccountReady(connection) ? "所有人共用一个账户" : undefined;
                 return (
                   <div key={connection.id} data-connector-row={connection.name}>
                     <ItemRow
@@ -115,18 +115,18 @@ export function AdminConnectorsScreen() {
                       status={readinessState ?? status}
                       statusOnNarrow={readinessState !== null}
                       wideAction={readinessState !== null}
-                      wrapDescription={readinessState === "Couldn't verify"}
-                      action={readinessState === "Couldn't verify" ? (
-                        <DenButton size="xs" variant="secondary" disabled={!canCheck || checkConnection.isPending} title={!canCheck ? "An admin can check this connection." : undefined}
-                          onClick={() => void checkConnection.mutateAsync(connection.id).catch(() => toast({ title: "Could not check this connection", description: "Try again." }))}>Check again</DenButton>
+                      wrapDescription={readinessState === "无法验证"}
+                      action={readinessState === "无法验证" ? (
+                        <DenButton size="xs" variant="secondary" disabled={!canCheck || checkConnection.isPending} title={!canCheck ? "管理员可以检查此连接。" : undefined}
+                          onClick={() => void checkConnection.mutateAsync(connection.id).catch(() => toast({ title: "无法检查此连接", description: "请重试。" }))}>重新检查</DenButton>
                       ) : unfinished ? (
-                        <LinkButton size="xs" href={finishSetupHref(orgSlug, connection)}>Finish</LinkButton>
+                        <LinkButton size="xs" href={finishSetupHref(orgSlug, connection)}>完成</LinkButton>
                       ) : (
                         <ItemMenu
-                          label={`More for ${connection.name}`}
+                          label={`${connection.name} 的更多操作`}
                           entries={[
-                            { label: "Open", href },
-                            ...(readinessState && canCheck ? [{ label: "Check again", onSelect: () => void checkConnection.mutateAsync(connection.id).catch(() => toast({ title: "Could not check this connection", description: "Try again." })) }] : []),
+                            { label: "打开", href },
+                            ...(readinessState && canCheck ? [{ label: "重新检查", onSelect: () => void checkConnection.mutateAsync(connection.id).catch(() => toast({ title: "无法检查此连接", description: "请重试。" })) }] : []),
                             ...(connection.id === GOOGLE_WORKSPACE_QUICK_ADD_ID || connection.id === MICROSOFT_365_QUICK_ADD_ID
                               ? []
                               : [removeEntry(connection.name, () => remove(connection))]),
@@ -140,7 +140,7 @@ export function AdminConnectorsScreen() {
             </ItemPanel>
           ) : null}
           {!connections.isLoading && visible.length === 0 ? (
-            <p className="rounded-2xl border border-gray-100 bg-white px-5 py-6 text-center text-[13px] text-gray-500">Nothing matches.</p>
+            <p className="rounded-2xl border border-gray-100 bg-white px-5 py-6 text-center text-[13px] text-gray-500">没有匹配项。</p>
           ) : null}
         </>
       ) : null}

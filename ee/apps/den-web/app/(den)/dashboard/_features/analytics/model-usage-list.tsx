@@ -11,11 +11,11 @@ export function ModelUsageList({ models, isLoading }: {
 
   return (
     <div className={`${analyticsSurfaceClass} p-5`}>
-      <h3 className="text-[14px] font-semibold tracking-[-0.01em] text-[#07192C]">Sessions by model</h3>
-      <p className="mt-0.5 text-[12px] text-[#637291]">Distinct sessions, last 30 days</p>
+      <h3 className="text-[14px] font-semibold tracking-[-0.01em] text-[#07192C]">按模型查看会话</h3>
+      <p className="mt-0.5 text-[12px] text-[#637291]">最近 30 天的独立会话</p>
       <div className="mt-4 space-y-3">
-        {isLoading ? <p className="text-[12px] text-[#637291]">Loading model usage…</p> : null}
-        {!isLoading && models.length === 0 ? <AnalyticsEmptyState title="No model usage yet">Model sessions from your team will appear here as they use OpenWork.</AnalyticsEmptyState> : null}
+        {isLoading ? <p className="text-[12px] text-[#637291]">正在加载模型用量…</p> : null}
+        {!isLoading && models.length === 0 ? <AnalyticsEmptyState title="暂无模型用量">团队使用 OpenWork 时，模型会话将显示在此处。</AnalyticsEmptyState> : null}
         {models.map((model) => (
           <div key={model.id}>
             <div className="flex items-center justify-between gap-3 text-[12px]">

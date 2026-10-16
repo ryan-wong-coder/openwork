@@ -60,12 +60,12 @@ export function DenCombobox({
   optionsDisabled = false,
   maxSearchLength,
   searchFeedback,
-  placeholder = "Select an option...",
-  searchPlaceholder = "Search...",
-  emptyLabel = "No options match",
+  placeholder = "选择选项…",
+  searchPlaceholder = "搜索…",
+  emptyLabel = "没有匹配选项",
   disabled = false,
   className,
-  ariaLabel = "Select option",
+  ariaLabel = "选择选项",
 }: DenComboboxProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");

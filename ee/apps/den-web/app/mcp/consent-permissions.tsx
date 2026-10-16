@@ -5,15 +5,15 @@ import type { McpRedirectDescription } from "./client-identity-model";
 export function mcpPermissionLines(scope: string): string[] {
   const scopes = new Set(scope.split(/\s+/).filter(Boolean));
   return [
-    ...(scopes.has("openid") || scopes.has("profile") || scopes.has("email") ? ["See your name and email"] : []),
-    ...(scopes.has("mcp:read") ? ["Find and read what is in this workspace"] : []),
-    ...(scopes.has("mcp:write") ? ["Use your connected tools, including actions that create, change, or delete data"] : []),
-    ...(scopes.has("offline_access") ? ["Stay connected until you remove it"] : []),
+    ...(scopes.has("openid") || scopes.has("profile") || scopes.has("email") ? ["查看你的姓名与邮箱"] : []),
+    ...(scopes.has("mcp:read") ? ["查找并读取工作区内容"] : []),
+    ...(scopes.has("mcp:write") ? ["使用已连接工具，包括创建、更改或删除数据的操作"] : []),
+    ...(scopes.has("offline_access") ? ["保持连接，直至你移除"] : []),
   ];
 }
 
 /** "Claude Code can" and the plain list of what it gets. */
-export function McpConsentPermissions({ scope, actor = "This app" }: { scope: string; actor?: string }) {
+export function McpConsentPermissions({ scope, actor = "此应用" }: { scope: string; actor?: string }) {
   return <SetupCanList actor={actor} items={mcpPermissionLines(scope)} />;
 }
 
@@ -21,9 +21,9 @@ export function McpConsentPermissions({ scope, actor = "This app" }: { scope: st
 export function McpTechnicalDetails({ scope, clientId, redirect }: { scope: string; clientId: string | null; redirect?: McpRedirectDescription | null }) {
   return (
     <SetupTechnicalDetails>
-      <span>Permissions: {scope || "none requested"}</span>
-      {clientId ? <span>App ID: {clientId}</span> : null}
-      {redirect ? <span>Full return address: <span dir="ltr" data-testid="mcp-redirect-url">{redirect.url}</span></span> : null}
+      <span>权限： {scope || "未请求"}</span>
+      {clientId ? <span>应用 ID： {clientId}</span> : null}
+      {redirect ? <span>完整返回地址： <span dir="ltr" data-testid="mcp-redirect-url">{redirect.url}</span></span> : null}
     </SetupTechnicalDetails>
   );
 }

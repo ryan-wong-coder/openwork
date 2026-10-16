@@ -48,7 +48,7 @@ export function detectedInstallPlatform(detected: DetectedInstallerPlatform | nu
 }
 
 export function downloadCtaLabel(os: DetectedInstallerOs | null) {
-  if (os === "windows") return "Download for Windows";
-  if (os === "linux") return "Download for Linux";
-  return "Download for macOS";
+  if (os === "windows") return "下载 Windows 版";
+  if (os === "linux") return "下载 Linux 版";
+  return "下载 macOS 版";
 }

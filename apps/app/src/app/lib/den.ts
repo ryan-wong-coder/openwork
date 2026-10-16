@@ -1,4 +1,5 @@
 import { builtMcpAppCatalogSchema, type BuiltMcpAppCatalogEntry } from "./built-mcp-app-catalog";
+import { isLocalGatewayClient, setClientProfileBootstrap } from "./client-profile";
 import {
   normalizeDesktopConfig,
   type DesktopConfig as SharedDesktopConfig,
@@ -978,6 +979,7 @@ function readRuntimeConfigDenApiUrl(payload: unknown): string | null {
 }
 
 async function fetchRuntimeConfigDenApiUrl(baseUrl: string): Promise<string | null> {
+  if (isLocalGatewayClient()) return null;
   const url = denRuntimeConfigUrl(baseUrl);
   if (!url) return null;
 
@@ -1034,6 +1036,7 @@ async function resolveBootBootstrapConfig(
   input: Parameters<typeof resolveDenBootstrapConfig>[0],
 ): Promise<DenBootstrapConfig> {
   const resolved = resolveDenBootstrapConfig(input);
+  setClientProfileBootstrap(resolved);
   if (enterpriseActivationRequired(readDesktopDistributionInfo(), resolved)) {
     return resolved;
   }
@@ -1116,6 +1119,7 @@ function getPendingBootstrapConfig(next: DenSettings): DenBootstrapConfig | null
 
 function applyDesktopBootstrapConfig(config: DenBootstrapConfig) {
   desktopBootstrapConfig = config;
+  setClientProfileBootstrap(config);
   desktopBootstrapResolution = "resolved";
 }
 
@@ -1454,7 +1458,7 @@ export function readDenSettings(): DenSettings {
   // unresolved, or when it resolved to a different control plane, the
   // retained session stays quarantined in storage — visible to no caller, so
   // no credential-bearing request can mix origins.
-  if (shouldWithholdDenCredentials(bootstrapConfig.baseUrl)) {
+  if (isLocalGatewayClient() || shouldWithholdDenCredentials(bootstrapConfig.baseUrl)) {
     return {
       ...baseUrls,
       authToken: null,
@@ -1616,7 +1620,7 @@ export function writeDenSettings(
   const preserveQuarantinedSession =
     !authToken
     && readStoredDenAuthToken() !== null
-    && shouldWithholdDenCredentials(readDenBootstrapConfig().baseUrl);
+    && (isLocalGatewayClient() || shouldWithholdDenCredentials(readDenBootstrapConfig().baseUrl));
 
   if (isDesktopRuntime()) {
     window.localStorage.removeItem(STORAGE_BASE_URL);
@@ -2775,6 +2779,9 @@ async function requestJsonRaw<T>(
   path: string,
   options: DenRequestOptions = {},
 ): Promise<RawJsonResponse<T>> {
+  if (isLocalGatewayClient()) {
+    throw new DenApiError(403, "local_client", "本地客户端未启用 OpenWork 账户或云端服务。");
+  }
   const baseUrls = typeof input === "string" ? resolveDenBaseUrls(input) : input;
   const url = `${resolveRequestBaseUrl(baseUrls, path)}${path}`;
   const headers: Record<string, string> = { Accept: "application/json" };

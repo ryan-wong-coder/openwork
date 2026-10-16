@@ -29,16 +29,16 @@ export function ApiKeyFields({ name, saving, error, onSave }: {
         <McpCredentialInput
           kind="secret"
           name="connector-api-key"
-          aria-label="API key"
+          aria-label="API密钥"
           autoComplete="off"
           data-ph-no-capture
-          placeholder={`${name} API key`}
+          placeholder={`${name} API 密钥`}
           value={apiKey}
           onChange={setApiKey}
           disabled={saving}
           autoFocus
         />
-        <DenButton type="submit" className="shrink-0" loading={saving} disabled={!apiKey.trim()}>Save key</DenButton>
+        <DenButton type="submit" className="shrink-0" loading={saving} disabled={!apiKey.trim()}>保存密钥</DenButton>
       </div>
       {error ? <p className="text-[12px] text-red-600" role="alert">{error}</p> : null}
     </form>
@@ -67,8 +67,8 @@ export function OAuthAppFields({ secretRequired, saving, error, onSave }: {
       <McpCredentialInput
         kind="identifier"
         name="connector-oauth-client-id"
-        aria-label="Client ID"
-        placeholder="Client ID"
+        aria-label="客户端 ID"
+        placeholder="客户端 ID"
         value={clientId}
         onChange={(event) => setClientId(event.target.value)}
         disabled={saving}
@@ -78,13 +78,13 @@ export function OAuthAppFields({ secretRequired, saving, error, onSave }: {
         <McpCredentialInput
           kind="secret"
           name="connector-oauth-client-secret"
-          aria-label="Client secret"
-          placeholder={secretRequired ? "Client secret" : "Client secret (optional)"}
+          aria-label="客户端密钥"
+          placeholder={secretRequired ? "客户端密钥" : "客户端密钥（可选）"}
           value={clientSecret}
           onChange={setClientSecret}
           disabled={saving}
         />
-        <DenButton type="submit" className="shrink-0" loading={saving} disabled={!ready}>Save app</DenButton>
+        <DenButton type="submit" className="shrink-0" loading={saving} disabled={!ready}>保存应用</DenButton>
       </div>
       {error ? <p className="text-[12px] text-red-600" role="alert">{error}</p> : null}
     </form>
@@ -102,10 +102,10 @@ export function ApiKeySchemeAdvanced({ value, onChange, disabled, testId }: {
     <details className="group">
       <summary className="flex cursor-pointer list-none items-center gap-1.5 text-[12px] font-medium text-gray-600 [&::-webkit-details-marker]:hidden">
         <ChevronRight className="h-3.5 w-3.5 text-gray-400 transition-transform group-open:rotate-90" aria-hidden />
-        Advanced
+        高级
       </summary>
       <label className="mt-2 flex flex-col gap-1.5">
-        <span className="text-[12px] font-medium text-gray-700">Authorization scheme</span>
+        <span className="text-[12px] font-medium text-gray-700">授权方案</span>
         <DenSelect
           value={value}
           disabled={disabled}

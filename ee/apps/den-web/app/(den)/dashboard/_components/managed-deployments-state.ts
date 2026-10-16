@@ -15,12 +15,12 @@ export function providerName(provider: ProviderReadiness["provider"]) {
 /** Configuration values and secrets never belong in readiness copy. */
 export function readinessMessage(entry: ProviderReadiness) {
   const name = providerName(entry.provider);
-  if (entry.available) return `${name} is ready for customer approval.`;
+  if (entry.available) return `${name} 已准备好，等待部署方审批。`;
   switch (entry.reason) {
-    case "feature_disabled": return `${name} deployments aren't enabled for this workspace. Ask your OpenWork operator to enable them.`;
-    case "invalid_configuration": return `${name} installer configuration is invalid. An OpenWork operator must correct the published release configuration.`;
-    case "not_supported": return `${name} deployments aren't supported yet. An OpenWork operator can confirm supported clouds.`;
-    default: return `${name} installer isn't configured for this OpenWork environment. An OpenWork operator must publish and configure a verified installer release.`;
+    case "feature_disabled": return `此工作区尚未启用 ${name} 部署，请联系 OpenWork 运营人员开启。`;
+    case "invalid_configuration": return `${name} 安装程序配置无效，需要 OpenWork 运营人员修正已发布版本的配置。`;
+    case "not_supported": return `暂不支持 ${name} 部署，请联系 OpenWork 运营人员确认支持的云平台。`;
+    default: return `此 OpenWork 环境尚未配置 ${name} 安装程序，需要运营人员发布并配置经验证的安装程序版本。`;
   }
 }
 
@@ -29,17 +29,17 @@ export function deploymentStatus(deployment: ManagedDeployment): { label: string
   const run = deployment.run;
   const installed = Boolean(deployment.installedVersion);
   if (run && run.state !== "ready") {
-    if (run.expired) return { label: installed ? "Update stopped reporting" : "Installer stopped reporting", tone: "danger" };
-    if (run.state === "failed") return { label: installed ? "Update failed" : "Install failed", tone: "danger" };
-    if (run.state === "awaiting_approval") return { label: `Awaiting ${deployment.provider === "gcp" ? "Google Cloud" : "AWS"} approval`, tone: "neutral" };
-    if (run.state === "provisioning") return { label: installed ? "Updating" : "Installing", tone: "neutral" };
+    if (run.expired) return { label: installed ? "更新已停止报告" : "安装程序已停止报告", tone: "danger" };
+    if (run.state === "failed") return { label: installed ? "更新失败" : "安装失败", tone: "danger" };
+    if (run.state === "awaiting_approval") return { label: `等待 ${deployment.provider === "gcp" ? "Google Cloud" : "AWS"} 审批`, tone: "neutral" };
+    if (run.state === "provisioning") return { label: installed ? "正在更新" : "正在安装", tone: "neutral" };
   }
-  if (!installed && !run) return { label: "Not launched", tone: "neutral" };
+  if (!installed && !run) return { label: "尚未启动", tone: "neutral" };
   switch (deployment.health.state) {
-    case "operational": return { label: "Operational", tone: "neutral" };
-    case "degraded": return { label: "Degraded", tone: "warning" };
-    case "down": return { label: "Down", tone: "danger" };
-    case "not_reporting": return { label: "Not reporting", tone: "warning" };
-    case "awaiting_report": return { label: "Waiting for first report", tone: "neutral" };
+    case "operational": return { label: "运行正常", tone: "neutral" };
+    case "degraded": return { label: "功能受限", tone: "warning" };
+    case "down": return { label: "服务不可用", tone: "danger" };
+    case "not_reporting": return { label: "未报告", tone: "warning" };
+    case "awaiting_report": return { label: "等待首次报告", tone: "neutral" };
   }
 }

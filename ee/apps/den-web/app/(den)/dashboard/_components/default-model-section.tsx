@@ -77,7 +77,7 @@ function comboboxOptions(input: {
   }));
   // A saved model the organization no longer has stays visible as the current value.
   const missing = input.saved && !findOption(input.options, input.saved)
-    ? [{ value: valueOf(input.saved), label: input.saved.modelId, description: "No longer available" }]
+    ? [{ value: valueOf(input.saved), label: input.saved.modelId, description: "已不可用" }]
     : [];
   return [{ value: INHERIT_VALUE, label: input.inherit.label, description: input.inherit.description, icon: input.inherit.icon }, ...missing, ...listed];
 }
@@ -131,7 +131,7 @@ function DefaultModelPicker({ scope, label, canManage, settings, saved, inherit,
       await save.mutateAsync({ teamId, model: next });
       setSavedChange({ previous, next });
     } catch (error) {
-      setSaveError(errorMessage(error, "Couldn't save the default model. Try again."));
+      setSaveError(errorMessage(error, "无法保存默认模型，请重试。"));
     }
   }
 
@@ -144,16 +144,16 @@ function DefaultModelPicker({ scope, label, canManage, settings, saved, inherit,
 
   let control: ReactNode;
   if (settingsError) {
-    control = <span className="text-[13px] text-gray-500">Unavailable</span>;
+    control = <span className="text-[13px] text-gray-500">不可用</span>;
   } else if (loading) {
     control = <DenSkeleton className="h-10 w-80 max-w-full" data-testid="default-model-skeleton" />;
   } else if (options.isError && !saved) {
-    control = <span className="text-[13px] text-gray-500">Unavailable</span>;
+    control = <span className="text-[13px] text-gray-500">不可用</span>;
   } else if (noModels && !saved) {
     control = (
       <>
-        <span className="text-[13px] text-gray-500" data-testid="default-model-empty">No models yet</span>
-        {canManage ? <DenButton variant="secondary" size="sm" href={getAiGatewayRoute(orgSlug)}>Set up models</DenButton> : null}
+        <span className="text-[13px] text-gray-500" data-testid="default-model-empty">暂无模型</span>
+        {canManage ? <DenButton variant="secondary" size="sm" href={getAiGatewayRoute(orgSlug)}>配置模型</DenButton> : null}
       </>
     );
   } else {
@@ -165,8 +165,8 @@ function DefaultModelPicker({ scope, label, canManage, settings, saved, inherit,
           options={comboboxOptions({ options: options.data ?? { options: [], unavailableSources: [] }, saved, inherit })}
           disabled={!canManage || save.isPending || options.isError}
           placeholder={inherit.label}
-          searchPlaceholder="Search models"
-          emptyLabel="No models match"
+          searchPlaceholder="搜索模型"
+          emptyLabel="没有匹配的模型"
           onChange={(value) => {
             const next = choiceOf(value);
             if (sameDefaultModel(next, saved)) return;
@@ -182,32 +182,32 @@ function DefaultModelPicker({ scope, label, canManage, settings, saved, inherit,
       {settingsError ? (
         <DenNotice
           tone="error"
-          message={errorMessage(settingsError, "Couldn't load the default model.")}
-          action={<DenButton variant="secondary" size="sm" onClick={onRetrySettings}>Try again</DenButton>}
+          message={errorMessage(settingsError, "无法加载默认模型，请重试。")}
+          action={<DenButton variant="secondary" size="sm" onClick={onRetrySettings}>重试</DenButton>}
         />
       ) : null}
       {!settingsError && options.isError ? (
         <DenNotice
           tone="error"
-          message={errorMessage(options.error, "Couldn't load your organization's models.")}
-          action={<DenButton variant="secondary" size="sm" loading={options.isFetching} onClick={() => void options.refetch()}>Try again</DenButton>}
+          message={errorMessage(options.error, "无法加载组织模型，请重试。")}
+          action={<DenButton variant="secondary" size="sm" loading={options.isFetching} onClick={() => void options.refetch()}>重试</DenButton>}
         />
       ) : null}
       {gatewayUnavailable || otherUnavailable.length > 0 ? (
         <DenNotice
           tone="warning"
           message={gatewayUnavailable && otherUnavailable.length === 0
-            ? "Couldn't load AI Gateway models. Your other models are listed."
-            : "Some of your organization's models couldn't be loaded. The rest are listed."}
-          action={<DenButton variant="secondary" size="sm" loading={options.isFetching} onClick={() => void options.refetch()}>Try again</DenButton>}
+            ? "无法加载 AI 网关模型，当前显示其他可用模型。"
+            : "部分组织模型加载失败，当前显示其他可用模型。"}
+          action={<DenButton variant="secondary" size="sm" loading={options.isFetching} onClick={() => void options.refetch()}>重试</DenButton>}
         />
       ) : null}
       {savedMissing ? (
         <DenNotice
           tone="warning"
           message={scope.kind === "team"
-            ? "This team's model is no longer available. Its members start on the organization default until you choose another."
-            : "The default model is no longer available. Desktops keep their own default until you choose another."}
+            ? "此团队的模型已不可用。选择其他模型前，成员将使用组织默认模型。"
+            : "默认模型已不可用。选择其他模型前，桌面端将保留各自的默认模型。"}
         />
       ) : null}
 
@@ -221,18 +221,18 @@ function DefaultModelPicker({ scope, label, canManage, settings, saved, inherit,
         <div role="status" className="flex items-center justify-between gap-3 px-1 text-[13px] text-gray-600">
           <span className="min-w-0 [overflow-wrap:anywhere]">
             {savedChange.next
-              ? `Saved. New desktop chats start on ${savedName(savedChange.next)}.`
-              : scope.kind === "team" ? "Saved. This team uses the organization default." : "Saved. No organization default."}
+              ? `已保存，桌面端新对话将使用 ${savedName(savedChange.next)}。`
+              : scope.kind === "team" ? "已保存，此团队使用组织默认模型。" : "已保存，组织未设置默认模型。"}
           </span>
           <DenButton variant="ghost" size="xs" loading={save.isPending} onClick={() => void store(savedChange.previous, savedChange.next)}>
-            Undo
+            撤销
           </DenButton>
         </div>
       ) : null}
       {!canManage && settings ? (
         <p className="flex items-center gap-2 px-1 text-[13px] text-gray-500">
           <Lock size={16} strokeWidth={1.5} aria-hidden="true" className="shrink-0" />
-          {`Read only. ${permissionLockReason("inference.manage")}`}
+          {`只读。${permissionLockReason("inference.manage")}`}
         </p>
       ) : null}
     </div>
@@ -240,7 +240,7 @@ function DefaultModelPicker({ scope, label, canManage, settings, saved, inherit,
 }
 
 function teamCountLabel(count: number): string {
-  return count === 1 ? "1 team uses its own model." : `${count} teams use their own model.`;
+  return count === 1 ? "1 个团队使用自己的模型。" : `${count} 个团队使用自己的模型设置。`;
 }
 
 /** Org settings › Default model: the model new desktop chats start with, for everyone. */
@@ -249,14 +249,14 @@ export function OrgDefaultModelSection({ canManage, embedded = false }: { canMan
   const settings = useDefaultModelSettings(orgId, true);
   const overriding = settings.data?.teams.filter((team) => team.model !== null).length ?? 0;
   return (
-    <section className={embedded ? "grid gap-3" : "mt-6 grid gap-3"} aria-label="Default model" data-testid="org-default-model-section">
+    <section className={embedded ? "grid gap-3" : "mt-6 grid gap-3"} aria-label="默认模型" data-testid="org-default-model-section">
       <DefaultModelPicker
         scope={{ kind: "organization" }}
-        label="Default model"
+        label="默认模型"
         canManage={canManage && (settings.data?.canEdit ?? true)}
         settings={settings.data}
         saved={settings.data?.everyone ?? null}
-        inherit={{ label: "No default", description: "Desktops keep their own default" }}
+        inherit={{ label: "未设置默认值", description: "桌面端保留自己的默认模型" }}
         stateLine={overriding > 0 ? teamCountLabel(overriding) : null}
         settingsError={settings.error}
         onRetrySettings={() => void settings.refetch()}
@@ -267,8 +267,8 @@ export function OrgDefaultModelSection({ canManage, embedded = false }: { canMan
 
 function conflictLine(count: number): string {
   return count === 1
-    ? "1 member is also on a team with a different model, so they start on the organization default."
-    : `${count} members are also on a team with a different model, so they start on the organization default.`;
+    ? "1 名成员还属于使用不同模型的团队，因此其新对话使用组织默认模型。"
+    : `${count} 名成员还属于使用不同模型的团队，因此将使用组织默认模型。`;
 }
 
 /** A team's Access tab › Default model: use the organization default or pick the team's own. */
@@ -281,22 +281,22 @@ export function TeamDefaultModelSection({ teamId, canManage, embedded = false }:
   const orgDefaultOption = findOption(options.data, orgDefault);
   const overridden = Boolean(team?.model);
   return (
-    <section className={embedded ? "grid gap-3" : "mb-8 grid gap-3"} aria-label={embedded ? "Default model" : undefined} aria-labelledby={embedded ? undefined : "team-default-model-heading"} data-testid="team-default-model-section">
-      {embedded ? null : <h2 id="team-default-model-heading" className="text-lg font-semibold text-gray-950">Default model</h2>}
+    <section className={embedded ? "grid gap-3" : "mb-8 grid gap-3"} aria-label={embedded ? "默认模型" : undefined} aria-labelledby={embedded ? undefined : "team-default-model-heading"} data-testid="team-default-model-section">
+      {embedded ? null : <h2 id="team-default-model-heading" className="text-lg font-semibold text-gray-950">默认模型</h2>}
       <DefaultModelPicker
         scope={{ kind: "team", teamId }}
-        label="New desktop chats start on"
+        label="新桌面对话默认使用"
         canManage={canManage && (settings.data?.canEdit ?? true)}
         settings={settings.data}
         saved={team?.model ?? null}
         inherit={orgDefault ? {
           // Inheriting shows which model that is; the chip beside the label says it is inherited.
           label: orgDefaultOption?.modelName ?? orgDefault.modelId,
-          description: orgDefaultOption ? `Organization default, ${orgDefaultOption.providerName}` : "Organization default",
+          description: orgDefaultOption ? `组织默认模型，${orgDefaultOption.providerName}` : "组织默认模型",
           icon: orgDefaultOption ? <ModelMark option={orgDefaultOption} /> : undefined,
-        } : { label: "Use organization default", description: "No organization default" }}
+        } : { label: "使用组织默认值", description: "未设置组织默认模型" }}
         aside={settings.data ? (
-          overridden ? <DenChip tone="info">Overridden</DenChip> : <DenChip>From organization</DenChip>
+          overridden ? <DenChip tone="info">已单独设置</DenChip> : <DenChip>来自组织</DenChip>
         ) : null}
         stateLine={team && team.conflictingMemberCount > 0 ? conflictLine(team.conflictingMemberCount) : null}
         settingsError={settings.error}

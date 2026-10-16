@@ -47,15 +47,15 @@ function AccessList({ title, value, onAdd, onRemove, onEveryone, busy }: {
   const [adding, setAdding] = useState<"person" | "team" | null>(null);
   const teams = orgContext?.teams ?? [];
   const members = orgContext?.members ?? [];
-  const teamOptions = teams.filter((team) => !value.teamIds.includes(team.id)).map((team) => ({ value: team.id, label: team.name, description: `${team.memberIds.length} ${team.memberIds.length === 1 ? "member" : "members"}` }));
+  const teamOptions = teams.filter((team) => !value.teamIds.includes(team.id)).map((team) => ({ value: team.id, label: team.name, description: `${team.memberIds.length} 名成员` }));
   const memberOptions = members.filter((member) => !value.memberIds.includes(member.id)).map((member) => ({ value: member.id, label: member.user.name, description: member.user.email }));
   return (
     <section className={`${CARD} mt-3`} aria-labelledby="litellm-access-heading">
       <h2 id="litellm-access-heading" className={CARD_TITLE}>{title}</h2>
       <div className={`${ROW} mt-1`}>
         <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-500"><Globe className="h-4 w-4" aria-hidden="true" strokeWidth={1.5} /></span>
-        <span className="min-w-0 flex-1 font-medium text-gray-900">Everyone in the organization</span>
-        <DenSwitch checked={value.allMembers} disabled={busy} aria-label="Everyone in the organization" testId="litellm-access-everyone" onChange={onEveryone} />
+        <span className="min-w-0 flex-1 font-medium text-gray-900">组织中的所有人</span>
+        <DenSwitch checked={value.allMembers} disabled={busy} aria-label="组织中的所有人" testId="litellm-access-everyone" onChange={onEveryone} />
       </div>
       {!value.allMembers && (value.teamIds.length || value.memberIds.length) ? (
         <ul className="divide-y divide-gray-100 border-t border-gray-100">
@@ -64,8 +64,8 @@ function AccessList({ title, value, onAdd, onRemove, onEveryone, busy }: {
             return (
               <li key={teamId} className={ROW} data-testid="litellm-access-row">
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-500"><Users className="h-4 w-4" aria-hidden="true" strokeWidth={1.5} /></span>
-                <span className="min-w-0 flex-1 text-gray-900">{team?.name ?? "Team"}</span>
-                <DenButton size="sm" variant="ghost" disabled={busy} onClick={() => onRemove({ type: "team", teamId })}>Remove</DenButton>
+                <span className="min-w-0 flex-1 text-gray-900">{team?.name ?? "团队"}</span>
+                <DenButton size="sm" variant="ghost" disabled={busy} onClick={() => onRemove({ type: "team", teamId })}>移除</DenButton>
               </li>
             );
           })}
@@ -74,8 +74,8 @@ function AccessList({ title, value, onAdd, onRemove, onEveryone, busy }: {
             return (
               <li key={memberId} className={ROW} data-testid="litellm-access-row">
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-500"><User className="h-4 w-4" aria-hidden="true" strokeWidth={1.5} /></span>
-                <span className="min-w-0 flex-1"><span className="block text-gray-900">{member?.user.name ?? "Person"}</span><span className="block text-[12px] text-gray-500">{member?.user.email ?? ""}</span></span>
-                <DenButton size="sm" variant="ghost" disabled={busy} onClick={() => onRemove({ type: "member", memberId })}>Remove</DenButton>
+                <span className="min-w-0 flex-1"><span className="block text-gray-900">{member?.user.name ?? "人员"}</span><span className="block text-[12px] text-gray-500">{member?.user.email ?? ""}</span></span>
+                <DenButton size="sm" variant="ghost" disabled={busy} onClick={() => onRemove({ type: "member", memberId })}>移除</DenButton>
               </li>
             );
           })}
@@ -83,12 +83,12 @@ function AccessList({ title, value, onAdd, onRemove, onEveryone, busy }: {
       ) : null}
       {!value.allMembers ? (
         <div className="mt-2 flex flex-wrap items-center gap-2">
-          <DenButton size="xs" variant="secondary" icon={Plus} disabled={busy} onClick={() => setAdding(adding === "person" ? null : "person")}>Add person</DenButton>
-          <DenButton size="xs" variant="secondary" icon={Plus} disabled={busy} onClick={() => setAdding(adding === "team" ? null : "team")}>Add team</DenButton>
+          <DenButton size="xs" variant="secondary" icon={Plus} disabled={busy} onClick={() => setAdding(adding === "person" ? null : "person")}>添加人员</DenButton>
+          <DenButton size="xs" variant="secondary" icon={Plus} disabled={busy} onClick={() => setAdding(adding === "team" ? null : "team")}>添加团队</DenButton>
           {adding ? (
             <div className="w-[280px]">
-              <DenCombobox ariaLabel={adding === "team" ? "Team" : "Person"} value="" options={adding === "team" ? teamOptions : memberOptions}
-                placeholder={adding === "team" ? "Choose a team…" : "Choose a person…"} searchPlaceholder={adding === "team" ? "Search teams" : "Search people"} emptyLabel={adding === "team" ? "No teams to add" : "No people to add"}
+              <DenCombobox ariaLabel={adding === "team" ? "团队" : "人员"} value="" options={adding === "team" ? teamOptions : memberOptions}
+                placeholder={adding === "team" ? "选择团队…" : "选择人员…"} searchPlaceholder={adding === "team" ? "搜索团队" : "搜索人员"} emptyLabel={adding === "team" ? "没有可添加的团队" : "没有可添加的人员"}
                 onChange={(id) => { onAdd(adding === "team" ? { type: "team", teamId: id } : { type: "member", memberId: id }); setAdding(null); }} />
             </div>
           ) : null}
@@ -134,44 +134,44 @@ export function LiteLlmSetupScreen({ embedded = false }: { embedded?: boolean })
         router.refresh();
       });
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Could not connect LiteLLM.");
+      setError(cause instanceof Error ? cause.message : "无法连接 LiteLLM，请重试。");
     } finally { setSaving(false); }
   }
 
   return (
     <div className={embedded ? "pb-28" : "mx-auto max-w-[860px] px-6 py-6 pb-28"}>
-      <nav className="text-[12px] text-gray-500" aria-label="Breadcrumb">
-        <Link href={getAiGatewayProvidersRoute(orgSlug)} className="hover:text-gray-900">AI Providers</Link>
-        <span className="mx-1.5 text-gray-300">/</span><Link href={getNewAiGatewayProviderRoute(orgSlug)} className="hover:text-gray-900">Add a provider</Link>
+      <nav className="text-[12px] text-gray-500" aria-label="面包屑导航">
+        <Link href={getAiGatewayProvidersRoute(orgSlug)} className="hover:text-gray-900">AI 提供商</Link>
+        <span className="mx-1.5 text-gray-300">/</span><Link href={getNewAiGatewayProviderRoute(orgSlug)} className="hover:text-gray-900">添加提供商</Link>
         <span className="mx-1.5 text-gray-300">/</span><span className="text-gray-900">LiteLLM</span>
       </nav>
       <div className="mt-3 flex items-center gap-3">
         <Mark />
-        <Heading className="text-[20px] font-medium tracking-[-0.02em] text-gray-900" data-testid="gateway-provider-title">Add LiteLLM</Heading>
+        <Heading className="text-[20px] font-medium tracking-[-0.02em] text-gray-900" data-testid="gateway-provider-title">添加 LiteLLM</Heading>
       </div>
       {error ? <DenNotice tone="error" message={error} className="mt-4" /> : null}
 
       <section className={`${CARD} mt-5`} aria-labelledby="litellm-connection-heading">
-        <h2 id="litellm-connection-heading" className={CARD_TITLE}>Connection</h2>
-        <label className={LABEL}>Proxy URL
+        <h2 id="litellm-connection-heading" className={CARD_TITLE}>连接</h2>
+        <label className={LABEL}>代理地址
           <DenInput className="mt-1.5 font-mono text-[12px]" value={baseUrl} onChange={(event) => setBaseUrl(event.target.value)} placeholder="https://litellm.example.com" data-testid="litellm-base-url" autoComplete="off" />
         </label>
-        <DenSegmented<LiteLlmMode> className="mt-3" aria-label="Keys" value={mode} options={[
+        <DenSegmented<LiteLlmMode> className="mt-3" aria-label="密钥" value={mode} options={[
           { value: "org", label: liteLlmModeLabel("org") },
           { value: "member", label: liteLlmModeLabel("member") },
           { value: "issued", label: liteLlmModeLabel("issued") },
         ]} onChange={(next) => { setMode(next); setApiKey(""); }} />
         {mode === "issued" ? (
           <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2">
-            <span className="flex items-center gap-2 text-[12px] text-gray-700">Keys
-              <DenSegmented<LiteLlmIssueStrategy> aria-label="How keys are created" value={issueStrategy} options={[
+            <span className="flex items-center gap-2 text-[12px] text-gray-700">密钥
+              <DenSegmented<LiteLlmIssueStrategy> aria-label="密钥创建方式" value={issueStrategy} options={[
                 { value: "per_team", label: liteLlmIssueStrategyLabel("per_team") },
                 { value: "mirror", label: liteLlmIssueStrategyLabel("mirror") },
               ]} onChange={setIssueStrategy} />
             </span>
             {issueStrategy === "mirror" ? (
-              <span className="flex items-center gap-2 text-[12px] text-gray-700">No key to copy
-                <DenSegmented<LiteLlmMirrorFallback> aria-label="No key to copy" value={mirrorFallback} options={[
+              <span className="flex items-center gap-2 text-[12px] text-gray-700">没有可复制的密钥
+                <DenSegmented<LiteLlmMirrorFallback> aria-label="没有可复制的密钥" value={mirrorFallback} options={[
                   { value: "per_team", label: liteLlmMirrorFallbackLabel("per_team") },
                   { value: "error", label: liteLlmMirrorFallbackLabel("error") },
                 ]} onChange={setMirrorFallback} />
@@ -179,7 +179,7 @@ export function LiteLlmSetupScreen({ embedded = false }: { embedded?: boolean })
             ) : null}
           </div>
         ) : null}
-        <p className="mt-2 text-[12px] text-gray-500" data-testid="litellm-spend-tracking">Spend tracking: {liteLlmSpendLabel({ spendTracking: mode === "org" })}</p>
+        <p className="mt-2 text-[12px] text-gray-500" data-testid="litellm-spend-tracking">费用跟踪： {liteLlmSpendLabel({ spendTracking: mode === "org" })}</p>
         <label className={LABEL}>{liteLlmKeyLabel(mode)}
           <DenSecretInput className="mt-1.5 font-mono text-[12px]" value={apiKey} onChange={setApiKey} placeholder="sk-…" data-testid="litellm-api-key" autoComplete="new-password" />
         </label>
@@ -190,9 +190,9 @@ export function LiteLlmSetupScreen({ embedded = false }: { embedded?: boolean })
         onAdd={(audience) => setAccess((current) => addAudience({ ...current, allMembers: false }, audience))}
         onRemove={(audience) => setAccess((current) => removeAudience(current, audience))} />
 
-      <DenStickyActionBar summary={<span>{liteLlmModeLabel(mode)} · {access.allMembers ? "everyone" : `${access.teamIds.length + access.memberIds.length} teams or people`}</span>}>
-        <Link href={getAiGatewayProvidersRoute(orgSlug)} className={buttonVariants({ variant: "secondary" })}>Cancel</Link>
-        <DenButton data-testid="litellm-connect" loading={saving} onClick={() => void connect()}>Connect LiteLLM</DenButton>
+      <DenStickyActionBar summary={<span>{liteLlmModeLabel(mode)} · {access.allMembers ? "所有人" : `${access.teamIds.length + access.memberIds.length} 个团队或成员`}</span>}>
+        <Link href={getAiGatewayProvidersRoute(orgSlug)} className={buttonVariants({ variant: "secondary" })}>取消</Link>
+        <DenButton data-testid="litellm-connect" loading={saving} onClick={() => void connect()}>连接 LiteLLM</DenButton>
       </DenStickyActionBar>
     </div>
   );
@@ -233,25 +233,25 @@ export function LiteLlmProviderScreen({ provider, reload, embedded = false }: { 
         setNotice(message);
       });
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Something went wrong. Try again.");
+      setError(cause instanceof Error ? cause.message : "操作失败，请重试。");
       await reload().catch(() => undefined);
     } finally { setBusy(null); }
   }
 
   const sync = () => run("sync", "sync-litellm-provider", async () => liteLlmSyncSummary((await syncLiteLlmProvider(provider.id, createAuditOperationContext())).sync));
   const saveKey = () => {
-    if (!apiKey.trim()) return setError(`Paste the new ${status ? liteLlmKeyLabel(status.mode).toLowerCase() : "key"}.`);
+    if (!apiKey.trim()) return setError(`粘贴新的${status ? liteLlmKeyLabel(status.mode).toLowerCase() : "密钥"}。`);
     return run("key", "replace-litellm-key", async () => {
       const result = await replaceLiteLlmKey(provider.id, apiKey, createAuditOperationContext());
       setApiKey("");
       setReplacing(false);
-      return `Key replaced. ${liteLlmSyncSummary(result.sync)}`;
+      return `密钥已替换。${liteLlmSyncSummary(result.sync)}`;
     });
   };
   const changeIssue = (input: { issueStrategy?: LiteLlmIssueStrategy; mirrorFallback?: LiteLlmMirrorFallback }) =>
-    run("issue", "update-litellm-key-creation", async () => `Key creation updated. ${liteLlmSyncSummary((await updateLiteLlmIssue(provider.id, input, createAuditOperationContext())).sync)}`);
+    run("issue", "update-litellm-key-creation", async () => `密钥创建设置已更新。${liteLlmSyncSummary((await updateLiteLlmIssue(provider.id, input, createAuditOperationContext())).sync)}`);
   const addGrant = (audience: Audience) => run("access", "add-litellm-access", async () => {
-    if (!accessGroupId || !set) throw new Error("Sync LiteLLM before granting access.");
+    if (!accessGroupId || !set) throw new Error("请先同步 LiteLLM，再授予访问权限。");
     const context = createAuditOperationContext();
     await saveGatewayResource(provider.id, null, { resource: "access-grants", body: { audience, modelGroupId: accessGroupId, credentialSetId: set.id } }, context);
     if (audience.type === "organization") for (const grant of grants) if (grant.audience.type !== "organization") await deleteGatewayResource(provider.id, "access-grants", grant.id, context);
@@ -274,88 +274,88 @@ export function LiteLlmProviderScreen({ provider, reload, embedded = false }: { 
         router.refresh();
       });
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Could not remove the provider.");
+      setError(cause instanceof Error ? cause.message : "无法移除提供商，请重试。");
     } finally { setBusy(null); }
   }
 
   return (
     <div className={embedded ? "pb-28" : "mx-auto max-w-[860px] px-6 py-6 pb-28"}>
-      <nav className="text-[12px] text-gray-500" aria-label="Breadcrumb">
-        <Link href={getAiGatewayProvidersRoute(orgSlug)} className="hover:text-gray-900">AI Providers</Link>
+      <nav className="text-[12px] text-gray-500" aria-label="面包屑导航">
+        <Link href={getAiGatewayProvidersRoute(orgSlug)} className="hover:text-gray-900">AI 提供商</Link>
         <span className="mx-1.5 text-gray-300">/</span><span className="text-gray-900">{provider.name}</span>
       </nav>
       <div className="mt-3 flex items-center gap-3">
         <Mark />
         <Heading className="min-w-0 flex-1 truncate text-[20px] font-medium tracking-[-0.02em] text-gray-900" data-testid="gateway-provider-title">{provider.name}</Heading>
-        <DenButton icon={RefreshCw} loading={busy === "sync"} disabled={busy !== null && busy !== "sync"} onClick={() => void sync()} data-testid="litellm-sync">Sync models</DenButton>
+        <DenButton icon={RefreshCw} loading={busy === "sync"} disabled={busy !== null && busy !== "sync"} onClick={() => void sync()} data-testid="litellm-sync">同步模型</DenButton>
       </div>
       {error ? <DenNotice tone="error" message={error} className="mt-4" /> : null}
-      {!error && status?.lastSyncError ? <DenNotice tone="error" message={`Last sync failed: ${status.lastSyncError} Fix the key or URL, then sync again.`} className="mt-4" /> : null}
+      {!error && status?.lastSyncError ? <DenNotice tone="error" message={`上次同步失败：${status.lastSyncError}。请修正密钥或地址后重新同步。`} className="mt-4" /> : null}
       {notice ? <DenNotice tone="info" message={notice} className="mt-4" /> : null}
 
       {status ? (
         <section className={`${CARD} mt-5`} aria-labelledby="litellm-status-heading">
-          <h2 id="litellm-status-heading" className="sr-only">Status</h2>
+          <h2 id="litellm-status-heading" className="sr-only">状态</h2>
           <dl className="divide-y divide-gray-100" data-testid="litellm-status">
-            <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">Proxy</dt><dd className="min-w-0 flex-1 truncate font-mono text-[12px] text-gray-900">{status.baseUrl ?? "Not set"}</dd></div>
-            <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">Keys</dt><dd className="flex-1 text-gray-900">{liteLlmModeLabel(uiMode)}</dd></div>
+            <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">代理</dt><dd className="min-w-0 flex-1 truncate font-mono text-[12px] text-gray-900">{status.baseUrl ?? "未设置"}</dd></div>
+            <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">密钥</dt><dd className="flex-1 text-gray-900">{liteLlmModeLabel(uiMode)}</dd></div>
             {uiMode === "issued" && status.issueStrategy ? (
-              <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">Each person gets</dt><dd className="flex-1">
-                <DenSegmented<LiteLlmIssueStrategy> aria-label="How keys are created" value={status.issueStrategy} options={[
+              <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">每人获得</dt><dd className="flex-1">
+                <DenSegmented<LiteLlmIssueStrategy> aria-label="密钥创建方式" value={status.issueStrategy} options={[
                   { value: "per_team", label: liteLlmIssueStrategyLabel("per_team"), disabled: busy !== null },
                   { value: "mirror", label: liteLlmIssueStrategyLabel("mirror"), disabled: busy !== null },
                 ]} onChange={(issueStrategy) => void changeIssue({ issueStrategy })} />
               </dd></div>
             ) : null}
             {uiMode === "issued" && status.issueStrategy === "mirror" && status.mirrorFallback ? (
-              <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">No key to copy</dt><dd className="flex-1">
-                <DenSegmented<LiteLlmMirrorFallback> aria-label="No key to copy" value={status.mirrorFallback} options={[
+              <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">没有可复制的密钥</dt><dd className="flex-1">
+                <DenSegmented<LiteLlmMirrorFallback> aria-label="没有可复制的密钥" value={status.mirrorFallback} options={[
                   { value: "per_team", label: liteLlmMirrorFallbackLabel("per_team"), disabled: busy !== null },
                   { value: "error", label: liteLlmMirrorFallbackLabel("error"), disabled: busy !== null },
                 ]} onChange={(mirrorFallback) => void changeIssue({ mirrorFallback })} />
               </dd></div>
             ) : null}
-            <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">Spend tracking</dt><dd className="flex-1 text-gray-900" data-testid="litellm-spend-tracking">{liteLlmSpendLabel(status)}</dd></div>
-            <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">Models</dt><dd className="flex-1 text-gray-900">{status.modelCount}</dd></div>
-            {status.mode === "member" ? <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">LiteLLM teams</dt><dd className="flex-1 text-gray-900">{status.teamCount}</dd></div> : null}
-            {uiMode === "member" ? <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">People connected</dt><dd className="flex-1 text-gray-900">{status.connectedMemberCount}</dd></div> : null}
-            {uiMode === "issued" ? <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">People with keys</dt><dd className="flex-1 text-gray-900" data-testid="litellm-issued-count">{status.issuedMemberCount}</dd></div> : null}
-            <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">Last sync</dt><dd className="flex-1 text-gray-900">{liteLlmSyncedLabel(status.lastSyncedAt)}</dd></div>
+            <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">费用跟踪</dt><dd className="flex-1 text-gray-900" data-testid="litellm-spend-tracking">{liteLlmSpendLabel(status)}</dd></div>
+            <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">模型</dt><dd className="flex-1 text-gray-900">{status.modelCount}</dd></div>
+            {status.mode === "member" ? <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">LiteLLM 团队</dt><dd className="flex-1 text-gray-900">{status.teamCount}</dd></div> : null}
+            {uiMode === "member" ? <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">已连接人员</dt><dd className="flex-1 text-gray-900">{status.connectedMemberCount}</dd></div> : null}
+            {uiMode === "issued" ? <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">拥有密钥的人员</dt><dd className="flex-1 text-gray-900" data-testid="litellm-issued-count">{status.issuedMemberCount}</dd></div> : null}
+            <div className={ROW}><dt className="w-40 shrink-0 text-gray-500">上次同步</dt><dd className="flex-1 text-gray-900">{liteLlmSyncedLabel(status.lastSyncedAt)}</dd></div>
             <div className={ROW}>
               <dt className="w-40 shrink-0 text-gray-500">{liteLlmKeyLabel(status.mode)}</dt>
               <dd className="flex min-w-0 flex-1 items-center gap-2">
                 {replacing ? (
                   <>
-                    <span className="min-w-0 flex-1"><DenSecretInput className="font-mono text-[12px]" value={apiKey} onChange={setApiKey} placeholder="sk-…" autoComplete="new-password" aria-label={`New ${liteLlmKeyLabel(status.mode).toLowerCase()}`} data-testid="litellm-replace-key-input" /></span>
-                    <DenButton size="sm" variant="ghost" disabled={busy === "key"} onClick={() => { setReplacing(false); setApiKey(""); }}>Keep saved key</DenButton>
-                    <DenButton size="sm" loading={busy === "key"} onClick={() => void saveKey()} data-testid="litellm-save-key">Save key</DenButton>
+                    <span className="min-w-0 flex-1"><DenSecretInput className="font-mono text-[12px]" value={apiKey} onChange={setApiKey} placeholder="sk-…" autoComplete="new-password" aria-label={`新建${liteLlmKeyLabel(status.mode).toLowerCase()}`} data-testid="litellm-replace-key-input" /></span>
+                    <DenButton size="sm" variant="ghost" disabled={busy === "key"} onClick={() => { setReplacing(false); setApiKey(""); }}>保留已保存的密钥</DenButton>
+                    <DenButton size="sm" loading={busy === "key"} onClick={() => void saveKey()} data-testid="litellm-save-key">保存密钥</DenButton>
                   </>
                 ) : (
                   <>
-                    <span className="flex flex-1 items-center gap-1.5 text-gray-900">{status.hasSyncKey ? <><Check className="h-4 w-4 text-emerald-600" aria-hidden="true" strokeWidth={1.5} />Saved</> : "Missing"}</span>
-                    <DenButton size="sm" variant="secondary" disabled={busy !== null} onClick={() => setReplacing(true)} data-testid="litellm-replace-key">Replace key</DenButton>
+                    <span className="flex flex-1 items-center gap-1.5 text-gray-900">{status.hasSyncKey ? <><Check className="h-4 w-4 text-emerald-600" aria-hidden="true" strokeWidth={1.5} />已保存</> : "缺失"}</span>
+                    <DenButton size="sm" variant="secondary" disabled={busy !== null} onClick={() => setReplacing(true)} data-testid="litellm-replace-key">替换密钥</DenButton>
                   </>
                 )}
               </dd>
             </div>
           </dl>
         </section>
-      ) : <DenNotice tone="error" className="mt-5" message="This LiteLLM provider has no sync state. Sync models to repair it." />}
+      ) : <DenNotice tone="error" className="mt-5" message="此 LiteLLM 提供商没有同步状态，请同步模型以修复。" />}
 
       {uiMode === "issued" && status && status.attentionCount > 0 ? (
         <section className={`${CARD} mt-3`} aria-labelledby="litellm-attention-heading">
-          <h2 id="litellm-attention-heading" className={CARD_TITLE}>No key yet</h2>
+          <h2 id="litellm-attention-heading" className={CARD_TITLE}>尚无密钥</h2>
           <ul className="mt-1 divide-y divide-gray-100" data-testid="litellm-attention">
             {status.attention.map((entry) => (
               <li key={entry.memberId} className={ROW}>
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-500"><User className="h-4 w-4" aria-hidden="true" strokeWidth={1.5} /></span>
-                <span className="min-w-0 flex-1"><span className="block text-gray-900">{entry.name ?? "Person"}</span><span className="block text-[12px] text-gray-500">{entry.email ?? ""}</span></span>
+                <span className="min-w-0 flex-1"><span className="block text-gray-900">{entry.name ?? "人员"}</span><span className="block text-[12px] text-gray-500">{entry.email ?? ""}</span></span>
                 <span className="text-[12px] text-amber-700">{liteLlmAttentionLabel(entry.reason)}</span>
               </li>
             ))}
             {status.attention.length === 0
-              ? <li className={`${ROW} text-[12px] text-gray-500`} data-testid="litellm-attention-hidden">{`${status.attentionCount} ${status.attentionCount === 1 ? "person" : "people"}. Names are hidden because you can't manage this provider.`}</li>
-              : status.attentionCount > status.attention.length ? <li className={`${ROW} text-[12px] text-gray-500`}>{status.attentionCount - status.attention.length} more</li> : null}
+              ? <li className={`${ROW} text-[12px] text-gray-500`} data-testid="litellm-attention-hidden">{`${status.attentionCount} 人。你无权管理此提供商，因此姓名已隐藏。`}</li>
+              : status.attentionCount > status.attention.length ? <li className={`${ROW} text-[12px] text-gray-500`}>另有 {status.attentionCount - status.attention.length} 人</li> : null}
           </ul>
         </section>
       ) : null}
@@ -365,29 +365,29 @@ export function LiteLlmProviderScreen({ provider, reload, embedded = false }: { 
         onAdd={(audience) => void addGrant(audience)} onRemove={(audience) => void removeGrant(audience)} />
 
       <section className={`${CARD} mt-3`} aria-labelledby="litellm-groups-heading">
-        <h2 id="litellm-groups-heading" className={CARD_TITLE}>Model groups</h2>
+        <h2 id="litellm-groups-heading" className={CARD_TITLE}>模型组</h2>
         <ul className="mt-1 divide-y divide-gray-100" data-testid="litellm-groups">
           {modelGroups.map((group) => (
             <li key={group.id} className={ROW}>
               <span className="min-w-0 flex-1 truncate text-gray-900">{group.name}</span>
-              <span className="text-[12px] text-gray-500">{group.modelIds.length} {group.modelIds.length === 1 ? "model" : "models"}</span>
+              <span className="text-[12px] text-gray-500">{group.modelIds.length} {"个模型"}</span>
             </li>
           ))}
-          {!modelGroups.length ? <li className={`${ROW} text-gray-500`}>{uiMode === "member" ? "No LiteLLM teams yet. People get a group when they connect their key." : uiMode === "issued" ? "No LiteLLM teams yet. People get a group when OpenWork creates their key." : "No models yet. Sync models to load them."}</li> : null}
+          {!modelGroups.length ? <li className={`${ROW} text-gray-500`}>{uiMode === "member" ? "暂无 LiteLLM 团队。成员连接密钥时将获得模型组。" : uiMode === "issued" ? "暂无 LiteLLM 团队。OpenWork 为成员创建密钥时将分配模型组。" : "暂无模型，请同步模型以加载。"}</li> : null}
         </ul>
       </section>
 
-      <DenStickyActionBar sticky={false} summary={<span>{status ? `${liteLlmModeLabel(uiMode)} · ${status.modelCount} models · ${liteLlmSyncedLabel(status.lastSyncedAt).toLowerCase()}` : provider.name}</span>}>
+      <DenStickyActionBar sticky={false} summary={<span>{status ? `${liteLlmModeLabel(uiMode)} · ${status.modelCount} 个模型 · ${liteLlmSyncedLabel(status.lastSyncedAt).toLowerCase()}` : provider.name}</span>}>
         <AlertDialog.Root open={confirmDelete && !reauthDialogOpen} onOpenChange={(open) => { if (busy === "remove") return; setConfirmDelete(open); }}>
-          <AlertDialog.Trigger disabled={busy !== null} className={buttonVariants({ variant: "secondary" })} data-testid="gateway-provider-remove">Remove</AlertDialog.Trigger>
+          <AlertDialog.Trigger disabled={busy !== null} className={buttonVariants({ variant: "secondary" })} data-testid="gateway-provider-remove">移除</AlertDialog.Trigger>
           <AlertDialog.Portal>
             <AlertDialog.Backdrop className="fixed inset-0 z-50 bg-gray-950/45" />
             <AlertDialog.Popup initialFocus={cancelDeleteRef} className="fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-[16px] border border-gray-200 bg-white p-5 outline-none">
-              <AlertDialog.Title className="text-[15px] font-medium text-gray-950">Remove {provider.name}?</AlertDialog.Title>
-              <AlertDialog.Description className="mt-2 text-[13px] leading-5 text-gray-600">People lose these models and their saved LiteLLM keys. Your LiteLLM proxy is not changed.</AlertDialog.Description>
+              <AlertDialog.Title className="text-[15px] font-medium text-gray-950">移除 {provider.name}?</AlertDialog.Title>
+              <AlertDialog.Description className="mt-2 text-[13px] leading-5 text-gray-600">成员将失去这些模型与已保存的 LiteLLM 密钥，LiteLLM 代理保持不变。</AlertDialog.Description>
               <div className="mt-5 flex justify-end gap-2">
-                <AlertDialog.Close ref={cancelDeleteRef} disabled={busy === "remove"} className={buttonVariants({ variant: "secondary" })}>Cancel</AlertDialog.Close>
-                <DenButton variant="destructive" loading={busy === "remove"} onClick={() => void remove()}>Remove provider</DenButton>
+                <AlertDialog.Close ref={cancelDeleteRef} disabled={busy === "remove"} className={buttonVariants({ variant: "secondary" })}>取消</AlertDialog.Close>
+                <DenButton variant="destructive" loading={busy === "remove"} onClick={() => void remove()}>移除提供商</DenButton>
               </div>
             </AlertDialog.Popup>
           </AlertDialog.Portal>

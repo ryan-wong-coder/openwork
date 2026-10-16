@@ -1,6 +1,7 @@
+import { getDenPermissionDefinition } from "../../_lib/permission-copy";
 import { parseDeploymentCapabilities, type DeploymentCapabilities } from "@openwork/types/den/deployment-capabilities";
 import { mapFeatures, type FeatureMap } from "@openwork/features";
-import { PERMISSION_KEYS, getPermissionDefinition, isPermissionKey, isPermissionOwnerOnlyByDefault, permissionDefaultKeys, type PermissionKey } from "@openwork/types/den/permissions";
+import { PERMISSION_KEYS, isPermissionKey, isPermissionOwnerOnlyByDefault, permissionDefaultKeys, type PermissionKey } from "@openwork/types/den/permissions";
 
 export type DenOrgSummary = {
   id: string;
@@ -640,13 +641,15 @@ export function getOrgAccessFlags(roleValue: string, isOwner: boolean, permissio
 
 /** Plain reason for a control locked by a missing permission (DESIGN.md P4). */
 export function permissionLockReason(key: PermissionKey): string {
-  const needs = `Needs the “${getPermissionDefinition(key).label}” permission.`;
-  return isPermissionOwnerOnlyByDefault(key) ? `${needs} Ask the organization owner.` : `${needs} Ask an organization owner or admin for access.`;
+  const needs = `需要“${getDenPermissionDefinition(key).label}”权限。`;
+  return isPermissionOwnerOnlyByDefault(key) ? `${needs}请联系组织所有者。` : `${needs}请联系组织所有者或管理员授权。`;
 }
 
 export function formatRoleLabel(role: string): string {
   const canonicalRole = normalizeCanonicalRole(role);
-  if (canonicalRole === "admin") return "Admin";
+  if (canonicalRole === "admin") return "管理员";
+  if (canonicalRole === "owner") return "所有者";
+  if (canonicalRole === "member") return "成员";
   return role
     .split(/[-_\s]+/)
     .filter(Boolean)

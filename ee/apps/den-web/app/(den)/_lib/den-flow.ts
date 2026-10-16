@@ -1,3 +1,5 @@
+import { localizeDenError } from "../../_lib/error-copy";
+import { denStatusLabel, DEFAULT_DEN_LOCALE } from "../../_lib/locale";
 import { workflowRunPreviewSchema, type WorkflowRunPreview } from "@openwork/types/workflows";
 import { denApiCredentials, denBrowserEndpoint } from "./den-api-origin";
 import { getAuthResumeUrl } from "./auth-resume";
@@ -44,9 +46,9 @@ export class ReauthRequiredError extends Error {
 }
 
 function formatDeadlineDuration(timeoutMs: number): string {
-  if (timeoutMs < 1000) return `${timeoutMs} milliseconds`;
+  if (timeoutMs < 1000) return `${timeoutMs} 毫秒`;
   const seconds = timeoutMs / 1000;
-  return Number.isInteger(seconds) ? `${seconds} seconds` : `${seconds.toFixed(1)} seconds`;
+  return Number.isInteger(seconds) ? `${seconds} 秒` : `${seconds.toFixed(1)} 秒`;
 }
 
 export class DenRequestTimeoutError extends Error {
@@ -55,7 +57,7 @@ export class DenRequestTimeoutError extends Error {
 
   constructor(timeoutMs: number, cause?: unknown) {
     super(
-      `OpenWork stopped waiting after ${formatDeadlineDuration(timeoutMs)}. The operation’s outcome is unknown.`,
+      `等待 ${formatDeadlineDuration(timeoutMs)} 后 OpenWork 已停止等待，操作结果未知。`,
       cause === undefined ? undefined : { cause },
     );
     this.name = "DenRequestTimeoutError";
@@ -68,7 +70,7 @@ export class DenRequestCanceledError extends Error {
 
   constructor(cause?: unknown) {
     super(
-      "The OpenWork request was canceled before the dashboard received a result. The operation’s outcome is unknown.",
+      "控制台收到结果前，请求已取消，操作结果未知。",
       cause === undefined ? undefined : { cause },
     );
     this.name = "DenRequestCanceledError";
@@ -107,8 +109,8 @@ declare global {
 export const PENDING_SOCIAL_SIGNUP_STORAGE_KEY = "openwork:web:pending-social-signup";
 export const AUTH_TOKEN_STORAGE_KEY = "openwork:web:auth-token";
 export const PENDING_AUTH_INTENT_STORAGE_KEY = "openwork:web:pending-auth-intent";
-export const DEFAULT_AUTH_NAME = "OpenWork User";
-export const WORKSPACE_REAUTH_SECURITY_MESSAGE = "For security, confirm it's you before changing workspace settings.";
+export const DEFAULT_AUTH_NAME = "OpenWork 用户";
+export const WORKSPACE_REAUTH_SECURITY_MESSAGE = "为保护账户安全，请先确认身份，再更改工作区设置。";
 
 export type AuthIntent = "models";
 
@@ -118,8 +120,8 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 export function getAuthInfoForMode(mode: AuthMode): string {
   return mode === "sign-up"
-    ? "Create an account to get started with OpenWork."
-    : "Sign in to continue to OpenWork.";
+    ? "创建账户以开始使用 OpenWork。"
+    : "登录后继续使用 OpenWork。";
 }
 
 export function getEmailDomain(email: string): string {
@@ -222,14 +224,14 @@ export function getSocialCallbackUrl(authCallbackBaseUrl = "", requestedReturnTo
 
 export function formatMoneyMinor(amount: number | null, currency: string | null): string {
   if (typeof amount !== "number" || !Number.isFinite(amount)) {
-    return "Not available";
+    return "不可用";
   }
 
   const normalizedCurrency = (currency ?? "USD").toUpperCase();
   const majorValue = amount / 100;
 
   try {
-    return new Intl.NumberFormat(undefined, {
+    return new Intl.NumberFormat(DEFAULT_DEN_LOCALE, {
       style: "currency",
       currency: normalizedCurrency
     }).format(majorValue);
@@ -241,13 +243,10 @@ export function formatMoneyMinor(amount: number | null, currency: string | null)
 export function formatSubscriptionStatus(status: string): string {
   const normalized = status.trim().toLowerCase();
   if (!normalized) {
-    return "Unknown";
+    return "未知";
   }
 
-  return normalized
-    .split("_")
-    .map((part) => `${part.slice(0, 1).toUpperCase()}${part.slice(1)}`)
-    .join(" ");
+  return denStatusLabel(normalized);
 }
 
 export function getErrorMessage(payload: unknown, fallback: string): string {
@@ -255,12 +254,12 @@ export function getErrorMessage(payload: unknown, fallback: string): string {
     const trimmed = payload.trim();
     const lower = trimmed.toLowerCase();
     if (lower.startsWith("<!doctype") || lower.startsWith("<html") || lower.includes("<body")) {
-      return `${fallback} Upstream returned an HTML error page.`;
+      return `${fallback} 上游服务返回了 HTML 错误页面。`;
     }
     if (trimmed.length > 240) {
-      return `${fallback} Upstream returned a non-JSON error payload.`;
+      return `${fallback} 上游服务返回了无法识别的错误信息。`;
     }
-    return trimmed;
+    return localizeDenError(trimmed);
   }
 
   if (!isRecord(payload)) {
@@ -269,12 +268,12 @@ export function getErrorMessage(payload: unknown, fallback: string): string {
 
   const message = payload.message;
   if (typeof message === "string" && message.trim().length > 0) {
-    return message;
+    return localizeDenError(message);
   }
 
   const error = payload.error;
   if (typeof error === "string" && error.trim().length > 0) {
-    return error;
+    return localizeDenError(error);
   }
 
   return fallback;

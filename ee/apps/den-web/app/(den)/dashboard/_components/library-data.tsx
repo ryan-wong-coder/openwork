@@ -260,14 +260,14 @@ function parseLibraryItem(value: unknown): LibraryItem | null {
 
 export function parseLibraryPayload(payload: unknown): LibraryItem[] {
   if (!isRecord(payload) || !Array.isArray(payload.items)) {
-    throw new Error("Library response was incomplete.");
+    throw new Error("资源库返回的信息不完整，请重试。");
   }
   const items = payload.items
     .map(parseLibraryItem)
     .filter((item): item is LibraryItem => item !== null);
   const supportedItemCount = payload.items.filter((item) => !isRecord(item) || item.type !== "app").length;
   if (items.length !== supportedItemCount) {
-    throw new Error("Library response was incomplete.");
+    throw new Error("资源库返回的信息不完整，请重试。");
   }
   return items;
 }
@@ -282,7 +282,7 @@ export function libraryQueryOptions() {
         15000,
       );
       if (!response.ok) {
-        throw new Error(getErrorMessage(payload, `Failed to load library (${response.status}).`));
+        throw new Error(getErrorMessage(payload, `无法加载资源库（${response.status}）。`));
       }
       return parseLibraryPayload(payload);
     },

@@ -56,10 +56,10 @@ export function toolSummary(tool: Pick<ExternalMcpTool, "description">): string 
 }
 
 export function toolsSentence(tools: readonly Pick<ExternalMcpTool, "name" | "title" | "annotations">[]): string {
-  if (tools.length === 0) return "Nothing to do yet.";
+  if (tools.length === 0) return "暂无待处理操作。";
   const examples = tools.slice(0, 2).map((tool) => toolTitle(tool).toLowerCase());
-  const count = tools.length === 1 ? "1 thing" : `${tools.length} things`;
-  return `${count}, like ${examples.join(" and ")}.`;
+  const count = tools.length === 1 ? "1 项" : `${tools.length} 项内容`;
+  return `${count}，例如 ${examples.join("和")}。`;
 }
 
 type SignInState =
@@ -123,7 +123,7 @@ export function useConnectorSetup({ target, initialConnectionId, onConnectionCre
     setDiscoveryError(null);
     discover.mutateAsync(target.url)
       .then((result) => setDiscovery(result))
-      .catch((error: unknown) => setDiscoveryError(errorMessage(error, "OpenWork could not reach it.")));
+      .catch((error: unknown) => setDiscoveryError(errorMessage(error, "OpenWork 无法连接此服务。")));
   }, [discover, orgId, target]);
 
   const stopPolling = useCallback(() => {
@@ -133,7 +133,7 @@ export function useConnectorSetup({ target, initialConnectionId, onConnectionCre
   useEffect(() => stopPolling, [stopPolling]);
 
   const createForMe = useCallback(async (auth: Pick<CreateMcpConnectionInput, "authType"> & Partial<Pick<CreateMcpConnectionInput, "apiKey" | "apiKeyAuthScheme" | "credentialMode" | "oauthClient">>) => {
-    if (!target || !orgContext) throw new Error("Your organization is still loading. Try again in a moment.");
+    if (!target || !orgContext) throw new Error("组织仍在加载，请稍后重试。");
     const created = await createConnection.mutateAsync({
       name: target.name,
       url: target.url,
@@ -161,14 +161,14 @@ export function useConnectorSetup({ target, initialConnectionId, onConnectionCre
   useEffect(() => {
     if (method !== "none" || connectionId || autoCreated.current) return;
     autoCreated.current = true;
-    createForMe({ authType: "none" }).catch((error: unknown) => setSignIn({ kind: "failed", message: errorMessage(error, "Could not add it.") }));
+    createForMe({ authType: "none" }).catch((error: unknown) => setSignIn({ kind: "failed", message: errorMessage(error, "无法添加此项，请重试。") }));
   }, [method, connectionId, createForMe]);
 
   /** Step two for a server that takes a key: the admin's key is shared by everyone who gets it. */
   const saveApiKey = useCallback(async (apiKey: string, apiKeyAuthScheme: ExternalMcpApiKeyAuthScheme) => {
     const key = apiKey.trim();
     if (!key) {
-      setSaveError("Paste the key first.");
+      setSaveError("请先粘贴密钥。");
       return;
     }
     setSaving(true);
@@ -176,7 +176,7 @@ export function useConnectorSetup({ target, initialConnectionId, onConnectionCre
     try {
       await createForMe({ authType: "apikey", credentialMode: "shared", apiKey: key, apiKeyAuthScheme });
     } catch (error) {
-      setSaveError(errorMessage(error, "The key did not save."));
+      setSaveError(errorMessage(error, "密钥保存失败，请重试。"));
     } finally {
       setSaving(false);
     }
@@ -189,7 +189,7 @@ export function useConnectorSetup({ target, initialConnectionId, onConnectionCre
     try {
       await createForMe({ authType: "apikey", credentialMode: "per_member", apiKeyAuthScheme });
     } catch {
-      setSaveError("The connection did not save. Try again.");
+      setSaveError("连接保存失败，请重试。");
     } finally {
       setSaving(false);
     }
@@ -200,11 +200,11 @@ export function useConnectorSetup({ target, initialConnectionId, onConnectionCre
     const clientId = input.clientId.trim();
     const clientSecret = input.clientSecret.trim();
     if (!clientId) {
-      setSaveError("Paste the client ID first.");
+      setSaveError("请先粘贴客户端 ID。");
       return;
     }
     if (!clientSecret && oauthClientSecretRequired(discovery)) {
-      setSaveError(`${target?.name ?? "This server"} needs the client secret too.`);
+      setSaveError(`${target?.name ?? "此服务器"} 还需要客户端密钥。`);
       return;
     }
     setSaving(true);
@@ -212,7 +212,7 @@ export function useConnectorSetup({ target, initialConnectionId, onConnectionCre
     try {
       await createForMe({ authType: "oauth", oauthClient: { clientId, ...(clientSecret ? { clientSecret } : {}) } });
     } catch (error) {
-      setSaveError(errorMessage(error, "The OAuth app did not save."));
+      setSaveError(errorMessage(error, "OAuth 应用保存失败，请重试。"));
     } finally {
       setSaving(false);
     }
@@ -233,7 +233,7 @@ export function useConnectorSetup({ target, initialConnectionId, onConnectionCre
         await usable.refetch();
         return;
       }
-      if (!result.authorizeUrl) throw new Error(`${target.name} did not send a sign-in page.`);
+      if (!result.authorizeUrl) throw new Error(`${target.name} 未返回登录页面。`);
       tab.location.href = safeMcpAuthorizationUrl(result.authorizeUrl);
       const openedTab = tab;
       const pollId = id;
@@ -257,11 +257,11 @@ export function useConnectorSetup({ target, initialConnectionId, onConnectionCre
           setSignIn({ kind: "idle" });
           void queryClient.invalidateQueries({ queryKey: libraryQueryKeys.items });
         } else {
-          setSignIn({ kind: "failed", message: "Sign-in did not finish. Try again." });
+          setSignIn({ kind: "failed", message: "登录未完成，请重试。" });
         }
       }, POLL_INTERVAL_MS);
     } catch (error) {
-      const message = errorMessage(error, "Sign-in did not start.");
+      const message = errorMessage(error, "未能开始登录，请重试。");
       showMcpAuthorizationFailure(tab, {
         connectionId: id ?? "",
         connectionName: target.name,
@@ -281,7 +281,7 @@ export function useConnectorSetup({ target, initialConnectionId, onConnectionCre
     }
   }, [connectionId, createdHere, deleteConnection, queryClient, stopPolling]);
 
-  const name = target?.name ?? "it";
+  const name = target?.name ?? "此连接";
   const findFailed = discoveryError !== null || (discovery !== null && !findDone);
   const needsAdminInput = method === "api_key" || method === "oauth_app";
   const adminInputSaved = needsAdminInput && connection !== null;
@@ -293,54 +293,54 @@ export function useConnectorSetup({ target, initialConnectionId, onConnectionCre
   const toolList = tools.data?.tools ?? [];
 
   const methodDescription = (() => {
-    if (methodFailed) return `OpenWork could not tell how to sign in to ${name}.`;
-    if (method === "none") return "No sign-in needed.";
-    if (method === "sign_in") return `You sign in with your own ${name} account.`;
+    if (methodFailed) return `OpenWork 无法确定 ${name} 的登录方式。`;
+    if (method === "none") return "无需登录。";
+    if (method === "sign_in") return `使用你自己的 ${name} 账户登录。`;
     if (method === "api_key") {
-      if (adminInputSaved) return usesIndividualKeys ? "Individual keys enabled." : "Key added. Everyone uses it.";
-      return mode === "member" ? `An admin adds the key for ${name}.` : `${name} needs a key.`;
+      if (adminInputSaved) return usesIndividualKeys ? "个人密钥已启用。" : "密钥已添加，所有人可使用。";
+      return mode === "member" ? `管理员为 ${name} 添加密钥。` : `${name} 需要密钥。`;
     }
     if (method === "oauth_app") {
-      if (adminInputSaved) return "OAuth app added.";
-      return mode === "member" ? `An admin adds the OAuth app for ${name}.` : `${name} needs your OAuth app.`;
+      if (adminInputSaved) return "OAuth 应用已添加。";
+      return mode === "member" ? `管理员为 ${name} 添加 OAuth 应用。` : `${name} 需要你的 OAuth 应用。`;
     }
-    return findDone ? "Checking now." : "Waits for the first check.";
+    return findDone ? "正在检查。" : "等待首次检查。";
   })();
 
   const signInDescription = (() => {
     if (signedIn) {
-      if (connection?.authType === "none") return "Nothing to sign in to.";
-      if (connection?.authType === "apikey") return usesIndividualKeys ? "Each person can now add their own key in My Library." : "Uses the key you added.";
-      return connection?.externalAccountId ? `As ${connection.externalAccountId}.` : "You are signed in.";
+      if (connection?.authType === "none") return "没有需要登录的内容。";
+      if (connection?.authType === "apikey") return usesIndividualKeys ? "现在每人均可在“我的资源库”中添加自己的密钥。" : "使用你添加的密钥。";
+      return connection?.externalAccountId ? `身份为 ${connection.externalAccountId}。` : "已登录。";
     }
-    if (usesIndividualKeys) return "Each person adds their own key.";
+    if (usesIndividualKeys) return "每人添加自己的密钥。";
     if (signIn.kind === "failed") return signIn.message;
-    if (signIn.kind === "waiting") return `${name} opened in a new tab. Come back here when you are done.`;
-    if (canSignIn) return `${name} opens in a new tab. Come back here when you are done.`;
-    if (usesKey && connection) return "Checking the key.";
-    return "Waits for the checks above.";
+    if (signIn.kind === "waiting") return `已在新标签页中打开 ${name}，完成后请返回此页面。`;
+    if (canSignIn) return `将在新标签页中打开 ${name}，完成后请返回此页面。`;
+    if (usesKey && connection) return "正在检查密钥。";
+    return "等待上方检查完成。";
   })();
 
   const checks: SetupCheck[] = [
     {
       id: "find",
-      title: `Finds ${name}`,
-      description: findFailed ? `OpenWork could not reach ${name}. Check the address and try again.` : findDone ? `${name} answered.` : "Looking for it now.",
+      title: `查找 ${name}`,
+      description: findFailed ? `OpenWork 无法连接 ${name}，请检查地址后重试。` : findDone ? `${name} 已响应。` : "正在查找。",
       status: findFailed ? "failed" : findDone ? "done" : "running",
     },
     {
       id: "sign-in-method",
-      title: "Knows how you sign in",
+      title: "确认登录方式",
       description: methodDescription,
       status: methodFailed ? "failed" : methodDone ? "done" : blocked ? "blocked" : needsAdminInput ? "current" : findDone ? "running" : "waiting",
     },
     {
       id: "sign-in",
       title: usesIndividualKeys
-        ? "Individual keys enabled"
+        ? "个人密钥已启用"
         : signedIn
-        ? usesKey ? `Connected to ${name}` : `Signed in to ${name}`
-        : usesKey ? `Connect to ${name}` : `Sign in to ${name}`,
+        ? usesKey ? `已连接 ${name}` : `已登录 ${name}`
+        : usesKey ? `连接 ${name}` : `登录 ${name}`,
       description: signInDescription,
       status: usesIndividualKeys
         ? "done"
@@ -352,12 +352,12 @@ export function useConnectorSetup({ target, initialConnectionId, onConnectionCre
     },
     {
       id: "tools",
-      title: usesIndividualKeys ? "Ready for first use" : "Has things your AI can do",
+      title: usesIndividualKeys ? "首次使用已就绪" : "提供 AI 可用的工具",
       description: usesIndividualKeys
-        ? "Tools appear after each person adds a working key."
+        ? "每人添加有效密钥后即可看到工具。"
         : tools.error
-        ? "OpenWork could not read what it can do. Try again later."
-        : tools.data ? toolsSentence(toolList) : signedIn ? "Reading them now." : usesKey ? "They show up once the key works." : "They show up after you sign in.",
+        ? "OpenWork 无法读取此服务的能力，请稍后重试。"
+        : tools.data ? toolsSentence(toolList) : signedIn ? "正在读取。" : usesKey ? "密钥验证成功后将在此显示。" : "登录后将在此显示。",
       status: usesIndividualKeys ? "done" : tools.error ? "failed" : tools.data ? "done" : signedIn ? "running" : "waiting",
     },
   ];
@@ -446,7 +446,7 @@ export function useMemberSignIn() {
         }
       }, 1500);
     } catch (error) {
-      const message = errorMessage(error, "Sign-in did not start.");
+      const message = errorMessage(error, "未能开始登录，请重试。");
       showMcpAuthorizationFailure(tab, {
         connectionId: item.id,
         connectionName: item.name,

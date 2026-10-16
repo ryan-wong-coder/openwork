@@ -18,6 +18,7 @@ import {
 import { t } from "../../../../i18n";
 import type { SettingsTab } from "../../../../app/types";
 import { Button } from "@/components/ui/button";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 
 export type GeneralSettingsViewProps = {
   onNavigateTab: (tab: SettingsTab) => void;
@@ -45,10 +46,12 @@ const globalCards: SettingsCardDefinition[] = [
 ];
 
 function cardTitle(card: SettingsCardDefinition) {
+  if (isLocalGatewayClient() && card.tab === "ai") return "模型网关";
   return t(card.titleKey);
 }
 
 function cardDescription(card: SettingsCardDefinition) {
+  if (isLocalGatewayClient() && card.tab === "ai") return "网关连接、模型与图片生成。";
   return t(card.descKey);
 }
 
@@ -99,7 +102,7 @@ export function GeneralSettingsView(props: GeneralSettingsViewProps) {
       <div className="space-y-3">
         <div className="text-[11px] font-semibold uppercase tracking-[0.15em] text-dls-secondary">{t("settings.group_global")} </div>
         <div className="grid grid-cols-2 gap-2">
-          {globalCards.map((card) => (
+          {globalCards.filter((card) => !isLocalGatewayClient() || card.tab !== "cloud-account").map((card) => (
             <SettingsCard
               key={card.tab}
               icon={card.icon}

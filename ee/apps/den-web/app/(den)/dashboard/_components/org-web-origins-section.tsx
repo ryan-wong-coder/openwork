@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE } from "../../../_lib/locale";
+
 import {
   ORGANIZATION_WEB_ORIGIN_LIMIT,
   normalizeExactHttpsOrigin,
@@ -19,19 +21,19 @@ import {
 } from "./org-web-origins-data";
 
 const INVALID_ORIGIN_MESSAGE =
-  "Enter an exact HTTPS origin like https://workspace.example.com, with an optional port and no path.";
-const DUPLICATE_ORIGIN_MESSAGE = "This origin is already approved.";
+  "输入准确的 HTTPS 来源，例如 https://workspace.example.com，可包含端口，但不能包含路径。";
+const DUPLICATE_ORIGIN_MESSAGE = "此来源已获批准。";
 
 function formatApprovedDate(value: string): string | null {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return null;
-  return date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+  return date.toLocaleDateString(DEFAULT_DEN_LOCALE, { year: "numeric", month: "short", day: "numeric" });
 }
 
 function approvedMeta(entry: OrganizationWebOrigin): string {
-  const by = entry.createdByName?.trim() || "a workspace owner";
+  const by = entry.createdByName?.trim() || "工作区所有者";
   const date = formatApprovedDate(entry.createdAt);
-  return date ? `Approved by ${by} on ${date}` : `Approved by ${by}`;
+  return date ? `由 ${by} 于 ${date} 批准` : `由 ${by} 批准`;
 }
 
 function errorMessage(error: unknown, fallback: string): string {
@@ -39,8 +41,8 @@ function errorMessage(error: unknown, fallback: string): string {
 }
 
 function countLabel(count: number): string {
-  if (count === 0) return "None";
-  return count === 1 ? "1 origin" : `${count} origins`;
+  if (count === 0) return "无";
+  return count === 1 ? "1 个来源" : `${count} 个来源`;
 }
 
 export function OrgWebOriginsSection({ orgId, canManage }: { orgId: string; canManage: boolean }) {
@@ -65,7 +67,7 @@ export function OrgWebOriginsSection({ orgId, canManage }: { orgId: string; canM
       await approve.mutateAsync(origin);
       return true;
     } catch (error) {
-      setActionError(errorMessage(error, `Couldn't approve ${origin}. Try again.`));
+      setActionError(errorMessage(error, `无法批准 ${origin}，请重试。`));
       return false;
     }
   }
@@ -96,7 +98,7 @@ export function OrgWebOriginsSection({ orgId, canManage }: { orgId: string; canM
       await remove.mutateAsync(entry);
       setRemoved(entry.origin);
     } catch (error) {
-      setActionError(errorMessage(error, `Couldn't remove ${entry.origin}. Try again.`));
+      setActionError(errorMessage(error, `无法移除 ${entry.origin}，请重试。`));
     }
   }
 
@@ -112,7 +114,7 @@ export function OrgWebOriginsSection({ orgId, canManage }: { orgId: string; canM
       className="inline-block h-3 w-14 rounded bg-gray-100 motion-safe:animate-pulse"
     />
   ) : query.isError ? (
-    "Unavailable"
+    "不可用"
   ) : (
     countLabel(origins.length)
   );
@@ -128,10 +130,10 @@ export function OrgWebOriginsSection({ orgId, canManage }: { orgId: string; canM
               aria-hidden="true"
               className="shrink-0 text-gray-400 transition-transform duration-150 ease-out group-open:rotate-90 motion-reduce:transition-none"
             />
-            <span className="text-[13px] font-semibold text-gray-900">Approved web origins</span>
+            <span className="text-[13px] font-semibold text-gray-900">已批准的网页来源</span>
           </span>
           <span className="shrink-0 text-[13px] text-gray-500" data-testid="web-origins-summary-state">
-            {query.isPending ? <span className="sr-only">Loading</span> : null}
+            {query.isPending ? <span className="sr-only">正在加载</span> : null}
             {summaryState}
           </span>
         </summary>
@@ -147,14 +149,14 @@ export function OrgWebOriginsSection({ orgId, canManage }: { orgId: string; canM
             <div role="alert" className="flex flex-wrap items-center justify-between gap-3 text-red-700">
               <span className="flex items-center gap-2">
                 <CircleAlert size={16} strokeWidth={1.5} aria-hidden="true" className="shrink-0" />
-                Couldn&apos;t load approved origins. Try again.
+                无法加载已批准来源，请重试。
               </span>
               <DenButton variant="ghost" size="xs" onClick={() => void query.refetch()}>
-                Try again
+                重试
               </DenButton>
             </div>
           ) : origins.length === 0 ? (
-            <p className="text-gray-500">No origins approved yet.</p>
+            <p className="text-gray-500">尚未批准任何来源。</p>
           ) : (
             <DenList className="-mx-6 !rounded-none !border-0">
               {origins.map((entry) => (
@@ -167,8 +169,8 @@ export function OrgWebOriginsSection({ orgId, canManage }: { orgId: string; canM
                     <DenButton
                       variant="ghost"
                       size="xs"
-                      aria-label={`Remove ${entry.origin}`}
-                      title={canManage ? "Remove" : permissionLockReason("web_origins.manage")}
+                      aria-label={`移除 ${entry.origin}`}
+                      title={canManage ? "移除" : permissionLockReason("web_origins.manage")}
                       disabled={!canManage || busy}
                       onClick={() => void handleRemove(entry)}
                     >
@@ -182,16 +184,16 @@ export function OrgWebOriginsSection({ orgId, canManage }: { orgId: string; canM
 
           {removed ? (
             <div role="status" className="flex flex-wrap items-center justify-between gap-3 text-gray-600">
-              <span className="min-w-0 truncate">Removed {removed}</span>
+              <span className="min-w-0 truncate">已移除 {removed}</span>
               <DenButton variant="ghost" size="xs" loading={approve.isPending} onClick={() => void handleUndo()}>
-                Undo
+                撤销
               </DenButton>
             </div>
           ) : null}
 
           {!query.isError ? (
             <form className="grid gap-2" onSubmit={(event) => void handleApprove(event)} noValidate>
-              <label htmlFor={inputId} className="sr-only">Origin to approve</label>
+              <label htmlFor={inputId} className="sr-only">待批准来源</label>
               <div className="flex flex-col gap-2 sm:flex-row">
                 <DenInput
                   id={inputId}
@@ -217,7 +219,7 @@ export function OrgWebOriginsSection({ orgId, canManage }: { orgId: string; canM
                   disabled={!canManage || atLimit || query.isPending || busy}
                   className="h-[42px] shrink-0"
                 >
-                  Approve origin
+                  批准来源
                 </DenButton>
               </div>
               {inputError || actionError ? (
@@ -228,13 +230,13 @@ export function OrgWebOriginsSection({ orgId, canManage }: { orgId: string; canM
               {canManage ? (
                 <p className="text-gray-500">
                   {atLimit
-                    ? `Remove an origin to approve another. Up to ${limit}.`
-                    : "Members who sign in on an approved origin share their OpenWork session with that site."}
+                    ? `请先移除一个来源再批准其他来源，最多允许 ${limit} 个。`
+                    : "成员在已批准来源登录时，会与该网站共享 OpenWork 会话。"}
                 </p>
               ) : (
                 <p className="flex items-center gap-2 text-gray-500">
                   <Lock size={16} strokeWidth={1.5} aria-hidden="true" className="shrink-0" />
-                  {`Locked. ${permissionLockReason("web_origins.manage")}`}
+                  {`已锁定。${permissionLockReason("web_origins.manage")}`}
                 </p>
               )}
             </form>

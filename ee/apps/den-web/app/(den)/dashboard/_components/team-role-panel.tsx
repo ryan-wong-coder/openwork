@@ -1,9 +1,11 @@
 "use client";
 
+import { getDenPermissionDefinition } from "../../../_lib/permission-copy";
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Check, ShieldCheck } from "lucide-react";
-import { getPermissionDefinition, permissionDefaultKeys, type PermissionKey } from "@openwork/types/den/permissions";
+import { permissionDefaultKeys, type PermissionKey } from "@openwork/types/den/permissions";
 import { DenButton } from "../../_components/ui/button";
 import { DenNotice } from "../../_components/ui/notice";
 import { DenOptionCard } from "../../_components/ui/option-card";
@@ -65,9 +67,9 @@ export function TeamRolePanel({ team }: { team: DenOrgTeam }) {
 
   const loading = permissionsFeature && (setsQuery.isPending || (teamSet !== null && teamSetDetail.isPending));
   const description = role === "admin"
-    ? `Everyone in ${team.name} is an admin`
+    ? `${team.name} 中的所有人都是管理员`
     : role === "custom"
-      ? `${customKeys.length} ${customKeys.length === 1 ? "permission" : "permissions"} chosen for ${team.name}`
+      ? `已为 ${team.name} 选择 ${customKeys.length} 项权限`
       : TEAM_ROLE_DESCRIPTIONS.member;
   const abilities: TeamRoleAbilities = {
     canManageAdminTeams: access?.canManageAdminTeams ?? false,
@@ -77,7 +79,7 @@ export function TeamRolePanel({ team }: { team: DenOrgTeam }) {
 
   return (
     <div className="flex flex-col gap-6" data-testid="team-role" data-role={role}>
-      {setsQuery.isError ? <DenNotice tone="error" message={setsQuery.error instanceof Error ? setsQuery.error.message : "Couldn't load this team's role."} /> : null}
+      {setsQuery.isError ? <DenNotice tone="error" message={setsQuery.error instanceof Error ? setsQuery.error.message : "无法加载此团队的角色，请重试。"} /> : null}
       <ItemPanel>
         <div className="flex items-center gap-3.5 px-5 py-4">
           <IconTile icon={ShieldCheck} />
@@ -87,8 +89,8 @@ export function TeamRolePanel({ team }: { team: DenOrgTeam }) {
           </span>
           {editing ? null : (
             <span className="flex shrink-0 gap-2">
-              {teamSet ? <LinkButton size="sm" variant="secondary" href={getPermissionSetRoute(orgSlug, teamSet.id)} data-testid="team-role-edit">Edit permissions</LinkButton> : null}
-              <DenButton size="sm" variant="secondary" disabled={loading} onClick={() => setEditing(true)} data-testid="team-role-change">Change role</DenButton>
+              {teamSet ? <LinkButton size="sm" variant="secondary" href={getPermissionSetRoute(orgSlug, teamSet.id)} data-testid="team-role-edit">编辑权限</LinkButton> : null}
+              <DenButton size="sm" variant="secondary" disabled={loading} onClick={() => setEditing(true)} data-testid="team-role-change">更改角色</DenButton>
             </span>
           )}
         </div>
@@ -104,15 +106,15 @@ export function TeamRolePanel({ team }: { team: DenOrgTeam }) {
       </ItemPanel>
 
       {loading ? (
-        <ItemPanel><ItemRowsSkeleton label="Loading what this team can do" rows={3} /></ItemPanel>
+        <ItemPanel><ItemRowsSkeleton label="正在加载团队权限" rows={3} /></ItemPanel>
       ) : alsoKeys.length > 0 ? (
-        <ItemSection title={`${team.name} can also`} testId="team-role-also">
+        <ItemSection title={`${team.name} 还可以`} testId="team-role-also">
           <ItemPanel>
-            {shownAlso.map((key) => <ItemRow key={key} logo={<CheckMark />} title={getPermissionDefinition(key).label} />)}
+            {shownAlso.map((key) => <ItemRow key={key} logo={<CheckMark />} title={getDenPermissionDefinition(key).label} />)}
             {alsoKeys.length > ALSO_PREVIEW ? (
               <div className="px-5 py-2.5">
                 <DenButton variant="ghost" size="xs" onClick={() => setShowAll(!showAll)} aria-expanded={showAll} data-testid="team-role-show-all">
-                  {showAll ? "Show fewer" : `Show all ${alsoKeys.length}`}
+                  {showAll ? "收起" : `显示全部 ${alsoKeys.length} 项`}
                 </DenButton>
               </div>
             ) : null}
@@ -120,10 +122,10 @@ export function TeamRolePanel({ team }: { team: DenOrgTeam }) {
         </ItemSection>
       ) : null}
 
-      <ItemSection title="Everyone can" testId="team-role-everyone">
+      <ItemSection title="所有人均可" testId="team-role-everyone">
         <ItemPanel>
           {EVERYONE_CAN.map((label) => <ItemRow key={label} logo={<CheckMark />} title={label} />)}
-          {memberKeys.map((key) => <ItemRow key={key} logo={<CheckMark />} title={getPermissionDefinition(key).label} />)}
+          {memberKeys.map((key) => <ItemRow key={key} logo={<CheckMark />} title={getDenPermissionDefinition(key).label} />)}
         </ItemPanel>
       </ItemSection>
     </div>
@@ -160,9 +162,9 @@ function RoleChoice({ team, state, adminKeys, abilities, onDone }: {
       // Undo only where nothing is lost: turning the Admin flag on or off.
       const undoable = (previous === "member" && choice === "admin") || (previous === "admin" && choice === "member" && !state.customSetId);
       toast({
-        title: `${team.name} is now ${TEAM_ROLE_LABELS[choice]}`,
+        title: `${team.name} 现在为${TEAM_ROLE_LABELS[choice]}`,
         action: undoable
-          ? { label: "Undo", onClick: () => updateTeam(team.id, { grantsOrganizationAdmin: previous === "admin" }) }
+          ? { label: "撤销", onClick: () => updateTeam(team.id, { grantsOrganizationAdmin: previous === "admin" }) }
           : undefined,
       });
       if (choice === "custom" && createdSetId) router.push(getPermissionSetRoute(orgSlug, createdSetId));
@@ -173,7 +175,7 @@ function RoleChoice({ team, state, adminKeys, abilities, onDone }: {
 
   return (
     <fieldset className="flex flex-col gap-3 border-t border-gray-100 px-5 py-4" disabled={apply.isPending} data-testid="team-role-choice">
-      <legend className="sr-only">Role for {team.name}</legend>
+      <legend className="sr-only">角色所属 {team.name}</legend>
       <div className="flex flex-col gap-2">
         {ROLE_ORDER.map((role) => {
           const reason = lock(role);
@@ -184,7 +186,7 @@ function RoleChoice({ team, state, adminKeys, abilities, onDone }: {
               name={`team-role-${team.id}`}
               checked={choice === role}
               onChange={(checked) => { if (checked) setChoice(role); }}
-              title={role === current ? `${TEAM_ROLE_LABELS[role]} (now)` : TEAM_ROLE_LABELS[role]}
+              title={role === current ? `${TEAM_ROLE_LABELS[role]}（当前）` : TEAM_ROLE_LABELS[role]}
               description={reason ?? TEAM_ROLE_DESCRIPTIONS[role]}
               disabled={reason !== null}
               testId={`team-role-option-${role}`}
@@ -193,13 +195,13 @@ function RoleChoice({ team, state, adminKeys, abilities, onDone }: {
         })}
       </div>
       {changed && choice === "member" && current === "custom" ? (
-        <p className="text-[13px] text-gray-600">{team.name}'s custom permissions are removed.</p>
+        <p className="text-[13px] text-gray-600">{team.name}的自定义权限将被移除。</p>
       ) : null}
       {apply.error ? <DenNotice tone="error" message={apply.error.message} /> : null}
       <div className="flex justify-end gap-2">
-        <DenButton size="sm" variant="secondary" onClick={onDone}>Cancel</DenButton>
+        <DenButton size="sm" variant="secondary" onClick={onDone}>取消</DenButton>
         <DenButton size="sm" disabled={!changed || lock(choice) !== null} loading={apply.isPending} onClick={() => void save()} data-testid="team-role-save">
-          {changed ? `Change to ${TEAM_ROLE_LABELS[choice]}` : "Change role"}
+          {changed ? `更改为 ${TEAM_ROLE_LABELS[choice]}` : "更改角色"}
         </DenButton>
       </div>
     </fieldset>

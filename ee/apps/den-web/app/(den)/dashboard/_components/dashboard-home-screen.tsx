@@ -15,7 +15,7 @@ export function DashboardHomeScreen() {
   if (!orgContext || orgBusy || switching) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center px-6 text-[14px] text-gray-500">
-        Loading your workspace...
+        正在加载工作区…
       </div>
     );
   }

@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE } from "../../../_lib/locale";
+
 import Link from "next/link";
 import { ArrowLeft, ChevronRight } from "lucide-react";
 import { DenBadge } from "../../_components/ui/badge";
@@ -23,9 +25,9 @@ const CARD_TITLE = "text-[13px] font-medium text-gray-900";
 
 export function GatewayPersonScreen({ memberId }: { memberId: string }) {
   const { orgId, orgSlug, orgContext } = useOrgDashboard();
-  if (!orgId || !orgContext) return <p role="status" className="text-sm text-gray-500">Loading…</p>;
+  if (!orgId || !orgContext) return <p role="status" className="text-sm text-gray-500">正在加载…</p>;
   const member = orgContext.members.find((entry) => entry.id === memberId);
-  if (!member) return <DenNotice tone="info" message="This person is not in your organization." />;
+  if (!member) return <DenNotice tone="info" message="此人员不在你的组织中。" />;
   return <GatewayPerson key={`${orgId}:${memberId}`} orgId={orgId} orgSlug={orgSlug} member={member} teams={orgContext.teams} members={orgContext.members} />;
 }
 
@@ -35,7 +37,7 @@ export function GatewayPerson({ orgId, orgSlug, member, teams, members }: { orgI
   return (
     <div className="flex flex-col gap-3" data-testid="gateway-person">
       <Link href={getAiGatewayUsersTeamsRoute(orgSlug)} className="inline-flex w-fit items-center gap-1.5 text-[12px] text-gray-500 hover:text-gray-900">
-        <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />Back to Users &amp; Teams
+        <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />返回用户与团队
       </Link>
       <div className="mb-2 flex flex-wrap items-center gap-3">
         <span aria-hidden="true" className="flex size-10 items-center justify-center rounded-full bg-gray-100 text-[13px] font-semibold text-gray-700">{initials(name)}</span>
@@ -54,14 +56,14 @@ function PersonSpend({ orgId, memberId }: { orgId: string; memberId: string }) {
   const usage = useGatewayUsage(orgId, "person", [memberId]);
   const total = usage.data ? gatewayUsageTotals(usage.data).find((row) => row.id === memberId) : undefined;
   return (
-    <section className={CARD} aria-label="Last 31 days" data-testid="gateway-person-spend">
-      <h3 className={CARD_TITLE}>Last 31 days</h3>
-      {usage.isPending ? <p role="status" className="mt-2 text-[13px] text-gray-500">Loading…</p>
+    <section className={CARD} aria-label="最近 31 天" data-testid="gateway-person-spend">
+      <h3 className={CARD_TITLE}>最近 31 天</h3>
+      {usage.isPending ? <p role="status" className="mt-2 text-[13px] text-gray-500">正在加载…</p>
         : usage.isError ? <ErrorRetry message={usage.error.message} onRetry={() => void usage.refetch()} />
           : (
             <div className="mt-1 flex flex-wrap items-baseline gap-x-6 gap-y-1">
-              <span className="text-[24px] font-semibold tracking-[-0.02em] tabular-nums text-gray-950">{total?.unpriced && !total.costMicroUsd ? "Unknown" : formatUsageCost(total?.costMicroUsd ?? 0)}</span>
-              <span className="text-[13px] text-gray-500">{(total?.tokens ?? 0).toLocaleString()} tokens</span>
+              <span className="text-[24px] font-semibold tracking-[-0.02em] tabular-nums text-gray-950">{total?.unpriced && !total.costMicroUsd ? "未知" : formatUsageCost(total?.costMicroUsd ?? 0)}</span>
+              <span className="text-[13px] text-gray-500">{(total?.tokens ?? 0).toLocaleString(DEFAULT_DEN_LOCALE)} Token</span>
             </div>
           )}
     </section>
@@ -73,14 +75,14 @@ function PersonAccess({ orgId, orgSlug, member, teams, members }: { orgId: strin
   const granted = providers.data ? directoryAccess(providers.data, memberSubject(member, teams)) : [];
   const withheld = (providers.data ?? []).filter((provider) => provider.status !== "disabled" && !granted.some((entry) => entry.provider.id === provider.id));
   return (
-    <section className={CARD} aria-label="What they can use" data-testid="gateway-person-access">
+    <section className={CARD} aria-label="可用内容" data-testid="gateway-person-access">
       <div className="flex items-center justify-between gap-3">
-        <h3 className={CARD_TITLE}>What they can use</h3>
-        <Link href={getAiGatewayProvidersRoute(orgSlug)} className="text-[12px] font-medium text-gray-700 hover:text-gray-950">Change in AI Providers</Link>
+        <h3 className={CARD_TITLE}>可用内容</h3>
+        <Link href={getAiGatewayProvidersRoute(orgSlug)} className="text-[12px] font-medium text-gray-700 hover:text-gray-950">在 AI 提供商中更改</Link>
       </div>
-      {providers.isPending ? <p role="status" className="mt-2 text-[13px] text-gray-500">Loading…</p>
+      {providers.isPending ? <p role="status" className="mt-2 text-[13px] text-gray-500">正在加载…</p>
         : providers.isError ? <ErrorRetry message={providers.error.message} onRetry={() => void providers.refetch()} />
-          : granted.length === 0 && withheld.length === 0 ? <p role="status" className="mt-2 text-[13px] text-gray-500">No providers yet. Add one in AI Providers.</p>
+          : granted.length === 0 && withheld.length === 0 ? <p role="status" className="mt-2 text-[13px] text-gray-500">暂无提供商，请在“AI 提供商”中添加。</p>
             : (
               <ul className="mt-1 divide-y divide-gray-100">
                 {granted.map(({ provider, sources }) => (
@@ -104,7 +106,7 @@ function PersonAccess({ orgId, orgSlug, member, teams, members }: { orgId: strin
 }
 
 function stateLabel(state: GatewayUsageStatus["state"]) {
-  return state === "blocked" ? "Paused" : state === "over_limit" ? "Over the limit" : "Within the limit";
+  return state === "blocked" ? "已暂停" : state === "over_limit" ? "已超出限额" : "未超出限额";
 }
 
 function LimitRows({ buckets, active, orgSlug }: { buckets: GatewayUsageBucket[]; active: GatewayUsageLimitPolicy[]; orgSlug: string | null | undefined }) {
@@ -114,14 +116,14 @@ function LimitRows({ buckets, active, orgSlug }: { buckets: GatewayUsageBucket[]
         <li key={bucket.id} className="flex flex-wrap items-center gap-3 py-2.5" data-testid="gateway-person-limit-row">
           <span className="min-w-0 flex-1">
             <span className="block text-[13px] font-medium text-gray-900">{formatLimitMoney(bucket.allowanceMicroUsd)} {timeframePeriods[bucket.timeframe]}</span>
-            <span className="block text-[12px] text-gray-500">{bucket.policyName} · {bucket.hardLimit ? "pauses at the limit" : "only warns"}</span>
+            <span className="block text-[12px] text-gray-500">{bucket.policyName} · {bucket.hardLimit ? "达到限额时暂停" : "仅警告"}</span>
           </span>
           <span className="flex w-36 flex-col gap-1">
-            <ShareBar value={Math.min(bucket.usedMicroUsd, bucket.allowanceMicroUsd)} max={bucket.allowanceMicroUsd} label={`${formatLimitMoney(bucket.usedMicroUsd)} of ${formatLimitMoney(bucket.allowanceMicroUsd)} used`} />
-            <span className="text-[11px] tabular-nums text-gray-500">{formatLimitMoney(bucket.usedMicroUsd)} used</span>
+            <ShareBar value={Math.min(bucket.usedMicroUsd, bucket.allowanceMicroUsd)} max={bucket.allowanceMicroUsd} label={`已用 ${formatLimitMoney(bucket.usedMicroUsd)} / ${formatLimitMoney(bucket.allowanceMicroUsd)}`} />
+            <span className="text-[11px] tabular-nums text-gray-500">已用 {formatLimitMoney(bucket.usedMicroUsd)}</span>
           </span>
           {active.some((policy) => policy.id === bucket.policyId)
-            ? <Link href={getAiGatewayLimitRoute(orgSlug, bucket.policyId)} className={buttonVariants({ variant: "secondary", size: "sm" })}>Edit</Link>
+            ? <Link href={getAiGatewayLimitRoute(orgSlug, bucket.policyId)} className={buttonVariants({ variant: "secondary", size: "sm" })}>编辑</Link>
             : null}
         </li>
       ))}
@@ -135,24 +137,24 @@ function PersonLimit({ orgId, orgSlug, memberId, name, teams }: { orgId: string;
   const active = policies.data?.policies.filter((policy) => !policy.archivedAt) ?? [];
   const providers = status.data?.providers ?? [];
   return (
-    <section className={CARD} aria-label="Spend limit" data-testid="gateway-person-limit">
-      <h3 className={CARD_TITLE}>Spend limit</h3>
+    <section className={CARD} aria-label="消费限额" data-testid="gateway-person-limit">
+      <h3 className={CARD_TITLE}>消费限额</h3>
       <div className="mt-2">
-        <GatewayLimitsQueryFeedback query={status} label="spend limit" />
+        <GatewayLimitsQueryFeedback query={status} label="消费限额" />
       </div>
       {!status.isError && status.data ? (
         <>
-          {providers.length && status.data.state === "unlimited" ? <h4 className="mb-2 mt-1 text-[12px] font-medium text-gray-700">Other providers</h4> : null}
+          {providers.length && status.data.state === "unlimited" ? <h4 className="mb-2 mt-1 text-[12px] font-medium text-gray-700">其他提供商</h4> : null}
           {status.data.state === "unlimited" ? (
             <div className="flex flex-wrap items-center gap-3">
-              <DenBadge>No limit</DenBadge>
-              <span className="min-w-0 flex-1 text-[13px] text-gray-500">{providers.length ? `Nothing pauses ${name}'s other providers.` : `Nothing pauses ${name}'s models.`}</span>
-              <Link href={getNewAiGatewayLimitRoute(orgSlug, { memberId })} className={buttonVariants({ variant: "secondary", size: "sm" })} data-testid="gateway-person-set-limit">Set a limit</Link>
+              <DenBadge>无限制</DenBadge>
+              <span className="min-w-0 flex-1 text-[13px] text-gray-500">{providers.length ? `${name} 的其他提供商没有暂停限制。` : `${name} 的模型没有暂停限制。`}</span>
+              <Link href={getNewAiGatewayLimitRoute(orgSlug, { memberId })} className={buttonVariants({ variant: "secondary", size: "sm" })} data-testid="gateway-person-set-limit">设置限额</Link>
             </div>
           ) : (
             <>
               <div className="mb-2 flex items-center gap-2">
-                {providers.length ? <h4 className="text-[12px] font-medium text-gray-700">Other providers</h4> : null}
+                {providers.length ? <h4 className="text-[12px] font-medium text-gray-700">其他提供商</h4> : null}
                 <DenBadge tone={status.data.state === "within_limit" ? "neutral" : "warning"}>{stateLabel(status.data.state)}</DenBadge>
               </div>
               <LimitRows buckets={status.data.buckets} active={active} orgSlug={orgSlug} />
@@ -161,7 +163,7 @@ function PersonLimit({ orgId, orgSlug, memberId, name, teams }: { orgId: string;
           {providers.map((provider) => (
             <div key={provider.providerId} className="mt-3 border-t border-gray-100 pt-3" data-testid="gateway-person-provider-limit">
               <div className="mb-2 flex items-center gap-2">
-                <h4 className="text-[12px] font-medium text-gray-700">Only {provider.providerName}</h4>
+                <h4 className="text-[12px] font-medium text-gray-700">仅 {provider.providerName}</h4>
                 <DenBadge tone={provider.state === "within_limit" ? "neutral" : "warning"}>{stateLabel(provider.state)}</DenBadge>
               </div>
               <LimitRows buckets={provider.buckets} active={active} orgSlug={orgSlug} />
@@ -171,7 +173,7 @@ function PersonLimit({ orgId, orgSlug, memberId, name, teams }: { orgId: string;
             <details className="group mt-2 text-[12px] text-gray-500">
               <summary className="flex cursor-pointer list-none items-center gap-1.5 [&::-webkit-details-marker]:hidden">
                 <ChevronRight className="h-3.5 w-3.5 transition-transform duration-150 group-open:rotate-90 motion-reduce:transition-none" aria-hidden="true" />
-                Technical details
+                技术详情
               </summary>
               <div className="pt-3">
                 <GatewayMemberUsageDetails status={status.data} policies={active.filter((policy) => !policy.providerId)} teams={teams} />
@@ -189,19 +191,19 @@ function PersonModels({ orgId, memberId }: { orgId: string; memberId: string }) 
   const rows = usage.data ? gatewayUsageTotals(usage.data) : [];
   const max = rows[0]?.costMicroUsd ?? 0;
   return (
-    <section className={CARD} aria-label="Models they use" data-testid="gateway-person-models">
-      <h3 className={CARD_TITLE}>Models they use</h3>
-      {usage.isPending ? <p role="status" className="mt-2 text-[13px] text-gray-500">Loading…</p>
+    <section className={CARD} aria-label="使用的模型" data-testid="gateway-person-models">
+      <h3 className={CARD_TITLE}>使用的模型</h3>
+      {usage.isPending ? <p role="status" className="mt-2 text-[13px] text-gray-500">正在加载…</p>
         : usage.isError ? <ErrorRetry message={usage.error.message} onRetry={() => void usage.refetch()} />
-          : rows.length === 0 ? <p role="status" className="mt-2 text-[13px] text-gray-500">No requests in the last 31 days.</p>
+          : rows.length === 0 ? <p role="status" className="mt-2 text-[13px] text-gray-500">最近 31 天没有请求。</p>
             : (
               <ul className="mt-1 divide-y divide-gray-100">
                 {rows.map((row) => (
                   <li key={row.id} className="flex items-center gap-3 py-2.5" data-testid="gateway-person-model-row">
                     <ModelMark seriesId={row.id} label={row.label} />
                     <span className="min-w-0 flex-1 truncate text-[13px] font-medium text-gray-900">{row.label}</span>
-                    <ShareBar value={row.costMicroUsd} max={max} label={`${formatUsageCost(row.costMicroUsd)} spent`} />
-                    <span className="w-20 shrink-0 text-right text-[13px] font-medium tabular-nums text-gray-950">{row.unpriced && !row.costMicroUsd ? "Unknown" : formatUsageCost(row.costMicroUsd)}</span>
+                    <ShareBar value={row.costMicroUsd} max={max} label={`已消费 ${formatUsageCost(row.costMicroUsd)}`} />
+                    <span className="w-20 shrink-0 text-right text-[13px] font-medium tabular-nums text-gray-950">{row.unpriced && !row.costMicroUsd ? "未知" : formatUsageCost(row.costMicroUsd)}</span>
                   </li>
                 ))}
               </ul>
@@ -214,7 +216,7 @@ function ErrorRetry({ message, onRetry }: { message: string; onRetry: () => void
   return (
     <div className="mt-2 flex flex-col items-start gap-3" role="alert">
       <DenNotice tone="error" message={message} />
-      <DenButton size="sm" variant="secondary" onClick={onRetry}>Retry</DenButton>
+      <DenButton size="sm" variant="secondary" onClick={onRetry}>重试</DenButton>
     </div>
   );
 }

@@ -362,6 +362,8 @@ OpenWork Cloud. Don't change it on a customer install.
 <!-- BEGIN GENERATED features (pnpm features:sync) -->
 | `config.features.*` | Environment variable | Default | What it does |
 | --- | --- | --- | --- |
+| `gatewayImageGeneration` | `DEN_FEATURE_GATEWAY_IMAGE_GENERATION` | default off | Generate and edit workspace image assets through the configured inference gateway, with artifacts available to chat and coding tools. |
+| `visualConfiguration` | `DEN_FEATURE_VISUAL_CONFIGURATION` | default off | Edit complete project and global agent configuration through structured controls while preserving custom fields and document comments. |
 | `secureSecretFields` | `DEN_FEATURE_SECURE_SECRET_FIELDS` | default off | When an agent sets up a connection, plugin or AI Gateway provider that needs keys, people enter them in private fields in the chat and the agent continues once they are saved. Key fields across OpenWork and OpenWork Cloud can be shown while typing and show saved keys as Replace rows. |
 | `memberListToolbars` | `DEN_FEATURE_MEMBER_LIST_TOOLBARS` | default off | Filter members, teams and roles beside their add action, with compact member rows and secondary actions in the list menu. |
 | `appBuildProgress` | `DEN_FEATURE_APP_BUILD_PROGRESS` | default off | While an agent creates or changes an MCP App, the chat shows each stage it goes through (finding and checking tools, writing the App, building and verifying it) as a checklist with a progress bar. |

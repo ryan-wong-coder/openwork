@@ -29,7 +29,7 @@ export function OrganizationBrandIdentity({
       // eslint-disable-next-line @next/next/no-img-element
       <img
         src={brand.logoUrl}
-        alt={`${organizationName} logo`}
+        alt={`${organizationName} 标志`}
         className={`inline-block max-h-[1.08em] max-w-[12rem] shrink-0 object-contain align-middle ${className}`}
         onError={() => setFailedLogoUrl(brand.logoUrl)}
       />

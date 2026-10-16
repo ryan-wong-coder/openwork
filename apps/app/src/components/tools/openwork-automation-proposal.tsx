@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button"
 import { Tool } from "@/components/ui/tool"
 import { useDenAuth } from "@/react-app/domains/cloud/den-auth-provider"
 import { automationCreationPlacement, useAutomationDeploymentEnabled } from "@/react-app/domains/automations/automation-availability"
+import { isLocalGatewayClient } from "@/app/lib/client-profile"
 import { formatAutomationSchedule } from "@/react-app/domains/automations/automation-format"
 import {
   automationModelOptions,
@@ -104,6 +105,10 @@ export function OpenWorkAutomationProposalTool({ part }: { part: DynamicToolUIPa
 
   if (!proposal) {
     return <Tool toolPart={part} title={t("ui.proposed_an_automation")} />
+  }
+
+  if (isLocalGatewayClient()) {
+    return <Tool toolPart={part} title="当前本地客户端不支持自动化调度" />
   }
 
   // Pin the workspace of the pane this card renders in — renderer-owned state.

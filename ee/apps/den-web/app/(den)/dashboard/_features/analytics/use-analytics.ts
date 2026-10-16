@@ -18,7 +18,7 @@ const REQUEST_TIMEOUT_MS = 12000;
 
 async function getTelemetryPayload(path: string): Promise<unknown> {
   const { response, payload } = await requestJson(path, { method: "GET" }, REQUEST_TIMEOUT_MS);
-  if (!response.ok) throw new Error("Could not load analytics. Try again.");
+  if (!response.ok) throw new Error("无法加载分析数据，请重试。");
   return payload;
 }
 

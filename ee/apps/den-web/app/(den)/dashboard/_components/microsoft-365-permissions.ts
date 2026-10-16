@@ -19,14 +19,14 @@ export type Microsoft365PermissionGroup = {
 
 export const MICROSOFT_365_PERMISSION_GROUPS: readonly Microsoft365PermissionGroup[] = [
   {
-    name: "Calendar",
+    name: "日历",
     permissions: [
-      { key: "calendarRead", label: "Read Outlook calendar", scope: "Calendars.Read" },
+      { key: "calendarRead", label: "读取 Outlook 日历", scope: "Calendars.Read" },
       {
         key: "calendarWrite",
-        label: "Create and manage calendar events",
+        label: "创建与管理日历事件",
         scope: "Calendars.ReadWrite",
-        detail: "Microsoft grants full access to the member's calendars.",
+        detail: "Microsoft 将授予成员日历的完整访问权限。",
       },
     ],
   },
@@ -35,33 +35,33 @@ export const MICROSOFT_365_PERMISSION_GROUPS: readonly Microsoft365PermissionGro
     permissions: [
       {
         key: "mailDraft",
-        label: "Create and manage email drafts",
+        label: "创建与管理邮件草稿",
         scope: "Mail.ReadWrite",
-        detail: "Microsoft grants mailbox read/write access. This option does not send mail.",
+        detail: "Microsoft 将授予邮箱读写权限，此选项不会发送邮件。",
       },
-      { key: "mailRead", label: "Read Outlook mail", scope: "Mail.Read" },
-      { key: "mailSend", label: "Send Outlook email", scope: "Mail.Send", detail: "Sending requires an explicit request and confirmation; a saved draft is not sent automatically." },
-      { key: "mailManage", label: "Manage read status, categories, and mailbox folders", scope: "Mail.ReadWrite" },
+      { key: "mailRead", label: "读取 Outlook 邮件", scope: "Mail.Read" },
+      { key: "mailSend", label: "发送 Outlook 邮件", scope: "Mail.Send", detail: "发送邮件需要明确请求与确认，已保存草稿不会自动发送。" },
+      { key: "mailManage", label: "管理已读状态、分类与邮箱文件夹", scope: "Mail.ReadWrite" },
     ],
   },
   {
     name: "OneDrive",
     permissions: [
-      { key: "filesRead", label: "Read OneDrive files", scope: "Files.Read" },
-      { key: "filesWrite", label: "Create and update OneDrive files", scope: "Files.ReadWrite" },
-      { key: "filesReadAll", label: "Read all files the member can access", scope: "Files.Read.All" },
-      { key: "filesFull", label: "Full access to files the member can access", scope: "Files.ReadWrite.All" },
+      { key: "filesRead", label: "读取 OneDrive 文件", scope: "Files.Read" },
+      { key: "filesWrite", label: "创建与更新 OneDrive 文件", scope: "Files.ReadWrite" },
+      { key: "filesReadAll", label: "读取成员可访问的所有文件", scope: "Files.Read.All" },
+      { key: "filesFull", label: "完整访问成员可访问的文件", scope: "Files.ReadWrite.All" },
     ],
   },
   {
-    name: "Teams",
+    name: "团队",
     permissions: [
-      { key: "teamsChatRead", label: "Read Teams chats", scope: "Chat.Read" },
+      { key: "teamsChatRead", label: "读取 Teams 对话", scope: "Chat.Read" },
       {
         key: "teamsChatSend",
-        label: "Send Teams chat messages",
+        label: "发送 Teams 对话消息",
         scope: "Chat.Read + ChatMessage.Send",
-        detail: "Includes chat read access so OpenWork can find an existing chat; it cannot create a new chat.",
+        detail: "包含对话读取权限，以便 OpenWork 查找已有对话；无法创建新对话。",
       },
     ],
   },

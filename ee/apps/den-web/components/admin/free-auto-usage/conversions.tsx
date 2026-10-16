@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE } from "../../../app/_lib/locale";
+
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -16,33 +18,33 @@ import { requestAdmin } from "../admin-request";
 import { AdminDeferredContent } from "../admin-deferred-content";
 import { formatCount, formatShare } from "./format";
 
-const Chart = dynamic(() => import("./conversion-chart"), { loading: () => <div className="h-64 bg-slate-50" aria-label="Loading conversion chart" /> });
+const Chart = dynamic(() => import("./conversion-chart"), { loading: () => <div className="h-64 bg-slate-50" aria-label="正在加载转化图表" /> });
 const STAGES = [
-  { value: "all", label: "All outcomes" }, { value: "signed-in", label: "Signed in afterward" },
-  { value: "new-account", label: "Created an account" }, { value: "subscribed", label: "Paid subscription" }, { value: "unlinked", label: "Unlinked guests" },
+  { value: "all", label: "所有结果" }, { value: "signed-in", label: "之后已登录" },
+  { value: "new-account", label: "已创建账户" }, { value: "subscribed", label: "付费订阅" }, { value: "unlinked", label: "未关联访客" },
 ];
 type Row = AdminFreeAutoConversions["rows"][number];
 function date(value: string | null) {
-  return value ? new Date(value).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) : "—";
+  return value ? new Date(value).toLocaleString(DEFAULT_DEN_LOCALE, { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) : "—";
 }
 function elapsed(after: string | null, before: string) {
   if (!after) return null;
   const minutes = Math.max(0, Math.floor((Date.parse(after) - Date.parse(before)) / 60_000));
-  return minutes < 60 ? `${minutes}m after limit` : minutes < 1440 ? `${Math.floor(minutes / 60)}h after limit` : `${Math.floor(minutes / 1440)}d after limit`;
+  return minutes < 60 ? `达到限制后 ${minutes} 分钟` : minutes < 1440 ? `达到限制后 ${Math.floor(minutes / 60)} 小时` : `达到限制后 ${Math.floor(minutes / 1440)} 天`;
 }
 function milestone(value: string | null, before: string) {
-  return <span className="whitespace-nowrap" title={value ?? "No recorded event"}>{date(value)}{value ? <span className="block text-xs text-slate-500">{elapsed(value, before)}</span> : null}</span>;
+  return <span className="whitespace-nowrap" title={value ?? "没有已记录的事件"}>{date(value)}{value ? <span className="block text-xs text-slate-500">{elapsed(value, before)}</span> : null}</span>;
 }
 const columns: DenTableColumn<Row>[] = [
-  { key: "person", header: "Person / journey", render: (row) => <div className="min-w-44">
-    {row.userId ? <Link prefetch={false} className="font-medium text-slate-900 underline-offset-4 hover:underline" href={`/admin/users?search=${encodeURIComponent(row.email ?? row.userId)}`}>{row.name ?? row.email ?? "Account"}</Link> : <span className="text-slate-500">Unlinked guest journey</span>}
-    <p className="text-xs text-slate-500">{row.email ?? "No identified account"}</p>
-    <p className="mt-1 text-xs text-slate-500">{row.startedAsGuest ? "Guest journey" : "Signed-in member"}</p>
+  { key: "person", header: "人员 / 使用路径", render: (row) => <div className="min-w-44">
+    {row.userId ? <Link prefetch={false} className="font-medium text-slate-900 underline-offset-4 hover:underline" href={`/admin/users?search=${encodeURIComponent(row.email ?? row.userId)}`}>{row.name ?? row.email ?? "账号"}</Link> : <span className="text-slate-500">未关联访客的使用路径</span>}
+    <p className="text-xs text-slate-500">{row.email ?? "未识别到账户"}</p>
+    <p className="mt-1 text-xs text-slate-500">{row.startedAsGuest ? "访客使用路径" : "已登录成员"}</p>
   </div> },
-  { key: "limit", header: "Limit observed", render: (row) => <span className="whitespace-nowrap" title={row.exhaustedAt}>{date(row.exhaustedAt)}</span> },
-  { key: "signin", header: "Signed in afterward", render: (row) => milestone(row.signedInAt, row.exhaustedAt) },
-  { key: "signup", header: "New account", render: (row) => milestone(row.signedUpAt, row.exhaustedAt) },
-  { key: "subscription", header: "Paid subscription", render: (row) => milestone(row.subscribedAt, row.exhaustedAt) },
+  { key: "limit", header: "已触及限额", render: (row) => <span className="whitespace-nowrap" title={row.exhaustedAt}>{date(row.exhaustedAt)}</span> },
+  { key: "signin", header: "之后已登录", render: (row) => milestone(row.signedInAt, row.exhaustedAt) },
+  { key: "signup", header: "新账户", render: (row) => milestone(row.signedUpAt, row.exhaustedAt) },
+  { key: "subscription", header: "付费订阅", render: (row) => milestone(row.subscribedAt, row.exhaustedAt) },
 ];
 
 export function FreeAutoConversions({ days, refreshKey }: { days: number; refreshKey: number }) {
@@ -66,7 +68,7 @@ export function FreeAutoConversions({ days, refreshKey }: { days: number; refres
         if (result.access === "ready") { setReport(result.data); setError(null); }
         else { setError(result.message); if (result.access !== "error") setReport(null); }
         setLoading(false);
-      }).catch(() => { if (!controller.signal.aborted) { setError("Could not load free Auto conversions."); setLoading(false); } });
+      }).catch(() => { if (!controller.signal.aborted) { setError("无法加载免费 Auto 转化数据，请重试。"); setLoading(false); } });
     }, 200);
     return () => { clearTimeout(timer); controller.abort(); };
   }, [days, page, refreshKey, search, stage]);
@@ -77,31 +79,31 @@ export function FreeAutoConversions({ days, refreshKey }: { days: number; refres
     window.history.pushState(null, "", `/admin/free-auto${query.size ? `?${query}` : ""}`);
   };
   const metrics = report ? [
-    { label: "Reached limit", value: report.totals.reachedLimit, filter: "all" }, { label: "Signed in afterward", value: report.totals.signedIn, filter: "signed-in" },
-    { label: "New accounts", value: report.totals.newAccounts, filter: "new-account" }, { label: "Paid subscriptions", value: report.totals.subscribed, filter: "subscribed" },
+    { label: "已达限额", value: report.totals.reachedLimit, filter: "all" }, { label: "之后已登录", value: report.totals.signedIn, filter: "signed-in" },
+    { label: "新账户数", value: report.totals.newAccounts, filter: "new-account" }, { label: "付费订阅数", value: report.totals.subscribed, filter: "subscribed" },
   ] : [];
   return <section className="flex min-w-0 flex-col gap-5 rounded-lg border border-slate-200 bg-white p-5" aria-labelledby="free-auto-conversions-title" aria-busy={loading}>
-    <div><h2 id="free-auto-conversions-title" className="text-base font-medium text-slate-900">After the free limit</h2>
+    <div><h2 id="free-auto-conversions-title" className="text-base font-medium text-slate-900">达到免费限额后</h2>
 </div>
     {error ? <DenNotice message={error} /> : null}
-    {!report && loading ? <p className="text-sm text-slate-500" role="status">Loading conversion activity…</p> : null}
+    {!report && loading ? <p className="text-sm text-slate-500" role="status">正在加载转化活动…</p> : null}
     {report ? <>
       <div className="grid grid-cols-2 border-y border-slate-200 md:grid-cols-4">{metrics.map((metric) => <button key={metric.filter} type="button" onClick={() => changeStage(metric.filter)}
-        className="min-w-0 px-3 py-4 text-left transition-colors hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-slate-500" aria-label={`Show ${metric.label}`} aria-pressed={stage === metric.filter}>
+        className="min-w-0 px-3 py-4 text-left transition-colors hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-slate-500" aria-label={`显示${metric.label}`} aria-pressed={stage === metric.filter}>
         <span className="block text-xs text-slate-500">{metric.label}</span><span className="mt-2 block text-2xl font-medium tabular-nums text-slate-900">{formatCount(metric.value)}</span>
-        <span className="mt-1 block text-xs text-slate-500">{metric.filter === "all" ? "Accounts and anonymous journeys" : `${formatShare(metric.value, report.totals.reachedLimit)} of the limit cohort`}</span>
+        <span className="mt-1 block text-xs text-slate-500">{metric.filter === "all" ? "账户与匿名使用路径" : `占触及限额群体的 ${formatShare(metric.value, report.totals.reachedLimit)}`}</span>
       </button>)}</div>
-      {report.totals.reachedLimit ? <div><AdminDeferredContent label="Show conversion activity chart" placeholderClassName="h-64">{() => <Chart daily={report.daily} />}</AdminDeferredContent><p className="mt-2 text-xs text-slate-500">Grouped by the UTC day the limit was first observed in this range. Recent cohorts still have time to convert.</p></div>
-        : <p className="rounded-md bg-slate-50 p-4 text-sm text-slate-500">No tracked limit observations in this range. New activity will appear here after tracking is deployed.</p>}
-      <div className="flex flex-wrap gap-3"><div className="min-w-48 flex-1"><DenInput icon={Search} aria-label="Search conversion people" placeholder="Search people by name, email, or user ID" value={draftSearch} onChange={(event) => setSearch(event.target.value.slice(0, 160))} /></div>
-        <DenSelect aria-label="Conversion outcome" value={stage} onChange={(event) => changeStage(event.target.value)}>{STAGES.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</DenSelect></div>
-      <DenTable columns={columns} rows={report.rows} getRowKey={(row) => row.id} density="compact" emptyLabel="No journeys match these filters." />
-      <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500"><span>{formatCount(report.page.total)} matching accounts / journeys · page {page} · dates in UTC</span>
-        <div className="flex gap-2"><DenButton variant="secondary" size="sm" disabled={loading || page <= 1} onClick={() => setPage(page - 1)}>Previous</DenButton><DenButton variant="secondary" size="sm" disabled={loading || !report.page.hasMore} onClick={() => setPage(page + 1)}>Next</DenButton></div></div>
-      <details className="text-xs leading-5 text-slate-500"><summary className="cursor-pointer text-slate-600">How attribution works</summary>
-        <p className="mt-2">Known accounts count once per selected range; unlinked guests count by random journey, so they are not a count of unique people. Guest sign-in means the app was seen authenticated with the same client-reported identifier. Member sign-in means a new session was created after the limit. A new account must have been created after the guest limit.</p>
-        <p className="mt-2">Paid conversion requires a positive payment for a subscription started after the limit, attributed to its checkout creator. Existing subscriptions, renewals of older subscriptions, trials, failed payments, and teammates are excluded. Sign-in and purchase are separate outcomes, and each has a 30-day attribution window.</p>
-        <p className="mt-2">Only activity recorded by the updated clients and services is available. We do not match guests by IP or backfill historical guest identities. Shared app profiles can share a journey. Guest observations are capped at 100 new journeys per network per UTC day to bound abuse. {formatCount(report.totals.unlinkedGuests)} guest journeys remain unlinked in this range. {report.firstRecordedAt ? `Earliest retained observation: ${date(report.firstRecordedAt)} UTC.` : "No observations recorded yet."}</p>
+      {report.totals.reachedLimit ? <div><AdminDeferredContent label="显示转化活动图表" placeholderClassName="h-64">{() => <Chart daily={report.daily} />}</AdminDeferredContent><p className="mt-2 text-xs text-slate-500">按此范围内首次触及限额的 UTC 日期分组。近期用户仍可能继续转化。</p></div>
+        : <p className="rounded-md bg-slate-50 p-4 text-sm text-slate-500">此范围内尚未记录触及限额的活动，启用跟踪后新活动将显示在这里。</p>}
+      <div className="flex flex-wrap gap-3"><div className="min-w-48 flex-1"><DenInput icon={Search} aria-label="搜索转化人员" placeholder="按姓名、邮箱或用户 ID 搜索人员" value={draftSearch} onChange={(event) => setSearch(event.target.value.slice(0, 160))} /></div>
+        <DenSelect aria-label="转化结果" value={stage} onChange={(event) => changeStage(event.target.value)}>{STAGES.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</DenSelect></div>
+      <DenTable columns={columns} rows={report.rows} getRowKey={(row) => row.id} density="compact" emptyLabel="没有符合筛选条件的使用路径。" />
+      <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500"><span>{formatCount(report.page.total)} 个匹配账户 / 使用路径 · 页 {page} · 日期均为 UTC</span>
+        <div className="flex gap-2"><DenButton variant="secondary" size="sm" disabled={loading || page <= 1} onClick={() => setPage(page - 1)}>上一个</DenButton><DenButton variant="secondary" size="sm" disabled={loading || !report.page.hasMore} onClick={() => setPage(page + 1)}>下一步</DenButton></div></div>
+      <details className="text-xs leading-5 text-slate-500"><summary className="cursor-pointer text-slate-600">归因规则</summary>
+        <p className="mt-2">已知账户在所选范围内仅统计一次；未关联访客按随机使用路径统计，不代表独立人数。访客登录指同一客户端标识已通过身份验证；成员登录指触及限额后创建了新会话；新账户必须在访客触及限额后创建。</p>
+        <p className="mt-2">付费转化要求触及限额后新建的订阅发生实际支付，并归因于结账创建者。既有订阅、续费、试用、失败支付和队友不计入。登录与购买分别统计，归因窗口均为 30 天。</p>
+        <p className="mt-2">仅提供新版客户端和服务记录的活动。不按 IP 匹配访客，也不回填历史访客身份。共享应用配置可能使用同一条路径。为限制滥用，每个网络在每个 UTC 自然日最多记录 100 条新访客路径。 {formatCount(report.totals.unlinkedGuests)} 条访客使用路径在此范围内仍未关联账户。 {report.firstRecordedAt ? `最早保留的观测记录：${date(report.firstRecordedAt)} UTC。` : "尚未记录观察数据。"}</p>
       </details>
     </> : null}
   </section>;

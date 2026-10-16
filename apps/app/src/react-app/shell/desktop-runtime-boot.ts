@@ -25,6 +25,7 @@ import { isDesktopRuntime, isElectronRuntime, safeStringify } from "../../app/ut
 import { useEnterpriseActivationRequired } from "../domains/cloud/enterprise-activation-gate";
 import { useServer } from "../kernel/server-provider";
 import { useBootState } from "./boot-state";
+import { clientWorkspaceVisible, isLocalGatewayClient } from "@/app/lib/client-profile";
 
 // Module-scoped latch so React Strict-Mode's "mount-unmount-remount" cycle in
 // dev only triggers the boot sequence once per app launch, and the async work
@@ -147,9 +148,9 @@ export function useDesktopRuntimeBoot() {
         }
 
         const selectedId = resolveWorkspaceListSelectedId(list);
-        const workspace = selectedId
-          ? list.workspaces.find((w) => w.id === selectedId)
-          : undefined;
+        const visibleWorkspaces = list.workspaces.filter(clientWorkspaceVisible);
+        const workspace = visibleWorkspaces.find((w) => w.id === selectedId)
+          ?? (isLocalGatewayClient() ? visibleWorkspaces[0] : undefined);
         if (!workspace) {
           await startServerWithoutDesktopWorkspace();
           return;
@@ -159,6 +160,11 @@ export function useDesktopRuntimeBoot() {
         if (!workspaceRoot) {
           await startServerWithoutDesktopWorkspace();
           return;
+        }
+
+        if (isLocalGatewayClient() && workspace.id !== selectedId) {
+          await workspaceSetSelected(workspace.id);
+          await workspaceSetRuntimeActive(workspace.id);
         }
 
         if (isElectronRuntime()) {

@@ -95,36 +95,36 @@ export function normalizePublicGitHubPluginUrl(value: string): string {
   try {
     url = new URL(value.trim());
   } catch {
-    throw new Error("Enter a valid public GitHub plugin URL.");
+    throw new Error("请输入有效的公开 GitHub 插件地址。");
   }
   if (url.protocol !== "https:" || (url.hostname !== "github.com" && url.hostname !== "www.github.com")) {
-    throw new Error("Plugin imports must use an HTTPS github.com URL.");
+    throw new Error("插件导入必须使用 github.com 的 HTTPS 地址。");
   }
   if (url.username || url.password || url.search || url.hash) {
-    throw new Error("GitHub plugin URLs cannot include credentials, query parameters, or fragments.");
+    throw new Error("GitHub 插件地址不能包含凭据、查询参数或片段。");
   }
   return url.toString();
 }
 
 function validateSelectedServerUrl(server: PluginImportServer): void {
-  if (!server.url) throw new Error(`The selected MCP server "${server.name}" does not have a remote URL.`);
+  if (!server.url) throw new Error(`所选 MCP 服务器“${server.name}”没有远程地址。`);
   let url: URL;
   try {
     url = new URL(server.url);
   } catch {
-    throw new Error(`The selected MCP server "${server.name}" has an invalid URL.`);
+    throw new Error(`所选 MCP 服务器“${server.name}”的地址无效。`);
   }
   if (url.protocol !== "https:") {
-    throw new Error(`The selected MCP server "${server.name}" must use HTTPS.`);
+    throw new Error(`所选 MCP 服务器“${server.name}”必须使用 HTTPS。`);
   }
   if (url.username || url.password || url.hash || hasCredentialQuery(url)) {
-    throw new Error(`The selected MCP server "${server.name}" URL cannot contain credentials or a fragment.`);
+    throw new Error(`所选 MCP 服务器“${server.name}”的地址不能包含凭据或片段标识。`);
   }
 }
 
 export function parsePluginImportPreview(payload: unknown): PluginImportPreview {
   const item = isRecord(payload) && isRecord(payload.item) ? payload.item : null;
-  if (!item) throw new Error("GitHub plugin import preview response was incomplete.");
+  if (!item) throw new Error("GitHub 插件导入预览响应不完整，请重试。");
 
   return {
     repositoryFullName: typeof item.repositoryFullName === "string" ? item.repositoryFullName : "",
@@ -213,10 +213,10 @@ export function minimizePluginImportDraft(draft: PluginImportDraft): PluginImpor
   const selectedSkills = draft.preview.skills.filter((skill) => selectedSkillKeys.includes(skill.skillKey));
 
   if (selectedServers.length !== selectedServerKeys.length || selectedServers.some((server) => !server.supported)) {
-    throw new Error("The selected MCP servers no longer match this plugin preview.");
+    throw new Error("所选 MCP 服务器与当前插件预览不再匹配。");
   }
   if (selectedSkills.length !== selectedSkillKeys.length || selectedSkills.some((skill) => !skill.supported)) {
-    throw new Error("The selected skills no longer match this plugin preview.");
+    throw new Error("所选技能与当前插件预览不再匹配。");
   }
   selectedServers.forEach(validateSelectedServerUrl);
 
@@ -265,7 +265,7 @@ export function pluginImportSourceLabel(preview: PluginImportPreview): string {
 export function pluginImportSuggestedName(preview: PluginImportPreview): string {
   const source = preview.rootPath.split("/").filter(Boolean).at(-1)
     ?? preview.repositoryFullName.split("/").filter(Boolean).at(-1)
-    ?? "Imported plugin";
+    ?? "已导入插件";
   return source
     .split(/[-_]+/g)
     .filter(Boolean)

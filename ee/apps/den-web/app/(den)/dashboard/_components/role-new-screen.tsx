@@ -35,10 +35,10 @@ export function RoleNewScreen() {
   const { orgContext } = useOrgDashboard();
   const sharedRoles = useSharedRolesOn();
   if (orgContext && !orgFeatureEnabled(orgContext, "teamRoles")) {
-    return <PermissionsPage title="Create role" testId="role-new"><DenNotice tone="neutral" message="Roles aren't turned on for this organization yet." /></PermissionsPage>;
+    return <PermissionsPage title="创建角色" testId="role-new"><DenNotice tone="neutral" message="此组织尚未启用角色功能。" /></PermissionsPage>;
   }
   if (permissions.state !== "ready") {
-    return <PermissionsPage title="Create role" testId="role-new"><PermissionsAccessState access={permissions} /></PermissionsPage>;
+    return <PermissionsPage title="创建角色" testId="role-new"><PermissionsAccessState access={permissions} /></PermissionsPage>;
   }
   return sharedRoles ? <SharedRoleNewContent ready={permissions} /> : <RoleNewContent ready={permissions} />;
 }
@@ -57,7 +57,7 @@ function SharedRoleNewContent({ ready }: { ready: ReadyAccess }) {
   const [name, setName] = useState("");
   const [teamIds, setTeamIds] = useState<string[]>([]);
   const [allowed, setAllowed] = useState<ReadonlySet<PermissionKey>>(new Set());
-  const back = { href: `${getMembersRoute(ready.orgSlug)}?tab=roles`, label: "Roles" };
+  const back = { href: `${getMembersRoute(ready.orgSlug)}?tab=roles`, label: "角色" };
   const trimmed = name.trim();
 
   const roleByTeam = new Map<string, string>();
@@ -68,13 +68,13 @@ function SharedRoleNewContent({ ready }: { ready: ReadyAccess }) {
   const teams = (orgContext?.teams ?? []).map((team) => ({
     id: team.id,
     name: team.name,
-    detail: `${team.memberIds.length} ${team.memberIds.length === 1 ? "member" : "members"}, now ${team.grantsOrganizationAdmin ? "Admin" : roleByTeam.get(team.id) ?? "Member"}`,
+    detail: `${team.memberIds.length} 名成员，现为 ${team.grantsOrganizationAdmin ? "管理员" : roleByTeam.get(team.id) ?? "成员"}`,
   }));
   const chosenNames = teamIds.flatMap((id) => teams.find((team) => team.id === id)?.name ?? []);
 
   const rows: PermissionEditorRow[] = PERMISSION_KEYS.map((key) => {
     const status: PermissionStatus = allowed.has(key) ? "allow" : "deny";
-    return { key, status, draft: status, lockedReason: ready.held.has(key) ? null : "You don't have this permission" };
+    return { key, status, draft: status, lockedReason: ready.held.has(key) ? null : "你没有此权限" };
   });
 
   function toggle(key: PermissionKey, next: PermissionStatus) {
@@ -91,7 +91,7 @@ function SharedRoleNewContent({ ready }: { ready: ReadyAccess }) {
     if (!trimmed) return;
     try {
       const set = await create.mutateAsync({ name: trimmed, teamIds, permissions: [...allowed].map((key) => ({ key, status: "allow" })) });
-      toast({ title: `${trimmed} created` });
+      toast({ title: `已创建 ${trimmed}` });
       router.replace(getPermissionSetRoute(ready.orgSlug, set.id));
     } catch {
       return;
@@ -99,14 +99,14 @@ function SharedRoleNewContent({ ready }: { ready: ReadyAccess }) {
   }
 
   return (
-    <PermissionsPage title="Create role" back={back} testId="role-new">
+    <PermissionsPage title="创建角色" back={back} testId="role-new">
       <label className="flex max-w-sm flex-col gap-1.5">
-        <span className="text-[13px] font-medium text-gray-700">Role name</span>
-        <DenInput value={name} onChange={(event) => { create.reset(); setName(event.target.value); }} placeholder="Skill publisher" maxLength={120} data-testid="role-new-name" />
+        <span className="text-[13px] font-medium text-gray-700">角色名称</span>
+        <DenInput value={name} onChange={(event) => { create.reset(); setName(event.target.value); }} placeholder="技能发布者" maxLength={120} data-testid="role-new-name" />
       </label>
 
       <div className="flex flex-col gap-1.5">
-        <span className="text-[13px] font-medium text-gray-700">Teams</span>
+        <span className="text-[13px] font-medium text-gray-700">团队</span>
         <TeamsField teams={teams} chosenIds={teamIds} onChange={(ids) => { create.reset(); setTeamIds(ids); }} rowTestId="role-new-team" />
       </div>
 
@@ -118,13 +118,13 @@ function SharedRoleNewContent({ ready }: { ready: ReadyAccess }) {
         testId="role-new-save-bar"
         summary={trimmed ? (
           <span className="flex flex-col">
-            <span className="font-medium text-gray-900">{`${allowed.size} ${allowed.size === 1 ? "permission" : "permissions"} selected`}</span>
-            <span>{chosenNames.length > 0 ? `Given to ${chosenNames.join(", ")}` : "No team yet"}</span>
+            <span className="font-medium text-gray-900">{`已选择 ${allowed.size} 项权限`}</span>
+            <span>{chosenNames.length > 0 ? `已授予 ${chosenNames.join(", ")}` : "尚无团队"}</span>
           </span>
-        ) : <span>Name the role to save</span>}
+        ) : <span>请输入角色名称后保存</span>}
       >
-        <LinkButton variant="secondary" href={back.href}>Cancel</LinkButton>
-        <DenButton disabled={!trimmed} loading={create.isPending} onClick={() => void submit()} data-testid="role-new-create">Create role</DenButton>
+        <LinkButton variant="secondary" href={back.href}>取消</LinkButton>
+        <DenButton disabled={!trimmed} loading={create.isPending} onClick={() => void submit()} data-testid="role-new-create">创建角色</DenButton>
       </DenStickyActionBar>
     </PermissionsPage>
   );
@@ -142,7 +142,7 @@ function RoleNewContent({ ready }: { ready: ReadyAccess }) {
   const [overrides, setOverrides] = useState<ReadonlyMap<PermissionKey, PermissionStatus>>(new Map());
   const base = new Set(roleStartKeys(start, ready.held));
   const allowed = new Set(PERMISSION_KEYS.filter((key) => (overrides.get(key) ?? (base.has(key) ? "allow" : "deny")) === "allow"));
-  const back = { href: `${getMembersRoute(ready.orgSlug)}?tab=roles`, label: "Roles" };
+  const back = { href: `${getMembersRoute(ready.orgSlug)}?tab=roles`, label: "角色" };
 
   const people = (orgContext?.members ?? [])
     .filter((member) => member.userId !== null)
@@ -151,7 +151,7 @@ function RoleNewContent({ ready }: { ready: ReadyAccess }) {
 
   const rows: PermissionEditorRow[] = PERMISSION_KEYS.map((key) => {
     const status: PermissionStatus = allowed.has(key) ? "allow" : "deny";
-    return { key, status, draft: status, lockedReason: ready.held.has(key) ? null : "You don't have this permission" };
+    return { key, status, draft: status, lockedReason: ready.held.has(key) ? null : "你没有此权限" };
   });
 
   function chooseStart(next: RoleStart) {
@@ -172,7 +172,7 @@ function RoleNewContent({ ready }: { ready: ReadyAccess }) {
         memberIds,
         permissions: [...allowed].map((key) => ({ key, status: "allow" })),
       });
-      toast({ title: `${trimmed} created` });
+      toast({ title: `已创建 ${trimmed}` });
       router.replace(getTeamRoute(ready.orgSlug, created.teamId));
     } catch {
       return;
@@ -182,20 +182,20 @@ function RoleNewContent({ ready }: { ready: ReadyAccess }) {
   const halfMade = create.error instanceof RolePermissionsNotSavedError ? create.error : null;
 
   return (
-    <PermissionsPage title="Create role" back={back} testId="role-new">
+    <PermissionsPage title="创建角色" back={back} testId="role-new">
       <label className="flex max-w-sm flex-col gap-1.5">
-        <span className="text-[13px] font-medium text-gray-700">Name</span>
-        <DenInput value={name} onChange={(event) => { create.reset(); setName(event.target.value); }} placeholder="Skill publishers" maxLength={255} data-testid="role-new-name" />
+        <span className="text-[13px] font-medium text-gray-700">名称</span>
+        <DenInput value={name} onChange={(event) => { create.reset(); setName(event.target.value); }} placeholder="技能发布团队" maxLength={255} data-testid="role-new-name" />
       </label>
 
       <div className="flex flex-col gap-1.5">
-        <span className="text-[13px] font-medium text-gray-700">People</span>
+        <span className="text-[13px] font-medium text-gray-700">人员</span>
         <PeopleField people={people} chosenIds={memberIds} onChange={setMemberIds} rowTestId="role-new-person" />
       </div>
 
       {/* Same native radio cards as Change role on a team page. */}
       <fieldset className="flex flex-col gap-1.5">
-        <legend className="mb-1.5 text-[13px] font-medium text-gray-700">Start from</legend>
+        <legend className="mb-1.5 text-[13px] font-medium text-gray-700">初始权限</legend>
         <div className="grid gap-2 sm:grid-cols-3">
           {START_OPTIONS.map((option) => (
             <DenOptionCard
@@ -215,15 +215,15 @@ function RoleNewContent({ ready }: { ready: ReadyAccess }) {
       {halfMade ? (
         <DenNotice
           tone="error"
-          message={<>The team was created but its permissions weren't saved: {halfMade.message} <Link className="font-medium underline underline-offset-2" href={getTeamRoute(ready.orgSlug, halfMade.teamId)}>Open the team</Link> to try again.</>}
+          message={<>团队已创建，但权限未保存： {halfMade.message} <Link className="font-medium underline underline-offset-2" href={getTeamRoute(ready.orgSlug, halfMade.teamId)}>打开团队</Link> 以重试。</>}
         />
       ) : create.error ? <DenNotice tone="error" message={create.error.message} /> : null}
 
       <PermissionEditor rows={rows} onToggle={toggle} />
 
-      <DenStickyActionBar testId="role-new-save-bar" summary={<span>{trimmed ? `${allowed.size} allowed for ${trimmed}` : "Name the role to save"}</span>}>
-        <LinkButton variant="secondary" href={back.href}>Cancel</LinkButton>
-        <DenButton disabled={!trimmed || halfMade !== null} loading={create.isPending} onClick={() => void submit()} data-testid="role-new-create">Create role</DenButton>
+      <DenStickyActionBar testId="role-new-save-bar" summary={<span>{trimmed ? `已为 ${trimmed} 允许${allowed.size}` : "请输入角色名称后保存"}</span>}>
+        <LinkButton variant="secondary" href={back.href}>取消</LinkButton>
+        <DenButton disabled={!trimmed || halfMade !== null} loading={create.isPending} onClick={() => void submit()} data-testid="role-new-create">创建角色</DenButton>
       </DenStickyActionBar>
     </PermissionsPage>
   );

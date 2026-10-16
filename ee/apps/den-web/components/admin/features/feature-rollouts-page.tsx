@@ -1,6 +1,7 @@
 "use client";
 
 import { RefreshCw } from "lucide-react";
+import { denFeatureCopy } from "../../../app/_lib/feature-copy";
 import { useCallback, useEffect, useState } from "react";
 import { DenBadge } from "../../../app/(den)/_components/ui/badge";
 import { DenButton } from "../../../app/(den)/_components/ui/button";
@@ -40,8 +41,7 @@ function parseFeature(value: unknown): AdminFeature | null {
     : [];
   return {
     key: value.key,
-    label: value.label,
-    description: typeof value.description === "string" ? value.description : "",
+    ...denFeatureCopy(value.key, { label: value.label, description: typeof value.description === "string" ? value.description : "" }),
     deployments,
     available: value.available === true,
     enabled: value.enabled === true,
@@ -60,13 +60,13 @@ function parseReport(payload: unknown): FeaturesReport | null {
 
 /** One state line per feature (DESIGN.md P1). */
 function rolloutState(feature: AdminFeature): string {
-  if (!feature.available) return "Not part of this deployment";
-  if (feature.killed) return "Turned off everywhere";
-  if (feature.lock !== null) return feature.lock ? "On for everyone · set by deployment config" : "Off for everyone · set by deployment config";
-  return feature.enabled ? "On for everyone · organization overrides apply" : "Off · organization overrides only";
+  if (!feature.available) return "此部署不包含该功能";
+  if (feature.killed) return "已全局关闭";
+  if (feature.lock !== null) return feature.lock ? "对所有人启用 · 由部署配置设置" : "对所有人关闭 · 由部署配置设置";
+  return feature.enabled ? "对所有人启用 · 组织单独设置优先" : "已关闭 · 仅适用组织单独设置";
 }
 
-const ON_OFF = [{ value: "on", label: "On" }, { value: "off", label: "Off" }] as const;
+const ON_OFF = [{ value: "on", label: "开启" }, { value: "off", label: "关闭" }] as const;
 
 function FeatureRow({ feature, onChange }: { feature: AdminFeature; onChange: (next: AdminFeature) => void }) {
   const [saving, setSaving] = useState(false);
@@ -92,7 +92,7 @@ function FeatureRow({ feature, onChange }: { feature: AdminFeature; onChange: (n
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
           <p className="text-[14px] font-medium text-gray-900" title={feature.description}>{feature.label}</p>
-          {feature.deployments.length === 1 ? <DenBadge>{feature.deployments[0] === "cloud" ? "Cloud only" : "Self-hosted only"}</DenBadge> : null}
+          {feature.deployments.length === 1 ? <DenBadge>{feature.deployments[0] === "cloud" ? "仅云端" : "仅自托管"}</DenBadge> : null}
         </div>
         <p data-testid={`admin-feature-state-${feature.key}`} className={`mt-1 text-[13px] ${feature.killed ? "text-red-700" : "text-gray-500"}`}>
           {rolloutState(feature)}
@@ -101,7 +101,7 @@ function FeatureRow({ feature, onChange }: { feature: AdminFeature; onChange: (n
       </div>
       <div className="flex shrink-0 items-center gap-3">
         <DenSegmented
-          aria-label={`${feature.label} for everyone`}
+          aria-label={`${feature.label}的全局设置`}
           options={ON_OFF.map((option) => ({ ...option, disabled: controlsDisabled }))}
           value={feature.enabled ? "on" : "off"}
           onChange={(value) => {
@@ -113,7 +113,7 @@ function FeatureRow({ feature, onChange }: { feature: AdminFeature; onChange: (n
         <div className="flex w-40 justify-end">
           {feature.killed ? (
             <DenButton type="button" variant="secondary" size="sm" data-testid={`admin-feature-restore-${feature.key}`} disabled={controlsDisabled} onClick={() => void save({ killed: false })}>
-              Restore
+              恢复
             </DenButton>
           ) : (
             <DenButton
@@ -124,12 +124,12 @@ function FeatureRow({ feature, onChange }: { feature: AdminFeature; onChange: (n
               disabled={controlsDisabled}
               onClick={() => {
                 // Turning a feature off for everyone, overrides included, is the one destructive action here (DESIGN.md P8).
-                if (window.confirm(`Turn off ${feature.label} for everyone on this deployment? Organization overrides and deployment locks are ignored until you restore it.`)) {
+                if (window.confirm(`对本部署中的所有人关闭“${feature.label}”？恢复前将忽略组织单独设置与部署锁定。`)) {
                   void save({ killed: true });
                 }
               }}
             >
-              Turn off everywhere
+              全局关闭
             </DenButton>
           )}
         </div>
@@ -165,9 +165,9 @@ export function FeatureRolloutsPage() {
   return (
     <div className="flex flex-col gap-6">
       <DenPageHeader
-        title="Features"
+        title="功能"
         caption={state.status === "ready" ? (state.report.deployment === "cloud" ? "OpenWork Cloud" : "Self-hosted") : undefined}
-        action={<DenButton variant="secondary" size="sm" icon={RefreshCw} onClick={() => void load()}>Refresh</DenButton>}
+        action={<DenButton variant="secondary" size="sm" icon={RefreshCw} onClick={() => void load()}>刷新</DenButton>}
       />
       {state.status === "signed-out" || state.status === "forbidden" ? <DenNotice tone="warning" message={state.message} /> : null}
       {state.status === "error" ? <DenNotice message={state.message} /> : null}

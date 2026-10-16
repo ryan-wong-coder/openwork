@@ -102,7 +102,7 @@ export function useFreeAutoUsage(days: FreeAutoRange) {
       })
       .catch((error: unknown) => {
         if (controller.signal.aborted) return;
-        setState({ status: "error", message: error instanceof Error ? error.message : "The request failed.", report: last.current });
+        setState({ status: "error", message: error instanceof Error ? error.message : "请求失败，请重试。", report: last.current });
       });
     return () => controller.abort();
   }, [days, hasSessionCookie, nonce]);

@@ -15,7 +15,7 @@ import type { PermissionsAccess } from "./permissions-ui";
 
 type ReadyAccess = Extract<PermissionsAccess, { state: "ready" }>;
 
-function plural(count: number, one: string, many = `${one}s`) {
+function plural(count: number, one: string, many = one) {
   return `${count} ${count === 1 ? one : many}`;
 }
 
@@ -44,17 +44,17 @@ export function SharedRoleTeams({ ready, set }: { ready: ReadyAccess; set: Permi
     .map((team) => ({
       id: team.id,
       name: team.name,
-      detail: team.grantsOrganizationAdmin ? "Admin team" : roleByTeam.has(team.id) ? `Now ${roleByTeam.get(team.id)}` : "Now Member",
+      detail: team.grantsOrganizationAdmin ? "管理员团队" : roleByTeam.has(team.id) ? `现在为 ${roleByTeam.get(team.id)}` : "现为成员",
     }));
 
   async function add(ids: string[]) {
     setError(null);
     try {
       for (const teamId of ids) await setTeamRole.mutateAsync({ teamId, permissionSetId: set.id });
-      const names = ids.map((id) => teams.find((team) => team.id === id)?.name ?? "a team");
-      toast({ title: `${set.name} given to ${names.join(", ")}` });
+      const names = ids.map((id) => teams.find((team) => team.id === id)?.name ?? "一个团队");
+      toast({ title: `已将 ${set.name} 授予 ${names.join(", ")}` });
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Couldn't give the role.");
+      setError(cause instanceof Error ? cause.message : "无法分配角色，请重试。");
     }
   }
 
@@ -62,17 +62,17 @@ export function SharedRoleTeams({ ready, set }: { ready: ReadyAccess; set: Permi
     <div className="flex flex-col gap-3" data-testid="role-teams">
       <ItemPanel>
         {set.teams.length === 0 ? (
-          <p className="px-5 py-4 text-[13px] text-gray-500" data-testid="role-teams-empty">No team has this role.</p>
+          <p className="px-5 py-4 text-[13px] text-gray-500" data-testid="role-teams-empty">没有团队拥有此角色。</p>
         ) : set.teams.map((team) => {
-          const name = team.name ?? "A deleted team";
+          const name = team.name ?? "已删除的团队";
           const memberCount = teams.find((entry) => entry.id === team.id)?.memberIds.length ?? 0;
           return (
             <AccessRow
               key={team.id}
               lead={<IconTile icon={Users} />}
               title={name}
-              description={plural(memberCount, "member")}
-              trailing={canManage ? <RemoveButton label={`Remove ${set.name} from ${name}`} onClick={() => setRemoving({ id: team.id, name })} /> : undefined}
+              description={plural(memberCount, "名成员")}
+              trailing={canManage ? <RemoveButton label={`从 ${name} 移除 ${set.name}`} onClick={() => setRemoving({ id: team.id, name })} /> : undefined}
               testId="role-team-row"
             />
           );
@@ -89,8 +89,8 @@ export function SharedRoleTeams({ ready, set }: { ready: ReadyAccess; set: Permi
         onRemove={async (team) => {
           await setTeamRole.mutateAsync({ teamId: team.id, permissionSetId: null });
           toast({
-            title: `Removed ${set.name} from ${team.name}`,
-            action: { label: "Undo", onClick: () => { void setTeamRole.mutateAsync({ teamId: team.id, permissionSetId: set.id }); } },
+            title: `已从 ${team.name} 移除 ${set.name}`,
+            action: { label: "撤销", onClick: () => { void setTeamRole.mutateAsync({ teamId: team.id, permissionSetId: set.id }); } },
           });
         }}
       />
@@ -108,7 +108,7 @@ function RemoveRoleFromTeam({ set, team, onClose, onRemove }: {
   const cancelRef = useRef<HTMLButtonElement>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const others = set.teams.filter((entry) => entry.id !== team?.id).map((entry) => entry.name ?? "A deleted team");
+  const others = set.teams.filter((entry) => entry.id !== team?.id).map((entry) => entry.name ?? "已删除的团队");
 
   async function confirm() {
     if (!team) return;
@@ -118,7 +118,7 @@ function RemoveRoleFromTeam({ set, team, onClose, onRemove }: {
       await onRemove(team);
       onClose();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Couldn't remove the role.");
+      setError(cause instanceof Error ? cause.message : "无法移除角色，请重试。");
     } finally {
       setBusy(false);
     }
@@ -129,14 +129,14 @@ function RemoveRoleFromTeam({ set, team, onClose, onRemove }: {
       <AlertDialog.Portal>
         <AlertDialog.Backdrop className="fixed inset-0 z-50 bg-gray-950/45" />
         <AlertDialog.Popup initialFocus={cancelRef} className="fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-[16px] border border-gray-200 bg-white p-5 outline-none" data-testid="role-team-remove-dialog">
-          <AlertDialog.Title className="text-[15px] font-medium text-gray-950">Remove {set.name} from {team?.name}?</AlertDialog.Title>
+          <AlertDialog.Title className="text-[15px] font-medium text-gray-950">从 {team?.name} 移除 {set.name}？</AlertDialog.Title>
           <AlertDialog.Description className="mt-2 text-[13px] leading-5 text-gray-600">
-            People in {team?.name} lose these permissions now.{others.length > 0 ? ` ${others.join(", ")} keep${others.length === 1 ? "s" : ""} the role.` : ""}
+            所属人员 {team?.name} 将立即失去这些权限。{others.length > 0 ? `${others.join(", ")} 将保留此角色。` : ""}
           </AlertDialog.Description>
           {error ? <DenNotice tone="error" className="mt-3" message={error} /> : null}
           <div className="mt-5 flex justify-end gap-2">
-            <AlertDialog.Close ref={cancelRef} disabled={busy} className={buttonVariants({ variant: "secondary" })}>Cancel</AlertDialog.Close>
-            <DenButton variant="destructive" loading={busy} onClick={() => void confirm()} data-testid="role-team-remove-confirm">Remove</DenButton>
+            <AlertDialog.Close ref={cancelRef} disabled={busy} className={buttonVariants({ variant: "secondary" })}>取消</AlertDialog.Close>
+            <DenButton variant="destructive" loading={busy} onClick={() => void confirm()} data-testid="role-team-remove-confirm">移除</DenButton>
           </div>
         </AlertDialog.Popup>
       </AlertDialog.Portal>
@@ -157,7 +157,7 @@ export function RoleNameField({ ready, set }: { ready: ReadyAccess; set: Permiss
     if (!changed) return;
     try {
       await rename.mutateAsync(trimmed);
-      toast({ title: `Renamed to ${trimmed}` });
+      toast({ title: `已重命名为 ${trimmed}` });
     } catch {
       return;
     }
@@ -165,7 +165,7 @@ export function RoleNameField({ ready, set }: { ready: ReadyAccess; set: Permiss
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor="role-name" className="text-[13px] font-medium text-gray-700">Role name</label>
+      <label htmlFor="role-name" className="text-[13px] font-medium text-gray-700">角色名称</label>
       <div className="flex items-center gap-2">
         <DenInput
           id="role-name"
@@ -177,7 +177,7 @@ export function RoleNameField({ ready, set }: { ready: ReadyAccess; set: Permiss
           onKeyDown={(event) => { if (event.key === "Enter") void save(); }}
           data-testid="role-name"
         />
-        {changed ? <DenButton size="sm" loading={rename.isPending} onClick={() => void save()} data-testid="role-name-save">Rename</DenButton> : null}
+        {changed ? <DenButton size="sm" loading={rename.isPending} onClick={() => void save()} data-testid="role-name-save">重命名</DenButton> : null}
       </div>
       {rename.error ? <DenNotice tone="error" message={rename.error.message} /> : null}
     </div>

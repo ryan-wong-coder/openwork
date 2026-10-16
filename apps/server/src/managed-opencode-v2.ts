@@ -53,7 +53,7 @@ export interface ManagedOpencodeV2ServerOptions {
   port?: number;
   env?: Record<string, string>;
   bootTimeoutMs?: number;
-  contextTools?: { url: string; token: string; browser?: { url: string; token: string } };
+  contextTools?: { url: string; token: string; browser?: { url: string; token: string }; image?: { url: string; token: string } };
   permissions?: () => Promise<EnginePermissionRule[]>;
   /** Extra absolute skill directories registered before boot, so no later config write reloads the catalog. */
   skills?: string[];
@@ -212,7 +212,7 @@ export function renderOpencodeV2Config(input: {
   mcpResultsPluginDirectory?: string;
   mcpReadinessPluginDirectory?: string;
   contextPluginDirectory?: string;
-  contextTools?: { url: string; token: string; browser?: { url: string; token: string } };
+  contextTools?: { url: string; token: string; browser?: { url: string; token: string }; image?: { url: string; token: string } };
   agentPermissionRules?: AgentPermissionRule[];
   organizationMcp?: OrganizationMcpServers;
   agentPermissionsPluginDirectory?: string;

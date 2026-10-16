@@ -161,7 +161,7 @@ export function DenSecretInput({
       >
         <span className="min-w-0 flex-1 truncate font-mono text-[13px] text-gray-500">
           <span aria-hidden="true">{MASKED_SECRET}</span>
-          <span className="sr-only">Saved</span>
+          <span className="sr-only">已保存</span>
         </span>
         <DenButton
           variant="ghost"
@@ -169,14 +169,14 @@ export function DenSecretInput({
           disabled={disabled}
           data-testid={replaceTestId}
           // Explicit, because callers wrap the field in a <label>.
-          aria-label="Replace"
+          aria-label="替换"
           className="outline-hidden focus-visible:ring-2 focus-visible:ring-gray-900/20"
           onClick={() => {
             focusOnShow.current = true;
             setReplacing(true);
           }}
         >
-          Replace
+          替换
         </DenButton>
       </span>
     );
@@ -262,11 +262,11 @@ export function DenSecretInput({
           variant="ghost"
           size="xs"
           disabled={disabled}
-          aria-label="Cancel"
+          aria-label="取消"
           className="shrink-0 outline-hidden focus-visible:ring-2 focus-visible:ring-gray-900/20"
           onClick={cancelReplace}
         >
-          Cancel
+          取消
         </DenButton>
       ) : null}
     </span>

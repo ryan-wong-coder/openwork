@@ -72,30 +72,30 @@ function LibraryItemRow({ item, mine, signIn }: {
       await deleteConnection.mutateAsync(item.id);
     } else if (item.type === "plugin") {
       const { response, payload } = await requestJson(`/v1/plugins/${encodeURIComponent(item.id)}/archive`, { method: "POST", body: "{}" }, 15000);
-      if (!response.ok) throw getRequestError(payload, response, "Could not remove it.");
+      if (!response.ok) throw getRequestError(payload, response, "无法移除此项，请重试。");
       await queryClient.invalidateQueries({ queryKey: pluginQueryKeys.all });
     }
     await queryClient.invalidateQueries({ queryKey: libraryQueryKeys.items });
-    toast({ title: `${item.name} is removed`, description: "Nobody can use it anymore." });
+    toast({ title: `已移除 ${item.name}`, description: "此项已不再可供任何人使用。" });
   }
 
   const needsSignIn = item.type === "connection" && item.state === "needs_signin";
   const apiKeyStatus = item.type === "connection" ? signIn.apiKeyStatus(item.id) : null;
   const action = needsSignIn && item.type === "connection" ? (
     item.transport === "native" ? (
-      <DenButton variant="secondary" size="xs" aria-label="Sign in" href={`${getYourConnectionsRoute(orgSlug)}?connectionId=${encodeURIComponent(item.id)}`}>Sign in</DenButton>
+      <DenButton variant="secondary" size="xs" aria-label="登录" href={`${getYourConnectionsRoute(orgSlug)}?connectionId=${encodeURIComponent(item.id)}`}>登录</DenButton>
     ) : (
-      <DenButton variant="secondary" size="xs" aria-label={apiKeyStatus === "reconnect_required" ? "Replace key" : apiKeyStatus === "missing" ? "Add key" : "Sign in"} loading={signIn.pendingId === item.id} onClick={() => void signIn.signIn(item)}>
-        {apiKeyStatus === "reconnect_required" ? "Replace key" : apiKeyStatus === "missing" ? "Add key" : "Sign in"}
+      <DenButton variant="secondary" size="xs" aria-label={apiKeyStatus === "reconnect_required" ? "替换密钥" : apiKeyStatus === "missing" ? "添加密钥" : "登录"} loading={signIn.pendingId === item.id} onClick={() => void signIn.signIn(item)}>
+        {apiKeyStatus === "reconnect_required" ? "替换密钥" : apiKeyStatus === "missing" ? "添加密钥" : "登录"}
       </DenButton>
     )
   ) : (
     <ItemMenu
-      label={`More for ${item.name}`}
+      label={`${item.name} 的更多操作`}
       entries={[
-        { label: "Open", onSelect: () => router.push(href) },
-        ...(mine && item.type === "connection" ? [{ label: "Share", onSelect: () => router.push(getLibraryConnectorShareRoute(orgSlug, item.id)) }] : []),
-        ...(mine && item.type === "plugin" ? [{ label: "Share", onSelect: () => router.push(getLibraryPluginShareRoute(orgSlug, item.id)) }] : []),
+        { label: "打开", onSelect: () => router.push(href) },
+        ...(mine && item.type === "connection" ? [{ label: "分享", onSelect: () => router.push(getLibraryConnectorShareRoute(orgSlug, item.id)) }] : []),
+        ...(mine && item.type === "plugin" ? [{ label: "分享", onSelect: () => router.push(getLibraryPluginShareRoute(orgSlug, item.id)) }] : []),
         ...(mine && item.type !== "workflow" ? [removeEntry(item.name, remove)] : []),
       ]}
     />
@@ -110,7 +110,7 @@ function LibraryItemRow({ item, mine, signIn }: {
         logo={<ItemLogo item={item} />}
         title={item.name}
         description={libraryItemDescription(item)}
-        status={needsSignIn ? undefined : libraryItemReady(item) ? "Ready" : item.type !== "plugin" && item.state === "needs_signin" ? "Sign in" : "Set up"}
+        status={needsSignIn ? undefined : libraryItemReady(item) ? "已就绪" : item.type !== "plugin" && item.state === "needs_signin" ? "登录" : "设置"}
         action={action}
       />
     </div>
@@ -121,10 +121,10 @@ function LibraryEmpty({ onAdd }: { onAdd: () => void }) {
   return (
     <ItemPanel>
       <div className="flex flex-col items-center gap-3 px-5 py-8 text-center" data-testid="library-empty">
-        <h2 className="text-sm font-medium text-[var(--dls-text-primary)]">Nothing in your Library yet</h2>
-        <p className="text-[13px] text-[var(--dls-text-secondary)]">Add a connector, skill or plugin.</p>
-        <DenButton icon={Plus} onClick={onAdd}>Add to library</DenButton>
-        <p className="text-xs text-[var(--dls-text-secondary)]">Only you can use it until you share it.</p>
+        <h2 className="text-sm font-medium text-[var(--dls-text-primary)]">资源库暂无内容</h2>
+        <p className="text-[13px] text-[var(--dls-text-secondary)]">添加连接器、技能或插件。</p>
+        <DenButton icon={Plus} onClick={onAdd}>添加到资源库</DenButton>
+        <p className="text-xs text-[var(--dls-text-secondary)]">分享前仅供你使用。</p>
       </div>
     </ItemPanel>
   );
@@ -205,13 +205,13 @@ function LibraryContent() {
   return (
     <ItemPage testId="library-screen">
       <DenPageHeader
-        title="My Library"
+        title="我的资源库"
         size="compact"
       />
 
       {library.error ? (
         <p className="rounded-2xl border border-gray-100 bg-white px-5 py-4 text-[13px] text-red-600">
-          {library.error instanceof Error ? library.error.message : "Your Library did not load."}
+          {library.error instanceof Error ? library.error.message : "资源库加载失败，请重试。"}
         </p>
       ) : null}
 
@@ -220,7 +220,7 @@ function LibraryContent() {
       {!empty && !library.error ? (
         <>
           <div className="-mt-1 flex flex-wrap items-center justify-between gap-3">
-            <div className="flex flex-wrap items-center gap-1.5" role="tablist" aria-label="Show">
+            <div className="flex flex-wrap items-center gap-1.5" role="tablist" aria-label="显示">
               {LIBRARY_FILTERS.map((entry) => {
                 const active = entry.value === filter;
                 return (
@@ -247,7 +247,7 @@ function LibraryContent() {
                     className={`flex h-7 items-center gap-1.5 rounded-full px-3 text-[12px] transition-colors ${onlyNeedsSignIn ? "bg-gray-900 text-white" : "border border-gray-200 bg-white text-gray-700 hover:bg-gray-50"}`}
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-amber-500" aria-hidden="true" />
-                    Needs sign-in
+                    需要登录
                     <span className={onlyNeedsSignIn ? "text-white/70" : "text-gray-400"}>{needsSignInCount}</span>
                   </button>
                 </>
@@ -255,14 +255,14 @@ function LibraryContent() {
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <FilterInput value={query} onChange={setQuery} className="w-[200px] max-w-full" />
-              <DenButton size="sm" icon={Plus} onClick={openAdd}>Add to library</DenButton>
+              <DenButton size="sm" icon={Plus} onClick={openAdd}>添加到资源库</DenButton>
             </div>
           </div>
 
-          {library.isLoading ? <ItemSectionSkeleton label="Loading your Library" /> : null}
+          {library.isLoading ? <ItemSectionSkeleton label="正在加载资源库" /> : null}
 
           {groups.mine.length > 0 ? (
-            <ItemSection title="Added by you" testId="library-section-mine" variant="rule">
+            <ItemSection title="由你添加" testId="library-section-mine" variant="rule">
               <ItemPanel>
                 {groups.mine.map((item) => (
                   <LibraryItemRow key={`${item.type}:${item.id}`} item={item} mine signIn={signIn} />
@@ -272,7 +272,7 @@ function LibraryContent() {
           ) : null}
 
           {groups.received.length > 0 || modelRows.length > 0 ? (
-            <ItemSection title="From OpenWork" testId="library-section-received" variant="rule">
+            <ItemSection title="来自 OpenWork" testId="library-section-received" variant="rule">
               <ItemPanel>
                 {groups.received.map((item) => (
                   <LibraryItemRow key={`${item.type}:${item.id}`} item={item} mine={false} signIn={signIn} />
@@ -286,18 +286,18 @@ function LibraryContent() {
 
           {filter === "models" && models.error ? (
             <p className="rounded-2xl border border-gray-100 bg-white px-5 py-4 text-[13px] text-gray-600">
-              {models.error instanceof Error ? models.error.message : "Your models did not load."}
+              {models.error instanceof Error ? models.error.message : "模型加载失败，请重试。"}
             </p>
           ) : null}
 
           {filter === "models" && !models.isLoading && !models.error && !hasModels ? (
             <p className="rounded-2xl border border-gray-100 bg-white px-5 py-6 text-center text-[13px] text-gray-500" data-testid="library-models-empty">
-              Your organization hasn't given you any models yet.
+              组织尚未向你分配模型。
             </p>
           ) : null}
 
           {!library.isLoading && !models.isLoading && groups.mine.length === 0 && groups.received.length === 0 && modelRows.length === 0 && !(filter === "models" && (models.error || !hasModels)) ? (
-            <p className="rounded-2xl border border-gray-100 bg-white px-5 py-6 text-center text-[13px] text-gray-500">Nothing matches.</p>
+            <p className="rounded-2xl border border-gray-100 bg-white px-5 py-6 text-center text-[13px] text-gray-500">没有匹配项。</p>
           ) : null}
         </>
       ) : null}

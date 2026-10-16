@@ -1,5 +1,7 @@
 import type { ServerConfig } from "./types.js";
 import { createWorkspaceKvStore, isRecord } from "./workspace-kv-store.js";
+import { runtimeDbPath } from "./runtime-db.js";
+import { withConfigurationWriteLock } from "./configuration-write-lock.js";
 
 function normalizeOpenworkWorkspaceConfig(value: unknown): Record<string, unknown> {
   return isRecord(value) ? value : {};
@@ -29,9 +31,11 @@ export async function writeOpenworkWorkspaceConfig(
   workspaceId: string,
   updater: (current: Record<string, unknown>) => Record<string, unknown>,
 ): Promise<Record<string, unknown>> {
-  const next = normalizeOpenworkWorkspaceConfig(updater(await readOpenworkWorkspaceConfig(config, workspaceId)));
-  await openworkWorkspaceConfigStore.set(config, workspaceId, next);
-  return next;
+  return withConfigurationWriteLock(`${runtimeDbPath(config)}:openwork:${workspaceId}`, async () => {
+    const next = normalizeOpenworkWorkspaceConfig(updater(await readOpenworkWorkspaceConfig(config, workspaceId)));
+    await openworkWorkspaceConfigStore.set(config, workspaceId, next);
+    return next;
+  });
 }
 
 export async function hasOpenworkWorkspaceConfig(

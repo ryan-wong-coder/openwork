@@ -57,41 +57,41 @@ function installerOsFor(platform: InstallPlatform | null, detected: DetectedPlat
 /** Copy for opening the downloaded installer, per operating system. */
 function openGuidance(os: InstallerOs | null, fileName: string | null): OpenGuidance {
   const openFile = fileName
-    ? `Double-click ${fileName} in Downloads.`
-    : "Open the OpenWork Enterprise download in your Downloads folder.";
+    ? `在“下载”文件夹中双击 ${fileName}。`
+    : "打开“下载”文件夹中的 OpenWork Enterprise 安装文件。";
 
   if (os === "macos") {
     return {
-      actions: [openFile, "Drag OpenWork Enterprise to Applications, then open it."],
+      actions: [openFile, "将 OpenWork Enterprise 拖入“应用程序”，然后打开。"],
       trust: {
-        title: "macOS confirms apps downloaded from the internet",
-        body: "Choose Open when macOS asks you to confirm the signed OpenWork Enterprise app.",
+        title: "macOS 会确认从互联网下载的应用",
+        body: "macOS 要求确认已签名的 OpenWork Enterprise 应用时，选择“打开”。",
       },
     };
   }
   if (os === "windows") {
     return {
-      actions: [openFile, "Complete the OpenWork Enterprise setup, then open the app."],
+      actions: [openFile, "完成 OpenWork Enterprise 安装，然后打开应用。"],
       trust: {
-        title: "Windows may warn before it opens the installer",
-        body: "If you see “Windows protected your PC”, choose More info, then Run anyway.",
+        title: "Windows 可能在打开安装程序前显示警告",
+        body: "若看到“Windows 已保护你的电脑”，请选择“更多信息”，再选择“仍要运行”。",
       },
     };
   }
   if (os === "linux") {
     return {
       actions: [
-        "Make the downloaded AppImage executable.",
-        "Open the OpenWork Enterprise AppImage.",
+        "为下载的 AppImage 添加执行权限。",
+        "打开 OpenWork Enterprise AppImage。",
       ],
       trust: null,
     };
   }
   return {
-    actions: [openFile, `Choose Install in the installer window.`],
+    actions: [openFile, "在安装窗口中选择“安装”。"],
     trust: {
-      title: "Your computer may ask before it opens the installer",
-      body: "If you see a warning about an app from the internet, choose to open it anyway. This is normal for a new app.",
+      title: "计算机可能在打开安装程序前要求确认",
+      body: "若看到关于互联网应用的提示，请确认后打开。",
     },
   };
 }
@@ -161,13 +161,13 @@ async function fetchInstallConfig() {
   );
   if (!response.ok) {
     if (response.status === 401) {
-      throw new Error("Sign in to your Den portal to install OpenWork.");
+      throw new Error("登录 Den 门户以安装 OpenWork。");
     }
     throw new Error(getInstallConfigErrorMessage(payload, response.status));
   }
   const parsed = parseInstallConfig(payload);
   if (!parsed) {
-    throw new Error("This install link returned incomplete setup details.");
+    throw new Error("此安装链接返回的配置信息不完整。");
   }
   return parsed;
 }
@@ -270,7 +270,7 @@ export function InstallScreen() {
         setConfig(parsed);
       } catch (loadError) {
         if (!cancelled) {
-          setError(loadError instanceof Error ? loadError.message : "Could not load this install link.");
+          setError(loadError instanceof Error ? loadError.message : "无法加载此安装链接，请重试。");
           setConfig(null);
         }
       } finally {
@@ -302,7 +302,7 @@ export function InstallScreen() {
         os: "macos",
         title: "macOS",
         options: [
-          { href: installDownloadHref("mac-arm64"), label: "Apple Silicon (M1+)", arch: "arm64" },
+          { href: installDownloadHref("mac-arm64"), label: "Apple 芯片（M1 及更新机型）", arch: "arm64" },
           { href: installDownloadHref("mac-x64"), label: "Intel", arch: "x64" },
         ],
       },
@@ -310,7 +310,7 @@ export function InstallScreen() {
         os: "windows",
         title: "Windows",
         options: [
-          { href: installDownloadHref("win-x64"), label: "x64 app", arch: "x64" },
+          { href: installDownloadHref("win-x64"), label: "x64 应用", arch: "x64" },
         ],
       },
       {
@@ -339,7 +339,7 @@ export function InstallScreen() {
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1800);
     } catch {
-      setConnectError("Could not copy automatically. Select the install link and copy it manually.");
+      setConnectError("自动复制失败，请选中安装链接后手动复制。");
     }
   }
 
@@ -358,7 +358,7 @@ export function InstallScreen() {
       setAddressCopied(true);
       window.setTimeout(() => setAddressCopied(false), 1800);
     } catch {
-      setConnectError("Could not copy automatically. Select the address and copy it manually.");
+      setConnectError("自动复制失败，请选中地址后手动复制。");
     }
   }
 
@@ -390,8 +390,8 @@ export function InstallScreen() {
       <OnboardingShell state="install-loading" width="wide" background="surface">
         <section className="grid gap-4 rounded-[1.75rem] border border-slate-200/80 bg-white p-6 md:p-8" data-testid="install-page">
           <p className="den-eyebrow">OpenWork Desktop</p>
-          <h1 className="den-title-lg">Loading your install link.</h1>
-          <p className="den-copy">Checking your team's OpenWork setup...</p>
+          <h1 className="den-title-lg">正在加载安装链接。</h1>
+          <p className="den-copy">正在检查团队的 OpenWork 配置…</p>
         </section>
       </OnboardingShell>
     );
@@ -403,8 +403,8 @@ export function InstallScreen() {
         <section className="grid gap-6 rounded-[1.75rem] border border-slate-200/80 bg-white p-6 md:p-8" data-testid="install-page">
           <div className="grid gap-2">
             <p className="den-eyebrow">OpenWork Desktop</p>
-            <h1 className="den-title-lg">This install link can't be opened.</h1>
-            <p className="den-copy">{error ?? "Ask your workspace admin for a fresh install link."}</p>
+            <h1 className="den-title-lg">无法打开此安装链接。</h1>
+            <p className="den-copy">{error ?? "请联系工作区管理员获取新的安装链接。"}</p>
           </div>
         </section>
       </OnboardingShell>
@@ -418,17 +418,17 @@ export function InstallScreen() {
           <div className="grid gap-6 rounded-[1.75rem] border border-[#e7eaef] bg-[#fcfcfd] p-5 text-center sm:p-6 md:p-8" data-testid="install-card">
             <div className="grid justify-items-center gap-3">
               <h1 className="m-0 text-[2rem] font-semibold leading-[1.04] tracking-[-0.05em] text-slate-950 sm:text-[2.4rem]">
-                Download OpenWork
+                下载 OpenWork
               </h1>
-              <p className="den-copy max-w-2xl">Choose the version for your computer, install it, and open OpenWork.</p>
+              <p className="den-copy max-w-2xl">选择适合你计算机的版本，安装并打开 OpenWork。</p>
             </div>
 
             {isMobile ? (
               <div className="den-frame-inset grid gap-3 rounded-[1.5rem] p-5 text-left" data-testid="install-mobile-note">
-                <p className="m-0 text-base font-medium text-[var(--dls-text-primary)]">OpenWork Cloud runs on your computer.</p>
-                <p className="den-copy">Open this link on your Mac, Windows, or Linux machine.</p>
+                <p className="m-0 text-base font-medium text-[var(--dls-text-primary)]">OpenWork 云端客户端在你的计算机上运行。</p>
+                <p className="den-copy">请在 Mac、Windows 或 Linux 计算机上打开此链接。</p>
                 <button type="button" className="den-button-secondary w-full sm:w-auto" onClick={() => void copyCurrentLink()}>
-                  {copied ? "Copied" : "Copy install link"}
+                  {copied ? "已复制" : "复制安装链接"}
                 </button>
               </div>
             ) : (
@@ -436,7 +436,7 @@ export function InstallScreen() {
                 <DownloadPlatformGrid groups={downloadGroups} />
                 {/* Reload so the auth provider reads the desktop handoff parameters on mount. */}
                 <a className="den-button-secondary w-fit" href={DESKTOP_SIGN_IN_PATH}>
-                  I already installed OpenWork
+                  我已安装 OpenWork
                 </a>
               </div>
             )}
@@ -464,16 +464,16 @@ export function InstallScreen() {
               />
             </span>
             <h1 className="m-0 text-[1.5rem] font-semibold leading-tight tracking-[-0.03em] text-slate-950 sm:text-[1.7rem]">
-              Set up OpenWork Enterprise
+              配置 OpenWork Enterprise
             </h1>
           </div>
 
         {isMobile ? (
           <div className="grid gap-3 border-t border-slate-200 pt-5" data-testid="install-mobile-note">
-            <p className="m-0 text-base font-medium text-[var(--dls-text-primary)]">{config.appName} runs on your computer.</p>
-            <p className="den-copy">Open this link on your Mac, Windows, or Linux machine. You can also copy it and send it to yourself.</p>
+            <p className="m-0 text-base font-medium text-[var(--dls-text-primary)]">{config.appName} 在你的计算机上运行。</p>
+            <p className="den-copy">请在 Mac、Windows 或 Linux 计算机上打开此链接，也可以复制后发送给自己。</p>
             <button type="button" className="den-button-secondary w-full sm:w-auto" onClick={() => void copyCurrentLink()}>
-              {copied ? "Copied" : "Copy install link"}
+              {copied ? "已复制" : "复制安装链接"}
             </button>
           </div>
         ) : (
@@ -481,7 +481,7 @@ export function InstallScreen() {
             <InstallStep
               index={1}
               state={guideStep > 1 ? "complete" : "active"}
-              title="Download"
+              title="下载"
               expanded={expandedStep === 1}
               onExpand={() => setExpandedStep(1)}
               testId="install-guide-step-download"
@@ -498,22 +498,22 @@ export function InstallScreen() {
                     onClick={() => advanceGuide(LINK_STEP)}
                     data-testid="install-skip-download"
                   >
-                    Already installed? Skip to step 3
+                    已安装？跳转到第 3 步
                   </button>
                   {downloadState !== "idle" ? (
                     <div className="grid gap-2 rounded-xl border border-slate-100 bg-slate-50 p-4" aria-live="polite" data-testid="install-download-status">
                       {downloadState === "preparing" ? (
                         <>
                           <span className="size-5 animate-spin rounded-full border-2 border-[var(--dls-border-strong)] border-t-[var(--dls-accent)]" aria-hidden="true" />
-                          <p className="m-0 text-sm font-medium text-slate-950">Preparing your {downloadLabel} download...</p>
-                          <p className="m-0 text-[13px] leading-5 text-slate-500">The first download may take up to a minute. Your browser will begin downloading when it is ready.</p>
+                          <p className="m-0 text-sm font-medium text-slate-950">正在准备 {downloadLabel} 下载…</p>
+                          <p className="m-0 text-[13px] leading-5 text-slate-500">首次下载可能需要一分钟，准备完成后浏览器会开始下载。</p>
                         </>
                       ) : (
                         <>
-                          <p className="m-0 text-sm font-medium text-slate-950">Download started</p>
-                          <p className="m-0 text-[13px] leading-5 text-slate-500">Your browser is preparing the file. If it does not appear, try the download again.</p>
+                          <p className="m-0 text-sm font-medium text-slate-950">下载已开始</p>
+                          <p className="m-0 text-[13px] leading-5 text-slate-500">浏览器正在准备文件，若下载未出现，请重试。</p>
                           <a className="den-button-secondary w-fit" href={downloadHref} onClick={() => beginDownload(downloadLabel, downloadHref)}>
-                            Try again
+                            重试
                           </a>
                         </>
                       )}
@@ -524,7 +524,7 @@ export function InstallScreen() {
             <InstallStep
               index={2}
               state={guideStep === 2 ? "active" : guideStep > 2 ? "complete" : "pending"}
-              title="Install and open it"
+              title="安装并打开"
               expanded={expandedStep === 2 && guideStep >= 2}
               onExpand={() => setExpandedStep(2)}
               testId="install-guide-step-open"
@@ -551,7 +551,7 @@ export function InstallScreen() {
                         data-testid="install-app-ready"
                         onClick={() => advanceGuide(LINK_STEP)}
                       >
-                        It&apos;s open
+                        已打开
                       </button>
                   </div>
             </InstallStep>
@@ -559,13 +559,13 @@ export function InstallScreen() {
             <InstallStep
               index={3}
               state={guideStep === 3 ? "active" : "pending"}
-              title="Connect"
+              title="连接"
               expanded={expandedStep === 3 && guideStep >= 3}
               onExpand={() => setExpandedStep(3)}
               testId="install-guide-step-link"
             >
                   <div className="grid content-start gap-3" aria-live="polite">
-                      <p className="m-0 text-sm leading-6 text-slate-600">In the app, enter your workspace address:</p>
+                      <p className="m-0 text-sm leading-6 text-slate-600">在应用中输入工作区地址：</p>
 
                       <div className="flex h-10 w-fit max-w-full items-stretch overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05)]" data-testid="install-workspace-address">
                         <input
@@ -580,12 +580,12 @@ export function InstallScreen() {
                           className="shrink-0 border-l border-slate-200 bg-slate-50 px-3.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950"
                           onClick={() => void copyWorkspaceAddress()}
                         >
-                          {addressCopied ? "Copied" : "Copy"}
+                          {addressCopied ? "已复制" : "复制"}
                         </button>
                       </div>
 
                       <p className="m-0 max-w-xl text-[13px] leading-5 text-slate-500">
-                        Then choose Sign in — sign-in finishes in this browser and sends you back to the app.
+                        然后选择“登录”，在此浏览器中完成登录后将返回应用。
                       </p>
 
                       {connectError ? <p className="m-0 text-sm text-red-600" role="alert">{connectError}</p> : null}

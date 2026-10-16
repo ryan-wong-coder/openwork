@@ -26,7 +26,7 @@ export function TeamPermissionSelect({ label, allowed, onChange }: { label: stri
   return <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 py-3">
     <label htmlFor={id} className="text-sm text-gray-800">{label}</label>
     <select id={id} value={allowed ? "allow" : "deny"} onChange={(event) => onChange(event.target.value === "allow")} className="max-w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-800">
-      <option value="allow">Allowed</option><option value="deny">Blocked</option>
+      <option value="allow">允许</option><option value="deny">已阻止</option>
     </select>
   </div>;
 }

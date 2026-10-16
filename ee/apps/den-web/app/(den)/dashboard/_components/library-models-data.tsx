@@ -36,9 +36,9 @@ async function loadUsableProviders(orgId: string, signal?: AbortSignal) {
     headers: { [ORG_SCOPE_HEADER]: orgId },
     signal,
   }, 15000);
-  if (!response.ok) throw new Error(getErrorMessage(payload, "Your models did not load. Try again."));
+  if (!response.ok) throw new Error(getErrorMessage(payload, "模型加载失败，请重试。"));
   const parsed = usableProvidersResponseSchema.safeParse(payload);
-  if (!parsed.success) throw new Error("Your models did not load. Try again.");
+  if (!parsed.success) throw new Error("模型加载失败，请重试。");
   return parsed.data.inferenceProviders;
 }
 
@@ -49,7 +49,7 @@ export function useLibraryModels(enabled = true) {
     queryKey: libraryModelQueryKeys.providers(orgId),
     enabled: enabled && Boolean(orgId),
     queryFn: ({ signal }) => {
-      if (!orgId) throw new Error("Select an organization first.");
+      if (!orgId) throw new Error("请先选择组织。");
       return loadUsableProviders(orgId, signal);
     },
   });
@@ -57,7 +57,7 @@ export function useLibraryModels(enabled = true) {
     queryKey: libraryModelQueryKeys.connections(orgId),
     enabled: enabled && Boolean(orgId),
     queryFn: ({ signal }) => {
-      if (!orgId) throw new Error("Select an organization first.");
+      if (!orgId) throw new Error("请先选择组织。");
       return loadGatewayMemberConnections(orgId, signal);
     },
     refetchOnWindowFocus: "always",
@@ -116,7 +116,7 @@ export function useModelSignIn() {
         await new Promise((resolve) => setTimeout(resolve, SIGN_IN_POLL_MS));
         if (current.signal.aborted) return;
         if (Date.now() - startedAt > SIGN_IN_WAIT_MS) {
-          setState({ kind: "failed", providerId: provider.id, message: `${signInBrand(provider)} did not confirm the sign-in.` });
+          setState({ kind: "failed", providerId: provider.id, message: `${signInBrand(provider)} 未确认登录。` });
           return;
         }
         const tabClosed = tab?.closed ?? false;
@@ -124,32 +124,32 @@ export function useModelSignIn() {
         const row = latest?.find((entry) => gatewayMemberConnectionKey(entry) === key);
         if (!row) {
           if (tabClosed) {
-            setState({ kind: "failed", providerId: provider.id, message: "Sign-in didn't finish." });
+            setState({ kind: "failed", providerId: provider.id, message: "登录尚未完成。" });
             return;
           }
           continue;
         }
         if (!row.hasAccess || row.configurationRequired) {
-          setState({ kind: "failed", providerId: provider.id, message: "Your admin needs to finish setting this up." });
+          setState({ kind: "failed", providerId: provider.id, message: "管理员需要先完成配置。" });
           await refresh();
           return;
         }
         if (gatewayMemberAuthorizationCompleted(row, set.authorizationRevision)) {
           setState({ kind: "idle" });
           await refresh();
-          toast({ title: row.accountEmail ? `Signed in to ${signInBrand(provider)} as ${row.accountEmail}` : `Signed in to ${signInBrand(provider)}` });
+          toast({ title: row.accountEmail ? `已以 ${row.accountEmail} 身份登录 ${signInBrand(provider)}` : `已登录 ${signInBrand(provider)}` });
           return;
         }
         // The person closed the sign-in tab without finishing, or the provider said no there.
         if (tabClosed) {
-          setState({ kind: "failed", providerId: provider.id, message: "Sign-in didn't finish." });
+          setState({ kind: "failed", providerId: provider.id, message: "登录尚未完成。" });
           return;
         }
       }
     } catch (cause) {
       tab?.close();
       if (current.signal.aborted) return;
-      setState({ kind: "failed", providerId: provider.id, message: cause instanceof Error ? cause.message : "Sign-in did not start." });
+      setState({ kind: "failed", providerId: provider.id, message: cause instanceof Error ? cause.message : "未能开始登录，请重试。" });
     }
   }
 
@@ -165,7 +165,7 @@ export function useModelSignIn() {
     const signal = new AbortController().signal;
     for (const set of sets) await disconnectGatewayMemberConnection(orgId, set, signal);
     await refresh();
-    toast({ title: `Signed out of ${provider.name}`, description: "Sign in again to use its models." });
+    toast({ title: `已退出 ${provider.name}`, description: "重新登录以使用其模型。" });
   }
 
   return {

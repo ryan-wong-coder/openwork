@@ -13,7 +13,7 @@ export function MemberListToolbar({ collection, value, onChange, action, seconda
 }) {
   return (
     <div className="mb-4 flex items-center justify-between gap-3" data-testid={`${collection}-toolbar`}>
-      <FilterInput className="w-56 max-w-[50%]" placeholder={`Filter ${collection}`} value={value} onChange={onChange} />
+      <FilterInput className="w-56 max-w-[50%]" placeholder={`筛选${collection}`} value={value} onChange={onChange} />
       <div className="flex shrink-0 items-center gap-2">{secondary}{action}</div>
     </div>
   );

@@ -90,19 +90,19 @@ export function validateGuidedCustomProvider(input: {
     modelIds: string[];
 }): string | null {
     if (!input.providerId.trim()) {
-        return "Give this provider an ID (for example azure-foundry).";
+        return "请为提供商设置 ID，例如 azure-foundry。";
     }
     if (!isValidGuidedProviderId(input.providerId.trim())) {
-        return "Provider IDs can only contain letters, numbers, dashes, and underscores.";
+        return "提供商 ID 仅可包含字母、数字、连字符与下划线。";
     }
     if (!input.baseUrl.trim()) {
-        return "Add the base URL of the OpenAI-compatible endpoint.";
+        return "请添加兼容 OpenAI API 的端点基础地址。";
     }
     if (!/^https?:\/\//i.test(input.baseUrl.trim())) {
-        return "The base URL must start with http:// or https://";
+        return "基础地址必须以 http:// 或 https:// 开头";
     }
     if (input.modelIds.length === 0) {
-        return "List at least one model ID.";
+        return "请至少列出一个模型 ID。";
     }
     return null;
 }

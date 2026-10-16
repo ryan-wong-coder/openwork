@@ -12,6 +12,8 @@ import { cn } from "@/lib/utils"
 export type SecretFieldHandle = {
   /** Reads the entered value once and clears the field. The caller must not keep it. */
   take: () => string
+  /** Uses the current input for a connection preview without retaining it in state. */
+  preview: <Result>(operation: (value: string) => Promise<Result>) => Promise<Result>
   clear: () => void
   focus: () => void
 }
@@ -81,6 +83,7 @@ export function SecretField({ id, label, labelHidden = false, labelClassName, de
       clear()
       return value
     },
+    preview: async (operation) => operation(element()?.value ?? ""),
     clear,
     focus: () => element()?.focus(),
   }))

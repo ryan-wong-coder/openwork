@@ -26,18 +26,18 @@ export function teamRole(state: TeamRoleState): TeamRole {
 }
 
 export const TEAM_ROLE_LABELS: Record<TeamRole, string> = {
-  member: "Member",
-  admin: "Admin",
-  custom: "Custom",
+  member: "成员",
+  admin: "管理员",
+  custom: "自定义",
 };
 
 /** What the built-in Admin role is for, in one line. */
-export const ADMIN_ROLE_SUMMARY = "Invite people, manage teams, and run connections and models";
+export const ADMIN_ROLE_SUMMARY = "邀请人员、管理团队，以及使用连接和模型";
 
 export const TEAM_ROLE_DESCRIPTIONS: Record<TeamRole, string> = {
-  member: "Nothing beyond what everyone can do",
-  admin: `${ADMIN_ROLE_SUMMARY}, like every admin`,
-  custom: "Choose exactly what people in this team can do",
+  member: "与所有人的基础权限相同",
+  admin: `${ADMIN_ROLE_SUMMARY}，与所有管理员相同`,
+  custom: "选择此团队成员可执行的操作",
 };
 
 /**
@@ -47,24 +47,24 @@ export const TEAM_ROLE_DESCRIPTIONS: Record<TeamRole, string> = {
  * provider access assignments.
  */
 export const EVERYONE_CAN: readonly string[] = [
-  "Use skills, plugins and connections shared with them",
-  "Make their own skills and plugins",
-  "Share what they made with people and teams",
-  "Use the models and providers given to them",
+  "使用共享给自己的技能、插件与连接",
+  "创建自己的技能和插件",
+  "将创建的内容共享给人员与团队",
+  "使用已分配的模型和提供商",
 ];
 
 export type RoleStart = "member" | "admin" | "everything";
 
 export const ROLE_START_LABELS: Record<RoleStart, string> = {
-  member: "Member",
-  admin: "Admin",
-  everything: "Everything the owner can do",
+  member: "成员",
+  admin: "管理员",
+  everything: "所有者拥有的全部权限",
 };
 
 export const ROLE_START_DESCRIPTIONS: Record<RoleStart, string> = {
   member: TEAM_ROLE_DESCRIPTIONS.member,
   admin: ADMIN_ROLE_SUMMARY,
-  everything: "Every permission you can give",
+  everything: "你可以授予的全部权限",
 };
 
 /** The permissions a new role starts with, limited to what the person creating it holds. */
@@ -127,7 +127,7 @@ export function roleName(set: RoleSetLike, options: { shared?: boolean } = {}): 
 
 /** "Built-in role" or "Custom role", for captions next to a role's name. */
 export function roleKindLabel(set: Pick<RoleSetLike, "kind">): string {
-  return set.kind === "team" ? "Custom role" : "Built-in role";
+  return set.kind === "team" ? "自定义角色" : "内置角色";
 }
 
 /** Where a person's permission comes from, in role words. */
@@ -143,13 +143,13 @@ export type PermissionSourceLike = {
 export function permissionSourceRoleLabel(source: PermissionSourceLike, options: { shared?: boolean } = {}): string {
   switch (source.kind) {
     case "owner":
-      return "Owner";
+      return "所有者";
     case "member_default":
       return TEAM_ROLE_LABELS.member;
     case "admin_default":
-      return source.via === "team" && source.teamName ? `Admin via ${source.teamName}` : TEAM_ROLE_LABELS.admin;
+      return source.via === "team" && source.teamName ? `管理员，来自 ${source.teamName}` : TEAM_ROLE_LABELS.admin;
     case "team":
-      if (options.shared && source.setName) return source.teamName ? `${source.setName} via ${source.teamName}` : source.setName;
+      if (options.shared && source.setName) return source.teamName ? `${source.setName}，来自 ${source.teamName}` : source.setName;
       return source.teamName ?? source.label;
     case "code_default":
       return source.set === "admin" ? TEAM_ROLE_LABELS.admin : TEAM_ROLE_LABELS.member;
@@ -177,7 +177,7 @@ export function teamRoleLabels(input: {
   const custom = mine
     .filter((team) => !team.grantsOrganizationAdmin && input.customTeamIds.has(team.id))
     .map((team) => input.customRoleNameByTeam?.get(team.id) ?? team.name);
-  return [...(adminTeams.length > 0 ? [`Admin via ${adminTeams.join(", ")}`] : []), ...new Set(custom)];
+  return [...(adminTeams.length > 0 ? [`管理员，来自 ${adminTeams.join("、")}`] : []), ...new Set(custom)];
 }
 
 /** Invite and role pickers: a built-in role, or a custom role by its team. */
@@ -222,15 +222,15 @@ export function memberRoleOptions(input: {
     { value: "admin", label: TEAM_ROLE_LABELS.admin, caption: null, disabled: Boolean(input.adminLockReason), lockReason: input.adminLockReason },
   ];
   if (input.sharedRoles) return [...builtIn, ...(input.customRoles ?? []).map((role): MemberRoleOption => {
-    const lockReason = !input.canManageTeams ? "Needs Manage teams. Ask the organization owner." : input.lockReasons?.get(role.id) ?? null;
-    return { value: `role:${role.id}`, label: role.name, caption: role.teams.length ? `On ${role.teams.map((team) => team.name ?? "A deleted team").join(", ")}` : "No teams yet", disabled: lockReason !== null, lockReason };
+    const lockReason = !input.canManageTeams ? "需要“管理团队”权限，请联系组织所有者。" : input.lockReasons?.get(role.id) ?? null;
+    return { value: `role:${role.id}`, label: role.name, caption: role.teams.length ? `所属团队：${role.teams.map((team) => team.name ?? "已删除的团队").join("、")}` : "暂无团队", disabled: lockReason !== null, lockReason };
   })];
   return [
     ...builtIn,
     ...input.customRoleTeams.map((team): MemberRoleOption => ({
       value: customRoleChoice(team.id),
       label: team.name,
-      caption: "Custom role",
+      caption: "自定义角色",
       disabled: !input.canManageTeams || team.managedByScim === true,
     })),
   ];
@@ -250,11 +250,11 @@ export function teamRoleLockReason(current: TeamRoleState, next: TeamRole, abili
   const steps = teamRoleSteps(current, next, []);
   for (const step of steps) {
     if (step.kind === "set-admin" && !abilities.canManageAdminTeams) {
-      return "Needs the “Manage Admin teams” permission. Ask the organization owner.";
+      return "需要“管理管理员团队”权限，请联系组织所有者。";
     }
     if (step.kind !== "set-admin") {
-      if (!abilities.permissionsFeature) return "Custom roles need Permissions, an Enterprise feature.";
-      if (!abilities.canManagePermissions) return "Needs the “Manage permissions” permission. Ask the organization owner.";
+      if (!abilities.permissionsFeature) return "自定义角色需要企业版的权限管理功能。";
+      if (!abilities.canManagePermissions) return "需要“管理权限”权限，请联系组织所有者。";
     }
   }
   return null;
@@ -320,10 +320,10 @@ export function sharedTeamRoleSteps(current: SharedTeamRoleState, next: SharedTe
 export function sharedTeamRoleLockReason(current: SharedTeamRoleState, next: SharedTeamRole, abilities: TeamRoleAbilities): string | null {
   for (const step of sharedTeamRoleSteps(current, next)) {
     if (step.kind === "set-admin" && !abilities.canManageAdminTeams) {
-      return "Needs Manage Admin teams. Ask the owner.";
+      return "需要“管理管理员团队”权限，请联系所有者。";
     }
     if (step.kind === "assign" && !abilities.canManagePermissions) {
-      return "Needs Manage permissions. Ask the owner.";
+      return "需要“管理权限”权限，请联系所有者。";
     }
   }
   return null;

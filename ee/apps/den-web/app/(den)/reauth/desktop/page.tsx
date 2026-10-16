@@ -41,12 +41,12 @@ function DesktopReauth() {
     // Read the cookie just created by browser sign-in, through that same origin.
     // API discovery and a legacy web bearer token must not select another session.
     const me = await requestJson("/api/auth/get-session", { method: "GET" });
-    if (!me.response.ok || !getUser(me.payload)) throw new Error("Your browser session could not be confirmed. Try verification again.");
-    if (getUser(me.payload)?.id !== userId) throw new Error(`Sign in as ${email} to confirm this share.`);
+    if (!me.response.ok || !getUser(me.payload)) throw new Error("无法确认浏览器会话，请重新验证。");
+    if (getUser(me.payload)?.id !== userId) throw new Error(`以 ${email} 身份登录以确认此次分享。`);
     const result = await requestJson("/api/auth/desktop-handoff", { method: "POST", body: JSON.stringify({ desktopScheme: "openwork" }) });
-    if (!result.response.ok) throw new Error(getErrorMessage(result.payload, "Could not return verification to OpenWork. Try again."));
+    if (!result.response.ok) throw new Error(getErrorMessage(result.payload, "无法将验证结果返回 OpenWork，请重试。"));
     const grant = getDesktopHandoffGrant(result.payload, null);
-    if (!grant) throw new Error("Could not create a verification link. Try again.");
+    if (!grant) throw new Error("无法创建验证链接，请重试。");
     const returned = new URL("openwork://den-reauth");
     returned.searchParams.set("nonce", nonce);
     returned.searchParams.set("grant", grant);
@@ -55,27 +55,27 @@ function DesktopReauth() {
 
   return <div className="den-page flex min-h-screen items-center justify-center p-6">
     <div className="den-frame grid w-full max-w-[520px] gap-4 p-6">
-      <h1 className="den-title-lg">{link ? "Return to OpenWork to finish sharing" : "Confirm your identity to share apps"}</h1>
-      {!identity ? <p>Loading security check…</p> : !valid ? <p>Open verification from the Share dialog in OpenWork to start a new security check.</p>
-        : loadingSession ? <p>Checking your browser session…</p>
-        : cancelled ? <><p>Verification cancelled. Return to the Share dialog in OpenWork.</p><DenButton onClick={() => { setEmail(""); setCancelled(false); }}>Try verification again</DenButton></>
+      <h1 className="den-title-lg">{link ? "返回 OpenWork 以完成共享" : "验证身份以共享应用"}</h1>
+      {!identity ? <p>正在加载安全检查…</p> : !valid ? <p>从 OpenWork 共享对话框中打开验证，以开始新的安全检查。</p>
+        : loadingSession ? <p>正在检查浏览器会话…</p>
+        : cancelled ? <><p>验证已取消，请返回 OpenWork 共享对话框。</p><DenButton onClick={() => { setEmail(""); setCancelled(false); }}>重新验证</DenButton></>
         : !email ? <form className="grid gap-4" onSubmit={(event) => { event.preventDefault(); setEmail(emailInput.trim()); }}>
-          <p>Enter the email you use in OpenWork to continue verification.</p>
-          <label className="grid gap-2"><span>OpenWork email</span><DenInput type="email" autoComplete="email" required value={emailInput} onChange={(event) => setEmailInput(event.target.value)} /></label>
-          <DenButton type="submit">Continue</DenButton>
+          <p>输入在 OpenWork 中使用的邮箱以继续验证。</p>
+          <label className="grid gap-2"><span>OpenWork 邮箱</span><DenInput type="email" autoComplete="email" required value={emailInput} onChange={(event) => setEmailInput(event.target.value)} /></label>
+          <DenButton type="submit">继续</DenButton>
         </form>
         : link ? <>
-          <p>Return to the app to finish your pending share. If it doesn’t open, copy this link and paste it into the Share dialog.</p>
-          <a className={buttonVariants()} href={link}>Return to OpenWork</a>
-          <DenInput aria-label="Verification link" readOnly value={link} onFocus={(event) => event.target.select()} />
-          <DenButton variant="secondary" onClick={() => void navigator.clipboard.writeText(link).then(() => setCopied(true)).catch(() => setCopied(false))}>{copied ? "Copied" : "Copy verification link"}</DenButton>
-        </> : <p>Complete the security check to return to your pending share.</p>}
+          <p>返回应用完成待处理共享。若无法打开，请复制链接并粘贴到共享对话框。</p>
+          <a className={buttonVariants()} href={link}>返回 OpenWork</a>
+          <DenInput aria-label="验证链接" readOnly value={link} onFocus={(event) => event.target.select()} />
+          <DenButton variant="secondary" onClick={() => void navigator.clipboard.writeText(link).then(() => setCopied(true)).catch(() => setCopied(false))}>{copied ? "已复制" : "复制验证链接"}</DenButton>
+        </> : <p>完成安全检查以返回待处理共享。</p>}
     </div>
     <ReauthDialog open={valid && !loadingSession && Boolean(email) && !cancelled && !link} user={user} orgContext={null} onCancel={() => setCancelled(true)} onVerified={verified}
-      title="Confirm your identity to share apps" description="After verification, return to OpenWork to finish sharing your selected apps." />
+      title="验证身份以共享应用" description="验证后返回 OpenWork，以完成所选应用的共享。" />
   </div>;
 }
 
 export default function DesktopReauthPage() {
-  return <Suspense fallback={<p>Loading security check…</p>}><DesktopReauth /></Suspense>;
+  return <Suspense fallback={<p>正在加载安全检查…</p>}><DesktopReauth /></Suspense>;
 }

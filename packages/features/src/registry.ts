@@ -53,6 +53,20 @@ function defineFeatures<const T extends Record<string, FeatureDefinition>>(featu
 const everywhere = ["cloud", "self_hosted"] as const
 
 export const FEATURES = defineFeatures({
+  gatewayImageGeneration: {
+    label: "Gateway image generation",
+    description: "Generate and edit workspace image assets through the configured inference gateway, with artifacts available to chat and coding tools.",
+    since: "2026-10",
+    deployments: everywhere,
+    default: false,
+  },
+  visualConfiguration: {
+    label: "Visual configuration",
+    description: "Edit complete project and global agent configuration through structured controls while preserving custom fields and document comments.",
+    since: "2026-10",
+    deployments: everywhere,
+    default: false,
+  },
   secureSecretFields: {
     label: "Secure keys in chat",
     description: "When an agent sets up a connection, plugin or AI Gateway provider that needs keys, people enter them in private fields in the chat and the agent continues once they are saved. Key fields across OpenWork and OpenWork Cloud can be shown while typing and show saved keys as Replace rows.",

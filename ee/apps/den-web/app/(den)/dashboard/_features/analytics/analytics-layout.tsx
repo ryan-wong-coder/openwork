@@ -32,13 +32,13 @@ export function AnalyticsPageHeader({ orgSlug, active, title, action, caption }:
   const { orgContext } = useOrgDashboard();
   const libraryUsage = useLibraryUsageAvailable();
   const pages = [
-    { id: "adoption", label: "Usage & adoption", href: getAnalyticsRoute(orgSlug), icon: BarChart3 },
-    ...(runtimeConfig.orgMode === "single_org" || !orgFeatureEnabled(orgContext, "modelsAnalyticsUi") ? [] : [{ id: "models", label: "Models & usage", href: getModelsAnalyticsRoute(orgSlug), icon: null }]),
-    ...(libraryUsage ? [{ id: "library", label: "Plugins & connectors", href: getLibraryUsageRoute(orgSlug), icon: Blocks }] : []),
-    ...(orgContext?.capabilities.workflows && orgContext.entitlements.analytics ? [{ id: "workflows", label: "Workflow Runs", href: getWorkflowRunsRoute(orgSlug), icon: ScrollText }] : []),
+    { id: "adoption", label: "用量与采用率", href: getAnalyticsRoute(orgSlug), icon: BarChart3 },
+    ...(runtimeConfig.orgMode === "single_org" || !orgFeatureEnabled(orgContext, "modelsAnalyticsUi") ? [] : [{ id: "models", label: "模型与用量", href: getModelsAnalyticsRoute(orgSlug), icon: null }]),
+    ...(libraryUsage ? [{ id: "library", label: "插件与连接器", href: getLibraryUsageRoute(orgSlug), icon: Blocks }] : []),
+    ...(orgContext?.capabilities.workflows && orgContext.entitlements.analytics ? [{ id: "workflows", label: "工作流运行记录", href: getWorkflowRunsRoute(orgSlug), icon: ScrollText }] : []),
   ];
   return <header className="grid gap-5">
-    <p className="text-xs font-medium text-[#637291]">Analytics</p>
+    <p className="text-xs font-medium text-[#637291]">分析</p>
     <div className="flex flex-wrap items-start justify-between gap-4">
       <div className="max-w-2xl">
         <div data-dashboard-flat-header>
@@ -48,7 +48,7 @@ export function AnalyticsPageHeader({ orgSlug, active, title, action, caption }:
       </div>
       {action}
     </div>
-    <nav aria-label="Analytics views" className="flex flex-wrap gap-x-6 border-b border-[#e3e7ee]">
+    <nav aria-label="分析视图" className="flex flex-wrap gap-x-6 border-b border-[#e3e7ee]">
       {pages.map(({ id, label, href, icon: Icon }) => <Link key={id} href={href} aria-current={active === id ? "page" : undefined}
         className={`-mb-px focus-visible:outline-offset-4 ${underlineTabClassName(active === id)}`}>
         {Icon ? <Icon className="h-4 w-4" aria-hidden="true" /> : <img src="/openwork-mark.svg" alt="" aria-hidden className="size-4" />}{label}
@@ -82,12 +82,12 @@ export function AnalyticsLoading({ label }: { label: string }) {
 export function AnalyticsErrorState({ title, onRetry, retrying = false }: { title: string; onRetry: () => void; retrying?: boolean }) {
   return <div className={analyticsSurfaceClass} role="alert">
     <AnalyticsEmptyState title={title}
-      action={<DenButton variant="secondary" onClick={onRetry} disabled={retrying}>{retrying ? "Trying again…" : "Try again"}</DenButton>} />
+      action={<DenButton variant="secondary" onClick={onRetry} disabled={retrying}>{retrying ? "正在重试…" : "重试"}</DenButton>} />
   </div>;
 }
 
 export function AnalyticsAdoptionLink({ orgSlug }: { orgSlug?: string | null }) {
   return <Link href={getAnalyticsRoute(orgSlug)} className="inline-flex items-center gap-1 text-sm font-medium text-[var(--dls-text-primary)] hover:underline">
-    View usage &amp; adoption<ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+    查看用量与采用率<ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
   </Link>;
 }

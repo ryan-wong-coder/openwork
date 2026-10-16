@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { FEATURE_KEYS, FEATURES, type FeatureKey } from "@openwork/features";
+import { denFeatureCopy } from "../../app/_lib/feature-copy";
 import { DenButton } from "../../app/(den)/_components/ui/button";
 import { DenSwitch } from "../../app/(den)/_components/ui/switch";
 
@@ -18,11 +19,11 @@ export type AdminOrganizationFeatures = Record<FeatureKey, AdminFeatureState>;
 
 function describeSource(state: AdminFeatureState): string {
   switch (state.source) {
-    case "everyone": return state.everyone ? "On for everyone" : "Off for everyone";
-    case "override": return "Set for this organization";
-    case "lock": return "Set by deployment config";
-    case "killed": return "Turned off everywhere";
-    case "unavailable": return "Not part of this deployment";
+    case "everyone": return state.everyone ? "对所有人启用" : "对所有人关闭";
+    case "override": return "为此组织单独设置";
+    case "lock": return "由部署配置设置";
+    case "killed": return "已全局关闭";
+    case "unavailable": return "此部署不包含该功能";
   }
 }
 
@@ -43,7 +44,7 @@ export function AdminOrganizationFeatureControls({ organizationId, features, loa
     const controller = new AbortController();
     setLoadError(null);
     void loadFeatures(organizationId, controller.signal).catch((error: unknown) => {
-      if (!controller.signal.aborted) setLoadError(error instanceof Error ? error.message : "Could not load features.");
+      if (!controller.signal.aborted) setLoadError(error instanceof Error ? error.message : "无法加载功能，请重试。");
     });
     return () => controller.abort();
   }, [expanded, features, organizationId, loadFeatures, attempt]);
@@ -52,27 +53,27 @@ export function AdminOrganizationFeatureControls({ organizationId, features, loa
     <details className="group mt-4 border-t border-slate-200 pt-4" data-testid="admin-organization-features" onToggle={(event) => setExpanded(event.currentTarget.open)}>
       <summary data-testid="admin-organization-features-toggle" className="flex cursor-pointer list-none items-center gap-2 text-sm font-medium text-slate-700 [&::-webkit-details-marker]:hidden">
         <ChevronRight size={16} strokeWidth={1.5} className="transition-transform duration-150 group-open:rotate-90 motion-reduce:transition-none" aria-hidden="true" />
-        Features
+        功能
       </summary>
       {expanded && !features ? (
         loadError ? (
           <div className="mt-3 text-sm text-red-700" role="alert">
             <p>{loadError}</p>
-            <DenButton variant="secondary" size="sm" onClick={() => setAttempt((value) => value + 1)}>Retry features</DenButton>
+            <DenButton variant="secondary" size="sm" onClick={() => setAttempt((value) => value + 1)}>重新加载功能</DenButton>
           </div>
         ) : (
-          <div className="mt-3 grid gap-2" role="status" aria-label="Loading organization features" data-testid="admin-features-loading">
+          <div className="mt-3 grid gap-2" role="status" aria-label="正在加载组织功能" data-testid="admin-features-loading">
             {[0, 1, 2].map((row) => <div key={row} className="h-10 rounded-lg bg-gray-100" aria-hidden="true" />)}
           </div>
         )
       ) : null}
       {expanded && features ? (
         <div>
-          <a href="/admin/features" className="mt-3 inline-block text-xs font-medium text-slate-500 underline-offset-2 hover:underline">All features</a>
+          <a href="/admin/features" className="mt-3 inline-block text-xs font-medium text-slate-500 underline-offset-2 hover:underline">所有功能</a>
           <ul className="mt-2 grid gap-2">
             {FEATURE_KEYS.filter((key) => features[key].source !== "unavailable").map((key) => {
               const state = features[key];
-              const definition = FEATURES[key];
+              const definition = denFeatureCopy(key, FEATURES[key]);
               return (
                 <li key={key} className="flex items-start gap-3">
                   <label className="flex min-w-0 flex-1 items-start gap-2">
@@ -87,7 +88,7 @@ export function AdminOrganizationFeatureControls({ organizationId, features, loa
                   {state.source === "override" && state.overrideApplies ? (
                     <button type="button" data-testid={`admin-capability-reset-${key}`} disabled={saving} onClick={() => onChange(key, null)}
                       className="shrink-0 text-xs font-medium text-slate-500 underline-offset-2 hover:underline disabled:opacity-50">
-                      Use everyone&apos;s setting
+                      使用全局设置
                     </button>
                   ) : null}
                 </li>
@@ -96,7 +97,7 @@ export function AdminOrganizationFeatureControls({ organizationId, features, loa
           </ul>
         </div>
       ) : null}
-      {error ? <p data-testid="admin-capability-error" role="alert" className="mt-2 text-xs text-red-700">Save failed — the change was reverted. {error}</p> : null}
+      {error ? <p data-testid="admin-capability-error" role="alert" className="mt-2 text-xs text-red-700">保存失败，已撤销此更改。 {error}</p> : null}
     </details>
   );
 }

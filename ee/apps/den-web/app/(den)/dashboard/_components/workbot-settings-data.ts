@@ -24,10 +24,10 @@ export function useWorkbotSettings(orgId: string, enabled = true) {
         { method: "GET", headers: { [ORG_SCOPE_HEADER]: orgId }, cache: "no-store", signal },
         15000,
       );
-      if (response.status === 404) throw new Error("Workbot settings aren't turned on for this organization.");
-      if (!response.ok) throw new Error(getErrorMessage(payload, `Couldn't load Workbot settings (${response.status}).`));
+      if (response.status === 404) throw new Error("此组织尚未启用 Workbot 设置。");
+      if (!response.ok) throw new Error(getErrorMessage(payload, `无法加载 Workbot 设置（${response.status}）。`));
       const parsed = workbotSettingsSchema.safeParse(payload);
-      if (!parsed.success) throw new Error("Workbot settings returned an unexpected response.");
+      if (!parsed.success) throw new Error("Workbot 设置返回了无法识别的响应，请重试。");
       return parsed.data;
     },
   });
@@ -48,7 +48,7 @@ export function useSaveWorkbotModel(orgId: string) {
           { method: "PUT", headers: { [ORG_SCOPE_HEADER]: orgId }, body: JSON.stringify({ model }) },
           15000,
         );
-        if (!response.ok) throw getRequestError(payload, response, `Couldn't save the default model (${response.status}).`);
+        if (!response.ok) throw getRequestError(payload, response, `无法保存默认模型（${response.status}）。`);
         const parsed = workbotSettingsSchema.safeParse(payload);
         result.saved = parsed.success ? parsed.data : null;
       });

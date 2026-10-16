@@ -21,10 +21,10 @@ type Props = {
 export function EnterprisePlanNotice(props: Props) {
   const { orgContext } = useOrgDashboard();
   const teamPlan = props.plan === "team";
-  const planLabel = teamPlan ? "Team" : "Enterprise";
+  const planLabel = teamPlan ? "团队" : "企业版";
   const guidance = orgContext?.currentMember.isOwner
-    ? "You can change the plan."
-    : "Your workspace owner can change the plan.";
+    ? "你可以更改套餐。"
+    : "工作区所有者可以更改套餐。";
 
   return (
     <div className="mb-6" data-testid="enterprise-plan-notice">
@@ -36,17 +36,17 @@ export function EnterprisePlanNotice(props: Props) {
         message={
           <span className="text-[var(--dls-text-secondary)]">
             <span className="font-medium text-[var(--dls-text-primary)]" data-testid="enterprise-plan-notice-state">
-              {props.feature} is part of the {planLabel} plan.
+              {props.feature} 属于 {planLabel} 套餐。
             </span>{" "}
             <span data-testid="enterprise-plan-notice-detail">
-              {props.detail ?? "Your current configuration keeps working."}
+              {props.detail ?? "当前配置将继续生效。"}
             </span>{" "}
             <span data-testid="enterprise-plan-notice-guidance">{guidance}</span>
           </span>
         }
         action={teamPlan ? (
           <a href={props.billingHref ?? "/dashboard"} className={buttonVariants({ variant: "primary", size: "compact" })}>
-            Upgrade to Team
+            升级至团队版
           </a>
         ) : (
           <a
@@ -55,7 +55,7 @@ export function EnterprisePlanNotice(props: Props) {
             rel="noreferrer"
             className={buttonVariants({ variant: "primary", size: "compact" })}
           >
-            Talk to us for Enterprise pricing
+            联系我们了解企业版价格
           </a>
         )}
       />

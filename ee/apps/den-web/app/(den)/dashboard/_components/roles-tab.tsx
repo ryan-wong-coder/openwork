@@ -21,7 +21,7 @@ import { ADMIN_ROLE_SUMMARY } from "./team-roles";
 
 
 function peopleLabel(count: number): string {
-  return `${count} ${count === 1 ? "person" : "people"}`;
+  return `${count} 人`;
 }
 
 /**
@@ -65,45 +65,45 @@ function RolesTabContent({ orgId, orgSlug, permissionsFeature, canViewSets, acti
   const owner = orgContext.members.find((member) => member.isOwner);
   const directAdmins = orgContext.members.filter((member) => !member.isOwner && member.userId !== null && member.role === "admin").length;
   const adminTeams = orgContext.teams.filter((team) => team.grantsOrganizationAdmin);
-  const adminWho = [directAdmins > 0 ? peopleLabel(directAdmins) : null, ...adminTeams.map((team) => team.name)].filter(Boolean).join(", ") || "Nobody yet";
+  const adminWho = [directAdmins > 0 ? peopleLabel(directAdmins) : null, ...adminTeams.map((team) => team.name)].filter(Boolean).join(", ") || "暂无人员";
 
-  const byPermission = canViewSets ? <LinkButton href={getPermissionKeysRoute(orgSlug)} variant="secondary" data-testid="roles-by-permission">By permission</LinkButton> : null;
+  const byPermission = canViewSets ? <LinkButton href={getPermissionKeysRoute(orgSlug)} variant="secondary" data-testid="roles-by-permission">按权限</LinkButton> : null;
 
   return (
     <div data-testid="roles-tab">
       {listToolbars ? <MemberListToolbar collection="roles" value={filter} onChange={setFilter}
-        action={action ?? <DenButton size="sm" icon={LockKeyhole} disabled title={permissionLockReason("permissions.manage")}>Create role</DenButton>}
-        secondary={canViewSets ? <ItemMenu label="Role list actions" entries={[{ label: "By permission", href: getPermissionKeysRoute(orgSlug) }]} /> : undefined}
+        action={action ?? <DenButton size="sm" icon={LockKeyhole} disabled title={permissionLockReason("permissions.manage")}>创建角色</DenButton>}
+        secondary={canViewSets ? <ItemMenu label="角色列表操作" entries={[{ label: "按权限", href: getPermissionKeysRoute(orgSlug) }]} /> : undefined}
       /> : action || byPermission ? <div className="mb-6 flex justify-end gap-2">{byPermission}{action}</div> : null}
       <div className="flex flex-col gap-6">
-      <ItemSection title="Built-in roles" testId="roles-built-in">
+      <ItemSection title="内置角色" testId="roles-built-in">
         <ItemPanel>
-          {!["Member", "Admin", "Owner"].some(matches) ? <p className="px-5 py-6 text-[13px] text-gray-500">No built-in roles match your filter.</p> : null}
-          {matches("Member") ? (
+          {!["成员", "管理员", "所有者"].some(matches) ? <p className="px-5 py-6 text-[13px] text-gray-500">没有符合筛选条件的内置角色。</p> : null}
+          {matches("成员") ? (
           <ItemRow
             logo={<IconTile icon={ShieldCheck} />}
-            title="Member"
-            description="What everyone can do"
-            status="Everyone"
+            title="成员"
+            description="所有人的权限"
+            status="所有人"
             href={memberSet ? getPermissionSetRoute(orgSlug, memberSet.id) : undefined}
             testId="role-row-member"
           />
           ) : null}
-          {matches("Admin") ? (
+          {matches("管理员") ? (
           <ItemRow
             logo={<IconTile icon={ShieldCheck} />}
-            title="Admin"
+            title="管理员"
             description={ADMIN_ROLE_SUMMARY}
             status={adminWho}
             href={adminSet ? getPermissionSetRoute(orgSlug, adminSet.id) : undefined}
             testId="role-row-admin"
           />
           ) : null}
-          {matches("Owner") ? (
+          {matches("所有者") ? (
           <ItemRow
             logo={<IconTile icon={ShieldCheck} />}
-            title="Owner"
-            description="Can do everything"
+            title="所有者"
+            description="拥有全部权限"
             status={owner ? (owner.user.name || owner.user.email) : undefined}
             testId="role-row-owner"
           />
@@ -111,18 +111,18 @@ function RolesTabContent({ orgId, orgSlug, permissionsFeature, canViewSets, acti
         </ItemPanel>
       </ItemSection>
 
-      <ItemSection title="Custom roles" testId="roles-custom">
+      <ItemSection title="自定义角色" testId="roles-custom">
         {!permissionsFeature ? (
-          <DenNotice tone="neutral" icon={LockKeyhole} message="Custom roles need Permissions, an Enterprise feature." />
+          <DenNotice tone="neutral" icon={LockKeyhole} message="自定义角色需要企业版的权限管理功能。" />
         ) : !canViewSets ? (
           <DenNotice tone="neutral" icon={LockKeyhole} message={permissionLockReason("permissions.view")} />
         ) : setsQuery.isPending ? (
-          <ItemPanel><ItemRowsSkeleton label="Loading custom roles" rows={2} /></ItemPanel>
+          <ItemPanel><ItemRowsSkeleton label="正在加载自定义角色" rows={2} /></ItemPanel>
         ) : setsQuery.isError ? (
-          <DenNotice tone="error" message={setsQuery.error instanceof Error ? setsQuery.error.message : "Couldn't load custom roles."} />
+          <DenNotice tone="error" message={setsQuery.error instanceof Error ? setsQuery.error.message : "无法加载自定义角色，请重试。"} />
         ) : teamSets.length === 0 ? (
           <ItemPanel>
-            <div className="px-5 py-6 text-[13px] text-gray-500" data-testid="roles-custom-empty">{listToolbars && filter.trim() ? "No custom roles match your filter." : "No custom roles yet."}</div>
+            <div className="px-5 py-6 text-[13px] text-gray-500" data-testid="roles-custom-empty">{listToolbars && filter.trim() ? "没有符合筛选条件的自定义角色。" : "暂无自定义角色。"}</div>
           </ItemPanel>
         ) : (
           <ItemPanel>
@@ -134,8 +134,8 @@ function RolesTabContent({ orgId, orgSlug, permissionsFeature, canViewSets, acti
                     key={set.id}
                     logo={<IconTile icon={Users} />}
                     title={set.name}
-                    description={`${set.allowedCount} ${set.allowedCount === 1 ? "permission" : "permissions"}`}
-                    status={teams.length > 0 ? teams.map((entry) => entry.name).join(", ") : "No teams yet"}
+                    description={`${set.allowedCount} 项权限`}
+                    status={teams.length > 0 ? teams.map((entry) => entry.name).join(", ") : "暂无团队"}
                     href={getPermissionSetRoute(orgSlug, set.id)}
                     testId="role-row-custom"
                   />
@@ -148,7 +148,7 @@ function RolesTabContent({ orgId, orgSlug, permissionsFeature, canViewSets, acti
                   key={set.id}
                   logo={<IconTile icon={Users} />}
                   title={team?.name ?? set.team?.name ?? set.name}
-                  description={`${set.allowedCount} ${set.allowedCount === 1 ? "permission" : "permissions"}`}
+                  description={`${set.allowedCount} 项权限`}
                   status={peopleLabel(memberCount)}
                   href={team ? getTeamRoute(orgSlug, team.id) : getPermissionSetRoute(orgSlug, set.id)}
                   testId="role-row-custom"

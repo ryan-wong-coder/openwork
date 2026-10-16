@@ -19,9 +19,9 @@ import { LITELLM_DOC_URL, liteLlmAccessGroupId } from "./litellm-provider-data";
 const ROW = "flex items-center gap-4 px-4 py-3";
 
 function modelsLabel(provider: DenInferenceProvider) {
-  if (provider.modelIds === null) return `${provider.models.length} models`;
-  if (provider.modelIds.length === 0) return "All models";
-  return `${provider.modelIds.length} ${provider.modelIds.length === 1 ? "model" : "models"}`;
+  if (provider.modelIds === null) return `${provider.models.length} 个模型`;
+  if (provider.modelIds.length === 0) return "全部模型";
+  return `${provider.modelIds.length} 个模型`;
 }
 
 function ProviderRow({ provider, orgSlug }: { provider: DenInferenceProvider; orgSlug: string | null }) {
@@ -39,14 +39,14 @@ function ProviderRow({ provider, orgSlug }: { provider: DenInferenceProvider; or
   const keyReady = litellm ? litellm.hasSyncKey && (litellm.mode === "member" || provider.credentialStatus === "ready") : provider.credentialStatus === "ready";
   const ready = provider.status === "active" && keyReady && !litellm?.lastSyncError && !nobody;
   const status = provider.status === "disabled"
-    ? { label: "Off", dot: "bg-gray-300", text: "text-gray-500" }
+    ? { label: "关闭", dot: "bg-gray-300", text: "text-gray-500" }
     : litellm?.lastSyncError
-      ? { label: "Sync failed", dot: "bg-amber-500", text: "text-amber-700" }
+      ? { label: "同步失败", dot: "bg-amber-500", text: "text-amber-700" }
       : !keyReady
-      ? { label: "Add a key", dot: "bg-amber-500", text: "text-amber-700" }
+      ? { label: "添加密钥", dot: "bg-amber-500", text: "text-amber-700" }
       : nobody
-        ? { label: "Give access", dot: "bg-amber-500", text: "text-amber-700" }
-        : { label: "Ready", dot: "bg-emerald-500", text: "text-gray-600" };
+        ? { label: "授予访问权限", dot: "bg-amber-500", text: "text-amber-700" }
+        : { label: "已就绪", dot: "bg-emerald-500", text: "text-gray-600" };
   return (
     <div className={ROW} data-testid="gateway-provider-row">
       <DenBrandMark
@@ -61,19 +61,19 @@ function ProviderRow({ provider, orgSlug }: { provider: DenInferenceProvider; or
       </div>
       <p className="w-[140px] shrink-0 text-[13px] text-gray-600">{modelsLabel(provider)}</p>
       <p className={`min-w-0 flex-1 truncate text-[13px] ${nobody ? "text-gray-400" : "text-gray-600"}`} data-testid="gateway-provider-audience">
-        {nobody ? "No one yet" : audience}
+        {nobody ? "暂无人员" : audience}
       </p>
-      <p className={`flex w-[110px] shrink-0 items-center gap-2 text-[12px] ${status.text}`} aria-label={`Status: ${status.label}`}>
+      <p className={`flex w-[110px] shrink-0 items-center gap-2 text-[12px] ${status.text}`} aria-label={`状态：${status.label}`}>
         <span className={`h-1.5 w-1.5 rounded-full ${status.dot}`} aria-hidden="true" />
         {status.label}
       </p>
       <Link
         href={getAiGatewayProviderRoute(orgSlug, provider.id)}
         data-testid="gateway-provider-open"
-        aria-label={`Manage ${provider.name}`}
+        aria-label={`管理 ${provider.name}`}
         className={buttonVariants({ variant: "secondary", size: "sm" })}
       >
-        {ready ? "Manage" : "Set up"}
+        {ready ? "管理" : "设置"}
       </Link>
     </div>
   );
@@ -82,10 +82,10 @@ function ProviderRow({ provider, orgSlug }: { provider: DenInferenceProvider; or
 function EmptyState({ orgSlug }: { orgSlug: string | null }) {
   return (
     <div data-testid="gateway-providers-empty" className="flex flex-col items-center gap-4 py-12 text-center">
-      <h2 className="text-[15px] font-medium text-gray-900">No providers yet</h2>
+      <h2 className="text-[15px] font-medium text-gray-900">暂无提供商</h2>
       <Link href={getNewAiGatewayProviderRoute(orgSlug)} className={buttonVariants({ variant: "primary" })} data-testid="gateway-provider-create">
         <Plus className="h-4 w-4" aria-hidden="true" />
-        Add a provider
+        添加提供商
       </Link>
     </div>
   );
@@ -104,7 +104,7 @@ export function GatewayProvidersSection() {
 
   return (
     <div>
-      {error ? <DenNotice message="Could not load your providers. Your saved configuration has not changed." tone="error" presentation="inline" className="mb-6" action={<DenButton size="sm" variant="secondary" onClick={() => void reloadProviders()}>Retry</DenButton>} /> : null}
+      {error ? <DenNotice message="无法加载提供商，已保存的配置保持不变。" tone="error" presentation="inline" className="mb-6" action={<DenButton size="sm" variant="secondary" onClick={() => void reloadProviders()}>重试</DenButton>} /> : null}
 
       {empty ? <EmptyState orgSlug={orgSlug} /> : (
         <>
@@ -113,15 +113,15 @@ export function GatewayProvidersSection() {
           <section aria-labelledby="gateway-providers-heading" className="mt-8">
             <div className="mb-3 flex items-center justify-between gap-4">
               <h2 id="gateway-providers-heading" className="text-[14px] font-medium text-gray-900">
-                Providers
+                提供商
               </h2>
               <div className="flex items-center gap-2">
                 <div className="w-[200px]">
-                  <DenInput type="search" icon={Search} value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Filter by name" aria-label="Filter by name" className="h-8 text-[12px]" />
+                  <DenInput type="search" icon={Search} value={query} onChange={(event) => setQuery(event.target.value)} placeholder="按名称筛选" aria-label="按名称筛选" className="h-8 text-[12px]" />
                 </div>
                 <Link href={getNewAiGatewayProviderRoute(orgSlug)} data-testid="gateway-provider-create" className={buttonVariants({ variant: "primary", size: "sm" })}>
                   <Plus className="h-4 w-4" aria-hidden="true" />
-                  Add a provider
+                  添加提供商
                 </Link>
               </div>
             </div>
@@ -135,7 +135,7 @@ export function GatewayProvidersSection() {
                   <DenSkeleton className="h-4 w-[110px] shrink-0" />
                   <DenSkeleton className="h-8 w-20 shrink-0 rounded-lg" />
                 </div>
-              )) : filtered.length === 0 ? !error && !busy ? <p className="px-4 py-6 text-[13px] text-gray-500">No providers match that filter. Try another name.</p> : null
+              )) : filtered.length === 0 ? !error && !busy ? <p className="px-4 py-6 text-[13px] text-gray-500">没有匹配的提供商，请尝试其他名称。</p> : null
                 : filtered.map((provider) => <ProviderRow key={provider.id} provider={provider} orgSlug={orgSlug} />)}
             </div>
           </section>

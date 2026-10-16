@@ -17,6 +17,7 @@ import {
   safeStringify,
 } from "@/app/utils";
 import { t } from "@/i18n";
+import { clientWorkspaceVisible } from "@/app/lib/client-profile";
 
 export type RouteWorkspace = OpenworkWorkspaceInfo & {
   displayNameResolved: string;
@@ -318,7 +319,7 @@ export function resolveRouteWorkspaceListState(input: {
     activeId: routeListActiveId(input.list),
     error: null,
     usable: serverItems !== null,
-    workspaces: orderRouteWorkspaces(workspaces, input.orderIds),
+    workspaces: orderRouteWorkspaces(workspaces.filter(clientWorkspaceVisible), input.orderIds),
   };
 }
 
@@ -425,7 +426,7 @@ export function mergeRouteWorkspaces(
     return true;
   });
 
-  return [...mergedServer, ...missingDesktop];
+  return [...mergedServer, ...missingDesktop].filter(clientWorkspaceVisible);
 }
 
 export function orderRouteWorkspaces(workspaces: RouteWorkspace[], orderIds: string[]): RouteWorkspace[] {

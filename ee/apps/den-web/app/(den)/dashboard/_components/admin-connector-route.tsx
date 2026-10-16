@@ -15,15 +15,15 @@ export function AdminConnectorRoute({ connectorId }: { connectorId: string }) {
   const connection = connections.data?.find((entry) => entry.id === connectorId)
     ?? usable.data?.find((entry) => entry.id === connectorId);
   if (connection) return <AdminConnectorPageScreen connection={connection} />;
-  const back = { href: getMcpConnectionsRoute(orgSlug), label: "Connectors" };
-  if (connections.isLoading || usable.isLoading) return <ItemPage><ItemHeader back={back} title="Loading..." /></ItemPage>;
+  const back = { href: getMcpConnectionsRoute(orgSlug), label: "连接器" };
+  if (connections.isLoading || usable.isLoading) return <ItemPage><ItemHeader back={back} title="正在加载…" /></ItemPage>;
   return (
     <ItemPage testId="connector-not-found">
       <ItemHeader
         back={back}
-        title="Connector not found"
-        description="It may have been removed."
-        actions={<LinkButton variant="primary" href={getAddConnectorRoute(orgSlug)}>Add a connector</LinkButton>}
+        title="未找到连接器"
+        description="此项可能已被移除。"
+        actions={<LinkButton variant="primary" href={getAddConnectorRoute(orgSlug)}>添加连接器</LinkButton>}
       />
     </ItemPage>
   );

@@ -163,10 +163,10 @@ export type ItemMenuEntry = {
 /** Remove menu entry that asks first; the same copy everywhere an item can be removed. */
 export function removeEntry(name: string, onRemove: () => Promise<void>): ItemMenuEntry {
   return {
-    label: "Remove",
+    label: "移除",
     destructive: true,
     onSelect: onRemove,
-    confirm: { title: `Remove ${name}?`, description: "Nobody can use it anymore. This cannot be undone.", action: "Remove" },
+    confirm: { title: `移除 ${name}？`, description: "此后所有人都无法使用，且无法撤销。", action: "Remove" },
   };
 }
 
@@ -201,7 +201,7 @@ export function ConfirmDialog({ confirm, destructive = false, onConfirm, onClose
       await onConfirm();
       close();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Something went wrong. Try again.");
+      setError(cause instanceof Error ? cause.message : "操作失败，请重试。");
     } finally {
       setBusy(false);
     }
@@ -218,7 +218,7 @@ export function ConfirmDialog({ confirm, destructive = false, onConfirm, onClose
           <AlertDialog.Description className="mt-2 text-[13px] leading-5 text-gray-600">{shown.confirm?.description}</AlertDialog.Description>
           {error ? <DenNotice className="mt-4" tone="error" message={error} /> : null}
           <div className="mt-5 flex justify-end gap-2">
-            <AlertDialog.Close ref={cancelRef} disabled={busy} data-testid="confirm-dialog-cancel" className={buttonVariants({ variant: "secondary" })}>Cancel</AlertDialog.Close>
+            <AlertDialog.Close ref={cancelRef} disabled={busy} data-testid="confirm-dialog-cancel" className={buttonVariants({ variant: "secondary" })}>取消</AlertDialog.Close>
             <DenButton variant={shown.destructive ? "destructive" : "primary"} loading={busy} onClick={() => void run()}>{shown.confirm?.action}</DenButton>
           </div>
         </AlertDialog.Popup>
@@ -289,7 +289,7 @@ export function DetailRows({ rows }: { rows: { label: string; value: ReactNode; 
   );
 }
 
-export function FilterInput({ value, onChange, size = "sm", className = "", placeholder = "Filter by name", onEnter }: {
+export function FilterInput({ value, onChange, size = "sm", className = "", placeholder = "按名称筛选", onEnter }: {
   value: string;
   onChange: (value: string) => void;
   size?: "sm" | "md";

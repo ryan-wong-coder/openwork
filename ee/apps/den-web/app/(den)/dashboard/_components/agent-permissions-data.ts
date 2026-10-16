@@ -75,10 +75,10 @@ export function useAgentPermissions(orgId: string, enabled = true) {
         15000,
       );
       if (!response.ok) {
-        throw new Error(getErrorMessage(payload, `Couldn't load agent permissions (${response.status}).`));
+        throw new Error(getErrorMessage(payload, `无法加载智能体权限（${response.status}）。`));
       }
       const parsed = listSchema.safeParse(payload);
-      if (!parsed.success) throw new Error("Agent permissions returned an unexpected response.");
+      if (!parsed.success) throw new Error("代理权限返回了无法识别的响应，请重试。");
       return {
         everyone: toPolicy(parsed.data.everyone),
         teams: parsed.data.teams.map(toPolicy),
@@ -113,7 +113,7 @@ export function useSaveAgentPermissions(orgId: string) {
             },
             15000,
           );
-          if (!response.ok) throw getRequestError(payload, response, `Couldn't save agent permissions (${response.status}).`);
+          if (!response.ok) throw getRequestError(payload, response, `无法保存智能体权限（${response.status}）。`);
         }
       });
     },
@@ -135,7 +135,7 @@ export function useRemoveTeamAgentPermissions(orgId: string, teamId: string) {
           { method: "DELETE", headers: { [ORG_SCOPE_HEADER]: orgId } },
           15000,
         );
-        if (!response.ok) throw getRequestError(payload, response, `Couldn't remove these agent permissions (${response.status}).`);
+        if (!response.ok) throw getRequestError(payload, response, `无法移除这些智能体权限（${response.status}）。`);
       });
     },
     onSettled: () => queryClient.invalidateQueries({ queryKey: agentPermissionsQueryKey(orgId) }),
@@ -152,5 +152,5 @@ export function teamOverrideSummary(policy: AgentPermissionPolicy | undefined): 
   if (!policy || !hasTeamRecord(policy)) return null;
   const count = Object.keys(normalizeAgentPermissionSettings(policy.settings)).length;
   if (count === 0) return null;
-  return `${count} ${count === 1 ? "override" : "overrides"}`;
+  return `${count} 项自定义设置`;
 }

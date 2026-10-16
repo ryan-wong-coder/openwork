@@ -116,9 +116,9 @@ export function parseStripeWebBilling(payload: unknown): StripeWebBilling | null
 }
 
 export function getOpenWorkWebQuantityDescription(quantity: number): string {
-  const memberLabel = quantity === 1 ? "member" : "members";
+  const memberLabel = "名成员";
   return `${quantity} ${memberLabel}`;
 }
 
 export const OPENWORK_WEB_QUANTITY_EXPLANATION =
-  "Billed for each joined member of your organization, including the owner. Pending invitations are not billed.";
+  "按组织已加入的成员计费，包括所有者；待接受的邀请不计费。";

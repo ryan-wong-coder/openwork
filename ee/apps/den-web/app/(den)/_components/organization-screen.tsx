@@ -32,7 +32,7 @@ export function OrganizationScreen() {
     const trimmedName = user?.name?.trim();
     if (trimmedName) return trimmedName;
     const emailLocalPart = user?.email?.split("@")[0]?.trim() ?? "";
-    return emailLocalPart || "OpenWork User";
+    return emailLocalPart || "OpenWork 用户";
   }, [user?.email, user?.name]);
 
   const userInitials = useMemo(() => {
@@ -68,15 +68,15 @@ export function OrganizationScreen() {
       try {
         const { response, payload } = await requestJson("/v1/me/orgs", { method: "GET" });
         if (!response.ok) {
-          throw new Error(getErrorMessage(payload, "Failed to load organizations."));
+          throw new Error(getErrorMessage(payload, "加载组织失败。"));
         }
 
         if (isMounted) {
           if (typeof payload !== "object" || payload === null || !("orgs" in payload) || !Array.isArray(payload.orgs)) {
-            throw new Error("Organization lookup returned incomplete details.");
+            throw new Error("组织信息不完整，请重试。");
           }
           const parsed = parseOrgListPayload(payload);
-          if (parsed.orgs.length !== payload.orgs.length) throw new Error("Organization lookup returned incomplete details.");
+          if (parsed.orgs.length !== payload.orgs.length) throw new Error("组织信息不完整，请重试。");
           const nextOrgs = parsed.orgs.map((org) => ({ ...org, isActive: org.slug === parsed.activeOrgSlug }));
           const targetOrg = nextOrgs.find((org) => org.isActive) ?? nextOrgs[0] ?? null;
           if (isSingleOrgMode && targetOrg) {
@@ -90,7 +90,7 @@ export function OrganizationScreen() {
         }
       } catch (err) {
         if (isMounted) {
-          setError(err instanceof Error ? err.message : "An error occurred.");
+          setError(err instanceof Error ? err.message : "发生错误，请重试。");
           setBusy(false);
         }
       }
@@ -108,18 +108,18 @@ export function OrganizationScreen() {
       const url = new URL(invitationLink.trim(), window.location.origin);
       const invitationId = url.searchParams.get("invite")?.trim();
       if (url.origin !== window.location.origin || url.pathname !== "/join-org" || !invitationId) {
-        throw new Error("Paste the invitation link for this OpenWork Cloud. Ask your team owner if you do not have one yet.");
+        throw new Error("粘贴此 OpenWork 云端的邀请链接，若没有链接，请联系团队所有者。");
       }
       router.push(getJoinOrgRoute(invitationId));
     } catch (err) {
-      setCreateError(err instanceof Error ? err.message : "Enter a valid invitation link.");
+      setCreateError(err instanceof Error ? err.message : "请输入有效的邀请链接。");
     }
   }
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
     if (isSingleOrgMode) {
-      setCreateError("This deployment uses one managed organization.");
+      setCreateError("此部署使用单一托管组织。");
       return;
     }
 
@@ -137,7 +137,7 @@ export function OrganizationScreen() {
         });
 
         if (!response.ok) {
-          throw new Error(getErrorMessage(payload, "Failed to create organization."));
+          throw new Error(getErrorMessage(payload, "创建组织失败，请重试。"));
         }
 
         const organization =
@@ -145,7 +145,7 @@ export function OrganizationScreen() {
             ? payload.organization
             : null;
         if (!organization || !("slug" in organization) || typeof organization.slug !== "string" || !organization.slug || !("id" in organization) || typeof organization.id !== "string") {
-          throw new Error("Organization was created, but no slug was returned.");
+          throw new Error("组织已创建，但未返回组织标识，请刷新后重试。");
         }
 
         nextOrg = { id: organization.id, slug: organization.slug };
@@ -154,29 +154,29 @@ export function OrganizationScreen() {
       continueSetup(nextOrg.id, getOnboardingPeopleRoute(nextOrg.slug));
       router.push(getOnboardingPeopleRoute(nextOrg.slug));
     } catch (err) {
-      setCreateError(err instanceof Error ? err.message : "Failed to create organization.");
+      setCreateError(err instanceof Error ? err.message : "创建组织失败，请重试。");
       setCreateBusy(false);
     }
   }
 
   const creationForm = <form onSubmit={handleCreate} className="grid gap-5" aria-busy={createBusy}>
     <label className="grid gap-2">
-      <span className="text-[13px] font-medium text-gray-900">Workspace name</span>
-      <DenInput value={createName} onChange={(event) => setCreateName(event.target.value)} placeholder="My workspace" minLength={2} maxLength={120} disabled={createBusy || Boolean(createdOrg)} required autoFocus />
+      <span className="text-[13px] font-medium text-gray-900">工作区名称</span>
+      <DenInput value={createName} onChange={(event) => setCreateName(event.target.value)} placeholder="我的工作区" minLength={2} maxLength={120} disabled={createBusy || Boolean(createdOrg)} required autoFocus />
     </label>
     {createError ? <p role="alert" className="text-[13px] text-red-600">{createError}</p> : null}
-    <DenButton type="submit" loading={createBusy} disabled={createName.trim().length < 2} className="w-full">Create workspace</DenButton>
+    <DenButton type="submit" loading={createBusy} disabled={createName.trim().length < 2} className="w-full">创建工作区</DenButton>
     <details className="group">
       <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 rounded-md text-[13px] font-medium text-gray-500 hover:text-gray-900 [&::-webkit-details-marker]:hidden">
         <ChevronRight aria-hidden className="size-4 transition-transform duration-150 ease-out group-open:rotate-90 motion-reduce:transition-none" />
-        Join an existing workspace
+        加入已有工作区
       </summary>
       <div className="mt-3 grid gap-3">
         <label className="grid gap-2">
-          <span className="text-[13px] font-medium text-gray-900">Team invitation link</span>
-          <DenInput value={invitationLink} onChange={(event) => setInvitationLink(event.target.value)} placeholder="Paste your invitation link" disabled={createBusy || Boolean(createdOrg)} />
+          <span className="text-[13px] font-medium text-gray-900">团队邀请链接</span>
+          <DenInput value={invitationLink} onChange={(event) => setInvitationLink(event.target.value)} placeholder="粘贴邀请链接" disabled={createBusy || Boolean(createdOrg)} />
         </label>
-        <DenButton type="button" variant="secondary" disabled={createBusy || Boolean(createdOrg) || !invitationLink.trim()} onClick={reviewInvitation}>Review invitation</DenButton>
+        <DenButton type="button" variant="secondary" disabled={createBusy || Boolean(createdOrg) || !invitationLink.trim()} onClick={reviewInvitation}>查看邀请</DenButton>
       </div>
     </details>
   </form>;
@@ -188,18 +188,18 @@ export function OrganizationScreen() {
   if (!sessionHydrated || !runtimeConfigLoaded || busy) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#fafafa]">
-        <p className="text-sm text-gray-500">Loading organizations...</p>
+        <p className="text-sm text-gray-500">正在加载组织…</p>
       </div>
     );
   }
 
   if (!isSingleOrgMode && (showDirectCreateFlow || showCreate)) {
-    return <SetupFrame step="space" title="Create your workspace." description="">
+    return <SetupFrame step="space" title="创建工作区" description="">
       {error ? <p role="alert" className="mb-4 text-sm text-rose-600">{error}</p> : null}
       {creationForm}
       <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 pt-5 text-xs text-gray-500">
         <span className="min-w-0 max-w-[260px] truncate" title={user?.email}>{user?.email}</span>
-        {!createBusy && !createdOrg && orgs.length > 0 ? <button type="button" className="font-medium text-gray-700" onClick={() => { setShowCreate(false); setCreateName(""); setCreateError(null); }}>Cancel</button> : <button type="button" disabled={createBusy} onClick={() => void signOut()} className="font-medium text-gray-700">Log out</button>}
+        {!createBusy && !createdOrg && orgs.length > 0 ? <button type="button" className="font-medium text-gray-700" onClick={() => { setShowCreate(false); setCreateName(""); setCreateError(null); }}>取消</button> : <button type="button" disabled={createBusy} onClick={() => void signOut()} className="font-medium text-gray-700">退出登录</button>}
       </div>
     </SetupFrame>;
   }
@@ -215,7 +215,7 @@ export function OrganizationScreen() {
           <button
             onClick={() => void signOut()}
             className="text-gray-400 transition-colors hover:text-gray-900"
-            aria-label="Log out"
+            aria-label="退出登录"
           >
             <LogOut className="h-4 w-4" />
           </button>
@@ -236,7 +236,7 @@ export function OrganizationScreen() {
                     {singleOrgName}
                   </h1>
                   <p className="mt-3 max-w-xl text-[13px] leading-6 text-gray-500 sm:text-sm">
-                    This deployment uses one managed organization. Once setup is complete, you will be taken straight to the workspace.
+                    此部署使用单一托管组织，完成配置后将直接进入工作区。
                   </p>
                 </div>
               </div>
@@ -254,7 +254,7 @@ export function OrganizationScreen() {
                     className="w-full rounded-2xl bg-gray-900 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-gray-800 sm:w-auto"
                     onClick={() => router.push(`/sso/${encodeURIComponent(singleOrgSlug)}`)}
                   >
-                    Continue with SSO
+                    通过 SSO 继续
                   </button>
                 ) : null}
                 <button
@@ -262,7 +262,7 @@ export function OrganizationScreen() {
                   className="w-full rounded-2xl border border-gray-200 px-5 py-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 sm:w-auto"
                   onClick={() => window.location.reload()}
                 >
-                  Check again
+                  重新检查
                 </button>
               </div>
             </section>
@@ -272,8 +272,8 @@ export function OrganizationScreen() {
         {!isSingleOrgMode ? (
           <div className="mx-auto max-w-5xl">
             <div className="mb-6 sm:mb-8">
-              <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Settings</h1>
-              <p className="mt-1 text-sm text-gray-500">Manage your profile and organization memberships.</p>
+              <h1 className="text-2xl font-semibold tracking-tight text-gray-900">设置</h1>
+              <p className="mt-1 text-sm text-gray-500">管理个人资料与组织成员关系。</p>
             </div>
 
             <div className="mb-6 flex gap-6 overflow-x-auto border-b border-gray-200 sm:mb-8 sm:gap-8">
@@ -286,7 +286,7 @@ export function OrganizationScreen() {
                     : "border-transparent text-gray-500 hover:text-gray-700"
                 }`}
               >
-                Profile
+                个人资料
               </button>
               <button
                 type="button"
@@ -297,7 +297,7 @@ export function OrganizationScreen() {
                     : "border-transparent text-gray-500 hover:text-gray-700"
                 }`}
               >
-                Organizations
+                组织
               </button>
             </div>
 
@@ -315,13 +315,13 @@ export function OrganizationScreen() {
                   </div>
                   <div className="min-w-0">
                     <h2 className="text-lg font-medium text-gray-900">{userDisplayName}</h2>
-                    <p className="mt-1 text-sm text-gray-500">{user?.email ?? "Signed in"}</p>
+                    <p className="mt-1 text-sm text-gray-500">{user?.email ?? "已登录"}</p>
                   </div>
                 </div>
 
                 <div className="grid gap-5 md:grid-cols-2">
                   <label className="grid gap-2">
-                    <span className="text-sm font-medium text-gray-700">Full name</span>
+                    <span className="text-sm font-medium text-gray-700">姓名</span>
                     <input
                       type="text"
                       value={user?.name ?? ""}
@@ -331,7 +331,7 @@ export function OrganizationScreen() {
                   </label>
 
                   <label className="grid gap-2">
-                    <span className="text-sm font-medium text-gray-700">Email</span>
+                    <span className="text-sm font-medium text-gray-700">电子邮箱</span>
                     <input
                       type="email"
                       value={user?.email ?? ""}
@@ -341,7 +341,7 @@ export function OrganizationScreen() {
                   </label>
 
                   <label className="grid gap-2">
-                    <span className="text-sm font-medium text-gray-700">User ID</span>
+                    <span className="text-sm font-medium text-gray-700">用户 ID</span>
                     <input
                       type="text"
                       value={user?.id ?? ""}
@@ -351,10 +351,10 @@ export function OrganizationScreen() {
                   </label>
 
                   <label className="grid gap-2">
-                    <span className="text-sm font-medium text-gray-700">Current organization</span>
+                    <span className="text-sm font-medium text-gray-700">当前组织</span>
                     <input
                       type="text"
-                      value={activeOrg?.name ?? "No active organization"}
+                      value={activeOrg?.name ?? "没有当前组织"}
                       readOnly
                       className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 outline-hidden"
                     />
@@ -365,7 +365,7 @@ export function OrganizationScreen() {
               <>
                 <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <p className="max-w-2xl text-sm text-gray-500">
-                    Organizations are independent environments. In each organization you can collaborate with other members and manage your own resources.
+                    各组织拥有独立的环境，你可以在组织内与其他成员协作并管理自己的资源。
                   </p>
                   <div className="flex w-full flex-col gap-3 sm:w-auto sm:min-w-[18rem]">
                     {showOrgSearch ? (
@@ -373,7 +373,7 @@ export function OrganizationScreen() {
                         type="search"
                         value={orgQuery}
                         onChange={(event) => setOrgQuery(event.target.value)}
-                        placeholder="Search organizations"
+                        placeholder="搜索组织"
                         className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-900 outline-hidden transition focus:border-gray-400 focus:ring-4 focus:ring-gray-900/5"
                       />
                     ) : null}
@@ -381,7 +381,7 @@ export function OrganizationScreen() {
                       onClick={() => setShowCreate(true)}
                       className="w-full shrink-0 rounded-xl bg-gray-900 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-gray-800 sm:w-auto"
                     >
-                      + Create New Organization
+                      + 创建新组织
                     </button>
                   </div>
                 </div>
@@ -393,12 +393,12 @@ export function OrganizationScreen() {
                         <div className="min-w-0">
                           <h2 className="truncate text-[15px] font-semibold text-gray-950">{org.name}</h2>
                           <p className="mt-1 text-xs text-gray-500">
-                            {org.role === "owner" ? "Creator plan" : "Free plan"} • {formatRoleLabel(org.role)}
+                            {org.role === "owner" ? "创作者套餐" : "免费套餐"} • {formatRoleLabel(org.role)}
                           </p>
                         </div>
                         {org.isActive ? (
                           <span className="shrink-0 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-medium text-emerald-700">
-                            Current
+                            当前
                           </span>
                         ) : null}
                       </div>
@@ -407,12 +407,12 @@ export function OrganizationScreen() {
                           onClick={() => handleSwitch(org.slug)}
                           className="flex-1 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-medium text-gray-700 shadow-xs transition hover:bg-gray-50"
                         >
-                          {org.isActive ? "Open" : "Switch"}
+                          {org.isActive ? "打开" : "切换"}
                         </button>
                         <button
                           onClick={() => handleSwitch(org.slug)}
                           className="inline-flex items-center justify-center rounded-xl border border-gray-200 px-3 py-2.5 text-gray-500 transition hover:bg-gray-50 hover:text-gray-800"
-                          aria-label="Organization settings"
+                          aria-label="组织设置"
                         >
                           <Settings className="h-4 w-4" />
                         </button>
@@ -426,9 +426,9 @@ export function OrganizationScreen() {
                     <table className="w-full text-left text-sm">
                       <thead className="border-b border-gray-200 bg-gray-50/50">
                         <tr>
-                          <th className="px-6 py-4 font-medium text-gray-500">Organization</th>
-                          <th className="px-6 py-4 font-medium text-gray-500">Seat Type</th>
-                          <th className="px-6 py-4 text-right font-medium text-gray-500">Action</th>
+                          <th className="px-6 py-4 font-medium text-gray-500">组织</th>
+                          <th className="px-6 py-4 font-medium text-gray-500">席位类型</th>
+                          <th className="px-6 py-4 text-right font-medium text-gray-500">操作</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-100">
@@ -437,7 +437,7 @@ export function OrganizationScreen() {
                             <td className="px-6 py-4">
                               <div className="font-medium text-gray-900">{org.name}</div>
                               <div className="mt-1 text-xs text-gray-500">
-                                {org.role === "owner" ? "Creator plan" : "Free plan"} • 1 member
+                                {org.role === "owner" ? "创作者套餐" : "免费套餐"} • 1 名成员
                               </div>
                             </td>
                             <td className="px-6 py-4">
@@ -446,20 +446,20 @@ export function OrganizationScreen() {
                             <td className="px-6 py-4 text-right">
                               {org.isActive ? (
                                 <span className="inline-flex cursor-default items-center rounded-lg bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-500">
-                                  Current Organization
+                                  当前组织
                                 </span>
                               ) : (
                                 <button
                                   onClick={() => handleSwitch(org.slug)}
                                   className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 shadow-xs transition hover:bg-gray-50"
                                 >
-                                  Switch
+                                  切换
                                 </button>
                               )}
                               <button
                                 onClick={() => handleSwitch(org.slug)}
                                 className="ml-2 inline-flex items-center justify-center rounded-lg p-1.5 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
-                                aria-label="Organization settings"
+                                aria-label="组织设置"
                               >
                                 <Settings className="h-4 w-4" />
                               </button>
@@ -472,25 +472,25 @@ export function OrganizationScreen() {
                 </div>
 
                 {orgFilteredCount === 0 && orgQuery ? (
-                  <p className="mt-4 text-sm text-gray-500">No organizations match your search.</p>
+                  <p className="mt-4 text-sm text-gray-500">没有符合搜索条件的组织。</p>
                 ) : null}
 
                 {orgHasMore ? (
                   <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-sm text-gray-500">
-                      Showing {visibleOrgs.length} of {orgFilteredCount} organizations
+                      正在显示 {visibleOrgs.length} 个组织，共 {orgFilteredCount} 个
                     </p>
                     <button
                       type="button"
                       onClick={showMoreOrgs}
                       className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-xs transition hover:bg-gray-50 sm:w-auto"
                     >
-                      Show more
+                      显示更多
                     </button>
                   </div>
                 ) : null}
 
-                <p className="mt-8 text-center text-sm text-gray-500">You have no pending organization invites.</p>
+                <p className="mt-8 text-center text-sm text-gray-500">暂无待处理的组织邀请。</p>
               </>
             )}
           </div>

@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE } from "../../../_lib/locale";
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getErrorMessage, getRequestError, requestJson } from "../../_lib/den-flow";
 import { useOrgDashboard } from "../_providers/org-dashboard-provider";
@@ -169,7 +171,7 @@ export function parseMarketplaceResolvedPayload(payload: unknown): MarketplaceRe
   const item = isRecord(payload) && isRecord(payload.item) ? payload.item : null;
   const marketplace = item && isRecord(item.marketplace) ? parseMarketplace(item.marketplace) : null;
   if (!item || !marketplace) {
-    throw new Error("Collection resolved response was incomplete.");
+    throw new Error("集合解析响应不完整，请重试。");
   }
 
   const plugins = Array.isArray(item.plugins)
@@ -224,7 +226,7 @@ export function useMarketplace(marketplaceId: string | null) {
         15000,
       );
       if (!response.ok) {
-        throw new Error(getErrorMessage(payload, `Failed to load collection (${response.status}).`));
+        throw new Error(getErrorMessage(payload, `无法加载集合（${response.status}）。`));
       }
 
       return parseMarketplaceResolvedPayload(payload);
@@ -260,7 +262,7 @@ export function useMarketplaceAccess(marketplaceId: string | null) {
         15000,
       );
       if (!response.ok) {
-        throw new Error(getErrorMessage(payload, `Failed to load collection access (${response.status}).`));
+        throw new Error(getErrorMessage(payload, `无法加载集合访问权限（${response.status}）。`));
       }
 
       const items = isRecord(payload) && Array.isArray(payload.items) ? payload.items : [];
@@ -296,7 +298,7 @@ export function useGrantMarketplaceAccess() {
         15000,
       );
       if (!response.ok) {
-        throw getRequestError(payload, response, `Failed to grant access (${response.status}).`);
+        throw getRequestError(payload, response, `无法授予访问权限（${response.status}）。`);
       }
       });
       return input.marketplaceId;
@@ -321,7 +323,7 @@ export function useRevokeMarketplaceAccess() {
         15000,
       );
       if (response.status !== 204 && !response.ok) {
-        throw getRequestError(payload, response, `Failed to revoke access (${response.status}).`);
+        throw getRequestError(payload, response, `无法撤销访问权限（${response.status}）。`);
       }
       });
       return input.marketplaceId;
@@ -357,7 +359,7 @@ function parseConfiguredPluginMcpConnection(payload: unknown): ConfiguredPluginM
   const links = item && isRecord(item.links) ? item.links : null;
   const connectionId = connection ? asString(connection.id) : null;
   if (!connectionId) {
-    throw new Error("Plugin MCP setup response was incomplete.");
+    throw new Error("插件 MCP 配置响应不完整，请重试。");
   }
   return {
     connectionId,
@@ -389,11 +391,11 @@ export function useConfigurePluginMcpConnection() {
           20000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to configure plugin connection (${response.status}).`);
+          throw getRequestError(payload, response, `无法配置插件连接（${response.status}）。`);
         }
         configured = parseConfiguredPluginMcpConnection(payload);
       });
-      if (!configured) throw new Error("Plugin MCP setup response was incomplete.");
+      if (!configured) throw new Error("插件 MCP 配置响应不完整，请重试。");
       return configured;
     },
     onSuccess: () => {
@@ -413,7 +415,7 @@ export function useMarketplaces() {
         15000,
       );
       if (!response.ok) {
-        throw new Error(getErrorMessage(payload, `Failed to load collections (${response.status}).`));
+        throw new Error(getErrorMessage(payload, `无法加载集合（${response.status}）。`));
       }
 
       const items = isRecord(payload) && Array.isArray(payload.items) ? payload.items : [];
@@ -444,12 +446,12 @@ export function useCreateMarketplace() {
           15000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to create collection (${response.status}).`);
+          throw getRequestError(payload, response, `无法创建集合（${response.status}）。`);
         }
         created = isRecord(payload) && isRecord(payload.item) ? parseMarketplace(payload.item) : null;
       });
       if (!created) {
-        throw new Error("Collection create response was incomplete.");
+        throw new Error("集合创建响应不完整，请重试。");
       }
       return created;
     },
@@ -476,12 +478,12 @@ export function useUpdateMarketplace() {
           15000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to update collection (${response.status}).`);
+          throw getRequestError(payload, response, `无法更新集合（${response.status}）。`);
         }
         updated = isRecord(payload) && isRecord(payload.item) ? parseMarketplace(payload.item) : null;
       });
       if (!updated) {
-        throw new Error("Collection update response was incomplete.");
+        throw new Error("集合更新响应不完整，请重试。");
       }
       return updated;
     },
@@ -505,7 +507,7 @@ export function useDeleteMarketplace() {
           15000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to delete collection (${response.status}).`);
+          throw getRequestError(payload, response, `无法删除集合（${response.status}）。`);
         }
       });
       return marketplaceId;
@@ -518,10 +520,10 @@ export function useDeleteMarketplace() {
 }
 
 export function formatMarketplaceTimestamp(value: string | null): string {
-  if (!value) return "Recently added";
+  if (!value) return "最近添加";
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "Recently added";
-  return new Intl.DateTimeFormat("en-US", {
+  if (Number.isNaN(date.getTime())) return "最近添加";
+  return new Intl.DateTimeFormat(DEFAULT_DEN_LOCALE, {
     month: "short",
     day: "numeric",
     year: "numeric",

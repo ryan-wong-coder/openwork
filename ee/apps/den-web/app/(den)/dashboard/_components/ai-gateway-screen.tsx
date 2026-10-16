@@ -28,11 +28,11 @@ import { InferenceScreen } from "./inference-screen";
 export type AiGatewayTab = "overview" | "ai-providers" | "limits" | "users-and-teams" | "openwork-models";
 
 const AI_GATEWAY_TABS: readonly TabItem<AiGatewayTab>[] = [
-  { value: "overview", label: "Overview", icon: LayoutDashboard },
-  { value: "ai-providers", label: "AI Providers", icon: Plug },
-  { value: "limits", label: "Limits", icon: SlidersHorizontal },
-  { value: "users-and-teams", label: "Users & Teams", icon: Users },
-  { value: "openwork-models", label: "OpenWork Models", icon: Sparkles },
+  { value: "overview", label: "概览", icon: LayoutDashboard },
+  { value: "ai-providers", label: "AI 提供商", icon: Plug },
+  { value: "limits", label: "限额", icon: SlidersHorizontal },
+  { value: "users-and-teams", label: "用户与团队", icon: Users },
+  { value: "openwork-models", label: "OpenWork 模型", icon: Sparkles },
 ];
 
 const GATEWAY_TAB_AREAS: Record<Exclude<AiGatewayTab, "openwork-models">, GatewayDashboardArea> = {
@@ -51,21 +51,21 @@ function AiGatewayOverview({ orgId }: { orgId: string }) {
   const { inferenceProviders, busy, error, reloadProviders } = useOrgInferenceProviders(orgId);
 
   if (busy) {
-    return <DenCard><p role="status" className="text-sm text-gray-500">Loading gateway providers...</p></DenCard>;
+    return <DenCard><p role="status" className="text-sm text-gray-500">正在加载网关提供商…</p></DenCard>;
   }
 
   if (error) {
     return (
       <DenCard className="flex flex-col items-start gap-4">
         <DenNotice tone="error" message={error} />
-        <DenButton variant="secondary" onClick={() => void reloadProviders()}>Retry providers</DenButton>
+        <DenButton variant="secondary" onClick={() => void reloadProviders()}>重新加载提供商</DenButton>
       </DenCard>
     );
   }
 
   if (inferenceProviders.length === 0) {
     return (
-      <section aria-label="Gateway usage" data-testid="gateway-usage-no-providers">
+      <section aria-label="网关用量" data-testid="gateway-usage-no-providers">
         <DenCard className="flex flex-col items-center gap-4 px-8 py-16 text-center">
           <span className="flex items-center gap-2" aria-hidden="true">
             {EMPTY_STATE_PROVIDERS.map((provider) => (
@@ -73,12 +73,12 @@ function AiGatewayOverview({ orgId }: { orgId: string }) {
             ))}
           </span>
           <span className="flex flex-col gap-1">
-            <span className="text-[15px] font-medium text-gray-950">No usage yet</span>
-            <span className="text-[13px] text-gray-500">Spend and the models people use show up here after the first request.</span>
+            <span className="text-[15px] font-medium text-gray-950">暂无用量</span>
+            <span className="text-[13px] text-gray-500">首次请求后，此处将显示费用和模型使用情况。</span>
           </span>
-          <Link href={getNewAiGatewayProviderRoute(orgSlug)} className={buttonVariants({ variant: "primary", size: "sm" })} data-testid="gateway-usage-add-provider">Add provider</Link>
+          <Link href={getNewAiGatewayProviderRoute(orgSlug)} className={buttonVariants({ variant: "primary", size: "sm" })} data-testid="gateway-usage-add-provider">添加提供商</Link>
           <Link href={getInferenceRoute(orgSlug)} scroll={false} className="text-[12px] text-gray-600 underline underline-offset-4 hover:text-gray-900">
-            Or subscribe to OpenWork Models
+            或订阅 OpenWork 模型
           </Link>
         </DenCard>
       </section>
@@ -130,8 +130,8 @@ export function AiGatewayScreen({ providerContent, pageContent, pageTab }: { pro
 
   return (
     <DashboardPageTemplate
-      title="AI Gateway"
-      description="Manage Providers, Models, Usage Limits and LLM Controls for your team"
+      title="AI 网关"
+      description="管理团队的提供商、模型、用量限额与模型设置"
     >
       <div data-testid="ai-gateway-tabs" className="mb-6">
         <UnderlineTabs tabs={AI_GATEWAY_TABS} activeTab={tab} onChange={setTab} />
@@ -169,8 +169,8 @@ export function AiGatewayScreen({ providerContent, pageContent, pageTab }: { pro
                   : access === "denied"
                     ? <DenNotice tone="neutral" icon={LockKeyhole} message={gatewayAreaLockedMessage(gatewayTabArea)} />
                     : <DenNotice tone="info" message={access === "checking"
-                      ? "Checking workspace access..."
-                      : "This feature is not part of your deployment system, please ask an instance admin to configure deployment"} />
+                      ? "正在检查工作区访问权限…"
+                      : "此部署未启用该功能，请联系实例管理员配置。"} />
             ) : null}
             {tab === "openwork-models" ? <InferenceScreen embedded /> : null}
             {tab === "ai-providers" && orgId && !orgError && memberAccess.canViewAllLlmProviders ? (

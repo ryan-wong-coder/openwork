@@ -29,14 +29,14 @@ function SignInChoice({ name, value, onChange, disabled, kind = "oauth", sharedD
 }) {
   const options: { value: ExternalMcpCredentialMode; title: string; description: string }[] = [
     kind === "api_key"
-      ? { value: "per_member", title: "Each person adds a key", description: `One ${name} connection; each person adds their own key.` }
-      : { value: "per_member", title: "Each person signs in", description: `Everyone uses their own ${name} account.` },
+      ? { value: "per_member", title: "每人添加自己的密钥", description: `共用一个 ${name} 连接，每个人添加自己的密钥。` }
+      : { value: "per_member", title: "每人分别登录", description: `每个人使用自己的 ${name} 账户。` },
     kind === "api_key"
-      ? { value: "shared", title: "One key for everyone", description: sharedDescription ?? `Everyone uses one ${name} API key.` }
-      : { value: "shared", title: "One account for everyone", description: sharedDescription ?? `Everyone uses one ${name} account you sign in with.` },
+      ? { value: "shared", title: "所有人共用一个密钥", description: sharedDescription ?? `所有人共用一个 ${name} API 密钥。` }
+      : { value: "shared", title: "所有人共用一个账户", description: sharedDescription ?? `所有人共用你登录的 ${name} 账户。` },
   ];
   return (
-    <div className="grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label="How people connect">
+    <div className="grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label="连接方式">
       {options.map((option) => {
         const selected = option.value === value;
         return (
@@ -96,21 +96,21 @@ export function AdminConnectorSetupScreen({ catalogId }: { catalogId: string }) 
   });
 
   const name = target?.name ?? "";
-  const back = { href: getAddConnectorRoute(orgSlug), label: "Add a connector" };
+  const back = { href: getAddConnectorRoute(orgSlug), label: "添加连接器" };
 
   if (missing || failed) {
     return (
       <ItemPage>
         <ItemHeader
           back={back}
-          title={failed ? "The list did not load" : "Connector not found"}
-          description={failed ? "Reload the page to try again." : "Pick it again from the list."}
+          title={failed ? "列表加载失败" : "未找到连接器"}
+          description={failed ? "请重新加载页面后重试。" : "请从列表中重新选择。"}
         />
       </ItemPage>
     );
   }
   if (!target || !orgContext) {
-    return <ItemPage><ItemHeader back={back} title={loading || !orgContext ? "Loading..." : "Add a connector"} /></ItemPage>;
+    return <ItemPage><ItemHeader back={back} title={loading || !orgContext ? "正在加载…" : "添加连接器"} /></ItemPage>;
   }
 
   const connection = setup.connection;
@@ -123,13 +123,13 @@ export function AdminConnectorSetupScreen({ catalogId }: { catalogId: string }) 
     : { orgWide: false, memberIds: viewerId ? [viewerId] : [], teamIds: [] });
   const reached = accessPeopleIds(access, orgContext, viewerId).length;
   const me = orgContext.members.find((member) => member.id === viewerId);
-  const viewerName = me?.user.name || me?.user.email || "You";
+  const viewerName = me?.user.name || me?.user.email || "你";
   const switchingToShared = signsIn && chosenMode === "shared" && connection?.credentialMode === "per_member";
   const ready = setup.allDone && Boolean(connection);
 
   const checks = setup.checks.map((check) => {
     if (check.id === "sign-in" && setup.canSignIn) {
-      return { ...check, action: <DenButton size="sm" onClick={() => void setup.startSignIn()}>{`Sign in with ${name}`}</DenButton> };
+      return { ...check, action: <DenButton size="sm" onClick={() => void setup.startSignIn()}>{`使用 ${name} 登录`}</DenButton> };
     }
     if (check.id === "sign-in-method" && setup.needsInput) {
       return {
@@ -143,7 +143,7 @@ export function AdminConnectorSetupScreen({ catalogId }: { catalogId: string }) 
                 <ApiKeyFields name={name} saving={setup.saving} error={setup.saveError} onSave={(apiKey) => void setup.saveApiKey(apiKey, apiKeyAuthScheme)} />
               ) : (
                 <div className="flex flex-col items-start gap-2">
-                  <DenButton size="sm" loading={setup.saving} onClick={() => void setup.savePerMemberApiKeys(apiKeyAuthScheme)}>Use individual keys</DenButton>
+                  <DenButton size="sm" loading={setup.saving} onClick={() => void setup.savePerMemberApiKeys(apiKeyAuthScheme)}>使用个人密钥</DenButton>
                   {setup.saveError ? <p className="text-[12px] text-red-600" role="alert">{setup.saveError}</p> : null}
                 </div>
               )}
@@ -187,13 +187,13 @@ export function AdminConnectorSetupScreen({ catalogId }: { catalogId: string }) 
         ? await checkConnection.mutateAsync(connection.id) : null;
       const connectionId = connection.id;
       toast({
-        title: usesIndividualKeys ? `${name} is set up` : checked?.status === "could_not_verify" ? `${name} couldn't be verified` : `${name} is ready`,
-        description: `${reached > 0 ? `${peopleLabel(reached)} will find it in My Library.` : "Only you have it so far."}`,
-        action: { label: "View", onClick: () => router.push(getMcpConnectionRoute(orgSlug, connectionId)) },
+        title: usesIndividualKeys ? `${name} 已设置` : checked?.status === "could_not_verify" ? `无法验证 ${name}` : `${name} 已就绪`,
+        description: `${reached > 0 ? `${peopleLabel(reached)}可在“我的资源库”中找到它。` : "目前仅你拥有此项。"}`,
+        action: { label: "查看", onClick: () => router.push(getMcpConnectionRoute(orgSlug, connectionId)) },
       });
       router.push(getMcpConnectionsRoute(orgSlug));
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "That did not save.");
+      setError(cause instanceof Error ? cause.message : "保存失败，请重试。");
     } finally {
       setBusy(false);
     }
@@ -205,11 +205,11 @@ export function AdminConnectorSetupScreen({ catalogId }: { catalogId: string }) 
         <ItemHeader
           back={back}
           logo={<ConnectorLogo name={name} url={target.url} size="md" />}
-          title={`Add ${name}`}
+          title={`添加 ${name}`}
         />
         <SetupChecks checks={checks} />
-        <StepFooter note={`Step ${setup.stepNumber} of ${checks.length}`}>
-          <DenButton variant="secondary" loading={busy} onClick={() => void cancel()}>Cancel</DenButton>
+        <StepFooter note={`步骤 ${setup.stepNumber} / ${checks.length}`}>
+          <DenButton variant="secondary" loading={busy} onClick={() => void cancel()}>取消</DenButton>
         </StepFooter>
       </ItemPage>
     );
@@ -220,23 +220,23 @@ export function AdminConnectorSetupScreen({ catalogId }: { catalogId: string }) 
       <ItemHeader
         back={back}
         logo={<ConnectorLogo name={name} url={target.url} size="md" />}
-        title={usesIndividualKeys ? `${name} is set up` : `${name} passed all ${checks.length} checks`}
+        title={usesIndividualKeys ? `${name} 已设置` : `${name} 已通过全部 ${checks.length} 项检查`}
       />
       {signsIn || usesKey ? (
         <section className="flex flex-col gap-2.5">
-          <SectionTitle title="How people connect" />
+          <SectionTitle title="连接方式" />
           <SignInChoice
             name={name}
             value={chosenMode}
             onChange={setMode}
             disabled={busy || usesKey}
             kind={usesKey ? "api_key" : "oauth"}
-            sharedDescription={usesKey ? `Everyone uses the ${name} API key you added.` : undefined}
+            sharedDescription={usesKey ? `所有人使用你添加的 ${name} API 密钥。` : undefined}
           />
         </section>
       ) : null}
       <section className="flex flex-col gap-2.5">
-        <SectionTitle title="Who can use it" />
+        <SectionTitle title="谁可以使用" />
         <WhoCanUseIt
           value={access}
           onChange={setDraft}
@@ -244,22 +244,22 @@ export function AdminConnectorSetupScreen({ catalogId }: { catalogId: string }) 
           teams={orgContext.teams}
           owner={viewerId ? { id: viewerId, name: viewerName, isYou: true } : null}
           canShareWithEveryone={canShareWithEveryone}
-          everyoneOffDescription="Off. Only the people and teams below get it."
+          everyoneOffDescription="已关闭，仅下方人员与团队可使用。"
           disabled={busy}
         />
       </section>
       {error ? <p className="text-[13px] text-red-600" role="alert">{error}</p> : null}
       <StepFooter note={switchingToShared
-        ? `Next, sign in with the ${name} account everyone will use.`
-        : reached > 0 ? `${peopleLabel(reached)} will find ${name} in My Library.` : `Only you will have ${name}.`}
+        ? `接下来，登录所有人将共用的 ${name} 账户。`
+        : reached > 0 ? `${peopleLabel(reached)}可在“我的资源库”中找到 ${name}。` : `只有你能使用 ${name}。`}
       >
-        <DenButton variant="secondary" disabled={busy} onClick={() => void cancel()}>Cancel</DenButton>
-        <DenButton loading={busy} onClick={() => (switchingToShared ? setConfirmSwitch(true) : void add())}>{switchingToShared ? "Continue" : `Add ${name}`}</DenButton>
+        <DenButton variant="secondary" disabled={busy} onClick={() => void cancel()}>取消</DenButton>
+        <DenButton loading={busy} onClick={() => (switchingToShared ? setConfirmSwitch(true) : void add())}>{switchingToShared ? "继续" : `添加 ${name}`}</DenButton>
       </StepFooter>
       <ConfirmDialog
         confirm={confirmSwitch ? {
-          title: "Switch to one account for everyone?",
-          description: `This signs you out of ${name}. Next, you sign in with the ${name} account everyone will use.`,
+          title: "切换为所有人共用一个账户？",
+          description: `此操作会退出 ${name}。接下来，登录所有人将共用的 ${name} 账户。`,
           action: "Sign out and continue",
         } : null}
         onConfirm={switchToShared}

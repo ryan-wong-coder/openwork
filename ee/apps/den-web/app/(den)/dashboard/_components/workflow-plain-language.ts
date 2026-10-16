@@ -34,9 +34,9 @@ function stripServicePrefix(words: string[]): string[] {
 
 function displayWord(word: string): string {
   const lower = word.toLowerCase();
-  if (lower === "me") return "my";
-  if (lower === "org") return "organization";
-  if (lower === "orgs") return "organizations";
+  if (lower === "me") return "我的";
+  if (lower === "org") return "组织";
+  if (lower === "orgs") return "组织";
   if (lower === "gmail") return "Gmail";
   if (lower === "slack") return "Slack";
   if (lower === "google") return "Google";
@@ -78,8 +78,8 @@ export function serviceName(namespace: string): string {
   if (namespace === "google_workspace") return "Google Workspace";
   if (namespace === "slack") return "Slack";
   if (namespace === "den") return "OpenWork";
-  if (namespace === "marketplace") return "Marketplace";
-  if (namespace === "$codemode") return "Search";
+  if (namespace === "marketplace") return "市场";
+  if (namespace === "$codemode") return "搜索引擎";
   if (namespace === "gmail") return "Gmail";
   if (namespace === "calendar") return "Google Calendar";
   if (namespace === "drive") return "Google Drive";
@@ -124,7 +124,7 @@ function pathText(value: string): string | null {
   const length = normalized.endsWith(".length");
   const path = length ? normalized.slice(0, -".length".length) : normalized;
   const words = path.split(".").map((part) => lowerFirst(humanizeIdentifier(part))).join(" ");
-  return length ? `the number of ${words}` : words;
+  return length ? `${words}的数量` : words;
 }
 
 function operandText(value: string): string | null {
@@ -141,14 +141,14 @@ export function describeCondition(label: string): { text: string; technical: boo
   const missing = condition.match(/^!\s*([A-Za-z_$][\w$]*(?:\??\.[A-Za-z_$][\w$]*)*)$/);
   if (missing) {
     const subject = pathText(missing[1]);
-    if (subject) return { text: `${capitalize(subject)} is missing`, technical: false };
+    if (subject) return { text: `缺少${capitalize(subject)}`, technical: false };
   }
 
   const both = condition.split(/\s*&&\s*/);
   if (both.length === 2) {
     const left = pathText(both[0]);
     const right = pathText(both[1]);
-    if (left && right) return { text: `${capitalize(left)} and ${capitalize(right)} are set`, technical: false };
+    if (left && right) return { text: `已设置${capitalize(left)}和${capitalize(right)}`, technical: false };
   }
 
   const comparison = condition.match(/^(.+?)\s*(>=|<=|!==|===|==|>|<)\s*(.+)$/);
@@ -156,55 +156,55 @@ export function describeCondition(label: string): { text: string; technical: boo
     const left = operandText(comparison[1]);
     const right = operandText(comparison[3]);
     const phrases: Record<string, string> = {
-      ">": "is more than",
-      "<": "is less than",
-      ">=": "is at least",
-      "<=": "is at most",
-      "===": "is",
-      "==": "is",
-      "!==": "is not",
+      ">": "大于",
+      "<": "小于",
+      ">=": "大于或等于",
+      "<=": "小于或等于",
+      "===": "等于",
+      "==": "等于",
+      "!==": "不等于",
     };
     if (left && right) return { text: `${capitalize(left)} ${phrases[comparison[2]]} ${capitalize(right)}`, technical: false };
   }
 
   const subject = pathText(condition);
-  if (subject) return { text: `${capitalize(subject)} is set`, technical: false };
-  return { text: `Check: ${label}`, technical: true };
+  if (subject) return { text: `已设置${capitalize(subject)}`, technical: false };
+  return { text: `检查：${label}`, technical: true };
 }
 
 export function describeReturn(label: string): string {
   const trimmed = label.trim();
-  if (trimmed === "value" || trimmed === "undefined" || trimmed.toLowerCase() === "return") return "Finish";
+  if (trimmed === "value" || trimmed === "undefined" || trimmed.toLowerCase() === "return") return "完成";
   const object = trimmed.match(/^\{\s*(.*?)\s*\}$/);
-  if (!object) return "Finish with the result";
-  if (!object[1]) return "Finish";
+  if (!object) return "输出最终结果";
+  if (!object[1]) return "完成";
   const keys = object[1].split(",").map((part) => part.trim().replace(/^\.\.\./, "").split(":")[0].trim());
-  if (keys.some((key) => !/^[A-Za-z_$][\w$]*$/.test(key))) return "Finish with the result";
-  return `Finish with: ${keys.map(humanizeIdentifier).join(", ")}`;
+  if (keys.some((key) => !/^[A-Za-z_$][\w$]*$/.test(key))) return "输出最终结果";
+  return `最终输出：${keys.map(humanizeIdentifier).join(", ")}`;
 }
 
 export function describeLoop(label: string): string {
   const subject = pathText(label);
-  return subject ? `For each item in ${subject}` : "Repeat";
+  return subject ? `对${subject}中的每一项` : "重复";
 }
 
 function listSentence(values: string[]): string {
   if (values.length <= 1) return values[0] ?? "";
-  if (values.length === 2) return `${values[0]} and ${values[1]}`;
-  return `${values.slice(0, -1).join(", ")}, and ${values[values.length - 1]}`;
+  if (values.length === 2) return `${values[0]}和${values[1]}`;
+  return `${values.slice(0, -1).join(", ")}，以及${values[values.length - 1]}`;
 }
 
 export function summarizeGraph(graph: WorkflowGraph): { stepCount: number; services: string[]; sentence: string } {
   const toolSteps = graph.nodes.flatMap((node) => node.kind === "tool" ? [describeToolStep(node)] : []);
   const services = [...new Set(toolSteps.map((step) => step.service))];
   const readsOnly = toolSteps.every((step) => /^(Get|List|Search|Read)\b/.test(step.title));
-  const opening = services.length > 0 ? `${readsOnly ? "Reads from" : "Uses"} ${listSentence(services)}` : "Runs its steps";
+  const opening = services.length > 0 ? `${readsOnly ? "从以下服务读取数据：" : "使用以下服务："}${listSentence(services)}` : "执行步骤";
   const branchCount = graph.nodes.filter((node) => node.kind === "branch").length;
-  const decision = branchCount === 0 ? "" : branchCount === 1 ? " with one decision" : ` with ${branchCount} decisions`;
-  const parallel = graph.nodes.some((node) => node.kind === "tool" && node.parallelGroup) ? " while some steps run at the same time" : "";
+  const decision = branchCount === 0 ? "" : branchCount === 1 ? "，包含一个条件判断" : `，包含 ${branchCount} 个判断`;
+  const parallel = graph.nodes.some((node) => node.kind === "tool" && node.parallelGroup) ? "，部分步骤并行执行" : "";
   return {
     stepCount: graph.nodes.length,
     services,
-    sentence: `${opening}${decision}${parallel}, then finishes with a summary.`,
+    sentence: `${opening}${decision}${parallel}，最后生成摘要。`,
   };
 }

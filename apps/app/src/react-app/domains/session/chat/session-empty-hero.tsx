@@ -1,5 +1,6 @@
 /** @jsxImportSource react */
 import { t } from "@/i18n";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, X, Zap } from "lucide-react";
 
@@ -156,6 +157,7 @@ export function SessionEmptyHero(props: SessionEmptyHeroProps) {
   // (the built-in `opencode` provider) and the hosted offering applies.
   const onFreeStarterModel = props.composer?.selectedModel.providerID === DEFAULT_MODEL.providerID;
   const showModelsHint =
+    !isLocalGatewayClient() &&
     openWorkModelsPromoEligible &&
     !modelsPromoHidden &&
     !props.composer?.openWorkModelsEntitled &&
@@ -250,8 +252,8 @@ export function SessionEmptyHero(props: SessionEmptyHeroProps) {
         >
           <Zap className="mt-0.5 size-4 shrink-0 text-blue-10" />
           <div>
-            <div className="text-[13px] font-medium text-foreground">{t("interface.connect_a_model_provider")}</div>
-            <div className="mt-0.5 text-[12px] text-muted-foreground">{t("interface.add_an_api_key_for_anthropic_openai_google_or_other_providers_so_tasks_can_run")} </div>
+            <div className="text-[13px] font-medium text-foreground">{isLocalGatewayClient() ? "配置模型网关" : t("interface.connect_a_model_provider")}</div>
+            <div className="mt-0.5 text-[12px] text-muted-foreground">{isLocalGatewayClient() ? "填写网关密钥，同步对话与图片模型。" : t("interface.add_an_api_key_for_anthropic_openai_google_or_other_providers_so_tasks_can_run")} </div>
           </div>
         </button>
       ) : null}

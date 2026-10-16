@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE } from "../../../_lib/locale";
+
 import {
   gatewayUsageLimitPolicySchema,
   gatewayUsagePolicyWriteSchema,
@@ -37,7 +39,7 @@ export class GatewayLimitsRequestError extends Error {
 
 export class GatewayLimitsWriteUncertainError extends Error {
   constructor() {
-    super("The update’s outcome could not be verified. Close this dialog and refresh the current state before attempting another update; it may already have succeeded.");
+    super("无法验证更新结果，操作可能已成功。请关闭对话框并刷新当前状态，再尝试更新。");
   }
 }
 
@@ -53,15 +55,15 @@ async function requestLimits<T>(orgId: string, path: string, schema: z.ZodType<T
     throw error;
   });
   if (!response.ok) {
-    const message = getErrorMessage(payload, "Could not load or update Gateway usage limits.");
+    const message = getErrorMessage(payload, "无法加载或更新网关用量限额，请重试。");
     throw new GatewayLimitsRequestError(response.status === 409
-      ? `${message} This policy or request has changed. Refresh and review the latest state before trying again.`
+      ? `${message} 此策略或请求已更改，请刷新并检查最新状态后重试。`
       : message, response.status);
   }
   const result = schema.safeParse(payload);
   if (!result.success) {
     if (isWrite) throw new GatewayLimitsWriteUncertainError();
-    throw new Error("Gateway usage limits returned an invalid response. Refresh to verify the current state.");
+    throw new Error("网关用量限额响应无效，请刷新以验证当前状态。");
   }
   return result.data;
 }
@@ -90,8 +92,8 @@ export function useGatewayMemberUsage(orgId: string, memberId: string) {
   return useQuery({ ...queryDefaults, queryKey: [...gatewayLimitsKey(orgId), "usage", memberId], enabled: Boolean(memberId),
     queryFn: async ({ signal }) => {
       const status = await requestLimits(orgId, `${membersPath}/${encodeURIComponent(memberId)}`, gatewayUsageStatusSchema, { signal });
-      if (status.organizationId !== orgId || status.memberId !== memberId) throw new Error("Gateway usage returned a different member or organization. Refresh to try again.");
-      if ((status.state === "unlimited") !== (status.buckets.length === 0)) throw new Error("Gateway usage returned inconsistent limits. Refresh to try again.");
+      if (status.organizationId !== orgId || status.memberId !== memberId) throw new Error("网关用量返回了其他成员或组织的数据，请刷新后重试。");
+      if ((status.state === "unlimited") !== (status.buckets.length === 0)) throw new Error("网关返回的限额不一致，请刷新后重试。");
       return status;
     },
   });
@@ -105,7 +107,7 @@ export function useGatewayResetHistoryAvailable(orgId: string) {
       const params = new URLSearchParams({ view: "history", limit: "1" });
       const page = await requestLimits(orgId, `${resetsPath}?${params}`, gatewayUsageResetPageSchema, { signal });
       if (page.view !== "history" || page.limit !== 1) {
-        throw new Error("Could not verify previous increase requests. Refresh to try again.");
+        throw new Error("无法验证之前的提额申请，请刷新后重试。");
       }
       return page.requests.length > 0;
     },
@@ -125,7 +127,7 @@ export function useGatewayResetRequests(orgId: string, view: GatewayUsageResetPa
       const page = await requestLimits(orgId, `${resetsPath}?${params}`, gatewayUsageResetPageSchema, { signal });
       if (page.view !== view || page.limit !== 50 || page.hasMore !== Boolean(page.nextCursor)
         || (page.hasMore && (!page.requests.length || page.nextCursor === pageParam))) {
-        throw new Error("Gateway increase requests returned inconsistent pagination. Refresh from the first page.");
+        throw new Error("网关提额申请分页不一致，请从第一页刷新。");
       }
       return page;
     },
@@ -177,11 +179,11 @@ export function microUsdDecimal(value: number): string {
 
 export function formatLimitMoney(value: number): string {
   const [whole, fraction = ""] = microUsdDecimal(Math.abs(value)).split(".");
-  return `${value < 0 ? "−" : ""}$${BigInt(whole).toLocaleString("en-US")}.${fraction.padEnd(2, "0")}`;
+  return `${value < 0 ? "−" : ""}$${BigInt(whole).toLocaleString(DEFAULT_DEN_LOCALE)}.${fraction.padEnd(2, "0")}`;
 }
 
-export const timeframeLabels = { day: "1 day", week: "1 week", month: "1 month" };
-export const timeframePeriods = { day: "a day", week: "a week", month: "a month" };
+export const timeframeLabels = { day: "1 天", week: "1 周", month: "1 个月" };
+export const timeframePeriods = { day: "一天", week: "一周", month: "一个月" };
 
 export function newGatewayPolicy(): GatewayUsagePolicyWrite {
   return { name: "", providerId: null, hardLimit: true, allowRequestReset: true, limits: [{ timeframe: "month", costUsd: "" }] };

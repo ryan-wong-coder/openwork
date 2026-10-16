@@ -1,9 +1,11 @@
 "use client";
 
+import { getDenPermissionDefinition } from "../../../_lib/permission-copy";
+
 import Link from "next/link";
 import { useState } from "react";
 import { Check, Plus, ShieldCheck } from "lucide-react";
-import { getPermissionDefinition, permissionDefaultKeys, type PermissionKey } from "@openwork/types/den/permissions";
+import { permissionDefaultKeys, type PermissionKey } from "@openwork/types/den/permissions";
 import { DenButton } from "../../_components/ui/button";
 import { DenNotice } from "../../_components/ui/notice";
 import { DenSkeleton } from "../../_components/ui/skeleton";
@@ -33,7 +35,7 @@ function setTeams(set: PermissionSetSummary): { id: string; name: string | null 
 }
 
 function teamNames(teams: readonly { name: string | null }[]): string {
-  return teams.map((team) => team.name ?? "A deleted team").join(", ");
+  return teams.map((team) => team.name ?? "已删除的团队").join(", ");
 }
 
 /**
@@ -68,9 +70,9 @@ export function SharedTeamRolePanel({ team }: { team: DenOrgTeam }) {
   const otherTeams = teamSet ? setTeams(teamSet).filter((entry) => entry.id !== team.id) : [];
   const title = role.kind === "custom" && teamSet ? teamSet.name : TEAM_ROLE_LABELS[role.kind];
   const description = role.kind === "admin"
-    ? `Everyone in ${team.name} is an admin`
+    ? `${team.name} 中的所有人都是管理员`
     : role.kind === "custom"
-      ? otherTeams.length > 0 ? `Custom role, also on ${teamNames(otherTeams)}` : "Custom role"
+      ? otherTeams.length > 0 ? `自定义角色，也分配给 ${teamNames(otherTeams)}` : "自定义角色"
       : TEAM_ROLE_DESCRIPTIONS.member;
   const abilities: TeamRoleAbilities = {
     canManageAdminTeams: access?.canManageAdminTeams ?? false,
@@ -80,7 +82,7 @@ export function SharedTeamRolePanel({ team }: { team: DenOrgTeam }) {
 
   return (
     <div className="flex flex-col gap-6" data-testid="team-role" data-role={role.kind}>
-      {setsQuery.isError ? <DenNotice tone="error" message={setsQuery.error instanceof Error ? setsQuery.error.message : "Couldn't load this team's role."} /> : null}
+      {setsQuery.isError ? <DenNotice tone="error" message={setsQuery.error instanceof Error ? setsQuery.error.message : "无法加载此团队的角色，请重试。"} /> : null}
       <ItemPanel>
         <div className="flex flex-wrap items-center gap-3.5 px-5 py-4">
           <IconTile icon={ShieldCheck} />
@@ -90,7 +92,7 @@ export function SharedTeamRolePanel({ team }: { team: DenOrgTeam }) {
           </span>
           <span className="flex max-w-full flex-wrap gap-2">
             {teamSet && role.kind === "custom" ? (
-              <LinkButton size="sm" variant="secondary" href={getPermissionSetRoute(orgSlug, teamSet.id)} data-testid="team-role-open">Open role</LinkButton>
+              <LinkButton size="sm" variant="secondary" href={getPermissionSetRoute(orgSlug, teamSet.id)} data-testid="team-role-open">打开角色</LinkButton>
             ) : null}
             <RolePicker
               team={team}
@@ -105,11 +107,11 @@ export function SharedTeamRolePanel({ team }: { team: DenOrgTeam }) {
       </ItemPanel>
 
       {loading ? (
-        <ItemPanel><ItemRowsSkeleton label="Loading what this team can do" rows={3} /></ItemPanel>
+        <ItemPanel><ItemRowsSkeleton label="正在加载团队权限" rows={3} /></ItemPanel>
       ) : alsoKeys.length > 0 ? (
-        <ItemSection title={`${team.name} can also`} testId="team-role-also">
+        <ItemSection title={`${team.name} 还可以`} testId="team-role-also">
           <ItemPanel>
-            {alsoKeys.map((key) => <ItemRow key={key} logo={<CheckMark />} title={getPermissionDefinition(key).label} />)}
+            {alsoKeys.map((key) => <ItemRow key={key} logo={<CheckMark />} title={getDenPermissionDefinition(key).label} />)}
           </ItemPanel>
         </ItemSection>
       ) : null}
@@ -143,14 +145,14 @@ function RolePicker({ team, state, customSets, abilities, disabled, newRoleHref 
 
   const builtIn: PickerOption[] = [
     { role: { kind: "member" }, title: TEAM_ROLE_LABELS.member, description: TEAM_ROLE_DESCRIPTIONS.member },
-    { role: { kind: "admin" }, title: TEAM_ROLE_LABELS.admin, description: "Invite people, manage teams, and run connections and models" },
+    { role: { kind: "admin" }, title: TEAM_ROLE_LABELS.admin, description: "邀请人员、管理团队，以及使用连接和模型" },
   ];
   const custom: PickerOption[] = customSets.map((set) => {
     const teams = setTeams(set);
     return {
       role: { kind: "custom", setId: set.id },
       title: set.name,
-      description: teams.length ? `On ${teamNames(teams)}` : "No teams yet",
+      description: teams.length ? `已分配给 ${teamNames(teams)}` : "暂无团队",
     };
   });
   const changed = !sameSharedTeamRole(choice, current);
@@ -182,11 +184,11 @@ function RolePicker({ team, state, customSets, abilities, disabled, newRoleHref 
       await run(before, choice);
       setOpen(false);
         toast({
-        title: `${team.name} is now ${chosenTitle}`,
-        action: { label: "Undo", onClick: () => { void run(after, previous); } },
+        title: `${team.name} 现在为${chosenTitle}`,
+        action: { label: "撤销", onClick: () => { void run(after, previous); } },
       });
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Couldn't change the role.");
+      setError(cause instanceof Error ? cause.message : "无法更改角色，请重试。");
     } finally {
       setBusy(false);
     }
@@ -203,15 +205,15 @@ function RolePicker({ team, state, customSets, abilities, disabled, newRoleHref 
     <SearchableRolePicker
       value={choice.kind === "custom" ? choice.setId : choice.kind}
       onChange={(value) => setChoice(value === "member" ? { kind: "member" } : value === "admin" ? { kind: "admin" } : { kind: "custom", setId: value })}
-      options={options} label={`Role for ${team.name}`} trigger="Change role" disabled={disabled}
+      options={options} label={`${team.name} 的角色`} trigger="更改角色" disabled={disabled}
       testId="team-role" open={open} onOpenChange={(next) => next ? (setChoice(current), setOpen(true)) : close()}
       footer={<>
         {error ? <DenNotice tone="error" message={error} /> : null}
-        <Link href={newRoleHref} className="mb-2 inline-flex items-center gap-1.5 px-2 py-1 text-[12px] text-gray-700"><Plus className="h-3.5 w-3.5" aria-hidden />Create role</Link>
+        <Link href={newRoleHref} className="mb-2 inline-flex items-center gap-1.5 px-2 py-1 text-[12px] text-gray-700"><Plus className="h-3.5 w-3.5" aria-hidden />创建角色</Link>
         <div className="flex min-w-0 justify-end gap-2">
-          <DenButton size="sm" variant="secondary" onClick={close}>Cancel</DenButton>
-          <DenButton size="sm" disabled={!changed} loading={busy} onClick={() => void save()} className="min-w-0" title={changed ? `Change to ${chosenTitle}` : undefined} data-testid="team-role-save">
-            <span className="truncate">{changed ? `Change to ${chosenTitle}` : "Change role"}</span>
+          <DenButton size="sm" variant="secondary" onClick={close}>取消</DenButton>
+          <DenButton size="sm" disabled={!changed} loading={busy} onClick={() => void save()} className="min-w-0" title={changed ? `更改为 ${chosenTitle}` : undefined} data-testid="team-role-save">
+            <span className="truncate">{changed ? `更改为 ${chosenTitle}` : "更改角色"}</span>
           </DenButton>
         </div>
       </>}

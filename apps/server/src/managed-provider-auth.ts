@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { GATEWAY_PROXY_TOKEN_ENV, gatewayProxyToken } from "./gateway-proxy-auth.js";
 import { selectPrimaryCredentialEnvName } from "@openwork/types/managed-provider-config";
 export { selectPrimaryCredentialEnvName } from "@openwork/types/managed-provider-config";
 
@@ -252,6 +253,8 @@ async function reconcileManagedProviderAuth(input: ManagedProviderAuthInput): Pr
       storedValues.set(record.key, record.value);
     }
   }
+  // The engine receives only a scoped loopback credential, never the external gateway key.
+  storedValues.set(GATEWAY_PROXY_TOKEN_ENV, gatewayProxyToken(input.config));
 
   const target = resolveManagedProviderAuthTarget(input.config, input.target);
   if (!target) return result;

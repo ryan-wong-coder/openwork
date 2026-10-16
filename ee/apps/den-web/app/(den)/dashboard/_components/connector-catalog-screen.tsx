@@ -42,8 +42,8 @@ export function usePrefetchConnectorCatalog(): () => void {
 
 /** Google Workspace and Microsoft 365 are org OAuth apps, set up by admins only. */
 export const NATIVE_CATALOG_ENTRIES: CatalogEntry[] = [
-  { id: GOOGLE_WORKSPACE_QUICK_ADD_ID, name: "Google Workspace", description: "Gmail, Drive, Calendar, Sheets and Chat", url: "https://workspace.google.com" },
-  { id: MICROSOFT_365_QUICK_ADD_ID, name: "Microsoft 365", description: "Outlook, Calendar, OneDrive and Teams", url: "https://www.microsoft.com/microsoft-365" },
+  { id: GOOGLE_WORKSPACE_QUICK_ADD_ID, name: "Google Workspace", description: "Gmail、云端硬盘、日历、表格与 Chat", url: "https://workspace.google.com" },
+  { id: MICROSOFT_365_QUICK_ADD_ID, name: "Microsoft 365", description: "Outlook、日历、OneDrive 与 Teams", url: "https://www.microsoft.com/microsoft-365" },
 ];
 
 function nativeConnection(connections: readonly ExternalMcpConnection[], providerKey: string): ExternalMcpConnection | undefined {
@@ -71,7 +71,7 @@ export function ConnectorCatalogScreen({ mode }: { mode: ConnectorFlowMode }) {
     ? NATIVE_CATALOG_ENTRIES.map((entry): CatalogEntry => {
       const existing = nativeConnection(known, entry.id);
       if (existing && entry.id === GOOGLE_WORKSPACE_QUICK_ADD_ID) {
-        return { ...entry, addLabel: "Add another" };
+        return { ...entry, addLabel: "添加其他" };
       }
       return existing ? { ...entry, openHref: openRoute(existing.id) } : entry;
     })
@@ -82,11 +82,11 @@ export function ConnectorCatalogScreen({ mode }: { mode: ConnectorFlowMode }) {
     <ItemPage testId="connector-catalog">
       <ItemHeader
         compact
-        back={mode === "admin" ? { href: getMcpConnectionsRoute(orgSlug), label: "Connectors" } : { href: getLibraryRoute(orgSlug), label: "My Library" }}
-        title="Add a connector"
+        back={mode === "admin" ? { href: getMcpConnectionsRoute(orgSlug), label: "连接器" } : { href: getLibraryRoute(orgSlug), label: "我的资源库" }}
+        title="添加连接器"
       />
       {presets.error ? (
-        <p className="text-[13px] text-red-600">{presets.error instanceof Error ? presets.error.message : "The list did not load."}</p>
+        <p className="text-[13px] text-red-600">{presets.error instanceof Error ? presets.error.message : "列表加载失败，请重试。"}</p>
       ) : null}
       <ConnectorPicker
         entries={entries}

@@ -48,11 +48,11 @@ export function EveryoneScreen({ initialTab }: { initialTab: EveryoneTab | null 
   const setsQuery = usePermissionSets(orgId, canViewSets);
   const memberSet = setsQuery.data?.find((set) => set.kind === "member_default");
   const tabs: readonly TabItem<EveryoneTab>[] = [
-    { value: "role", label: "Role", icon: ShieldCheck },
-    ...(showAgents ? [{ value: "agents" as const, label: "Agents", icon: SquareTerminal }] : []),
-    ...(showBrowser ? [{ value: "browser" as const, label: "Browser", icon: Compass }] : []),
-    ...(showModels ? [{ value: "models" as const, label: "Models", icon: Layers }] : []),
-    ...(showDesktop ? [{ value: "desktop" as const, label: "Desktop", icon: Laptop }] : []),
+    { value: "role", label: "角色", icon: ShieldCheck },
+    ...(showAgents ? [{ value: "agents" as const, label: "智能体", icon: SquareTerminal }] : []),
+    ...(showBrowser ? [{ value: "browser" as const, label: "浏览器", icon: Compass }] : []),
+    ...(showModels ? [{ value: "models" as const, label: "模型", icon: Layers }] : []),
+    ...(showDesktop ? [{ value: "desktop" as const, label: "桌面端", icon: Laptop }] : []),
   ];
 
   return (
@@ -63,43 +63,43 @@ export function EveryoneScreen({ initialTab }: { initialTab: EveryoneTab | null 
           className="inline-flex items-center gap-1.5 text-[13px] text-gray-500 transition hover:text-gray-700"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back
+          返回
         </Link>
       </div>
 
       <header className="flex flex-wrap items-center gap-3">
-        <h1 className="text-[24px] font-semibold tracking-[-0.04em] text-gray-950">Everyone</h1>
+        <h1 className="text-[24px] font-semibold tracking-[-0.04em] text-gray-950">所有人</h1>
         <span className="rounded-full bg-gray-100 px-2.5 py-1 text-[12px] font-medium text-gray-600">
-          {memberCount} {memberCount === 1 ? "member" : "members"}
+          {memberCount} {"名成员"}
         </span>
       </header>
 
       <UnderlineTabs className="mt-6" tabs={tabs} activeTab={activeTab} onChange={chooseTab} />
 
       <div className="mt-6">
-        {activeTab === "desktop" ? (<div role="tabpanel" aria-label="Desktop"><DesktopSuggestionsPanel team={null} /></div>) : activeTab === "role" ? (
-          <div role="tabpanel" aria-label="Role">
+        {activeTab === "desktop" ? (<div role="tabpanel" aria-label="桌面端"><DesktopSuggestionsPanel team={null} /></div>) : activeTab === "role" ? (
+          <div role="tabpanel" aria-label="角色">
             <ItemPanel>
               <ItemRow
                 logo={<IconTile icon={ShieldCheck} />}
-                title="Member"
-                description="What everyone can do"
-                status="Built-in role"
+                title="成员"
+                description="所有人的权限"
+                status="内置角色"
                 href={memberSet ? getPermissionSetRoute(orgSlug, memberSet.id) : undefined}
                 testId="everyone-role-member"
               />
             </ItemPanel>
           </div>
         ) : activeTab === "browser" ? (
-          <div role="tabpanel" aria-label="Browser">
+          <div role="tabpanel" aria-label="浏览器">
             <AgentsPanel team={null} area="browser" />
           </div>
         ) : activeTab === "models" ? (
-          <div role="tabpanel" aria-label="Models">
+          <div role="tabpanel" aria-label="模型">
             <ModelsPanel team={null} />
           </div>
         ) : (
-          <div role="tabpanel" aria-label="Agents">
+          <div role="tabpanel" aria-label="智能体">
             <AgentsPanel team={null} area={showBrowser ? "agents" : "all"} />
           </div>
         )}

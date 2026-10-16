@@ -15,15 +15,15 @@ import { useOrgDashboard } from "../_providers/org-dashboard-provider";
 export type AdvancedTab = "collections" | "desktop-policies" | "brand-appearance";
 
 const ADVANCED_TABS: readonly TabItem<AdvancedTab>[] = [
-  { value: "collections", label: "Collections", icon: Store },
-  { value: "desktop-policies", label: "Desktop policies", icon: Laptop },
-  { value: "brand-appearance", label: "Brand appearance", icon: Palette },
+  { value: "collections", label: "合集", icon: Store },
+  { value: "desktop-policies", label: "桌面策略", icon: Laptop },
+  { value: "brand-appearance", label: "品牌外观", icon: Palette },
 ];
 
 const ADVANCED_DESCRIPTIONS: Record<AdvancedTab, string> = {
-  collections: "Collections contain plugins. The built-in OpenWork collection and assigned collections show up inside the desktop app after sign-in.",
-  "desktop-policies": "Control which desktop capabilities are available to the whole org, specific members, or teams.",
-  "brand-appearance": "Customize how your workspace appears across OpenWork.",
+  collections: "集合包含插件。登录后，内置 OpenWork 集合与已分配集合将显示在桌面应用中。",
+  "desktop-policies": "为整个组织、指定成员或团队设置可用的桌面功能。",
+  "brand-appearance": "自定义工作区在 OpenWork 中的外观。",
 };
 
 export function AdvancedPageTemplate({ tab, children }: { tab: AdvancedTab; children: React.ReactNode }) {
@@ -41,7 +41,7 @@ export function AdvancedPageTemplate({ tab, children }: { tab: AdvancedTab; chil
 
   return (
     <DashboardPageTemplate
-      title="Advanced"
+      title="高级"
       description={ADVANCED_DESCRIPTIONS[tab]}
     >
       <div data-testid="advanced-tabs" className="mb-6">

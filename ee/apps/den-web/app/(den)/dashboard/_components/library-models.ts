@@ -137,20 +137,20 @@ export function buildLibraryModelProviders(providers: readonly UsableProvider[],
 
 /** "Gemini 2.5 Pro, Gemini 2.5 Flash, Claude Sonnet 4.5 and 9 more". */
 export function modelNamesSummary(models: readonly LibraryModel[], shown = 3): string {
-  if (models.length === 0) return "No models yet";
+  if (models.length === 0) return "暂无模型";
   const names = models.slice(0, shown).map((model) => model.name).join(", ");
   const rest = models.length - shown;
-  return rest > 0 ? `${names} and ${rest} more` : names;
+  return rest > 0 ? `${names}等另外 ${rest} 项` : names;
 }
 
 export function modelCount(count: number): string {
-  return count === 1 ? "1 model" : `${count} models`;
+  return count === 1 ? "1 个模型" : `${count} 个模型`;
 }
 
 /** The brand people sign in with: Google (Vertex), AWS (Bedrock) or Microsoft (Foundry). */
 export function signInBrand(provider: Pick<LibraryModelProvider, "providerKey">): string {
   const method = gatewayMemberSignInMethod(provider.providerKey);
-  return method === "google" ? "Google" : method === "aws_sso" ? "AWS" : method === "microsoft" ? "Microsoft" : "your account";
+  return method === "google" ? "Google" : method === "aws_sso" ? "AWS" : method === "microsoft" ? "Microsoft" : "你的账户";
 }
 
 export function matchesModelQuery(provider: LibraryModelProvider, query: string): boolean {

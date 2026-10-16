@@ -1,7 +1,9 @@
 "use client";
 
+import { getDenPermissionDefinition } from "../../../_lib/permission-copy";
+
 import Link from "next/link";
-import { getPermissionDefinition, isPermissionKey } from "@openwork/types/den/permissions";
+import { isPermissionKey } from "@openwork/types/den/permissions";
 import { DenButton } from "../../_components/ui/button";
 import { DenNotice } from "../../_components/ui/notice";
 import { getOrgAccessFlags, getPermissionSetRoute, orgFeatureEnabled, type DenOrgContext } from "../../_lib/den-org";
@@ -43,12 +45,12 @@ export function MemberEffectivePermissions({ memberId, memberName }: { memberId:
   const teamRoles = orgContext ? orgFeatureEnabled(orgContext, "teamRoles") : false;
   const sharedRoles = useSharedRolesOn();
 
-  if (query.isPending) return <PermissionRowsSkeleton rows={4} label={`Loading permissions for ${memberName}`} />;
+  if (query.isPending) return <PermissionRowsSkeleton rows={4} label={`正在加载 ${memberName} 的权限`} />;
   if (query.isError) {
     return (
       <div className="flex flex-col items-start gap-2">
-        <DenNotice tone="error" className="w-full" message={query.error instanceof Error ? query.error.message : "Couldn't load effective permissions."} />
-        <DenButton variant="secondary" size="sm" disabled={query.isFetching} onClick={() => void query.refetch()}>Try again</DenButton>
+        <DenNotice tone="error" className="w-full" message={query.error instanceof Error ? query.error.message : "无法加载实际权限，请重试。"} />
+        <DenButton variant="secondary" size="sm" disabled={query.isFetching} onClick={() => void query.refetch()}>重试</DenButton>
       </div>
     );
   }
@@ -58,13 +60,13 @@ export function MemberEffectivePermissions({ memberId, memberName }: { memberId:
   const areas = permissionAreas(new Set(byKey.keys()));
 
   return (
-    <div className="flex flex-col gap-4" data-testid="member-effective-permissions" aria-label={`Effective permissions for ${memberName}`}>
+    <div className="flex flex-col gap-4" data-testid="member-effective-permissions" aria-label={`${memberName} 的有效权限`}>
       <p className="text-[13px] text-gray-600">
         {data.isOwner
-          ? `${memberName} is the owner and can always do everything.`
+          ? `${memberName} 是所有者，始终拥有全部操作权限。`
           : byKey.size === 0
-            ? `${memberName} has no organization permissions.`
-            : `${memberName} has ${byKey.size} ${byKey.size === 1 ? "permission" : "permissions"}.`}
+            ? `${memberName} 没有组织权限。`
+            : `${memberName} 拥有 ${byKey.size} 项权限。`}
       </p>
       {data.isOwner ? null : areas.map((area) => (
         <PermissionAreaSection key={area.key} label={area.label}>
@@ -73,7 +75,7 @@ export function MemberEffectivePermissions({ memberId, memberName }: { memberId:
             if (!entry) return null;
             return (
               <div key={key} className="flex min-h-10 flex-wrap items-center gap-x-3 gap-y-0.5 py-1.5" data-testid="member-permission-row" data-permission-key={key}>
-                <span className="min-w-0 flex-1 truncate text-[13px] font-medium text-gray-900">{getPermissionDefinition(key).label}</span>
+                <span className="min-w-0 flex-1 truncate text-[13px] font-medium text-gray-900">{getDenPermissionDefinition(key).label}</span>
                 <span className="text-[12px] text-gray-500">
                   {entry.sources.map((source, index) => (
                     <span key={`${source.kind}-${source.setId ?? index}`}>

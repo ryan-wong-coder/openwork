@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE } from "../../../_lib/locale";
+
 import { z } from "zod";
 import { queryOptions, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DenRequestCanceledError, DenRequestTimeoutError, getRequestError, isReauthRequiredError, requestJson } from "../../_lib/den-flow";
@@ -20,7 +22,7 @@ function getOrgScopeHeaders(orgId: string) {
 
 function requireOrgId(orgId: string | null) {
   if (!orgId) {
-    throw new Error("Select an organization before managing connections.");
+    throw new Error("请先选择组织，再管理连接。");
   }
   return orgId;
 }
@@ -65,7 +67,7 @@ export function useCheckMcpConnection() {
       const { response, payload } = await requestJson(`/v1/mcp-connections/${encodeURIComponent(connectionId)}/check`, {
         method: "POST", headers: getOrgScopeHeaders(requireOrgId(orgId)),
       }, 30000);
-      if (!response.ok) throw getRequestError(payload, response, "Could not check this connection. Try again.");
+      if (!response.ok) throw getRequestError(payload, response, "无法检查此连接，请重试。");
       return z.object({ readiness: z.object({ status: z.enum(["ready", "could_not_verify"]), checkedAt: z.string(), reason: z.string().nullable() }) }).parse(payload).readiness;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: mcpConnectionQueryKeys.all }),
@@ -348,14 +350,14 @@ export function useMcpConnectionTools(connectionId: string, enabled: boolean) {
         30000,
       );
       if (!response.ok) {
-        throw getRequestError(payload, response, `Failed to inspect MCP tools (${response.status}).`);
+        throw getRequestError(payload, response, `无法检查 MCP 工具（${response.status}）。`);
       }
       if (!isRecord(payload) || !Array.isArray(payload.tools)) {
-        throw new Error("MCP tool catalog response was incomplete.");
+        throw new Error("MCP 工具目录响应不完整，请重试。");
       }
       const policy = parseExternalMcpToolPolicy(payload.policy);
       if (!policy || !payload.tools.every(isExternalMcpTool)) {
-        throw new Error("MCP tool catalog response was incomplete.");
+        throw new Error("MCP 工具目录响应不完整，请重试。");
       }
       return { tools: payload.tools, policy };
     },
@@ -377,10 +379,10 @@ export function useUpdateMcpConnectionToolPolicy(connectionId: string) {
         30000,
       );
       if (!response.ok) {
-        throw getRequestError(payload, response, `Failed to update MCP tool policy (${response.status}).`);
+        throw getRequestError(payload, response, `无法更新 MCP 工具策略（${response.status}）。`);
       }
       const policy = isRecord(payload) ? parseExternalMcpToolPolicy(payload.policy) : null;
-      if (!policy) throw new Error("MCP tool policy response was incomplete.");
+      if (!policy) throw new Error("MCP 工具策略响应不完整，请重试。");
       return policy;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: mcpConnectionQueryKeys.tools(orgId, connectionId) }),
@@ -409,12 +411,12 @@ export function useRunMcpConnectionTool(connectionId: string) {
       if (!response.ok) {
         if (response.status === 403 && isRecord(payload) && payload.error === "policy_blocked") {
           throw new ExternalMcpToolPolicyBlockedError(
-            typeof payload.message === "string" ? payload.message : "This tool is disabled by organization policy.",
+            typeof payload.message === "string" ? payload.message : "组织策略已禁用此工具。",
             typeof payload.disabledBy === "string" ? payload.disabledBy : null,
             typeof payload.disabledAt === "string" ? payload.disabledAt : null,
           );
         }
-        const requestError = getRequestError(payload, response, `Failed to run MCP tool (${response.status}).`);
+        const requestError = getRequestError(payload, response, `无法运行 MCP 工具（${response.status}）。`);
         throw new ExternalMcpToolRunError(
           requestError.message,
           isRecord(payload) ? parseToolCallInspection(payload.inspection) : null,
@@ -427,7 +429,7 @@ export function useRunMcpConnectionTool(connectionId: string) {
         || typeof payload.durationMs !== "number"
         || !("result" in payload)
       ) {
-        throw new Error("MCP tool result was incomplete.");
+        throw new Error("MCP 工具结果不完整，请重试。");
       }
       return {
         referenceId: payload.referenceId,
@@ -468,7 +470,7 @@ export class McpOAuthConfigurationRequiredError extends McpOAuthStartError {
 }
 
 const MCP_OAUTH_START_UNREADABLE_MESSAGE =
-  "OpenWork could not read the answer from its API when starting the sign-in. The browser blocked the response or the request never completed. Try again; if it keeps happening, tell your workspace admin the time of this attempt.";
+  "开始登录时，OpenWork 无法读取 API 响应，可能是浏览器阻止响应或请求未完成。请重试；若问题持续，请将此次尝试的时间告知工作区管理员。";
 
 /**
  * The browser refused to hand the page a response: a network failure, or an
@@ -624,7 +626,7 @@ async function fetchConnections(scope: ExternalMcpConnectionScope, orgId: string
     15000,
   );
   if (!response.ok) {
-    throw getRequestError(payload, response, `Failed to load MCP connectors (${response.status}).`);
+    throw getRequestError(payload, response, `无法加载 MCP 连接器（${response.status}）。`);
   }
   const record = payload as { connections?: ExternalMcpConnection[] };
   return (record.connections ?? []).map((connection) => ({
@@ -669,7 +671,7 @@ export function mcpConnectionPresetsQueryOptions() {
     queryFn: async (): Promise<ExternalMcpPreset[]> => {
       const { response, payload } = await requestJson("/v1/mcp-connections/presets", {}, 15000);
       if (!response.ok) {
-        throw getRequestError(payload, response, `Failed to load MCP presets (${response.status}).`);
+        throw getRequestError(payload, response, `无法加载 MCP 预设（${response.status}）。`);
       }
       const record = payload as { presets?: ExternalMcpPreset[] };
       return record.presets ?? [];
@@ -767,7 +769,7 @@ export function useResolveMcpConnection() {
         30000,
       );
       if (!response.ok) {
-        throw getRequestError(payload, response, `Failed to look up the MCP server (${response.status}).`);
+        throw getRequestError(payload, response, `无法查询 MCP 服务器（${response.status}）。`);
       }
       return payload as McpConnectionResolution;
     },
@@ -788,7 +790,7 @@ export function useDiscoverMcpConnectionRequirements() {
         20000,
       );
       if (!response.ok) {
-        throw getRequestError(payload, response, `Failed to discover MCP requirements (${response.status}).`);
+        throw getRequestError(payload, response, `无法发现 MCP 配置要求（${response.status}）。`);
       }
       return payload as McpRequirementsDiscovery;
     },
@@ -814,11 +816,11 @@ export function useCreateMcpConnection() {
           20000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to add MCP connection (${response.status}).`);
+          throw getRequestError(payload, response, `无法添加 MCP 连接（${response.status}）。`);
         }
         created = payload as CreatedMcpConnection;
       });
-      if (!created) throw new Error("Create MCP connection response was incomplete.");
+      if (!created) throw new Error("创建 MCP 连接的响应不完整，请重试。");
       return created;
     },
     onSuccess: () => {
@@ -845,11 +847,11 @@ export function useCreateNativeProviderConnection() {
           20000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to add native provider connection (${response.status}).`);
+          throw getRequestError(payload, response, `无法添加原生提供商连接（${response.status}）。`);
         }
         created = payload as CreatedMcpConnection;
       });
-      if (!created) throw new Error("Create native provider connection response was incomplete.");
+      if (!created) throw new Error("创建原生提供商连接的响应不完整，请重试。");
       return created;
     },
     onSuccess: () => {
@@ -873,11 +875,11 @@ export function useUpdateMcpConnection() {
           30000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to update MCP connection (${response.status}).`);
+          throw getRequestError(payload, response, `无法更新 MCP 连接（${response.status}）。`);
         }
         updated = payload as UpdatedMcpConnection;
       });
-      if (!updated) throw new Error("Update MCP connection response was incomplete.");
+      if (!updated) throw new Error("更新 MCP 连接的响应不完整，请重试。");
       return updated;
     },
     onSuccess: () => {
@@ -910,7 +912,7 @@ export function useReviewMcpIssuer() {
           30000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to review the OAuth issuer (${response.status}).`);
+          throw getRequestError(payload, response, `无法检查 OAuth 签发方（${response.status}）。`);
         }
         review = payload as McpIssuerReview;
       };
@@ -919,7 +921,7 @@ export function useReviewMcpIssuer() {
       } else {
         await request();
       }
-      if (!review) throw new Error("OAuth issuer review response was incomplete.");
+      if (!review) throw new Error("OAuth 签发者检查响应不完整，请重试。");
       return review;
     },
     onSuccess: (_review, input) => {
@@ -944,11 +946,11 @@ export function useReplaceMcpConnectionAccess() {
           15000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to update connection access (${response.status}).`);
+          throw getRequestError(payload, response, `无法更新连接访问权限（${response.status}）。`);
         }
         result = input.connectionId;
       });
-      if (!result) throw new Error("Update connection access response was incomplete.");
+      if (!result) throw new Error("更新连接访问权限的响应不完整，请重试。");
       return result;
     },
     onSuccess: () => {
@@ -978,7 +980,7 @@ export function useStartMcpConnectionOAuth() {
       }
       if (!response.ok) {
         const details = mcpOAuthStartDebugDetails(payload, response.status);
-        const requestError = getRequestError(payload, response, `Failed to start OAuth (${response.status}).`);
+        const requestError = getRequestError(payload, response, `无法启动 OAuth（${response.status}）。`);
         if (details.errorCode === "mcp_oauth_configuration_required") {
           throw new McpOAuthConfigurationRequiredError(
             requestError.message,
@@ -1033,7 +1035,7 @@ export function useDisconnectMyProviderAccount() {
         15000,
       );
       if (!response.ok) {
-        throw getRequestError(payload, response, `Failed to disconnect account (${response.status}).`);
+        throw getRequestError(payload, response, `无法断开账户连接（${response.status}）。`);
       }
       return connection.id;
     },
@@ -1057,11 +1059,11 @@ export function useDisconnectMcpConnection() {
           15000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to disconnect MCP connection (${response.status}).`);
+          throw getRequestError(payload, response, `无法断开 MCP 连接（${response.status}）。`);
         }
         result = connectionId;
       });
-      if (!result) throw new Error("Disconnect MCP connection response was incomplete.");
+      if (!result) throw new Error("断开 MCP 连接的响应不完整，请重试。");
       return result;
     },
     onSuccess: () => {
@@ -1084,11 +1086,11 @@ export function useDeleteMcpConnection() {
           15000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to remove MCP connection (${response.status}).`);
+          throw getRequestError(payload, response, `无法移除 MCP 连接（${response.status}）。`);
         }
         result = connectionId;
       });
-      if (!result) throw new Error("Delete MCP connection response was incomplete.");
+      if (!result) throw new Error("删除 MCP 连接的响应不完整，请重试。");
       return result;
     },
     onSuccess: () => {
@@ -1117,7 +1119,7 @@ export type NativeProviderClient = {
 
 function parseNativeProviderClient(payload: unknown): NativeProviderClient {
   if (!isRecord(payload)) {
-    throw new Error("Native provider client response was incomplete.");
+    throw new Error("提供商客户端返回的信息不完整，请重试。");
   }
   const { providerId, configured, clientId, tenantId, features, scopes, redirectUri } = payload;
   if (
@@ -1129,7 +1131,7 @@ function parseNativeProviderClient(payload: unknown): NativeProviderClient {
     || !isStringArray(scopes)
     || typeof redirectUri !== "string"
   ) {
-    throw new Error("Native provider client response was incomplete.");
+    throw new Error("提供商客户端返回的信息不完整，请重试。");
   }
   return { providerId, configured, clientId, tenantId, features, scopes, redirectUri };
 }
@@ -1164,7 +1166,7 @@ export function useSaveNativeProviderClient() {
           20000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to save the OAuth client (${response.status}).`);
+          throw getRequestError(payload, response, `无法保存 OAuth 客户端（${response.status}）。`);
         }
       });
     },
@@ -1190,12 +1192,12 @@ export function useNativeProviderClient(providerId: string, enabled: boolean) {
           15000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to load the OAuth client (${response.status}).`);
+          throw getRequestError(payload, response, `无法加载 OAuth 客户端（${response.status}）。`);
         }
         client = parseNativeProviderClient(payload);
       });
       if (!client) {
-        throw new Error("Native provider client response was incomplete.");
+        throw new Error("提供商客户端返回的信息不完整，请重试。");
       }
       return client;
     },
@@ -1203,8 +1205,8 @@ export function useNativeProviderClient(providerId: string, enabled: boolean) {
 }
 
 export function formatMcpConnectedTimestamp(value: string | null): string {
-  if (!value) return "Not connected";
+  if (!value) return "未连接";
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "Not connected";
-  return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(date);
+  if (Number.isNaN(date.getTime())) return "未连接";
+  return new Intl.DateTimeFormat(DEFAULT_DEN_LOCALE, { month: "short", day: "numeric", year: "numeric" }).format(date);
 }

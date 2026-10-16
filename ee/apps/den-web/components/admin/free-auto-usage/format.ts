@@ -1,7 +1,8 @@
-const usd = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const preciseUsd = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 4 });
-const whole = new Intl.NumberFormat("en-US");
-const compact = new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 });
+import { DEFAULT_DEN_LOCALE } from "../../../app/_lib/locale";
+const usd = new Intl.NumberFormat(DEFAULT_DEN_LOCALE, { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const preciseUsd = new Intl.NumberFormat(DEFAULT_DEN_LOCALE, { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 4 });
+const whole = new Intl.NumberFormat(DEFAULT_DEN_LOCALE);
+const compact = new Intl.NumberFormat(DEFAULT_DEN_LOCALE, { notation: "compact", maximumFractionDigits: 1 });
 
 /** Micro-USD to dollars. Small non-zero amounts keep enough digits to stay visible. */
 export function formatUsd(microUsd: number): string {
@@ -25,13 +26,13 @@ export function formatShare(part: number, total: number): string {
 }
 
 export function formatRelative(iso: string | null, now = Date.now()): string {
-  if (!iso) return "Never";
+  if (!iso) return "从未";
   const minutes = Math.round((now - Date.parse(iso)) / 60_000);
-  if (!Number.isFinite(minutes)) return "Unknown";
-  if (minutes < 1) return "Just now";
-  if (minutes < 60) return `${minutes} min ago`;
+  if (!Number.isFinite(minutes)) return "未知";
+  if (minutes < 1) return "刚刚";
+  if (minutes < 60) return `${minutes} 分钟前`;
   const hours = Math.round(minutes / 60);
-  if (hours < 24) return `${hours} h ago`;
+  if (hours < 24) return `${hours} 小时前`;
   const days = Math.round(hours / 24);
-  return days === 1 ? "Yesterday" : `${days} days ago`;
+  return days === 1 ? "昨天" : `${days} 天前`;
 }

@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE } from "../../../_lib/locale";
+
 import { Copy, RefreshCw, Shield, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { DashboardPageTemplate } from "../../_components/ui/dashboard-page-template";
@@ -17,15 +19,15 @@ import { useOrgDashboard } from "../_providers/org-dashboard-provider";
 
 function formatDateTime(value: string | null) {
   if (!value) {
-    return "Not configured";
+    return "未配置";
   }
 
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
-    return "Not configured";
+    return "未配置";
   }
 
-  return date.toLocaleString();
+  return date.toLocaleString(DEFAULT_DEN_LOCALE);
 }
 
 export function ScimScreen() {
@@ -88,7 +90,7 @@ export function ScimScreen() {
       );
 
       if (!response.ok) {
-        throw getRequestError(payload, response, `Failed to load SCIM settings (${response.status}).`);
+        throw getRequestError(payload, response, `无法加载 SCIM 设置（${response.status}）。`);
       }
 
       const parsed = parseOrgScimPayload(payload);
@@ -105,7 +107,7 @@ export function ScimScreen() {
 
       if (isCurrent()) {
         setError(
-          nextError instanceof Error ? nextError.message : "Failed to load SCIM settings.",
+          nextError instanceof Error ? nextError.message : "无法加载 SCIM 设置，请重试。",
         );
       }
     } finally {
@@ -119,7 +121,7 @@ export function ScimScreen() {
     let active = true;
     void runReauthableAction("load-scim-settings", () => loadScimConfig(() => active)).catch((nextError) => {
       if (active) {
-        setError(nextError instanceof Error ? nextError.message : "Failed to load SCIM settings.");
+        setError(nextError instanceof Error ? nextError.message : "无法加载 SCIM 设置，请重试。");
       }
     });
     return () => {
@@ -145,18 +147,18 @@ export function ScimScreen() {
       await navigator.clipboard.writeText(value);
       setCopiedValue(kind);
     } catch {
-      setError(`Could not copy the ${kind === "token" ? "SCIM token" : "SCIM base URL"}.`);
+      setError(`无法复制${kind === "token" ? "SCIM 令牌" : "SCIM 基础地址"}。`);
     }
   }
 
   async function handleRotateToken() {
     if (!access.canManageScim) {
-      setError("You don't have permission to create or rotate SCIM tokens.");
+      setError("你没有创建或轮换 SCIM 令牌的权限。");
       return;
     }
 
     if (!orgId) {
-      setError("Organization not found.");
+      setError("未找到组织。");
       return;
     }
 
@@ -173,12 +175,12 @@ export function ScimScreen() {
           );
 
           if (!response.ok) {
-            throw getRequestError(payload, response, `Failed to rotate SCIM token (${response.status}).`);
+            throw getRequestError(payload, response, `无法轮换 SCIM 令牌（${response.status}）。`);
           }
 
           const parsed = parseOrgScimPayload(payload);
           if (!parsed.baseUrl || !parsed.connection || !parsed.scimToken) {
-            throw new Error("SCIM token rotation succeeded, but the response was incomplete.");
+            throw new Error("SCIM 令牌轮换成功，但响应不完整，请刷新后检查。");
           }
 
           setBaseUrl(parsed.baseUrl);
@@ -193,19 +195,19 @@ export function ScimScreen() {
       });
     } catch (nextError) {
       setError(
-        nextError instanceof Error ? nextError.message : "Failed to rotate SCIM token.",
+        nextError instanceof Error ? nextError.message : "轮换 SCIM 令牌失败，请重试。",
       );
     }
   }
 
   async function handleRunReconciliation() {
     if (!access.canManageScim) {
-      setError("You don't have permission to run SCIM reconciliation.");
+      setError("你没有执行 SCIM 协调同步的权限。");
       return;
     }
 
     if (!orgId) {
-      setError("Organization not found.");
+      setError("未找到组织。");
       return;
     }
 
@@ -221,7 +223,7 @@ export function ScimScreen() {
           );
 
           if (!response.ok) {
-            throw getRequestError(payload, response, `Failed to reconcile SCIM (${response.status}).`);
+            throw getRequestError(payload, response, `无法同步 SCIM（${response.status}）。`);
           }
 
           await loadScimConfig();
@@ -231,19 +233,19 @@ export function ScimScreen() {
       });
     } catch (nextError) {
       setError(
-        nextError instanceof Error ? nextError.message : "Failed to reconcile SCIM.",
+        nextError instanceof Error ? nextError.message : "SCIM 协调同步失败，请重试。",
       );
     }
   }
 
   async function handleGroupMappingChange() {
     if (!access.canManageScim) {
-      setError("You don't have permission to change SCIM mappings.");
+      setError("你没有更改 SCIM 映射的权限。");
       return;
     }
 
     if (!connection) {
-      setError("Create the SCIM connector before enabling group synchronization.");
+      setError("请先创建 SCIM 连接器，再启用群组同步。");
       return;
     }
 
@@ -259,16 +261,16 @@ export function ScimScreen() {
         12000,
       );
       if (!response.ok) {
-        throw getRequestError(payload, response, `Failed to update SCIM group mapping (${response.status}).`);
+        throw getRequestError(payload, response, `无法更新 SCIM 组映射（${response.status}）。`);
       }
       const parsed = parseOrgScimPayload(payload);
       if (!parsed.connection) {
-        throw new Error("SCIM settings were updated, but the response was incomplete.");
+        throw new Error("SCIM 设置已更新，但响应不完整，请刷新后检查。");
       }
       setConnection(parsed.connection);
       setHealth(parsed.health);
     } catch (nextError) {
-      setError(nextError instanceof Error ? nextError.message : "Failed to update SCIM group mapping.");
+      setError(nextError instanceof Error ? nextError.message : "更新 SCIM 群组映射失败，请重试。");
     } finally {
       setUpdatingGroupMapping(false);
     }
@@ -276,14 +278,14 @@ export function ScimScreen() {
 
   async function handleDeleteConnection() {
     if (!access.canManageScim) {
-      setError("You don't have permission to delete SCIM connections.");
+      setError("你没有删除 SCIM 连接的权限。");
       return;
     }
 
     if (
       !orgId ||
       !window.confirm(
-        "Delete this SCIM connection? The current bearer token will stop working immediately.",
+        "删除此 SCIM 连接？当前持有者令牌将立即失效。",
       )
     ) {
       return;
@@ -301,7 +303,7 @@ export function ScimScreen() {
           );
 
           if (response.status !== 204 && !response.ok) {
-            throw getRequestError(payload, response, `Failed to delete SCIM connection (${response.status}).`);
+            throw getRequestError(payload, response, `无法删除 SCIM 连接（${response.status}）。`);
           }
 
           setConnection(null);
@@ -314,7 +316,7 @@ export function ScimScreen() {
       });
     } catch (nextError) {
       setError(
-        nextError instanceof Error ? nextError.message : "Failed to delete SCIM connection.",
+        nextError instanceof Error ? nextError.message : "删除 SCIM 连接失败，请重试。",
       );
     }
   }
@@ -324,10 +326,10 @@ export function ScimScreen() {
       <DashboardPageTemplate
         icon={Shield}
         title="SCIM"
-        description="Provision organization members from your identity provider with an org-scoped SCIM connector."
+        description="通过组织范围的 SCIM 连接器，从身份提供商预配组织成员。"
       >
         <div className="rounded-[28px] border border-gray-200 bg-white px-6 py-10 text-[15px] text-gray-500">
-          Loading organization details...
+          正在加载组织信息…
         </div>
       </DashboardPageTemplate>
     );
@@ -337,7 +339,7 @@ export function ScimScreen() {
     <DashboardPageTemplate
       icon={Shield}
       title="SCIM"
-      description="Create one SCIM connector per workspace, then give your identity provider the base URL and bearer token shown here."
+      description="为每个工作区创建一个 SCIM 连接器，然后向身份提供商配置此处显示的基础地址与持有者令牌。"
     >
       {!access.canViewScim ? (
         <div className="rounded-[28px] border border-[var(--dls-border)] bg-[var(--dls-hover)] px-6 py-5 text-[14px] text-[var(--dls-text-primary)]">
@@ -347,15 +349,15 @@ export function ScimScreen() {
         <>
           {!access.canManageScim ? (
             <div className="mb-6 rounded-[24px] border border-[var(--dls-border)] bg-[var(--dls-hover)] px-5 py-4 text-[14px] text-[var(--dls-text-primary)]">
-              {`Read only. ${permissionLockReason("scim.manage")}`}
+              {`只读。${permissionLockReason("scim.manage")}`}
             </div>
           ) : null}
           <div className="mb-6 flex flex-wrap gap-2 rounded-[24px] border border-gray-200 bg-white px-5 py-4 text-[12px] font-semibold shadow-[0_18px_48px_-34px_rgba(15,23,42,0.22)]">
             <span className={`rounded-full px-3 py-1.5 ${orgContext.authMethods.sso ? "bg-emerald-50 text-emerald-700" : "bg-gray-100 text-gray-500"}`}>
-              {orgContext.authMethods.sso ? "SAML/SSO active" : "SAML/SSO not configured"}
+              {orgContext.authMethods.sso ? "SAML/SSO 已启用" : "SAML/SSO 未配置"}
             </span>
             <span className={`rounded-full px-3 py-1.5 ${connection ? "bg-cyan-50 text-cyan-700" : "bg-gray-100 text-gray-500"}`}>
-              {connection ? "SCIM connected" : "SCIM not configured"}
+              {connection ? "SCIM 已连接" : "SCIM 未配置"}
             </span>
           </div>
 
@@ -365,9 +367,9 @@ export function ScimScreen() {
 
           {!ssoReady ? (
             <div className="mb-6 rounded-[28px] border border-[var(--dls-border)] bg-[var(--dls-hover)] px-6 py-5 text-[14px] text-[var(--dls-text-primary)]">
-              <p className="font-semibold">Configure SAML/SSO before enabling SCIM</p>
+              <p className="font-semibold">请先配置 SAML/SSO，再启用 SCIM</p>
               <p className="mt-1 leading-6">
-                Add an enabled SSO connection for this workspace before creating or rotating its SCIM connector token.
+                请先为工作区添加已启用的 SSO 连接，再创建或轮换 SCIM 连接器令牌。
               </p>
             </div>
           ) : null}
@@ -376,21 +378,21 @@ export function ScimScreen() {
             <div className="mb-6 rounded-[28px] border border-[var(--dls-border)] bg-[var(--dls-hover)] px-6 py-5 text-[14px] text-[var(--dls-text-primary)]">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <p className="font-semibold">SCIM needs attention</p>
+                  <p className="font-semibold">SCIM 需要处理</p>
                   <p className="mt-1 leading-6">
-                    {health.unresolvedFailureCount} SCIM sync issue{health.unresolvedFailureCount === 1 ? "" : "s"} still need retry or review.
+                    {health.unresolvedFailureCount} SCIM 同步问题{health.unresolvedFailureCount === 1 ? "" : "s"} 仍需重试或检查。
                   </p>
                   {health.lastFailureMessage ? (
                     <p className="mt-1 break-words text-[13px] leading-6">
-                      Last issue: {health.lastFailureMessage}
+                      上次问题： {health.lastFailureMessage}
                     </p>
                   ) : null}
                   <p className="mt-1 text-[13px] leading-6">
-                    Last failure {formatDateTime(health.lastFailureAt)} · Next retry {formatDateTime(health.nextRetryAt)}
+                    上次失败 {formatDateTime(health.lastFailureAt)} · 下次重试 {formatDateTime(health.nextRetryAt)}
                   </p>
                 </div>
                 <DenButton variant="secondary" icon={RefreshCw} onClick={() => void handleRunReconciliation()} loading={reconciling} disabled={!access.canManageScim}>
-                  Reconcile now
+                  立即协调同步
                 </DenButton>
               </div>
             </div>
@@ -400,13 +402,13 @@ export function ScimScreen() {
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <p className="text-[16px] font-semibold tracking-[-0.03em] text-gray-900">
-                  SCIM base URL
+                  SCIM 基础地址
                 </p>
                 <p className="mt-1 text-[14px] leading-6 text-gray-500">
-                  Use this URL when your identity provider asks for the SCIM endpoint.
+                  在身份提供商要求 SCIM 端点时使用此地址。
                 </p>
                 <p className="mt-2 text-[13px] leading-6 text-gray-500">
-                  SCIM supports user lifecycle management and group synchronization.
+                  SCIM 支持用户生命周期管理与群组同步。
                 </p>
               </div>
               <DenButton
@@ -415,13 +417,13 @@ export function ScimScreen() {
                 onClick={() => void copyValue(baseUrl, "base-url")}
                 disabled={!baseUrl}
               >
-                {copiedValue === "base-url" ? "Copied" : "Copy URL"}
+                {copiedValue === "base-url" ? "已复制" : "复制地址"}
               </DenButton>
             </div>
 
             <div className="mt-5 rounded-[20px] border border-gray-200 bg-gray-50 p-4">
               <code className="block break-all text-[13px] leading-6 text-gray-700">
-                {baseUrl ?? (busy ? "Loading..." : "Not available")}
+                {baseUrl ?? (busy ? "正在加载…" : "不可用")}
               </code>
             </div>
           </div>
@@ -431,14 +433,14 @@ export function ScimScreen() {
               <div className="max-w-2xl">
                 <div className="flex flex-wrap items-center gap-2">
                   <p className="text-[16px] font-semibold tracking-[-0.03em] text-gray-900">
-                    Create teams from SCIM groups
+                    根据 SCIM 群组创建团队
                   </p>
                   <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${connection?.groupMappingMode === "create_teams" ? "bg-cyan-50 text-cyan-700" : "bg-gray-100 text-gray-500"}`}>
-                    {connection?.groupMappingMode === "create_teams" ? "Enabled" : "Off"}
+                    {connection?.groupMappingMode === "create_teams" ? "已启用" : "关闭"}
                   </span>
                 </div>
                 <p className="mt-1 text-[14px] leading-6 text-gray-500">
-                  Create matching OpenWork teams and keep their memberships synchronized from your identity provider. Manually managed teams remain unchanged.
+                  创建对应的 OpenWork 团队，并从身份提供商持续同步成员关系。手动管理的团队保持不变。
                 </p>
               </div>
               <DenButton
@@ -447,7 +449,7 @@ export function ScimScreen() {
                 loading={updatingGroupMapping}
                 disabled={!access.canManageScim || !connection}
               >
-                {connection?.groupMappingMode === "create_teams" ? "Disable" : "Enable team sync"}
+                {connection?.groupMappingMode === "create_teams" ? "禁用" : "启用团队同步"}
               </DenButton>
             </div>
           </div>
@@ -456,18 +458,18 @@ export function ScimScreen() {
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <p className="text-[16px] font-semibold tracking-[-0.03em] text-gray-900">
-                  Connector token
+                  连接器令牌
                 </p>
                 <p className="mt-1 text-[14px] leading-6 text-gray-500">
                   {connection
-                    ? "Rotate the bearer token whenever your identity provider needs a fresh secret."
-                    : "Create the workspace SCIM connector and generate its first bearer token."}
+                    ? "身份提供商需要新密钥时，可轮换持有者令牌。"
+                    : "创建工作区 SCIM 连接器，并生成首个持有者令牌。"}
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-3">
                 <DenButton icon={RefreshCw} onClick={() => void handleRotateToken()} loading={rotating} disabled={!access.canManageScim || !ssoReady}>
-                  {connection ? "Rotate token" : "Create connector"}
+                  {connection ? "轮换令牌" : "创建连接器"}
                 </DenButton>
                 {connection ? (
                   <DenButton
@@ -477,7 +479,7 @@ export function ScimScreen() {
                     loading={deleting}
                     disabled={!access.canManageScim}
                   >
-                    Delete connector
+                    删除连接器
                   </DenButton>
                 ) : null}
               </div>
@@ -486,34 +488,34 @@ export function ScimScreen() {
             <div className="mt-5 grid gap-4 md:grid-cols-2">
               <div className="rounded-[20px] border border-gray-200 bg-gray-50 p-4">
                 <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-gray-500">
-                  Status
+                  状态
                 </p>
                 <p className="mt-2 text-[15px] font-medium text-gray-900">
-                  {busy ? "Loading..." : connection ? "Connected" : "Not configured"}
+                  {busy ? "正在加载…" : connection ? "已连接" : "未配置"}
                 </p>
                 <p className="mt-2 text-[13px] leading-6 text-gray-500">
-                  Last rotated {formatDateTime(connection?.updatedAt ?? null)}
+                  上次轮换 {formatDateTime(connection?.updatedAt ?? null)}
                 </p>
                 {connection ? (
                   <p className="mt-2 break-all text-[12px] text-gray-400">
-                    Internal provider id: {connection.providerId}
+                    内部提供商 ID： {connection.providerId}
                   </p>
                 ) : null}
               </div>
 
               <div className="rounded-[20px] border border-cyan-100 bg-cyan-50 p-4 text-[13px] leading-6 text-cyan-900">
-                SCIM deprovisioning retains a disconnected member record. The global user is deleted only after their final active organization membership is removed.
+                SCIM 取消预配后会保留已断开的成员记录。仅在用户最后一个有效组织成员关系被移除后，才会删除全局用户。
                 <p className="mt-2">
-                  Last successful SCIM sync: {formatDateTime(health.lastSuccessfulSyncAt)}.
+                  上次成功的 SCIM 同步： {formatDateTime(health.lastSuccessfulSyncAt)}.
                 </p>
               </div>
             </div>
 
             <div className="mt-5 rounded-[24px] border border-gray-200 bg-gray-50 p-4 text-[13px] leading-6 text-gray-600">
-              OpenWork records failed SCIM lifecycle work for retry, runs periodic reconciliation for local SCIM drift, and surfaces unresolved issues here so deprovisioning failures are not silent.
+              OpenWork 会记录失败的 SCIM 生命周期操作以便重试，定期协调同步本地 SCIM 差异，并在此显示未解决问题，避免取消预配失败被忽略。
               <div className="mt-3">
                 <DenButton variant="secondary" icon={RefreshCw} onClick={() => void handleRunReconciliation()} loading={reconciling} disabled={!access.canManageScim}>
-                  Run reconciliation
+                  运行协调同步
                 </DenButton>
               </div>
             </div>
@@ -523,10 +525,10 @@ export function ScimScreen() {
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div>
                     <p className="text-[16px] font-semibold tracking-[-0.03em]">
-                      Your SCIM bearer token is ready
+                      SCIM 持有者令牌已就绪
                     </p>
                     <p className="mt-1 text-[14px] leading-6 text-slate-300">
-                      Copy it now. This value is only shown immediately after creation or rotation.
+                      请立即复制，此值仅在创建或轮换后显示一次。
                     </p>
                   </div>
                   <DenButton
@@ -534,7 +536,7 @@ export function ScimScreen() {
                     icon={Copy}
                     onClick={() => void copyValue(visibleToken, "token")}
                   >
-                    {copiedValue === "token" ? "Copied" : "Copy token"}
+                    {copiedValue === "token" ? "已复制" : "复制令牌"}
                   </DenButton>
                 </div>
 

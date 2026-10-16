@@ -27,7 +27,7 @@ export function DenTable<T>({
   getRowKey,
   rowClassName,
   renderRowDetail,
-  emptyLabel = "Nothing here yet.",
+  emptyLabel = "暂无内容。",
   headerTone = "muted",
   density = "default",
 }: DenTableProps<T>) {

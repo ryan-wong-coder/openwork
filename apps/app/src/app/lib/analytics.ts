@@ -17,6 +17,7 @@
 import { denSessionUpdatedEvent, type DenSessionUpdatedDetail } from "./den-session-events";
 import { recordInspectorEvent } from "./app-inspector";
 import { resolvePosthogKey } from "./analytics-key";
+import { isLocalGatewayClient } from "./client-profile";
 
 const ENV_POSTHOG_HOST = String(import.meta.env.VITE_OPENWORK_POSTHOG_HOST ?? "").trim();
 const ENV_APP_VERSION = String(import.meta.env.VITE_OPENWORK_APP_VERSION ?? "").trim();
@@ -46,6 +47,7 @@ const queue: QueuedEvent[] = [];
 let initialized = false;
 
 export function isAnalyticsEnabled(): boolean {
+  if (isLocalGatewayClient()) return false;
   if (typeof window === "undefined") return false;
   try {
     const raw = window.localStorage.getItem(PREFS_STORAGE_KEY);
@@ -121,6 +123,7 @@ function identify(denUserId: string) {
 }
 
 export async function flushAnalytics(): Promise<void> {
+  if (!isAnalyticsEnabled()) { queue.length = 0; return; }
   if (queue.length === 0 || !POSTHOG_KEY) return;
   const batch = queue.splice(0, MAX_BATCH);
   const distinctId = getAnalyticsDistinctId();

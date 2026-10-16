@@ -35,7 +35,7 @@ type CodeState =
 
 const CLIENT_NAMES: Record<string, string> = {
   "openwork-cli": "OpenWork CLI",
-  "openwork-opencode-plugin": "OpenWork - OpenCode Plugin",
+  "openwork-opencode-plugin": "OpenWork - OpenCode 插件",
 };
 
 /** The command the person ran, echoed in the terminal illustration. */
@@ -109,7 +109,7 @@ export function DeviceApprovalScreen({ initialUserCode, returnTo = "" }: { initi
       setOrgs(list);
       setOrganizationId(list.find((org) => org.isActive)?.id ?? list[0]?.id ?? "");
       if (!lookup.response.ok) {
-        setCodeState({ kind: "invalid", message: "This code is not valid or has expired. Check it against your terminal, or run the command again." });
+        setCodeState({ kind: "invalid", message: "此代码无效或已过期，请核对终端中的代码，或重新运行命令。" });
         return;
       }
       const clientId = readClientId(lookup.payload);
@@ -127,7 +127,7 @@ export function DeviceApprovalScreen({ initialUserCode, returnTo = "" }: { initi
   // Only a known client may send the browser back, and only to a page on this machine.
   const returnUrl = useMemo(() => deviceReturnUrl(returnTo, clientId), [returnTo, clientId]);
   const command = (clientId && CLIENT_COMMANDS[clientId]) || "openwork-bootstrap login";
-  const returnPlace = (clientId && CLIENT_RETURN_PLACES[clientId]) || "your terminal";
+  const returnPlace = (clientId && CLIENT_RETURN_PLACES[clientId]) || "你的终端";
   const isOpenCodePlugin = clientId === "openwork-opencode-plugin";
 
   async function decide(decision: "approve" | "deny") {
@@ -147,7 +147,7 @@ export function DeviceApprovalScreen({ initialUserCode, returnTo = "" }: { initi
     );
     setBusy(null);
     if (!response.ok) {
-      setError(getErrorMessage(payload, "Could not record your choice. Start sign-in again from your terminal."));
+      setError(getErrorMessage(payload, "无法记录此选择，请从终端重新登录。"));
       return;
     }
     setCodeState(decision === "approve" ? { kind: "approved" } : { kind: "denied" });
@@ -157,19 +157,19 @@ export function DeviceApprovalScreen({ initialUserCode, returnTo = "" }: { initi
 
   const shownCode = userCode || "XXXX-XXXX";
   const terminalStatus: SetupTerminalLine = codeState.kind === "approved"
-    ? { text: `Signed in as ${user?.email ?? "you"}${selectedOrg ? ` in ${selectedOrg.name}` : ""}.` }
+    ? { text: `已以 ${user?.email ?? "you"} 身份登录${selectedOrg ? `，所属组织为 ${selectedOrg.name}` : ""}。` }
     : codeState.kind === "denied"
-      ? { text: "Sign-in was denied." }
-      : { text: "Waiting for approval...", muted: true };
+      ? { text: "登录已被拒绝。" }
+      : { text: "正在等待批准…", muted: true };
   const description = codeState.kind === "approved"
-    ? "Your terminal is signed in."
+    ? "终端已登录。"
     : codeState.kind === "denied"
-      ? "Your terminal did not get access."
-      : "Your terminal is waiting for approval.";
+      ? "终端未获得访问权限。"
+      : "终端正在等待批准。";
 
   const frame = (children: ReactNode) => (
     <SetupFrame
-      title={isOpenCodePlugin ? "Approve this sign-in" : `Sign in ${clientName}.`}
+      title={isOpenCodePlugin ? "批准此次登录" : `登录 ${clientName}。`}
       compactHeader={isOpenCodePlugin}
       description={description}
       panelVisual={<OnboardingTexture />}
@@ -177,9 +177,9 @@ export function DeviceApprovalScreen({ initialUserCode, returnTo = "" }: { initi
         <SetupTerminal
           lines={[
             { text: `$ ${command}` },
-            { text: "Open this link to sign in:", muted: true },
+            { text: "打开此链接以登录：", muted: true },
             { text: `  ${host || "…"}/device` },
-            { text: `and confirm the code ${shownCode}.`, muted: true },
+            { text: `并确认代码 ${shownCode}。`, muted: true },
             terminalStatus,
           ]}
         />
@@ -192,7 +192,7 @@ export function DeviceApprovalScreen({ initialUserCode, returnTo = "" }: { initi
   if (!sessionHydrated) {
     return frame(
       <SetupPanelBody>
-        <SetupPanelTitle>{`Sign in ${clientName}?`}</SetupPanelTitle>
+        <SetupPanelTitle>{`登录 ${clientName}？`}</SetupPanelTitle>
         <SetupSkeletonRows count={1} />
       </SetupPanelBody>,
     );
@@ -201,14 +201,14 @@ export function DeviceApprovalScreen({ initialUserCode, returnTo = "" }: { initi
   if (!user) {
     return frame(
       <SetupPanelBody>
-        {userCode ? <SetupFacts rows={[{ label: "Code", value: <SetupCode code={userCode} testId="device-user-code" /> }]} /> : null}
+        {userCode ? <SetupFacts rows={[{ label: "代码", value: <SetupCode code={userCode} testId="device-user-code" /> }]} /> : null}
         <AuthPanel
           bare
           emailFirstFlow
           socialFirst
           socialProviders={["google"]}
           prefillKey={userCode}
-          emailStepContent={{ title: "Sign in to OpenWork" }}
+          emailStepContent={{ title: "登录 OpenWork" }}
         />
       </SetupPanelBody>,
     );
@@ -223,9 +223,9 @@ export function DeviceApprovalScreen({ initialUserCode, returnTo = "" }: { initi
           if (draftCode.trim()) setUserCode(formatUserCode(draftCode));
         }}
       >
-        <SetupPanelTitle>Enter the code from your terminal</SetupPanelTitle>
+        <SetupPanelTitle>输入终端中的代码</SetupPanelTitle>
         <label className="flex flex-col gap-2">
-          <span className="den-label">Code</span>
+          <span className="den-label">代码</span>
           <input
             className="den-input font-mono uppercase tracking-[0.12em]"
             value={draftCode}
@@ -235,75 +235,75 @@ export function DeviceApprovalScreen({ initialUserCode, returnTo = "" }: { initi
             autoFocus
           />
         </label>
-        <SetupFacts rows={[{ label: "Account", value: user.email }]} />
-        <button type="submit" className="den-button-primary w-full" disabled={!draftCode.trim()}>Continue</button>
+        <SetupFacts rows={[{ label: "账号", value: user.email }]} />
+        <button type="submit" className="den-button-primary w-full" disabled={!draftCode.trim()}>继续</button>
       </form>,
     );
   }
 
   if (codeState.kind === "approved") {
-    return frame(<SetupStatus icon={<Check className="size-5" strokeWidth={1.5} />} title={`${clientName} is signed in`} line={`Return to ${returnPlace}.`} />);
+    return frame(<SetupStatus icon={<Check className="size-5" strokeWidth={1.5} />} title={`${clientName} 已登录`} line={`返回 ${returnPlace}。`} />);
   }
 
   if (codeState.kind === "denied") {
-    return frame(<SetupStatus icon={<X className="size-5" strokeWidth={1.5} />} title="Sign-in denied" line={`${clientName} did not get access. You can close this tab.`} />);
+    return frame(<SetupStatus icon={<X className="size-5" strokeWidth={1.5} />} title="登录已被拒绝" line={`${clientName} 未获得访问权限，你可以关闭此标签页。`} />);
   }
 
   if (codeState.kind === "invalid") {
     return frame(
       <SetupPanelBody gap="md">
-        <SetupPanelTitle>This code can’t be used</SetupPanelTitle>
+        <SetupPanelTitle>此代码不可用</SetupPanelTitle>
         <SetupLine>{codeState.message}</SetupLine>
         <button type="button" className="den-button-secondary self-start" onClick={() => { setUserCode(""); setCodeState({ kind: "idle" }); }}>
-          Enter a different code
+          输入其他代码
         </button>
       </SetupPanelBody>,
     );
   }
 
   const checking = codeState.kind === "checking" || codeState.kind === "idle" || orgs === null;
-  const orgLabel = selectedOrg ? selectedOrg.name : "no organization yet";
+  const orgLabel = selectedOrg ? selectedOrg.name : "尚无组织";
 
   return frame(
     <SetupPanelBody>
       <span className="flex size-10 items-center justify-center rounded-full bg-[var(--dls-hover)] text-[var(--dls-text-primary)]" aria-hidden="true">
         <Terminal className="size-5" strokeWidth={1.5} />
       </span>
-      <SetupPanelTitle>{`Sign in ${clientName}?`}</SetupPanelTitle>
+      <SetupPanelTitle>{`登录 ${clientName}？`}</SetupPanelTitle>
       <div className="flex flex-col gap-1">
-        <span className="text-[13px] leading-[18px] text-[var(--dls-text-secondary)]">Code</span>
+        <span className="text-[13px] leading-[18px] text-[var(--dls-text-secondary)]">代码</span>
         <SetupCode code={userCode} size="lg" testId="device-user-code" />
       </div>
       <SetupFacts
         rows={[
-          { label: "Account", value: user.email },
+          { label: "账号", value: user.email },
           {
-            label: "Organization",
+            label: "组织",
             value: orgs && orgs.length > 1 ? (
-              <DenSelect aria-label="Organization" value={organizationId} onChange={(event) => setOrganizationId(event.target.value)} disabled={busy !== null}>
+              <DenSelect aria-label="组织" value={organizationId} onChange={(event) => setOrganizationId(event.target.value)} disabled={busy !== null}>
                 {orgs.map((org) => (
                   <option key={org.id} value={org.id}>{org.name}</option>
                 ))}
               </DenSelect>
-            ) : checking ? "…" : selectedOrg?.name ?? "None yet",
+            ) : checking ? "…" : selectedOrg?.name ?? "暂无",
           },
         ]}
       />
       <p className="m-0 text-[13px] leading-5 text-[var(--setup-ink-soft)]" data-testid="device-consent-line">
-        Only approve if you started this in your own terminal and the code matches. {clientName} will act as {user.email} in {orgLabel} until you sign out of it.
+        仅当你在自己的终端发起了登录且代码一致时批准。 {clientName} 将以此身份操作： {orgLabel} 中的 {user.email} ，直至退出登录。
       </p>
       <div className="flex flex-col gap-3.5">
         {error ? <SetupErrorLine>{error}</SetupErrorLine> : null}
         <div className="flex gap-2.5">
           <button type="button" className="den-button-primary grow" onClick={() => void decide("approve")} disabled={checking || busy !== null}>
-            {busy === "approve" ? "Signing in…" : `Sign in ${clientName}`}
+            {busy === "approve" ? "正在登录…" : `登录 ${clientName}`}
           </button>
           <button type="button" className="den-button-secondary w-30 shrink-0" onClick={() => void decide("deny")} disabled={checking || busy !== null}>
-            {busy === "deny" ? "Denying…" : "Deny"}
+            {busy === "deny" ? "正在拒绝…" : "拒绝"}
           </button>
         </div>
         <SetupQuietButton className="self-start" onClick={() => void signOut()} disabled={busy !== null}>
-          Use a different account
+          使用其他账户
         </SetupQuietButton>
       </div>
     </SetupPanelBody>,

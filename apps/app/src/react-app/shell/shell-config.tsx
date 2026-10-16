@@ -1,5 +1,6 @@
 /** @jsxImportSource react */
 import { createContext, useCallback, use, useMemo, useState, type ReactNode } from "react";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -78,6 +79,13 @@ function writeShellConfig(config: ShellConfig): void {
   }
 }
 
+/** Saved display preferences cannot enable services unavailable in this client. */
+function clientShellConfig(config: ShellConfig): ShellConfig {
+  return isLocalGatewayClient()
+    ? { ...config, cloudSignin: false, docsButton: false, feedbackButton: false }
+    : config;
+}
+
 /* ------------------------------------------------------------------ */
 /*  Context                                                            */
 /* ------------------------------------------------------------------ */
@@ -107,7 +115,7 @@ export function ShellConfigProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo<ShellConfigContextValue>(
-    () => ({ config, update, reset }),
+    () => ({ config: clientShellConfig(config), update, reset }),
     [config, update, reset],
   );
 

@@ -47,7 +47,7 @@ function parseJson(label: string, value: string, optional = false): unknown {
   try {
     return JSON.parse(value.trim() || "null");
   } catch {
-    throw new Error(`${label}: check the format and try again.`);
+    throw new Error(`${label}：请检查格式后重试。`);
   }
 }
 
@@ -81,15 +81,15 @@ function toDraft(detail: WorkflowDetail, fields: WorkflowFields): WorkflowDraft 
     name: fields.name.trim(),
     description: fields.description.trim() || undefined,
     code: fields.code,
-    exampleInput: parseJson("Example input", fields.input),
-    inputSchema: parseJson("What it needs", fields.inputSchema, true),
-    outputSchema: parseJson("What it returns", fields.outputSchema, true),
+    exampleInput: parseJson("输入示例", fields.input),
+    inputSchema: parseJson("所需输入", fields.inputSchema, true),
+    outputSchema: parseJson("返回内容", fields.outputSchema, true),
     requiredCapabilities: detail.currentVersion.requiredCapabilities,
   };
 }
 
 function errorMessage(error: unknown) {
-  return error instanceof Error ? error.message : "That action did not work. Please try again.";
+  return error instanceof Error ? error.message : "操作失败，请重试。";
 }
 
 export function useWorkflowDetailState(configObjectId: string) {
@@ -172,7 +172,7 @@ export function useWorkflowDetailState(configObjectId: string) {
     if (!detail || !fields) return;
     setLocalError(null);
     try {
-      const input = parseJson("Run details", fields.input);
+      const input = parseJson("运行详情", fields.input);
       void runMutation.mutateAsync({
         pluginId: detail.pluginId,
         configObjectVersionId: detail.currentVersion.id,
@@ -234,7 +234,7 @@ export function useWorkflowDetailState(configObjectId: string) {
   }
 
   function close(onClose: () => void) {
-    if (dirty && !window.confirm("Discard your unsaved changes?")) return;
+    if (dirty && !window.confirm("放弃未保存的更改？")) return;
     onClose();
   }
 

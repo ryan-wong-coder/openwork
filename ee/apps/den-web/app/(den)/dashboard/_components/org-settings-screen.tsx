@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE } from "../../../_lib/locale";
+
 import { Check, Copy, Pencil, SlidersHorizontal, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { getErrorMessage, requestJson } from "../../_lib/den-flow";
@@ -144,17 +146,17 @@ function DeleteOrganizationDialog({
           </div>
           <div className="min-w-0 flex-1">
             <h2 id="delete-organization-title" className="text-[18px] font-semibold tracking-[-0.02em] text-gray-950">
-              Delete {organizationName}?
+              删除 {organizationName}?
             </h2>
             <p id="delete-organization-description" className="mt-1 text-[13px] leading-6 text-gray-600">
-              Type the organization name to permanently delete it.
+              输入组织名称以永久删除。
             </p>
           </div>
         </div>
 
         <label className="mt-5 grid gap-2">
           <span className="text-[12px] font-medium text-gray-700">
-            Organization name
+            组织名称
           </span>
           <DenInput
             value={confirmationName}
@@ -173,7 +175,7 @@ function DeleteOrganizationDialog({
 
         <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <DenButton variant="secondary" onClick={onClose} disabled={busy}>
-            Cancel
+            取消
           </DenButton>
           <DenButton
             type="submit"
@@ -182,7 +184,7 @@ function DeleteOrganizationDialog({
             loading={busy}
             disabled={!confirmed}
           >
-            {busy ? "Deleting..." : "Delete organization"}
+            {busy ? "正在删除…" : "删除组织"}
           </DenButton>
         </div>
       </form>
@@ -318,14 +320,14 @@ export function OrgSettingsScreen() {
           throw new Error(
             getErrorMessage(
               payload,
-              `Failed to load desktop version metadata (${response.status}).`,
+              `无法加载桌面版本信息（${response.status}）。`,
             ),
           );
         }
 
         const metadata = getDesktopVersionMetadata(payload);
         if (!metadata) {
-          throw new Error("Desktop version metadata was incomplete.");
+          throw new Error("桌面版本信息不完整，请重试。");
         }
 
         if (cancelled) {
@@ -344,7 +346,7 @@ export function OrgSettingsScreen() {
           setDesktopVersionOptionsError(
             error instanceof Error
               ? error.message
-              : "Could not load desktop versions.",
+              : "无法加载桌面版本，请重试。",
           );
         }
       } finally {
@@ -383,17 +385,17 @@ export function OrgSettingsScreen() {
 
   const createdAtLabel = useMemo(() => {
     if (!orgContext?.organization.createdAt) {
-      return "Not available";
+      return "不可用";
     }
 
-    return new Date(orgContext.organization.createdAt).toLocaleDateString();
+    return new Date(orgContext.organization.createdAt).toLocaleDateString(DEFAULT_DEN_LOCALE);
   }, [orgContext?.organization.createdAt]);
 
   if (orgBusy && !orgContext) {
     return (
       <div className="mx-auto max-w-[860px] p-8">
         <div className="rounded-[28px] border border-gray-200 bg-white px-6 py-10 text-[15px] text-gray-500">
-          Loading workspace settings...
+          正在加载工作区设置…
         </div>
       </div>
     );
@@ -403,7 +405,7 @@ export function OrgSettingsScreen() {
     return (
       <div className="mx-auto max-w-[860px] p-8">
         <div className="rounded-[28px] border border-red-200 bg-red-50 px-6 py-10 text-[15px] text-red-700">
-          {orgError ?? "Workspace settings are not available right now."}
+          {orgError ?? "工作区设置暂时不可用。"}
         </div>
       </div>
     );
@@ -438,7 +440,7 @@ export function OrgSettingsScreen() {
     clearOrgSettingsCompletion();
 
     if (!canManageSettings) {
-      setPageError("You don't have permission to change settings.");
+      setPageError("你没有更改设置的权限。");
       return;
     }
 
@@ -464,7 +466,7 @@ export function OrgSettingsScreen() {
       setPageError(
         error instanceof Error
           ? error.message
-          : "Could not update workspace settings.",
+          : "无法更新工作区设置，请重试。",
       );
     }
   }
@@ -500,7 +502,7 @@ export function OrgSettingsScreen() {
       setDeleteError(
         error instanceof Error
           ? error.message
-          : "Could not delete organization.",
+          : "无法删除组织，请重试。",
       );
     }
   }
@@ -508,15 +510,15 @@ export function OrgSettingsScreen() {
   return (
     <DashboardPageTemplate
       icon={SlidersHorizontal}
-      title="Org settings"
+      title="组织设置"
       description={(
         <span className="flex w-full items-baseline justify-between gap-4">
-          <span>Control your organization&apos;s settings.</span>
+          <span>管理组织设置。</span>
           {denVersion ? (
             <span
               className="font-normal tabular-nums text-gray-300"
               data-den-runtime-version={denVersion}
-              title={`Den API version ${denVersion}`}
+              title={`Den API 版本 ${denVersion}`}
             >
               Den {denVersion}
             </span>
@@ -525,7 +527,7 @@ export function OrgSettingsScreen() {
       )}
     >
       {orgContext && !orgContext.entitlements.orgControls ? (
-        <EnterprisePlanNotice feature="Enforced SSO and desktop version control" />
+        <EnterprisePlanNotice feature="强制 SSO 与桌面版本控制" />
       ) : null}
       {pageError ? (
         <DenNotice message={pageError} className="mb-6" />
@@ -540,17 +542,17 @@ export function OrgSettingsScreen() {
         <DenCard size="spacious" className="grid gap-6">
           <div className="grid gap-2">
             <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-gray-400">
-              Core
+              基础
             </p>
             <h2 className="text-[24px] font-semibold tracking-[-0.04em] text-gray-900">
-              Organization Identity
+              组织标识
             </h2>
           </div>
 
           <div className="grid gap-5 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)]">
             <label className="grid gap-3">
               <span className="text-[14px] font-medium text-gray-700">
-                Name
+                名称
               </span>
               <DenInput
                 type="text"
@@ -569,7 +571,7 @@ export function OrgSettingsScreen() {
                 <DenInput
                   value={organizationId}
                   readOnly
-                  aria-label="Organization ID"
+                  aria-label="组织 ID"
                   className="font-mono text-[13px]"
                 />
                 <DenButton
@@ -578,7 +580,7 @@ export function OrgSettingsScreen() {
                   icon={copiedOrgId ? Check : Copy}
                   onClick={() => void handleCopyOrgId()}
                 >
-                  {copiedOrgId ? "Copied" : "Copy"}
+                  {copiedOrgId ? "已复制" : "复制"}
                 </DenButton>
               </div>
             </div>
@@ -589,22 +591,21 @@ export function OrgSettingsScreen() {
           <div className="flex items-start justify-between gap-4">
             <div className="grid gap-2">
               <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-gray-400">
-                Access rules
+                访问规则
               </p>
               <h2 className="text-[24px] font-semibold tracking-[-0.04em] text-gray-900">
-                Allowed email domains
+                允许的邮箱域名
               </h2>
               <p className="text-[14px] text-gray-500">
-                Only allow people with specific email domains to join this
-                Organization.
+                仅允许指定邮箱域名的人员加入此组织。
               </p>
             </div>
             <div className="flex items-center gap-3 pt-1">
               <span className="text-[13px] font-medium text-gray-500">
-                {domainRestrictionsEnabled ? "On" : "Off"}
+                {domainRestrictionsEnabled ? "开启" : "关闭"}
               </span>
               <SettingsToggle
-                label="Restrict allowed email domains"
+                label="限制允许的邮箱域名"
                 checked={domainRestrictionsEnabled}
                 disabled={
                   !canManageSettings || (domainRestrictionsEnabled && hasDraftDomains)
@@ -617,10 +618,10 @@ export function OrgSettingsScreen() {
           {domainRestrictionsEnabled && domainEditModeEnabled ? (
             <label className="grid gap-3">
               <span className="text-[14px] font-medium text-gray-700">
-                Domain allowlist
+                域名允许列表
               </span>
               <span className="text-[10px] text-gray-500">
-                Enter domains one per line or with comma as separator
+                每行输入一个域名，或用逗号分隔
               </span>
               <DenTextarea
                 value={allowedDomainsDraft}
@@ -648,7 +649,7 @@ export function OrgSettingsScreen() {
                   </div>
                 ) : (
                   <p className="text-[14px] text-gray-600">
-                    No email domains are configured yet.
+                    尚未配置邮箱域名。
                   </p>
                 )}
                 {canManageSettings ? (
@@ -663,7 +664,7 @@ export function OrgSettingsScreen() {
                       setDomainEditModeEnabled(true);
                     }}
                   >
-                    Edit
+                    编辑
                   </DenButton>
                 ) : null}
               </div>
@@ -674,25 +675,25 @@ export function OrgSettingsScreen() {
         <DenCard size="spacious" className="grid gap-6">
           <div className="grid gap-2">
             <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-gray-400">
-              Authentication
+              身份验证
             </p>
             <h2 className="text-[24px] font-semibold tracking-[-0.04em] text-gray-900">
-              Single sign-on requirement
+              单点登录要求
             </h2>
             <p className="text-[14px] text-gray-500">
-              Require members to use the workspace SSO entrypoint when their email domain matches this organization.
+              成员邮箱域名与此组织匹配时，要求通过工作区 SSO 入口登录。
             </p>
           </div>
 
           <div className="flex items-start justify-between gap-4 rounded-[24px] border border-gray-200 bg-white px-5 py-4">
             <div className="grid gap-1 pr-4">
-              <p className="text-[15px] font-medium text-gray-900">Require SSO for matching domains</p>
+              <p className="text-[15px] font-medium text-gray-900">为匹配域名强制要求 SSO</p>
               <p className="text-[13px] text-gray-500">
-                Email/password sign-in will redirect users to the org SSO flow when their email domain matches the configured SSO connection.
+                邮箱域名与已配置的 SSO 连接匹配时，邮箱密码登录将跳转至组织 SSO 流程。
               </p>
             </div>
             <SettingsToggle
-              label="Require SSO for this organization"
+              label="为此组织强制要求 SSO"
               checked={requireSsoEnabled}
               disabled={!canManageSettings}
               onChange={setRequireSsoEnabled}
@@ -703,19 +704,18 @@ export function OrgSettingsScreen() {
         <DenCard size="spacious" className="grid gap-6">
           <div className="grid gap-2">
             <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-gray-400">
-              Desktop app
+              桌面应用
             </p>
             <h2 className="text-[24px] font-semibold tracking-[-0.04em] text-gray-900">
-              Allowed Desktop Versions
+              允许的桌面版本
             </h2>
             <p className="text-[14px] text-gray-500">
-              Choose which supported desktop versions can sign in to this
-              workspace.
+              选择允许登录此工作区的桌面版本。
             </p>
             {desktopVersionRange ? (
               <p className="text-[10px] text-gray-400">
-                This server currently supports desktop v
-                {desktopVersionRange.minVersion} to v
+                此服务器目前支持桌面版本 v
+                {desktopVersionRange.minVersion} 至 v
                 {desktopVersionRange.maxVersion}.
               </p>
             ) : null}
@@ -723,7 +723,7 @@ export function OrgSettingsScreen() {
 
           {desktopVersionOptionsBusy ? (
             <div className="rounded-[24px] border border-dashed border-gray-200 bg-gray-50 px-5 py-4 text-[14px] text-gray-500">
-              Loading desktop versions...
+              正在加载桌面版本…
             </div>
           ) : null}
 
@@ -775,7 +775,7 @@ export function OrgSettingsScreen() {
                         </p>
                         {requiresServerUpgrade ? (
                           <p className="text-[12px] text-gray-400">
-                            Upgrade server to allow this version
+                            升级服务器以允许此版本
                           </p>
                         ) : null}
                       </div>
@@ -783,7 +783,7 @@ export function OrgSettingsScreen() {
                         type="checkbox"
                         checked={checked}
                         disabled={!canManageDesktopVersions || requiresServerUpgrade}
-                        aria-label={`Allow desktop version v${version}`}
+                        aria-label={`允许桌面版本 v${version}`}
                         onChange={(event) =>
                           setAllowedDesktopVersionsDraft((current) =>
                             toggleAllowedDesktopVersion(
@@ -804,14 +804,14 @@ export function OrgSettingsScreen() {
 
         <div className="flex min-w-0 flex-wrap items-center justify-between gap-3">
           <p className="text-[13px] text-gray-500">
-            {!canManageSettings ? `Read only. ${permissionLockReason("organization.update")}` : null}
+            {!canManageSettings ? `只读。${permissionLockReason("organization.update")}` : null}
           </p>
           <DenButton
             type="submit"
             loading={mutationBusy === "update-organization-settings"}
             disabled={!canManageSettings}
           >
-            Save settings
+            保存设置
           </DenButton>
         </div>
       </form>
@@ -828,13 +828,13 @@ export function OrgSettingsScreen() {
         <DenCard size="spacious" className="mt-6 grid gap-5 !border-red-200 bg-red-50/30">
           <div className="grid gap-2">
             <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-red-400">
-              Owner controls
+              所有者控制项
             </p>
             <h2 className="text-[24px] font-semibold tracking-[-0.04em] text-red-950">
-              Danger zone
+              危险操作
             </h2>
             <p className="max-w-2xl text-[14px] leading-6 text-red-700">
-              Permanently delete this organization, including members, teams, workers, plugins, and connections. This cannot be undone.
+              永久删除此组织及其成员、团队、工作实例、插件和连接，此操作无法撤销。
             </p>
           </div>
           <div>
@@ -844,7 +844,7 @@ export function OrgSettingsScreen() {
               icon={Trash2}
               onClick={openDeleteDialog}
             >
-              Delete organization
+              删除组织
             </DenButton>
           </div>
         </DenCard>

@@ -58,8 +58,8 @@ export function ReauthDialog({
   orgContext,
   onCancel,
   onVerified,
-  title = "Confirm your identity to change workspace settings",
-  description = "Your change will finish automatically after you confirm.",
+  title = "确认身份以更改工作区设置",
+  description = "确认身份后将自动完成更改。",
 }: {
   open: boolean;
   user: AuthUser | null;
@@ -115,7 +115,7 @@ export function ReauthDialog({
         return;
       }
       stopPopupWatcher();
-      setError("The sign-in window was closed before confirmation. Try again when you're ready.");
+      setError("确认前登录窗口已关闭，请准备好后重试。");
       setBusy(false);
     }, 500);
   }
@@ -170,7 +170,7 @@ export function ReauthDialog({
           }
         }
       } catch (nextError) {
-        if (!cancelled) setError(nextError instanceof Error ? nextError.message : "Could not load sign-in methods. Try again.");
+        if (!cancelled) setError(nextError instanceof Error ? nextError.message : "无法加载登录方式，请重试。");
       } finally {
         if (!cancelled) {
           setLoadingMethods(false);
@@ -200,7 +200,7 @@ export function ReauthDialog({
       popup?.close();
 
       if (message.error) {
-        setError("Sign-in was cancelled or failed. Try again.");
+        setError("登录已取消或失败，请重试。");
         setBusy(false);
         return;
       }
@@ -215,11 +215,11 @@ export function ReauthDialog({
           const result = await requestJson("/api/auth/get-session", { method: "GET" });
           const verifiedUser = getUser(result.payload);
           if (!result.response.ok || !verifiedUser || verifiedUser.id !== user?.id) {
-            throw new Error(`Sign in as ${user?.email} to confirm this change.`);
+            throw new Error(`以 ${user?.email} 身份登录以确认此更改。`);
           }
           await onVerifiedRef.current();
         } catch (nextError) {
-          setError(nextError instanceof Error ? nextError.message : "Re-authentication failed.");
+          setError(nextError instanceof Error ? nextError.message : "重新验证身份失败，请重试。");
           setBusy(false);
         }
       })();
@@ -249,14 +249,14 @@ export function ReauthDialog({
       });
 
       if (!response.ok) {
-        setError(getErrorMessage(payload, `Re-authentication failed (${response.status}).`));
+        setError(getErrorMessage(payload, `重新验证身份失败（${response.status}）。`));
         return;
       }
 
       await onVerified();
       setPassword("");
     } catch (nextError) {
-      setError(nextError instanceof Error ? nextError.message : "Re-authentication failed.");
+      setError(nextError instanceof Error ? nextError.message : "重新验证身份失败，请重试。");
     } finally {
       setBusy(false);
     }
@@ -265,7 +265,7 @@ export function ReauthDialog({
   async function continueSocial(provider: SocialAuthProvider) {
     const popup = window.open("", "openwork-reauth", "popup,width=480,height=640");
     if (!popup) {
-      setError("OpenWork could not open the sign-in window. Allow popups for OpenWork, then try again.");
+      setError("无法打开登录窗口，请允许 OpenWork 弹出窗口后重试。");
       return;
     }
 
@@ -285,7 +285,7 @@ export function ReauthDialog({
       if (!response.ok) {
         stopPopupWatcher();
         popup.close();
-        setError(getErrorMessage(payload, `${getSocialLabel(provider)} sign-in failed (${response.status}).`));
+        setError(getErrorMessage(payload, `${getSocialLabel(provider)} 登录失败（${response.status}）。`));
         setBusy(false);
         return;
       }
@@ -294,7 +294,7 @@ export function ReauthDialog({
       if (!redirectUrl) {
         stopPopupWatcher();
         popup.close();
-        setError(`${getSocialLabel(provider)} sign-in did not return a redirect URL.`);
+        setError(`${getSocialLabel(provider)} 登录未返回跳转地址。`);
         setBusy(false);
         return;
       }
@@ -304,20 +304,20 @@ export function ReauthDialog({
       if (popupRef.current !== popup) return;
       stopPopupWatcher();
       popup.close();
-      setError(nextError instanceof Error ? nextError.message : `${getSocialLabel(provider)} sign-in failed.`);
+      setError(nextError instanceof Error ? nextError.message : `${getSocialLabel(provider)} 登录失败。`);
       setBusy(false);
     }
   }
 
   function continueSso() {
     if (!ssoUrl || !user?.email) {
-      setError("This workspace is managed by your organization, but no SSO sign-in URL is available for this email.");
+      setError("此工作区由组织管理，但未找到此邮箱可用的 SSO 登录地址。");
       return;
     }
 
     const popup = window.open("", "openwork-reauth", "popup,width=480,height=640");
     if (!popup) {
-      setError("OpenWork could not open the sign-in window. Allow popups for OpenWork, then try again.");
+      setError("无法打开登录窗口，请允许 OpenWork 弹出窗口后重试。");
       return;
     }
 
@@ -333,7 +333,7 @@ export function ReauthDialog({
       startPopupWatcher(popup);
     } catch (nextError) {
       popup?.close();
-      setError(nextError instanceof Error ? nextError.message : "Organization SSO sign-in failed.");
+      setError(nextError instanceof Error ? nextError.message : "组织 SSO 登录失败，请重试。");
       setBusy(false);
     }
   }
@@ -355,7 +355,7 @@ export function ReauthDialog({
         <div className="relative border-b border-slate-100 bg-slate-50/70 px-6 pb-5 pt-6">
           <button
             type="button"
-            aria-label="Close security check"
+            aria-label="关闭安全检查"
             className="absolute right-4 top-4 flex size-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-white hover:text-slate-700"
             disabled={busy && !waitingForPopup}
             onClick={cancelSignIn}
@@ -366,13 +366,13 @@ export function ReauthDialog({
             <ShieldCheck size={20} strokeWidth={1.8} aria-hidden="true" />
           </div>
           <div className="grid gap-2 pr-8">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">Security check</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">安全检查</p>
             <h2 id="reauth-dialog-title" className="text-[22px] font-semibold tracking-[-0.03em] text-slate-950">
-              {waitingForPopup ? "Complete sign-in in the other window" : title}
+              {waitingForPopup ? "在另一窗口中完成登录" : title}
             </h2>
             <p className="text-[14px] leading-6 text-slate-600">
               {waitingForPopup
-                ? "Return here after signing in. Your change will finish automatically."
+                ? "登录后返回此页面，更改将自动完成。"
                 : description}
             </p>
           </div>
@@ -385,7 +385,7 @@ export function ReauthDialog({
                 {user.email.slice(0, 1)}
               </div>
               <div className="min-w-0">
-                <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-slate-400">Signing in as</p>
+                <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-slate-400">当前登录身份</p>
                 <p className="truncate text-[13px] font-medium text-slate-700">{user.email}</p>
               </div>
             </div>
@@ -397,22 +397,22 @@ export function ReauthDialog({
 
           {waitingForPopup ? (
             <div className="grid gap-4" role="status">
-              <p className="text-sm text-slate-600">Waiting for confirmation…</p>
+              <p className="text-sm text-slate-600">正在等待确认…</p>
               <DenButton className="w-full" onClick={() => popupRef.current?.focus()}>
-                Reopen sign-in
+                重新打开登录
               </DenButton>
             </div>
           ) : (
             <div className="grid gap-4">
               {loadingMethods ? (
                 <div className="rounded-[18px] border border-gray-200 bg-gray-50 px-4 py-3 text-[14px] text-gray-500">
-                  Checking available sign-in methods...
+                  正在检查可用的登录方式…
                 </div>
               ) : null}
 
               {hasManagedOrgSignIn ? (
                 <DenButton className="w-full" onClick={continueSso} loading={busy || loadingMethods} disabled={!ssoUrl || busy || loadingMethods}>
-                  Continue with SSO
+                  通过 SSO 继续
                 </DenButton>
               ) : null}
 
@@ -426,7 +426,7 @@ export function ReauthDialog({
                     disabled={busy}
                     onClick={() => void continueSocial(provider)}
                   >
-                    Continue with {getSocialLabel(provider)}
+                    继续使用 {getSocialLabel(provider)}
                   </button>
                 );
               })}
@@ -434,7 +434,7 @@ export function ReauthDialog({
               {hasPassword && !ssoUrl ? (
                 <form className="grid gap-3" onSubmit={submitPassword}>
                   <label className="grid gap-2">
-                    <span className="text-[13px] font-medium text-gray-700">Password</span>
+                    <span className="text-[13px] font-medium text-gray-700">密码</span>
                     <DenInput
                       type="password"
                       value={password}
@@ -445,7 +445,7 @@ export function ReauthDialog({
                     />
                   </label>
                   <DenButton className="w-full" type="submit" loading={busy} disabled={!password.trim()}>
-                    Verify password
+                    验证密码
                   </DenButton>
                 </form>
               ) : null}
@@ -458,7 +458,7 @@ export function ReauthDialog({
             onClick={cancelSignIn}
             disabled={busy && !waitingForPopup}
           >
-            Cancel
+            取消
           </button>
         </div>
       </div>

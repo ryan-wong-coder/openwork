@@ -54,7 +54,7 @@ export function CatalogIdentityTile({
       <span data-testid="catalog-identity-tile" className={`${base} border border-gray-100 bg-white`}>
         <img
           src={logoUrl}
-          alt={`${name} logo`}
+          alt={`${name} 标志`}
           onError={() => setErroredUrl(logoUrl)}
           className="h-full w-full object-contain p-1"
         />

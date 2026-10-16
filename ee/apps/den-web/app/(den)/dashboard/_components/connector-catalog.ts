@@ -35,60 +35,60 @@ export const POPULAR_CONNECTORS: PopularConnector[] = [
   {
     id: "gmail",
     displayName: "Gmail",
-    description: "Read, send, and manage Gmail",
+    description: "阅读、发送和管理 Gmail",
     icon: { simpleIconSlug: "gmail" },
     target: { kind: "google-workspace" },
-    chatPrompt: "Explain how I can triage my Gmail inbox. If access is available, search and summarize unread threads and suggest reply priorities. Otherwise, help me plan a triage routine without accessing my inbox.",
+    chatPrompt: "说明如何整理我的 Gmail 收件箱。若有访问权限，请搜索并总结未读会话，建议回复优先级；否则在不访问收件箱的情况下帮助我制定整理流程。",
   },
   {
     id: "github",
     displayName: "GitHub",
-    description: "PRs, issues, code, and CI — OAuth app or personal access token",
+    description: "PR、Issue、代码和 CI，通过 OAuth 应用或个人访问令牌连接",
     icon: { simpleIconSlug: "github", serviceUrl: "https://api.githubcopilot.com/mcp/" },
     target: { kind: "preset", presetId: "github" },
-    chatPrompt: "Explain how I can review a GitHub repo's authentication. Ask which repo to use; if access is available, inspect its code and docs. Otherwise, outline a review checklist without accessing the repo.",
+    chatPrompt: "说明如何审查 GitHub 仓库的身份验证。先询问使用哪个仓库；若有访问权限，请检查代码与文档，否则在不访问仓库的情况下列出审查清单。",
   },
   {
     id: "google-drive",
     displayName: "Google Drive",
-    description: "Organize files, read Docs and Slides, and edit Sheets",
+    description: "整理文件、阅读文档和演示文稿，以及编辑表格",
     icon: { simpleIconSlug: "googledrive" },
     target: { kind: "google-workspace" },
-    chatPrompt: "Explain what changed in Google Drive this week. If access is available, list files modified in the last 7 days, follow pagination, and call out any incomplete search before summarizing the results. Otherwise, help me plan a file review without accessing Drive.",
+    chatPrompt: "说明本周 Google 云端硬盘的变化。若有访问权限，请列出过去 7 天修改的文件、处理分页，并在总结前说明任何不完整的搜索；否则在不访问云端硬盘的情况下帮助我制定文件检查计划。",
   },
   {
     id: "google-calendar",
     displayName: "Google Calendar",
-    description: "Create, reschedule, and manage Google Calendar events",
+    description: "创建、改期与管理 Google 日历事件",
     icon: { simpleIconSlug: "googlecalendar" },
     target: { kind: "google-workspace" },
-    chatPrompt: "Explain how I can plan my week with Google Calendar. If access is available, list my meetings, point out conflicts, and suggest focus time without changing events. Otherwise, help me plan a weekly schedule without accessing my calendar.",
+    chatPrompt: "说明如何使用 Google 日历安排一周。若有访问权限，请列出会议、指出冲突并建议专注时间，不要更改事件；否则在不访问日历的情况下帮助我制定每周安排。",
   },
   {
     id: "notion",
     displayName: "Notion",
-    description: "Notion docs and workflows",
+    description: "Notion 文档与工作流",
     icon: { serviceUrl: "https://mcp.notion.com/mcp" },
     target: { kind: "preset", presetId: "notion" },
-    chatPrompt: "Explain how I can organize a Notion workspace. If access is available, ask which pages to review and summarize their structure. Otherwise, suggest a workspace outline without accessing Notion.",
+    chatPrompt: "说明如何整理 Notion 工作区。若有访问权限，请先询问要检查哪些页面并总结其结构；否则在不访问 Notion 的情况下建议工作区大纲。",
   },
   {
     id: "slack",
     displayName: "Slack",
-    description: "Messages and search — requires an internal or Marketplace-published Slack app",
+    description: "消息与搜索，需要内部或已发布到市场的 Slack 应用",
     icon: { simpleIconSlug: "slack", serviceUrl: "https://mcp.slack.com/mcp" },
     target: { kind: "preset", presetId: "slack" },
-    chatPrompt: "Explain how I can catch up on Slack. If access is available, ask which channels or topics to search and summarize the messages found. Otherwise, help me plan a catch-up routine without accessing Slack.",
+    chatPrompt: "请介绍如何在 Slack 中跟进消息。如果可以访问，请先询问需要搜索的频道或主题，再总结找到的消息；如果无法访问，请先帮我规划消息跟进流程，无需访问 Slack。",
   },
 ];
 
-export const MORE_CONNECTORS_TEASER = "See Outlook Email, Granola, and more";
+export const MORE_CONNECTORS_TEASER = "查看 Outlook 邮件、Granola 等更多服务";
 
 /** Starter prompt for connectors without a curated one. */
 export function connectorChatPrompt(displayName: string): string {
   const popular = POPULAR_CONNECTORS.find((connector) => connector.displayName === displayName);
   return popular?.chatPrompt
-    ?? `Explain how I could use ${displayName}: suggest three useful tasks and distinguish general ideas from tools available here. If access is unavailable, help me plan without connecting.`;
+    ?? `请介绍如何使用 ${displayName}：提出三个实用任务，并区分通用建议与此处可用的工具。如果无法访问，请先帮我规划，无需连接。`;
 }
 
 /**

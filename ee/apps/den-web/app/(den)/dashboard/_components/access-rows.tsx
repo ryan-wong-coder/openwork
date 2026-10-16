@@ -64,7 +64,7 @@ export function RemoveButton({ label, onClick, disabled }: { label: string; onCl
       onClick={onClick}
       className="shrink-0 rounded-lg px-2 py-1 text-[12px] font-medium text-red-600 transition-colors hover:bg-red-50 disabled:opacity-50"
     >
-      Remove
+      移除
     </button>
   );
 }
@@ -94,7 +94,7 @@ export function PeopleField({ people, chosenIds, onChange, rowTestId }: {
           lead={<Avatar name={person.name} />}
           title={person.name}
           description={person.email}
-          trailing={<RemoveButton label={`Remove ${person.name}`} onClick={() => onChange(chosenIds.filter((id) => id !== person.id))} />}
+          trailing={<RemoveButton label={`移除 ${person.name}`} onClick={() => onChange(chosenIds.filter((id) => id !== person.id))} />}
           testId={rowTestId}
         />
       ))}
@@ -124,7 +124,7 @@ export function TeamsField({ teams, chosenIds, onChange, rowTestId }: {
           lead={<IconTile icon={Users} />}
           title={team.name}
           description={team.detail}
-          trailing={<RemoveButton label={`Remove ${team.name}`} onClick={() => onChange(chosenIds.filter((id) => id !== team.id))} />}
+          trailing={<RemoveButton label={`移除 ${team.name}`} onClick={() => onChange(chosenIds.filter((id) => id !== team.id))} />}
           testId={rowTestId}
         />
       ))}
@@ -146,12 +146,12 @@ export function AddPicker({ kind, options, disabled, onAdd }: {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<string[]>([]);
-  const noun = kind === "person" ? "people" : "teams";
+  const noun = kind === "person" ? "成员" : "团队";
   const visible = options.filter((option) => `${option.name} ${option.detail}`.toLowerCase().includes(query.trim().toLowerCase()));
   const chosen = options.filter((option) => selected.includes(option.id));
   const addLabel = chosen.length === 1
-    ? `Add ${chosen[0].name}`
-    : chosen.length > 1 ? `Add ${chosen.length} ${noun}` : "Add";
+    ? `添加 ${chosen[0].name}`
+    : chosen.length > 1 ? `添加 ${chosen.length} 项${noun}` : "添加";
 
   function close() {
     setOpen(false);
@@ -166,7 +166,7 @@ export function AddPicker({ kind, options, disabled, onAdd }: {
         className="inline-flex h-8 items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3 text-[12px] font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <Plus className="h-3.5 w-3.5" aria-hidden />
-        {kind === "person" ? "Add person" : "Add team"}
+        {kind === "person" ? "添加人员" : "添加团队"}
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Positioner side="bottom" align="start" sideOffset={8} className="z-50">
@@ -174,21 +174,21 @@ export function AddPicker({ kind, options, disabled, onAdd }: {
             data-testid={`access-add-${kind}-popover`}
             className="w-[320px] max-w-[calc(100vw-2rem)] rounded-2xl border border-gray-200 bg-white p-2 shadow-[0_8px_24px_rgba(15,23,42,0.08)] outline-none"
           >
-            <Popover.Title className="sr-only">{kind === "person" ? "Add people" : "Add teams"}</Popover.Title>
+            <Popover.Title className="sr-only">{kind === "person" ? "添加人员" : "添加团队"}</Popover.Title>
             <label className="flex h-9 items-center gap-2 rounded-lg border border-gray-200 px-3 focus-within:border-gray-400">
               <Search className="h-3.5 w-3.5 text-gray-500" aria-hidden />
               <input
                 autoFocus
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder={kind === "person" ? "Search people" : "Search teams"}
+                placeholder={kind === "person" ? "搜索人员" : "搜索团队"}
                 className="min-w-0 flex-1 bg-transparent text-[13px] text-gray-900 outline-none placeholder:text-gray-500"
               />
             </label>
             <div className="mt-1 max-h-[240px] overflow-y-auto" role="listbox" aria-multiselectable>
               {visible.length === 0 ? (
                 <p className="px-3 py-4 text-center text-[12px] text-gray-500">
-                  {options.length === 0 ? `Everyone is already added.` : `No ${noun} match.`}
+                  {options.length === 0 ? "已添加所有人。" : `没有匹配的${noun}。`}
                 </p>
               ) : visible.map((option) => {
                 const isSelected = selected.includes(option.id);
@@ -212,7 +212,7 @@ export function AddPicker({ kind, options, disabled, onAdd }: {
             </div>
             <div className="mt-1 flex items-center justify-between gap-3 border-t border-gray-100 px-2 pt-2">
               <span className="text-[12px] text-gray-500">
-                {chosen.length === 0 ? `Pick ${noun}` : `${chosen.length} ${chosen.length === 1 ? (kind === "person" ? "person" : "team") : noun} selected`}
+                {chosen.length === 0 ? `选择${noun}` : `已选择 ${chosen.length} 项${chosen.length === 1 ? (kind === "person" ? "成员" : "团队") : noun}`}
               </span>
               <DenButton
                 size="sm"

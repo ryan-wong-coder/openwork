@@ -245,7 +245,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
   function openVerificationStep(targetEmail: string, message?: string) {
     setVerificationRequired(true);
     setVerificationCode("");
-    setAuthInfo(message ?? `Enter the 6-digit code we sent to ${targetEmail}.`);
+    setAuthInfo(message ?? `输入发送至 ${targetEmail} 的六位验证码。`);
     setAuthError(null);
     setSignupPasswordFeedback([]);
   }
@@ -262,7 +262,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
     const { response, payload } = await requestJson(`/api/auth/sso-resolve?email=${encodeURIComponent(trimmedEmail)}`, { method: "GET" }, 12000);
 
     if (!response.ok) {
-      throw new Error(getErrorMessage(payload, response.status === 403 ? "We could not verify this sign-in attempt. Please refresh and try again." : `Could not resolve workspace SSO (${response.status}).`));
+      throw new Error(getErrorMessage(payload, response.status === 403 ? "无法验证此次登录，请刷新后重试。" : `无法解析工作区单点登录配置（${response.status}）。`));
     }
 
     const method = typeof (payload as { method?: unknown } | null)?.method === "string"
@@ -310,7 +310,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
       });
 
       if (!signInResult.response.ok) {
-        setAuthError(getErrorMessage(signInResult.payload, `Authentication failed with ${signInResult.response.status}.`));
+        setAuthError(getErrorMessage(signInResult.payload, `身份验证失败（${signInResult.response.status}）。`));
         trackPosthogEvent("den_auth_failed", {
           mode: nextMode,
           method: "email",
@@ -334,7 +334,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
     if (payloadUser) {
       authenticatedUser = payloadUser;
       setUser(payloadUser);
-      setAuthInfo(`Signed in as ${payloadUser.email}.`);
+      setAuthInfo(`已以 ${payloadUser.email} 身份登录。`);
     } else {
       const refreshed = await refreshSession(true);
       if (refreshed) {
@@ -344,10 +344,10 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
         // the person on the sign-in step instead of a signed-in screen that
         // every request would reject.
         setAuthMode("sign-in");
-        setAuthInfo(`Email verified. Sign in as ${trimmedEmail} to continue.`);
+        setAuthInfo(`邮箱已验证，请以 ${trimmedEmail} 身份登录以继续。`);
         return null;
       } else {
-        setAuthInfo("Authentication succeeded, but session details are still syncing.");
+        setAuthInfo("身份验证成功，会话详情仍在同步。");
       }
     }
 
@@ -371,7 +371,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
     }
 
     if (desktopAuthRequested || webAuthRequested) {
-      setAuthInfo("Signed in. Returning to OpenWork...");
+      setAuthInfo("已登录，正在返回 OpenWork…");
       return null;
     }
 
@@ -380,13 +380,13 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
 
   async function resendVerificationCode() {
     if (isSingleOrgMode) {
-      setAuthError("Email verification codes are not used for this single-organization deployment.");
+      setAuthError("此单组织部署不使用邮箱验证码。");
       return;
     }
 
     const trimmedEmail = email.trim();
     if (!trimmedEmail) {
-      setAuthError("Enter your email before requesting a verification code.");
+      setAuthError("请先输入邮箱，再申请验证码。");
       return;
     }
 
@@ -402,17 +402,17 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
       });
 
       if (!response.ok) {
-        setAuthError(getErrorMessage(payload, `Could not resend the code (${response.status}).`));
+        setAuthError(getErrorMessage(payload, `无法重新发送验证码（${response.status}）。`));
         return;
       }
 
-      setAuthInfo(`We sent a fresh verification code to ${trimmedEmail}.`);
+      setAuthInfo(`我们已向 ${trimmedEmail} 发送新的验证码。`);
       trackPosthogEvent("den_signup_verification_sent", {
         method: "email",
         email_domain: getEmailDomain(trimmedEmail),
       });
     } catch (error) {
-      setAuthError(error instanceof Error ? error.message : "Could not resend the verification code.");
+      setAuthError(error instanceof Error ? error.message : "无法重新发送验证码，请重试。");
     } finally {
       setAuthBusy(false);
     }
@@ -422,14 +422,14 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
     event.preventDefault();
     if (isSingleOrgMode) {
       setVerificationRequired(false);
-      setAuthError("Email verification codes are not used for this single-organization deployment.");
+      setAuthError("此单组织部署不使用邮箱验证码。");
       return null;
     }
 
     const trimmedEmail = email.trim();
     const otp = verificationCode.trim();
     if (!trimmedEmail || !otp) {
-      setAuthError("Enter the verification code from your email.");
+      setAuthError("请输入邮件中的验证码。");
       return null;
     }
 
@@ -445,7 +445,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
       });
 
       if (!response.ok) {
-        setAuthError(getErrorMessage(payload, `Verification failed with ${response.status}.`));
+        setAuthError(getErrorMessage(payload, `验证失败（${response.status}）。`));
         trackPosthogEvent("den_auth_failed", {
           mode: authMode,
           method: "email",
@@ -457,7 +457,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
 
       setVerificationRequired(false);
       setVerificationCode("");
-      setAuthInfo(`Email verified for ${trimmedEmail}. Finishing sign-in...`);
+      setAuthInfo(`${trimmedEmail} 的邮箱已验证，正在完成登录…`);
       trackPosthogEvent("den_email_verified", {
         method: "email",
         email_domain: getEmailDomain(trimmedEmail),
@@ -465,7 +465,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
 
       return await finalizeEmailPasswordSignIn(authMode, trimmedEmail, payload);
     } catch (error) {
-      setAuthError(error instanceof Error ? error.message : "Verification failed.");
+      setAuthError(error instanceof Error ? error.message : "验证失败，请重试。");
       return null;
     } finally {
       setAuthBusy(false);
@@ -489,20 +489,20 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
           setAuthToken(null);
         }
         if (!quiet) {
-          setAuthError("No active session found. Sign in first.");
+          setAuthError("未找到有效会话，请先登录。");
         }
         return null;
       }
-      throw new Error(getErrorMessage(payload, `Could not check your sign-in status (${response.status}).`));
+      throw new Error(getErrorMessage(payload, `无法检查登录状态（${response.status}）。`));
     }
 
     const sessionUser = getUser(payload);
     if (!sessionUser) {
-      throw new Error("Session response did not include a user.");
+      throw new Error("会话响应中缺少用户信息。");
     }
 
     setUser(sessionUser);
-    setAuthInfo(`Signed in as ${sessionUser.email}.`);
+    setAuthInfo(`已以 ${sessionUser.email} 身份登录。`);
     return sessionUser;
   }
 
@@ -514,11 +514,11 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
 
     const { response, payload } = await requestJson("/v1/me/orgs", { method: "GET", headers }, 12000);
     if (!response.ok) {
-      throw new Error(getErrorMessage(payload, "Could not load your organizations. Refresh to try again."));
+      throw new Error(getErrorMessage(payload, "无法加载组织，请刷新后重试。"));
     }
-    if (!isRecord(payload) || !Array.isArray(payload.orgs)) throw new Error("Organization lookup returned incomplete details.");
+    if (!isRecord(payload) || !Array.isArray(payload.orgs)) throw new Error("组织信息不完整，请重试。");
     const directory = parseOrgListPayload(payload);
-    if (directory.orgs.length !== payload.orgs.length) throw new Error("Organization lookup returned incomplete details.");
+    if (directory.orgs.length !== payload.orgs.length) throw new Error("组织信息不完整，请重试。");
     return directory;
   }
 
@@ -545,7 +545,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
         const selected = await requestJson("/v1/me/active-organization", {
           method: "POST", headers, body: JSON.stringify({ organizationId }),
         });
-        if (!selected.response.ok) throw new Error(getErrorMessage(selected.payload, "Could not select your workspace."));
+        if (!selected.response.ok) throw new Error(getErrorMessage(selected.payload, "无法选择工作区，请重试。"));
       }
       if (continuationRef.current !== current || epoch !== sessionEpochRef.current) return false;
 
@@ -557,13 +557,13 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
       if (continuationRef.current !== current || epoch !== sessionEpochRef.current) return false;
 
       if (!response.ok) {
-        setAuthError(getErrorMessage(payload, `Desktop handoff failed with ${response.status}.`));
+        setAuthError(getErrorMessage(payload, `桌面应用交接失败（${response.status}）。`));
         return false;
       }
 
       const openworkUrl = getDesktopHandoffOpenworkUrl(payload) ?? "";
       if (!openworkUrl) {
-        setAuthError("Desktop handoff succeeded, but no OpenWork redirect URL was returned.");
+        setAuthError("桌面交接成功，但未返回 OpenWork 重定向地址。");
         return false;
       }
 
@@ -574,7 +574,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
       window.location.assign(openworkUrl);
       return true;
     } catch (error) {
-      if (continuationRef.current === current && epoch === sessionEpochRef.current) setAuthError(error instanceof Error ? error.message : "Failed to open OpenWork.");
+      if (continuationRef.current === current && epoch === sessionEpochRef.current) setAuthError(error instanceof Error ? error.message : "打开 OpenWork 失败，请重试。");
       return false;
     } finally {
       handoffBusyRef.current = false;
@@ -587,7 +587,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
     if (!runtimeConfigLoaded || !sessionHydrated) return false;
     if (!user || (current && current.userId !== user.id)
       || (current?.setup && current.setup.organizationId !== organizationId)) {
-      setAuthError("Return to the workspace where you started setup before completing it.");
+      setAuthError("请先返回开始配置的工作区，再完成配置。");
       return false;
     }
     if (getPendingOrgInvitationId() || getPendingWorkspaceClaimToken()) return false;
@@ -617,7 +617,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
 
     try {
       if (!webAuthReturnUrl) {
-        setAuthError("Web handoff failed because no return URL was provided.");
+        setAuthError("网页交接失败，未提供返回地址。");
         return;
       }
 
@@ -633,14 +633,14 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
       });
 
       if (!response.ok) {
-        setAuthError(getErrorMessage(payload, `Web handoff failed with ${response.status}.`));
+        setAuthError(getErrorMessage(payload, `网页应用交接失败（${response.status}）。`));
         return;
       }
 
       const grant = getDesktopHandoffGrant(payload, null) ?? "";
       const approvedReturnUrl = getWebHandoffReturnUrl(payload) ?? "";
       if (!grant || !approvedReturnUrl) {
-        setAuthError("Web handoff succeeded, but no Cloud return URL was returned.");
+        setAuthError("网页交接成功，但未返回云端地址。");
         return;
       }
 
@@ -648,7 +648,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
       redirectUrl.searchParams.set("grant", grant);
       window.location.replace(redirectUrl.toString());
     } catch (error) {
-      setAuthError(error instanceof Error ? error.message : "Failed to return to OpenWork Cloud.");
+      setAuthError(error instanceof Error ? error.message : "无法返回 OpenWork 云端，请重试。");
     } finally {
       setWebRedirectBusy(false);
     }
@@ -685,7 +685,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
       return returnTo;
     }
     if (runtimeConfig === EMPTY_RUNTIME_CONFIG) {
-      setAuthError("Could not load workspace configuration. Refresh to try again.");
+      setAuthError("无法加载工作区配置，请刷新后重试。");
       return null;
     }
 
@@ -694,7 +694,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
     try {
       directory = await loadOrgDirectory();
     } catch (error) {
-      if (epoch === sessionEpochRef.current) setAuthError(error instanceof Error ? error.message : "Could not load your organizations.");
+      if (epoch === sessionEpochRef.current) setAuthError(error instanceof Error ? error.message : "无法加载组织，请重试。");
       return null;
     }
     if (epoch !== sessionEpochRef.current) return null;
@@ -762,9 +762,9 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
         // Only better-auth's unverified-email refusal means a code was sent;
         // any other 403 (SSO-managed, sign-up policy) is a plain error.
         if (response.status === 403 && !isSingleOrgMode && isEmailNotVerifiedError(payload)) {
-          openVerificationStep(trimmedEmail, `Enter the 6-digit code we sent to ${trimmedEmail} to finish verifying your email.`);
+          openVerificationStep(trimmedEmail, `输入发送至 ${trimmedEmail} 的六位验证码以完成邮箱验证。`);
         }
-        const message = getErrorMessage(payload, `Authentication failed with ${response.status}.`);
+        const message = getErrorMessage(payload, `身份验证失败（${response.status}）。`);
         if (submitMode === "sign-up" && isSignupPasswordFeedback(payload)) {
           setSignupPasswordFeedback(getSignupPasswordFeedback(payload, message));
           setAuthError(null);
@@ -790,7 +790,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
 
       if (submitMode === "sign-up" && !token) {
         setUser(null);
-        openVerificationStep(trimmedEmail, `We emailed a 6-digit verification code to ${trimmedEmail}. Enter it below to finish creating your account.`);
+        openVerificationStep(trimmedEmail, `我们已向 ${trimmedEmail} 发送六位验证码，请在下方输入以完成账户创建。`);
         trackPosthogEvent("den_signup_verification_sent", {
           method: "email",
           email_domain: getEmailDomain(trimmedEmail),
@@ -799,7 +799,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
       }
       return await finalizeEmailPasswordSignIn(submitMode, trimmedEmail, payload);
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Unknown network error";
+      const message = error instanceof Error ? error.message : "网络错误，请检查连接后重试";
       setAuthError(message);
       setSignupPasswordFeedback([]);
       trackPosthogEvent("den_auth_failed", {
@@ -826,7 +826,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
     setAuthBusy(true);
     setAuthError(null);
     setSignupPasswordFeedback([]);
-    setAuthInfo(`Redirecting to ${getSocialProviderLabel(provider)}...`);
+    setAuthInfo(`正在跳转至 ${getSocialProviderLabel(provider)}…`);
     trackPosthogEvent("den_auth_submitted", {
       mode: authMode,
       method: provider
@@ -857,7 +857,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
           window.sessionStorage.removeItem(PENDING_SOCIAL_SIGNUP_STORAGE_KEY);
         }
         setAuthInfo(getAuthInfoForMode(authMode));
-        setAuthError(getErrorMessage(payload, `${getSocialProviderLabel(provider)} sign-in failed with ${response.status}.`));
+        setAuthError(getErrorMessage(payload, `${getSocialProviderLabel(provider)} 登录失败（${response.status}）。`));
         setAuthBusy(false);
         return;
       }
@@ -872,7 +872,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
           window.sessionStorage.removeItem(PENDING_SOCIAL_SIGNUP_STORAGE_KEY);
         }
         setAuthInfo(getAuthInfoForMode(authMode));
-        setAuthError(`${getSocialProviderLabel(provider)} sign-in did not return a redirect URL.`);
+        setAuthError(`${getSocialProviderLabel(provider)} 登录未返回跳转地址。`);
         setAuthBusy(false);
         return;
       }
@@ -883,7 +883,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
         window.sessionStorage.removeItem(PENDING_SOCIAL_SIGNUP_STORAGE_KEY);
       }
       setAuthInfo(getAuthInfoForMode(authMode));
-      setAuthError(error instanceof Error ? error.message : "Unknown network error");
+      setAuthError(error instanceof Error ? error.message : "网络错误，请检查连接后重试");
       setAuthBusy(false);
     }
   }
@@ -943,12 +943,12 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
     );
 
     if (!response.ok) {
-      throw new Error(getErrorMessage(payload, `Failed to update profile (${response.status}).`));
+      throw new Error(getErrorMessage(payload, `无法更新个人资料（${response.status}）。`));
     }
 
     const nextUser = getUser(payload);
     if (!nextUser) {
-      throw new Error("Profile update response did not include a user.");
+      throw new Error("个人资料更新响应中缺少用户信息。");
     }
 
     setUser(nextUser);
@@ -972,7 +972,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
     void getRuntimeConfig().then((config) => {
       if (cancelled) return;
       if (config === EMPTY_RUNTIME_CONFIG) {
-        setMemberAuthCheckError("Could not load workspace configuration.");
+        setMemberAuthCheckError("无法加载工作区配置，请重试。");
         setMemberAuthCheckStatus("error");
         return;
       }
@@ -1050,7 +1050,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
         }
       } catch {
         if (!cancelled && epoch === sessionEpochRef.current) {
-          setMemberAuthCheckError("Could not check your sign-in status.");
+          setMemberAuthCheckError("无法检查登录状态，请重试。");
           setMemberAuthCheckStatus("error");
         }
       }
@@ -1131,7 +1131,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
     }
     // Failed config fetches return the single-org fallback, not a deployment decision.
     if (runtimeConfig === EMPTY_RUNTIME_CONFIG) {
-      setAuthError("Could not load workspace configuration. Refresh to try again.");
+      setAuthError("无法加载工作区配置，请刷新后重试。");
       setDesktopRedirectAttempted(true);
       return;
     }
@@ -1150,7 +1150,7 @@ export function DenFlowProvider({ children }: { children: ReactNode }) {
       void completeDesktopAuthHandoff();
     }).catch((error: unknown) => {
       if (!cancelled && epoch === sessionEpochRef.current) {
-        setAuthError(error instanceof Error ? error.message : "Could not load your organizations.");
+        setAuthError(error instanceof Error ? error.message : "无法加载组织，请重试。");
         setDesktopRedirectAttempted(true);
       }
     });

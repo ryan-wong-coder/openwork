@@ -31,7 +31,7 @@ function totalCost(rows: GatewayUsageTotal[]) {
 }
 
 function shareLabel(row: GatewayUsageTotal, total: number) {
-  return total > 0 ? `${Math.round((row.costMicroUsd / total) * 100)}% of spend` : "No recorded cost";
+  return total > 0 ? `占消费的 ${Math.round((row.costMicroUsd / total) * 100)}%` : "无已记录费用";
 }
 
 function BreakdownCard({ title, groupBy, orgId, testId, renderLead, href }: {
@@ -50,13 +50,13 @@ function BreakdownCard({ title, groupBy, orgId, testId, renderLead, href }: {
   return (
     <section aria-label={title} data-testid={testId} className="flex min-w-0 flex-col rounded-[12px] border border-gray-100 bg-white">
       <h3 className="border-b border-gray-100 px-4 py-3 text-[14px] font-medium text-gray-950">{title}</h3>
-      {query.isPending ? <p role="status" className="px-4 py-6 text-[13px] text-gray-500">Loading…</p>
+      {query.isPending ? <p role="status" className="px-4 py-6 text-[13px] text-gray-500">正在加载…</p>
         : query.isError ? (
           <div className="flex flex-col items-start gap-3 px-4 py-4">
             <DenNotice tone="error" message={query.error.message} />
-            <DenButton size="sm" variant="secondary" onClick={() => void query.refetch()}>Retry</DenButton>
+            <DenButton size="sm" variant="secondary" onClick={() => void query.refetch()}>重试</DenButton>
           </div>
-        ) : rows.length === 0 ? <p role="status" className="px-4 py-6 text-[13px] text-gray-500">No requests in the last 31 days.</p>
+        ) : rows.length === 0 ? <p role="status" className="px-4 py-6 text-[13px] text-gray-500">最近 31 天没有请求。</p>
           : (
             <ul className="divide-y divide-gray-100">
               {rows.slice(0, VISIBLE_ROWS).map((row) => {
@@ -69,7 +69,7 @@ function BreakdownCard({ title, groupBy, orgId, testId, renderLead, href }: {
                       <span className="text-[11px] text-gray-500">{shareLabel(row, total)}</span>
                     </span>
                     <span className="w-20 shrink-0 text-right text-[13px] font-medium tabular-nums text-gray-950">
-                      {row.unpriced && row.costMicroUsd === 0 ? "Unknown" : formatUsageCost(row.costMicroUsd)}
+                      {row.unpriced && row.costMicroUsd === 0 ? "未知" : formatUsageCost(row.costMicroUsd)}
                     </span>
                   </>
                 );
@@ -85,7 +85,7 @@ function BreakdownCard({ title, groupBy, orgId, testId, renderLead, href }: {
           )}
       {hidden.length > 0 ? (
         <p className="border-t border-gray-100 px-4 py-3 text-[12px] text-gray-500">
-          {hidden.length} more · {formatUsageCost(totalCost(hidden))}
+          {hidden.length} 项更多内容 · {formatUsageCost(totalCost(hidden))}
         </p>
       ) : null}
     </section>
@@ -96,7 +96,7 @@ export function GatewaySpendBreakdown({ orgId, orgSlug }: { orgId: string; orgSl
   return (
     <div className="mb-10 grid gap-4 lg:grid-cols-2" data-testid="gateway-spend-breakdown">
       <BreakdownCard
-        title="Who spends it"
+        title="费用来源人员"
         groupBy="person"
         orgId={orgId}
         testId="gateway-spend-people"
@@ -106,7 +106,7 @@ export function GatewaySpendBreakdown({ orgId, orgSlug }: { orgId: string; orgSl
         )}
       />
       <BreakdownCard
-        title="Models people use"
+        title="成员使用的模型"
         groupBy="model"
         orgId={orgId}
         testId="gateway-spend-models"

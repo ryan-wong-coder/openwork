@@ -15,13 +15,13 @@ export function useMcpRedirect(oauthQuery: string): McpRedirectDescription | nul
 export function mcpIdentityFacts(client: McpClient, redirect: McpRedirectDescription | null): { app: SetupFact; returnsTo: SetupFact } {
   const domain = mcpCimdDomain(client.clientId);
   return {
-    app: { label: "App", value: (
+    app: { label: "应用", value: (
       <span className="flex min-w-0 flex-col items-end gap-1">
         <span className="flex min-w-0 items-center gap-2"><McpAppFact client={client} /></span>
         {domain ? <span dir="ltr" className="break-all whitespace-normal font-mono text-xs" data-testid="mcp-client-domain">{domain}</span> : null}
       </span>
     ) },
-    returnsTo: { label: "Returns to", value: redirect?.host ?? "Unknown", mono: true, testId: "mcp-redirect-host" },
+    returnsTo: { label: "返回至", value: redirect?.host ?? "未知", mono: true, testId: "mcp-redirect-host" },
   };
 }
 
@@ -32,25 +32,25 @@ export function McpUnverifiedAppWarning({ redirect, client }: { redirect: McpRed
   const knownDomain = client?.loaded && client.metadataResolved ? knownMcpCimdDomain(client.clientId) : null;
   if (knownDomain) {
     return (
-      <section aria-label="Application identity" className="flex min-w-0 flex-col gap-2" data-testid="mcp-known-app-identity">
-        <SetupLine>Application information provided by <span className="font-medium" data-testid="mcp-identity-domain">{knownDomain}</span>.</SetupLine>
-        <SetupLine>Only authorize if you started this connection and trust the app with the permissions shown.</SetupLine>
+      <section aria-label="应用身份" className="flex min-w-0 flex-col gap-2" data-testid="mcp-known-app-identity">
+        <SetupLine>应用信息提供方 <span className="font-medium" data-testid="mcp-identity-domain">{knownDomain}</span>.</SetupLine>
+        <SetupLine>仅当你发起了此连接，并信任应用使用所列权限时授权。</SetupLine>
       </section>
     );
   }
   return (
-    <section aria-label="Unverified application" className="flex min-w-0 flex-col gap-2 border-l-2 border-[var(--dls-text-secondary)] pl-3" data-testid="mcp-unverified-app-warning">
-      <SetupLine><strong className="font-semibold">Unverified application</strong></SetupLine>
+    <section aria-label="未验证的应用" className="flex min-w-0 flex-col gap-2 border-l-2 border-[var(--dls-text-secondary)] pl-3" data-testid="mcp-unverified-app-warning">
+      <SetupLine><strong className="font-semibold">未验证的应用</strong></SetupLine>
       <SetupLine>
-        OpenWork has not verified who is requesting this access. Only authorize if you started this connection and trust the app to act on your behalf with the permissions shown.
+        OpenWork 尚未验证访问请求者身份。仅当你发起了此连接，并信任应用使用所列权限代表你操作时授权。
       </SetupLine>
       {redirect ? (
         <div className="flex min-w-0 flex-col gap-1">
-          <SetupLine>Check the return host supplied by this app:</SetupLine>
+          <SetupLine>请检查应用提供的返回主机：</SetupLine>
           <span dir="ltr" className="break-all font-mono text-xs leading-5 text-[var(--dls-text-primary)]" data-testid="mcp-warning-redirect-host">{redirect.host}</span>
         </div>
       ) : (
-        <SetupLine>Return address unavailable. Cancel and restart the connection from the app you intended to use.</SetupLine>
+        <SetupLine>返回地址不可用，请取消并从原应用重新连接。</SetupLine>
       )}
     </section>
   );
@@ -67,15 +67,15 @@ export function McpReturnLine({ client, redirect, short = false }: { client: Mcp
     return (
       <p className="m-0 text-[13px] leading-5 text-[var(--setup-ink-soft)]" role="status" data-testid="mcp-loopback-warning">
         {short
-          ? "This app returns to your own computer. Only continue if you started this sign-in here just now."
-          : "This app returns to your own computer. Anything running on it could use this access, so only continue if you started this sign-in here just now."}
+          ? "此应用将返回你的计算机，仅当你刚刚在此发起登录时继续。"
+          : "此应用将返回你的计算机，其中运行的任何程序都可能使用此访问权限。仅当你刚刚在此发起登录时继续。"}
       </p>
     );
   }
   if (!client.name && redirect) {
     return (
       <p className="m-0 text-[13px] leading-5 text-[var(--setup-ink-soft)]" role="status" data-testid="mcp-unnamed-app-line">
-        This app did not share its name. Only continue if you know {redirect.host} and started this sign-in.
+        此应用未提供名称，仅在你认识以下应用时继续： {redirect.host} ，且此次登录由你发起。
       </p>
     );
   }

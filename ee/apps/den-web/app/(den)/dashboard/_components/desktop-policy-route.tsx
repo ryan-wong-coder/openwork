@@ -13,7 +13,7 @@ const LegacyEditor = dynamic(() => import("./desktop-policy-editor-screen").then
 /** Retain legacy screens for an immediate, data-preserving rollback. */
 export function DesktopPolicyRoute({ editor = false, desktopPolicyId, setupRestricted = false }: { editor?: boolean; desktopPolicyId?: string; setupRestricted?: boolean }) {
   const { orgContext, orgSlug } = useOrgDashboard();
-  if (!orgContext) return <ItemPanel><ItemRowsSkeleton label="Loading desktop settings" /></ItemPanel>;
+  if (!orgContext) return <ItemPanel><ItemRowsSkeleton label="正在加载桌面设置" /></ItemPanel>;
   if (desktopPolicyScreenRemoved(orgContext)) redirect(getMembersTeamsRoute(orgSlug));
   if (setupRestricted) redirect("/dashboard/onboarding/people");
   return editor ? <LegacyEditor desktopPolicyId={desktopPolicyId} /> : <LegacyList />;

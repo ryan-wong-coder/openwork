@@ -32,26 +32,26 @@ export async function loadGatewayMemberConnections(orgId: string, signal?: Abort
   const { response, payload } = await memberRequest("/v1/inference-providers/member-connections", {
     headers: { [ORG_SCOPE_HEADER]: orgId },
   }, signal);
-  if (!response.ok) throw new Error(getErrorMessage(payload, "Your models did not load. Try again."));
+  if (!response.ok) throw new Error(getErrorMessage(payload, "模型加载失败，请重试。"));
   const result = gatewayMemberConnectionsResponseSchema.safeParse(payload);
-  if (!result.success) throw new Error("Your models did not load. Try again.");
+  if (!result.success) throw new Error("模型加载失败，请重试。");
   return result.data.connections;
 }
 
 export async function startGatewayMemberConnection(orgId: string, row: GatewayMemberConnection, signal: AbortSignal) {
-  if (!row.hasAccess) throw new Error("You no longer have access to these models. Ask your admin.");
-  if (row.configurationRequired) throw new Error("Your admin needs to finish setting this up before you can sign in.");
+  if (!row.hasAccess) throw new Error("你已无权访问这些模型，请联系管理员。");
+  if (row.configurationRequired) throw new Error("管理员完成配置后，你才能登录。");
   const query = new URLSearchParams({ credentialSetId: row.credentialSetId });
   const { response, payload } = await memberRequest(`/v1/inference-providers/${encodeURIComponent(row.providerId)}/oauth/start?${query}`, {
     headers: { [ORG_SCOPE_HEADER]: orgId, Accept: "application/json" },
   }, signal);
-  if (!response.ok) throw new Error(getErrorMessage(payload, "Sign-in did not start. Try again, or ask your admin if it keeps happening."));
+  if (!response.ok) throw new Error(getErrorMessage(payload, "未能开始登录，请重试；若问题持续，请联系管理员。"));
   if (!payload || typeof payload !== "object" || !("authUrl" in payload) || typeof payload.authUrl !== "string") {
-    throw new Error("Sign-in did not start. Try again.");
+    throw new Error("未能开始登录，请重试。");
   }
   const url = new URL(payload.authUrl);
   if (url.username || url.password || url.hash || (url.protocol !== "https:" && !(url.protocol === "http:" && url.origin === window.location.origin))) {
-    throw new Error("Sign-in did not start. Try again.");
+    throw new Error("未能开始登录，请重试。");
   }
   return payload.authUrl;
 }
@@ -61,5 +61,5 @@ export async function disconnectGatewayMemberConnection(orgId: string, row: Gate
   const { response, payload } = await memberRequest(`/v1/inference-providers/${encodeURIComponent(row.providerId)}/oauth?${query}`, {
     method: "DELETE", headers: { [ORG_SCOPE_HEADER]: orgId },
   }, signal, 20000);
-  if (!response.ok) throw new Error(getErrorMessage(payload, "Sign out did not finish. Try again."));
+  if (!response.ok) throw new Error(getErrorMessage(payload, "退出登录未完成，请重试。"));
 }

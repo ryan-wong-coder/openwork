@@ -56,18 +56,18 @@ export default function SetupPage() {
         body: JSON.stringify({ email, code: setupCode }),
       });
       if (!response.ok) {
-        setError(getErrorMessage(payload, "Setup could not be verified. Check the administrator email and one-time setup code."));
+        setError(getErrorMessage(payload, "无法验证配置，请检查管理员邮箱与一次性配置代码。"));
         return;
       }
       const nextGrant = readString(payload, "grant");
       if (!nextGrant) {
-        setError("Setup could not be verified. Refresh and try again.");
+        setError("无法验证配置，请刷新后重试。");
         return;
       }
       setGrant(nextGrant);
       setStep("create");
     } catch (verificationError) {
-      setError(verificationError instanceof Error ? verificationError.message : "Setup could not be verified. Refresh and try again.");
+      setError(verificationError instanceof Error ? verificationError.message : "无法验证配置，请刷新后重试。");
     } finally {
       setBusy(false);
     }
@@ -82,13 +82,13 @@ export default function SetupPage() {
         method: "POST",
         body: JSON.stringify({
           email,
-          name: name.trim() || "OpenWork Administrator",
+          name: name.trim() || "OpenWork 管理员",
           password,
           bootstrapGrant: grant,
         }),
       });
       if (!response.ok) {
-        setError(getErrorMessage(payload, `Account creation failed with ${response.status}.`));
+        setError(getErrorMessage(payload, `账户创建失败（${response.status}）。`));
         return;
       }
       const token = getToken(payload);
@@ -97,7 +97,7 @@ export default function SetupPage() {
       }
       window.location.assign("/install");
     } catch (creationError) {
-      setError(creationError instanceof Error ? creationError.message : "Account creation failed. Refresh and try again.");
+      setError(creationError instanceof Error ? creationError.message : "创建账户失败，请刷新后重试。");
     } finally {
       setBusy(false);
     }
@@ -112,18 +112,18 @@ export default function SetupPage() {
         <section className="den-page flex min-h-[calc(100vh-2.5rem)] w-full items-center justify-center py-3 sm:py-4">
           <div className="den-frame mx-auto grid w-full max-w-[680px] gap-8 p-5 sm:p-8 md:p-10" data-testid="initial-admin-setup">
             <div className="grid gap-3">
-              <p className="den-eyebrow">Private deployment setup</p>
-              <h1 className="den-title-lg">{complete ? "Setup is complete" : "Set up your administrator account"}</h1>
+              <p className="den-eyebrow">私有部署配置</p>
+              <h1 className="den-title-lg">{complete ? "配置已完成" : "配置管理员账户"}</h1>
               <p className="den-copy">
                 {complete
-                  ? "This OpenWork deployment already has its first administrator. Continue with the normal sign-in flow."
-                  : "Create the first administrator for this private OpenWork deployment. Public signup remains disabled during setup."}
+                  ? "此 OpenWork 部署已有首位管理员，请使用常规流程登录。"
+                  : "为此私有 OpenWork 部署创建首位管理员，配置期间公开注册保持关闭。"}
               </p>
             </div>
 
             {status === "loading" ? (
               <div className="den-frame-inset rounded-[1.5rem] px-4 py-3 text-sm text-[var(--dls-text-secondary)]" role="status">
-                Checking setup availability...
+                正在检查配置可用性…
               </div>
             ) : complete || unavailable ? (
               <div className="grid gap-5">
@@ -132,17 +132,17 @@ export default function SetupPage() {
                     {complete ? <CheckCircle2 className="mt-0.5 h-5 w-5 text-emerald-600" /> : null}
                     <p className="m-0 leading-6">
                       {complete
-                        ? "Initial administrator setup is permanently disabled for this deployment."
-                        : "Initial administrator setup is not available. Ask the deployment operator to verify the bootstrap configuration."}
+                        ? "此部署已永久关闭初始管理员配置。"
+                        : "初始管理员配置不可用，请联系部署运维人员检查初始化配置。"}
                     </p>
                   </div>
                 </div>
-                <button type="button" className="den-button-primary" onClick={() => window.location.assign("/")}>Sign in</button>
+                <button type="button" className="den-button-primary" onClick={() => window.location.assign("/")}>登录</button>
               </div>
             ) : step === "verify" ? (
               <form className="grid gap-5" onSubmit={submitVerification}>
                 <div className="grid gap-2">
-                  <label className="den-label" htmlFor="setup-email">Administrator email</label>
+                  <label className="den-label" htmlFor="setup-email">管理员邮箱</label>
                   <input
                     id="setup-email"
                     name="email"
@@ -155,7 +155,7 @@ export default function SetupPage() {
                   />
                 </div>
                 <div className="grid gap-2">
-                  <label className="den-label" htmlFor="setup-code">One-time setup code</label>
+                  <label className="den-label" htmlFor="setup-code">一次性配置代码</label>
                   <input
                     id="setup-code"
                     name="setupCode"
@@ -167,23 +167,23 @@ export default function SetupPage() {
                     required
                   />
                   <p className="m-0 text-xs leading-5 text-[var(--dls-text-secondary)]">
-                    Use the code supplied by the deployment operator through your secret-management system. It is not sent by email.
+                    使用部署运维人员通过密钥管理系统提供的代码，此代码不会通过邮件发送。
                   </p>
                 </div>
                 {error ? <p className="m-0 text-sm font-medium text-rose-600" role="alert">{error}</p> : null}
                 <button type="submit" className="den-button-primary" disabled={busy}>
-                  {busy ? "Checking..." : "Continue"}
+                  {busy ? "正在检查…" : "继续"}
                   <ArrowRight className="h-4 w-4" />
                 </button>
               </form>
             ) : (
               <form className="grid gap-5" onSubmit={submitAccount}>
                 <div className="grid gap-2">
-                  <p className="den-eyebrow">Create your administrator account</p>
-                  <p className="den-copy">Enter your name and password. OpenWork will create the first account, sign you in, and permanently close setup.</p>
+                  <p className="den-eyebrow">创建管理员账户</p>
+                  <p className="den-copy">输入姓名与密码，OpenWork 将创建首个账户、完成登录，并永久关闭初始配置。</p>
                 </div>
                 <div className="grid gap-2">
-                  <label className="den-label" htmlFor="setup-name">Name</label>
+                  <label className="den-label" htmlFor="setup-name">名称</label>
                   <input
                     id="setup-name"
                     name="name"
@@ -196,7 +196,7 @@ export default function SetupPage() {
                   />
                 </div>
                 <div className="grid gap-2">
-                  <label className="den-label" htmlFor="setup-password">Password</label>
+                  <label className="den-label" htmlFor="setup-password">密码</label>
                   <input
                     id="setup-password"
                     name="password"
@@ -210,7 +210,7 @@ export default function SetupPage() {
                 </div>
                 {error ? <p className="m-0 text-sm font-medium text-rose-600" role="alert">{error}</p> : null}
                 <button type="submit" className="den-button-primary" disabled={busy}>
-                  {busy ? "Creating..." : "Create administrator"}
+                  {busy ? "正在创建…" : "创建管理员"}
                   <ArrowRight className="h-4 w-4" />
                 </button>
               </form>

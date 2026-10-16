@@ -26,7 +26,7 @@ export function useConnectorTarget(catalogId: string): { target: ConnectorTarget
   return useMemo(() => {
     if (catalogId === "custom") {
       if (!customUrl) return { target: null, loading: false, missing: true, failed: false };
-      return { target: { name: customName?.trim() || "MCP server", url: customUrl, description: "" }, loading: false, missing: false, failed: false };
+      return { target: { name: customName?.trim() || "MCP 服务器", url: customUrl, description: "" }, loading: false, missing: false, failed: false };
     }
     const preset = presets.data?.find((entry) => entry.presetId === catalogId);
     if (!preset && presets.error) return { target: null, loading: false, missing: false, failed: true };
@@ -63,25 +63,25 @@ export function MemberConnectorSetupScreen({ catalogId }: { catalogId: string })
   });
 
   const name = target?.name ?? "";
-  const back = { href: getLibraryAddConnectorRoute(orgSlug), label: "Add a connector" };
+  const back = { href: getLibraryAddConnectorRoute(orgSlug), label: "添加连接器" };
 
   if (missing || failed) {
     return (
       <ItemPage>
         <ItemHeader
           back={back}
-          title={failed ? "The list did not load" : "Connector not found"}
-          description={failed ? "Reload the page to try again." : "Pick it again from the list."}
+          title={failed ? "列表加载失败" : "未找到连接器"}
+          description={failed ? "请重新加载页面后重试。" : "请从列表中重新选择。"}
         />
       </ItemPage>
     );
   }
   if (!target) {
-    return <ItemPage><ItemHeader back={back} title={loading ? "Loading..." : "Add a connector"} /></ItemPage>;
+    return <ItemPage><ItemHeader back={back} title={loading ? "正在加载…" : "添加连接器"} /></ItemPage>;
   }
 
   const checks = setup.checks.map((check) => check.id === "sign-in" && setup.canSignIn
-    ? { ...check, action: <DenButton size="sm" onClick={() => void setup.startSignIn()}>{`Sign in with ${name}`}</DenButton> }
+    ? { ...check, action: <DenButton size="sm" onClick={() => void setup.startSignIn()}>{`使用 ${name} 登录`}</DenButton> }
     : check);
 
   async function cancel() {
@@ -95,23 +95,23 @@ export function MemberConnectorSetupScreen({ catalogId }: { catalogId: string })
       <ItemHeader
         back={back}
         logo={<ConnectorLogo name={name} url={target.url} size="md" />}
-        title={setup.allDone ? `${name} is ready` : `Connect ${name}`}
+        title={setup.allDone ? `${name} 已就绪` : `连接 ${name}`}
         description={setup.allDone
-          ? "Only you can use it. Share it when your team needs it too."
-          : `OpenWork checks ${name}, then you sign in. Only you can use it.`}
+          ? "仅你自己可使用，团队需要时可共享。"
+          : `OpenWork 将检查 ${name}，然后请你登录。此连接仅供你使用。`}
       />
       <SetupChecks checks={checks} />
       {setup.allDone && setup.connectionId ? (
-        <StepFooter note={`All ${checks.length} steps done`}>
+        <StepFooter note={`已完成全部 ${checks.length} 步骤`}>
           <LinkButton href={getLibraryConnectorShareRoute(orgSlug, setup.connectionId)}>
             <UserPlus className="h-4 w-4" aria-hidden />
-            Share
+            分享
           </LinkButton>
-          <LinkButton variant="primary" href={getLibraryRoute(orgSlug)}>Done</LinkButton>
+          <LinkButton variant="primary" href={getLibraryRoute(orgSlug)}>完成</LinkButton>
         </StepFooter>
       ) : (
-        <StepFooter note={`Step ${setup.stepNumber} of ${checks.length}`}>
-          <DenButton variant="secondary" loading={leaving} onClick={() => void cancel()}>Cancel</DenButton>
+        <StepFooter note={`步骤 ${setup.stepNumber} / ${checks.length}`}>
+          <DenButton variant="secondary" loading={leaving} onClick={() => void cancel()}>取消</DenButton>
         </StepFooter>
       )}
     </ItemPage>

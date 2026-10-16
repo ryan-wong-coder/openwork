@@ -38,14 +38,14 @@ export function WhatYourAiCanDo({ tools, loading, signedIn, error }: {
 }) {
   const [expanded, setExpanded] = useState(false);
   const visible = expanded ? tools : tools.slice(0, TOOLS_PREVIEW);
-  const count = tools.length === 1 ? "1 thing" : `${tools.length} things`;
+  const count = tools.length === 1 ? "1 项" : `${tools.length} 项内容`;
   return (
     <section className="flex flex-col gap-2.5" data-testid="what-your-ai-can-do">
-      <SectionTitle title="What your AI can do" meta={tools.length > 0 ? count : undefined} />
+      <SectionTitle title="你的 AI 可以做什么" meta={tools.length > 0 ? count : undefined} />
       <ItemPanel>
-        {!signedIn ? <p className="px-5 py-4 text-[13px] text-gray-500">They show up after you sign in.</p> : null}
-        {signedIn && loading ? <p className="px-5 py-4 text-[13px] text-gray-500">Reading them now...</p> : null}
-        {signedIn && error ? <p className="px-5 py-4 text-[13px] text-gray-500">OpenWork could not read them right now.</p> : null}
+        {!signedIn ? <p className="px-5 py-4 text-[13px] text-gray-500">登录后将在此显示。</p> : null}
+        {signedIn && loading ? <p className="px-5 py-4 text-[13px] text-gray-500">正在读取…</p> : null}
+        {signedIn && error ? <p className="px-5 py-4 text-[13px] text-gray-500">OpenWork 暂时无法读取，请稍后重试。</p> : null}
         {visible.map((tool) => (
           <div key={tool.name} className="px-5 py-3" data-testid="connector-tool">
             <p className="text-[14px] font-medium leading-5 text-gray-900">{toolTitle(tool)}</p>
@@ -58,7 +58,7 @@ export function WhatYourAiCanDo({ tools, loading, signedIn, error }: {
             onClick={() => setExpanded((value) => !value)}
             className="flex items-center gap-1.5 px-5 py-3 text-left text-[13px] font-medium text-gray-700 hover:text-gray-900"
           >
-            {expanded ? "Show less" : `Show all ${tools.length}`}
+            {expanded ? "收起" : `显示全部 ${tools.length} 项`}
             <ChevronDown className={`h-3.5 w-3.5 transition-transform ${expanded ? "rotate-180" : ""}`} aria-hidden />
           </button>
         ) : null}
@@ -70,7 +70,7 @@ export function WhatYourAiCanDo({ tools, loading, signedIn, error }: {
 export function ChatButton({ name }: { name: string }) {
   return (
     <DenButton icon={MessageSquare} href={connectorChatDeepLink({ connector: name, prompt: connectorChatPrompt(name) })}>
-      Chat
+      聊天
     </DenButton>
   );
 }
@@ -93,16 +93,16 @@ export function LibraryConnectorScreen({ connectionId }: { connectionId: string 
   const tools = useMcpConnectionTools(connectionId, signedIn);
   const viewerId = orgContext?.currentMember.id ?? null;
   const mine = Boolean(connection?.access) || Boolean(item && isOwnedByViewer(item, viewerId, new Set()));
-  const back = { href: getLibraryRoute(orgSlug), label: "My Library" };
+  const back = { href: getLibraryRoute(orgSlug), label: "我的资源库" };
 
   if (!connection && (usable.isLoading || library.isLoading)) {
-    return <ItemPage><ItemHeader back={back} title="Loading..." /></ItemPage>;
+    return <ItemPage><ItemHeader back={back} title="正在加载…" /></ItemPage>;
   }
   if (!connection && (usable.error || library.error)) {
-    return <ItemPage><ItemHeader back={back} title="It did not load" description="Reload the page to try again." /></ItemPage>;
+    return <ItemPage><ItemHeader back={back} title="加载失败" description="请重新加载页面后重试。" /></ItemPage>;
   }
   if (!connection) {
-    return <ItemPage><ItemHeader back={back} title="Not in your Library" description="It may have been removed, or it is no longer shared with you." /></ItemPage>;
+    return <ItemPage><ItemHeader back={back} title="不在你的资源库中" description="此项可能已移除，或已不再与你共享。" /></ItemPage>;
   }
 
   const name = connection.name;
@@ -115,7 +115,7 @@ export function LibraryConnectorScreen({ connectionId }: { connectionId: string 
   async function remove() {
     await deleteConnection.mutateAsync(connectionId);
     await queryClient.invalidateQueries({ queryKey: libraryQueryKeys.items });
-    toast({ title: `${name} is removed`, description: "Nobody can use it anymore." });
+    toast({ title: `已移除 ${name}`, description: "此项已不再可供任何人使用。" });
     router.push(getLibraryRoute(orgSlug));
   }
 
@@ -136,16 +136,16 @@ export function LibraryConnectorScreen({ connectionId }: { connectionId: string 
           <>
             <ItemMenu
               size="md"
-              label={`More for ${name}`}
+              label={`${name} 的更多操作`}
               entries={[
-                ...(connection.connectedForMe && connection.credentialMode === "per_member" ? [{ label: apiKeyStatus ? "Remove key" : "Sign out", onSelect: () => void signOut() }] : []),
+                ...(connection.connectedForMe && connection.credentialMode === "per_member" ? [{ label: apiKeyStatus ? "移除密钥" : "退出登录", onSelect: () => void signOut() }] : []),
                 ...(mine ? [removeEntry(name, remove)] : []),
               ]}
             />
             {mine ? (
               <LinkButton href={getLibraryConnectorShareRoute(orgSlug, connectionId)}>
                 <UserPlus className="h-4 w-4" aria-hidden />
-                Share
+                分享
               </LinkButton>
             ) : null}
             <ChatButton name={name} />
@@ -154,23 +154,23 @@ export function LibraryConnectorScreen({ connectionId }: { connectionId: string 
       />
       <WhatYourAiCanDo tools={tools.data?.tools ?? []} loading={tools.isLoading} signedIn={signedIn} error={Boolean(tools.error)} />
       <section className="flex flex-col gap-2.5">
-        <SectionTitle title="Details" />
+        <SectionTitle title="详情" />
         <DetailRows
           rows={[
-            { label: "Who can use it", value: who },
+            { label: "谁可以使用", value: who },
             ...(connection.authType === "none" ? [] : [{
-              label: connection.authType === "apikey" ? "Key" : "Signed in as",
+              label: connection.authType === "apikey" ? "名称" : "当前登录账户",
               value: apiKeyStatus === "saved_unverified" || apiKeyStatus === "ready"
                 ? personalApiKeyStatusLabel(apiKeyStatus)
                 : apiKeyStatus === "missing" || apiKeyStatus === "reconnect_required"
-                  ? <DenButton variant="secondary" size="xs" loading={signIn.pendingId === connectionId} onClick={() => void signIn.signIn(connection)}>{apiKeyStatus === "reconnect_required" ? "Replace key" : "Add key"}</DenButton>
+                  ? <DenButton variant="secondary" size="xs" loading={signIn.pendingId === connectionId} onClick={() => void signIn.signIn(connection)}>{apiKeyStatus === "reconnect_required" ? "替换密钥" : "添加密钥"}</DenButton>
                   : signedIn
-                    ? connection.authType === "apikey" ? "Organization key ready" : connection.externalAccountId ?? "You"
+                    ? connection.authType === "apikey" ? "组织密钥已就绪" : connection.externalAccountId ?? "你"
                     : connection.authType === "apikey"
-                      ? "Ask an admin to replace the organization key"
-                      : <DenButton variant="secondary" size="xs" loading={signIn.pendingId === connectionId} onClick={() => void signIn.signIn(connection)}>Sign in</DenButton>,
+                      ? "请联系管理员替换组织密钥"
+                      : <DenButton variant="secondary" size="xs" loading={signIn.pendingId === connectionId} onClick={() => void signIn.signIn(connection)}>登录</DenButton>,
             }]),
-            ...(added ? [{ label: "Added", value: added }] : []),
+            ...(added ? [{ label: "已添加", value: added }] : []),
           ]}
         />
       </section>

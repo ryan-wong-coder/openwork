@@ -25,7 +25,7 @@ export function useDashboardActivity() {
     queryKey: ["dashboard-activity", orgId, user?.id, member?.id, member?.permissions ?? null, enabled],
     enabled,
     queryFn: async ({ signal }) => {
-      if (!enabled || !orgId) throw new Error("Activity requires an active workspace administrator.");
+      if (!enabled || !orgId) throw new Error("查看活动需要有效的工作区管理员身份。");
       return fetchDashboardActivity({
         orgSlug,
         signal,
@@ -43,7 +43,7 @@ export function useDashboardActivity() {
               signal: controller.signal,
             });
             if (!response.ok) {
-              throw new Error(getErrorMessage(payload, `Could not load workspace activity (${response.status}).`));
+              throw new Error(getErrorMessage(payload, `无法加载工作区活动（${response.status}）。`));
             }
             return payload;
           } finally {

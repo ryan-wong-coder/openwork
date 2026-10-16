@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE } from "../../../_lib/locale";
+
 import { useState, type FormEvent, type ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronRight } from "lucide-react";
@@ -30,15 +32,15 @@ export function getAuditAccess(input: {
 
 function AuditPage({ children, action }: { children: ReactNode; action?: ReactNode }) {
   // Match ItemPage's centered column.
-  return <section aria-label="Audit logs" className="mx-auto flex w-full max-w-[896px] flex-col gap-7 px-6 py-10 text-[13px] text-[var(--dls-text-primary)] md:px-12">
-    <DenPageHeader size="compact" title="Audit logs" action={action} />{children}
+  return <section aria-label="审计日志" className="mx-auto flex w-full max-w-[896px] flex-col gap-7 px-6 py-10 text-[13px] text-[var(--dls-text-primary)] md:px-12">
+    <DenPageHeader size="compact" title="审计日志" action={action} />{children}
   </section>;
 }
 
 export function AuditLogsScreen() {
   const dashboard = useOrgDashboard();
   const access = getAuditAccess(dashboard);
-  if (access === "error") return <AuditPage><DenNotice tone="error" message="Could not verify workspace access. Try again." /><DenButton variant="secondary" onClick={() => void dashboard.refreshOrgData()}>Retry access check</DenButton></AuditPage>;
+  if (access === "error") return <AuditPage><DenNotice tone="error" message="无法验证工作区访问权限，请重试。" /><DenButton variant="secondary" onClick={() => void dashboard.refreshOrgData()}>重新检查访问权限</DenButton></AuditPage>;
   if (access === "checking") return <AuditPage><AuditSkeleton /></AuditPage>;
   if (access === "unavailable") return <AuditPage><AuditLocked unavailable /></AuditPage>;
   if (access === "locked" || !dashboard.orgContext || !dashboard.orgId) return <AuditPage><AuditLocked /></AuditPage>;
@@ -70,35 +72,35 @@ function AuditFiltersForm({ filters, members, operations, eventTypes, eventTypes
   function apply(event: FormEvent) {
     event.preventDefault();
     if ((from && !Number.isFinite(Date.parse(from))) || (to && !Number.isFinite(Date.parse(to))) || (from && to && Date.parse(from) > Date.parse(to))) {
-      setError("Choose a valid date range with the start before the end.");
+      setError("请选择有效日期范围，开始时间必须早于结束时间。");
       return;
     }
     setError(null);
     onApply({ ...draft, searchId: draft.searchId?.trim() || undefined, from: from ? new Date(from).toISOString() : undefined, to: to ? new Date(to).toISOString() : undefined });
   }
   function clear() { setDraft({}); setFrom(""); setTo(""); setError(null); onApply({}); }
-  return <form onSubmit={apply} aria-label="Filter audit operations" className="flex flex-col gap-3">
+  return <form onSubmit={apply} aria-label="筛选审计操作" className="flex flex-col gap-3">
     <div className="grid grid-cols-1 items-end gap-3 lg:grid-cols-2" data-testid="audit-primary-filters">
-      <label className="flex min-w-60 flex-1 flex-col gap-1">From (local time)<DenInput type="datetime-local" aria-label="From (local time)" title="Operation start time" value={from} onChange={(event) => setFrom(event.target.value)} aria-invalid={Boolean(error)} /></label>
-      <label className="flex min-w-60 flex-1 flex-col gap-1">To (local time)<DenInput type="datetime-local" aria-label="To (local time)" title="Operation start time" value={to} onChange={(event) => setTo(event.target.value)} aria-invalid={Boolean(error)} /></label>
-      <label className="flex min-w-56 flex-1 flex-col gap-1" aria-busy={eventTypesPending}>Event type<DenSelect aria-label="Event type" searchLabel="Search event types" searchEmptyLabel="No event types match. Try another word." disabled={eventTypesPending} value={draft.action ?? ""} onChange={(event) => setDraft({ ...draft, action: event.target.value || undefined })}>
-        <option value="">All event types</option>{actions.map((action) => <option key={action} value={action}>{auditLabel(action)}</option>)}
+      <label className="flex min-w-60 flex-1 flex-col gap-1">开始时间（本地时间）<DenInput type="datetime-local" aria-label="开始时间（本地时间）" title="操作开始时间" value={from} onChange={(event) => setFrom(event.target.value)} aria-invalid={Boolean(error)} /></label>
+      <label className="flex min-w-60 flex-1 flex-col gap-1">结束时间（本地时间）<DenInput type="datetime-local" aria-label="结束时间（本地时间）" title="操作开始时间" value={to} onChange={(event) => setTo(event.target.value)} aria-invalid={Boolean(error)} /></label>
+      <label className="flex min-w-56 flex-1 flex-col gap-1" aria-busy={eventTypesPending}>事件类型<DenSelect aria-label="事件类型" searchLabel="搜索事件类型" searchEmptyLabel="没有匹配的事件类型，请尝试其他关键词。" disabled={eventTypesPending} value={draft.action ?? ""} onChange={(event) => setDraft({ ...draft, action: event.target.value || undefined })}>
+        <option value="">所有事件类型</option>{actions.map((action) => <option key={action} value={action}>{auditLabel(action)}</option>)}
       </DenSelect></label>
-      <label className="flex min-w-56 flex-1 flex-col gap-1">Search IDs<DenInput aria-label="Search IDs" placeholder="Exact ID" title="Exact operation, event, request, or resource ID" maxLength={255} value={draft.searchId ?? ""} onChange={(event) => setDraft({ ...draft, searchId: event.target.value })} /></label>
+      <label className="flex min-w-56 flex-1 flex-col gap-1">搜索 ID<DenInput aria-label="搜索 ID" placeholder="精确 ID" title="精确的操作、事件、请求或资源 ID" maxLength={255} value={draft.searchId ?? ""} onChange={(event) => setDraft({ ...draft, searchId: event.target.value })} /></label>
     </div>
     <div className="flex flex-wrap gap-2">
-      <DenButton type="submit" variant="secondary">Apply filters</DenButton><DenButton variant="ghost" onClick={clear}>Clear filters</DenButton>
+      <DenButton type="submit" variant="secondary">应用筛选</DenButton><DenButton variant="ghost" onClick={clear}>清除筛选</DenButton>
     </div>
-    <details className="group"><summary className={auditSummaryClass}><AuditChevron />More filters</summary>
+    <details className="group"><summary className={auditSummaryClass}><AuditChevron />更多筛选</summary>
       <div className="flex flex-wrap gap-3 pb-3">
-        <label className="flex min-w-44 flex-1 flex-col gap-1">Actor<DenSelect aria-label="Actor" value={draft.actorId ?? ""} onChange={(event) => setDraft({ ...draft, actorId: event.target.value || undefined })}>
-          <option value="">All actors</option>{[...actors].map(([id, name]) => <option key={id} value={id}>{name}</option>)}
+        <label className="flex min-w-44 flex-1 flex-col gap-1">操作人<DenSelect aria-label="操作人" value={draft.actorId ?? ""} onChange={(event) => setDraft({ ...draft, actorId: event.target.value || undefined })}>
+          <option value="">所有操作人</option>{[...actors].map(([id, name]) => <option key={id} value={id}>{name}</option>)}
         </DenSelect></label>
-        <label className="flex min-w-44 flex-1 flex-col gap-1">Result<DenSelect aria-label="Result" value={draft.outcome ?? ""} onChange={(event) => setDraft({ ...draft, outcome: auditOperationOutcomeSchema.safeParse(event.target.value).data })}>
-          <option value="">All results</option>{auditOperationOutcomeSchema.options.map((outcome) => <option key={outcome} value={outcome}>{auditOutcomeLabels[outcome]}</option>)}
+        <label className="flex min-w-44 flex-1 flex-col gap-1">结果<DenSelect aria-label="结果" value={draft.outcome ?? ""} onChange={(event) => setDraft({ ...draft, outcome: auditOperationOutcomeSchema.safeParse(event.target.value).data })}>
+          <option value="">所有结果</option>{auditOperationOutcomeSchema.options.map((outcome) => <option key={outcome} value={outcome}>{auditOutcomeLabels[outcome]}</option>)}
         </DenSelect></label>
-        <label className="flex min-w-44 flex-1 flex-col gap-1">Origin<DenSelect aria-label="Origin" value={draft.origin ?? ""} onChange={(event) => setDraft({ ...draft, origin: auditOriginSchema.safeParse(event.target.value).data })}>
-          <option value="">All origins</option>{auditOriginSchema.options.map((origin) => <option key={origin} value={origin}>{auditOriginLabels[origin]}</option>)}
+        <label className="flex min-w-44 flex-1 flex-col gap-1">来源<DenSelect aria-label="来源" value={draft.origin ?? ""} onChange={(event) => setDraft({ ...draft, origin: auditOriginSchema.safeParse(event.target.value).data })}>
+          <option value="">所有来源</option>{auditOriginSchema.options.map((origin) => <option key={origin} value={origin}>{auditOriginLabels[origin]}</option>)}
         </DenSelect></label>
       </div>
     </details>
@@ -115,7 +117,7 @@ function AuditCompactOperations({ operations, scope, members, expanded, onExpand
       const open = expanded === operation.id;
       const targets = [...new Set(operation.resources.filter((resource) => resource.relationship === "target").map((resource) => auditResourceLabel(resource)))].join(", ");
       return <details key={operation.id} open={open} data-testid="audit-compact-operation">
-        <summary role="button" aria-label={`${open ? "Hide" : "View"} changes for ${auditLabel(operation.action)}`} aria-expanded={open} aria-controls={`audit-operation-${operation.id}`}
+        <summary role="button" aria-label={`${open ? "隐藏" : "查看"}${auditLabel(operation.action)}的更改`} aria-expanded={open} aria-controls={`audit-operation-${operation.id}`}
           className="cursor-pointer list-none rounded-lg hover:bg-[var(--dls-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--dls-border)] [&::-webkit-details-marker]:hidden"
           onClick={(event) => { event.preventDefault(); onExpand(open ? null : operation.id); }}>
           <ItemRow
@@ -131,15 +133,15 @@ function AuditCompactOperations({ operations, scope, members, expanded, onExpand
         </summary>
         {open ? <div id={`audit-operation-${operation.id}`} className="px-5 pb-3">
           <AuditTimeline scope={scope} operationId={operation.id} members={members} onAccessError={onAccessError} />
-          <details className="group/audit-technical"><summary className={auditTechnicalSummaryClass}><AuditChevron technical />Technical details</summary>
+          <details className="group/audit-technical"><summary className={auditTechnicalSummaryClass}><AuditChevron technical />技术详情</summary>
             <dl className="flex flex-col gap-2 break-all text-xs text-[var(--dls-text-secondary)]">
-              <div><dt>Operation</dt><dd className="font-mono">{operation.id}</dd></div>
-              <div><dt>Action</dt><dd className="font-mono">{operation.action}</dd></div>
-              <div><dt>Actor</dt><dd className="font-mono">{operation.initiatingActor.id ?? "Unknown"}</dd></div>
-              <div><dt>Scope</dt><dd className="font-mono">{operation.scope}</dd></div>
-              <div><dt>Origin</dt><dd>{auditOriginLabels[operation.origin]}</dd></div>
-              <div><dt>Origin trust</dt><dd>{operation.originTrust === "reported" ? "Reported origin" : "Authenticated"}</dd></div>
-              <div><dt>Recorded events</dt><dd>{operation.eventCount.toLocaleString()}</dd></div>
+              <div><dt>操作</dt><dd className="font-mono">{operation.id}</dd></div>
+              <div><dt>操作</dt><dd className="font-mono">{operation.action}</dd></div>
+              <div><dt>操作人</dt><dd className="font-mono">{operation.initiatingActor.id ?? "未知"}</dd></div>
+              <div><dt>范围</dt><dd className="font-mono">{operation.scope}</dd></div>
+              <div><dt>来源</dt><dd>{auditOriginLabels[operation.origin]}</dd></div>
+              <div><dt>来源可信度</dt><dd>{operation.originTrust === "reported" ? "已报告来源" : "已验证身份"}</dd></div>
+              <div><dt>已记录事件</dt><dd>{operation.eventCount.toLocaleString(DEFAULT_DEN_LOCALE)}</dd></div>
               {operation.resources.map((resource) => <div key={`${resource.type}-${resource.id}-${resource.relationship}`}><dt>{auditLabel(resource.relationship)}</dt><dd>{auditResourceLabel(resource)}<span className="block font-mono">{resource.type}: {resource.id}</span></dd></div>)}
             </dl>
           </details>
@@ -165,24 +167,24 @@ export function AuditLogsContent({ scope, members }: { scope: AuditScope; member
     <DenButton variant="secondary" disabled={refreshing} onClick={() => {
       setExpanded(null); setUsageOpen(false);
       void Promise.all([query.refetch(), eventTypes.refetch()]).then((results) => { if (results.every((result) => !result.error)) setDetailAccessError(null); });
-    }}>Retry access check</DenButton>
+    }}>重新检查访问权限</DenButton>
   </AuditLocked></AuditPage>;
-  return <AuditPage action={<DenButton variant="secondary" size="sm" disabled={refreshing} onClick={() => void client.invalidateQueries({ queryKey: auditQueryKey(scope) })}>Refresh history</DenButton>}>
+  return <AuditPage action={<DenButton variant="secondary" size="sm" disabled={refreshing} onClick={() => void client.invalidateQueries({ queryKey: auditQueryKey(scope) })}>刷新历史</DenButton>}>
     <AuditFiltersForm key={JSON.stringify(filters)} filters={filters} members={members} operations={operations} eventTypes={eventTypes.data?.eventTypes ?? []} eventTypesPending={eventTypes.isPending} onApply={applyFilters} />
     {eventTypes.isError ? <div className="flex flex-wrap items-center gap-3">
-      <DenNotice tone="error" message={eventTypes.data ? "Could not refresh event types. Showing the last verified catalog." : "Could not load event types. Try again."} />
-      <DenButton variant="secondary" size="sm" disabled={eventTypes.isFetching} onClick={() => void eventTypes.refetch()}>Retry event types</DenButton>
+      <DenNotice tone="error" message={eventTypes.data ? "无法刷新事件类型，当前显示上次验证的目录。" : "无法加载事件类型，请重试。"} />
+      <DenButton variant="secondary" size="sm" disabled={eventTypes.isFetching} onClick={() => void eventTypes.refetch()}>重新加载事件类型</DenButton>
     </div> : null}
     <div aria-busy={query.isFetching}>
       {query.isError ? <AuditReadFailure retained={Boolean(query.data)} verifiedAt={query.dataUpdatedAt} retry={() => { void (query.isFetchNextPageError ? query.fetchNextPage() : query.refetch()); }} busy={query.isFetching} /> : null}
-      {query.isPending ? <ItemPanel><ItemRowsSkeleton label="Loading audit history" rows={5} /></ItemPanel> : operations.length ? <AuditCompactOperations operations={operations} scope={scope} members={members} expanded={expanded} onExpand={setExpanded} onAccessError={setDetailAccessError} /> : !query.isError ? <div role="status" className="flex flex-col items-start gap-3 py-8" data-testid="audit-empty">
-        <p>{Object.values(filters).some(Boolean) ? "No operations match these filters." : "No retained audit operations yet. Review capture and storage for the current capture state."}</p>
-        {Object.values(filters).some(Boolean) ? <DenButton variant="secondary" size="sm" onClick={() => applyFilters({})}>Show all operations</DenButton> : null}
+      {query.isPending ? <ItemPanel><ItemRowsSkeleton label="正在加载审计历史" rows={5} /></ItemPanel> : operations.length ? <AuditCompactOperations operations={operations} scope={scope} members={members} expanded={expanded} onExpand={setExpanded} onAccessError={setDetailAccessError} /> : !query.isError ? <div role="status" className="flex flex-col items-start gap-3 py-8" data-testid="audit-empty">
+        <p>{Object.values(filters).some(Boolean) ? "没有符合筛选条件的操作。" : "尚未保留审计操作，请在“记录与存储”中查看当前状态。"}</p>
+        {Object.values(filters).some(Boolean) ? <DenButton variant="secondary" size="sm" onClick={() => applyFilters({})}>显示所有操作</DenButton> : null}
       </div> : null}
     </div>
-    {query.hasNextPage ? <div className="flex items-center justify-between gap-3"><span className="text-[var(--dls-text-secondary)]">{operations.length} operations loaded</span><DenButton variant="secondary" size="sm" disabled={query.isFetching} onClick={() => void query.fetchNextPage()}>Load more operations</DenButton></div> : null}
+    {query.hasNextPage ? <div className="flex items-center justify-between gap-3"><span className="text-[var(--dls-text-secondary)]">{operations.length} 项操作已加载</span><DenButton variant="secondary" size="sm" disabled={query.isFetching} onClick={() => void query.fetchNextPage()}>加载更多操作</DenButton></div> : null}
     <details className="group border-t border-[var(--dls-border)]" onToggle={(event) => { if (event.currentTarget.open) setUsageOpen(true); }}>
-      <summary className={auditSummaryClass}><AuditChevron />Capture and storage</summary>
+      <summary className={auditSummaryClass}><AuditChevron />记录与存储</summary>
       {usageOpen ? <AuditUsage scope={scope} onAccessError={setDetailAccessError} /> : null}
     </details>
   </AuditPage>;

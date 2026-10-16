@@ -22,9 +22,9 @@ export function firstName(name: string): string {
 export function joinNames(names: readonly string[], max = 2): string {
   if (names.length === 0) return "";
   if (names.length === 1) return names[0];
-  if (names.length <= max) return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
+  if (names.length <= max) return `${names.slice(0, -1).join(", ")}和${names[names.length - 1]}`;
   const rest = names.length - max;
-  return `${names.slice(0, max).join(", ")} and ${rest} more`;
+  return `${names.slice(0, max).join(", ")}等另外 ${rest} 项`;
 }
 
 /** Everyone the draft reaches besides the owner, counting each person once. */
@@ -44,7 +44,7 @@ export function accessPeopleIds(draft: AccessDraft, directory: Directory, ownerI
 }
 
 export function peopleLabel(count: number): string {
-  return count === 1 ? "1 person" : `${count} people`;
+  return count === 1 ? "1 人" : `${count} 人`;
 }
 
 /** Names of the people and teams in a draft, people first, without the owner. */
@@ -61,26 +61,26 @@ export function accessNames(draft: AccessDraft, directory: Directory, ownerId: s
 
 /** The status lane text for something the viewer owns. */
 export function ownedAccessStatus(draft: AccessDraft | null, directory: Directory, ownerId: string | null): string {
-  if (!draft) return "Only you";
-  if (draft.orgWide) return "Everyone";
+  if (!draft) return "仅你自己";
+  if (draft.orgWide) return "所有人";
   const names = accessNames(draft, directory, ownerId);
-  return names.length === 0 ? "Only you" : `Shared with ${joinNames(names)}`;
+  return names.length === 0 ? "仅你自己" : `已分享给${joinNames(names)}`;
 }
 
 /** Who-has-it text in Manage, where the admin is not the audience. */
 export function managedAccessStatus(draft: AccessDraft | null, directory: Directory, ownerId: string | null): string {
-  if (!draft) return "Only you";
-  if (draft.orgWide) return "Everyone";
+  if (!draft) return "仅你自己";
+  if (draft.orgWide) return "所有人";
   const names = accessNames(draft, directory, ownerId);
-  return names.length === 0 ? "Only you" : joinNames(names);
+  return names.length === 0 ? "仅你自己" : joinNames(names);
 }
 
 /** "Maya and Support will find it in My Library." */
 export function shareConsequence(draft: AccessDraft, directory: Directory, ownerId: string | null): string {
-  if (draft.orgWide) return "Everyone in the organization will find it in My Library.";
+  if (draft.orgWide) return "组织中的所有人都可在“我的资源库”中找到此项。";
   const names = accessNames(draft, directory, ownerId);
-  if (names.length === 0) return "Only you can use it.";
-  return `${joinNames(names)} will find it in My Library.`;
+  if (names.length === 0) return "仅你自己可使用。";
+  return `${joinNames(names)}可在“我的资源库”中找到它。`;
 }
 
 export function sameAccess(left: AccessDraft, right: AccessDraft): boolean {
@@ -90,26 +90,26 @@ export function sameAccess(left: AccessDraft, right: AccessDraft): boolean {
 
 /** Toast body after sharing: "6 people can use it now." */
 export function sharedToastDescription(draft: AccessDraft, org: Directory, ownerId: string | null): string {
-  if (draft.orgWide) return "Everyone in the organization can use it now.";
+  if (draft.orgWide) return "组织中的所有人现在都可使用。";
   const count = accessPeopleIds(draft, org, ownerId).length;
   const onlyTeam = draft.memberIds.filter((id) => id !== ownerId).length === 0 && draft.teamIds.length === 1
     ? org.teams.find((team) => team.id === draft.teamIds[0])?.name
     : undefined;
-  if (count === 0) return "Only you can use it now.";
-  return onlyTeam ? `${peopleLabel(count)} in ${onlyTeam} can use it now.` : `${peopleLabel(count)} can use it now.`;
+  if (count === 0) return "现在仅你自己可使用。";
+  return onlyTeam ? `${onlyTeam}中的${peopleLabel(count)}现在可以使用它。` : `${peopleLabel(count)}现在可以使用它。`;
 }
 
 /** "They get the skill, the command and HubSpot. Each person uses their own HubSpot account." */
 export function pluginShareSubtitle(plugin: Pick<DenPlugin, "skills" | "commands" | "mcps">): string {
   const parts = [
-    ...(plugin.skills.length === 1 ? ["the skill"] : plugin.skills.length > 1 ? [`${plugin.skills.length} skills`] : []),
-    ...(plugin.commands.length === 1 ? ["the command"] : plugin.commands.length > 1 ? [`${plugin.commands.length} commands`] : []),
+    ...(plugin.skills.length === 1 ? ["此技能"] : plugin.skills.length > 1 ? [`${plugin.skills.length} 项技能`] : []),
+    ...(plugin.commands.length === 1 ? ["此命令"] : plugin.commands.length > 1 ? [`${plugin.commands.length} 条命令`] : []),
     ...plugin.mcps.map((mcp) => mcp.name),
   ];
-  if (parts.length === 0) return "They get everything inside it.";
+  if (parts.length === 0) return "他们将获得其中的全部内容。";
   const connectors = plugin.mcps.map((mcp) => mcp.name);
-  const accounts = connectors.length > 0 ? ` Each person uses their own ${joinNames(connectors)} account.` : "";
-  return `They get ${joinNames(parts, parts.length)}.${accounts}`;
+  const accounts = connectors.length > 0 ? `每个人使用自己的 ${joinNames(connectors)} 账户。` : "";
+  return `他们将获得${joinNames(parts, parts.length)}。${accounts}`;
 }
 
 /** "Sales can use it now / 8 people will find it in My Library.", or null when nobody was added. */
@@ -119,12 +119,12 @@ export function accessAddedToast(previous: AccessDraft, next: AccessDraft, org: 
     memberIds: next.memberIds.filter((id) => !previous.memberIds.includes(id)),
     teamIds: next.teamIds.filter((id) => !previous.teamIds.includes(id)),
   };
-  if (added.orgWide) return { title: "Everyone can use it now", description: "They will find it in My Library." };
+  if (added.orgWide) return { title: "现在所有人都可使用", description: "他们可在“我的资源库”中找到此项。" };
   if (added.memberIds.length === 0 && added.teamIds.length === 0) return null;
   const names = accessNames(added, org, null);
   const reached = accessPeopleIds(added, org, ownerId).length;
   return {
-    title: `${joinNames(names) || "They"} can use it now`,
-    description: `${peopleLabel(reached)} will find it in My Library.`,
+    title: `${joinNames(names) || "他们"}现在可以使用它`,
+    description: `${peopleLabel(reached)}可在“我的资源库”中找到它。`,
   };
 }

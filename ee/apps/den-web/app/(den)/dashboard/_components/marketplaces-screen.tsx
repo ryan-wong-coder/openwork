@@ -58,17 +58,17 @@ export function MarketplacesScreen() {
             icon={Search}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search collections..."
+            placeholder="搜索集合…"
           />
         </div>
         {access.canManageMarketplaces ? (
           <DenButton icon={Plus} onClick={() => setCreateOpen(true)}>
-            New collection
+            新建集合
           </DenButton>
         ) : (
           <span title={permissionLockReason("marketplaces.manage")}>
-            <DenButton icon={LockKeyhole} variant="secondary" disabled aria-label={`New collection. ${permissionLockReason("marketplaces.manage")}`}>
-              New collection
+            <DenButton icon={LockKeyhole} variant="secondary" disabled aria-label={`新集合。${permissionLockReason("marketplaces.manage")}`}>
+              新建集合
             </DenButton>
           </span>
         )}
@@ -76,34 +76,34 @@ export function MarketplacesScreen() {
 
       {error ? (
         <DenNotice
-          message={error instanceof Error ? error.message : "Failed to load collections."}
+          message={error instanceof Error ? error.message : "无法加载集合，请重试。"}
           className="mb-6"
         />
       ) : null}
 
       {isLoading || integrationsLoading ? (
         <div className="rounded-2xl border border-gray-100 bg-white px-6 py-10 text-[14px] text-gray-500">
-          Loading collections…
+          正在加载集合…
         </div>
       ) : !hasAnyIntegration && marketplaces.length === 0 ? (
         <ConnectIntegrationEmptyState integrationsHref={getPluginSourcesRoute(orgSlug)} />
       ) : filtered.length === 0 ? (
         <EmptyState
-          title={marketplaces.length === 0 ? "No collections yet" : "No collections match that search"}
+          title={marketplaces.length === 0 ? "暂无集合" : "没有符合搜索条件的集合"}
           description={
             marketplaces.length === 0
-              ? "Create or connect a collection, then assign it to everyone in your org or specific users and teams."
-              : "Try a different search term or open the plugins tab."
+              ? "创建或连接集合，再分配给组织所有人或指定用户与团队。"
+              : "请尝试其他关键词，或打开插件标签。"
           }
           action={
             marketplaces.length === 0
-              ? { href: getPluginSourcesRoute(orgSlug), label: "Open Sources", icon: Cable }
+              ? { href: getPluginSourcesRoute(orgSlug), label: "开源项目", icon: Cable }
               : undefined
           }
         />
       ) : (
         <DenCatalogList
-          label={`${filtered.length} collection${filtered.length === 1 ? "" : "s"}`}
+          label={`${filtered.length} 个集合`}
           valueLabel="Plugins"
         >
           {filtered.map((marketplace) => (
@@ -115,11 +115,11 @@ export function MarketplacesScreen() {
               }
               title={marketplace.name}
               description={
-                marketplace.description ?? <span className="text-gray-400">No description yet</span>
+                marketplace.description ?? <span className="text-gray-400">暂无描述</span>
               }
               value={String(marketplace.pluginCount)}
               valueMuted={marketplace.pluginCount === 0}
-              valueCaption={`Added ${formatMarketplaceTimestamp(marketplace.createdAt)}`}
+              valueCaption={`添加于 ${formatMarketplaceTimestamp(marketplace.createdAt)}`}
             />
           ))}
         </DenCatalogList>
@@ -179,27 +179,27 @@ function CreateMarketplaceDialog({
         onClick={(event) => event.stopPropagation()}
       >
         <h2 id="create-marketplace-title" className="text-[16px] font-semibold tracking-[-0.01em] text-gray-950">
-          New collection
+          新建集合
         </h2>
         <p className="mt-1 text-[13px] leading-6 text-gray-500">
-          Create a catalog for your organization. You can add plugins and choose its audience after creation.
+          为组织创建目录，创建后可添加插件并设置受众。
         </p>
 
         <label className="mt-4 block">
-          <span className="mb-1.5 block text-[12px] font-medium text-gray-700">Name</span>
+          <span className="mb-1.5 block text-[12px] font-medium text-gray-700">名称</span>
           <DenInput
             value={name}
             onChange={(event) => setName(event.target.value)}
-            placeholder="Engineering tools"
+            placeholder="研发工具"
             autoFocus
           />
         </label>
         <label className="mt-3 block">
-          <span className="mb-1.5 block text-[12px] font-medium text-gray-700">Description (optional)</span>
+          <span className="mb-1.5 block text-[12px] font-medium text-gray-700">描述（可选）</span>
           <textarea
             value={description}
             onChange={(event) => setDescription(event.target.value)}
-            placeholder="What belongs in this collection?"
+            placeholder="此集合包含什么内容？"
             rows={2}
             className="w-full resize-none rounded-xl border border-gray-200 px-3 py-2 text-[13px] text-gray-900 outline-hidden transition placeholder:text-gray-300 focus:border-gray-400"
           />
@@ -207,17 +207,17 @@ function CreateMarketplaceDialog({
 
         {createMutation.error ? (
           <p className="mt-3 text-[12.5px] text-red-600">
-            {createMutation.error instanceof Error ? createMutation.error.message : "Failed to create collection."}
+            {createMutation.error instanceof Error ? createMutation.error.message : "创建集合失败，请重试。"}
           </p>
         ) : null}
 
         <div className="mt-5 flex items-center justify-end gap-2">
           <DenButton variant="secondary" onClick={onClose} disabled={createMutation.isPending}>
-            Cancel
+            取消
           </DenButton>
           <DenButton disabled={!trimmedName || createMutation.isPending} onClick={() => void submit()}>
             {createMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : null}
-            Create collection
+            创建集合
           </DenButton>
         </div>
       </div>
@@ -254,9 +254,9 @@ function EmptyState({
 function ConnectIntegrationEmptyState({ integrationsHref }: { integrationsHref: string }) {
   return (
     <EmptyState
-      title="Connect a source to discover collections"
-      description="Collections are created when OpenWork finds plugins in a connected repository. Assign them to everyone in your org or specific users and teams."
-      action={{ href: integrationsHref, label: "Open Sources", icon: Cable }}
+      title="连接来源以发现集合"
+      description="OpenWork 在已连接仓库中发现插件时会创建集合，可分配给组织所有人或指定用户与团队。"
+      action={{ href: integrationsHref, label: "开源项目", icon: Cable }}
     />
   );
 }

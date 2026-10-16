@@ -10,6 +10,7 @@ import {
 import { isWebDeployment } from "../../app/lib/openwork-deployment";
 import { openworkServerInfo, type OpenworkServerInfo } from "../../app/lib/desktop";
 import { isDesktopRuntime } from "../../app/utils";
+import { isLocalGatewayClient } from "../../app/lib/client-profile";
 
 export type OpenworkConnectionSource = "desktop-runtime" | "stored-settings" | "same-origin" | "gateway" | "empty";
 
@@ -100,6 +101,9 @@ export async function resolveOpenworkConnection(): Promise<ResolvedOpenworkConne
 
   const settings = readOpenworkServerSettings();
   const normalizedBaseUrl = normalizeOpenworkServerUrl(settings.urlOverride ?? "") ?? "";
+  if (isLocalGatewayClient() && normalizedBaseUrl && !isLoopbackOpenworkServerUrl(normalizedBaseUrl)) {
+    return { normalizedBaseUrl: "", resolvedToken: "", resolvedHostToken: "", hostInfo: null, source: "empty" };
+  }
   const sameOriginBaseUrl =
     !normalizedBaseUrl && !isDesktopRuntime() && isWebDeployment() && typeof window !== "undefined"
       ? normalizeOpenworkServerUrl(window.location.origin) ?? ""

@@ -31,7 +31,7 @@ import { PluginPageSkeleton } from "./plugin-skeletons";
 import { WhoCanUseIt } from "./who-can-use-it";
 
 export function pluginChatDeepLink(plugin: Pick<DenPlugin, "name">): string {
-  const params = new URLSearchParams({ prompt: `Use ${plugin.name} to help me with this: ` });
+  const params = new URLSearchParams({ prompt: `请使用 ${plugin.name} 帮我完成以下工作：` });
   return `openwork://chat?${params.toString()}`;
 }
 
@@ -50,7 +50,7 @@ export function WhatsInside({ plugin, appMcpServersEnabled = false }: { plugin: 
       title: app.name,
       description: "",
       kind: "App",
-      href: appMcpServersEnabled ? pluginChatDeepLink({ name: `the ${app.name} app from ${plugin.name}` }) : undefined,
+      href: appMcpServersEnabled ? pluginChatDeepLink({ name: `来自 ${plugin.name} 的 ${app.name} 应用` }) : undefined,
     })),
     ...plugin.skills.map((skill) => ({
       key: `skill:${skill.id}`,
@@ -76,9 +76,9 @@ export function WhatsInside({ plugin, appMcpServersEnabled = false }: { plugin: 
   ];
   return (
     <section className="flex flex-col gap-2.5" data-testid="whats-inside">
-      <SectionTitle title="What's inside" />
+      <SectionTitle title="包含的内容" />
       <ItemPanel>
-        {rows.length === 0 ? <p className="px-5 py-4 text-[13px] text-gray-500">Nothing inside yet.</p> : null}
+        {rows.length === 0 ? <p className="px-5 py-4 text-[13px] text-gray-500">暂无内容。</p> : null}
         {rows.map((row) => (
           <ItemRow compact key={row.key} logo={row.logo} title={row.title} description={row.description || undefined} href={"href" in row && typeof row.href === "string" ? row.href : undefined} action={<span className="text-[12px] text-gray-500">{row.kind}</span>} />
         ))}
@@ -96,7 +96,7 @@ export function AppMcpServers({ plugin }: { plugin: DenPlugin }) {
   if (plugin.authoredApps.length === 0 || orgContext?.capabilities.appMcpServers !== true) return null;
   return (
     <section className="flex flex-col gap-2.5" data-testid="app-mcp-servers">
-      <SectionTitle title="Use in another app" />
+      <SectionTitle title="在其他应用中使用" />
       {plugin.authoredApps.map((app) => (
         <McpConnectionAppSetup
           key={app.id}
@@ -114,7 +114,7 @@ function useArchivePlugin() {
   const queryClient = useQueryClient();
   return async (pluginId: string) => {
     const { response, payload } = await requestJson(`/v1/plugins/${encodeURIComponent(pluginId)}/archive`, { method: "POST", body: "{}" }, 15000);
-    if (!response.ok) throw getRequestError(payload, response, "Could not remove it.");
+    if (!response.ok) throw getRequestError(payload, response, "无法移除此项，请重试。");
     await Promise.all([
       queryClient.invalidateQueries({ queryKey: pluginQueryKeys.all }),
       queryClient.invalidateQueries({ queryKey: libraryQueryKeys.items }),
@@ -143,7 +143,7 @@ function PluginPage({ pluginId, mode, libraryItems }: { pluginId: string; mode: 
   const archive = useArchivePlugin();
   const [savingAccess, setSavingAccess] = useState(false);
   const [accessError, setAccessError] = useState<string | null>(null);
-  const back = mode === "admin" ? { href: getPluginsRoute(orgSlug), label: "Plugins" } : { href: getLibraryRoute(orgSlug), label: "My Library" };
+  const back = mode === "admin" ? { href: getPluginsRoute(orgSlug), label: "插件" } : { href: getLibraryRoute(orgSlug), label: "我的资源库" };
 
   if (plugin.isLoading) {
     return <PluginPageSkeleton back={back} mode={mode} compact />;
@@ -154,8 +154,8 @@ function PluginPage({ pluginId, mode, libraryItems }: { pluginId: string; mode: 
       <ItemPage>
         <ItemHeader
           back={back}
-          title={plugin.error ? "It did not load" : "Not found"}
-          description={plugin.error ? "Reload the page to try again." : "It may have been removed."}
+          title={plugin.error ? "加载失败" : "未找到"}
+          description={plugin.error ? "请重新加载页面后重试。" : "此项可能已被移除。"}
         />
       </ItemPage>
     );
@@ -188,7 +188,7 @@ function PluginPage({ pluginId, mode, libraryItems }: { pluginId: string; mode: 
         toast({
           ...message,
           action: {
-            label: "Undo",
+            label: "撤销",
             onClick: async () => {
               const refreshed = await access.refetch();
               if (refreshed.data) await saveAccess({ pluginId, grants: refreshed.data, next: previous, ownerId: data.createdByOrgMembershipId });
@@ -197,7 +197,7 @@ function PluginPage({ pluginId, mode, libraryItems }: { pluginId: string; mode: 
         });
       }
     } catch (error) {
-      setAccessError(error instanceof Error ? error.message : "That change did not save.");
+      setAccessError(error instanceof Error ? error.message : "更改保存失败，请重试。");
     } finally {
       setSavingAccess(false);
     }
@@ -205,7 +205,7 @@ function PluginPage({ pluginId, mode, libraryItems }: { pluginId: string; mode: 
 
   async function remove() {
     await archive(pluginId);
-    toast({ title: `${data.name} is removed`, description: "Nobody can use it anymore." });
+    toast({ title: `已移除 ${data.name}`, description: "此项已不再可供任何人使用。" });
     router.push(back.href);
   }
 
@@ -218,29 +218,29 @@ function PluginPage({ pluginId, mode, libraryItems }: { pluginId: string; mode: 
         title={data.name}
         actions={(
           <>
-            {!canManage ? <DenButton variant="secondary" icon={LockKeyhole} disabled>Manage</DenButton> : null}
+            {!canManage ? <DenButton variant="secondary" icon={LockKeyhole} disabled>管理</DenButton> : null}
             <ItemMenu
               size="md"
-              label={`More for ${data.name}`}
+              label={`${data.name} 的更多操作`}
               entries={canManage ? [
-                ...(mode === "admin" ? [{ label: "Edit contents", href: getPluginDetailsRoute(orgSlug, pluginId) }] : []),
+                ...(mode === "admin" ? [{ label: "编辑内容", href: getPluginDetailsRoute(orgSlug, pluginId) }] : []),
                 removeEntry(data.name, remove),
               ] : []}
             />
             {mode === "member" && mine ? (
               <LinkButton href={getLibraryPluginShareRoute(orgSlug, pluginId)}>
                 <UserPlus className="h-4 w-4" aria-hidden />
-                Share
+                分享
               </LinkButton>
             ) : null}
-            <DenButton icon={MessageSquare} href={pluginChatDeepLink(data)}>Chat</DenButton>
+            <DenButton icon={MessageSquare} href={pluginChatDeepLink(data)}>聊天</DenButton>
           </>
         )}
       />
 
       {mode === "admin" && orgContext && draft ? (
         <section className="flex flex-col gap-2.5">
-          <SectionTitle title="Who can use it" />
+          <SectionTitle title="谁可以使用" />
           <WhoCanUseIt
             value={draft}
             onChange={(next) => void changeAccess(next)}
@@ -249,8 +249,8 @@ function PluginPage({ pluginId, mode, libraryItems }: { pluginId: string; mode: 
             owner={creator ? { id: creator.id, name: creator.user.name || creator.user.email, isYou: creator.id === viewerId } : null}
             canShareWithEveryone={memberAccess?.canShareWithEveryone === true}
             everyoneOffDescription={draft.memberIds.filter((id) => id !== data.createdByOrgMembershipId).length === 0 && draft.teamIds.length === 0
-              ? "Off. Only you have it so far."
-              : "Off. Only the people and teams below have it."}
+              ? "已关闭，目前仅你自己可使用。"
+              : "已关闭，仅下方人员和团队拥有此权限。"}
             disabled={savingAccess}
           />
           {accessError ? <p className="text-[13px] text-red-600">{accessError}</p> : null}
@@ -260,16 +260,16 @@ function PluginPage({ pluginId, mode, libraryItems }: { pluginId: string; mode: 
       <WhatsInside plugin={data} appMcpServersEnabled={orgContext?.capabilities.appMcpServers === true} />
       <AppMcpServers plugin={data} />
 
-      {!canManage ? <p className="flex items-center gap-2 text-[13px] text-[var(--dls-text-secondary)]" data-testid="plugin-manage-locked"><LockKeyhole className="size-4 shrink-0" aria-hidden />Only a plugin manager or organization admin can edit or remove it.</p> : null}
+      {!canManage ? <p className="flex items-center gap-2 text-[13px] text-[var(--dls-text-secondary)]" data-testid="plugin-manage-locked"><LockKeyhole className="size-4 shrink-0" aria-hidden />仅插件管理员或组织管理员可编辑或移除。</p> : null}
 
       <section className="flex flex-col gap-2.5">
-        <SectionTitle title="Details" />
+        <SectionTitle title="详情" />
         <DetailRows
           rows={[
-            ...(data.description ? [{ label: "About", value: data.description, wrap: true }] : []),
-            ...(mode === "member" ? [{ label: "Who can use it", value: who }] : []),
-            { label: "Made by", value: mine ? "You" : creator?.user.name || "Your organization" },
-            ...(formatAddedDate(data.createdAt) ? [{ label: "Added", value: formatAddedDate(data.createdAt) }] : []),
+            ...(data.description ? [{ label: "关于", value: data.description, wrap: true }] : []),
+            ...(mode === "member" ? [{ label: "谁可以使用", value: who }] : []),
+            { label: "创建者", value: mine ? "你" : creator?.user.name || "你的组织" },
+            ...(formatAddedDate(data.createdAt) ? [{ label: "已添加", value: formatAddedDate(data.createdAt) }] : []),
           ]}
         />
       </section>

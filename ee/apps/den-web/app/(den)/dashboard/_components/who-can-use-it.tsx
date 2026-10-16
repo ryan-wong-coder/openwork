@@ -19,7 +19,7 @@ export function WhoCanUseIt({
   teams,
   owner,
   canShareWithEveryone,
-  everyoneOffDescription = "Off. Only you and the people below can use it.",
+  everyoneOffDescription = "已关闭。仅你和下方列出的人员可以使用。",
   disabled = false,
 }: {
   value: AccessDraft;
@@ -55,21 +55,21 @@ export function WhoCanUseIt({
     .map((team) => ({ id: team.id, name: team.name, detail: peopleLabel(team.memberIds.length) }));
 
   const everyoneDescription = value.orgWide
-    ? "On. Everyone in the organization can use it."
+    ? "已开启。组织中的所有人都可以使用。"
     : canShareWithEveryone ? everyoneOffDescription : permissionLockReason("sharing.share_org_wide");
 
   return (
     <div className="flex flex-col divide-y divide-gray-100 rounded-2xl border border-gray-100 bg-white" data-testid="who-can-use-it">
       <Row
         lead={<IconTile icon={Globe} />}
-        title="Everyone in the organization"
+        title="组织中的所有人"
         description={everyoneDescription}
         trailing={(
           <DenSwitch
             checked={value.orgWide}
             disabled={disabled || (!canShareWithEveryone && !value.orgWide)}
             onChange={(orgWide) => onChange({ ...value, orgWide })}
-            aria-label="Everyone in the organization"
+            aria-label="组织中的所有人"
             testId="access-everyone"
           />
         )}
@@ -77,9 +77,9 @@ export function WhoCanUseIt({
       {owner ? (
         <Row
           lead={<Avatar name={owner.name} owner />}
-          title={owner.isYou ? `${owner.name} (you)` : owner.name}
-          description="Can change and remove it"
-          trailing={<span className="shrink-0 text-[12px] text-gray-500">Owner</span>}
+          title={owner.isYou ? `${owner.name}（你）` : owner.name}
+          description="可更改与移除"
+          trailing={<span className="shrink-0 text-[12px] text-gray-500">所有者</span>}
           testId="access-owner"
         />
       ) : null}
@@ -91,7 +91,7 @@ export function WhoCanUseIt({
               lead={<Avatar name={member.user.name || member.user.email} />}
               title={member.user.name || member.user.email}
               description={member.user.email}
-              trailing={<RemoveButton label={`Remove ${member.user.name || member.user.email}`} disabled={disabled} onClick={() => onChange({ ...value, memberIds: value.memberIds.filter((id) => id !== member.id) })} />}
+              trailing={<RemoveButton label={`移除 ${member.user.name || member.user.email}`} disabled={disabled} onClick={() => onChange({ ...value, memberIds: value.memberIds.filter((id) => id !== member.id) })} />}
               testId="access-person"
             />
           ))}
@@ -100,8 +100,8 @@ export function WhoCanUseIt({
               key={team.id}
               lead={<IconTile icon={Users} />}
               title={team.name}
-              description={`${peopleLabel(team.memberIds.length)}, and anyone who joins later`}
-              trailing={<RemoveButton label={`Remove ${team.name}`} disabled={disabled} onClick={() => onChange({ ...value, teamIds: value.teamIds.filter((id) => id !== team.id) })} />}
+              description={`${peopleLabel(team.memberIds.length)}，以及之后加入的成员`}
+              trailing={<RemoveButton label={`移除 ${team.name}`} disabled={disabled} onClick={() => onChange({ ...value, teamIds: value.teamIds.filter((id) => id !== team.id) })} />}
               testId="access-team"
             />
           ))}

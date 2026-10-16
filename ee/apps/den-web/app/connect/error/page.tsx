@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { OAuthErrorScreen } from "./oauth-error-screen";
 
 export const metadata: Metadata = {
-  title: "Sign-in failed — OpenWork",
+  title: "登录失败 · OpenWork",
   referrer: "no-referrer",
   robots: { index: false, follow: false },
 };

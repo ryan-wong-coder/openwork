@@ -47,7 +47,7 @@ export function runtimeEnvKeyText(key: RuntimeEnvKey): string {
 
 export function RuntimeEnvKeyChip({ envKey, className }: { envKey: RuntimeEnvKey; className: string }) {
     return (
-        <span className={className} title={envKey.pending ? "The tag is assigned when the provider is created." : undefined}>
+        <span className={className} title={envKey.pending ? "标签在创建提供商时分配。" : undefined}>
             {envKey.tag ? (
                 <span className={envKey.pending ? "text-gray-400" : "text-gray-500"}>{envKey.tag}_</span>
             ) : null}
@@ -61,8 +61,8 @@ export function RuntimeEnvKeyNote({ keys }: { keys: RuntimeEnvKey[] }) {
     return (
         <p className="mt-2 text-[12px] leading-5 text-gray-500">
             {keys.some((key) => key.pending)
-                ? "Members' machines read this under a provider-specific name. The 5-character tag is assigned when the provider is created and stays fixed."
-                : "The exact name members' machines and cloud workers read for this provider. It never collides with a key someone set themselves or with another provider of the same kind."}
+                ? "成员计算机使用提供商专属名称读取此值，五字符标签在创建提供商时分配并保持不变。"
+                : "成员计算机与云端工作实例读取此提供商时使用的确切名称，不会与自行设置的密钥或同类其他提供商冲突。"}
         </p>
     );
 }

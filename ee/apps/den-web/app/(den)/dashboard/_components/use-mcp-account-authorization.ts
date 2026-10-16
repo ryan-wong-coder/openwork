@@ -84,7 +84,7 @@ export function useMcpAccountAuthorization(onConnected?: () => void) {
 
   async function connect(connectionId: string) {
     setError(null);
-    const connectionName = connections.find((connection) => connection.id === connectionId)?.name ?? "this provider";
+    const connectionName = connections.find((connection) => connection.id === connectionId)?.name ?? "此提供商";
     let authorizationTab: Window | null = null;
     try {
       authorizationTab = openMcpAuthorizationTab({ connectionId, connectionName });
@@ -106,12 +106,12 @@ export function useMcpAccountAuthorization(onConnected?: () => void) {
         return;
       }
       if (!result.authorizeUrl) {
-        throw new Error("The MCP provider did not return an authorization URL.");
+        throw new Error("MCP 提供商未返回授权地址。");
       }
       authorizationTab.location.href = safeMcpAuthorizationUrl(result.authorizeUrl);
       pollUntilConnected(connectionId, connectionName, authorizationTab);
     } catch (connectError) {
-      const message = connectError instanceof Error ? connectError.message : "Failed to connect account.";
+      const message = connectError instanceof Error ? connectError.message : "连接账户失败，请重试。";
       showMcpAuthorizationFailure(authorizationTab, {
         connectionId,
         connectionName,

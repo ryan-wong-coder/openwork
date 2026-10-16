@@ -1,6 +1,7 @@
 import type { AutomationExecutionTarget } from "@openwork/types/automations"
 
 import { isDesktopRuntime } from "@/app/lib/runtime-env"
+import { isLocalGatewayClient } from "@/app/lib/client-profile"
 import { useDesktopConfig } from "@/react-app/domains/cloud/desktop-config-provider"
 
 /**
@@ -11,7 +12,7 @@ import { useDesktopConfig } from "@/react-app/domains/cloud/desktop-config-provi
  */
 export function useAutomationDeploymentEnabled() {
   const { config, loading } = useDesktopConfig()
-  return !loading && config.automationsEnabled === true
+  return !isLocalGatewayClient() && !loading && config.automationsEnabled === true
 }
 
 /**

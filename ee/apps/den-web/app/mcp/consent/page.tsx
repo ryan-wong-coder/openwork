@@ -63,7 +63,7 @@ export default function McpConsentPage() {
   const client = useMcpClient(oauthQuery);
   const redirect = useMcpRedirect(oauthQuery);
   const story = mcpStoryCopy(client);
-  const actor = client.name ?? "This app";
+  const actor = client.name ?? "此应用";
 
   useEffect(() => {
     let cancelled = false;
@@ -88,7 +88,7 @@ export default function McpConsentPage() {
     const url = isRecord(result.payload) && typeof result.payload.url === "string" ? result.payload.url : null;
     if (!result.response.ok) {
       setBusy(null);
-      setError(describeMcpOAuthError(result.payload, accept ? `Could not authorize ${client.name ?? "this app"}. Try again.` : "Could not deny this request. Try again."));
+      setError(describeMcpOAuthError(result.payload, accept ? `无法授权 ${client.name ?? "此应用"}，请重试。` : "无法拒绝此请求，请重试。"));
       return;
     }
     if (url) {
@@ -115,22 +115,22 @@ export default function McpConsentPage() {
   );
 
   if (denied) {
-    return frame(<SetupStatus icon={<X className="size-5" strokeWidth={1.5} />} title="Nothing was authorized" line="You can close this tab." />);
+    return frame(<SetupStatus icon={<X className="size-5" strokeWidth={1.5} />} title="尚未授权任何内容" line="可以关闭此标签页。" />);
   }
 
   const identity = mcpIdentityFacts(client, redirect);
-  const appName = client.name ?? "this app";
+  const appName = client.name ?? "此应用";
 
   return frame(
     <SetupPanelBody>
-      <SetupPanelTitle>{`Allow ${appName} to use ${workspaceName ?? "your workspace"}?`}</SetupPanelTitle>
+      <SetupPanelTitle>{`允许 ${appName} 使用 ${workspaceName ?? "你的工作区"}？`}</SetupPanelTitle>
       <div data-testid="mcp-client-identity">
         <SetupFacts
           rows={[
             identity.app,
-            { label: "Workspace", value: workspaceName ?? "…" },
+            { label: "工作区", value: workspaceName ?? "…" },
             identity.returnsTo,
-            { label: "Account", value: email ?? "…" },
+            { label: "账号", value: email ?? "…" },
           ]}
         />
       </div>
@@ -140,12 +140,12 @@ export default function McpConsentPage() {
         <McpReturnLine client={client} redirect={redirect} />
         {error ? <SetupErrorLine>{error}</SetupErrorLine> : null}
         <button type="button" className="den-button-primary w-full" disabled={busy !== null} onClick={() => void decide(true)}>
-          {busy === "accept" ? "Authorizing…" : client.name ? `Authorize ${client.name}` : "Authorize this app"}
+          {busy === "accept" ? "正在授权…" : client.name ? `授权 ${client.name}` : "授权此应用"}
         </button>
         <div className="flex items-start justify-between gap-4">
           <McpTechnicalDetails scope={scope} clientId={client.clientId} redirect={redirect} />
           <SetupQuietButton onClick={() => void decide(false)} disabled={busy !== null}>
-            Deny
+            拒绝
           </SetupQuietButton>
         </div>
       </div>

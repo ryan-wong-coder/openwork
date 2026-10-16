@@ -22,16 +22,16 @@ export function TeamAdminCheckbox({ team }: { team: DenOrgTeam }) {
             try {
               await updateTeam(team.id, { grantsOrganizationAdmin: event.target.checked });
             } catch (cause) {
-              setError(cause instanceof Error ? cause.message : "Could not update team Admin access.");
+              setError(cause instanceof Error ? cause.message : "无法更新团队管理员访问权限，请重试。");
             }
           }}
         />
-        <span>Grant organisation Admin to all members of {team.name}</span>
+        <span>向以下团队的全部成员授予组织管理员权限： {team.name}</span>
       </label>
       <p className="text-[12px] text-gray-500">
-        {canManageAdminTeams ? "" : `Locked. ${permissionLockReason("teams.manage_admin")} `}
-        Admin access is inherited while a member belongs to this team; individual roles are unchanged.
-        {team.managedByScim ? " Membership is managed by your identity provider. Disabling SCIM mapping or removing its group or provider clears this grant and requires reapproval." : ""}
+        {canManageAdminTeams ? "" : `已锁定。${permissionLockReason("teams.manage_admin")}`}
+        成员属于此团队期间继承管理员权限，个人角色保持不变。
+        {team.managedByScim ? " 成员关系由身份提供商管理。禁用 SCIM 映射，或移除对应群组或提供商，将清除此授权，并需要重新批准。" : ""}
       </p>
       {error ? <DenNotice tone="error" message={error} /> : null}
     </div>

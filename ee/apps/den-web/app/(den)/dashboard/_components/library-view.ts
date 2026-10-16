@@ -4,11 +4,11 @@ import type { LibraryAccessEdge, LibraryItem } from "./library-data";
 export type LibraryFilter = "all" | "connectors" | "skills" | "plugins" | "models";
 
 export const LIBRARY_FILTERS: readonly { value: LibraryFilter; label: string }[] = [
-  { value: "all", label: "All" },
-  { value: "connectors", label: "Connectors" },
-  { value: "skills", label: "Skills" },
-  { value: "plugins", label: "Plugins" },
-  { value: "models", label: "Models" },
+  { value: "all", label: "全部" },
+  { value: "connectors", label: "连接器" },
+  { value: "skills", label: "技能" },
+  { value: "plugins", label: "插件" },
+  { value: "models", label: "模型" },
 ];
 
 export function parseLibraryFilter(value: string | null): LibraryFilter {
@@ -55,12 +55,12 @@ export function isOwnedByViewer(item: LibraryItem, viewerId: string | null, owne
 
 /** Where something the organization gave the viewer came from, in a few words. */
 export function receivedStatus(edges: readonly LibraryAccessEdge[]): string {
-  if (edges.some((edge) => edge.kind === "org_wide")) return "Everyone";
+  if (edges.some((edge) => edge.kind === "org_wide")) return "所有人";
   const teams = edges.flatMap((edge) => edge.kind === "team" ? [edge.team.name] : []);
   if (teams.length > 0) return joinNames(teams);
   const sharer = edges.find((edge) => edge.kind === "person" && edge.sharedBy);
-  if (sharer?.kind === "person" && sharer.sharedBy) return `From ${firstName(sharer.sharedBy.name)}`;
-  return "Your organization";
+  if (sharer?.kind === "person" && sharer.sharedBy) return `来自 ${firstName(sharer.sharedBy.name)}`;
+  return "你的组织";
 }
 
 export type LibraryGroups = {
@@ -98,16 +98,16 @@ export function groupLibrary(input: {
 export function libraryItemDescription(item: LibraryItem): string {
   const text = item.description?.split(/\s[—–-]\s|—/)[0]?.trim();
   if (text) return text.replace(/\.$/, "");
-  if (item.type === "connection") return "Connector";
-  if (item.type === "workflow") return "Workflow";
-  return isSingleSkill(item) ? "Skill" : "Plugin";
+  if (item.type === "connection") return "连接器";
+  if (item.type === "workflow") return "工作流";
+  return isSingleSkill(item) ? "技能" : "插件";
 }
 
 /** What a row reads as in its Kind column. */
 export function libraryKindLabel(item: LibraryItem): string {
-  if (item.type === "connection") return "Connector";
-  if (item.type === "workflow") return "Workflow";
-  return isSingleSkill(item) ? "Skill" : "Plugin";
+  if (item.type === "connection") return "连接器";
+  if (item.type === "workflow") return "工作流";
+  return isSingleSkill(item) ? "技能" : "插件";
 }
 
 /** Ready to use right now: a connector you are signed in to, any plugin, a runnable workflow. */

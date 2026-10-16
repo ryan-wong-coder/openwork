@@ -5,7 +5,7 @@ type Breadcrumb = { id: string; label: string; href?: string };
 
 export function AdminBreadcrumbs({ items }: { items: Breadcrumb[] }) {
   return (
-    <nav aria-label="Breadcrumb" data-testid="admin-breadcrumbs" className="mb-4 text-sm text-slate-600">
+    <nav aria-label="面包屑导航" data-testid="admin-breadcrumbs" className="mb-4 text-sm text-slate-600">
       <ol className="flex min-w-0 flex-wrap items-center gap-x-1 gap-y-2">
         {items.map((item, index) => (
           <li key={item.id} className="flex min-w-0 max-w-full items-center gap-1">

@@ -22,10 +22,10 @@ function PluginsEmpty({ orgSlug }: { orgSlug: string | null }) {
   return (
     <ItemPanel>
       <div className="flex flex-col items-center gap-3 px-5 py-8 text-center" data-testid="plugins-empty">
-        <h2 className="text-sm font-medium text-[var(--dls-text-primary)]">No plugins yet</h2>
-        <p className="text-[13px] text-[var(--dls-text-secondary)]">Create a plugin to share skills with your team.</p>
-        <DenButton icon={Plus} href={getNewPluginRoute(orgSlug)}>Create a plugin</DenButton>
-        <p className="text-xs text-[var(--dls-text-secondary)]">Only you can use it until you choose who gets access.</p>
+        <h2 className="text-sm font-medium text-[var(--dls-text-primary)]">暂无插件</h2>
+        <p className="text-[13px] text-[var(--dls-text-secondary)]">创建插件以向团队共享技能。</p>
+        <DenButton icon={Plus} href={getNewPluginRoute(orgSlug)}>创建插件</DenButton>
+        <p className="text-xs text-[var(--dls-text-secondary)]">分配访问权限前，仅你自己可使用。</p>
       </div>
     </ItemPanel>
   );
@@ -39,15 +39,15 @@ function PluginRow({ plugin }: { plugin: DenPluginSummary }) {
   const archive = useArchivePlugin();
   const href = getPluginRoute(orgSlug, plugin.id);
   const owner = orgContext?.members.find((member) => member.id === plugin.createdByOrgMembershipId);
-  const ownerName = owner?.user.name || owner?.user.email || "Former member";
+  const ownerName = owner?.user.name || owner?.user.email || "前成员";
   const status = orgContext && access.data
     ? managedAccessStatus(draftFromPluginGrants(access.data), orgContext, plugin.createdByOrgMembershipId)
     : "";
-  const sharing = status === "Only you" ? (plugin.createdByOrgMembershipId === orgContext?.currentMember.id ? "Only you" : `Only ${ownerName}`) : status;
+  const sharing = status === "仅你自己" ? (plugin.createdByOrgMembershipId === orgContext?.currentMember.id ? "仅你自己" : `仅 ${ownerName}`) : status;
 
   async function remove() {
     await archive.mutateAsync(plugin.id);
-    toast({ title: `${plugin.name} is removed`, description: "Nobody can use it anymore." });
+    toast({ title: `${plugin.name} 已移除`, description: "此项已不再可供任何人使用。" });
   }
 
   function prefetch() {
@@ -56,9 +56,9 @@ function PluginRow({ plugin }: { plugin: DenPluginSummary }) {
 
   return (
     <div data-plugin-row={plugin.name} data-plugin-access={sharing} onPointerEnter={prefetch} onFocus={prefetch}>
-      <ItemRow compact href={href} logo={<PluginLogo name={plugin.name} />} title={plugin.name} description={plugin.description || "Plugin"} status={status ? status === "Only you" ? "Private" : "Shared" : "Unknown"} action={<ItemMenu label={`More for ${plugin.name}`} entries={[
-        { label: "Open", href },
-        ...(status === "Only you" ? [{ label: "Share", href }] : []),
+      <ItemRow compact href={href} logo={<PluginLogo name={plugin.name} />} title={plugin.name} description={plugin.description || "插件"} status={status ? status === "仅你自己" ? "私有" : "已共享" : "未知"} action={<ItemMenu label={`${plugin.name}的更多操作`} entries={[
+        { label: "打开", href },
+        ...(status === "仅你自己" ? [{ label: "分享", href }] : []),
         removeEntry(plugin.name, remove),
       ]} />} />
     </div>
@@ -88,16 +88,16 @@ function DirectoryFilter({ label, title, value, options, counts, onChange }: {
             <Popover.Title className="px-2 pb-2 pt-1 text-[12px] font-medium text-gray-700">{title}</Popover.Title>
             <label className="flex h-9 items-center gap-2 rounded-lg border border-gray-200 px-2 focus-within:ring-2 focus-within:ring-gray-300">
               <Search className="h-4 w-4 text-gray-400" aria-hidden />
-              <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={label === "Owner" ? "Find an owner" : "Find a team"} className="min-w-0 flex-1 bg-transparent text-[13px] outline-none" />
+              <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={label === "Owner" ? "查找所有者" : "查找团队"} className="min-w-0 flex-1 bg-transparent text-[13px] outline-none" />
             </label>
             <div className="mt-1 max-h-60 overflow-y-auto">
-              <Popover.Close render={<button type="button" onClick={() => onChange(null)} className="flex w-full items-center rounded-lg px-3 py-2 text-left text-[13px] hover:bg-gray-50" />}>All {label.toLowerCase()}s</Popover.Close>
+              <Popover.Close render={<button type="button" onClick={() => onChange(null)} className="flex w-full items-center rounded-lg px-3 py-2 text-left text-[13px] hover:bg-gray-50" />}>全部 {label.toLowerCase()}s</Popover.Close>
               {matches.map((option) => (
                 <Popover.Close key={option.id} render={<button type="button" aria-label={option.name} onClick={() => onChange(option.id)} className="flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left text-[13px] hover:bg-gray-50" />}>
-                  <span className="min-w-0 flex-1 truncate">{option.name}</span>{counts ? <span className="text-[12px] tabular-nums text-gray-400" aria-label={`${counts[option.id] ?? 0} plugins`}>{counts[option.id] ?? 0}</span> : null}{value === option.id ? <Check className="h-4 w-4 shrink-0" aria-hidden /> : null}
+                  <span className="min-w-0 flex-1 truncate">{option.name}</span>{counts ? <span className="text-[12px] tabular-nums text-gray-400" aria-label={`${counts[option.id] ?? 0} 个插件`}>{counts[option.id] ?? 0}</span> : null}{value === option.id ? <Check className="h-4 w-4 shrink-0" aria-hidden /> : null}
                 </Popover.Close>
               ))}
-              {matches.length === 0 ? <p className="px-3 py-3 text-[13px] text-gray-500">No matches.</p> : null}
+              {matches.length === 0 ? <p className="px-3 py-3 text-[13px] text-gray-500">没有匹配项。</p> : null}
             </div>
           </Popover.Popup>
         </Popover.Positioner>
@@ -121,9 +121,9 @@ function DirectoryResults({ plugins, filtered }: { plugins: ReturnType<typeof us
   const viewportHeight = 544;
   const { start, end } = pluginDirectoryRange(scrollTop, viewportHeight, rowHeight, rows.length);
 
-  if (plugins.isPending) return <ItemPanel><ItemRowsSkeleton label="Loading plugins" rows={6} /></ItemPanel>;
-  if (plugins.isError && rows.length === 0) return <div role="alert" className="rounded-xl border border-gray-200 bg-white p-5 text-[13px] text-gray-700">The list did not load. <button type="button" onClick={() => void plugins.refetch()} className="font-medium underline">Try again</button></div>;
-  if (rows.length === 0) return filtered ? <div className="rounded-xl border border-gray-200 bg-white p-6 text-[13px] text-gray-600">No plugins match. Try another name, team, or owner.</div> : <PluginsEmpty orgSlug={orgSlug} />;
+  if (plugins.isPending) return <ItemPanel><ItemRowsSkeleton label="正在加载插件" rows={6} /></ItemPanel>;
+  if (plugins.isError && rows.length === 0) return <div role="alert" className="rounded-xl border border-gray-200 bg-white p-5 text-[13px] text-gray-700">列表加载失败，请重试。 <button type="button" onClick={() => void plugins.refetch()} className="font-medium underline">重试</button></div>;
+  if (rows.length === 0) return filtered ? <div className="rounded-xl border border-gray-200 bg-white p-6 text-[13px] text-gray-600">没有匹配的插件，请尝试其他名称、团队或所有者。</div> : <PluginsEmpty orgSlug={orgSlug} />;
 
   return (
     <ItemPanel className="overflow-hidden"><div className="min-w-0">
@@ -139,10 +139,10 @@ function DirectoryResults({ plugins, filtered }: { plugins: ReturnType<typeof us
             </div>
           ))}
         </div>
-        {plugins.hasNextPage ? <button type="button" onClick={() => void plugins.fetchNextPage()} disabled={plugins.isFetchingNextPage} className="h-12 w-full text-[13px] text-gray-600 hover:bg-gray-50 disabled:opacity-50">{plugins.isFetchingNextPage ? "Loading more…" : "Load more plugins"}</button> : null}
+        {plugins.hasNextPage ? <button type="button" onClick={() => void plugins.fetchNextPage()} disabled={plugins.isFetchingNextPage} className="h-12 w-full text-[13px] text-gray-600 hover:bg-gray-50 disabled:opacity-50">{plugins.isFetchingNextPage ? "正在加载更多…" : "加载更多插件"}</button> : null}
       </div>
       </div>
-      {plugins.isFetchNextPageError ? <div role="alert" className="border-t border-gray-100 px-5 py-3 text-[13px] text-red-600">More plugins did not load. Use Load more to try again.</div> : null}
+      {plugins.isFetchNextPageError ? <div role="alert" className="border-t border-gray-100 px-5 py-3 text-[13px] text-red-600">更多插件加载失败，请选择“加载更多”重试。</div> : null}
     </ItemPanel>
   );
 }
@@ -173,7 +173,7 @@ export function AdminPluginsScreen() {
   const firstPage = plugins.data?.pages[0];
   const legacyMember = orgContext?.members.find((member) => member.id === memberId);
   const empty = firstPage?.total === 0 && !q && !teamId && !memberId && !ownerId;
-  const createAction = <LinkButton variant="primary" size="sm" href={getNewPluginRoute(orgSlug)}><Plus className="h-4 w-4" aria-hidden />Create a plugin</LinkButton>;
+  const createAction = <LinkButton variant="primary" size="sm" href={getNewPluginRoute(orgSlug)}><Plus className="h-4 w-4" aria-hidden />创建插件</LinkButton>;
 
   function setFilters(next: { name: string; teamId: string | null; memberId: string | null; ownerId?: string | null }) {
     if (searchTimer.current) clearTimeout(searchTimer.current);
@@ -194,15 +194,15 @@ export function AdminPluginsScreen() {
 
   return (
     <ItemPage testId="admin-plugins">
-      <DenPageHeader size="compact" title="Plugins" />
+      <DenPageHeader size="compact" title="插件" />
       {!empty ? <div className="flex flex-wrap items-center gap-2" data-testid="plugin-directory-toolbar">
         <FilterInput value={search} onChange={setSearch} className="w-[200px] max-w-full" />
-        <DirectoryFilter label="Team" title="Plugins available to a team" counts={firstPage?.teamCounts} value={teamId} options={orgContext?.teams ?? []} onChange={(id) => setFilters({ name: search.trim(), teamId: id, memberId: null, ownerId })} />
-        <DirectoryFilter label="Owner" title="Plugins created by" counts={firstPage?.ownerCounts} value={ownerId} options={(orgContext?.members ?? []).map((member) => ({ id: member.id, name: member.user.name || member.user.email }))} onChange={(id) => setFilters({ name: search.trim(), teamId, memberId: null, ownerId: id })} />
+        <DirectoryFilter label="团队" title="团队可使用的插件" counts={firstPage?.teamCounts} value={teamId} options={orgContext?.teams ?? []} onChange={(id) => setFilters({ name: search.trim(), teamId: id, memberId: null, ownerId })} />
+        <DirectoryFilter label="所有者" title="插件创建者" counts={firstPage?.ownerCounts} value={ownerId} options={(orgContext?.members ?? []).map((member) => ({ id: member.id, name: member.user.name || member.user.email }))} onChange={(id) => setFilters({ name: search.trim(), teamId, memberId: null, ownerId: id })} />
         <span className="sm:ml-auto">{createAction}</span>
       </div> : null}
-      {search || teamId || memberId || ownerId ? <button type="button" onClick={() => { setSearch(""); setFilters({ name: "", teamId: null, memberId: null, ownerId: null }); }} className="-mt-2 inline-flex w-fit items-center gap-1 text-[12px] text-gray-600 hover:text-gray-900"><X className="h-3.5 w-3.5" aria-hidden />Clear filters</button> : null}
-      {legacyMember ? <p className="text-[13px] text-gray-600">Available to {legacyMember.user.name || legacyMember.user.email}</p> : null}
+      {search || teamId || memberId || ownerId ? <button type="button" onClick={() => { setSearch(""); setFilters({ name: "", teamId: null, memberId: null, ownerId: null }); }} className="-mt-2 inline-flex w-fit items-center gap-1 text-[12px] text-gray-600 hover:text-gray-900"><X className="h-3.5 w-3.5" aria-hidden />清除筛选</button> : null}
+      {legacyMember ? <p className="text-[13px] text-gray-600">可使用人员 {legacyMember.user.name || legacyMember.user.email}</p> : null}
       <DirectoryResults key={`${orgId}:${q}:${teamId}:${memberId}:${ownerId}`} plugins={plugins} filtered={Boolean(q || teamId || memberId || ownerId)} />
     </ItemPage>
   );

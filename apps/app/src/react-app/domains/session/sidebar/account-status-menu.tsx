@@ -26,6 +26,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { t } from "@/i18n";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 import { usePlatform } from "../../../kernel/platform";
 import { isDenSessionRestoring, useDenAuth } from "../../cloud/den-auth-provider";
 import { useDesktopRestriction } from "../../cloud/desktop-config-provider";
@@ -213,6 +214,45 @@ export type AccountStatusMenuProps = {
  * used to show in a full-width bottom status bar.
  */
 export function AccountStatusMenu(props: AccountStatusMenuProps) {
+  return isLocalGatewayClient()
+    ? <LocalClientStatusMenu {...props} />
+    : <ConnectedAccountStatusMenu {...props} />;
+}
+
+function LocalClientStatusMenu(props: AccountStatusMenuProps) {
+  const { config } = useShellConfig();
+  const [initializing, setInitializing] = useState(() => Date.now() - BOOT_STARTED_AT < INITIALIZING_MS);
+  useEffect(() => {
+    if (!initializing) return;
+    const timer = window.setTimeout(() => setInitializing(false), Math.max(0, INITIALIZING_MS - (Date.now() - BOOT_STARTED_AT)));
+    return () => window.clearTimeout(timer);
+  }, [initializing]);
+  const status = resolveRuntimeStatus({
+    clientConnected: props.clientConnected,
+    openworkServerStatus: props.openworkServerStatus,
+    initializing,
+    reloadBusy: props.reloadBusy,
+    reloadError: props.reloadError,
+  });
+
+  return (
+    <div className="flex w-full items-center gap-2 ps-2 pe-1 py-1.5" data-testid="local-client-status" data-runtime-state={status.variant}>
+      {config.statusBar && props.showConnectionStatus ? (
+        <div className="flex min-w-0 flex-1 items-center gap-2" role="status" title={status.detail ?? undefined}>
+          <StatusDot variant={status.variant} />
+          <span className="truncate text-xs text-muted-foreground">{status.label}</span>
+        </div>
+      ) : <span className="flex-1" />}
+      {props.showSettingsButton !== false ? (
+        <Button variant="ghost" size="icon-sm" onClick={props.onOpenAccountSettings} aria-label={t("status.settings")} title={t("status.settings")}>
+          <Settings className="size-4" />
+        </Button>
+      ) : null}
+    </div>
+  );
+}
+
+function ConnectedAccountStatusMenu(props: AccountStatusMenuProps) {
   const denAuth = useDenAuth();
   const platform = usePlatform();
   const navigate = useNavigate();

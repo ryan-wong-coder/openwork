@@ -163,8 +163,8 @@ export function getAwsKeysError(keys: AwsKeysInput): string | null {
   const accessKeyId = keys.accessKeyId.trim();
   const secretAccessKey = keys.secretAccessKey.trim();
   if (!accessKeyId && !secretAccessKey && !keys.sessionToken.trim()) return null;
-  if (!accessKeyId || !secretAccessKey) return "Enter both the AWS access key ID and secret access key.";
-  if (/\s/.test(accessKeyId) || /\s/.test(secretAccessKey)) return "AWS access keys cannot contain spaces.";
+  if (!accessKeyId || !secretAccessKey) return "请输入 AWS 访问密钥 ID 和私有访问密钥。";
+  if (/\s/.test(accessKeyId) || /\s/.test(secretAccessKey)) return "AWS 访问密钥不能包含空格。";
   return null;
 }
 
@@ -199,11 +199,11 @@ export function getAwsSsoError(input: AwsSsoInput): string | null {
   let url: URL | null = null;
   try { url = new URL(input.startUrl.trim()); } catch { url = null; }
   if (!url || url.protocol !== "https:" || url.search || url.hash || !/\.(?:awsapps\.com|app\.aws)$/i.test(url.hostname)) {
-    return "Enter the AWS access portal URL, for example https://d-xxxxxxxxxx.awsapps.com/start.";
+    return "输入 AWS 访问门户地址，例如 https://d-xxxxxxxxxx.awsapps.com/start。";
   }
-  if (!isAwsRegion(input.region.trim())) return "Enter the IAM Identity Center region, for example us-east-1.";
-  if (!/^\d{12}$/.test(input.accountId.trim())) return "Enter the 12-digit AWS account ID where Bedrock is enabled.";
-  if (!/^[\w+=,.@-]{1,32}$/.test(input.roleName.trim())) return "Enter the permission set name, for example BedrockInference.";
+  if (!isAwsRegion(input.region.trim())) return "请输入 IAM 身份中心区域，例如 us-east-1。";
+  if (!/^\d{12}$/.test(input.accountId.trim())) return "请输入已启用 Bedrock 的 12 位 AWS 账户 ID。";
+  if (!/^[\w+=,.@-]{1,32}$/.test(input.roleName.trim())) return "请输入权限集名称，例如 BedrockInference。";
   return null;
 }
 
@@ -375,12 +375,12 @@ export function readInferenceProvidersFromPayload(payload: unknown): DenInferenc
 // --- Labels ---
 
 export function getCredentialModeLabel(mode: InferenceProviderCredentialMode) {
-  return mode === "member" ? "Each member signs in" : "Organization key";
+  return mode === "member" ? "每位成员分别登录" : "组织密钥";
 }
 
 export function getCredentialStatusLabel(provider: Pick<DenInferenceProvider, "credentialMode" | "credentialStatus">) {
-  if (provider.credentialMode === "member") return "Members authorize individually";
-  return provider.credentialStatus === "ready" ? "Ready" : "Org credential missing";
+  if (provider.credentialMode === "member") return "成员分别授权";
+  return provider.credentialStatus === "ready" ? "已就绪" : "缺少组织凭据";
 }
 
 export function getCredentialStatusTone(
@@ -393,28 +393,28 @@ export function getCredentialStatusTone(
 export function getCredentialKindLabel(kind: InferenceProviderCredentialKind) {
   switch (kind) {
     case "api_key":
-      return "API key";
+      return "API密钥";
     case "api_key_map":
-      return "API keys (per env)";
+      return "API 密钥（按环境变量）";
     case "gcp_service_account":
-      return "Google service account";
+      return "Google 服务账户";
     case "aws_keys":
-      return "AWS keys";
+      return "AWS 密钥";
     case "oauth_google":
       return "Google OAuth";
     case "oauth_azure":
-      return "Microsoft sign-in";
+      return "Microsoft 登录";
     case "aws_sso":
-      return "AWS sign-in";
+      return "AWS 登录";
   }
 }
 
 export function getProviderStatusLabel(status: InferenceProviderStatus) {
-  return status === "active" ? "Active" : "Disabled";
+  return status === "active" ? "已启用" : "已禁用";
 }
 
 export const GATEWAY_PAGE_DESCRIPTION =
-  "Your organization's provider keys stay on the server. People pick models in the app; you decide who can use which ones.";
+  "组织提供商密钥保留在服务器上。成员在应用中选择模型，由你决定各模型的使用权限。";
 
 export type GatewayAudienceNames = {
   organization: string | null;
@@ -428,12 +428,12 @@ export function describeGatewayAccess(
   names: GatewayAudienceNames,
 ): string {
   const { allMembers, teamIds, memberIds } = accessFromGrants(provider.accessGrants);
-  if (allMembers) return names.organization ? `Everyone in ${names.organization}` : "Everyone";
+  if (allMembers) return names.organization ? `${names.organization} 中的所有人` : "所有人";
   const labels = [
-    ...teamIds.map((id) => names.teamName(id) ?? "A team"),
-    ...memberIds.map((id) => names.memberName(id) ?? "A person"),
+    ...teamIds.map((id) => names.teamName(id) ?? "某个团队"),
+    ...memberIds.map((id) => names.memberName(id) ?? "人员"),
   ];
-  return labels.length ? labels.join(", ") : "No one has access yet";
+  return labels.length ? labels.join(", ") : "尚未向任何人授予访问权限";
 }
 
 export function accessFromGrants(grants: GatewayAccessGrant[] | null | undefined): {
@@ -607,38 +607,38 @@ export function validateInferenceProviderForm(input: {
   oauthTenantId?: string;
   awsSso?: AwsSsoInput;
 }): string | null {
-  if (!input.providerId) return "Select a provider.";
+  if (!input.providerId) return "请选择提供商。";
   if (!isSupportedGatewayNpm(input.npm)) {
-    return "This provider cannot be routed through the OpenWork gateway yet. Pick another provider, or add it under Bring your Own Keys.";
+    return "此提供商暂无法通过 OpenWork 网关路由。请选择其他提供商，或在“使用自有密钥”中添加。";
   }
-  if (!input.name.trim()) return "Give the provider a name.";
-  if (input.modelIds.length === 0) return "Select at least one model.";
+  if (!input.name.trim()) return "请为提供商命名。";
+  if (input.modelIds.length === 0) return "请至少选择一个模型。";
   for (const key of getRequiredSettingKeys(input.npm, input.providerId)) {
     if (!(input.settings[key] ?? "").trim()) {
-      return `${getSettingLabel(key, input.providerId)} is required for this provider.`;
+      return `此提供商需要${getSettingLabel(key, input.providerId)}。`;
     }
   }
   if (isAmazonBedrockNpm(input.npm) && !isAwsRegion((input.settings.region ?? "").trim())) {
-    return "Enter an AWS region code such as us-east-1.";
+    return "请输入 AWS 区域代码，例如 us-east-1。";
   }
   const awsKeysError = input.awsKeys ? getAwsKeysError(input.awsKeys) : null;
   if (awsKeysError) return awsKeysError;
   if (input.credentialMode === "member") {
     const method = getMemberSignInMethod(input.providerId);
     if (!method) {
-      return "Each member signs in isn't available for this provider.";
+      return "此提供商不支持成员分别登录。";
     }
     if (method === "aws_sso") {
       const error = getAwsSsoError(input.awsSso ?? EMPTY_AWS_SSO);
       if (error) return error;
     } else {
       if (method === "microsoft" && !isMicrosoftTenantId(input.oauthTenantId ?? "")) {
-        return "Enter the Microsoft Entra directory (tenant) ID.";
+        return "请输入 Microsoft Entra 目录（租户）ID。";
       }
       if (!input.oauthClientId.trim() || (!input.oauthClientSecret.trim() && !input.hasOauthClientSecret)) {
         return method === "microsoft"
-          ? "Each member signs in requires your Entra application (client) ID and client secret."
-          : "Each member signs in requires your Google OAuth client ID and client secret.";
+          ? "成员分别登录需要 Entra 应用程序（客户端）ID 和客户端密钥。"
+          : "成员分别登录需要 Google OAuth 客户端 ID 和客户端密钥。";
       }
     }
   }
@@ -647,10 +647,10 @@ export function validateInferenceProviderForm(input: {
     try {
       const parsed: unknown = JSON.parse(json);
       if (!isRecord(parsed) || parsed.type !== "service_account") {
-        return "The service account JSON should be the key file downloaded from Google Cloud (type: service_account).";
+        return "服务账户 JSON 应为从 Google Cloud 下载的密钥文件（类型为 service_account）。";
       }
     } catch {
-      return "The service account JSON could not be parsed.";
+      return "无法解析服务账户 JSON，请检查密钥文件。";
     }
   }
   return null;
@@ -670,16 +670,16 @@ export function getReusableAwsKeyProviders(
 }
 
 export function getSettingLabel(key: string, providerId: string | null = null) {
-  if (key === "resourceName" && isMicrosoftFoundryProvider(providerId)) return "Foundry resource name";
+  if (key === "resourceName" && isMicrosoftFoundryProvider(providerId)) return "Foundry 资源名称";
   switch (key) {
     case "project":
-      return "Google Cloud project";
+      return "Google Cloud 项目";
     case "location":
-      return "Region";
+      return "区域";
     case "resourceName":
-      return "Azure resource name";
+      return "Azure 资源名称";
     case "region":
-      return "AWS region";
+      return "AWS 区域";
     default:
       return key;
   }

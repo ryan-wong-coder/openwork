@@ -1,4 +1,5 @@
 import { t } from "@/i18n";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 import type { PlatformCapabilities } from "@/app/lib/platform-capabilities";
 import { isSettingsTabAllowed, type DesktopAppRestrictionChecker } from "@/app/cloud/desktop-app-restrictions";
 import type { SettingsTab } from "@/app/types";
@@ -52,7 +53,7 @@ export function buildCommandPaletteSettingsItems(input: {
     "general",
     ...getWorkspaceSettingsTabs(),
     ...getGlobalSettingsTabs(input.developerMode, input.capabilities),
-    ...CLOUD_SETTINGS_TABS,
+    ...(isLocalGatewayClient() ? [] : CLOUD_SETTINGS_TABS),
   ] satisfies SettingsTab[]).filter((tab) => isSettingsTabAllowed({ tab, checkRestriction }));
 
   const tabItems = tabs.map((tab): PaletteItem => ({
@@ -82,7 +83,7 @@ export function buildCommandPaletteSettingsItems(input: {
   }));
 
   const advancedItems: PaletteItem[] = tabs.includes("advanced")
-    ? ADVANCED_SETTINGS_SECTIONS.map((section) => ({
+    ? ADVANCED_SETTINGS_SECTIONS.filter((section) => !isLocalGatewayClient() || (section.id !== "organization-server" && section.id !== "agent-access")).map((section) => ({
         id: `settings:advanced/${section.id}`,
         title: t(section.titleKey),
         keywords: section.keywords,

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { currentLocale } from "../../i18n";
 import type { McpStatusMap } from "../types";
 import type { ConnectionActionIntent } from "@openwork/types/connection-action-app";
 import type { Message, Part, Session, Todo } from "@opencode-ai/sdk/v2/client";
@@ -21,6 +22,24 @@ import type { ExecResult, OpencodeConfigFile, WorkspaceInfo, WorkspaceList } fro
 import type { DenResourceSnapshot } from "./den-types";
 import type { CloudImportedMarketplace, CloudImportedPlugin, CloudImportedProvider } from "../cloud/import-state";
 import { desktopFreeAccessStatusSchema } from "./inference-access";
+
+export type GatewayConfig = {
+  baseURL: string;
+  chatModel: string;
+  imageModel: string;
+  imageSize: string;
+  imageQuality: string;
+  requestTimeoutMs: number;
+  imageGenerationEnabled: boolean;
+  configured: boolean;
+  ready?: boolean;
+  readinessReason?: string;
+  apiKeyLast4: string | null;
+  refresh?: "reloaded" | "deferred";
+};
+export type GatewayModel = { id: string; name: string; kind: "chat" | "image" | "other" };
+export type GatewayConfigInput = Partial<Omit<GatewayConfig, "configured" | "apiKeyLast4" | "refresh" | "ready" | "readinessReason">> & { apiKey?: string };
+export type GatewayTestResult = { ok: boolean; model: string; latencyMs: number; message: string };
 
 const desktopFreePreferencesSchema = z.object({ enabled: z.boolean(), available: z.boolean(), canEnable: z.boolean(), refresh: z.enum(["reloaded", "deferred"]).optional() });
 export type DesktopFreePreferences = z.infer<typeof desktopFreePreferencesSchema>;
@@ -1385,11 +1404,34 @@ export class OpenworkServerError extends Error {
   details?: unknown;
 
   constructor(status: number, code: string, message: string, details?: unknown) {
-    super(message);
+    super(localizedServerMessage(message));
     this.status = status;
     this.code = code;
     this.details = details;
   }
+}
+
+const SERVER_ERROR_CHINESE: Record<string, string> = {
+  "Invalid host token": "本机服务授权已失效，请重新启动客户端后重试。",
+  "Invalid bearer token": "服务授权已失效，请重新连接本地服务。",
+  "Missing bearer token": "缺少本地服务授权，请重新启动客户端。",
+  "Unauthorized": "当前操作未获得授权。",
+  "Forbidden": "当前权限不允许执行此操作。",
+  "Not found": "找不到请求的内容。",
+  "Workspace not found": "找不到该工作区。",
+  "Session not found": "找不到该对话。",
+  "Request timed out.": "请求超时，请检查连接后重试。",
+  "Request was canceled": "请求已取消。",
+  "Failed to fetch": "无法连接本地服务，请检查服务是否正在运行。",
+  "fetch failed": "无法连接本地服务，请检查服务是否正在运行。",
+  "Unexpected server error": "本地服务发生意外错误，请稍后重试。",
+  "Server is read-only": "当前服务处于只读模式，无法保存修改。",
+  "Invalid JSON body": "请求内容格式无效，请重试。",
+  "Invalid workspace default model response": "本地服务返回的默认模型配置无效，请重新同步模型。",
+};
+
+function localizedServerMessage(message: string): string {
+  return currentLocale() === "zh" ? SERVER_ERROR_CHINESE[message] ?? message : message;
 }
 
 function buildHeaders(
@@ -1470,17 +1512,17 @@ async function fetchWithTimeout(
       } catch {
         // ignore
       }
-      reject(new Error("Request timed out."));
+      reject(new Error(localizedServerMessage("Request timed out.")));
     }, timeoutMs);
   });
 
   try {
     return await Promise.race([fetchImpl(url, initWithSignal), timeoutPromise]);
   } catch (error) {
-    const name = (error && typeof error === "object" && "name" in error ? (error as any).name : "") as string;
-    if (name === "AbortError") {
-      throw new Error("Request timed out.");
+    if (error instanceof Error && error.name === "AbortError") {
+      throw new Error(localizedServerMessage(init.signal?.aborted ? "Request was canceled" : "Request timed out."));
     }
+    if (error instanceof Error && SERVER_ERROR_CHINESE[error.message]) throw new Error(localizedServerMessage(error.message));
     throw error;
   } finally {
     if (timeoutId) clearTimeout(timeoutId);
@@ -1855,6 +1897,16 @@ export function createOpenworkServerClient(options: { baseUrl: string; token?: s
         timeoutMs: timeouts.workspaceExport,
       });
     },
+    getGatewayConfig: () => requestJson<GatewayConfig>(baseUrl, "/gateway/config", { token, hostToken, timeoutMs: timeouts.config }),
+    updateGatewayConfig: (input: GatewayConfigInput) => requestJson<GatewayConfig>(baseUrl, "/gateway/config", {
+      token, hostToken, method: "PUT", body: input, timeoutMs: 610_000,
+    }),
+    getGatewayModels: (input?: GatewayConfigInput) => requestJson<{ models: GatewayModel[]; syncedAt: number; refresh?: "reloaded" | "deferred" }>(baseUrl, "/gateway/models", {
+      token, hostToken, ...(input ? { method: "POST", body: input } : {}), timeoutMs: 610_000,
+    }),
+    testGateway: (model?: string) => requestJson<GatewayTestResult>(baseUrl, "/gateway/test", {
+      token, hostToken, method: "POST", body: { model }, timeoutMs: 610_000,
+    }),
     getConfig: (workspaceId: string) =>
       requestJson<{ opencode: Record<string, unknown>; openwork: Record<string, unknown>; updatedAt?: number | null }>(
         baseUrl,
@@ -1918,7 +1970,7 @@ export function createOpenworkServerClient(options: { baseUrl: string; token?: s
         { token, hostToken, timeoutMs: timeouts.config },
       ),
     /** `mergeProviderModels`: provider IDs whose saved models are kept, with the patch's models added. */
-    patchConfig: (workspaceId: string, payload: { opencode?: Record<string, unknown>; openwork?: Record<string, unknown>; mergeProviderModels?: string[] }) =>
+    patchConfig: (workspaceId: string, payload: { opencode?: Record<string, unknown>; openwork?: Record<string, unknown>; mergeProviderModels?: string[]; openworkReplace?: boolean; expectedOpenwork?: Record<string, unknown> }) =>
       requestJson<{ updatedAt?: number | null }>(baseUrl, `/workspace/${workspaceId}/config`, {
         token,
         hostToken,
@@ -1959,12 +2011,12 @@ export function createOpenworkServerClient(options: { baseUrl: string; token?: s
         hostToken,
       });
     },
-    writeOpencodeConfigFile: (workspaceId: string, scope: "project" | "global", content: string) =>
+    writeOpencodeConfigFile: (workspaceId: string, scope: "project" | "global", content: string, expectedContent?: string | null) =>
       requestJson<ExecResult>(baseUrl, `/workspace/${encodeURIComponent(workspaceId)}/opencode-config`, {
         token,
         hostToken,
         method: "POST",
-        body: { scope, content },
+        body: { scope, content, ...(expectedContent !== undefined ? { expectedContent } : {}) },
       }),
     listReloadEvents: (workspaceId: string, options?: { since?: number }) => {
       const query = typeof options?.since === "number" ? `?since=${options.since}` : "";

@@ -42,14 +42,14 @@ export function ToolRail({
     <aside className="w-full shrink-0 space-y-3 lg:w-[300px]">
       <DenInput
         icon={Search}
-        aria-label="Search tools"
-        placeholder={`Search ${tools.length} tools`}
+        aria-label="搜索工具"
+        placeholder={`搜索 ${tools.length} 项工具`}
         value={search}
         onChange={(event) => onSearchChange(event.target.value)}
       />
       <div className="divide-y divide-gray-100 overflow-hidden rounded-2xl border border-gray-100 bg-white">
         {filteredTools.length === 0 ? (
-          <p className="px-4 py-5 text-[12px] text-gray-500">No tools match “{search.trim()}”.</p>
+          <p className="px-4 py-5 text-[12px] text-gray-500">没有匹配的工具：“{search.trim()}”.</p>
         ) : filteredTools.map((tool) => {
           const disabled = policy.allDisabled || policy.disabledTools.includes(tool.name);
           const selected = tool.name === selectedToolName;
@@ -62,7 +62,7 @@ export function ToolRail({
                 <span className="min-w-0 flex-1">
                   <span className={`block truncate text-[13px] font-medium ${disabled ? "text-gray-400" : "text-gray-900"}`}>{toolTitle(tool)}</span>
                   <span className="mt-0.5 block truncate font-mono text-[10.5px] text-gray-400">{tool.name}</span>
-                  {disabled && policy.updatedBy ? <span className="mt-1 block text-[10px] text-gray-400">Disabled{policyAttribution}</span> : null}
+                  {disabled && policy.updatedBy ? <span className="mt-1 block text-[10px] text-gray-400">已禁用{policyAttribution}</span> : null}
                 </span>
               </button>
               <span className="shrink-0 px-3">
@@ -71,7 +71,7 @@ export function ToolRail({
                   checked={!disabled}
                   disabled={policy.allDisabled || policyUpdating}
                   onChange={(enabled) => onToggle(tool.name, enabled)}
-                  aria-label={`Toggle ${tool.name} for the organization`}
+                  aria-label={`为组织切换 ${tool.name} 的启用状态`}
                   testId={`tool-policy-switch-${tool.name}`}
                 />
               </span>

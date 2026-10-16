@@ -2,6 +2,7 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 
 import { useLocation } from "react-router";
+import { ChevronRight } from "lucide-react";
 import { ADVANCED_SETTINGS_SECTIONS } from "../advanced-sections";
 
 import { Separator } from "@/components/ui/separator";
@@ -9,6 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import type { OpencodeConnectStatus } from "@/app/types";
 import type { OpenworkServerClient, OpenworkCloudMcpHealth, OpenworkRuntimeConfigStatus, OpenworkServerStatus } from "@/app/lib/openwork-server";
 import { t } from "@/i18n";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 import { LayoutStack } from "../settings-layout";
 import type { useDenSession } from "../cloud/use-den-session";
 
@@ -59,6 +61,7 @@ export type AdvancedViewProps = {
 type AdvancedStatusTone = "ready" | "warning" | "error" | "neutral";
 
 export function AdvancedView(props: AdvancedViewProps) {
+  const localOnly = isLocalGatewayClient();
   const location = useLocation();
   const viewRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -173,10 +176,29 @@ export function AdvancedView(props: AdvancedViewProps) {
     void refreshRuntimeConfigStatus();
   }, [props.canInspectRuntimeConfig]);
 
+  const runtimeInspection = <>
+    <AdvancedRuntimeSection
+      clientStatusLabel={clientStatusLabel}
+      clientTone={clientTone}
+      clientDetailLines={clientDetailLines}
+      openworkStatusLabel={openworkStatusLabel}
+      openworkTone={openworkTone}
+      openworkDetailLines={openworkDetailLines}
+    />
+    <AdvancedRuntimeConfigSourcesSection
+      busy={props.busy}
+      canInspect={props.canInspectRuntimeConfig}
+      configStatus={configStatus}
+      configStatusBusy={configStatusBusy}
+      configStatusError={configStatusError}
+      onRefresh={refreshRuntimeConfigStatus}
+    />
+  </>;
+
   return (
     <div ref={viewRef}>
       <LayoutStack>
-        <AdvancedOrganizationServerSection
+        {!localOnly ? <AdvancedOrganizationServerSection
           authBusy={props.organizationServer.authBusy}
           baseUrl={props.organizationServer.baseUrl}
           baseUrlBusy={props.organizationServer.baseUrlBusy}
@@ -188,30 +210,17 @@ export function AdvancedView(props: AdvancedViewProps) {
           onResetBaseUrlToDefault={props.organizationServer.onResetBaseUrlToDefault}
           sessionBusy={props.organizationServer.sessionBusy}
           cloudMcpUrl={props.cloudMcpUrl}
-        />
+        /> : null}
 
-        <AdvancedRuntimeSection
-          clientStatusLabel={clientStatusLabel}
-          clientTone={clientTone}
-          clientDetailLines={clientDetailLines}
-          openworkStatusLabel={openworkStatusLabel}
-          openworkTone={openworkTone}
-          openworkDetailLines={openworkDetailLines}
-        />
-
-        <AdvancedCloudMcpDiagnosticsSection
+        {!localOnly ? <AdvancedCloudMcpDiagnosticsSection
           cloudMcpHealth={props.cloudMcpHealth}
           onRefresh={props.refreshCloudMcpHealth}
-        />
+        /> : null}
 
-        <AdvancedRuntimeConfigSourcesSection
-          busy={props.busy}
-          canInspect={props.canInspectRuntimeConfig}
-          configStatus={configStatus}
-          configStatusBusy={configStatusBusy}
-          configStatusError={configStatusError}
-          onRefresh={refreshRuntimeConfigStatus}
-        />
+        {localOnly ? <details className="group/runtime-diagnostics">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 text-sm font-medium"><ChevronRight className="size-4 transition-transform group-open/runtime-diagnostics:rotate-90" />运行时诊断</summary>
+          <div className="pt-4"><LayoutStack>{runtimeInspection}</LayoutStack></div>
+        </details> : runtimeInspection}
 
         <AdvancedEngineV2PreviewSection client={props.engineClient} />
 

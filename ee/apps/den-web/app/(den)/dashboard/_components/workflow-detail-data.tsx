@@ -23,7 +23,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 function parseWorkflowDetail(value: unknown): WorkflowLibraryDetail {
-  if (!isRecord(value) || !isRecord(value.workflow) || !Array.isArray(value.views)) throw new Error("Workflow response was incomplete.");
+  if (!isRecord(value) || !isRecord(value.workflow) || !Array.isArray(value.views)) throw new Error("工作流响应不完整，请重试。");
   const workflow = value.workflow;
   const role = workflow.role === "viewer" || workflow.role === "editor" || workflow.role === "manager" ? workflow.role : null;
   const state = workflow.state === "ready" || workflow.state === "needs_signin" || workflow.state === "needs_admin_setup" ? workflow.state : null;
@@ -32,7 +32,7 @@ function parseWorkflowDetail(value: unknown): WorkflowLibraryDetail {
   const sourceKind = isRecord(workflow.source) && (workflow.source.kind === "created" || workflow.source.kind === "installed_template") ? workflow.source.kind : null;
   const plugin = isRecord(workflow.plugin) && typeof workflow.plugin.id === "string" && typeof workflow.plugin.name === "string" ? { id: workflow.plugin.id, name: workflow.plugin.name } : null;
   if (workflow.type !== "workflow" || typeof workflow.id !== "string" || (workflow.plugin !== null && !plugin) || typeof workflow.name !== "string" || !role || !state || !resultState || !viewState || !sourceKind || typeof workflow.automationCount !== "number") {
-    throw new Error("Workflow response was incomplete.");
+    throw new Error("工作流响应不完整，请重试。");
   }
   return {
     workflow: {
@@ -50,7 +50,7 @@ function parseWorkflowDetail(value: unknown): WorkflowLibraryDetail {
 
 async function mutationJson(path: string, method: "POST" | "PUT") {
   const { response, payload } = await requestJson(path, { method }, 15_000);
-  if (!response.ok) throw new Error(getErrorMessage(payload, `Workflow action failed (${response.status}).`));
+  if (!response.ok) throw new Error(getErrorMessage(payload, `工作流操作失败（${response.status}）。`));
   return payload;
 }
 
@@ -59,7 +59,7 @@ export function useWorkflowLibraryDetail(workflowId: string) {
     queryKey: ["workflow", workflowId],
     queryFn: async () => {
       const { response, payload } = await requestJson(`/v1/workflows/${encodeURIComponent(workflowId)}`, { method: "GET" }, 15_000);
-      if (!response.ok) throw new Error(getErrorMessage(payload, `Failed to load Workflow (${response.status}).`));
+      if (!response.ok) throw new Error(getErrorMessage(payload, `无法加载工作流（${response.status}）。`));
       return parseWorkflowDetail(payload);
     },
   });

@@ -13,30 +13,30 @@ export type OAuthErrorPageState = {
 
 const KNOWN: Record<string, { title: string; description: string; advice: string[] }> = {
   invalid_redirect: {
-    title: "The app's return address isn't registered",
-    description: "OpenWork can't send you back to the app because it asked to return to an address it hasn't registered.",
+    title: "应用返回地址尚未注册",
+    description: "应用请求返回未注册的地址，OpenWork 无法将你送回应用。",
     advice: [
-      "Ask the app's developer to register the return address it uses, then connect again.",
-      "If you built the app, add the address to its OAuth client or metadata document.",
+      "请联系应用开发者注册返回地址后重新连接。",
+      "如果你是应用开发者，请将地址添加到 OAuth 客户端或元数据文档中。",
     ],
   },
   invalid_client: {
-    title: "OpenWork doesn't recognize this app",
-    description: "The app started sign-in with a client ID that OpenWork can't find or fetch.",
+    title: "OpenWork 无法识别此应用",
+    description: "应用使用了 OpenWork 无法找到或获取的客户端 ID 发起登录。",
     advice: [
-      "Go back to the app and connect again.",
-      "If it keeps happening, share the technical details with the app's developer.",
+      "请返回应用重新连接。",
+      "如果问题持续出现，请将技术详情提供给应用开发者。",
     ],
   },
   client_disabled: {
-    title: "This app has been turned off",
-    description: "An administrator disabled sign-in for this app.",
-    advice: ["Contact your OpenWork administrator if you need this app back."],
+    title: "此应用已被停用",
+    description: "管理员已禁用此应用的登录。",
+    advice: ["如需恢复此应用，请联系 OpenWork 管理员。"],
   },
   unauthorized_client: {
-    title: "This app can't use this sign-in method",
-    description: "The app is registered, but not for the kind of sign-in it asked for.",
-    advice: ["Share the technical details with the app's developer."],
+    title: "此应用无法使用此登录方式",
+    description: "应用已注册，但不支持所请求的登录类型。",
+    advice: ["请将技术详情提供给应用开发者。"],
   },
 };
 
@@ -62,16 +62,16 @@ export function describeOAuthError(params: URLSearchParams): OAuthErrorPageState
     return {
       code,
       detail,
-      title: "The sign-in request was malformed",
-      description: "The app sent a sign-in request OpenWork can't process.",
-      advice: ["Go back to the app and connect again.", "If it keeps happening, share the technical details with the app's developer."],
+      title: "登录请求格式错误",
+      description: "应用发送了 OpenWork 无法处理的登录请求。",
+      advice: ["请返回应用重新连接。", "如果问题持续出现，请将技术详情提供给应用开发者。"],
     };
   }
   return {
     code,
     detail,
-    title: "Sign-in couldn't be completed",
-    description: "OpenWork stopped this sign-in before it finished.",
-    advice: ["Go back to the app and try again.", "If it keeps happening, share the technical details with the app's developer."],
+    title: "无法完成登录",
+    description: "OpenWork 已在完成前停止此次登录。",
+    advice: ["请返回应用重试。", "如果问题持续出现，请将技术详情提供给应用开发者。"],
   };
 }

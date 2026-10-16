@@ -116,14 +116,14 @@ export function buildDashboardNavSections({
       : []),
     {
       href: orgSlug ? getLibraryRoute(orgSlug) : "#",
-      label: "My Library",
+      label: "我的资源库",
       icon: LibraryBig,
       ...(libraryNeedsSignIn > 0
-        ? { attention: `${libraryNeedsSignIn} ${libraryNeedsSignIn === 1 ? "needs" : "need"} your sign-in` }
+        ? { attention: `${libraryNeedsSignIn} 项需要你登录` }
         : {}),
     },
     ...(workflowsEnabled && orgSlug
-      ? [{ href: getAutomationsRoute(orgSlug), label: "My Automations", icon: CalendarClock }]
+      ? [{ href: getAutomationsRoute(orgSlug), label: "我的自动化", icon: CalendarClock }]
       : []),
     ...(showWeb
       ? [{ href: orgSlug ? getWebRoute(orgSlug) : "#", label: "OpenWork Web", icon: Globe }]
@@ -134,23 +134,23 @@ export function buildDashboardNavSections({
   const canOpen = (href: string) => canOpenAdminRoute(href, access);
   const manageItems: DashboardNavItem[] = orgSlug
     ? [
-        { href: getPluginsRoute(orgSlug), label: "Plugins", icon: Box },
-        { href: getMcpConnectionsRoute(orgSlug), label: "Connectors", icon: Plug, badge: "MCPs" },
-        { href: getAiGatewayRoute(orgSlug), label: "AI Gateway", icon: Sparkles },
-        ...(!desktopPolicyScreenRemoved ? [{ href: getDesktopPoliciesRoute(orgSlug), label: "Desktop policies", icon: Laptop }] : []),
+        { href: getPluginsRoute(orgSlug), label: "插件", icon: Box },
+        { href: getMcpConnectionsRoute(orgSlug), label: "连接器", icon: Plug, badge: "MCPs" },
+        { href: getAiGatewayRoute(orgSlug), label: "AI 网关", icon: Sparkles },
+        ...(!desktopPolicyScreenRemoved ? [{ href: getDesktopPoliciesRoute(orgSlug), label: "桌面策略", icon: Laptop }] : []),
         ...(workbotSettings ? [{ href: getWorkbotSettingsRoute(orgSlug), label: "Workbot", icon: MessageCircle, testId: "dashboard-nav-workbot-settings" }] : []),
-        ...(managedDeployments ? [{ href: getDeploymentsRoute(orgSlug), label: "Deployments", icon: Server }] : []),
+        ...(managedDeployments ? [{ href: getDeploymentsRoute(orgSlug), label: "部署", icon: Server }] : []),
       ].filter((item) => canOpen(item.href))
     : [];
   const observabilityItems: DashboardNavItem[] = orgSlug
     ? [
-        ...(access.canViewUsageAnalytics ? [{ href: getAnalyticsRoute(orgSlug), label: "Analytics", icon: BarChart3 }] : []),
+        ...(access.canViewUsageAnalytics ? [{ href: getAnalyticsRoute(orgSlug), label: "分析", icon: BarChart3 }] : []),
         ...(capabilities.auditLogs
           ? [{
               href: getAuditLogsRoute(orgSlug),
-              label: "Audit logs",
+              label: "审计日志",
               icon: access.canViewAuditLogs ? ScrollText : LockKeyhole,
-              ...(access.canViewAuditLogs ? {} : { badge: "Locked" }),
+              ...(access.canViewAuditLogs ? {} : { badge: "已锁定" }),
             }]
           : []),
       ]
@@ -158,42 +158,42 @@ export function buildDashboardNavSections({
   const settingsChildren: DashboardNavChild[] = orgSlug
     ? [
         ...[
-          { href: getOrgSettingsRoute(orgSlug), label: "General" },
-          { href: getDiagnosticsRoute(orgSlug), label: "Diagnostics" },
-          { href: getBillingRoute(orgSlug), label: "Billing" },
-          { href: getApiKeysRoute(orgSlug), label: "API Keys" },
+          { href: getOrgSettingsRoute(orgSlug), label: "通用" },
+          { href: getDiagnosticsRoute(orgSlug), label: "诊断" },
+          { href: getBillingRoute(orgSlug), label: "账单" },
+          { href: getApiKeysRoute(orgSlug), label: "API 密钥" },
         ].filter((item) => canOpen(item.href)),
         ...permissionsNavChildren(orgSlug, access, permissionsEnabled, teamRoles ? { membersOpen: canOpen(getMembersRoute(orgSlug)) } : null),
         ...(access.canViewSso ? [{ href: getSsoRoute(orgSlug), label: "SSO" }] : []),
         ...(access.canViewScim ? [{ href: getScimRoute(orgSlug), label: "SCIM" }] : []),
         ...(canOpen(getMarketplacesRoute(orgSlug))
-          ? [{ href: getMarketplacesRoute(orgSlug), label: "Advanced" }]
+          ? [{ href: getMarketplacesRoute(orgSlug), label: "高级" }]
           : []),
         ...(capabilities.mcpConnections && canOpen(getToolTesterRoute(orgSlug))
-          ? [{ href: getToolTesterRoute(orgSlug), label: "Tool Tester" }]
+          ? [{ href: getToolTesterRoute(orgSlug), label: "工具测试" }]
           : []),
       ]
     : [];
   const settingsGroup: DashboardNavItem | null = settingsChildren.length > 0
     ? {
         href: settingsChildren[0].href,
-        label: "Settings",
+        label: "设置",
         icon: SlidersHorizontal,
         children: settingsChildren,
       }
     : null;
   const teamItems: DashboardNavItem[] = [
     ...(orgSlug && canOpen(getMembersRoute(orgSlug))
-      ? [{ href: getMembersRoute(orgSlug), label: "Members", icon: Users }]
+      ? [{ href: getMembersRoute(orgSlug), label: "成员", icon: Users }]
       : []),
     ...(settingsGroup ? [settingsGroup] : []),
   ];
 
   return [
-    { label: "Work", items: workItems },
-    ...(manageItems.length > 0 ? [{ label: "Manage", items: manageItems }] : []),
-    ...(observabilityItems.length > 0 ? [{ label: "Observability", items: observabilityItems }] : []),
-    ...(teamItems.length > 0 ? [{ label: "Team", items: teamItems }] : []),
+    { label: "工作", items: workItems },
+    ...(manageItems.length > 0 ? [{ label: "管理", items: manageItems }] : []),
+    ...(observabilityItems.length > 0 ? [{ label: "可观测性", items: observabilityItems }] : []),
+    ...(teamItems.length > 0 ? [{ label: "团队", items: teamItems }] : []),
   ];
 }
 
@@ -207,40 +207,40 @@ export function buildDashboardNavSections({
  */
 function permissionsNavChildren(orgSlug: string, access: DenOrgAccessFlags, enabled: boolean, teamRoles: { membersOpen: boolean } | null): DashboardNavChild[] {
   const href = getPermissionsRoute(orgSlug);
-  if (enabled && teamRoles) return access.canViewPermissions && !teamRoles.membersOpen ? [{ href, label: "Roles" }] : [];
-  if (enabled) return access.canViewPermissions ? [{ href, label: "Permissions" }] : [];
-  return access.canManagePermissions ? [{ href, label: "Permissions", badge: "Enterprise" }] : [];
+  if (enabled && teamRoles) return access.canViewPermissions && !teamRoles.membersOpen ? [{ href, label: "角色" }] : [];
+  if (enabled) return access.canViewPermissions ? [{ href, label: "权限" }] : [];
+  return access.canManagePermissions ? [{ href, label: "权限", badge: "企业版" }] : [];
 }
 
 // Alias order is ranking priority in the command palette.
 const PAGE_KEYWORDS: Record<string, string[]> = {
-  Advanced: ["marketplace", "collections", "branding", "brand appearance"],
-  "AI Gateway": ["llm", "provider", "gateway", "inference", "usage"],
-  Analytics: ["usage", "stats", "workflow runs", "history"],
-  "Audit logs": ["audit", "history", "operations", "changes", "security"],
-  "API Keys": ["token", "secret"],
-  Billing: ["plan", "invoice", "payment"],
-  "Bring Your Own Keys (Legacy)": ["llm", "provider", "byok", "api key"],
-  Connectors: ["mcp", "integrations", "servers", "connect"],
-  "Desktop policies": ["policy", "mdm", "lock", "desktop"],
-  Deployments: ["aws", "self-hosted", "byoc", "install", "health", "status"],
-  Dashboards: ["boards", "apps"],
-  Diagnostics: ["health", "debug", "troubleshooting"],
-  General: ["organization", "workspace"],
+  "高级": ["Advanced","高级","marketplace","collections","branding","brand appearance"],
+  "AI 网关": ["AI Gateway","AI 网关","llm","provider","gateway","inference","usage"],
+  "分析": ["Analytics","分析","usage","stats","workflow runs","history"],
+  "审计日志": ["Audit logs","审计日志","audit","history","operations","changes","security"],
+  "API 密钥": ["API Keys","API 密钥","token","secret"],
+  "账单": ["Billing","账单","plan","invoice","payment"],
+  "Bring Your Own Keys (Legacy)": ["Bring Your Own Keys (Legacy)","llm","provider","byok","API 密钥"],
+  "连接器": ["Connectors","连接器","mcp","integrations","servers","connect"],
+  "桌面策略": ["Desktop policies","桌面策略","policy","mdm","lock","desktop"],
+  "部署": ["Deployments","部署","aws","self-hosted","byoc","install","health","status"],
+  "Dashboards": ["Dashboards","boards","apps"],
+  "诊断": ["Diagnostics","诊断","health","debug","troubleshooting"],
+  "通用": ["General","通用","organization","workspace"],
   // Agent permissions live on Members › Teams (Everyone and each team's Agents tab).
-  Members: ["people", "users", "invite", "teams", "roles", "agent permissions", "commands", "websites", "allow list", "block list", "desktop", "prompt suggestions"],
-  Models: ["llm", "provider", "byok", "api key"],
-  Permissions: ["access", "roles", "teams", "admin", "rbac"],
-  "My Automations": ["schedule", "recurring", "tasks"],
-  "My Library": ["skills", "plugins", "connections"],
-  "OpenWork Models": ["llm", "provider", "managed", "inference"],
-  "OpenWork Web": ["cloud", "sessions"],
-  Plugins: ["skills", "commands", "plugin directory"],
-  SCIM: ["provisioning", "directory", "users"],
-  Settings: ["organization", "workspace"],
-  SSO: ["single sign on", "saml", "oidc"],
-  "Tool Tester": ["tools", "test", "mcp"],
-  Workbot: ["model", "default model", "assistant", "slack", "automations"],
+  "成员": ["Members","成员","people","users","invite","teams","roles","代理权限","commands","websites","allow list","block list","desktop","prompt suggestions"],
+  "Models": ["Models","llm","provider","byok","API 密钥"],
+  "权限": ["Permissions","权限","access","roles","teams","admin","rbac"],
+  "我的自动化": ["My Automations","我的自动化","schedule","recurring","tasks"],
+  "我的资源库": ["My Library","我的资源库","skills","plugins","connections"],
+  "OpenWork 模型": ["OpenWork Models","OpenWork 模型","llm","provider","managed","inference"],
+  "OpenWork Web": ["OpenWork Web","cloud","sessions"],
+  "插件": ["Plugins","插件","skills","commands","plugin directory"],
+  "SCIM": ["SCIM","provisioning","directory","users"],
+  "设置": ["Settings","设置","organization","workspace"],
+  "SSO": ["SSO","single sign on","saml","oidc"],
+  "工具测试": ["Tool Tester","工具测试","tools","test","mcp"],
+  "Workbot": ["Workbot","model","default model","assistant","slack","automations"],
 };
 
 function keywordsFor(...labels: string[]): string[] {

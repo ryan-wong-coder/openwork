@@ -4,13 +4,13 @@ import { DenButton, buttonVariants } from "./ui/button";
 
 export function OrgLimitDialog({
   open,
-  eyebrow = "Workspace limit",
+  eyebrow = "工作区限额",
   title,
   message,
   detail,
   feedbackHref,
-  actionLabel = "Contact support",
-  closeLabel = "Close",
+  actionLabel = "联系支持",
+  closeLabel = "关闭",
   actionLoading = false,
   actionDisabled = false,
   onAction,

@@ -50,7 +50,7 @@ function parseAcceptedClaim(payload: unknown): AcceptedClaim | null {
   const slug = (organization as { slug?: unknown }).slug;
 
   return {
-    organizationName: typeof name === "string" ? name : "your workspace",
+    organizationName: typeof name === "string" ? name : "你的工作区",
     organizationSlug: typeof slug === "string" ? slug : "",
   };
 }
@@ -65,7 +65,7 @@ function getOpenworkUrl(payload: unknown): string | null {
 }
 
 function pluralize(count: number, noun: string): string {
-  return `${count} ${noun}${count === 1 ? "" : "s"}`;
+  return `${count} ${noun}`;
 }
 
 // Teammates saved with the workspace come back on accept, so invites survive a
@@ -89,12 +89,12 @@ async function inviteTeammates(inviteEmails: readonly string[]): Promise<string>
   const failed = inviteEmails.length - succeeded;
 
   if (failed === 0) {
-    return `Invited ${pluralize(succeeded, "teammate")}.`;
+    return `已邀请 ${pluralize(succeeded, "名团队成员")}。`;
   }
   if (succeeded === 0) {
-    return `Could not invite ${pluralize(failed, "teammate")}. You can invite them later from Manage Members.`;
+    return `无法邀请 ${pluralize(failed, "名团队成员")}，你可以稍后在“管理成员”中重试。`;
   }
-  return `Invited ${pluralize(succeeded, "teammate")}; ${pluralize(failed, "invite")} did not go through. You can retry from Manage Members.`;
+  return `已邀请 ${pluralize(succeeded, "名团队成员")}，${pluralize(failed, "项邀请")} 发送失败。你可以在“管理成员”中重试。`;
 }
 
 export function WorkspaceClaimScreen({
@@ -140,7 +140,7 @@ export function WorkspaceClaimScreen({
 
   async function handleClaim() {
     if (!token) {
-      setClaimError("Missing claim link.");
+      setClaimError("缺少认领链接。");
       return;
     }
 
@@ -162,8 +162,8 @@ export function WorkspaceClaimScreen({
           getErrorMessage(
             payload,
             response.status === 404
-              ? "This claim link is missing, expired, or already used."
-              : `Could not claim the workspace (${response.status}).`,
+              ? "此认领链接缺失、已过期或已被使用。"
+              : `无法认领工作区（${response.status}）。`,
           ),
         );
         return;
@@ -193,7 +193,7 @@ export function WorkspaceClaimScreen({
       // "open this link?" prompt without asking.
       setClaimedOrg(parseAcceptedClaim(payload));
     } catch (error) {
-      setClaimError(error instanceof Error ? error.message : "Could not claim the workspace.");
+      setClaimError(error instanceof Error ? error.message : "无法认领工作区，请重试。");
     } finally {
       setClaimBusy(false);
     }
@@ -219,12 +219,12 @@ export function WorkspaceClaimScreen({
     );
 
     if (!response.ok) {
-      throw new Error(getErrorMessage(payload, `Could not prepare an OpenWork link (${response.status}).`));
+      throw new Error(getErrorMessage(payload, `无法准备 OpenWork 链接（${response.status}）。`));
     }
 
     const openworkUrl = getOpenworkUrl(payload);
     if (!openworkUrl) {
-      throw new Error("No OpenWork link was returned.");
+      throw new Error("未返回 OpenWork 链接。");
     }
 
     return openworkUrl;
@@ -238,7 +238,7 @@ export function WorkspaceClaimScreen({
     try {
       window.location.assign(await createDesktopHandoff());
     } catch (error) {
-      setHandoffError(error instanceof Error ? error.message : "Could not open OpenWork.");
+      setHandoffError(error instanceof Error ? error.message : "无法打开 OpenWork，请重试。");
     } finally {
       setHandoffBusy(false);
     }
@@ -251,7 +251,7 @@ export function WorkspaceClaimScreen({
 
     try {
       if (!navigator.clipboard) {
-        throw new Error("Clipboard is not available in this browser.");
+        throw new Error("此浏览器不支持剪贴板。");
       }
 
       const openworkUrl = await createDesktopHandoff();
@@ -259,7 +259,7 @@ export function WorkspaceClaimScreen({
       setLinkCopied(true);
       window.setTimeout(() => setLinkCopied(false), 1800);
     } catch (error) {
-      setHandoffError(error instanceof Error ? error.message : "Could not copy the OpenWork link.");
+      setHandoffError(error instanceof Error ? error.message : "无法复制 OpenWork 链接，请手动复制。");
     } finally {
       setCopyBusy(false);
     }
@@ -275,12 +275,12 @@ export function WorkspaceClaimScreen({
         <div className="den-frame grid max-w-[44rem] gap-6 p-6 md:p-8">
           <div className="grid gap-2">
             <p className="den-eyebrow">OpenWork Cloud</p>
-            <h1 className="den-title-lg">This claim link can&apos;t be opened.</h1>
-            <p className="den-copy">The link is missing its claim token. Re-open the link from your setup, or ask for a new one.</p>
+            <h1 className="den-title-lg">无法打开此认领链接。</h1>
+            <p className="den-copy">链接缺少认领令牌，请从配置页面重新打开，或申请新链接。</p>
           </div>
           <div className="flex flex-wrap gap-3">
             <Link href="/" className="den-button-primary w-full sm:w-auto">
-              Back to OpenWork Cloud
+              返回 OpenWork 云端
             </Link>
           </div>
         </div>
@@ -289,7 +289,7 @@ export function WorkspaceClaimScreen({
   }
 
   if (!sessionHydrated) {
-    return <LoadingCard title="Loading workspace claim." body="Checking your account state..." />;
+    return <LoadingCard title="正在加载工作区认领信息。" body="正在检查账户状态…" />;
   }
 
   // Signed out: collect credentials, then resume on this page automatically.
@@ -299,28 +299,28 @@ export function WorkspaceClaimScreen({
         <div className="mx-auto grid w-full max-w-[32rem] gap-5">
           <div className="grid gap-2 text-center">
             <p className="den-eyebrow">OpenWork Cloud</p>
-            <h1 className="den-title-lg">Claim your workspace</h1>
+            <h1 className="den-title-lg">认领工作区</h1>
             <p className="den-copy">
-              Sign in or create an account to become the owner. Your workspace is already set up.
+              登录或创建账户以成为所有者，工作区已配置完成。
             </p>
           </div>
 
           <AuthPanel
-            eyebrow="Workspace owner"
+            eyebrow="工作区所有者"
             // Prefill only - never locked. The claim token (not the email) is
             // what authorizes accepting this claim, so the human can still
             // claim with a different email if they want to.
             prefilledEmail={prefilledEmail}
             prefillKey={token}
             signUpContent={{
-              title: "Create your account",
-              copy: "You will become the workspace owner.",
-              submitLabel: "Create account and claim",
+              title: "创建账户",
+              copy: "你将成为此工作区的所有者。",
+              submitLabel: "创建账户并认领",
             }}
             signInContent={{
-              title: "Sign in to continue",
-              copy: "You will become the workspace owner.",
-              submitLabel: "Sign in and claim",
+              title: "登录后继续",
+              copy: "你将成为此工作区的所有者。",
+              submitLabel: "登录并认领",
             }}
           />
         </div>
@@ -342,10 +342,10 @@ export function WorkspaceClaimScreen({
           </div>
 
           <div className="grid justify-items-center gap-3">
-            <p className={`den-eyebrow ${isLoopback ? "text-blue-700" : ""}`}>{isLoopback ? "Demo workspace ready" : "Workspace ready"}</p>
-            <h1 className="den-title-lg max-w-[22ch]">{claimedOrg.organizationName} is yours.</h1>
+            <p className={`den-eyebrow ${isLoopback ? "text-blue-700" : ""}`}>{isLoopback ? "演示工作区已就绪" : "工作区已就绪"}</p>
+            <h1 className="den-title-lg max-w-[22ch]">{claimedOrg.organizationName} 已属于你。</h1>
             <p className="den-copy max-w-[46ch]">
-              Copy the OpenWork link, open OpenWork, and paste it under Paste sign-in code. You will not need to enter your password again.
+              复制 OpenWork 链接，打开应用后粘贴到“粘贴登录代码”中，无需再次输入密码。
             </p>
           </div>
 
@@ -357,7 +357,7 @@ export function WorkspaceClaimScreen({
               disabled={handoffBusy || copyBusy}
             >
               <Copy className="size-4" aria-hidden />
-              {copyBusy ? "Copying..." : linkCopied ? "Link copied" : "Copy OpenWork link"}
+              {copyBusy ? "正在复制…" : linkCopied ? "链接已复制" : "复制 OpenWork 链接"}
             </button>
 
             <div className="flex flex-col items-center justify-center gap-2 text-sm sm:flex-row sm:gap-5">
@@ -368,7 +368,7 @@ export function WorkspaceClaimScreen({
                 disabled={handoffBusy || copyBusy}
               >
                 <ExternalLink className="size-3.5" aria-hidden />
-                {handoffBusy ? "Opening OpenWork..." : "Open OpenWork"}
+                {handoffBusy ? "正在打开 OpenWork…" : "打开 OpenWork"}
               </button>
               <span className="hidden text-[var(--dls-border)] sm:inline" aria-hidden>•</span>
               <button
@@ -377,20 +377,20 @@ export function WorkspaceClaimScreen({
                 onClick={continueInBrowser}
                 disabled={handoffBusy || copyBusy}
               >
-                Continue in browser instead
+                改为在浏览器中继续
               </button>
             </div>
           </div>
 
           {linkCopied ? (
             <div className="rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm font-medium text-blue-800">
-              Open OpenWork and paste the OpenWork link under Paste sign-in code.
+              打开 OpenWork，将链接粘贴到“粘贴登录代码”中。
             </div>
           ) : null}
 
           {handoffAttempted && !handoffError ? (
             <p className="den-copy text-sm">
-              Opening OpenWork now. If nothing happens (for example, the app isn&apos;t installed on this machine), use &quot;Continue in browser instead&quot;.
+              正在打开 OpenWork。若应用未打开，例如当前设备尚未安装应用，请选择“改为在浏览器中继续”。
             </p>
           ) : null}
           {handoffError ? <div className="den-notice is-error">{handoffError}</div> : null}
@@ -405,19 +405,19 @@ export function WorkspaceClaimScreen({
       <div className="den-frame mx-auto grid max-w-[34rem] gap-6 p-6 md:p-8">
         <div className="grid gap-2">
           <p className="den-eyebrow">OpenWork Cloud</p>
-          <h1 className="den-title-lg">Claim your workspace</h1>
-          <p className="den-copy">Confirm this account to become the owner.</p>
+          <h1 className="den-title-lg">认领工作区</h1>
+          <p className="den-copy">确认此账户以成为所有者。</p>
         </div>
 
         <div className="den-frame-inset grid gap-1 rounded-[1.5rem] px-4 py-3">
-          <p className="den-label">Signed in as</p>
+          <p className="den-label">当前登录账户</p>
           <p className="m-0 text-sm font-medium text-[var(--dls-text-primary)]">{user.email}</p>
         </div>
 
         <div className="grid gap-4">
           {inviteEmails.length > 0 ? (
             <div className="den-frame-inset rounded-[1.5rem] px-4 py-3">
-              <p className="den-label">Will invite on claim</p>
+              <p className="den-label">认领后将发送邀请</p>
               <p className="m-0 text-sm text-[var(--dls-text-primary)]">{inviteEmails.join(", ")}</p>
             </div>
           ) : null}
@@ -428,7 +428,7 @@ export function WorkspaceClaimScreen({
               onClick={() => void handleClaim()}
               disabled={claimBusy}
             >
-              {claimBusy ? (inviteSummary ?? "Claiming...") : "Claim this workspace"}
+              {claimBusy ? (inviteSummary ?? "正在认领…") : "认领此工作区"}
             </button>
             <button
               type="button"
@@ -436,7 +436,7 @@ export function WorkspaceClaimScreen({
               onClick={() => void signOut()}
               disabled={claimBusy}
             >
-              Use a different account
+              使用其他账户
             </button>
           </div>
         </div>

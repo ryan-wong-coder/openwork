@@ -12,13 +12,13 @@ import type { McpClient } from "./use-mcp-client";
 /** Story-column copy for an agent's sign-in, named after the app when it shared a name. */
 export function mcpStoryCopy(client: Pick<McpClient, "name">) {
   return client.name
-    ? { title: `Connect ${client.name}.`, description: `${client.name} asked to use OpenWork as you.` }
-    : { title: "Connect an app.", description: "An app asked to use OpenWork as you." };
+    ? { title: `连接 ${client.name}。`, description: `${client.name} 请求以你的身份使用 OpenWork。` }
+    : { title: "连接应用", description: "有应用请求以你的身份使用 OpenWork。" };
 }
 
 /** The app that asked, joined to the workspace it will use (or a new one). */
 export function McpStoryTiles({ client, workspaceName, appHost = null }: { client: McpClient; workspaceName: string | null; appHost?: string | null }) {
-  const appLabel = client.name ?? appHost ?? "An app";
+  const appLabel = client.name ?? appHost ?? "一个应用";
   return (
     <SetupStoryTiles
       from={{
@@ -32,7 +32,7 @@ export function McpStoryTiles({ client, workspaceName, appHost = null }: { clien
       to={
         workspaceName
           ? { label: workspaceName, mark: <SetupLetterTile name={workspaceName} size="lg" /> }
-          : { label: "New workspace", mark: <SetupNewWorkspaceTile />, pending: true }
+          : { label: "新建工作区", mark: <SetupNewWorkspaceTile />, pending: true }
       }
     />
   );
@@ -43,7 +43,7 @@ export function McpAppFact({ client }: { client: McpClient }) {
   return (
     <>
       <SetupAppMark name={client.name} logoUri={client.logoUri} />
-      <span className="truncate" data-testid="mcp-client-name">{client.loaded ? client.name ?? "An app without a name" : "…"}</span>
+      <span className="truncate" data-testid="mcp-client-name">{client.loaded ? client.name ?? "未命名应用" : "…"}</span>
     </>
   );
 }

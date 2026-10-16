@@ -20,9 +20,9 @@ export function OrgMemberIdentity({
 }) {
   const access = getOrgAccessFlags(member.role, member.isOwner);
   const roleBadge = access.isOwner
-    ? "Owner"
+    ? "所有者"
     : access.canonicalRole === "admin"
-      ? "Admin"
+      ? "管理员"
       : null;
   const isInvited = !member.joinedAt;
   const name = compact && (isInvited || !member.user.name || member.user.name === member.user.email)
@@ -46,7 +46,7 @@ export function OrgMemberIdentity({
           ) : null}
           {!compact && isInvited ? (
             <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${inverted ? "bg-white/15 text-white/80" : "bg-amber-50 text-amber-700"}`}>
-              Invited
+              已邀请
             </span>
           ) : null}
         </div>

@@ -42,9 +42,9 @@ export function useDefaultModelSettings(orgId: string, enabled = true) {
         { method: "GET", headers: { [ORG_SCOPE_HEADER]: orgId }, cache: "no-store", signal },
         15000,
       );
-      if (!response.ok) throw new Error(getErrorMessage(payload, `Couldn't load the default model (${response.status}).`));
+      if (!response.ok) throw new Error(getErrorMessage(payload, `无法加载默认模型（${response.status}）。`));
       const parsed = defaultModelSettingsSchema.safeParse(payload);
-      if (!parsed.success) throw new Error("The default model returned an unexpected response.");
+      if (!parsed.success) throw new Error("默认模型返回了无法识别的响应，请重试。");
       return parsed.data;
     },
   });
@@ -63,9 +63,9 @@ export function useDefaultModelOptions(orgId: string, enabled = true) {
         { method: "GET", headers: { [ORG_SCOPE_HEADER]: orgId }, cache: "no-store", signal },
         20000,
       );
-      if (!response.ok) throw new Error(getErrorMessage(payload, `Couldn't load your organization's models (${response.status}).`));
+      if (!response.ok) throw new Error(getErrorMessage(payload, `无法加载组织的模型（${response.status}）。`));
       const parsed = defaultModelOptionsSchema.safeParse(payload);
-      if (!parsed.success) throw new Error("The model list returned an unexpected response.");
+      if (!parsed.success) throw new Error("模型列表返回了无法识别的响应，请重试。");
       return parsed.data;
     },
   });
@@ -90,7 +90,7 @@ export function useSaveDefaultModel(orgId: string) {
           { method: "PUT", headers: { [ORG_SCOPE_HEADER]: orgId }, body: JSON.stringify({ model: input.model }) },
           20000,
         );
-        if (!response.ok) throw getRequestError(payload, response, `Couldn't save the default model (${response.status}).`);
+        if (!response.ok) throw getRequestError(payload, response, `无法保存默认模型（${response.status}）。`);
         const parsed = defaultModelSettingsSchema.safeParse(payload);
         result.saved = parsed.success ? parsed.data : null;
       });

@@ -81,7 +81,7 @@ export function GatewayConnect() {
       const attempt = browserAttempt();
       if (!attempt) {
         setStep("restart");
-        setError("This sign-in link is invalid. Start signing in again in OpenWork.");
+        setError("此登录链接无效。请返回 OpenWork 重新登录。");
         return;
       }
       const endpoint = await gatewayBrowserEndpoint(`/v1/inference-providers/oauth/browser-status?attempt=${encodeURIComponent(attempt)}`);
@@ -99,10 +99,10 @@ export function GatewayConnect() {
       if (!response.ok) {
         setStep(response.status === 400 ? "restart" : response.status === 403 ? "blocked" : "error");
         setError(readString(payload, "message") ?? (response.status === 400
-          ? "This sign-in link expired. Start signing in again in OpenWork."
+          ? "此登录链接已过期。请返回 OpenWork 重新登录。"
           : response.status === 403
-            ? "You can't sign in to these models right now. Ask your admin."
-            : "Could not verify your sign-in. Check your connection and retry."));
+            ? "你目前无法登录这些模型，请联系管理员。"
+            : "无法验证登录状态，请检查网络连接后重试。"));
         return;
       }
       const status = readString(payload, "status");
@@ -127,7 +127,7 @@ export function GatewayConnect() {
     } catch {
       if (!current()) return;
       setStep("error");
-      setError("Could not verify your sign-in. Check your connection and retry.");
+      setError("无法验证登录状态，请检查网络连接后重试。");
     } finally {
       if (current()) {
         statusRequest.current = null;
@@ -180,7 +180,7 @@ export function GatewayConnect() {
       const attempt = browserAttempt();
       if (!attempt) {
         setStep("restart");
-        setError("This sign-in link is invalid. Start signing in again in OpenWork.");
+        setError("此登录链接无效。请返回 OpenWork 重新登录。");
         return;
       }
       const endpoint = await gatewayBrowserEndpoint(`/v1/inference-providers/oauth/browser-start?attempt=${encodeURIComponent(attempt)}`);
@@ -203,7 +203,7 @@ export function GatewayConnect() {
           setStep(code === "browser_signin_required" ? "sign_in_required" : "account_mismatch");
         } else {
           setStep("restart");
-          setError("Sign-in could not continue. Start signing in again in OpenWork.");
+          setError("登录无法继续，请在 OpenWork 中重新登录。");
         }
         return;
       }
@@ -217,8 +217,8 @@ export function GatewayConnect() {
       if (!current()) return;
       setStep(startAttempted.current ? "restart" : "error");
       setError(startAttempted.current
-        ? `Could not confirm whether ${method === "microsoft" ? "Microsoft" : "Google"} sign-in started. Start signing in again in OpenWork.`
-        : "Could not verify your sign-in. Check your connection and retry.");
+        ? `无法确认 ${method === "microsoft" ? "Microsoft" : "Google"} 登录是否已启动，请返回 OpenWork 重新开始登录。`
+        : "无法验证登录状态，请检查网络连接后重试。");
     } finally {
       if (current()) {
         actionRequest.current = null;
@@ -241,7 +241,7 @@ export function GatewayConnect() {
       const attempt = browserAttempt();
       if (!attempt) {
         setStep("restart");
-        setError("This sign-in link is invalid. Start signing in again in OpenWork.");
+        setError("此登录链接无效。请返回 OpenWork 重新登录。");
         return;
       }
       const endpoint = await gatewayBrowserEndpoint("/v1/inference-providers/oauth/browser-aws-start");
@@ -267,10 +267,10 @@ export function GatewayConnect() {
         } else if (response.status === 409) {
           startAttempted.current = false;
           ready.current = true;
-          setError(readString(payload, "message") ?? "AWS is temporarily unavailable. Try again shortly.");
+          setError(readString(payload, "message") ?? "AWS 暂时不可用，请稍后重试。");
         } else {
           setStep("restart");
-          setError(readString(payload, "message") ?? "AWS sign-in could not start. Start signing in again in OpenWork.");
+          setError(readString(payload, "message") ?? "无法开始 AWS 登录，请在 OpenWork 中重新登录。");
         }
         return;
       }
@@ -286,7 +286,7 @@ export function GatewayConnect() {
     } catch {
       if (!current()) return;
       setStep(startAttempted.current ? "restart" : "error");
-      setError(startAttempted.current ? "Could not confirm whether AWS sign-in started. Start signing in again in OpenWork." : "Could not verify your sign-in. Check your connection and retry.");
+      setError(startAttempted.current ? "无法确认 AWS 登录是否已开始，请在 OpenWork 中重新登录。" : "无法验证登录状态，请检查网络连接后重试。");
     } finally {
       if (current()) {
         actionRequest.current = null;
@@ -332,8 +332,8 @@ export function GatewayConnect() {
       if (response.status === 409) { scheduleAwsPoll(attempt, 10); return; }
       setAwsDevice(null);
       if (code === "browser_signin_required" || code === "browser_account_mismatch") setStep(code === "browser_signin_required" ? "sign_in_required" : "account_mismatch");
-      else if (response.status === 403) { setStep("blocked"); setError(readString(payload, "message") ?? "AWS did not give you access to these models. Ask your admin."); }
-      else { setStep("restart"); setError(readString(payload, "message") ?? "AWS sign-in did not finish. Start signing in again in OpenWork."); }
+      else if (response.status === 403) { setStep("blocked"); setError(readString(payload, "message") ?? "AWS 未授予这些模型的访问权限，请联系管理员。"); }
+      else { setStep("restart"); setError(readString(payload, "message") ?? "AWS 登录未完成，请在 OpenWork 中重新登录。"); }
     } catch {
       if (!mounted.current) return;
       scheduleAwsPoll(attempt, 10);
@@ -345,7 +345,7 @@ export function GatewayConnect() {
     if (!mounted.current || !ready.current || actionRequest.current) return;
     const apiKey = liteLlmKey.trim();
     if (!apiKey) {
-      setError(`Paste your ${providerName} key.`);
+      setError(`粘贴你的 ${providerName} 密钥。`);
       return;
     }
     const controller = new AbortController();
@@ -358,7 +358,7 @@ export function GatewayConnect() {
       const attempt = browserAttempt();
       if (!attempt) {
         setStep("restart");
-        setError("This sign-in link is invalid. Start signing in again in OpenWork.");
+        setError("此登录链接无效。请返回 OpenWork 重新登录。");
         return;
       }
       const endpoint = await gatewayBrowserEndpoint("/v1/inference-providers/oauth/browser-litellm-key");
@@ -389,16 +389,16 @@ export function GatewayConnect() {
         setStep(code === "browser_signin_required" ? "sign_in_required" : "account_mismatch");
       } else if (response.status === 400 && code === "oauth_entry_expired") {
         setStep("restart");
-        setError("This sign-in link expired. Start signing in again in OpenWork.");
+        setError("此登录链接已过期。请返回 OpenWork 重新登录。");
       } else if (response.status === 403) {
         setStep("blocked");
-        setError(readString(payload, "message") ?? "You can't connect a key here right now. Ask your admin.");
+        setError(readString(payload, "message") ?? "目前无法在此连接密钥，请联系管理员。");
       } else {
-        setError(code === "litellm_unauthorized" ? `${providerName} rejected this key. Check it and try again.` : readString(payload, "message") ?? "Could not connect this key. Try again.");
+        setError(code === "litellm_unauthorized" ? `${providerName} 拒绝了此密钥，请检查后重试。` : readString(payload, "message") ?? "无法连接此密钥，请重试。");
       }
     } catch {
       if (!current()) return;
-      setError("Could not reach OpenWork. Check your connection and try again.");
+      setError("无法连接 OpenWork，请检查网络连接后重试。");
     } finally {
       if (current()) {
         actionRequest.current = null;
@@ -420,7 +420,7 @@ export function GatewayConnect() {
       const attempt = browserAttempt();
       if (!attempt) {
         setStep("restart");
-        setError("This sign-in link is invalid. Start signing in again in OpenWork.");
+        setError("此登录链接无效。请返回 OpenWork 重新登录。");
         return;
       }
       const endpoint = await gatewayBrowserEndpoint("/v1/inference-providers/oauth/browser-litellm-check");
@@ -449,12 +449,12 @@ export function GatewayConnect() {
       }
       const code = readString(payload, "error");
       if (code === "browser_signin_required" || code === "browser_account_mismatch") setStep(code === "browser_signin_required" ? "sign_in_required" : "account_mismatch");
-      else if (response.status === 400 && code === "oauth_entry_expired") { setStep("restart"); setError("This sign-in link expired. Start signing in again in OpenWork."); }
-      else if (response.status === 403) { setStep("blocked"); setError(readString(payload, "message") ?? "You don't have LiteLLM access right now. Ask your admin."); }
-      else setError(readString(payload, "message") ?? "Could not check LiteLLM. Try again.");
+      else if (response.status === 400 && code === "oauth_entry_expired") { setStep("restart"); setError("此登录链接已过期。请返回 OpenWork 重新登录。"); }
+      else if (response.status === 403) { setStep("blocked"); setError(readString(payload, "message") ?? "你目前没有 LiteLLM 访问权限，请联系管理员。"); }
+      else setError(readString(payload, "message") ?? "无法检查 LiteLLM，请重试。");
     } catch {
       if (!current()) return;
-      setError("Could not reach OpenWork. Check your connection and try again.");
+      setError("无法连接 OpenWork，请检查网络连接后重试。");
     } finally {
       if (current()) {
         actionRequest.current = null;
@@ -494,7 +494,7 @@ export function GatewayConnect() {
     } catch {
       if (!current()) return;
       setStep("error");
-      setError("Could not confirm sign-out. Retry the sign-in check before changing accounts.");
+      setError("无法确认退出登录，请先重新检查登录状态，再更换账户。");
     } finally {
       if (current()) {
         actionRequest.current = null;
@@ -506,54 +506,54 @@ export function GatewayConnect() {
   const liteLlm = method === "litellm_key";
   const issued = method === "litellm_issued";
   const brand = method === "google" || method === "microsoft" || method === "aws_sso" ? METHOD_BRAND[method] : null;
-  const title = step === "sign_in_required" ? "Sign in to OpenWork"
-    : step === "account_mismatch" ? "Switch OpenWork account"
-      : step === "connected" ? issued ? `${providerName} is ready` : `${providerName} connected`
-      : step === "ready" ? liteLlm ? `Connect your ${providerName} key` : issued ? `${providerName} isn't set up for you yet` : awsDevice ? "Approve in AWS" : `Sign in to ${brand ?? "Google"}`
-        : step === "blocked" ? "Sign-in unavailable"
-          : step === "restart" ? "Start signing in again"
-            : "Could not verify sign-in";
+  const title = step === "sign_in_required" ? "登录 OpenWork"
+    : step === "account_mismatch" ? "切换 OpenWork 账户"
+      : step === "connected" ? issued ? `${providerName} 已就绪` : `${providerName} 已连接`
+      : step === "ready" ? liteLlm ? `连接你的 ${providerName} 密钥` : issued ? `尚未为你设置 ${providerName}` : awsDevice ? "在 AWS 中批准" : `登录 ${brand ?? "Google"}`
+        : step === "blocked" ? "登录不可用"
+          : step === "restart" ? "重新开始登录"
+            : "无法验证登录";
 
   return (
     <main aria-busy={busy || checking} className="flex min-h-dvh items-center justify-center bg-[var(--dls-surface)] p-4 text-sm text-[var(--dls-text-primary)]">
       <div className="flex w-full max-w-xl flex-col gap-4">
         {step === "loading" ? (
-          <div role="status" aria-label="Checking OpenWork sign-in" className="flex flex-col items-start gap-4 motion-safe:animate-pulse">
+          <div role="status" aria-label="正在检查 OpenWork 登录状态" className="flex flex-col items-start gap-4 motion-safe:animate-pulse">
             <div aria-hidden="true" className="h-6 w-56 rounded bg-[var(--dls-hover)]" />
             <div aria-hidden="true" className="h-10 w-44 rounded-lg bg-[var(--dls-hover)]" />
           </div>
         ) : <DenPageHeader title={title} className="[&_h1]:text-xl [&_h1]:leading-tight [&_h1]:text-[var(--dls-text-primary)]" />}
-        {step === "account_mismatch" ? <DenNotice tone="neutral" message={<span className="flex items-start gap-2"><LockKeyhole aria-hidden="true" strokeWidth={1.5} className="size-4 shrink-0" />Use the OpenWork account that started signing in.</span>} /> : null}
+        {step === "account_mismatch" ? <DenNotice tone="neutral" message={<span className="flex items-start gap-2"><LockKeyhole aria-hidden="true" strokeWidth={1.5} className="size-4 shrink-0" />请使用发起登录的 OpenWork 账户。</span>} /> : null}
         {error ? <DenNotice tone={step === "blocked" ? "neutral" : "error"} message={error} /> : null}
-        {step === "connected" && method === "aws_sso" ? <DenNotice tone="info" message={`${accountName ? `Signed in to AWS as ${accountName}. ` : ""}Your models are ready in OpenWork. You can close this tab.`} /> : null}
-        {step === "connected" && !issued && method !== "aws_sso" ? <DenNotice tone="info" message={`${connectedModels} ${connectedModels === 1 ? "model is" : "models are"} ready in OpenWork. You can close this tab.`} /> : null}
+        {step === "connected" && method === "aws_sso" ? <DenNotice tone="info" message={`${accountName ? `已以 ${accountName} 身份登录 AWS。` : ""}你的模型已在 OpenWork 中就绪，可以关闭此标签页。`} /> : null}
+        {step === "connected" && !issued && method !== "aws_sso" ? <DenNotice tone="info" message={`${connectedModels} 个模型已在 OpenWork 中就绪，可以关闭此标签页。`} /> : null}
         {step === "ready" && awsDevice ? (
           <div className="flex flex-col gap-3" data-testid="gateway-connect-aws-device">
-            <p className="text-[var(--dls-text-secondary)]">Approve OpenWork in the AWS tab. Check that AWS shows this code:</p>
+            <p className="text-[var(--dls-text-secondary)]">请在 AWS 标签页批准 OpenWork，并确认显示以下代码：</p>
             <code className="w-fit rounded-lg border border-[var(--dls-border)] px-3 py-2 font-mono text-lg tracking-widest" data-testid="gateway-connect-aws-code">{awsDevice.userCode}</code>
-            <span role="status" className="text-[var(--dls-text-secondary)]">Waiting for AWS…</span>
+            <span role="status" className="text-[var(--dls-text-secondary)]">正在等待 AWS…</span>
           </div>
         ) : null}
-        {step === "connected" && issued ? <DenNotice tone="info" message="Your models are ready in OpenWork. You can close this tab." /> : null}
-        {step === "ready" && issued ? <DenNotice tone="neutral" message={issue?.message ?? "OpenWork is creating your LiteLLM key. Check again in a moment."} /> : null}
+        {step === "connected" && issued ? <DenNotice tone="info" message="模型已在 OpenWork 中就绪，你可以关闭此标签页。" /> : null}
+        {step === "ready" && issued ? <DenNotice tone="neutral" message={issue?.message ?? "OpenWork 正在创建 LiteLLM 密钥，请稍后检查。"} /> : null}
         {step === "ready" && liteLlm ? (
           <label className="flex flex-col gap-1.5 text-[12px] font-medium text-[var(--dls-text-secondary)]">
-            {providerName} key
+            {providerName} 密钥
             <DenSecretInput autoComplete="off" value={liteLlmKey} placeholder="sk-…" data-testid="gateway-connect-litellm-key" className="font-mono text-[12px]"
               onChange={setLiteLlmKey} onKeyDown={(event) => { if (event.key === "Enter") void connectLiteLlmKey(); }} />
           </label>
         ) : null}
         <div className="flex flex-wrap gap-3">
-          {step === "sign_in_required" ? <a href="/" target="_blank" rel="noopener noreferrer" className={buttonVariants()}>Sign in to OpenWork</a> : null}
-          {step === "ready" && (method === "google" || method === "microsoft") ? <DenButton loading={busy} disabled={checking || startAttempted.current} onClick={() => void continueToProvider()}>Continue to {METHOD_BRAND[method]}</DenButton> : null}
-          {step === "ready" && method === "aws_sso" && !awsDevice ? <DenButton loading={busy} disabled={checking || startAttempted.current} data-testid="gateway-connect-aws-start" onClick={() => void startAwsSignIn()}>Continue to AWS</DenButton> : null}
-          {step === "ready" && awsDevice ? <a href={awsDevice.verificationUrl} target="_blank" rel="noopener noreferrer" className={buttonVariants({ variant: "secondary" })}>Open AWS again</a> : null}
-          {step === "ready" && issued ? <DenButton loading={busy} disabled={checking} data-testid="gateway-connect-litellm-check" onClick={() => void checkIssuedKey()}>Check again</DenButton> : null}
-          {step === "ready" && liteLlm ? <DenButton loading={busy} disabled={checking} data-testid="gateway-connect-litellm-submit" onClick={() => void connectLiteLlmKey()}>Connect key</DenButton> : null}
-          {step === "account_mismatch" ? <DenButton loading={busy} disabled={checking} onClick={() => void signOut()}>Sign out of this browser account</DenButton> : null}
-          {step === "error" || step === "blocked" ? <DenButton loading={checking} onClick={() => void checkStatus()}>Retry sign-in check</DenButton> : null}
+          {step === "sign_in_required" ? <a href="/" target="_blank" rel="noopener noreferrer" className={buttonVariants()}>登录 OpenWork</a> : null}
+          {step === "ready" && (method === "google" || method === "microsoft") ? <DenButton loading={busy} disabled={checking || startAttempted.current} onClick={() => void continueToProvider()}>继续前往 {METHOD_BRAND[method]}</DenButton> : null}
+          {step === "ready" && method === "aws_sso" && !awsDevice ? <DenButton loading={busy} disabled={checking || startAttempted.current} data-testid="gateway-connect-aws-start" onClick={() => void startAwsSignIn()}>继续前往 AWS</DenButton> : null}
+          {step === "ready" && awsDevice ? <a href={awsDevice.verificationUrl} target="_blank" rel="noopener noreferrer" className={buttonVariants({ variant: "secondary" })}>重新打开 AWS</a> : null}
+          {step === "ready" && issued ? <DenButton loading={busy} disabled={checking} data-testid="gateway-connect-litellm-check" onClick={() => void checkIssuedKey()}>重新检查</DenButton> : null}
+          {step === "ready" && liteLlm ? <DenButton loading={busy} disabled={checking} data-testid="gateway-connect-litellm-submit" onClick={() => void connectLiteLlmKey()}>连接密钥</DenButton> : null}
+          {step === "account_mismatch" ? <DenButton loading={busy} disabled={checking} onClick={() => void signOut()}>退出此浏览器账户</DenButton> : null}
+          {step === "error" || step === "blocked" ? <DenButton loading={checking} onClick={() => void checkStatus()}>重新检查登录</DenButton> : null}
         </div>
-        {checking && step !== "loading" ? <span role="status" className="sr-only">Checking OpenWork sign-in</span> : null}
+        {checking && step !== "loading" ? <span role="status" className="sr-only">正在检查 OpenWork 登录状态</span> : null}
       </div>
     </main>
   );

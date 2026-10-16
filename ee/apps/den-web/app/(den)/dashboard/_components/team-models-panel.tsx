@@ -53,25 +53,25 @@ export function modelsTabVisible(orgContext: DenOrgContext | null): boolean {
 export function ModelsPanel({ team }: { team: { id: string; name: string } | null }) {
   const { orgContext, orgId, orgSlug } = useOrgDashboard();
   const access = teamModelsAccess(orgContext);
-  if (!orgContext || !orgId || !access) return <ItemPanel><ItemRowsSkeleton label="Loading models" /></ItemPanel>;
+  if (!orgContext || !orgId || !access) return <ItemPanel><ItemRowsSkeleton label="正在加载模型" /></ItemPanel>;
   const subject: DirectorySubject = team ? { type: "team", teamId: team.id } : { type: "organization" };
-  const name = team?.name ?? "Everyone";
+  const name = team?.name ?? "所有人";
   return (
     <div className="flex flex-col gap-8" data-testid="team-models">
       {access.defaultModel ? (
         team ? (
-          <ItemSection title="Default model"><TeamDefaultModelSection teamId={team.id} canManage={access.manageDefaultModel} embedded /></ItemSection>
+          <ItemSection title="默认模型"><TeamDefaultModelSection teamId={team.id} canManage={access.manageDefaultModel} embedded /></ItemSection>
         ) : <OrgDefaultModelSection canManage={access.manageDefaultModel} embedded />
       ) : null}
       {access.gateway ? (
         <>
           {access.providers ? <ProvidersSection orgId={orgId} orgSlug={orgSlug} subject={subject} name={name} orgContext={orgContext} /> : (
-            <ItemSection title="Can use"><DenNotice tone="neutral" icon={LockKeyhole} message={gatewayAreaLockedMessage("providers")} /></ItemSection>
+            <ItemSection title="可使用"><DenNotice tone="neutral" icon={LockKeyhole} message={gatewayAreaLockedMessage("providers")} /></ItemSection>
           )}
           {access.limits ? (
             <LimitsSection orgId={orgId} orgSlug={orgSlug} team={team} subject={subject} name={name} orgContext={orgContext} canManage={access.manageLimits} providerLimits={access.providerLimits} />
           ) : (
-            <ItemSection title="Spend limits"><DenNotice tone="neutral" icon={LockKeyhole} message={gatewayAreaLockedMessage("limits")} /></ItemSection>
+            <ItemSection title="消费限额"><DenNotice tone="neutral" icon={LockKeyhole} message={gatewayAreaLockedMessage("limits")} /></ItemSection>
           )}
         </>
       ) : null}
@@ -81,7 +81,7 @@ export function ModelsPanel({ team }: { team: { id: string; name: string } | nul
 
 function modelNames(provider: GatewayAccessProvider): string {
   const ids = [...new Set(provider.modelGroups.filter((group) => group.status !== "disabled").flatMap((group) => group.modelIds))];
-  if (ids.length === 0) return "No models yet";
+  if (ids.length === 0) return "暂无模型";
   return ids.join(", ");
 }
 
@@ -101,15 +101,15 @@ function ProvidersSection({ orgId, orgSlug, subject, name, orgContext }: {
   const withheld = (providers.data ?? []).filter((provider) => provider.status !== "disabled" && !granted.some((entry) => entry.provider.id === provider.id));
   return (
     <ItemSection
-      title="Can use"
+      title="可使用"
       testId="team-models-providers"
-      meta={<Link href={getAiGatewayProvidersRoute(orgSlug)} className="font-medium text-gray-700 hover:text-gray-950">Change in AI Providers</Link>}
+      meta={<Link href={getAiGatewayProvidersRoute(orgSlug)} className="font-medium text-gray-700 hover:text-gray-950">在 AI 提供商中更改</Link>}
     >
-      {providers.isPending ? <ItemPanel><ItemRowsSkeleton label="Loading providers" rows={2} /></ItemPanel>
+      {providers.isPending ? <ItemPanel><ItemRowsSkeleton label="正在加载提供商" rows={2} /></ItemPanel>
         : providers.isError ? (
-          <DenNotice tone="error" message={providers.error.message} action={<DenButton variant="secondary" size="sm" onClick={() => void providers.refetch()}>Try again</DenButton>} />
+          <DenNotice tone="error" message={providers.error.message} action={<DenButton variant="secondary" size="sm" onClick={() => void providers.refetch()}>重试</DenButton>} />
         ) : granted.length === 0 && withheld.length === 0 ? (
-          <ItemPanel><div className="px-5 py-6 text-[13px] text-gray-500">No AI providers yet. Add one in AI Providers.</div></ItemPanel>
+          <ItemPanel><div className="px-5 py-6 text-[13px] text-gray-500">暂无 AI 提供商，请在“AI 提供商”中添加。</div></ItemPanel>
         ) : (
           <ItemPanel>
             {granted.map(({ provider, sources }) => (
@@ -128,7 +128,7 @@ function ProvidersSection({ orgId, orgSlug, subject, name, orgContext }: {
                 testId="team-models-provider-withheld"
                 logo={<span className="opacity-60"><ProviderLogo provider={provider} /></span>}
                 title={<span className="text-gray-500">{provider.name}</span>}
-                description={subject.type === "organization" ? "Not shared with everyone" : `${name} can't use it`}
+                description={subject.type === "organization" ? "未与所有人共享" : `${name} 无法使用`}
                 status={<span className="inline-flex items-center gap-1"><LockKeyhole className="h-3 w-3" aria-hidden />{providerAudienceLabel(provider, orgContext.teams, orgContext.members)}</span>}
               />
             ))}
@@ -155,25 +155,25 @@ function LimitsSection({ orgId, orgSlug, team, subject, name, orgContext, canMan
   const effective = policies.data ? directoryLimit(policies.data.policies, subject) : null;
   return (
     <ItemSection
-      title="Spend limits"
+      title="消费限额"
       testId="team-models-limits"
       meta={canManage ? (
-        <Link href={getNewAiGatewayLimitRoute(orgSlug, team ? { teamId: team.id } : undefined)} className={buttonVariants({ variant: "secondary", size: "sm" })} data-testid="team-models-new-limit">New limit</Link>
+        <Link href={getNewAiGatewayLimitRoute(orgSlug, team ? { teamId: team.id } : undefined)} className={buttonVariants({ variant: "secondary", size: "sm" })} data-testid="team-models-new-limit">新建限额</Link>
       ) : null}
     >
-      {policies.isPending ? <ItemPanel><ItemRowsSkeleton label="Loading spend limits" rows={1} /></ItemPanel>
+      {policies.isPending ? <ItemPanel><ItemRowsSkeleton label="正在加载消费限额" rows={1} /></ItemPanel>
         : policies.isError ? (
-          <DenNotice tone="error" message={policies.error.message} action={<DenButton variant="secondary" size="sm" onClick={() => void policies.refetch()}>Try again</DenButton>} />
+          <DenNotice tone="error" message={policies.error.message} action={<DenButton variant="secondary" size="sm" onClick={() => void policies.refetch()}>重试</DenButton>} />
         ) : own.length === 0 ? (
           <ItemPanel>
             <div className="px-5 py-4 text-[13px] text-gray-500" data-testid="team-models-no-limit">
               {effective && effective.windows.length > 0
-                ? `No limit of its own. ${limitSourceLabel(effective, subject, orgContext.teams)}: ${limitSummary(effective, true)}.`
-                : `Nothing pauses ${name}'s models.`}
+                ? `没有单独设置限制。${limitSourceLabel(effective, subject, orgContext.teams)}：${limitSummary(effective, true)}。`
+                : `${name} 的模型没有暂停限制。`}
             </div>
           </ItemPanel>
         ) : (
-          <ul className="divide-y divide-gray-100 overflow-hidden rounded-2xl border border-gray-100 bg-white" aria-label={`Spend limits for ${name}`}>
+          <ul className="divide-y divide-gray-100 overflow-hidden rounded-2xl border border-gray-100 bg-white" aria-label={`${name} 的消费限制`}>
             {own.map((policy) => (
               <GatewayLimitRow
                 key={policy.id}

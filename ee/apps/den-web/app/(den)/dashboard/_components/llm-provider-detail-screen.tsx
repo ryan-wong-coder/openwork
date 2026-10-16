@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE } from "../../../_lib/locale";
+
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -37,7 +39,7 @@ function getLimitLabel(config: Record<string, unknown>) {
             ? (config.limit as Record<string, unknown>)
             : null;
     const context = typeof limit?.context === "number" ? limit.context : null;
-    return context ? `${context.toLocaleString()} ctx` : null;
+    return context ? `${context.toLocaleString(DEFAULT_DEN_LOCALE)} 上下文` : null;
 }
 
 export function LlmProviderDetailScreen({
@@ -73,7 +75,7 @@ export function LlmProviderDetailScreen({
 
         if (
             !window.confirm(
-                `Delete ${provider.name}? This will remove its saved model list and access rules.`,
+                `删除 ${provider.name}？将移除已保存的模型列表和访问规则。`,
             )
         ) {
             return;
@@ -90,7 +92,7 @@ export function LlmProviderDetailScreen({
                 );
 
                 if (response.status !== 204 && !response.ok) {
-                    throw getRequestError(payload, response, `Failed to delete provider (${response.status}).`);
+                    throw getRequestError(payload, response, `无法删除提供商（${response.status}）。`);
                 }
 
                 await reloadProviders();
@@ -101,7 +103,7 @@ export function LlmProviderDetailScreen({
             setDeleteError(
                 nextError instanceof Error
                     ? nextError.message
-                    : "Could not delete the provider.",
+                    : "无法删除提供商，请重试。",
             );
         } finally {
             setDeleteBusy(false);
@@ -124,7 +126,7 @@ export function LlmProviderDetailScreen({
             setMigrateError(
                 nextError instanceof Error
                     ? nextError.message
-                    : "Could not move the provider to the gateway.",
+                    : "无法将提供商迁移到网关，请重试。",
             );
         } finally {
             setMigrateBusy(false);
@@ -135,7 +137,7 @@ export function LlmProviderDetailScreen({
         return (
             <div className="mx-auto max-w-[1180px] px-6 py-8 md:px-8">
                 <div className="rounded-[28px] border border-gray-200 bg-white px-6 py-10 text-[15px] text-gray-500">
-                    Loading provider details...
+                    正在加载提供商详情…
                 </div>
             </div>
         );
@@ -145,7 +147,7 @@ export function LlmProviderDetailScreen({
         return (
             <div className="mx-auto max-w-[1180px] px-6 py-8 md:px-8">
                 <div className="rounded-[28px] border border-red-200 bg-red-50 px-6 py-4 text-[15px] text-red-700">
-                    {error ?? "That provider could not be found."}
+                    {error ?? "未找到此提供商。"}
                 </div>
             </div>
         );
@@ -165,7 +167,7 @@ export function LlmProviderDetailScreen({
         <div className="mx-auto max-w-[1180px] px-6 py-8 md:px-8">
             <div className="mb-8 flex flex-col gap-3">
                 <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-gray-400">
-                    LLM provider
+                    模型提供商
                 </p>
                 <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
                     <div>
@@ -182,7 +184,7 @@ export function LlmProviderDetailScreen({
                     className="inline-flex items-center gap-2 text-[15px] font-medium text-gray-500 transition hover:text-gray-900"
                 >
                     <ArrowLeft className="h-5 w-5" />
-                    Back to providers
+                    返回提供商
                 </Link>
 
                 <div className="flex flex-wrap gap-3">
@@ -196,7 +198,7 @@ export function LlmProviderDetailScreen({
                             }}
                         >
                             <ArrowRightLeft className="h-4 w-4" />
-                            Move to gateway
+                            迁移到网关
                         </DenButton>
                     ) : null}
                     {provider.canManage && provider.source !== "openwork" ? (
@@ -208,7 +210,7 @@ export function LlmProviderDetailScreen({
                                 )}
                             >
                                 <DenButton variant="secondary">
-                                    Edit Provider
+                                    编辑提供商
                                 </DenButton>
                             </Link>
                             <DenButton
@@ -217,7 +219,7 @@ export function LlmProviderDetailScreen({
                                 onClick={() => void deleteProvider()}
                             >
                                 <Trash2 className="h-4 w-4" />
-                                Delete
+                                删除
                             </DenButton>
                         </>
                     ) : null}
@@ -225,7 +227,7 @@ export function LlmProviderDetailScreen({
             </div>
 
             {gatewayEnabled && provider.source === "models_dev" && provider.credentialMode === "per_member" ? (
-                <DenNotice className="mb-6" tone="info" message="Per-member BYOK providers cannot be moved to the gateway. Their individual credentials stay unchanged. Create a separate gateway provider instead; member sign-in is supported only for Google Vertex." />
+                <DenNotice className="mb-6" tone="info" message="每人独立密钥的提供商无法迁移到网关，个人凭据保持不变。请单独创建网关提供商；目前仅 Google Vertex 支持成员登录。" />
             ) : null}
             {deleteError ? (
                 <div className="mb-6 rounded-[28px] border border-red-200 bg-red-50 px-6 py-4 text-[14px] text-red-700">
@@ -247,14 +249,10 @@ export function LlmProviderDetailScreen({
                 >
                     <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-6 shadow-xl">
                         <h2 id="move-to-gateway-title" className="text-[18px] font-semibold text-gray-950">
-                            Move “{provider.name}” to the OpenWork gateway?
+                            将“{provider.name}”迁移到 OpenWork 网关？
                         </h2>
                         <p className="mt-2 text-[13px] leading-5 text-gray-500">
-                            The saved credential moves to the OpenWork server and is no longer sent to devices.
-                            Members keep the same models and access, and call them via OpenWork Gateway with their
-                            own OpenWork key. Desktop apps re-sync automatically. This provider disappears from
-                            Bring your Own Keys.
-                            If its settings or credential cannot be converted safely, the move is refused and the original provider stays unchanged.
+                            已保存凭据将迁移到 OpenWork 服务器，不再发送至设备。成员保留相同模型与访问权限，使用自己的 OpenWork 密钥通过网关调用。桌面应用会自动同步，此提供商将从“使用自有密钥”中移除。若设置或凭据无法安全转换，迁移将被拒绝，原提供商保持不变。
                         </p>
                         {migrateError ? (
                             <p className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700">
@@ -263,14 +261,14 @@ export function LlmProviderDetailScreen({
                         ) : null}
                         <div className="mt-6 flex justify-end gap-2">
                             <DenButton variant="secondary" onClick={() => setConfirmingMigrate(false)}>
-                                Cancel
+                                取消
                             </DenButton>
                             <DenButton
                                 data-testid="llm-provider-move-to-gateway-confirm"
                                 loading={migrateBusy}
                                 onClick={() => void moveToGateway()}
                             >
-                                Move to gateway
+                                迁移到网关
                             </DenButton>
                         </div>
                     </div>
@@ -281,7 +279,7 @@ export function LlmProviderDetailScreen({
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <div>
                         <h2 className="text-[24px] font-semibold tracking-[-0.05em] text-gray-950">
-                            Provider configuration
+                            提供商配置
                         </h2>
                     </div>
 
@@ -291,8 +289,8 @@ export function LlmProviderDetailScreen({
                         >
                             <KeyRound className="h-4 w-4" />
                             {provider.hasApiKey
-                                ? "Credential saved"
-                                : "Credential missing"}
+                                ? "凭据已保存"
+                                : "缺少凭据"}
                         </div>
                     )}
                 </div>
@@ -300,7 +298,7 @@ export function LlmProviderDetailScreen({
                 <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                     <div className="rounded-[24px] bg-gray-50 p-5">
                         <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-gray-400">
-                            Provider id
+                            提供商 ID
                         </p>
                         <p className="mt-3 text-[16px] font-medium text-gray-900">
                             {provider.providerId}
@@ -308,25 +306,25 @@ export function LlmProviderDetailScreen({
                     </div>
                     <div className="rounded-[24px] bg-gray-50 p-5">
                         <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-gray-400">
-                            NPM package
+                            NPM 软件包
                         </p>
                         <p className="mt-3 text-[16px] font-medium text-gray-900">
-                            {npmPackage ?? "Not set"}
+                            {npmPackage ?? "未设置"}
                         </p>
                     </div>
                     {provider.configRedacted ? null : (
                         <div className="rounded-[24px] bg-gray-50 p-5">
                             <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-gray-400">
-                                API base
+                                API 基础地址
                             </p>
                             <p className="mt-3 break-all text-[16px] font-medium text-gray-900">
-                                {apiBase ?? "Not set"}
+                                {apiBase ?? "未设置"}
                             </p>
                         </div>
                     )}
                     <div className="rounded-[24px] bg-gray-50 p-5">
                         <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-gray-400">
-                            Updated
+                            已更新
                         </p>
                         <p className="mt-3 text-[16px] font-medium text-gray-900">
                             {formatProviderTimestamp(provider.updatedAt)}
@@ -354,7 +352,7 @@ export function LlmProviderDetailScreen({
                                 rel="noreferrer"
                                 className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-[12px] font-medium text-gray-600 transition hover:bg-gray-200"
                             >
-                                Docs
+                                文档
                                 <ExternalLink className="h-3.5 w-3.5" />
                             </a>
                         ) : null}
@@ -366,14 +364,14 @@ export function LlmProviderDetailScreen({
                 <div className="flex items-start justify-between gap-4">
                     <div>
                         <h2 className="text-[24px] font-semibold tracking-[-0.05em] text-gray-950">
-                            Selected models
+                            已选模型
                         </h2>
                     </div>
                     <div className="rounded-full bg-gray-100 px-4 py-2 text-[13px] font-medium text-gray-600">
                         {formatCountLabel(
                             provider.models.length,
-                            "model",
-                            "models",
+                            "个模型",
+                            "个模型",
                         )}
                     </div>
                 </div>
@@ -411,36 +409,36 @@ export function LlmProviderDetailScreen({
                 <div className="flex items-start justify-between gap-4">
                     <div>
                         <h2 className="text-[24px] font-semibold tracking-[-0.05em] text-gray-950">
-                            Access
+                            访问权限
                         </h2>
                     </div>
                     <div className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2 text-[13px] font-medium text-gray-600">
                         <Users className="h-4 w-4" />
                         {provider.access.allMembers
-                            ? "Everyone"
-                            : `${provider.access.memberCount + provider.access.teams.length} grants`}
+                            ? "所有人"
+                            : `${provider.access.memberCount + provider.access.teams.length} 项授权`}
                     </div>
                 </div>
 
                 {provider.access.allMembers ? (
                     <p className="mt-6 rounded-[20px] bg-gray-50 px-5 py-4 text-[14px] text-gray-600">
-                        Everyone in the organization — including members who join later — can use this provider.
+                        组织中的所有人均可使用此提供商，包括之后加入的成员。
                     </p>
                 ) : null}
 
                 <div className="mt-8 grid gap-6 xl:grid-cols-2">
                     <div className="rounded-[24px] bg-gray-50 p-5">
                         <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-gray-400">
-                            People
+                            人员
                         </p>
                         <div className="mt-4 grid gap-3">
                             {provider.access.membersHidden ? (
                                 <p data-testid="llm-provider-members-hidden" className="text-[14px] text-gray-500">
-                                    {`${provider.access.memberCount} ${provider.access.memberCount === 1 ? "person" : "people"}. ${LLM_PROVIDER_MEMBERS_HIDDEN_MESSAGE}`}
+                                    {`${provider.access.memberCount} 人. ${LLM_PROVIDER_MEMBERS_HIDDEN_MESSAGE}`}
                                 </p>
                             ) : provider.access.members.length === 0 ? (
                                 <p className="text-[14px] text-gray-500">
-                                    No direct people access yet.
+                                    尚未向人员直接授予访问权限。
                                 </p>
                             ) : (
                                 provider.access.members.map((member) => (
@@ -462,12 +460,12 @@ export function LlmProviderDetailScreen({
 
                     <div className="rounded-[24px] bg-gray-50 p-5">
                         <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-gray-400">
-                            Teams
+                            团队
                         </p>
                         <div className="mt-4 grid gap-3">
                             {provider.access.teams.length === 0 ? (
                                 <p className="text-[14px] text-gray-500">
-                                    No team access yet.
+                                    尚未向团队授予访问权限。
                                 </p>
                             ) : (
                                 provider.access.teams.map((team) => (
@@ -479,7 +477,7 @@ export function LlmProviderDetailScreen({
                                             {team.name}
                                         </p>
                                         <p className="mt-1 text-[13px] text-gray-500">
-                                            Updated{" "}
+                                            已更新{" "}
                                             {formatProviderTimestamp(
                                                 team.updatedAt,
                                             )}
@@ -495,10 +493,10 @@ export function LlmProviderDetailScreen({
             {provider.source === "custom" && !provider.configRedacted ? (
                 <section className="rounded-[36px] border border-gray-200 bg-white p-8 shadow-[0_18px_48px_-34px_rgba(15,23,42,0.24)]">
                     <h2 className="text-[24px] font-semibold tracking-[-0.05em] text-gray-950">
-                        Custom provider payload
+                        自定义提供商配置
                     </h2>
                     <p className="mt-2 text-[15px] text-gray-500">
-                        The raw provider config saved for this custom source.
+                        为此自定义来源保存的原始提供商配置。
                     </p>
                     <pre className="mt-6 overflow-x-auto rounded-[24px] bg-[#0f172a] p-5 text-[13px] leading-6 text-slate-100">
                         {JSON.stringify(provider.providerConfig, null, 2)}

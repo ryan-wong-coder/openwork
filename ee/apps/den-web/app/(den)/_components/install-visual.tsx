@@ -27,7 +27,7 @@ function ApplicationsFolder() {
         <path d="M4 14h48v22c0 2.2-1.8 4-4 4H8c-2.2 0-4-1.8-4-4V14z" fill="#7db8f8" />
         <text x="28" y="31" textAnchor="middle" fontSize="13" fontWeight="700" fill="#ffffff" fontFamily="system-ui">A</text>
       </svg>
-      <span className="text-[11px] font-medium text-[#344054]">Applications</span>
+      <span className="text-[11px] font-medium text-[#344054]">应用程序</span>
     </span>
   );
 }
@@ -50,7 +50,7 @@ function MacDragVisual({ appName, iconUrl }: { appName: string; iconUrl: string 
         </span>
         <span className="grid justify-items-center gap-0.5 text-[#98a2b3]" aria-hidden="true">
           <ArrowRight className="size-6" strokeWidth={2.2} />
-          <span className="text-[10px] font-semibold uppercase tracking-[0.08em]">drag</span>
+          <span className="text-[10px] font-semibold uppercase tracking-[0.08em]">拖动</span>
         </span>
         <ApplicationsFolder />
       </div>
@@ -62,7 +62,7 @@ function WindowsRunAnywayVisual({ appName }: { appName: string }) {
   return (
     <div className="w-full max-w-[26rem] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_10px_30px_-18px_rgba(16,24,40,0.3)]">
       <div className="flex h-7 items-center justify-between border-b border-slate-100 bg-[#f7f9fc] px-3">
-        <span className="text-[11px] font-medium text-[#3a3a3c]">{appName} Setup</span>
+        <span className="text-[11px] font-medium text-[#3a3a3c]">{appName} 设置</span>
         <span className="flex items-center gap-2 text-[10px] text-[#6b7280]" aria-hidden="true">
           <span>—</span>
           <span>▢</span>
@@ -70,12 +70,12 @@ function WindowsRunAnywayVisual({ appName }: { appName: string }) {
         </span>
       </div>
       <div className="grid gap-2.5 bg-[#f6f8fb] px-6 py-6">
-        <p className="m-0 text-[13px] font-semibold text-[#1c2b44]">Windows protected your PC</p>
+        <p className="m-0 text-[13px] font-semibold text-[#1c2b44]">Windows 已保护你的电脑</p>
         <p className="m-0 text-[11px] leading-4 text-[#475467]">
-          Click <span className="font-semibold underline underline-offset-2">More info</span>, then
+          点击 <span className="font-semibold underline underline-offset-2">更多信息</span>，然后
         </p>
         <span className="grid h-9 w-32 place-items-center rounded-md bg-[#1c2b44] text-[12px] font-semibold text-white">
-          Run anyway
+          仍要运行
         </span>
       </div>
     </div>
@@ -86,7 +86,7 @@ function LinuxTerminalVisual() {
   return (
     <div className="w-full max-w-[26rem] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_10px_30px_-18px_rgba(16,24,40,0.3)]">
       <div className="relative flex h-7 items-center justify-center border-b border-slate-100 bg-[#f7f9fc]">
-        <span className="text-[11px] font-medium text-[#3a3a3c]">Terminal</span>
+        <span className="text-[11px] font-medium text-[#3a3a3c]">终端</span>
       </div>
       <div className="grid gap-1.5 bg-[#101828] px-5 py-5 font-mono text-[11px] leading-5 text-[#d0d5dd]">
         <span>

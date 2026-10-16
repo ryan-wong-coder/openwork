@@ -20,9 +20,9 @@ export default function GlobalError({ error }: { error: Error & { digest?: strin
   }, [error]);
 
   return (
-    <html lang="en">
+    <html lang="zh-CN">
       <body>
-        <NextError statusCode={0} />
+        <NextError statusCode={0} title="应用遇到错误，请刷新页面后重试。" />
       </body>
     </html>
   );

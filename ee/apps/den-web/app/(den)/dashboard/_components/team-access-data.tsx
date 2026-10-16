@@ -119,7 +119,7 @@ export function useTeamPluginAccess(teamId: string) {
         15000,
       );
       if (!response.ok) {
-        throw new Error(getErrorMessage(payload, `Failed to load team access (${response.status}).`));
+        throw new Error(getErrorMessage(payload, `无法加载团队访问权限（${response.status}）。`));
       }
 
       const items = isRecord(payload) && Array.isArray(payload.items) ? payload.items : [];
@@ -143,7 +143,7 @@ export function useRevokeTeamPluginAccess() {
           15000,
         );
         if (response.status !== 204 && !response.ok) {
-          throw getRequestError(payload, response, `Failed to revoke access (${response.status}).`);
+          throw getRequestError(payload, response, `无法撤销访问权限（${response.status}）。`);
         }
       });
       return input.teamId;

@@ -29,9 +29,9 @@ export function MarketplaceOnboardingScreen() {
     queryKey: ["onboarding", "inference", orgId],
     enabled: Boolean(orgId),
     queryFn: async () => {
-      if (!orgId) throw new Error("Choose a workspace to check OpenWork Models.");
+      if (!orgId) throw new Error("选择工作区以检查 OpenWork 模型。");
       const { response, payload } = await requestJson("/v1/inference", { method: "GET", headers: { "x-openwork-org-id": orgId } }, 12000);
-      if (!response.ok) throw new Error(getErrorMessage(payload, "Could not check OpenWork Models."));
+      if (!response.ok) throw new Error(getErrorMessage(payload, "无法检查 OpenWork 模型，请重试。"));
       return typeof payload === "object" && payload !== null && "inference" in payload
         && typeof payload.inference === "object" && payload.inference !== null
         && "enabled" in payload.inference && payload.inference.enabled === true;
@@ -50,16 +50,16 @@ export function MarketplaceOnboardingScreen() {
   }
 
   return (
-    <SetupFrame step="ready" title="Choose what powers your work." description="Use OpenWork Models or bring your own provider. You can decide now or set this up later.">
+    <SetupFrame step="ready" title="选择工作使用的模型" description="使用 OpenWork 模型或自有提供商，可现在选择或稍后配置。">
       <div className="grid gap-6" data-testid="marketplace-onboarding">
         <section aria-labelledby="setup-models-heading" className="grid gap-4">
           <div>
-            <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-neutral-400">Optional · Models</p>
-            <h2 id="setup-models-heading" ref={modelsHeading} tabIndex={-1} className="mt-2 text-xl font-semibold tracking-[-0.03em]">Your choice of model.</h2>
+            <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-neutral-400">可选 · 模型</p>
+            <h2 id="setup-models-heading" ref={modelsHeading} tabIndex={-1} className="mt-2 text-xl font-semibold tracking-[-0.03em]">自由选择模型</h2>
             <p className="mt-2 text-sm leading-6 text-[var(--dls-text-secondary)]" role="status">
-              {modelsLoading ? "Checking OpenWork Models..." : modelsError ? "Model status is unavailable. You can still complete setup." : modelsEnabled ? "OpenWork Models are on for this workspace." : "Signing in does not enable models. Keep your existing provider, or choose one when you are ready."}
+              {modelsLoading ? "正在检查 OpenWork 模型…" : modelsError ? "模型状态不可用，仍可完成配置。" : modelsEnabled ? "此工作区已启用 OpenWork 模型。" : "登录不会自动启用模型，可保留现有提供商或在准备好后选择。"}
             </p>
-            {modelsEnabled ? <DenBadge icon={Check}>Models on</DenBadge> : null}
+            {modelsEnabled ? <DenBadge icon={Check}>模型已开启</DenBadge> : null}
           </div>
           <div className="divide-y divide-[var(--dls-border)] overflow-hidden rounded-2xl border border-[var(--dls-border)]">
             <div className="flex items-start gap-3 p-4 sm:p-5" data-testid="onboarding-choice-openwork-models">
@@ -67,20 +67,20 @@ export function MarketplaceOnboardingScreen() {
                 <img src="/openwork-mark.svg" alt="" aria-hidden className="h-5 w-5" />
               </div>
               <div className="min-w-0 flex-1">
-                <h3 className="text-sm font-semibold">OpenWork Models</h3>
-                <p className="mt-1 text-[13px] leading-5 text-[var(--dls-text-secondary)]">Managed models, billed per member. No API keys to look after.</p>
+                <h3 className="text-sm font-semibold">OpenWork 模型</h3>
+                <p className="mt-1 text-[13px] leading-5 text-[var(--dls-text-secondary)]">托管模型按成员计费，无需管理 API 密钥。</p>
                 <Link href={getInferenceRoute(orgSlug)} className="mt-3 inline-flex items-center gap-1.5 rounded-sm text-sm font-medium underline-offset-4 hover:underline focus-visible:ring-2 focus-visible:ring-neutral-950">
-                  {modelsEnabled ? "Manage models" : "Explore models"}<ArrowUpRight className="size-3.5" aria-hidden />
+                  {modelsEnabled ? "管理模型" : "浏览模型"}<ArrowUpRight className="size-3.5" aria-hidden />
                 </Link>
               </div>
             </div>
             <div className="flex items-start gap-3 p-4 sm:p-5" data-testid="onboarding-choice-byok">
               <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[var(--dls-hover)]"><KeyRound className="size-[18px] text-[var(--dls-text-secondary)]" aria-hidden /></div>
               <div className="min-w-0 flex-1">
-                <h3 className="text-sm font-semibold">Bring your Own Keys</h3>
-                <p className="mt-1 text-[13px] leading-5 text-[var(--dls-text-secondary)]">Connect your provider or gateway. Keep your own billing and model choices.</p>
+                <h3 className="text-sm font-semibold">使用自有密钥</h3>
+                <p className="mt-1 text-[13px] leading-5 text-[var(--dls-text-secondary)]">连接自有提供商或网关，保留自己的计费与模型选择。</p>
                 <Link href={getCustomLlmProvidersRoute(orgSlug)} className="mt-3 inline-flex items-center gap-1.5 rounded-sm text-sm font-medium underline-offset-4 hover:underline focus-visible:ring-2 focus-visible:ring-neutral-950">
-                  Add a provider<ArrowUpRight className="size-3.5" aria-hidden />
+                  添加提供商<ArrowUpRight className="size-3.5" aria-hidden />
                 </Link>
               </div>
             </div>
@@ -88,13 +88,13 @@ export function MarketplaceOnboardingScreen() {
         </section>
         <section aria-labelledby="setup-finish-heading" className="grid gap-4 border-t border-[var(--dls-border)] pt-6" data-testid="onboarding-finish">
           <div>
-            <h2 id="setup-finish-heading" className="text-base font-semibold tracking-tight">Your workspace is ready</h2>
-            <p className="mt-2 text-sm leading-6 text-[var(--dls-text-secondary)]">No model selection is required to complete setup.</p>
+            <h2 id="setup-finish-heading" className="text-base font-semibold tracking-tight">工作区已就绪</h2>
+            <p className="mt-2 text-sm leading-6 text-[var(--dls-text-secondary)]">无需选择模型即可完成配置。</p>
           </div>
           {authError ? <p role="alert" className="text-sm text-rose-600">{authError}</p> : null}
           {desktopRedirectUrl ? <DesktopHandoffAction openworkUrl={desktopRedirectUrl} grant={getDesktopGrant(desktopRedirectUrl)} organizationName={activeOrg?.name ?? null} showCopyLinkByDefault /> : (
             <button type="button" onClick={() => void finish()} disabled={!orgId || completing} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-neutral-950 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-neutral-800 disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2">
-              {completing ? "Completing..." : desktopAuthRequested ? "Complete and open the app" : "Complete setup"}<ArrowRight className="size-4" aria-hidden />
+              {completing ? "正在完成…" : desktopAuthRequested ? "完成并打开应用" : "完成配置"}<ArrowRight className="size-4" aria-hidden />
             </button>
           )}
         </section>

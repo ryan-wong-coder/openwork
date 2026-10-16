@@ -17,18 +17,18 @@ import { MemberAuthCheckError } from "./member-auth-guard";
 function SessionStatusPanel({ mode }: { mode: "checking" | "redirecting" }) {
   const status = mode === "checking"
     ? {
-        title: "Checking account",
-        body: "If you are already signed in, we will open your workspace. Otherwise you can continue here.",
+        title: "正在检查账户",
+        body: "若已登录，将打开你的工作区；也可以在此继续登录。",
       }
     : {
-        title: "Opening workspace",
-        body: "You are signed in. We are taking you to the right Cloud destination.",
+        title: "正在打开工作区",
+        body: "已登录，正在打开对应的云端页面。",
       };
 
   return (
     <div className="grid gap-6" role="status" aria-live="polite">
       <div className="grid gap-3">
-        <p className="den-eyebrow">Account</p>
+        <p className="den-eyebrow">账号</p>
         <div className="rounded-[1.5rem] border border-[var(--dls-border)] bg-[var(--dls-hover)]/60 p-4">
           <div className="flex items-start gap-3">
             <span className="relative mt-1 flex h-2.5 w-2.5 shrink-0">
@@ -43,7 +43,7 @@ function SessionStatusPanel({ mode }: { mode: "checking" | "redirecting" }) {
         </div>
       </div>
       <p className="m-0 text-xs leading-5 text-[var(--dls-text-secondary)]">
-        No action needed.
+        无需操作。
       </p>
     </div>
   );
@@ -89,7 +89,7 @@ export function AuthScreen({ agentSignIn = false }: { agentSignIn?: boolean }) {
       panelVisual={<OnboardingTexture />}
       // The sign-up panel carries its own heading (P2).
       title=""
-      description="One account for your desktop, your tools, and your team."
+      description="一个账户，连接桌面端、工具与团队。"
     >
       <div data-testid="auth-landing-frame">
         <div data-testid="auth-landing-form">
@@ -102,7 +102,7 @@ export function AuthScreen({ agentSignIn = false }: { agentSignIn?: boolean }) {
           ) : (
             <div className="grid gap-5">
               <TemporaryAuthNotice />
-              <AuthPanel bare emailFirstFlow emailStepContent={{ title: "Start using OpenWork." }} />
+              <AuthPanel bare emailFirstFlow emailStepContent={{ title: "开始使用 OpenWork" }} />
             </div>
           )}
         </div>
@@ -133,7 +133,7 @@ function AgentSignInScreen({ status }: { status: "checking" | "redirecting" | "e
       <div data-testid="auth-landing-frame">
         <div data-testid="auth-landing-form">
           <SetupPanelBody>
-            <SetupFacts rows={[{ label: "Signing in for", value: <McpAppFact client={client} /> }]} />
+            <SetupFacts rows={[{ label: "正在登录", value: <McpAppFact client={client} /> }]} />
             {status === "error" ? (
               <MemberAuthCheckError />
             ) : status ? (
@@ -143,7 +143,7 @@ function AgentSignInScreen({ status }: { status: "checking" | "redirecting" | "e
                 bare
                 emailFirstFlow
                 socialFirst
-                emailStepContent={{ title: "Create your account.", copy: "Already have an account? Enter your email and we\u2019ll find it." }}
+                emailStepContent={{ title: "创建账户", copy: "已有账户？输入邮箱以查找账户。" }}
               />
             )}
           </SetupPanelBody>

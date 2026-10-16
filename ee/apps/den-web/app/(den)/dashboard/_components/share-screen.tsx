@@ -50,7 +50,7 @@ function ShareLayout({ back, logo, title, subtitle, draft, setDraft, savedDraft,
     <ItemPage testId="share-screen">
       <ItemHeader back={back} logo={logo} title={title} description={subtitle} />
       <section className="flex flex-col gap-2.5">
-        <SectionTitle title="Who can use it" />
+        <SectionTitle title="谁可以使用" />
         <WhoCanUseIt
           value={draft}
           onChange={setDraft}
@@ -63,9 +63,9 @@ function ShareLayout({ back, logo, title, subtitle, draft, setDraft, savedDraft,
       </section>
       {error ? <p className="text-[13px] text-red-600">{error}</p> : null}
       <StepFooter note={shareConsequence(draft, orgContext, ownerId)}>
-        <LinkButton href={back.href}>Cancel</LinkButton>
+        <LinkButton href={back.href}>取消</LinkButton>
         <DenButton loading={saving} disabled={unchanged} onClick={onSave}>
-          {count > 0 ? `Share with ${peopleLabel(count)}` : "Save"}
+          {count > 0 ? `分享给 ${peopleLabel(count)}` : "保存"}
         </DenButton>
       </StepFooter>
     </ItemPage>
@@ -97,15 +97,15 @@ export function ShareConnectorScreen({ connectionId }: { connectionId: string })
   const { draft, setDraft } = useShareFlow(saved);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const back = { href: getLibraryConnectorRoute(orgSlug, connectionId), label: connection?.name ?? "Back" };
+  const back = { href: getLibraryConnectorRoute(orgSlug, connectionId), label: connection?.name ?? "返回" };
 
   if (!connection || !draft || !saved || !orgContext) {
     return (
       <ItemPage>
         <ItemHeader
           back={back}
-          title={usable.isLoading ? "Loading..." : usable.error ? "It did not load" : "You can't share this"}
-          description={usable.isLoading ? undefined : usable.error ? "Reload the page to try again." : "Only the person who added it can share it."}
+          title={usable.isLoading ? "正在加载…" : usable.error ? "加载失败" : "你无法共享此项"}
+          description={usable.isLoading ? undefined : usable.error ? "请重新加载页面后重试。" : "仅添加此项的人员可共享。"}
         />
       </ItemPage>
     );
@@ -113,8 +113,8 @@ export function ShareConnectorScreen({ connectionId }: { connectionId: string })
 
   const name = connection.name;
   const subtitle = connection.authType === "oauth" && connection.credentialMode === "per_member"
-    ? `Each person signs in with their own ${name} account. Nobody uses yours.`
-    : `Everyone you add uses ${name} the way you set it up.`;
+    ? `每个人使用自己的 ${name} 账户登录，不会使用你的账户。`
+    : `你添加的每个人都将按你的配置使用 ${name}。`;
 
   async function save() {
     if (!draft || !saved || !orgContext) return;
@@ -124,13 +124,13 @@ export function ShareConnectorScreen({ connectionId }: { connectionId: string })
       await saveAccess(connectionId, draft);
       const previous = saved;
       toast({
-        title: `${name} is shared`,
+        title: `已分享 ${name}`,
         description: sharedToastDescription(draft, orgContext, orgContext.currentMember.id),
-        action: { label: "Undo", onClick: () => saveAccess(connectionId, previous) },
+        action: { label: "撤销", onClick: () => saveAccess(connectionId, previous) },
       });
       router.push(getLibraryRoute(orgSlug));
     } catch (saveError) {
-      setError(saveError instanceof Error ? saveError.message : "Sharing did not save.");
+      setError(saveError instanceof Error ? saveError.message : "共享设置保存失败，请重试。");
       setSaving(false);
     }
   }
@@ -139,12 +139,12 @@ export function ShareConnectorScreen({ connectionId }: { connectionId: string })
     <ShareLayout
       back={back}
       logo={<ConnectorLogo name={name} url={connection.url} size="lg" />}
-      title={`Share ${name}`}
+      title={`分享 ${name}`}
       subtitle={subtitle}
       draft={draft}
       setDraft={setDraft}
       savedDraft={saved}
-      ownerName={viewerName(orgContext, "You")}
+      ownerName={viewerName(orgContext, "你")}
       onSave={() => void save()}
       saving={saving}
       error={error}
@@ -164,15 +164,15 @@ export function SharePluginScreen({ pluginId }: { pluginId: string }) {
   const { draft, setDraft } = useShareFlow(saved);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const back = { href: getLibraryPluginRoute(orgSlug, pluginId), label: plugin.data?.name ?? "Back" };
+  const back = { href: getLibraryPluginRoute(orgSlug, pluginId), label: plugin.data?.name ?? "返回" };
 
   if (!plugin.data || !draft || !saved || !access.data || !orgContext) {
     return (
       <ItemPage>
         <ItemHeader
           back={back}
-          title={plugin.isLoading || access.isLoading ? "Loading..." : plugin.error || access.error ? "It did not load" : "You can't share this"}
-          description={plugin.isLoading || access.isLoading ? undefined : plugin.error || access.error ? "Reload the page to try again." : "Only the person who made it can share it."}
+          title={plugin.isLoading || access.isLoading ? "正在加载…" : plugin.error || access.error ? "加载失败" : "你无法共享此项"}
+          description={plugin.isLoading || access.isLoading ? undefined : plugin.error || access.error ? "请重新加载页面后重试。" : "仅创建此项的人员可共享。"}
         />
       </ItemPage>
     );
@@ -188,10 +188,10 @@ export function SharePluginScreen({ pluginId }: { pluginId: string }) {
     try {
       await savePluginAccess({ pluginId, grants: access.data, next: draft, ownerId });
       toast({
-        title: `${name} is shared`,
+        title: `已分享 ${name}`,
         description: sharedToastDescription(draft, orgContext, ownerId),
         action: {
-          label: "Undo",
+          label: "撤销",
           onClick: async () => {
             const refreshed = await access.refetch();
             if (refreshed.data && saved) await savePluginAccess({ pluginId, grants: refreshed.data, next: saved, ownerId });
@@ -200,7 +200,7 @@ export function SharePluginScreen({ pluginId }: { pluginId: string }) {
       });
       router.push(getLibraryRoute(orgSlug));
     } catch (saveError) {
-      setError(saveError instanceof Error ? saveError.message : "Sharing did not save.");
+      setError(saveError instanceof Error ? saveError.message : "共享设置保存失败，请重试。");
       setSaving(false);
     }
   }
@@ -209,12 +209,12 @@ export function SharePluginScreen({ pluginId }: { pluginId: string }) {
     <ShareLayout
       back={back}
       logo={<LetterTile name={name} size="lg" />}
-      title={`Share ${name}`}
+      title={`分享 ${name}`}
       subtitle={pluginShareSubtitle(plugin.data)}
       draft={draft}
       setDraft={setDraft}
       savedDraft={saved}
-      ownerName={viewerName(orgContext, "You")}
+      ownerName={viewerName(orgContext, "你")}
       onSave={() => void save()}
       saving={saving}
       error={error}

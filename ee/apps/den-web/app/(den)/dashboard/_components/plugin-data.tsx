@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE } from "../../../_lib/locale";
+
 import { queryOptions, useInfiniteQuery, useMutation, useQuery, useQueryClient, type QueryClient } from "@tanstack/react-query";
 import { mcpAppProjectionSchema } from "@openwork/types/mcp-app";
 import { getErrorMessage, getRequestError, requestJson } from "../../_lib/den-flow";
@@ -160,28 +162,28 @@ export type DenPlugin = {
 export function getPluginCategoryLabel(category: PluginCategory): string {
   switch (category) {
     case "integrations":
-      return "External Integrations";
+      return "外部集成";
     case "workflows":
-      return "Workflows";
+      return "工作流";
     case "code-intelligence":
-      return "Code Intelligence";
+      return "代码智能";
     case "output-styles":
-      return "Output Styles";
+      return "输出风格";
     case "infrastructure":
-      return "Infrastructure";
+      return "基础设施";
   }
 }
 export function formatPluginTimestamp(value: string | null): string {
   if (!value) {
-    return "Recently updated";
+    return "最近更新";
   }
 
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
-    return "Recently updated";
+    return "最近更新";
   }
 
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(DEFAULT_DEN_LOCALE, {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -205,27 +207,27 @@ export function getPluginPartsSummary(plugin: DenPlugin): string {
   const parts: string[] = [];
   const appCount = plugin.apps.length + plugin.authoredApps.length;
   if (appCount > 0) {
-    parts.push(`${appCount} ${appCount === 1 ? "App" : "Apps"}`);
+    parts.push(`${appCount} 个应用`);
   }
   if (plugin.skills.length > 0) {
-    parts.push(`${plugin.skills.length} ${plugin.skills.length === 1 ? "Skill" : "Skills"}`);
+    parts.push(`${plugin.skills.length} 项技能`);
   }
   if (plugin.hooks.length > 0) {
-    parts.push(`${plugin.hooks.length} ${plugin.hooks.length === 1 ? "Hook" : "Hooks"}`);
+    parts.push(`${plugin.hooks.length} 个钩子`);
   }
   if (plugin.mcps.length > 0) {
     parts.push(`${plugin.mcps.length} ${plugin.mcps.length === 1 ? "MCP" : "MCPs"}`);
   }
   if (plugin.agents.length > 0) {
-    parts.push(`${plugin.agents.length} ${plugin.agents.length === 1 ? "Agent" : "Agents"}`);
+    parts.push(`${plugin.agents.length} 个智能体`);
   }
   if (plugin.commands.length > 0) {
-    parts.push(`${plugin.commands.length} ${plugin.commands.length === 1 ? "Command" : "Commands"}`);
+    parts.push(`${plugin.commands.length} 条命令`);
   }
   if (plugin.workflows.length > 0) {
-    parts.push(`${plugin.workflows.length} ${plugin.workflows.length === 1 ? "Workflow" : "Workflows"}`);
+    parts.push(`${plugin.workflows.length} 个工作流`);
   }
-  return parts.length > 0 ? parts.join(" · ") : "Empty bundle";
+  return parts.length > 0 ? parts.join(" · ") : "空插件包";
 }
 
 // ── Mock data ──────────────────────────────────────────────────────────────
@@ -239,21 +241,21 @@ const MOCK_PLUGINS: DenPlugin[] = [
     name: "GitHub",
     slug: "github",
     description:
-      "Work with GitHub repositories, pull requests, issues, and Actions directly from chat. Bundles an MCP server and review workflows.",
+      "直接在对话中操作 GitHub 仓库、PR、Issue 与 Actions，包含 MCP 服务器与审查工作流。",
     version: "1.4.2",
     author: "Anthropic",
     category: "integrations",
     installed: true,
     source: { type: "marketplace", marketplace: "claude-plugins-official" },
     skills: [
-      { id: "sk_gh_pr", name: "Open Pull Request", description: "Draft PR titles and bodies from a diff." },
-      { id: "sk_gh_review", name: "Review Pull Request", description: "Summarize diffs and suggest blocking comments." },
+      { id: "sk_gh_pr", name: "创建合并请求", description: "根据代码差异起草 PR 标题与描述。" },
+      { id: "sk_gh_review", name: "审查合并请求", description: "总结代码差异并提出阻止合并的问题。" },
     ],
     hooks: [
       {
         id: "hk_gh_pre",
         event: "PreToolUse",
-        description: "Redact GitHub tokens from logs before tool execution.",
+        description: "工具执行前隐藏日志中的 GitHub 令牌。",
         matcher: "Bash",
       },
     ],
@@ -261,7 +263,7 @@ const MOCK_PLUGINS: DenPlugin[] = [
       {
         id: "mcp_gh",
         name: "github-mcp",
-        description: "Official GitHub MCP server — issues, PRs, releases, Actions.",
+        description: "官方 GitHub MCP 服务器，支持 Issue、PR、版本与 Actions。",
         transport: "http",
         toolCount: 42,
       },
@@ -270,11 +272,11 @@ const MOCK_PLUGINS: DenPlugin[] = [
       {
         id: "ag_gh_reviewer",
         name: "pr-reviewer",
-        description: "Opinionated pull-request reviewer with context-aware suggestions.",
+        description: "结合上下文提出建议的合并请求审查助手。",
       },
     ],
     commands: [
-      { id: "cmd_gh_pr", name: "/gh:pr", description: "Create a pull request from the current branch." },
+      { id: "cmd_gh_pr", name: "/gh:pr", description: "根据当前分支创建合并请求。" },
     ],
     workflows: [],
     apps: [],
@@ -286,26 +288,26 @@ const MOCK_PLUGINS: DenPlugin[] = [
   },
   {
     id: "plg_commit_commands",
-    name: "Commit Commands",
+    name: "提交命令",
     slug: "commit-commands",
     description:
-      "Git commit, push, and PR-creation workflows. Uses conventional-commit heuristics and follows your repo's commit style.",
+      "Git 提交、推送与 PR 创建工作流，遵循约定式提交规则及仓库提交风格。",
     version: "0.9.0",
     author: "Anthropic",
     category: "workflows",
     installed: true,
     source: { type: "marketplace", marketplace: "claude-plugins-official" },
     skills: [
-      { id: "sk_cc_commit", name: "Smart Commit", description: "Stage, group, and commit with a generated message." },
-      { id: "sk_cc_push", name: "Push & Open PR", description: "Push current branch and open a PR with autogenerated body." },
+      { id: "sk_cc_commit", name: "智能提交", description: "暂存、分组并使用生成的消息提交。" },
+      { id: "sk_cc_push", name: "推送并创建 PR", description: "推送当前分支，并使用自动生成的描述创建 PR。" },
     ],
     hooks: [],
     mcps: [],
     agents: [],
     commands: [
-      { id: "cmd_cc_commit", name: "/commit", description: "Create a commit for staged changes." },
-      { id: "cmd_cc_push", name: "/push", description: "Push current branch and track upstream." },
-      { id: "cmd_cc_pr", name: "/pr", description: "Open a pull request." },
+      { id: "cmd_cc_commit", name: "/commit", description: "为已暂存更改创建提交。" },
+      { id: "cmd_cc_push", name: "/push", description: "推送当前分支并设置上游跟踪。" },
+      { id: "cmd_cc_pr", name: "/pr", description: "创建合并请求。" },
     ],
     workflows: [],
     apps: [],
@@ -317,10 +319,10 @@ const MOCK_PLUGINS: DenPlugin[] = [
   },
   {
     id: "plg_typescript_lsp",
-    name: "TypeScript LSP",
+    name: "TypeScript 语言服务器",
     slug: "typescript-lsp",
     description:
-      "Connects Claude to the TypeScript language server so it can jump to definitions, find references, and surface type errors immediately after edits.",
+      "将 Claude 连接到 TypeScript 语言服务器，支持跳转定义、查找引用，并在编辑后立即报告类型错误。",
     version: "1.1.0",
     author: "Anthropic",
     category: "code-intelligence",
@@ -331,7 +333,7 @@ const MOCK_PLUGINS: DenPlugin[] = [
       {
         id: "hk_ts_diag",
         event: "PostToolUse",
-        description: "Run LSP diagnostics after every file edit and report type errors.",
+        description: "每次文件编辑后运行语言服务器诊断并报告类型错误。",
         matcher: "Edit|Write",
       },
     ],
@@ -339,7 +341,7 @@ const MOCK_PLUGINS: DenPlugin[] = [
       {
         id: "mcp_ts",
         name: "typescript-language-server",
-        description: "LSP bridge for .ts/.tsx diagnostics and navigation.",
+        description: "用于 .ts/.tsx 诊断与导航的语言服务器桥接。",
         transport: "stdio",
         toolCount: 9,
       },
@@ -359,30 +361,30 @@ const MOCK_PLUGINS: DenPlugin[] = [
     name: "Linear",
     slug: "linear",
     description:
-      "Create, update, and triage Linear issues without leaving the session. Bundles a Linear MCP and an issue-grooming agent.",
+      "直接在会话中创建、更新与分拣 Linear Issue，包含 Linear MCP 与问题整理代理。",
     version: "0.6.3",
     author: "Anthropic",
     category: "integrations",
     installed: false,
     source: { type: "marketplace", marketplace: "claude-plugins-official" },
     skills: [
-      { id: "sk_lin_triage", name: "Triage Inbox", description: "Sweep the inbox and file issues to the right project." },
+      { id: "sk_lin_triage", name: "整理收件箱", description: "检查收件箱并将问题归入对应项目。" },
     ],
     hooks: [],
     mcps: [
       {
         id: "mcp_linear",
         name: "linear-mcp",
-        description: "Linear MCP — issues, cycles, projects, comments.",
+        description: "Linear MCP，支持问题、周期、项目与评论。",
         transport: "http",
         toolCount: 24,
       },
     ],
     agents: [
-      { id: "ag_lin_groomer", name: "linear-groomer", description: "Keeps the backlog tidy and flags stale issues." },
+      { id: "ag_lin_groomer", name: "linear-groomer", description: "整理待办列表并标记长期未更新的问题。" },
     ],
     commands: [
-      { id: "cmd_lin_new", name: "/linear:new", description: "File a new issue from the current context." },
+      { id: "cmd_lin_new", name: "/linear:new", description: "根据当前上下文创建新问题。" },
     ],
     workflows: [],
     apps: [],
@@ -394,33 +396,33 @@ const MOCK_PLUGINS: DenPlugin[] = [
   },
   {
     id: "plg_openwork_release",
-    name: "OpenWork Release Kit",
+    name: "OpenWork 发布工具包",
     slug: "openwork-release-kit",
     description:
-      "Internal plugin that automates OpenWork release prep, server package checks, and changelog generation. Shipped by OpenWork infra.",
+      "自动执行 OpenWork 发布准备、服务器软件包检查与更新日志生成的内部插件，由 OpenWork 基础设施团队提供。",
     version: "2.3.1",
     author: "OpenWork",
     category: "workflows",
     installed: true,
     source: { type: "github", repo: "different-ai/openwork-plugins" },
     skills: [
-      { id: "sk_ow_release_prep", name: "Release Prep", description: "Bump versions across app, desktop, and openwork-server in lockstep." },
-      { id: "sk_ow_changelog", name: "Changelog Drafter", description: "Generate markdown release notes from merged PRs." },
+      { id: "sk_ow_release_prep", name: "发布准备", description: "同步更新 app、desktop 与 openwork-server 的版本号。" },
+      { id: "sk_ow_changelog", name: "更新日志起草", description: "根据已合并 PR 生成 Markdown 发布说明。" },
     ],
     hooks: [
       {
         id: "hk_ow_sessionstart",
         event: "SessionStart",
-        description: "Load the release runbook into context at session start.",
+        description: "会话开始时将发布操作手册载入上下文。",
         matcher: null,
       },
     ],
     mcps: [],
     agents: [
-      { id: "ag_ow_release", name: "release-captain", description: "Drives the full release flow end-to-end." },
+      { id: "ag_ow_release", name: "release-captain", description: "执行完整发布流程。" },
     ],
     commands: [
-      { id: "cmd_ow_release", name: "/release", description: "Run the standardized release workflow." },
+      { id: "cmd_ow_release", name: "/release", description: "运行标准发布工作流。" },
     ],
     workflows: [],
     apps: [],
@@ -435,21 +437,21 @@ const MOCK_PLUGINS: DenPlugin[] = [
     name: "Sentry",
     slug: "sentry",
     description:
-      "Connect to Sentry and ingest recent errors into a session. Includes an MCP server and a triage skill that clusters noisy issues.",
+      "连接 Sentry，将近期错误引入会话。包含 MCP 服务器与可聚合重复问题的分拣技能。",
     version: "0.4.0",
     author: "Anthropic",
     category: "infrastructure",
     installed: false,
     source: { type: "marketplace", marketplace: "claude-plugins-official" },
     skills: [
-      { id: "sk_sentry_triage", name: "Triage Errors", description: "Cluster Sentry issues and recommend owners." },
+      { id: "sk_sentry_triage", name: "分拣错误", description: "聚合 Sentry 问题并推荐负责人。" },
     ],
     hooks: [],
     mcps: [
       {
         id: "mcp_sentry",
         name: "sentry-mcp",
-        description: "Sentry MCP — projects, issues, releases, performance.",
+        description: "Sentry MCP，支持项目、问题、版本与性能。",
         transport: "http",
         toolCount: 18,
       },
@@ -466,10 +468,10 @@ const MOCK_PLUGINS: DenPlugin[] = [
   },
   {
     id: "plg_explanatory_style",
-    name: "Explanatory Output Style",
+    name: "解释型输出风格",
     slug: "explanatory-output-style",
     description:
-      "Response style that adds educational context around implementation choices, trade-offs, and alternatives.",
+      "在回复中解释实现选择、取舍与替代方案。",
     version: "1.0.0",
     author: "Anthropic",
     category: "output-styles",
@@ -480,7 +482,7 @@ const MOCK_PLUGINS: DenPlugin[] = [
       {
         id: "hk_explain_post",
         event: "Stop",
-        description: "Append an 'Implementation notes' section before stopping.",
+        description: "结束前追加“实现说明”部分。",
         matcher: null,
       },
     ],
@@ -673,7 +675,7 @@ function requestPluginContents(id: string) {
 
 function pluginContentsPayload({ response, payload }: Awaited<ReturnType<typeof requestPluginContents>>) {
   if (!response.ok) {
-    throw new Error(getErrorMessage(payload, `Failed to load plugin contents (${response.status}).`));
+    throw new Error(getErrorMessage(payload, `无法加载插件内容（${response.status}）。`));
   }
   return payload;
 }
@@ -685,7 +687,7 @@ async function fetchResolvedPlugin(id: string): Promise<DenPlugin | null> {
   ]);
 
   if (!pluginResult.response.ok) {
-    throw new Error(getErrorMessage(pluginResult.payload, `Failed to load plugin (${pluginResult.response.status}).`));
+    throw new Error(getErrorMessage(pluginResult.payload, `无法加载插件（${pluginResult.response.status}）。`));
   }
   const contents = pluginContentsPayload(membershipsResult);
 
@@ -757,7 +759,7 @@ function buildDenPlugin(pluginItem: Record<string, unknown>, contents: unknown):
     agents,
     apps,
     authoredApps,
-    author: "Connected repository",
+    author: "已连接的仓库",
     category: derivePluginCategory({ agents, apps, authoredApps, commands, hooks, mcps, skills, workflows }),
     commands,
     createdAt: asString(pluginItem.createdAt) ?? new Date().toISOString(),
@@ -775,7 +777,7 @@ function buildDenPlugin(pluginItem: Record<string, unknown>, contents: unknown):
     slug: slugifyPluginName(name),
     source: marketplaces[0]
       ? { type: "marketplace", marketplace: marketplaces[0].name }
-      : { type: "github", repo: "Connected repository" },
+      : { type: "github", repo: "已连接的仓库" },
     status: asString(pluginItem.status) === "archived" ? "archived" : "active",
     updatedAt: asString(pluginItem.updatedAt) ?? new Date().toISOString(),
     version: null,
@@ -801,14 +803,14 @@ async function requestPluginsContents(ids: string[]): Promise<Map<string, unknow
     return new Map(await Promise.all(ids.map(async (id) => [id, pluginContentsPayload(await requestPluginContents(id))] as const)));
   }
   if (!response.ok) {
-    throw new Error(getErrorMessage(payload, `Failed to load plugin contents (${response.status}).`));
+    throw new Error(getErrorMessage(payload, `无法加载插件内容（${response.status}）。`));
   }
   const plugins = isRecord(payload) && isRecord(payload.plugins) ? payload.plugins : {};
   const failures = isRecord(payload) && isRecord(payload.failures) ? payload.failures : {};
   return new Map(ids.map((id) => {
     const failure = failures[id];
     if (isRecord(failure)) {
-      throw new Error(getErrorMessage(failure, `Failed to load plugin contents (${String(failure.status)}).`));
+      throw new Error(getErrorMessage(failure, `无法加载插件内容（${String(failure.status)}）。`));
     }
     return [id, plugins[id]];
   }));
@@ -822,7 +824,7 @@ export function usePlugins({ enabled = true }: { enabled?: boolean } = {}) {
     queryFn: async () => {
       const { response, payload } = await requestJson("/v1/plugins?status=active&limit=100", { method: "GET" }, 20000);
       if (!response.ok) {
-        throw new Error(getErrorMessage(payload, `Failed to load plugins (${response.status}).`));
+        throw new Error(getErrorMessage(payload, `无法加载插件（${response.status}）。`));
       }
 
       const items = listItems(payload);
@@ -869,7 +871,7 @@ export function pluginSummariesQueryOptions() {
     queryFn: async ({ client }): Promise<DenPluginSummary[]> => {
       const { response, payload } = await requestJson("/v1/plugins?status=active&limit=100&includeAccess=true", { method: "GET" }, 20000);
       if (!response.ok) {
-        throw new Error(getErrorMessage(payload, `Failed to load plugins (${response.status}).`));
+        throw new Error(getErrorMessage(payload, `无法加载插件（${response.status}）。`));
       }
 
       return listItems(payload).flatMap((item) => {
@@ -918,7 +920,7 @@ export function usePluginDirectory(filters: { q: string; teamId: string | null; 
     queryFn: async ({ pageParam }) => {
       const params = pluginDirectoryParams(filters, pageParam);
       const { response, payload } = await requestJson(`/v1/plugins?${params}`, { method: "GET" }, 20000);
-      if (!response.ok) throw new Error(getErrorMessage(payload, `Failed to load plugins (${response.status}).`));
+      if (!response.ok) throw new Error(getErrorMessage(payload, `无法加载插件（${response.status}）。`));
       const items = listItems(payload).flatMap((item) => {
         const summary = parsePluginSummary(item);
         if (!summary) return [];
@@ -965,7 +967,7 @@ export function useUpdatePlugin() {
           15000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to update plugin (${response.status}).`);
+          throw getRequestError(payload, response, `无法更新插件（${response.status}）。`);
         }
       });
       return input.pluginId;
@@ -990,7 +992,7 @@ export function useArchivePlugin() {
           15000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to archive plugin (${response.status}).`);
+          throw getRequestError(payload, response, `无法归档插件（${response.status}）。`);
         }
       });
       return pluginId;
@@ -1018,7 +1020,7 @@ export function useAttachWorkflowToPlugin(pluginId: string) {
           15000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to add Workflow (${response.status}).`);
+          throw getRequestError(payload, response, `无法添加工作流（${response.status}）。`);
         }
       });
       return workflowId;

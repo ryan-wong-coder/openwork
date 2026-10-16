@@ -43,10 +43,10 @@ test("changing a team's role never leaves it with less access part way", () => {
 
 test("a role change is locked with the permission it needs", () => {
   assert.equal(teamRoleLockReason(member, "admin", all), null);
-  assert.match(teamRoleLockReason(member, "admin", { ...all, canManageAdminTeams: false }) ?? "", /Manage Admin teams/);
-  assert.match(teamRoleLockReason(admin, "member", { ...all, canManageAdminTeams: false }) ?? "", /Manage Admin teams/);
-  assert.match(teamRoleLockReason(member, "custom", { ...all, permissionsFeature: false }) ?? "", /Enterprise/);
-  assert.match(teamRoleLockReason(custom, "member", { ...all, canManagePermissions: false }) ?? "", /Manage permissions/);
+  assert.match(teamRoleLockReason(member, "admin", { ...all, canManageAdminTeams: false }) ?? "", /管理管理员团队/);
+  assert.match(teamRoleLockReason(admin, "member", { ...all, canManageAdminTeams: false }) ?? "", /管理管理员团队/);
+  assert.match(teamRoleLockReason(member, "custom", { ...all, permissionsFeature: false }) ?? "", /企业版/);
+  assert.match(teamRoleLockReason(custom, "member", { ...all, canManagePermissions: false }) ?? "", /管理权限/);
   assert.equal(teamRoleLockReason(custom, "custom", { canManageAdminTeams: false, canManagePermissions: false, permissionsFeature: false }), null);
 });
 
@@ -59,14 +59,14 @@ test("a new role starts from Member, Admin or everything, limited to what the cr
 });
 
 test("every screen names roles the same way, never by Den's stored set names", () => {
-  assert.equal(roleName({ kind: "member_default", name: "Member permissions", team: null }), "Member");
-  assert.equal(roleName({ kind: "admin_default", name: "Admin permissions", team: null }), "Admin");
+  assert.equal(roleName({ kind: "member_default", name: "Member permissions", team: null }), "成员");
+  assert.equal(roleName({ kind: "admin_default", name: "Admin permissions", team: null }), "管理员");
   assert.equal(roleName({ kind: "team", name: "Engineering Permissions", team: { id: "tem_1", name: "Engineering" } }), "Engineering");
-  assert.equal(roleKindLabel({ kind: "team" }), "Custom role");
-  assert.equal(roleKindLabel({ kind: "admin_default" }), "Built-in role");
-  assert.equal(permissionSourceRoleLabel({ kind: "admin_default", label: "Admin permissions (via Sales team)", via: "team", teamName: "Sales" }), "Admin via Sales");
+  assert.equal(roleKindLabel({ kind: "team" }), "自定义角色");
+  assert.equal(roleKindLabel({ kind: "admin_default" }), "内置角色");
+  assert.equal(permissionSourceRoleLabel({ kind: "admin_default", label: "Admin permissions (via Sales team)", via: "team", teamName: "Sales" }), "管理员，来自 Sales");
   assert.equal(permissionSourceRoleLabel({ kind: "team", label: "Engineering Permissions (via Engineering team)", teamName: "Engineering" }), "Engineering");
-  assert.equal(permissionSourceRoleLabel({ kind: "code_default", label: "Member permissions (default)", set: "member" }), "Member");
+  assert.equal(permissionSourceRoleLabel({ kind: "code_default", label: "Member permissions (default)", set: "member" }), "成员");
 });
 
 test("a person's team roles read Admin first, then custom roles by team", () => {
@@ -76,7 +76,7 @@ test("a person's team roles read Admin first, then custom roles by team", () => 
     { id: "tem_plain", name: "Book club", memberIds: ["om_1"], grantsOrganizationAdmin: false },
   ];
   const customTeamIds = new Set(["tem_eng"]);
-  assert.deepEqual(teamRoleLabels({ memberId: "om_1", ownRole: "member", teams, customTeamIds }), ["Admin via Sales", "Engineering"]);
+  assert.deepEqual(teamRoleLabels({ memberId: "om_1", ownRole: "member", teams, customTeamIds }), ["管理员，来自 Sales", "Engineering"]);
   assert.deepEqual(teamRoleLabels({ memberId: "om_1", ownRole: "admin", teams, customTeamIds }), ["Engineering"]);
   assert.deepEqual(teamRoleLabels({ memberId: "om_1", ownRole: "owner", teams, customTeamIds }), []);
   assert.deepEqual(teamRoleLabels({ memberId: "om_2", ownRole: "member", teams, customTeamIds }), []);
@@ -107,16 +107,16 @@ test("sharedRoles: changing a team's role never leaves it with less access part 
 
 test("sharedRoles: a role change is locked with the permission it needs", () => {
   const abilities = { canManageAdminTeams: false, canManagePermissions: true, permissionsFeature: true };
-  assert.match(sharedTeamRoleLockReason({ admin: false, setId: null }, { kind: "admin" }, abilities) ?? "", /Manage Admin teams/);
+  assert.match(sharedTeamRoleLockReason({ admin: false, setId: null }, { kind: "admin" }, abilities) ?? "", /管理管理员团队/);
   assert.equal(sharedTeamRoleLockReason({ admin: false, setId: null }, { kind: "custom", setId: "pms_publisher" }, abilities), null);
-  assert.match(sharedTeamRoleLockReason({ admin: false, setId: null }, { kind: "custom", setId: "pms_publisher" }, { ...abilities, canManagePermissions: false }) ?? "", /Manage permissions/);
+  assert.match(sharedTeamRoleLockReason({ admin: false, setId: null }, { kind: "custom", setId: "pms_publisher" }, { ...abilities, canManagePermissions: false }) ?? "", /管理权限/);
 });
 
 test("sharedRoles: custom roles read by their own name", () => {
   const set = { kind: "team" as const, name: "Skill publisher", team: { id: "tem_sales", name: "Sales" } };
   assert.equal(roleName(set), "Sales");
   assert.equal(roleName(set, { shared: true }), "Skill publisher");
-  assert.equal(permissionSourceRoleLabel({ kind: "team", label: "x", teamName: "Sales", setName: "Skill publisher" }, { shared: true }), "Skill publisher via Sales");
+  assert.equal(permissionSourceRoleLabel({ kind: "team", label: "x", teamName: "Sales", setName: "Skill publisher" }, { shared: true }), "Skill publisher，来自 Sales");
   const teams = [{ id: "tem_sales", name: "Sales", memberIds: ["om_1"], grantsOrganizationAdmin: false }, { id: "tem_eng", name: "Engineering", memberIds: ["om_1"], grantsOrganizationAdmin: false }];
   const names = new Map([["tem_sales", "Skill publisher"], ["tem_eng", "Skill publisher"]]);
   assert.deepEqual(teamRoleLabels({ memberId: "om_1", ownRole: "member", teams, customTeamIds: new Set(["tem_sales", "tem_eng"]), customRoleNameByTeam: names }), ["Skill publisher"]);
@@ -129,9 +129,9 @@ test("Invite and Edit role list built-ins first, then every shared role by name,
   ];
   const options = memberRoleOptions({ sharedRoles: true, customRoleTeams: [], customRoles, canManageTeams: true, lockReasons: new Map([["set_publisher", "Ask the owner"]]) });
   assert.deepEqual(options.map((option) => [option.value, option.label, option.caption, option.disabled]), [
-    ["member", "Member", null, false], ["admin", "Admin", null, false],
-    ["role:set_publisher", "Skill publisher", "On Sales, Engineering", true],
-    ["role:set_empty", "Unassigned", "No teams yet", false],
+    ["member", "成员", null, false], ["admin", "管理员", null, false],
+    ["role:set_publisher", "Skill publisher", "所属团队：Sales、Engineering", true],
+    ["role:set_empty", "Unassigned", "暂无团队", false],
   ]);
   assert.equal(options[2]?.lockReason, "Ask the owner");
   assert.deepEqual(parseRoleChoice("role:set_publisher"), { role: "member", teamId: null });
@@ -144,10 +144,10 @@ test("Without shared roles, Invite and Edit role retain custom roles by team", (
   assert.deepEqual(shared.map((option) => option.value), ["member", "admin"]);
   const byTeam = memberRoleOptions({ sharedRoles: false, customRoleTeams, canManageTeams: true });
   assert.deepEqual(byTeam.map((option) => [option.value, option.label, option.caption, option.disabled]), [
-    ["member", "Member", null, false],
-    ["admin", "Admin", null, false],
-    ["team:tem_eng", "test Permissions", "Custom role", false],
-    ["team:tem_scim", "Directory", "Custom role", true],
+    ["member", "成员", null, false],
+    ["admin", "管理员", null, false],
+    ["team:tem_eng", "test Permissions", "自定义角色", false],
+    ["team:tem_scim", "Directory", "自定义角色", true],
   ]);
   assert.ok(memberRoleOptions({ sharedRoles: false, customRoleTeams, canManageTeams: false }).filter((option) => option.caption).every((option) => option.disabled));
   assert.deepEqual(parseRoleChoice(byTeam[2]?.value ?? ""), { role: "member", teamId: "tem_eng" });

@@ -63,6 +63,7 @@ import {
   type OpencodeConfigFile,
 } from "../../../../app/lib/desktop";
 import { readDenSettings, type DenExternalMcpPreset } from "../../../../app/lib/den";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 import type { DenLibraryConnectionItem, DenLibraryPluginItem } from "../../../../app/lib/den-library";
 import {
   getMcpIdentityKey,
@@ -406,6 +407,7 @@ type LibraryScreen =
   | { kind: "edit"; skill: LibraryEditableSkill };
 
 export function McpView(props: McpViewProps) {
+  const localOnly = isLocalGatewayClient();
   const cloudSession = useCloudSession();
   const denAuth = useDenAuth();
   const denBaseUrl = readDenSettings().baseUrl;
@@ -517,8 +519,8 @@ export function McpView(props: McpViewProps) {
     setOnlyNeedsSignIn(next);
     props.onStateChange?.(next ? "needs_signin" : "all", filter);
   };
-  const libraryCloudSignedIn = cloudSession.isSignedIn
-    || (Boolean(cloudSession.authToken.trim()) && denAuth.isSignedIn);
+  const libraryCloudSignedIn = !localOnly && (cloudSession.isSignedIn
+    || (Boolean(cloudSession.authToken.trim()) && denAuth.isSignedIn));
   const activeOrganizationId = cloudSession.activeOrganization?.id.trim() ?? "";
   // The connector catalog rarely changes; keep it across visits so the Add dialog shows its logos at once.
   const connectorPresetsQuery = useQuery({
@@ -565,8 +567,8 @@ export function McpView(props: McpViewProps) {
   const libraryAddKinds = libraryAddKindsForFilter(filter).filter((kind) => (
     libraryAddAction(kind, libraryAddOptions) !== null
   ));
-  const inventoryError = props.inventoryError ?? props.orgMcpError ?? null;
-  const cloudIssue = denAuth.status === "checking"
+  const inventoryError = props.inventoryError ?? (!localOnly ? props.orgMcpError : null) ?? null;
+  const cloudIssue = localOnly ? undefined : denAuth.status === "checking"
     ? t("den.checking_session")
     : denAuth.status === "unavailable"
       ? t("extensions.cloud_unavailable")
@@ -578,7 +580,12 @@ export function McpView(props: McpViewProps) {
   const addDisabledReason = cloudIssue ?? (!props.createLibraryItem ? t("extensions.cloud_unavailable") : undefined);
   const signedOut = !libraryCloudSignedIn && denAuth.status !== "checking";
   // Signed out, every add kind needs Cloud: the sign-in banner carries the action instead.
-  const addControl = signedOut ? null : (
+  const addControl = localOnly ? <LibraryAddControl
+    kinds={["workspace-mcp"]}
+    disabledReason={props.allowManageExtensions ? undefined : manageExtensionsDisabledReason()}
+    label={t("extensions.add_workspace_mcp")}
+    onSelect={(kind) => handleAddKind(kind)}
+  /> : signedOut ? null : (
     <LibraryAddControl
       kinds={libraryAddKindsForFilter("all")}
       connectorCues={connectorCues}
@@ -1835,23 +1842,24 @@ export function McpView(props: McpViewProps) {
 
   const inventory = (
     <LibraryInventory
-      rows={rows}
+      rows={localOnly ? rows.filter((row) => row.section === "mac") : rows}
       loading={props.inventoryLoading === true}
       filter={filter}
       search={search}
       sectionMeta={sectionMeta}
       onlyNeedsSignIn={onlyNeedsSignIn}
-      signedOut={signedOut}
-      onSignUp={props.onOpenCloudAccount}
+      signedOut={!localOnly && signedOut}
+      onSignUp={localOnly ? undefined : props.onOpenCloudAccount}
       emptyState={(
         <LibraryEmptyState
           filter={filter}
           searching={Boolean(search.trim())}
           cloudIssue={cloudIssue}
-          onAdd={!addDisabledReason && libraryAddKinds[0] ? () => handleAddKind(libraryAddKinds[0]) : undefined}
+          addKind={localOnly ? "workspace-mcp" : undefined}
+          onAdd={localOnly ? props.allowManageExtensions ? () => handleAddKind("workspace-mcp") : undefined : !addDisabledReason && libraryAddKinds[0] ? () => handleAddKind(libraryAddKinds[0]) : undefined}
           onClearSearch={() => setSearch("")}
-          onOpenCloudAccount={!libraryCloudSignedIn || !activeOrganizationId ? props.onOpenCloudAccount : undefined}
-          onRefresh={denAuth.status === "unavailable" || inventoryError ? props.onRefresh : undefined}
+          onOpenCloudAccount={!localOnly && (!libraryCloudSignedIn || !activeOrganizationId) ? props.onOpenCloudAccount : undefined}
+          onRefresh={(!localOnly && denAuth.status === "unavailable") || inventoryError ? props.onRefresh : undefined}
           error={inventoryError}
         />
       )}
@@ -2244,6 +2252,7 @@ export function LibraryEmptyState(props: {
   cloudIssue?: string;
   error?: string | null;
   onAdd?: () => void;
+  addKind?: LibraryAddKind;
   onClearSearch: () => void;
   onOpenCloudAccount?: () => void;
   onRefresh?: () => void;
@@ -2260,7 +2269,7 @@ export function LibraryEmptyState(props: {
     ? t("extensions.empty_filtered_hint")
     : props.error || (category !== "all" ? props.cloudIssue : undefined)
       || t(category === "skill" ? "extensions.empty_skill_hint" : category === "plugin" ? "extensions.empty_plugin_hint" : "extensions.empty_all_hint");
-  const addKind = libraryAddKindsForFilter(category)[0];
+  const addKind = props.addKind ?? libraryAddKindsForFilter(category)[0];
   return (
     <div className="flex flex-col items-center gap-3 rounded-[10px] border border-dashed border-dls-border bg-dls-surface px-6 py-12 text-center">
       <h2 className="text-[15px] font-medium text-dls-text">{title}</h2>

@@ -34,10 +34,10 @@ type ViewState =
   | { kind: "error"; message: string };
 
 function ConnectFrame({ link, workspaceName, linked = false, children }: { link: ConnectMcpLink | null; workspaceName: string | null; linked?: boolean; children: ReactNode }) {
-  const title = link ? `Connect ${link.name}.` : "Connect a tool.";
+  const title = link ? `连接 ${link.name}。` : "连接工具";
   const description = link
-    ? `Your agent added ${link.name} to ${workspaceName ?? "your workspace"}.`
-    : "Your agent sent you a sign-in link.";
+    ? `你的智能体已将 ${link.name} 添加至 ${workspaceName ?? "你的工作区"}。`
+    : "代理向你发送了登录链接。";
   return (
     <SetupFrame
       title={title}
@@ -49,7 +49,7 @@ function ConnectFrame({ link, workspaceName, linked = false, children }: { link:
           from={{ label: link.name, mark: <SetupStoryTile><SetupAppMark name={link.name} size={26} /></SetupStoryTile> }}
           to={workspaceName
             ? { label: workspaceName, mark: <SetupLetterTile name={workspaceName} size="lg" /> }
-            : { label: "Your workspace", mark: <SetupStoryTile><Folder className="size-5 text-[var(--dls-text-secondary)]" strokeWidth={1.5} /></SetupStoryTile> }}
+            : { label: "你的工作区", mark: <SetupStoryTile><Folder className="size-5 text-[var(--dls-text-secondary)]" strokeWidth={1.5} /></SetupStoryTile> }}
         />
       ) : undefined}
     >
@@ -90,8 +90,8 @@ function ConnectMcpContent() {
     return (
       <ConnectFrame link={null} workspaceName={null}>
         <SetupPanelBody gap="md">
-          <SetupPanelTitle>This sign-in link is incomplete</SetupPanelTitle>
-          <SetupLine>Ask your agent for a new link to this connection.</SetupLine>
+          <SetupPanelTitle>此登录链接不完整</SetupPanelTitle>
+          <SetupLine>请让代理提供此连接的新链接。</SetupLine>
         </SetupPanelBody>
       </ConnectFrame>
     );
@@ -103,7 +103,7 @@ function ConnectMcpContent() {
     return (
       <ConnectFrame link={link} workspaceName={null}>
         <SetupPanelBody>
-          <SetupPanelTitle>{`Connect ${name}`}</SetupPanelTitle>
+          <SetupPanelTitle>{`连接 ${name}`}</SetupPanelTitle>
           <SetupSkeletonRows count={1} />
         </SetupPanelBody>
       </ConnectFrame>
@@ -114,13 +114,13 @@ function ConnectMcpContent() {
     return (
       <ConnectFrame link={link} workspaceName={null}>
         <SetupPanelBody>
-          <SetupFacts rows={[{ label: "Connecting", value: <><SetupAppMark name={name} /><span className="truncate">{name}</span></> }]} />
+          <SetupFacts rows={[{ label: "正在连接", value: <><SetupAppMark name={name} /><span className="truncate">{name}</span></> }]} />
           <AuthPanel
             bare
             emailFirstFlow
             socialFirst
             socialProviders={["google"]}
-            emailStepContent={{ title: "Sign in to OpenWork" }}
+            emailStepContent={{ title: "登录 OpenWork" }}
           />
         </SetupPanelBody>
       </ConnectFrame>
@@ -145,14 +145,14 @@ function ConnectMcpContent() {
       }
       setState(result);
     } catch {
-      setState({ kind: "error", message: `${name} did not open a sign-in page. Try again.` });
+      setState({ kind: "error", message: `${name} 未打开登录页面，请重试。` });
     }
   }
 
   if (state.kind === "connected") {
     return (
       <ConnectFrame link={link} workspaceName={workspaceName} linked>
-        <SetupStatus icon={<Check className="size-5" strokeWidth={1.5} />} title={`${name} is connected`} line="Your agent can use it now. You can close this tab." />
+        <SetupStatus icon={<Check className="size-5" strokeWidth={1.5} />} title={`${name} 已连接`} line="代理现在可使用此连接，你可以关闭此标签页。" />
       </ConnectFrame>
     );
   }
@@ -161,7 +161,7 @@ function ConnectMcpContent() {
     return (
       <ConnectFrame link={link} workspaceName={workspaceName}>
         <SetupPanelBody gap="md">
-          <SetupPanelTitle>{`${name} can\u2019t be connected`}</SetupPanelTitle>
+          <SetupPanelTitle>{`无法连接 ${name}`}</SetupPanelTitle>
           <SetupLine>{state.message}</SetupLine>
         </SetupPanelBody>
       </ConnectFrame>
@@ -171,17 +171,17 @@ function ConnectMcpContent() {
   return (
     <ConnectFrame link={link} workspaceName={workspaceName}>
       <SetupPanelBody>
-        <SetupPanelTitle>{`Connect ${name}`}</SetupPanelTitle>
+        <SetupPanelTitle>{`连接 ${name}`}</SetupPanelTitle>
         <SetupFacts
           rows={[
-            { label: "Connection", value: <><SetupAppMark name={name} /><span className="truncate">{name}</span></> },
-            { label: "Workspace", value: workspaceName ?? "…" },
-            { label: "Account", value: user.email },
+            { label: "连接", value: <><SetupAppMark name={name} /><span className="truncate">{name}</span></> },
+            { label: "工作区", value: workspaceName ?? "…" },
+            { label: "账号", value: user.email },
           ]}
         />
-        {state.kind === "error" ? <SetupErrorLine>{state.message}</SetupErrorLine> : <SetupLine>{`Sign in to ${name} so your agent can use it as you.`}</SetupLine>}
+        {state.kind === "error" ? <SetupErrorLine>{state.message}</SetupErrorLine> : <SetupLine>{`登录 ${name}，让智能体能以你的身份使用。`}</SetupLine>}
         <button type="button" className="den-button-primary w-full" disabled={state.kind === "starting"} onClick={() => void startSignIn()}>
-          {state.kind === "starting" ? "Opening sign-in…" : `Sign in to ${name}`}
+          {state.kind === "starting" ? "正在打开登录页面…" : `登录 ${name}`}
         </button>
       </SetupPanelBody>
     </ConnectFrame>

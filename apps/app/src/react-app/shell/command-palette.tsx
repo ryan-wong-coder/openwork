@@ -11,6 +11,7 @@ import type { Agent } from "@opencode-ai/sdk/v2/client";
 import type { OpenworkServerClient } from "@/app/lib/openwork-server";
 import { useOpencodeEngineControls } from "./opencode-engine-controls";
 import { currentLocale, t } from "@/i18n";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 import {
   Command,
   CommandCollection,
@@ -400,7 +401,7 @@ export function CommandPalette(props: CommandPaletteProps) {
           },
         }]
       : []),
-    ...(props.onOpenAutomations
+    ...(props.onOpenAutomations && !isLocalGatewayClient()
       ? [{
           id: "automations.open",
           title: t("interface.automations"),
@@ -412,7 +413,7 @@ export function CommandPalette(props: CommandPaletteProps) {
           },
         }]
       : []),
-    ...(props.onOpenCalendar
+    ...(props.onOpenCalendar && !isLocalGatewayClient()
       ? [{
           id: "calendar.open",
           title: t("interface.calendar"),
@@ -448,7 +449,7 @@ export function CommandPalette(props: CommandPaletteProps) {
           },
         }]
       : []),
-    {
+    ...(!isLocalGatewayClient() ? [{
       id: "cloud.sign_in",
       title: t("den.signin_title"),
       keywords: ["login", "account", "organization", "org", "den", "cloud"],
@@ -457,7 +458,7 @@ export function CommandPalette(props: CommandPaletteProps) {
         props.onClose();
         props.onOpenSettings("/settings/cloud-account");
       },
-    },
+    }] : []),
   ], [props, locale]);
 
   const allRootItems = useMemo(

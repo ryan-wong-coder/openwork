@@ -38,6 +38,6 @@ export function fallbackClientName(clientId: string): string {
     // Client ID Metadata Documents use an HTTPS URL as the client id.
     return new URL(clientId).host;
   } catch {
-    return "An app without a name";
+    return "未命名应用";
   }
 }

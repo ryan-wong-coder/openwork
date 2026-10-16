@@ -1,6 +1,10 @@
 /** @jsxImportSource react */
 import { useAutoAccess } from "@/react-app/domains/cloud/auto-access-ui";
 import { freeAutoSwitchedOff } from "@/app/lib/inference-access";
+import { clientWorkspaceVisible, isLocalGatewayClient, LOCAL_GATEWAY_PROVIDER_ID } from "@/app/lib/client-profile";
+import { GatewayView } from "@/react-app/domains/settings/pages/gateway-view";
+import { localClientFeatureEnabled } from "@/app/lib/local-client-features";
+import { VisualConfigView } from "@/react-app/domains/settings/pages/visual-config-view";
 import { openNewSessionDraft } from "@/react-app/domains/session/chat/new-session-destination";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
@@ -270,7 +274,7 @@ function reconcileSelectedWorkspaceId(
     if (pathMatch) return pathMatch.id;
   }
 
-  return serverList.activeId?.trim() || desktopSelectedId || workspaces[0]?.id || "";
+  return [serverList.activeId?.trim(), desktopSelectedId].find((id) => id && serverIds.has(id)) || workspaces[0]?.id || "";
 }
 
 const SETTINGS_HIDE_TITLEBAR_KEY = "openwork.react.settings.hide-titlebar";
@@ -294,7 +298,6 @@ export function parseSettingsPath(pathname: string): {
   switch (head) {
     case "general":
     case "ai":
-    case "ollama":
     case "preferences":
     case "permissions":
     case "appearance":
@@ -303,12 +306,14 @@ export function parseSettingsPath(pathname: string): {
     case "updates":
     case "debug":
       return { tab: head, redirectPath: null };
+    case "ollama":
+      return isLocalGatewayClient() ? { tab: "ai", redirectPath: "ai" } : { tab: "ollama", redirectPath: null };
     case "advanced":
       return { tab: "advanced", redirectPath: null, advancedSection: tail };
     case "cloud-account":
     case "cloud-providers":
     case "usage":
-      return { tab: head, redirectPath: null };
+      return isLocalGatewayClient() ? { tab: "general", redirectPath: "general" } : { tab: head, redirectPath: null };
     case "connect":
       return { tab: "extensions", redirectPath: "extensions", extensionsSection: "all" };
     case "recovery":
@@ -321,7 +326,7 @@ export function parseSettingsPath(pathname: string): {
       return { tab: "extensions", redirectPath: "extensions", extensionsSection: "all" };
     case "den":
     case "cloud-workers":
-      return { tab: "cloud-account", redirectPath: "cloud-account" };
+      return isLocalGatewayClient() ? { tab: "general", redirectPath: "general" } : { tab: "cloud-account", redirectPath: "cloud-account" };
     case "extensions":
       if (tail === "mcp") return { tab: "extensions", redirectPath: "extensions/mcps", extensionsSection: "mcps" };
       if (
@@ -400,7 +405,7 @@ export function settingsDeveloperModePaletteItem(
     id: "developer-mode.toggle",
     title: developerMode ? t("settings.disable_developer_mode") : t("settings.enable_developer_mode"),
     detail: t("settings.developer_mode_desc"),
-    meta: developerMode ? "On" : "Off",
+    meta: developerMode ? t("common.on") : t("common.off"),
     searchText: "developer dev mode debug diagnostics toggle enable disable",
     action,
   };
@@ -1325,7 +1330,7 @@ function SettingsRouteContent(props: SettingsSurfaceProps = {}) {
       if (isDesktopRuntime()) {
         try {
           desktopList = await workspaceBootstrap() as WorkspaceList;
-          desktopWorkspaces = (desktopList.workspaces ?? []).map(mapDesktopWorkspace);
+          desktopWorkspaces = (desktopList.workspaces ?? []).filter(clientWorkspaceVisible).map(mapDesktopWorkspace);
         } catch (error) {
           const message = describeRouteError(error);
           console.error("[settings-route] workspaceBootstrap failed", error);
@@ -2169,6 +2174,17 @@ function SettingsRouteContent(props: SettingsSurfaceProps = {}) {
           </SettingsStack>
         );
       case "ai":
+        if (isLocalGatewayClient()) {
+          return <GatewayView
+            client={openworkClient}
+            busy={busy}
+            onGatewayReady={async (modelID) => {
+              const defaultModel = { providerID: LOCAL_GATEWAY_PROVIDER_ID, modelID };
+              local.setPrefs((previous) => ({ ...previous, defaultModel, modelVariant: null }));
+              await providerAuthStore.refreshProviders({ force: true });
+            }}
+          />;
+        }
         return (
           <AiSettingsView
             busy={busy}
@@ -2229,8 +2245,8 @@ function SettingsRouteContent(props: SettingsSurfaceProps = {}) {
             autoError={autoError}
             onSetAutoEnabled={autoClient ? setAutoEnabled : undefined}
             organizationProviderIds={organizationProviderIds}
-            onOpenDen={openProvidersInDen}
-            cloudProvidersView={
+            onOpenDen={isLocalGatewayClient() ? undefined : openProvidersInDen}
+            cloudProvidersView={isLocalGatewayClient() ? null :
               <CloudProvidersView
                 key={`${cloudSession.baseUrl}:${cloudSession.activeOrganization?.id ?? "signed-out"}`}
                 embedded
@@ -2272,6 +2288,10 @@ function SettingsRouteContent(props: SettingsSurfaceProps = {}) {
           <PreferencesView
             busy={busy}
             linkOpenDestination={local.prefs.linkOpenDestination}
+            askBeforeOpeningLinks={local.prefs.askBeforeOpeningLinks}
+            onAskBeforeOpeningLinksChange={(askBeforeOpeningLinks) => {
+              local.setPrefs((previous) => ({ ...previous, askBeforeOpeningLinks }));
+            }}
             onLinkOpenDestinationChange={(linkOpenDestination) => {
               local.setPrefs((previous) => ({ ...previous, linkOpenDestination, askBeforeOpeningLinks: false }));
             }}
@@ -2423,6 +2443,14 @@ function SettingsRouteContent(props: SettingsSurfaceProps = {}) {
       case "advanced":
         return (
           <SettingsStack>
+            {localClientFeatureEnabled("visualConfiguration") ? (
+              <VisualConfigView
+                client={selectedWorkspaceEndpoint?.client ?? openworkClient}
+                workspaceId={runtimeWorkspaceId}
+                busy={busy}
+                onSaved={() => reloadCoordinator.reloadWorkspaceEngine()}
+              />
+            ) : null}
             <AdvancedView
               sectionId={route.advancedSection}
               key={runtimeWorkspaceId ?? selectedWorkspaceId}
@@ -2632,7 +2660,7 @@ function SettingsRouteContent(props: SettingsSurfaceProps = {}) {
       />
 
       <ProviderAuthModal
-        open={providerAuthSnapshot.providerAuthModalOpen}
+        open={!isLocalGatewayClient() && providerAuthSnapshot.providerAuthModalOpen}
         loading={false}
         submitting={providerAuthSnapshot.providerAuthBusy}
         error={providerAuthSnapshot.providerAuthError}

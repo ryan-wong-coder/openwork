@@ -45,8 +45,8 @@ async function fetchAdoption(): Promise<AdoptionData | null> {
 
 function getGreeting(name: string | null | undefined) {
   const hour = new Date().getHours();
-  const g = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
-  return `${g}, ${name?.trim().split(/\s+/)[0] ?? "there"}`;
+  const g = hour < 12 ? "早上好" : hour < 18 ? "下午好" : "晚上好";
+  return name?.trim() ? `${g}，${name.trim().split(/\s+/)[0]}` : g;
 }
 
 function toneBg(tone: "violet" | "green" | "blue") {
@@ -97,19 +97,19 @@ export function DashboardOverviewScreen() {
       <div className="flex flex-wrap items-center gap-2.5 border-b border-[#e7e9f0] pb-3">
         <span className="text-[14px] font-semibold tracking-[-0.01em] text-[#07192C]">{activeOrg?.name ?? "OpenWork Cloud"}</span>
         <ChevronRight className="h-3.5 w-3.5 text-[#9AA5BA]" />
-        <span className="text-[14px] font-medium tracking-[-0.01em] text-[#5A6886]">Dashboard</span>
+        <span className="text-[14px] font-medium tracking-[-0.01em] text-[#5A6886]">仪表盘</span>
       </div>
 
       {/* Greeting */}
       <h1 className="mt-4 text-[22px] font-semibold tracking-[-0.03em] text-[#07192C]">{getGreeting(user?.name)}</h1>
       <p className="mt-1 text-[14px] leading-6 text-[#5A6886]">
-        Run locally for free. Keep data on your machine and move to shared workflows when ready.
+        免费在本地运行，数据保留在你的计算机上，需要时再使用共享工作流。
       </p>
 
       {/* Live org data */}
       <div className="mt-5 grid gap-3.5 md:grid-cols-2">
-        <StatCard icon={<Users className="h-5 w-5 text-[#6F3DFF]" />} title="OpenWork users" value={`${members}`} sub="Current workspace members" tone="violet" />
-        <StatCard icon={<Gauge className="h-5 w-5 text-[#1D63FF]" />} title="Pending invites" value={`${pending}`} sub="Awaiting activation" tone="blue" />
+        <StatCard icon={<Users className="h-5 w-5 text-[#6F3DFF]" />} title="OpenWork 用户" value={`${members}`} sub="当前工作区成员" tone="violet" />
+        <StatCard icon={<Gauge className="h-5 w-5 text-[#1D63FF]" />} title="待接受的邀请" value={`${pending}`} sub="等待激活" tone="blue" />
       </div>
 
       <DashboardActivity />

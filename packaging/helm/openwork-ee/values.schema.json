@@ -18,6 +18,26 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
+            "gatewayImageGeneration": {
+              "enum": [
+                "",
+                "true",
+                "false",
+                true,
+                false
+              ],
+              "description": "Gateway image generation: Generate and edit workspace image assets through the configured inference gateway, with artifacts available to chat and coding tools. Renders DEN_FEATURE_GATEWAY_IMAGE_GENERATION."
+            },
+            "visualConfiguration": {
+              "enum": [
+                "",
+                "true",
+                "false",
+                true,
+                false
+              ],
+              "description": "Visual configuration: Edit complete project and global agent configuration through structured controls while preserving custom fields and document comments. Renders DEN_FEATURE_VISUAL_CONFIGURATION."
+            },
             "secureSecretFields": {
               "enum": [
                 "",

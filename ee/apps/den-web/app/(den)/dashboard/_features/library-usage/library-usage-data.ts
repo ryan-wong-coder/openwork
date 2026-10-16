@@ -1,3 +1,4 @@
+import { DEFAULT_DEN_LOCALE } from "../../../../_lib/locale";
 import { z } from "zod";
 
 export const libraryUsageKinds = ["plugins", "skills", "connectors"] as const;
@@ -33,16 +34,16 @@ export const libraryUsageCopy: Record<LibraryUsageKind, {
   label: string; noun: string; plural: string; emptyTitle: string; emptyBody: string; emptyAction: string;
 }> = {
   plugins: {
-    label: "Plugins", noun: "plugin", plural: "plugins",
-    emptyTitle: "No plugins yet", emptyBody: "Create a plugin with skills or Workflows to see how your team uses it.", emptyAction: "Create a plugin",
+    label: "插件", noun: "插件", plural: "插件",
+    emptyTitle: "暂无插件", emptyBody: "创建包含技能或工作流的插件，以查看团队的使用情况。", emptyAction: "创建插件",
   },
   skills: {
-    label: "Skills", noun: "skill", plural: "skills",
-    emptyTitle: "No skills yet", emptyBody: "Add a plugin with skills to see how often people use them.", emptyAction: "Create a plugin",
+    label: "技能", noun: "技能", plural: "技能",
+    emptyTitle: "暂无技能", emptyBody: "添加包含技能的插件，以查看成员的使用频率。", emptyAction: "创建插件",
   },
   connectors: {
-    label: "Connectors", noun: "connector", plural: "connectors",
-    emptyTitle: "No connectors yet", emptyBody: "Add a connector to see which tools your team calls and which calls fail.", emptyAction: "Add a connector",
+    label: "连接器", noun: "连接器", plural: "连接器",
+    emptyTitle: "暂无连接器", emptyBody: "添加连接器，以查看团队调用的工具及调用失败情况。", emptyAction: "添加连接器",
   },
 };
 
@@ -82,7 +83,7 @@ export function summarizeLibraryUsage(rows: readonly LibraryUsageRow[]): Library
 export function failureLabel(row: Pick<LibraryUsageRow, "failures" | "uses">): string | null {
   if (row.failures === null) return null;
   if (row.failures === 0) return "0";
-  return `${row.failures} of ${row.uses}`;
+  return `${row.failures} / ${row.uses}`;
 }
 
 /**
@@ -94,17 +95,17 @@ export function countingSinceLabel(report: Pick<LibraryUsageReport, "days" | "tr
   if (!report.trackingSince) return null;
   const since = new Date(report.trackingSince).getTime();
   if (Number.isNaN(since) || since <= now - report.days * 86_400_000) return null;
-  return `Counting since ${new Date(since).toLocaleDateString(undefined, { month: "short", day: "numeric" })}`;
+  return `自 ${new Date(since).toLocaleDateString(DEFAULT_DEN_LOCALE, { month: "short", day: "numeric" })} 开始统计`;
 }
 
 export function lastUsedLabel(lastUsedAt: string | null, now: number): string | null {
   if (!lastUsedAt) return null;
   const at = new Date(lastUsedAt).getTime();
   const days = Math.floor(Math.max(0, now - at) / 86_400_000);
-  if (days === 0) return "Today";
-  if (days === 1) return "Yesterday";
-  if (days < 7) return `${days} days ago`;
-  return new Date(at).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  if (days === 0) return "今天";
+  if (days === 1) return "昨天";
+  if (days < 7) return `${days} 天前`;
+  return new Date(at).toLocaleDateString(DEFAULT_DEN_LOCALE, { month: "short", day: "numeric" });
 }
 
 // ---------------------------------------------------------------------------
@@ -155,11 +156,11 @@ export function libraryUsageBreakdownPath(kind: LibraryUsageKind, days: LibraryU
 
 /** What started a use, in the words people see. */
 export const libraryUsageSourceLabels: Record<LibraryUsageSource, string> = {
-  agent: "Agents",
-  workflow: "Workflows",
-  automation: "Automations",
-  app: "Apps",
-  artifact: "Live views",
+  agent: "智能体",
+  workflow: "工作流",
+  automation: "自动化",
+  app: "应用",
+  artifact: "实时视图",
 };
 
 /** Uses per source across rows, most used first, leaving out sources nobody used. */
@@ -188,7 +189,7 @@ export function dailyLibraryUsage(report: Pick<LibraryUsageBreakdown, "from" | "
 /** A member's display name and email from the organization; removed members keep a neutral label. */
 export function libraryUsageMember(members: readonly { id: string; user: { name: string; email: string } }[], memberId: string | null): { name: string; email: string | null } {
   const member = memberId ? members.find((entry) => entry.id === memberId) : undefined;
-  if (!member) return { name: "Former member", email: null };
+  if (!member) return { name: "前成员", email: null };
   return { name: member.user.name.trim() || member.user.email, email: member.user.email };
 }
 

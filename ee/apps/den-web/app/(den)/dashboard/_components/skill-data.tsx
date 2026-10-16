@@ -89,10 +89,10 @@ export function useSkill(pluginId: string, skillId: string) {
         requestJson(`/v1/config-objects/${encodedSkillId}/plugins`, { method: "GET" }, 15000),
       ]);
       if (!response.ok) {
-        throw new Error(getErrorMessage(payload, `Failed to load skill (${response.status}).`));
+        throw new Error(getErrorMessage(payload, `无法加载技能（${response.status}）。`));
       }
       if (!membershipResult.response.ok) {
-        throw new Error(getErrorMessage(membershipResult.payload, `Failed to verify skill plugin (${membershipResult.response.status}).`));
+        throw new Error(getErrorMessage(membershipResult.payload, `无法验证技能所属插件（${membershipResult.response.status}）。`));
       }
       const belongsToPlugin = isRecord(membershipResult.payload)
         && Array.isArray(membershipResult.payload.items)
@@ -100,11 +100,11 @@ export function useSkill(pluginId: string, skillId: string) {
           isRecord(entry) && entry.pluginId === pluginId && entry.removedAt === null
         ));
       if (!belongsToPlugin) {
-        throw new Error("That skill is not part of this plugin.");
+        throw new Error("此技能不属于当前插件。");
       }
       const skill = parseSkillResponse(payload);
       if (!skill) {
-        throw new Error("Skill detail response was incomplete.");
+        throw new Error("技能详情响应不完整，请重试。");
       }
       return skill;
     },
@@ -128,15 +128,15 @@ export function useCreateSkill(pluginId: string) {
           15000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to create skill (${response.status}).`);
+          throw getRequestError(payload, response, `无法创建技能（${response.status}）。`);
         }
         const skill = parseSkillResponse(payload);
         if (!skill) {
-          throw new Error("Skill create response was incomplete.");
+          throw new Error("技能创建响应不完整，请重试。");
         }
         result.skill = skill;
       });
-      if (!result.skill) throw new Error("Skill save response was incomplete.");
+      if (!result.skill) throw new Error("技能保存响应不完整，请重试。");
       return result.skill;
     },
     onSuccess: async () => {
@@ -162,21 +162,21 @@ export function useUpdateSkill(pluginId: string) {
             method: "POST",
             body: JSON.stringify({
               input: { rawSourceText: skillSourceFromDraft(input.draft) },
-              reason: "Updated from Den Web",
+              reason: "从 Den 网页端更新",
             }),
           },
           15000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to save skill (${response.status}).`);
+          throw getRequestError(payload, response, `无法保存技能（${response.status}）。`);
         }
         const skill = parseSkillResponse(payload);
         if (!skill) {
-          throw new Error("Skill update response was incomplete.");
+          throw new Error("技能更新响应不完整，请重试。");
         }
         result.skill = skill;
       });
-      if (!result.skill) throw new Error("Skill save response was incomplete.");
+      if (!result.skill) throw new Error("技能保存响应不完整，请重试。");
       return result.skill;
     },
     onSuccess: async () => {
@@ -201,7 +201,7 @@ export function useDeleteSkill(pluginId: string) {
           15000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Failed to delete skill (${response.status}).`);
+          throw getRequestError(payload, response, `无法删除技能（${response.status}）。`);
         }
       });
       return skillId;

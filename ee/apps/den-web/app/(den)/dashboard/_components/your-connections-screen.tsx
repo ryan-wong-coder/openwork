@@ -80,7 +80,7 @@ export function YourConnectionsScreen() {
     } catch (disconnectError) {
       setRowError({
         connectionId: connection.id,
-        message: disconnectError instanceof Error ? disconnectError.message : "Failed to disconnect account.",
+        message: disconnectError instanceof Error ? disconnectError.message : "断开账户失败，请重试。",
       });
     }
   }
@@ -96,22 +96,22 @@ export function YourConnectionsScreen() {
   return (
     <DashboardPageTemplate
       icon={Plug}
-      title="Your Connections"
-      description="Tools your organization has made available to you. Connect your own account where needed; workspace admins can test tools directly, and your AI coworker uses them with your permissions."
+      title="你的连接"
+      description="使用组织向你提供的工具，按需连接自己的账户。工作区管理员可直接测试工具，AI 助手将按你的权限使用。"
     >
       {error ? (
         <div className="mb-6 rounded-[24px] border border-red-200 bg-red-50 px-5 py-4 text-[14px] text-red-700">
-          {error instanceof Error ? error.message : "Failed to load your connections."}
+          {error instanceof Error ? error.message : "无法加载你的连接，请重试。"}
         </div>
       ) : null}
 
       {isLoading ? (
         <div className="rounded-[28px] border border-gray-200 bg-white px-6 py-10 text-[15px] text-gray-500">
-          Loading your connections…
+          正在加载你的连接…
         </div>
       ) : connections.length === 0 ? (
         <div className="rounded-[28px] border border-gray-200 bg-white px-6 py-10 text-center text-[14px] text-gray-500">
-          Nothing has been shared with you yet. Ask a workspace admin to add an MCP connection.
+          尚未与你共享任何内容，请联系工作区管理员添加 MCP 连接。
         </div>
       ) : (
         <div className="divide-y divide-gray-100 rounded-2xl border border-gray-100 bg-white">
@@ -223,10 +223,10 @@ function YourConnectionRow({
   if (state) return (
     <div data-connector-row={connection.name} ref={rowRef}>
       <ItemRow href={getLibraryConnectorRoute(orgSlug, connection.id)} logo={<IntegrationIcon name={connection.name} serviceUrl={connection.url} />} title={connection.name}
-        description={checkConnection.error ? "Could not check this connection. Try again." : !canManageConnections && state === "Couldn't verify" ? `${connectorReadinessNote(connection)} An admin can check again.` : connectorReadinessNote(connection)} status={state} statusOnNarrow wideAction wrapDescription={state === "Couldn't verify"}
-        action={state === "Sign in" ? <DenButton size="xs" variant="secondary" onClick={onConnect} data-testid={`connect-my-mcp-account-${connection.id}`}>Sign in</DenButton>
-          : state === "Set up" ? <DenButton size="xs" variant="secondary" disabled={!canManageConnections} title={!canManageConnections ? "An admin can finish setup." : undefined} href={canManageConnections ? getMcpConnectionRoute(orgSlug, connection.id) : undefined}>Set up</DenButton>
-          : <DenButton size="xs" variant="secondary" disabled={!canManageConnections || checkConnection.isPending} title={!canManageConnections ? "An admin can check this connection." : undefined} onClick={() => checkConnection.mutate(connection.id)}>Check again</DenButton>}
+        description={checkConnection.error ? "无法检查此连接，请重试。" : !canManageConnections && state === "无法验证" ? `${connectorReadinessNote(connection)} 管理员可以重新检查。` : connectorReadinessNote(connection)} status={state} statusOnNarrow wideAction wrapDescription={state === "无法验证"}
+        action={state === "登录" ? <DenButton size="xs" variant="secondary" onClick={onConnect} data-testid={`connect-my-mcp-account-${connection.id}`}>登录</DenButton>
+          : state === "设置" ? <DenButton size="xs" variant="secondary" disabled={!canManageConnections} title={!canManageConnections ? "管理员可完成配置。" : undefined} href={canManageConnections ? getMcpConnectionRoute(orgSlug, connection.id) : undefined}>设置</DenButton>
+          : <DenButton size="xs" variant="secondary" disabled={!canManageConnections || checkConnection.isPending} title={!canManageConnections ? "管理员可以检查此连接。" : undefined} onClick={() => checkConnection.mutate(connection.id)}>重新检查</DenButton>}
       />
     </div>
   );
@@ -245,17 +245,17 @@ function YourConnectionRow({
               <p className="truncate text-[14px] font-semibold text-gray-900">{connection.name}</p>
               {needsAdminSetup ? (
                 <span className="inline-flex rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-700">
-                  Waiting for an admin to finish setup
+                  正在等待管理员完成配置
                 </span>
               ) : needsAdminRecovery ? (
                 <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-700">
                   <AlertTriangle className="h-3 w-3" />
-                  Admin review required
+                  需要管理员检查
                 </span>
               ) : needsReconnect ? (
                 <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-700">
                   <AlertTriangle className="h-3 w-3" />
-                  {apiKeyStatus === "reconnect_required" ? personalApiKeyStatusLabel(apiKeyStatus) : "Reconnect required"}
+                  {apiKeyStatus === "reconnect_required" ? personalApiKeyStatusLabel(apiKeyStatus) : "需要重新连接"}
                 </span>
               ) : apiKeyStatus === "saved_unverified" ? (
                 <span className="inline-flex rounded-full bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-600">
@@ -264,24 +264,24 @@ function YourConnectionRow({
               ) : connection.connectedForMe ? (
                 <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-700">
                   <Check className="h-3 w-3" />
-                  {apiKeyStatus === "ready" ? personalApiKeyStatusLabel(apiKeyStatus) : isPerMember ? "Connected as you" : "Org account connected"}
+                  {apiKeyStatus === "ready" ? personalApiKeyStatusLabel(apiKeyStatus) : isPerMember ? "已通过你的账户连接" : "组织账户已连接"}
                 </span>
               ) : polling ? (
                 <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-700">
                   <Loader2 className="h-3 w-3 animate-spin" />
-                  Waiting for authorization…
+                  正在等待授权…
                 </span>
               ) : needsMyConnect ? (
                 <span className="inline-flex rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-700">
-                  {apiKeyStatus === "missing" ? personalApiKeyStatusLabel(apiKeyStatus) : "Connect your account"}
+                  {apiKeyStatus === "missing" ? personalApiKeyStatusLabel(apiKeyStatus) : "连接你的账号"}
                 </span>
               ) : needsAdminConnect ? (
                 <span className="inline-flex rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-700">
-                  Connect the org account
+                  连接组织账户
                 </span>
               ) : (
                 <span className="inline-flex rounded-full bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-500">
-                  Waiting for an admin to connect
+                  正在等待管理员连接
                 </span>
               )}
             </div>
@@ -292,14 +292,14 @@ function YourConnectionRow({
             {isNativeProvider && (connection.tenantId || connection.externalAccountId) ? (
               <p className="mt-1 text-[11px] text-gray-500">
                 {connection.tenantId ? (
-                  <>Tenant <span className="font-mono text-gray-700">{connection.tenantId}</span>{connection.externalAccountId ? <> · {connection.externalAccountId}</> : null}</>
+                  <>租户 <span className="font-mono text-gray-700">{connection.tenantId}</span>{connection.externalAccountId ? <> · {connection.externalAccountId}</> : null}</>
                 ) : (
                   <span className="font-mono text-gray-700">{connection.externalAccountId}</span>
                 )}
               </p>
             ) : null}
             {microsoftScopes.length > 0 ? (
-              <div className="mt-2 flex flex-wrap gap-1.5" aria-label="Approved Microsoft 365 capabilities">
+              <div className="mt-2 flex flex-wrap gap-1.5" aria-label="已批准的 Microsoft 365 功能">
                 {microsoftScopes.map((scope) => (
                   <span key={scope} className="rounded-full bg-blue-50 px-2 py-0.5 font-mono text-[10px] text-blue-700">{scope}</span>
                 ))}
@@ -307,7 +307,7 @@ function YourConnectionRow({
             ) : null}
             {needsAdminRecovery ? (
               <p className="mt-1 text-[12px] text-amber-700">
-                A workspace admin must review this provider&apos;s OAuth settings before anyone reconnects.
+                重新连接前，工作区管理员必须检查此提供商的 OAuth 设置。
               </p>
             ) : null}
             {errorMessage ? <p className="mt-1 text-[12px] text-red-600">{errorMessage}</p> : null}
@@ -324,15 +324,15 @@ function YourConnectionRow({
           ) : null}
           {needsAdminRecovery && canManageConnections ? (
             <Link href="/dashboard/mcp-connections" className={buttonVariants({ variant: "primary", size: "sm" })}>
-              Review OAuth
+              检查 OAuth
             </Link>
           ) : null}
           {canTestTools ? (
             <Link
               href={`${toolTesterRoute}?connectionId=${encodeURIComponent(connection.id)}`}
               className={buttonVariants({ variant: "secondary", size: "sm", className: "h-8 w-8 !px-0" })}
-              aria-label={`Test tools for ${connection.name}`}
-              title={`Test tools for ${connection.name}`}
+              aria-label={`测试 ${connection.name} 的工具`}
+              title={`测试 ${connection.name} 的工具`}
               data-testid={`test-mcp-tools-${connection.id}`}
             >
               <Wrench className="h-3.5 w-3.5" aria-hidden="true" />
@@ -340,27 +340,27 @@ function YourConnectionRow({
           ) : null}
           {canDisconnect && !keyInMenu ? (
             <DenButton variant="destructive" size="sm" loading={disconnecting} onClick={onDisconnect} data-testid={`disconnect-my-mcp-account-${connection.id}`}>
-              Disconnect
+              断开连接
             </DenButton>
           ) : null}
           {!needsReconnect && (apiKeyStatus === "saved_unverified" || apiKeyStatus === "ready") ? (
             <DenButton variant="secondary" size="sm" loading={connecting} onClick={onConnect} data-testid={`replace-my-mcp-key-${connection.id}`}>
-              Replace key
+              替换密钥
             </DenButton>
           ) : null}
           {needsReconnect || needsMyConnect || needsAdminConnect ? (
             <DenButton variant="primary" size="sm" loading={connecting || polling} onClick={onConnect} data-testid={`connect-my-mcp-account-${connection.id}`}>
-              {apiKeyStatus === "reconnect_required" ? "Replace key" : apiKeyStatus === "missing" ? "Add key" : needsReconnect ? "Reconnect" : "Connect"}
+              {apiKeyStatus === "reconnect_required" ? "替换密钥" : apiKeyStatus === "missing" ? "添加密钥" : needsReconnect ? "重新连接" : "连接"}
             </DenButton>
           ) : null}
           {keyInMenu ? (
             <ItemMenu
-              label={`More for ${connection.name}`}
+              label={`${connection.name} 的更多操作`}
               entries={[{
-                label: "Remove key",
+                label: "移除密钥",
                 destructive: true,
                 onSelect: onDisconnect,
-                confirm: { title: `Remove your ${connection.name} key?`, description: "You can add a key again at any time.", action: "Remove key" },
+                confirm: { title: `移除你的 ${connection.name} 密钥？`, description: "之后可随时重新添加密钥。", action: "Remove key" },
               }]}
             />
           ) : null}
@@ -399,7 +399,7 @@ function MarketplaceConfigureButton({
   const pluginQuery = usePlugin(target.pluginId);
 
   if (pluginQuery.isLoading) {
-    return <DenButton variant="primary" size="sm" disabled>Configure</DenButton>;
+    return <DenButton variant="primary" size="sm" disabled>配置</DenButton>;
   }
 
   const plugin = pluginQuery.data;
@@ -432,7 +432,7 @@ function MarketplaceConfigureButton({
         } satisfies MarketplacePluginCloudReadinessConnection,
       })}
     >
-      Configure
+      配置
     </DenButton>
   );
 }

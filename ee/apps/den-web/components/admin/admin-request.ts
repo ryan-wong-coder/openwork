@@ -1,3 +1,4 @@
+import { localizeDenError } from "../../app/_lib/error-copy";
 import { denApiCredentials, denBrowserEndpoint } from "../../app/(den)/_lib/den-api-origin";
 
 const AUTH_TOKEN_STORAGE_KEY = "openwork:web:auth-token";
@@ -25,8 +26,10 @@ export type AdminResult<T> =
 
 function errorMessage(payload: unknown, fallback: string) {
   if (payload && typeof payload === "object") {
-    const record = payload as Record<string, unknown>;
-    for (const key of ["message", "error"]) if (typeof record[key] === "string" && record[key]) return record[key] as string;
+    const message = "message" in payload ? payload.message : undefined;
+    const error = "error" in payload ? payload.error : undefined;
+    if (typeof message === "string" && message) return localizeDenError(message);
+    if (typeof error === "string" && error) return localizeDenError(error);
   }
   return fallback;
 }
@@ -43,11 +46,11 @@ export async function requestAdmin<T>(path: string, parse: (payload: unknown) =>
   const text = await response.text();
   let payload: unknown = null;
   try { payload = text ? JSON.parse(text) : null; } catch { payload = text; }
-  if (response.status === 401) return { access: "signed-out", message: "Sign in with an OpenWork admin account to continue." };
-  if (response.status === 403) return { access: "forbidden", message: "This account is not on the OpenWork admin allowlist." };
-  if (!response.ok) return { access: "error", message: errorMessage(payload, `The request failed with status ${response.status}.`) };
+  if (response.status === 401) return { access: "signed-out", message: "请使用 OpenWork 管理员账户登录后继续。" };
+  if (response.status === 403) return { access: "forbidden", message: "此账户不在 OpenWork 管理员允许名单中。" };
+  if (!response.ok) return { access: "error", message: errorMessage(payload, `请求失败（HTTP ${response.status}），请重试。`) };
   const data = parse(payload);
-  return data === null ? { access: "error", message: "The server returned data this page does not understand." } : { access: "ready", data };
+  return data === null ? { access: "error", message: "服务器返回的数据无法识别，请刷新后重试。" } : { access: "ready", data };
 }
 
 /** PUT/POST JSON to an admin endpoint; returns the parsed payload or the server's error message. */
@@ -62,6 +65,6 @@ export async function sendAdmin(path: string, method: "PUT" | "POST", body: unkn
   const text = await response.text();
   let payload: unknown = null;
   try { payload = text ? JSON.parse(text) : null; } catch { payload = text; }
-  if (!response.ok) return { ok: false, message: errorMessage(payload, `The request failed with status ${response.status}.`) };
+  if (!response.ok) return { ok: false, message: errorMessage(payload, `请求失败（HTTP ${response.status}），请重试。`) };
   return { ok: true, payload };
 }

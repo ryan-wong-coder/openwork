@@ -1,7 +1,9 @@
 "use client";
 
+import { getDenPermissionDefinition } from "../../../_lib/permission-copy";
+
 import { useInfiniteQuery, useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getPermissionDefinition, isPermissionKey } from "@openwork/types/den/permissions";
+import { isPermissionKey } from "@openwork/types/den/permissions";
 import { z } from "zod";
 import { getErrorMessage, getReauthRequiredError, requestJson } from "../../_lib/den-flow";
 import { ORG_SCOPE_HEADER } from "../../_lib/org-scope";
@@ -160,25 +162,25 @@ export class PermissionsRequestError extends Error {
 
 /** Catalog labels for keys, quoted, for error messages. Unknown keys stay as sent. */
 export function permissionLabels(keys: readonly string[]): string {
-  return keys.map((key) => `“${isPermissionKey(key) ? getPermissionDefinition(key).label : key}”`).join(", ");
+  return keys.map((key) => `“${isPermissionKey(key) ? getDenPermissionDefinition(key).label : key}”`).join("、");
 }
 
 function explainedMessage(code: string | null, keys: string[], fallback: string): string {
   switch (code) {
     case "permission_locked":
-      return `${permissionLabels(keys)} ${keys.length === 1 ? "is" : "are"} always on for admins, so it can't be turned off here.`;
+      return `${permissionLabels(keys)}对管理员始终启用，无法在此关闭。`;
     case "permission_not_held":
-      return `You can only turn on permissions you have yourself. You don't have ${permissionLabels(keys)}.`;
+      return `你只能启用自己拥有的权限，当前缺少${permissionLabels(keys)}。`;
     case "admin_permissions_require_admin":
-      return "Only the owner and admins can change Admin permissions.";
+      return "仅所有者与管理员可更改管理员权限。";
     case "permission_set_archived":
-      return "These team permissions were removed, so they can't be changed.";
+      return "这些团队权限已移除，无法更改。";
     case "team_permission_set_exists":
-      return "This team already has permissions. Edit them instead.";
+      return "此团队已有权限配置，请编辑现有配置。";
     case "feature_disabled":
-      return "Permissions is turned off for this organization.";
+      return "此组织已关闭权限功能。";
     case "permission_set_not_found":
-      return "These permissions don't exist anymore.";
+      return "这些权限已不存在。";
     default:
       return fallback;
   }
@@ -221,12 +223,12 @@ async function permissionsRequest<T>(input: {
   }
   if (!input.schema) return null;
   const parsed = input.schema.safeParse(payload);
-  if (!parsed.success) throw new Error(`${input.fallback}: unexpected response.`);
+  if (!parsed.success) throw new Error(`${input.fallback}：响应无法识别，请重试。`);
   return parsed.data;
 }
 
 function required<T>(value: T | null): T {
-  if (value === null) throw new Error("Permissions returned an empty response.");
+  if (value === null) throw new Error("权限响应为空，请重试。");
   return value;
 }
 
@@ -241,7 +243,7 @@ export function usePermissionSets(orgId: string | null, enabled = true) {
       orgId: orgId ?? "",
       path: "/v1/permissions/sets",
       schema: z.object({ sets: z.array(setSummarySchema) }),
-      fallback: "Couldn't load permissions",
+      fallback: "无法加载权限",
       signal,
     })).sets,
   });
@@ -273,7 +275,7 @@ export function usePermissionSet(orgId: string | null, setId: string, enabled = 
       orgId: orgId ?? "",
       path: `/v1/permissions/sets/${encodeURIComponent(setId)}`,
       schema: z.object({ set: setDetailSchema }),
-      fallback: "Couldn't load these permissions",
+      fallback: "无法加载这些权限",
       signal,
     })).set,
   });
@@ -286,13 +288,13 @@ export function useRoleGrantLocks(orgId: string | null, sets: readonly Permissio
     retry: false,
     queryFn: async ({ signal }: { signal: AbortSignal }) => required(await permissionsRequest({
       orgId: orgId ?? "", path: `/v1/permissions/sets/${encodeURIComponent(set.id)}`,
-      schema: z.object({ set: setDetailSchema }), fallback: "Couldn't verify this role", signal,
+      schema: z.object({ set: setDetailSchema }), fallback: "无法验证此角色", signal,
     })).set,
   })) });
   return new Map(sets.map((set, index) => {
     const detail = details[index];
     const missing = detail?.data?.permissions.find((entry) => entry.status === "allow" && !permissions.includes(entry.key));
-    const reason = isOwner ? null : !detail?.data ? "Couldn't verify this role's permissions yet." : missing ? "This role grants permissions you don’t have. Ask the organization owner." : null;
+    const reason = isOwner ? null : !detail?.data ? "暂时无法验证此角色的权限。" : missing ? "此角色包含你尚未拥有的权限，请联系组织所有者。" : null;
     return [set.id, reason];
   }));
 }
@@ -314,7 +316,7 @@ export function usePermissionSetHistory(orgId: string | null, setId: string, ena
         orgId: orgId ?? "",
         path: `/v1/permissions/sets/${encodeURIComponent(setId)}/history?${query.toString()}`,
         schema: z.object({ items: z.array(historyItemSchema), nextCursor: z.string().nullable() }),
-        fallback: "Couldn't load history",
+        fallback: "无法加载历史",
         signal,
       }));
     },
@@ -330,7 +332,7 @@ export function usePermissionKeyStatus(orgId: string | null, key: string) {
       orgId: orgId ?? "",
       path: `/v1/permissions/keys/${encodeURIComponent(key)}`,
       schema: keyStatusSchema,
-      fallback: "Couldn't load this permission",
+      fallback: "无法加载此权限",
       signal,
     })),
   });
@@ -345,7 +347,7 @@ export function useMemberPermissions(orgId: string | null, memberId: string, ena
       orgId: orgId ?? "",
       path: `/v1/members/${encodeURIComponent(memberId)}/permissions`,
       schema: memberPermissionsSchema,
-      fallback: "Couldn't load effective permissions",
+      fallback: "无法加载实际权限",
       signal,
     })),
   });
@@ -363,7 +365,7 @@ function useReauthableWrite() {
       box.value = await write();
       box.done = true;
     });
-    if (!box.done || box.value === undefined) throw new Error("The change didn't finish. Try again.");
+    if (!box.done || box.value === undefined) throw new Error("更改未完成，请重试。");
     return box.value;
   };
 }
@@ -380,7 +382,7 @@ export function useUpdatePermissionSet(orgId: string, setId: string) {
       method: "PUT",
       body: { changes },
       schema: z.object({ set: setDetailSchema }),
-      fallback: "Couldn't save permissions",
+      fallback: "无法保存权限",
     })).set),
     onSuccess: (set) => {
       queryClient.setQueryData(permissionsQueryKeys.set(orgId, setId), set);
@@ -401,7 +403,7 @@ export function useCreateTeamPermissions(orgId: string) {
       method: "POST",
       body: input,
       schema: z.object({ set: setDetailSchema }),
-      fallback: "Couldn't create team permissions",
+      fallback: "无法创建团队权限",
     })).set),
     onSuccess: (set) => {
       queryClient.setQueryData(permissionsQueryKeys.set(orgId, set.id), set);
@@ -447,10 +449,10 @@ export function useCreateRole(orgId: string) {
         if (!response.ok) {
           const reauth = getReauthRequiredError(payload, response);
           if (reauth) throw reauth;
-          throw new Error(getErrorMessage(payload, `Couldn't create the role (${response.status}).`));
+          throw new Error(getErrorMessage(payload, `无法创建角色（${response.status}）。`));
         }
         const parsed = z.object({ team: z.object({ id: z.string() }) }).safeParse(payload);
-        if (!parsed.success) throw new Error("Couldn't create the role: unexpected response.");
+        if (!parsed.success) throw new Error("创建角色失败，响应无法识别。");
         return parsed.data.team.id;
       });
       try {
@@ -460,11 +462,11 @@ export function useCreateRole(orgId: string) {
           method: "POST",
           body: { teamId, permissions: input.permissions },
           schema: z.object({ set: setDetailSchema }),
-          fallback: "Couldn't save the role's permissions",
+          fallback: "无法保存角色权限",
         })).set);
         return { teamId, set };
       } catch (cause) {
-        throw new RolePermissionsNotSavedError(cause instanceof Error ? cause.message : "Couldn't save the role's permissions.", teamId);
+        throw new RolePermissionsNotSavedError(cause instanceof Error ? cause.message : "无法保存角色权限，请重试。", teamId);
       }
     },
     onSettled: async () => {
@@ -503,7 +505,7 @@ export function useApplyTeamRole(orgId: string, teamId: string) {
             method: "POST",
             body: { teamId, permissions: step.keys.map((key) => ({ key, status: "allow" })) },
             schema: z.object({ set: setDetailSchema }),
-            fallback: "Couldn't create team permissions",
+            fallback: "无法创建团队权限",
           })).set);
           createdSetId = set.id;
         } else {
@@ -513,7 +515,7 @@ export function useApplyTeamRole(orgId: string, teamId: string) {
               path: `/v1/permissions/sets/${encodeURIComponent(step.setId)}`,
               method: "DELETE",
               schema: null,
-              fallback: "Couldn't remove team permissions",
+              fallback: "无法移除团队权限",
             });
             return step.setId;
           });
@@ -540,7 +542,7 @@ export function useRemoveTeamPermissions(orgId: string, setId: string) {
         path: `/v1/permissions/sets/${encodeURIComponent(setId)}`,
         method: "DELETE",
         schema: null,
-        fallback: "Couldn't remove team permissions",
+        fallback: "无法移除团队权限",
       });
       return setId;
     }),
@@ -567,7 +569,7 @@ export function useSetTeamRole(orgId: string) {
         method: "PUT",
         body: { permissionSetId: input.permissionSetId },
         schema: null,
-        fallback: "Couldn't change the team's role",
+        fallback: "无法更改团队角色",
       });
       return input.teamId;
     }),
@@ -591,7 +593,7 @@ export function useCreateSharedRole(orgId: string) {
       method: "POST",
       body: input,
       schema: z.object({ set: setDetailSchema }),
-      fallback: "Couldn't create the role",
+      fallback: "无法创建角色",
     })).set),
     onSuccess: (set) => {
       queryClient.setQueryData(permissionsQueryKeys.set(orgId, set.id), set);
@@ -613,7 +615,7 @@ export function useRenameRole(orgId: string, setId: string) {
       method: "PATCH",
       body: { name },
       schema: z.object({ set: setDetailSchema }),
-      fallback: "Couldn't rename the role",
+      fallback: "无法重命名角色",
     })).set),
     onSuccess: (set) => {
       queryClient.setQueryData(permissionsQueryKeys.set(orgId, setId), set);

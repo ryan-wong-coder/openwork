@@ -1,13 +1,11 @@
 "use client";
 
+import { denAgentPermissionDecisionLabels, denAgentPermissionDefinitions, denAgentPermissionPatternErrors } from "../../../_lib/agent-permission-copy";
 import { AlertDialog } from "@base-ui/react/alert-dialog";
 import {
   AGENT_PERMISSION_DEFAULT_DECISION,
   AGENT_PERMISSION_EVERYONE,
-  agentPermissionDecisionLabels,
   agentPermissionDecisionsFor,
-  agentPermissionDefinitions,
-  agentPermissionPatternErrors,
   agentPermissionPatternPlaceholders,
   decideAgentPermission,
   normalizeAgentPermissionPattern,
@@ -76,7 +74,7 @@ function withSetting(settings: AgentPermissionSettings, key: AgentPermissionDefi
 /** The permissions a record sets: for a team, the rows it changed from Everyone. */
 export function changedDefinitions(settings: AgentPermissionSettings): AgentPermissionDefinition[] {
   const set = normalizeAgentPermissionSettings(settings);
-  return agentPermissionDefinitions.filter((definition) => set[definition.key] !== undefined);
+  return denAgentPermissionDefinitions.filter((definition) => set[definition.key] !== undefined);
 }
 
 export function plural(count: number, one: string, many: string): string {
@@ -87,7 +85,7 @@ export function plural(count: number, one: string, many: string): string {
 export function overrideSummary(policy: AgentPermissionPolicy | undefined): string | null {
   if (!policy || !hasTeamRecord(policy)) return null;
   const count = changedDefinitions(policy.settings).length;
-  return count === 0 ? null : plural(count, "override", "overrides");
+  return count === 0 ? null : plural(count, "项自定义设置", "项自定义设置");
 }
 
 // ---------------------------------------------------------------------------
@@ -125,10 +123,10 @@ export function AgentPermissionsFeatureOff() {
   return (
     <div className="flex flex-col items-center gap-1.5 rounded-2xl border border-dashed border-gray-200 bg-white px-6 py-10 text-center" data-testid="agent-permissions-feature-off">
       <LockKeyhole className="mb-1 size-4 text-gray-500" aria-hidden="true" strokeWidth={1.5} />
-      <p className="text-[14px] font-medium text-gray-900">Agent permissions is an Enterprise feature</p>
-      <p className="text-[13px] text-gray-500">Contact us to turn it on for your organization.</p>
+      <p className="text-[14px] font-medium text-gray-900">代理权限是企业版功能</p>
+      <p className="text-[13px] text-gray-500">联系我们为组织启用此功能。</p>
       <a href={ENTERPRISE_CONTACT_URL} target="_blank" rel="noreferrer" className={buttonVariants({ variant: "secondary", size: "sm", className: "mt-2" })}>
-        Contact us
+        联系我们
       </a>
     </div>
   );
@@ -139,7 +137,7 @@ export function AgentPermissionsAccessState({ access }: { access: AgentPermissio
   if (access.state === "feature_off") return <AgentPermissionsFeatureOff />;
   if (access.state === "no_access") return <DenNotice tone="neutral" icon={Lock} message={permissionLockReason("agent_permissions.view")} />;
   if (access.state === "error") {
-    return <DenNotice tone="error" message="Couldn't verify workspace access." action={<DenButton variant="secondary" size="sm" onClick={() => void refreshOrgData()}>Try again</DenButton>} />;
+    return <DenNotice tone="error" message="无法验证工作区访问权限，请重试。" action={<DenButton variant="secondary" size="sm" onClick={() => void refreshOrgData()}>重试</DenButton>} />;
   }
   return <EditorSkeleton />;
 }
@@ -152,8 +150,8 @@ export function WithPolicies({ orgId, children }: { orgId: string; children: (da
     return (
       <DenNotice
         tone="error"
-        message={query.error instanceof Error ? query.error.message : "Couldn't load agent permissions."}
-        action={<DenButton variant="secondary" size="sm" loading={query.isFetching} onClick={() => void query.refetch()}>Try again</DenButton>}
+        message={query.error instanceof Error ? query.error.message : "无法加载代理权限，请重试。"}
+        action={<DenButton variant="secondary" size="sm" loading={query.isFetching} onClick={() => void query.refetch()}>重试</DenButton>}
       />
     );
   }
@@ -161,12 +159,12 @@ export function WithPolicies({ orgId, children }: { orgId: string; children: (da
 }
 
 export function ReadOnlyNotice() {
-  return <DenNotice tone="neutral" icon={LockKeyhole} message={<span id="agent-permissions-read-only">Read only. {permissionLockReason("agent_permissions.manage")}</span>} />;
+  return <DenNotice tone="neutral" icon={LockKeyhole} message={<span id="agent-permissions-read-only">只读。 {permissionLockReason("agent_permissions.manage")}</span>} />;
 }
 
 // Desktop apps re-read their organization's config every 5 minutes and when
 // the member returns to the app (DesktopConfigProvider in apps/app).
-const PROPAGATION_NOTE = "Members' desktop apps can take up to 5 minutes to pick up changes.";
+const PROPAGATION_NOTE = "成员的桌面应用最多可能需要 5 分钟才能应用更改。";
 
 // ---------------------------------------------------------------------------
 // One scope's Agents panel: Everyone's, or a team's changes from Everyone
@@ -218,8 +216,8 @@ function ScopeAgents({ access, data, policy, team, area }: {
   const [saveError, setSaveError] = useState<string | null>(null);
   const editable = data.canEdit;
   const settings = draft ?? policy.settings;
-  const name = team ?? "Everyone";
-  const changes = agentPermissionDefinitions.filter((definition) => !sameSetting(definition, settings[definition.key], policy.settings[definition.key])).length;
+  const name = team ?? "所有人";
+  const changes = denAgentPermissionDefinitions.filter((definition) => !sameSetting(definition, settings[definition.key], policy.settings[definition.key])).length;
   const dirty = draft !== null && changes > 0;
   const savedChanges = team ? changedDefinitions(policy.settings) : [];
   const hadRecord = hasTeamRecord(policy);
@@ -229,7 +227,7 @@ function ScopeAgents({ access, data, policy, team, area }: {
       await save.mutateAsync([{ scopeId: policy.scopeId, settings: next }]);
       return true;
     } catch (error) {
-      setSaveError(error instanceof Error && error.message ? error.message : "Couldn't save agent permissions. Try again.");
+      setSaveError(error instanceof Error && error.message ? error.message : "无法保存代理权限，请重试。");
       return false;
     }
   }
@@ -241,7 +239,7 @@ function ScopeAgents({ access, data, policy, team, area }: {
         await remove.mutateAsync();
         return true;
       } catch (error) {
-        setSaveError(error instanceof Error && error.message ? error.message : "Couldn't restore agent permissions. Try again.");
+        setSaveError(error instanceof Error && error.message ? error.message : "无法恢复代理权限，请重试。");
         return false;
       }
     }
@@ -255,10 +253,10 @@ function ScopeAgents({ access, data, policy, team, area }: {
     if (!(await saveSettings(normalizeAgentPermissionSettings(draft)))) return;
     setDraft(null);
     toast({
-      title: "Agent permissions saved",
+      title: "代理权限已保存",
       description: PROPAGATION_NOTE,
       action: {
-        label: "Undo",
+        label: "撤销",
         onClick: async () => {
           if (await restore(previous, hadRecord)) toast({ title: "Agent permissions restored" });
         },
@@ -268,11 +266,11 @@ function ScopeAgents({ access, data, policy, team, area }: {
 
   const intro = area === "browser"
     ? team
-      ? `Which pages agents and the built-in browser can open for people in ${team}. Rows you don't change follow Everyone.`
-      : "Which pages agents and the built-in browser can open on every member's computer. A team can change this on its own Browser tab."
+      ? `设置 ${team} 成员的智能体和内置浏览器可以打开哪些页面，未更改的行沿用“所有人”的设置。`
+      : "设置代理和内置浏览器在所有成员计算机上可打开的网站。团队可在自己的浏览器标签中更改此设置。"
     : team
-      ? `What agents can do on the computers of people in ${team}. Rows you don't change follow Everyone.`
-      : "What agents can do on every member's computer. A team can change any row on its own Agents tab.";
+      ? `设置智能体可以在 ${team} 成员的计算机上执行哪些操作，未更改的行沿用“所有人”的设置。`
+      : "设置代理在所有成员计算机上可执行的操作。团队可在自己的代理标签中更改各项设置。";
 
   return (
     <div className="flex flex-col gap-4" data-testid={area === "browser" ? "agent-permissions-browser" : "agent-permissions-agents"} data-scope={policy.scopeId}>
@@ -285,7 +283,7 @@ function ScopeAgents({ access, data, policy, team, area }: {
               className="rounded text-[13px] font-medium text-gray-700 underline-offset-2 hover:text-gray-900 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400"
               data-testid="agent-permissions-open-everyone"
             >
-              Open Everyone
+              打开所有人设置
             </Link>
             {/* Reset removes every change the team made, so it lives on the Agents tab only. */}
             {access.canManage && editable && savedChanges.length > 0 && area !== "browser" ? (
@@ -321,7 +319,7 @@ function ScopeAgents({ access, data, policy, team, area }: {
           testId="agent-permissions-save-bar"
           summary={(
             <span className="flex min-w-0 flex-col gap-0.5">
-              <span>{plural(changes, "change", "changes")} for {name}. Members&apos; apps pick them up the next time they refresh.</span>
+              <span>{name} 有 {changes} 项更改，成员的应用下次刷新时生效。</span>
               <span className="flex items-center gap-1 text-[12px] text-gray-500" data-testid="agent-permissions-propagation-note">
                 <Info className="size-3.5 shrink-0" aria-hidden="true" strokeWidth={1.5} />
                 {PROPAGATION_NOTE}
@@ -329,8 +327,8 @@ function ScopeAgents({ access, data, policy, team, area }: {
             </span>
           )}
         >
-          <DenButton variant="ghost" size="sm" disabled={save.isPending} onClick={() => { setDraft(null); setSaveError(null); }}>Discard</DenButton>
-          <DenButton variant="primary" size="sm" loading={save.isPending} disabled={!editable} onClick={() => void handleSave()}>Save changes</DenButton>
+          <DenButton variant="ghost" size="sm" disabled={save.isPending} onClick={() => { setDraft(null); setSaveError(null); }}>放弃</DenButton>
+          <DenButton variant="primary" size="sm" loading={save.isPending} disabled={!editable} onClick={() => void handleSave()}>保存更改</DenButton>
         </DenStickyActionBar>
       ) : null}
     </div>
@@ -363,12 +361,12 @@ function ResetToEveryone({ team, changes, previous, remove, removeError, removin
     setOpen(false);
     onReset();
     toast({
-      title: `${team} reset to Everyone`,
+      title: `${team} 已重置为“所有人”的设置`,
       description: PROPAGATION_NOTE,
       action: {
-        label: "Undo",
+        label: "撤销",
         onClick: async () => {
-          if (await undo(previous)) toast({ title: `Changes for ${team} restored` });
+          if (await undo(previous)) toast({ title: `已恢复 ${team} 的更改` });
         },
       },
     });
@@ -376,18 +374,18 @@ function ResetToEveryone({ team, changes, previous, remove, removeError, removin
 
   return (
     <AlertDialog.Root open={open} onOpenChange={(next) => { if (!removing) { resetError(); setOpen(next); } }}>
-      <AlertDialog.Trigger className={buttonVariants({ variant: "secondary", size: "sm" })} data-testid="agent-permissions-reset">Reset to Everyone</AlertDialog.Trigger>
+      <AlertDialog.Trigger className={buttonVariants({ variant: "secondary", size: "sm" })} data-testid="agent-permissions-reset">重置为所有人</AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Backdrop className="fixed inset-0 z-50 bg-gray-950/45" />
         <AlertDialog.Popup initialFocus={cancelRef} className="fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-[16px] border border-gray-200 bg-white p-5 outline-none" data-testid="agent-permissions-reset-dialog">
-          <AlertDialog.Title className="text-[15px] font-medium text-gray-950">Reset {team} to Everyone&apos;s agent permissions?</AlertDialog.Title>
+          <AlertDialog.Title className="text-[15px] font-medium text-gray-950">重置 {team} 为所有人的代理权限？</AlertDialog.Title>
           <AlertDialog.Description className="mt-2 text-[13px] leading-5 text-gray-600">
-            {team} loses its {plural(changes.length, "change", "changes")}: {names}. People in {team} get Everyone&apos;s rules the next time their apps refresh.
+            {team} 将移除 {changes.length} 项自定义设置：{names}。团队成员将在应用下次刷新时使用所有人的规则。
           </AlertDialog.Description>
           {removeError ? <DenNotice tone="error" className="mt-3" message={removeError.message} /> : null}
           <div className="mt-5 flex justify-end gap-2">
-            <AlertDialog.Close ref={cancelRef} disabled={removing} className={buttonVariants({ variant: "secondary" })}>Cancel</AlertDialog.Close>
-            <DenButton variant="destructive" loading={removing} onClick={() => void confirm()} data-testid="agent-permissions-reset-confirm">Reset to Everyone</DenButton>
+            <AlertDialog.Close ref={cancelRef} disabled={removing} className={buttonVariants({ variant: "secondary" })}>取消</AlertDialog.Close>
+            <DenButton variant="destructive" loading={removing} onClick={() => void confirm()} data-testid="agent-permissions-reset-confirm">重置为所有人</DenButton>
           </div>
         </AlertDialog.Popup>
       </AlertDialog.Portal>
@@ -400,26 +398,26 @@ function ResetToEveryone({ team, changes, previous, remove, removeError, removin
 // ---------------------------------------------------------------------------
 
 const EDITOR_GROUPS: readonly { label: string; sections: readonly AgentPermissionSection[] }[] = [
-  { label: "Commands and files", sections: ["commands", "files"] },
-  { label: "Web", sections: ["web"] },
-  { label: "Skills and MCP servers", sections: ["extensions"] },
+  { label: "命令与文件", sections: ["commands", "files"] },
+  { label: "网页", sections: ["web"] },
+  { label: "技能与 MCP 服务器", sections: ["extensions"] },
 ];
 
 const BROWSER_GROUPS: readonly { label: string; sections: readonly AgentPermissionSection[] }[] = [
-  { label: "Websites", sections: ["web"] },
+  { label: "网站", sections: ["web"] },
 ];
 
 /** One line per row, in the words people use (DESIGN.md C3); the full detail stays in the type's description. */
 const ROW_COPY: Record<string, string> = {
-  commands: "Commands the agent runs in the terminal, like npm test",
-  fileEdits: "Create, change and delete files in the member's folders",
-  websites: "Pages the agent fetches and the built-in browser opens",
-  webSearch: "Look things up with a web search",
-  localSkills: "Skills installed on the member's computer",
-  localMcpServers: "MCP servers the member added themselves",
+  commands: "代理在终端中运行的命令，例如 pnpm test",
+  fileEdits: "在成员文件夹中创建、修改和删除文件",
+  websites: "代理获取和内置浏览器打开的网页",
+  webSearch: "通过网络搜索查找内容",
+  localSkills: "安装在成员计算机上的技能",
+  localMcpServers: "成员自行添加的 MCP 服务器",
 };
 
-const PATTERN_NOUN: Record<string, string> = { website: "site" };
+const PATTERN_NOUN: Record<string, string> = { website: "网站" };
 
 export function AgentPermissionsEditor({ scopeId, team, settings, everyone, teams, area = "all", editable, onChange }: {
   scopeId: AgentPermissionScopeId;
@@ -440,7 +438,7 @@ export function AgentPermissionsEditor({ scopeId, team, settings, everyone, team
       <div className="divide-y divide-gray-100 rounded-2xl border border-gray-100 bg-white">
         {(area === "browser" ? BROWSER_GROUPS : EDITOR_GROUPS).map((group) => ({
           label: group.label,
-          definitions: agentPermissionDefinitions.filter((definition) => group.sections.includes(definition.section) && inArea(area, definition.key)),
+          definitions: denAgentPermissionDefinitions.filter((definition) => group.sections.includes(definition.section) && inArea(area, definition.key)),
         })).filter((group) => group.definitions.length > 0).map((group) => (
           <div key={group.label} className="pb-1">
             <h3 className="px-5 pb-1 pt-3 text-[12px] font-medium text-gray-500">{group.label}</h3>
@@ -453,7 +451,7 @@ export function AgentPermissionsEditor({ scopeId, team, settings, everyone, team
                   team={team}
                   setting={settings[definition.key]}
                   everyoneSetting={team === null ? settings[definition.key] : everyone[definition.key]}
-                  everyoneStatus={changedBy.length === 0 ? null : changedBy.length === 1 ? `Changed for ${changedBy[0]?.name ?? ""}` : `Changed for ${changedBy.length} teams`}
+                  everyoneStatus={changedBy.length === 0 ? null : changedBy.length === 1 ? `已为 ${changedBy[0]?.name ?? ""} 更改` : `已为 ${changedBy.length} 个团队更改`}
                   editable={editable}
                   blockedByEdits={definition.action === "shell" && editsBlocked}
                   onChange={(setting) => onChange(withSetting(settings, definition.key, setting))}
@@ -506,21 +504,21 @@ function PermissionRow({ definition, team, setting, everyoneSetting, everyoneSta
             <>
               <span className="inline-flex items-center gap-1.5 text-gray-700">
                 <span className="size-1.5 shrink-0 rounded-full bg-blue-500" aria-hidden="true" />
-                <span className="truncate">Changed for {team}</span>
+                <span className="truncate">已单独更改 {team}</span>
               </span>
               {editable ? (
                 <button
                   type="button"
-                  aria-label={`Use Everyone's setting for ${definition.label}`}
+                  aria-label={`对${definition.label}使用“所有人”的设置`}
                   onClick={() => onChange(null)}
                   className="rounded pl-3 text-[12px] text-gray-500 underline underline-offset-2 hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-gray-400"
                 >
-                  Use Everyone&apos;s
+                  使用所有人的设置
                 </button>
               ) : null}
             </>
           ) : (
-            <span className="text-gray-500">From Everyone</span>
+            <span className="text-gray-500">来自所有人的设置</span>
           )}
         </div>
         <div className="flex w-[140px] shrink-0 justify-end">
@@ -541,7 +539,7 @@ function PermissionRow({ definition, team, setting, everyoneSetting, everyoneSta
                 onChange={(event) => setDecision(agentPermissionDecisionsFor(definition).find((decision) => decision === event.target.value))}
               >
                 {agentPermissionDecisionsFor(definition).map((decision) => (
-                  <option key={decision} value={decision}>{agentPermissionDecisionLabels[decision]}</option>
+                  <option key={decision} value={decision}>{denAgentPermissionDecisionLabels[decision]}</option>
                 ))}
               </DenSelect>
             </div>
@@ -551,7 +549,7 @@ function PermissionRow({ definition, team, setting, everyoneSetting, everyoneSta
       {blockedByEdits ? (
         <p className="mt-1.5 flex items-center gap-1.5 text-[12px] text-gray-600" data-testid={`agent-permission-${definition.key}-blocked-by-edits`}>
           <Lock className="size-3.5 shrink-0" aria-hidden="true" />
-          Blocked while Edit files is blocked, because any command can change files.
+          文件编辑被阻止时，此项也会被阻止，因为命令可更改文件。
         </p>
       ) : null}
       {definition.patterns && definition.patternNoun ? (
@@ -634,7 +632,7 @@ function PatternLine({ list, label, noun, testId, kind, patterns, inherited, edi
   const [adding, setAdding] = useState(false);
   const [draft, setDraft] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const title = list === "allow" ? "Always allow" : "Always block";
+  const title = list === "allow" ? "始终允许" : "始终阻止";
 
   function close() {
     setAdding(false);
@@ -646,11 +644,11 @@ function PatternLine({ list, label, noun, testId, kind, patterns, inherited, edi
     event.preventDefault();
     const pattern = normalizeAgentPermissionPattern(kind, draft);
     if (pattern === null) {
-      setError(agentPermissionPatternErrors[kind]);
+      setError(denAgentPermissionPatternErrors[kind]);
       return;
     }
     if (patterns.includes(pattern) || inherited.includes(pattern)) {
-      setError(`${pattern} is already on this list.`);
+      setError(`此列表中已存在 ${pattern}。`);
       return;
     }
     onChange([...patterns, pattern]);
@@ -665,11 +663,11 @@ function PatternLine({ list, label, noun, testId, kind, patterns, inherited, edi
           {inherited.map((pattern) => (
             <li key={`inherited-${pattern}`}>
               <Tooltip>
-                <TooltipTrigger className="inline-flex h-6 items-center gap-1 rounded-md bg-gray-100 px-2 font-mono text-[12px] text-gray-500" aria-label={`${pattern}, set for Everyone`}>
+                <TooltipTrigger className="inline-flex h-6 items-center gap-1 rounded-md bg-gray-100 px-2 font-mono text-[12px] text-gray-500" aria-label={`${pattern}，适用于所有人`}>
                   <Lock className="size-3" aria-hidden="true" />
                   {pattern}
                 </TooltipTrigger>
-                <TooltipContent>Set for Everyone</TooltipContent>
+                <TooltipContent>为所有人设置</TooltipContent>
               </Tooltip>
             </li>
           ))}
@@ -679,7 +677,7 @@ function PatternLine({ list, label, noun, testId, kind, patterns, inherited, edi
               {editable ? (
                 <button
                   type="button"
-                  aria-label={`Remove ${pattern}`}
+                  aria-label={`移除 ${pattern}`}
                   onClick={() => onChange(patterns.filter((entry) => entry !== pattern))}
                   className="rounded p-0.5 text-gray-500 hover:bg-gray-100 hover:text-gray-800 focus-visible:outline-2 focus-visible:outline-gray-400"
                 >
@@ -714,7 +712,7 @@ function PatternLine({ list, label, noun, testId, kind, patterns, inherited, edi
               className="inline-flex h-6 items-center gap-1 rounded-full border border-dashed border-gray-300 px-2.5 text-[12px] text-gray-500 transition-colors hover:border-gray-400 hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-gray-400"
             >
               <Plus className="size-3" aria-hidden="true" />
-              Add {noun}
+              添加 {noun}
             </button>
           )
         ) : null}
@@ -729,15 +727,15 @@ function PatternLine({ list, label, noun, testId, kind, patterns, inherited, edi
 // ---------------------------------------------------------------------------
 
 const TRY_KINDS: readonly { action: AgentPermissionAction; label: string; placeholder: string }[] = [
-  { action: "shell", label: "Command", placeholder: "git push origin main" },
-  { action: "webfetch", label: "Website", placeholder: "https://docs.example.com/guide" },
-  { action: "skill", label: "Local skill", placeholder: "meeting-notes" },
-  { action: "mcp", label: "Local MCP server", placeholder: "issue-tracker" },
+  { action: "shell", label: "命令", placeholder: "git push origin main" },
+  { action: "webfetch", label: "网站", placeholder: "https://docs.example.com/guide" },
+  { action: "skill", label: "本地技能", placeholder: "meeting-notes" },
+  { action: "mcp", label: "本地 MCP 服务器", placeholder: "issue-tracker" },
 ];
 
 function TryRequest({ area, everyone, team }: { area: AgentPermissionsArea; everyone: AgentPermissionSettings; team: { name: string; settings: AgentPermissionSettings } | null }) {
   const kinds = TRY_KINDS.filter((entry) => {
-    const key = agentPermissionDefinitions.find((definition) => definition.action === entry.action)?.key;
+    const key = denAgentPermissionDefinitions.find((definition) => definition.action === entry.action)?.key;
     return key === undefined || inArea(area, key);
   });
   const [action, setAction] = useState<AgentPermissionAction>(kinds[0]?.action ?? "shell");
@@ -750,26 +748,26 @@ function TryRequest({ area, everyone, team }: { area: AgentPermissionsArea; ever
         teams: team ? [{ source: team.name, settings: team.settings }] : [],
       }), action, [resource])
     : null;
-  const definition = agentPermissionDefinitions.find((entry) => entry.action === action);
+  const definition = denAgentPermissionDefinitions.find((entry) => entry.action === action);
   const because = result?.rule
     ? result.rule.resource === "*"
-      ? `${definition?.label ?? "This"} is set to ${agentPermissionDecisionLabels[result.rule.effect]} for ${result.rule.source}`
-      : `Matches "${result.rule.resource}" for ${result.rule.source}`
-    : "No permission applies";
+      ? `${definition?.label ?? "此项"}对 ${result.rule.source} 的设置为${denAgentPermissionDecisionLabels[result.rule.effect]}`
+      : `对${result.rule.source}匹配“${result.rule.resource}”`
+    : "没有适用的权限";
 
   return (
     <div className="mt-4 rounded-xl border border-gray-200 bg-white px-4 py-3" data-testid="agent-permission-try">
       <div className="flex flex-wrap items-center gap-2">
-        <span className="mr-1 text-[13px] font-medium text-gray-900">Try a request</span>
+        <span className="mr-1 text-[13px] font-medium text-gray-900">尝试请求</span>
         {kinds.length > 1 ? (
           <div className="w-[170px]">
-            <DenSelect aria-label="Request type" value={action} onChange={(event) => setAction(kinds.find((entry) => entry.action === event.target.value)?.action ?? "shell")}>
+            <DenSelect aria-label="请求类型" value={action} onChange={(event) => setAction(kinds.find((entry) => entry.action === event.target.value)?.action ?? "shell")}>
               {kinds.map((entry) => <option key={entry.action} value={entry.action}>{entry.label}</option>)}
             </DenSelect>
           </div>
         ) : null}
         <DenInput
-          aria-label="Request to try"
+          aria-label="要尝试的请求"
           data-testid="agent-permission-try-input"
           className="h-9 min-w-[200px] flex-1 font-mono text-[12px]"
           placeholder={kind?.placeholder}
@@ -780,11 +778,11 @@ function TryRequest({ area, everyone, team }: { area: AgentPermissionsArea; ever
       {result ? (
         <p className="mt-2 flex flex-wrap items-center gap-2 text-[12px] text-gray-600" data-testid="agent-permission-try-result" data-effect={result.effect} aria-live="polite">
           {result.effect === "deny" ? (
-            <DenChip icon={Lock}>Blocked</DenChip>
+            <DenChip icon={Lock}>已阻止</DenChip>
           ) : result.effect === "ask" ? (
-            <DenChip tone="info">Asks first</DenChip>
+            <DenChip tone="info">先询问</DenChip>
           ) : (
-            <DenChip tone="success" icon={Check}>Allowed</DenChip>
+            <DenChip tone="success" icon={Check}>允许</DenChip>
           )}
           <span>{because}</span>
         </p>
@@ -795,7 +793,7 @@ function TryRequest({ area, everyone, team }: { area: AgentPermissionsArea; ever
 
 export function EditorSkeleton() {
   return (
-    <div role="status" aria-label="Loading agent permissions" className="flex flex-col gap-2 rounded-2xl border border-gray-100 bg-white p-5" data-testid="agent-permissions-loading">
+    <div role="status" aria-label="正在加载代理权限" className="flex flex-col gap-2 rounded-2xl border border-gray-100 bg-white p-5" data-testid="agent-permissions-loading">
       {[0, 1, 2, 3, 4, 5].map((index) => (
         <div key={index} className="flex items-center gap-4 py-1.5" aria-hidden="true">
           <div className="flex min-w-0 flex-1 flex-col gap-1.5">

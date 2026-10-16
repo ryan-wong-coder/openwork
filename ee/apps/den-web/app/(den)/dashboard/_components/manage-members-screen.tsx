@@ -1,4 +1,6 @@
 "use client";
+
+import { DEFAULT_DEN_LOCALE } from "../../../_lib/locale";
 import { TeamAdminCheckbox } from "./team-admin-checkbox";
 
 import Link from "next/link";
@@ -237,17 +239,17 @@ export function ManageMembersScreen() {
     if (!choice.teams.length) return (
       <p className="col-span-full min-w-0 text-[13px] text-gray-500">
         <Link href={getPermissionSetRoute(orgSlug, choice.set.id)} className="underline" title={choice.set.name}>{choice.set.name}</Link>
-        {" isn’t on a team yet. Add it to a team first."}
+        {" 尚未加入团队，请先将其添加到团队。"}
       </p>
     );
     if (choice.teams.length === 1) return (
-      <p className="min-w-0 truncate text-[13px] text-gray-500" title={`Joins ${choice.teams[0]?.name}`}>Joins {choice.teams[0]?.name}</p>
+      <p className="min-w-0 truncate text-[13px] text-gray-500" title={`加入 ${choice.teams[0]?.name}`}>加入 {choice.teams[0]?.name}</p>
     );
     return (
       <label className="grid min-w-0 gap-3">
-        <span className="text-[14px] font-medium text-gray-700">Team</span>
-        <DenSelect aria-label="Team" value={choice.selected?.id ?? ""} onChange={(event) => onChange(event.target.value)} menuWidth="trigger">
-          <option value="">Choose a team</option>
+        <span className="text-[14px] font-medium text-gray-700">团队</span>
+        <DenSelect aria-label="团队" value={choice.selected?.id ?? ""} onChange={(event) => onChange(event.target.value)} menuWidth="trigger">
+          <option value="">选择团队</option>
           {choice.teams.map((team) => (
             <option key={team.id} value={team.id} disabled={!choice.grantable.includes(team)} title={team.name}>{team.name}</option>
           ))}
@@ -352,7 +354,7 @@ export function ManageMembersScreen() {
   async function handleTransferOwnership(member: DenOrgMember) {
     const targetName = member.user.name || member.user.email;
     const confirmed = window.confirm(
-      `Transfer workspace ownership to ${targetName}? ${targetName} becomes the sole owner, and your account becomes an admin.`,
+      `将工作区所有权转让给 ${targetName}？${targetName} 将成为唯一所有者，你的账户将变为管理员。`,
     );
     if (!confirmed) {
       return;
@@ -363,7 +365,7 @@ export function ManageMembersScreen() {
       await transferOwnership(member.id);
       setOpenMemberMenuId(null);
     } catch (error) {
-      setPageError(error instanceof Error ? error.message : "Could not transfer ownership.");
+      setPageError(error instanceof Error ? error.message : "无法转移所有权，请重试。");
     }
   }
 
@@ -378,7 +380,7 @@ export function ManageMembersScreen() {
     return (
       <div className="mx-auto max-w-[1200px] px-6 py-8 md:px-8">
         <div className="rounded-[28px] border border-gray-200 bg-white px-6 py-10 text-[15px] text-gray-500">
-          Loading organization details...
+          正在加载组织信息…
         </div>
       </div>
     );
@@ -388,7 +390,7 @@ export function ManageMembersScreen() {
     return (
       <div className="mx-auto max-w-[1200px] px-6 py-8 md:px-8">
         <div className="rounded-[28px] border border-red-200 bg-red-50 px-6 py-4 text-[15px] text-red-700">
-          {orgError ?? "Organization details are unavailable."}
+          {orgError ?? "组织详情不可用。"}
         </div>
       </div>
     );
@@ -425,13 +427,13 @@ export function ManageMembersScreen() {
               setPageError(
                 error instanceof Error
                   ? error.message
-                  : "Could not invite member.",
+                  : "无法邀请成员，请重试。",
               );
             }
           }}
         >
           <label className="grid gap-3">
-            <span className="text-[14px] font-medium text-gray-700">Email</span>
+            <span className="text-[14px] font-medium text-gray-700">电子邮箱</span>
             <DenInput
               type="email"
               data-testid="invite-email"
@@ -443,47 +445,47 @@ export function ManageMembersScreen() {
           </label>
           {canChooseInviteRole ? (
             <label className="grid gap-3">
-              <span className="text-[14px] font-medium text-gray-700">Role</span>
+              <span className="text-[14px] font-medium text-gray-700">角色</span>
               <MemberRoleSelect value={inviteRole} onChange={(value) => { setInviteRole(value); setInviteTeamId(""); }} options={memberRoles} searchable={sharedRoles} />
             </label>
           ) : (
             <div className="grid gap-3">
-              <span className="text-[14px] font-medium text-gray-700">Role</span>
+              <span className="text-[14px] font-medium text-gray-700">角色</span>
               <DenInput value="Member" readOnly disabled aria-describedby="invite-role-locked" />
             </div>
           )}
           {customTeamChoice(inviteRole, inviteTeamId, setInviteTeamId)}
           {inviteTeamPicker && !inviteChoice.set ? (
             <label className="grid gap-3">
-              <span className="text-[14px] font-medium text-gray-700">Team</span>
+              <span className="text-[14px] font-medium text-gray-700">团队</span>
               {/* sharedRoles: each team shows its role, so picking a team decides the custom role. */}
-              <DenSelect aria-label="Team" value={inviteTeamId} onChange={(event) => setInviteTeamId(event.target.value)} menuWidth="trigger">
-                <option value="">No team</option>
+              <DenSelect aria-label="团队" value={inviteTeamId} onChange={(event) => setInviteTeamId(event.target.value)} menuWidth="trigger">
+                <option value="">无团队</option>
                 {orgContext.teams.filter((team) => !team.managedByScim && (!team.grantsOrganizationAdmin || access.canManageAdminTeams)).map((team) => (
                   <option key={team.id} value={team.id} title={team.name}>
                     {team.name}
-                    <span className="ml-1.5 font-normal text-gray-500">{team.grantsOrganizationAdmin ? "Admin" : access.canViewPermissions ? customRoles.nameByTeam.get(team.id) ?? "Member" : ""}</span>
+                    <span className="ml-1.5 font-normal text-gray-500">{team.grantsOrganizationAdmin ? "管理员" : access.canViewPermissions ? customRoles.nameByTeam.get(team.id) ?? "成员" : ""}</span>
                   </option>
                 ))}
               </DenSelect>
             </label>
           ) : null}
           <div className={`flex gap-2 lg:justify-end ${inviteTeamPicker ? "lg:col-span-3" : ""}`}>
-            <ActionButton size="md" onClick={resetInviteForm}>Cancel</ActionButton>
+            <ActionButton size="md" onClick={resetInviteForm}>取消</ActionButton>
             <DenButton type="submit" loading={mutationBusy === "invite-member"} disabled={inviteChoice.blocked}>
-              Send invite
+              发送邀请
             </DenButton>
           </div>
           {canChooseInviteRole ? null : (
             <p id="invite-role-locked" className="flex items-center gap-1.5 text-[13px] text-gray-500 lg:col-span-3">
               <Lock className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-              {`Inviting someone as an admin is locked. ${permissionLockReason("members.update")}`}
+              {`无法邀请新管理员。${permissionLockReason("members.update")}`}
             </p>
           )}
           {access.canManageRoles && !sharedRoles && customRoleTeams.length > 0 && !access.canManageTeams ? (
             <p className="flex items-center gap-1.5 text-[13px] text-gray-500 lg:col-span-3">
               <Lock className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-              {`Inviting someone into a custom role is locked. ${permissionLockReason("teams.manage")}`}
+              {`无法邀请具有自定义角色的成员。${permissionLockReason("teams.manage")}`}
             </p>
           ) : null}
         </form>
@@ -521,7 +523,7 @@ export function ManageMembersScreen() {
       }
       resetMemberEditor();
     } catch (error) {
-      setPageError(error instanceof Error ? error.message : "Could not update member role.");
+      setPageError(error instanceof Error ? error.message : "无法更新成员角色，请重试。");
     }
   }
 
@@ -541,7 +543,7 @@ export function ManageMembersScreen() {
         teamRoles={sharedRoles ? (
           <span className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1" data-testid="member-role-editor-team-roles">
             <span className="min-w-0 truncate" title={editingMemberTeamRoles.join(", ")}>
-              {editingMemberTeamRoles.length > 0 ? `From teams: ${editingMemberTeamRoles.join(", ")}` : "No roles from teams"}
+              {editingMemberTeamRoles.length > 0 ? `来自团队：${editingMemberTeamRoles.join(", ")}` : "没有来自团队的角色"}
             </span>
             {access.canManageTeams ? (
               <button
@@ -553,7 +555,7 @@ export function ManageMembersScreen() {
                 }}
                 className="shrink-0 rounded font-medium text-gray-700 underline-offset-2 transition hover:text-gray-900 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400"
               >
-                Manage teams
+                管理团队
               </button>
             ) : null}
           </span>
@@ -584,31 +586,31 @@ export function ManageMembersScreen() {
               resetTeamEditor();
             } catch (error) {
               setPageError(
-                error instanceof Error ? error.message : "Could not save team.",
+                error instanceof Error ? error.message : "无法保存团队，请重试。",
               );
             }
           }}
         >
           <label className="grid gap-3 lg:max-w-[420px]">
             <span className="text-[14px] font-medium text-gray-700">
-              Team name
+              团队名称
             </span>
             <DenInput
               type="text"
               value={teamNameDraft}
               onChange={(event) => setTeamNameDraft(event.target.value)}
-              placeholder="Core Engineering"
+              placeholder="核心研发"
               required
             />
           </label>
 
           <div>
             <p className="mb-3 text-[14px] font-medium text-gray-700">
-              Team members
+              团队成员
             </p>
             {orgContext.members.length === 0 ? (
               <div className="rounded-[24px] border border-dashed border-gray-200 bg-gray-50 px-5 py-6 text-[14px] text-gray-500">
-                Invite a member before assigning people to this team.
+                请先邀请成员，再将人员分配到此团队。
               </div>
             ) : teamRoles ? (
               // teamRoles: the same people rows and Add person picker as Create role.
@@ -653,12 +655,12 @@ export function ManageMembersScreen() {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <ActionButton size="md" onClick={resetTeamEditor}>Cancel</ActionButton>
+            <ActionButton size="md" onClick={resetTeamEditor}>取消</ActionButton>
             <DenButton
               type="submit"
               loading={mutationBusy === "create-team" || mutationBusy === "update-team"}
             >
-              {editingTeamId ? "Save team" : "Create team"}
+              {editingTeamId ? "保存团队" : "创建团队"}
             </DenButton>
           </div>
         </form>
@@ -668,7 +670,7 @@ export function ManageMembersScreen() {
   const toolbarAction = (() => {
     if (shownTab === "members" && access.canInviteMembers) {
       return {
-        label: "Add member",
+        label: "添加成员",
         onClick: () => {
           resetMemberEditor();
           setShowInviteForm((current) => !current);
@@ -677,7 +679,7 @@ export function ManageMembersScreen() {
     }
     if (activeTab === "teams" && access.canManageTeams) {
       return {
-        label: "Create team",
+        label: "创建团队",
         onClick: () => {
           resetTeamEditor();
           setShowTeamForm((current) => !current);
@@ -690,16 +692,16 @@ export function ManageMembersScreen() {
   return (
     <DashboardPageTemplate
       icon={Users}
-      title="Members"
-      description={listToolbars ? null : "Invite teammates, adjust roles, and keep access clean."}
+      title="成员"
+      description={listToolbars ? null : "邀请队友、调整角色并管理访问权限。"}
     >
       <OrgLimitDialog
         open={Boolean(limitDialogError)}
-        title={limitDialogError?.limitType === "members" ? "Member limit reached" : "Worker limit reached"}
-        message={limitDialogError?.message ?? "This workspace reached its current plan limit."}
+        title={limitDialogError?.limitType === "members" ? "已达成员上限" : "已达工作实例上限"}
+        message={limitDialogError?.message ?? "此工作区已达到当前套餐上限。"}
         detail={
           limitDialogError
-            ? `${limitDialogError.currentCount} of ${limitDialogError.limit} ${limitDialogError.limitType} are already in use.`
+            ? `已有 ${limitDialogError.currentCount} / ${limitDialogError.limit} ${limitDialogError.limitType === "members" ? "个成员席位" : "个工作实例"}正在使用。`
             : null
         }
         feedbackHref={feedbackHref}
@@ -707,12 +709,12 @@ export function ManageMembersScreen() {
       />
       <OrgLimitDialog
         open={Boolean(seatBillingDialogError)}
-        eyebrow="Seat billing"
-        title="Subscribe to add more users"
-        message="The first 5 users in your organization are free, additional users are charged at $10 per user per month"
+        eyebrow="席位计费"
+        title="订阅以添加更多用户"
+        message="组织前 5 名用户免费，额外用户按每人每月 10 美元计费。"
         detail={canStartSeatCheckout ? null : permissionLockReason("billing.manage")}
-        closeLabel="Cancel"
-        actionLabel="Subscribe"
+        closeLabel="取消"
+        actionLabel="订阅"
         actionLoading={mutationBusy === "seat-checkout"}
         actionDisabled={!canStartSeatCheckout}
         onClose={() => setSeatBillingDialogError(null)}
@@ -721,7 +723,7 @@ export function ManageMembersScreen() {
             return;
           }
           void startSeatCheckout().catch((error) => {
-            setPageError(error instanceof Error ? error.message : "Could not start seat billing checkout.");
+            setPageError(error instanceof Error ? error.message : "无法开始席位结账，请重试。");
           });
         }}
       />
@@ -735,16 +737,16 @@ export function ManageMembersScreen() {
         activeTab={shownTab}
         onChange={setActiveTab}
         tabs={[
-          { value: "members", label: "Members", icon: User, count: tabCounts.members },
-          { value: "teams", label: "Teams", icon: Users, count: tabCounts.teams },
-          ...(teamRoles ? [{ value: "roles" as const, label: "Roles", icon: ShieldCheck }] : []),
+          { value: "members", label: "成员", icon: User, count: tabCounts.members },
+          { value: "teams", label: "团队", icon: Users, count: tabCounts.teams },
+          ...(teamRoles ? [{ value: "roles" as const, label: "角色", icon: ShieldCheck }] : []),
         ]}
       />
 
       {shownTab === "roles" ? (
         <RolesTab
           action={orgContext && canCreateRole({ permissionsFeature: orgFeatureEnabled(orgContext, "permissions"), canManageTeams: access.canManageTeams, canManagePermissions: access.canManagePermissions })
-            ? <DenButton size={listToolbars ? "sm" : "md"} icon={Plus} href={getNewRoleRoute(orgSlug)} data-testid="roles-create">Create role</DenButton>
+            ? <DenButton size={listToolbars ? "sm" : "md"} icon={Plus} href={getNewRoleRoute(orgSlug)} data-testid="roles-create">创建角色</DenButton>
             : undefined}
         />
       ) : null}
@@ -757,8 +759,8 @@ export function ManageMembersScreen() {
         <div>
           {listToolbars ? <MemberListToolbar
             collection="members" value={memberFilter} onChange={setMemberFilter}
-            action={<DenButton size="sm" icon={access.canInviteMembers ? Plus : Lock} disabled={!access.canInviteMembers} title={!access.canInviteMembers ? permissionLockReason("invitations.manage") : undefined} onClick={() => { resetMemberEditor(); setShowInviteForm((current) => !current); }}>Add member</DenButton>}
-            secondary={access.canInviteMembers && orgContext.capabilities.installLinks ? <ItemMenu label="Member list actions" entries={[{ label: installLinkCopied ? "Copied" : "Copy install link", onSelect: handleCopyInstallLink }]} /> : undefined}
+            action={<DenButton size="sm" icon={access.canInviteMembers ? Plus : Lock} disabled={!access.canInviteMembers} title={!access.canInviteMembers ? permissionLockReason("invitations.manage") : undefined} onClick={() => { resetMemberEditor(); setShowInviteForm((current) => !current); }}>添加成员</DenButton>}
+            secondary={access.canInviteMembers && orgContext.capabilities.installLinks ? <ItemMenu label="成员列表操作" entries={[{ label: installLinkCopied ? "已复制" : "复制安装链接", onSelect: handleCopyInstallLink }]} /> : undefined}
           /> : <div className="mb-6 flex flex-wrap items-center justify-end gap-4" data-testid="members-toolbar">
             {toolbarAction ? (
               <div className="flex flex-wrap justify-end gap-2">
@@ -769,7 +771,7 @@ export function ManageMembersScreen() {
                     icon={LinkIcon}
                     onClick={() => void handleCopyInstallLink()}
                   >
-                    {installLinkCopied ? "Copied" : "Copy install link"}
+                    {installLinkCopied ? "已复制" : "复制安装链接"}
                   </DenButton>
                 ) : null}
                 <DenButton icon={Plus} onClick={toolbarAction.onClick}>
@@ -782,7 +784,7 @@ export function ManageMembersScreen() {
           {installLinkShareUrl ? (
             <div className="mb-6 rounded-[24px] border border-gray-200 bg-white px-5 py-4">
               <p className="text-[13px] text-gray-500">
-                Copy blocked by the browser — copy the link manually:
+                浏览器阻止了复制，请手动复制链接：
               </p>
               <div className="mt-3 flex flex-col gap-3 lg:flex-row lg:items-center">
                 <DenInput
@@ -790,7 +792,7 @@ export function ManageMembersScreen() {
                   data-testid="install-link-share-url"
                   value={installLinkShareUrl}
                   readOnly
-                  aria-label="Install link"
+                  aria-label="安装链接"
                   className="font-mono text-[12px]"
                   onFocus={(event) => event.currentTarget.select()}
                   onClick={(event) => event.currentTarget.select()}
@@ -802,7 +804,7 @@ export function ManageMembersScreen() {
                     size="sm"
                     onClick={() => void handleInstallLinkShareCopy()}
                   >
-                    {installLinkShareCopied ? "Copied" : "Copy"}
+                    {installLinkShareCopied ? "已复制" : "复制"}
                   </DenButton>
                   <DenButton
                     variant="secondary"
@@ -812,7 +814,7 @@ export function ManageMembersScreen() {
                       setInstallLinkShareCopied(false);
                     }}
                   >
-                    Done
+                    完成
                   </DenButton>
                 </div>
               </div>
@@ -821,17 +823,17 @@ export function ManageMembersScreen() {
 
           <div className="overflow-visible rounded-2xl border border-gray-100 bg-white">
             <div data-testid="members-column-header" className={`grid grid-cols-[minmax(0,1fr)_auto] gap-4 border-b border-gray-100 py-3 text-[12px] font-medium text-gray-500 ${listToolbars ? "px-5 lg:grid-cols-[minmax(0,1fr)_180px_140px_28px]" : "px-4 lg:grid-cols-[minmax(0,1fr)_180px_140px_160px] lg:px-6"}`}>
-              <span>Member</span>
-              <span className="hidden lg:block">Role</span>
-              <span className="hidden lg:block">Joined</span>
+              <span>成员</span>
+              <span className="hidden lg:block">角色</span>
+              <span className="hidden lg:block">加入时间</span>
               <span />
             </div>
 
-            {visibleMembers.length === 0 ? <p className="px-5 py-6 text-[13px] text-gray-500" role="status">{memberFilter.trim() ? "No members match your filter." : "No members yet."}</p> : null}
+            {visibleMembers.length === 0 ? <p className="px-5 py-6 text-[13px] text-gray-500" role="status">{memberFilter.trim() ? "没有符合筛选条件的成员。" : "暂无成员。"}</p> : null}
             {visibleMembers.map((member) => {
               const roleLabels = [
                 ...splitRoleString(member.role).map(formatRoleLabel),
-                ...(teamRoles ? teamRoleLabels({ memberId: member.id, ownRole: member.isOwner ? "owner" : getOrgAccessFlags(member.role, false).isAdmin ? "admin" : "member", teams: orgContext.teams, customTeamIds: customRoles.teamIds, customRoleNameByTeam: sharedRoles ? customRoles.nameByTeam : undefined }) : member.adminTeams.length > 0 ? ["Admin"] : []),
+                ...(teamRoles ? teamRoleLabels({ memberId: member.id, ownRole: member.isOwner ? "owner" : getOrgAccessFlags(member.role, false).isAdmin ? "admin" : "member", teams: orgContext.teams, customTeamIds: customRoles.teamIds, customRoleNameByTeam: sharedRoles ? customRoles.nameByTeam : undefined }) : member.adminTeams.length > 0 ? ["管理员"] : []),
               ];
               const roleLabel = [...new Set(roleLabels)].join(", ");
               const isInvited = !member.joinedAt;
@@ -848,14 +850,14 @@ export function ManageMembersScreen() {
                   : access.canManageRoles || access.canManageTeams || access.canRemoveMembers || canTransferOwnershipToMember || canViewPermissions;
 
               const memberActions = [
-                ...(canResendInvitation && inviteId ? [{ label: "Copy invite link", onSelect: async () => { setPageError(null); try { await copyTextWhenReady(getInvitationLink(inviteId)); } catch (error) { setPageError(error instanceof Error ? error.message : "Could not copy the invite link."); } } }] : []),
-                ...(canResendInvitation ? [{ label: "Resend invite", disabled: mutationBusy === "invite-member", onSelect: async () => { try { await inviteMember({ email: member.user.email, role: assignableOrgRole(member.role) }); } catch (error) { setPageError(error instanceof Error ? error.message : "Could not resend invitation."); } } }] : []),
-                ...(isInvited && access.canCancelInvitations && canManageMemberGrants && inviteId ? [{ label: "Cancel invite", destructive: true, onSelect: async () => { try { await cancelInvitation(inviteId); } catch (error) { setPageError(error instanceof Error ? error.message : "Could not cancel invitation."); } } }] : []),
-                ...(canViewPermissions ? [{ label: permissionsMemberId === member.id ? "Hide permissions" : "View permissions", onSelect: () => setPermissionsMemberId((current) => current === member.id ? null : member.id) }] : []),
-                ...(!isInvited ? [{ label: "Edit role", disabled: !access.canManageRoles, onSelect: () => { setEditingMemberId(member.id); setMemberRoleDraft(assignableOrgRole(member.role)); setShowInviteForm(false); } }] : []),
-                ...(canTransferOwnershipToMember ? [{ label: "Transfer ownership", disabled: mutationBusy === "transfer-ownership", onSelect: () => handleTransferOwnership(member) }] : []),
-                ...(!isInvited && access.canManageTeams ? [{ label: "Manage teams", onSelect: () => { setEditingMemberTeamsId(member.id); setMemberTeamsDraft(new Set(orgContext.teams.filter((team) => team.memberIds.includes(member.id)).map((team) => team.id))); } }] : []),
-                ...(!isInvited && access.canRemoveMembers && canManageMemberGrants ? [{ label: "Remove member", destructive: true, confirm: { title: `Remove ${member.user.name || member.user.email}?`, description: "They lose access to this organization. You can invite them again.", action: "Remove member" }, onSelect: async () => { await removeMember(member.id); if (editingMemberId === member.id) resetMemberEditor(); } }] : []),
+                ...(canResendInvitation && inviteId ? [{ label: "复制邀请链接", onSelect: async () => { setPageError(null); try { await copyTextWhenReady(getInvitationLink(inviteId)); } catch (error) { setPageError(error instanceof Error ? error.message : "无法复制邀请链接，请手动复制。"); } } }] : []),
+                ...(canResendInvitation ? [{ label: "重新发送邀请", disabled: mutationBusy === "invite-member", onSelect: async () => { try { await inviteMember({ email: member.user.email, role: assignableOrgRole(member.role) }); } catch (error) { setPageError(error instanceof Error ? error.message : "无法重新发送邀请，请重试。"); } } }] : []),
+                ...(isInvited && access.canCancelInvitations && canManageMemberGrants && inviteId ? [{ label: "取消邀请", destructive: true, onSelect: async () => { try { await cancelInvitation(inviteId); } catch (error) { setPageError(error instanceof Error ? error.message : "无法取消邀请，请重试。"); } } }] : []),
+                ...(canViewPermissions ? [{ label: permissionsMemberId === member.id ? "隐藏权限" : "查看权限", onSelect: () => setPermissionsMemberId((current) => current === member.id ? null : member.id) }] : []),
+                ...(!isInvited ? [{ label: "编辑角色", disabled: !access.canManageRoles, onSelect: () => { setEditingMemberId(member.id); setMemberRoleDraft(assignableOrgRole(member.role)); setShowInviteForm(false); } }] : []),
+                ...(canTransferOwnershipToMember ? [{ label: "转移所有权", disabled: mutationBusy === "transfer-ownership", onSelect: () => handleTransferOwnership(member) }] : []),
+                ...(!isInvited && access.canManageTeams ? [{ label: "管理团队", onSelect: () => { setEditingMemberTeamsId(member.id); setMemberTeamsDraft(new Set(orgContext.teams.filter((team) => team.memberIds.includes(member.id)).map((team) => team.id))); } }] : []),
+                ...(!isInvited && access.canRemoveMembers && canManageMemberGrants ? [{ label: "移除成员", destructive: true, confirm: { title: `移除 ${member.user.name || member.user.email}？`, description: "他们将失去此组织的访问权限，之后可重新邀请。", action: "Remove member" }, onSelect: async () => { await removeMember(member.id); if (editingMemberId === member.id) resetMemberEditor(); } }] : []),
               ];
               return (
                 <div key={member.id}>
@@ -869,22 +871,22 @@ export function ManageMembersScreen() {
                     {!listToolbars && teamRoles ? (
                       <MemberTeamRoles member={member} teams={orgContext.teams} customTeamIds={customRoles.teamIds} customRoleNameByTeam={sharedRoles ? customRoles.nameByTeam : undefined} />
                     ) : !listToolbars && member.adminTeams.length > 0 ? (
-                      <span className="mt-1 block text-[12px] text-cyan-700">Admin via {member.adminTeams.map((team) => team.name).join(", ")}</span>
+                      <span className="mt-1 block text-[12px] text-cyan-700">管理员权限来自 {member.adminTeams.map((team) => team.name).join(", ")}</span>
                     ) : null}
                   </span>
                   <span data-testid="member-joined" className="col-start-1 row-start-3 pl-11 text-[13px] text-gray-500 lg:col-auto lg:row-auto lg:pl-0">
-                    {member.joinedAt ? <span className="lg:hidden">Joined </span> : null}
+                    {member.joinedAt ? <span className="lg:hidden">加入时间 </span> : null}
                     {member.joinedAt
-                      ? listToolbars ? formatAddedDate(member.joinedAt) : new Date(member.joinedAt).toLocaleDateString()
-                      : "Pending"}
+                      ? listToolbars ? formatAddedDate(member.joinedAt) : new Date(member.joinedAt).toLocaleDateString(DEFAULT_DEN_LOCALE)
+                      : "待处理"}
                   </span>
                   <div data-testid="member-actions" className="relative col-start-2 row-span-3 row-start-1 flex items-center justify-end gap-2 lg:col-auto lg:row-span-1 lg:row-auto">
                     {listToolbars ? (
-                      member.isOwner ? <span data-testid="member-owner-locked"><TeamsListLocked reason="The owner cannot be edited here. Only the owner can transfer ownership to an admin." /></span> : canOpenActions ? <ItemMenu label={`Open actions for ${member.user.name || member.user.email}`} entries={memberActions} /> : <TeamsListLocked reason="You cannot change this member. Ask an organization admin for access." />
+                      member.isOwner ? <span data-testid="member-owner-locked"><TeamsListLocked reason="无法在此编辑所有者，只有所有者可将所有权转移给管理员。" /></span> : canOpenActions ? <ItemMenu label={`打开 ${member.user.name || member.user.email} 的操作`} entries={memberActions} /> : <TeamsListLocked reason="你无法更改此成员，请联系组织管理员授权。" />
                     ) : member.isOwner ? (
                       <span data-testid="member-owner-locked" className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-[12px] text-gray-600">
                         <Lock className="h-3 w-3" />
-                        Locked
+                        已锁定
                       </span>
                     ) : canOpenActions ? (
                       <>
@@ -892,7 +894,7 @@ export function ManageMembersScreen() {
                           type="button"
                           onClick={() => setOpenMemberMenuId((current) => current === member.id ? null : member.id)}
                           className="rounded-full p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
-                          aria-label={`Open actions for ${member.user.name}`}
+                          aria-label={`打开 ${member.user.name} 的操作`}
                         >
                           <MoreHorizontal className="h-4 w-4" />
                         </button>
@@ -907,13 +909,13 @@ export function ManageMembersScreen() {
                                   try {
                                     await copyTextWhenReady(getInvitationLink(inviteId));
                                   } catch (error) {
-                                    setPageError(error instanceof Error ? error.message : "Could not copy the invite link.");
+                                    setPageError(error instanceof Error ? error.message : "无法复制邀请链接，请手动复制。");
                                   }
                                 }}
                                 className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-gray-600 transition hover:bg-gray-50"
                               >
                                 <LinkIcon className="h-3.5 w-3.5" />
-                                Copy invite link
+                                复制邀请链接
                               </button>
                             ) : null}
                             {canResendInvitation ? (
@@ -925,14 +927,14 @@ export function ManageMembersScreen() {
                                     await inviteMember({ email: member.user.email, role: assignableOrgRole(member.role) });
                                     setOpenMemberMenuId(null);
                                   } catch (error) {
-                                    setPageError(error instanceof Error ? error.message : "Could not resend invitation.");
+                                    setPageError(error instanceof Error ? error.message : "无法重新发送邀请，请重试。");
                                   }
                                 }}
                                 disabled={mutationBusy === "invite-member"}
                                 className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
                               >
                                 <Send className="h-3.5 w-3.5" />
-                                Resend invite
+                                重新发送邀请
                               </button>
                             ) : null}
                             {isInvited && access.canCancelInvitations && canManageMemberGrants && inviteId ? (
@@ -944,14 +946,14 @@ export function ManageMembersScreen() {
                                     await cancelInvitation(inviteId);
                                     setOpenMemberMenuId(null);
                                   } catch (error) {
-                                    setPageError(error instanceof Error ? error.message : "Could not cancel invitation.");
+                                    setPageError(error instanceof Error ? error.message : "无法取消邀请，请重试。");
                                   }
                                 }}
                                 disabled={mutationBusy === "cancel-invitation"}
                                 className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
                               >
                                 <Trash2 className="h-3.5 w-3.5" />
-                                Cancel invite
+                                取消邀请
                               </button>
                             ) : null}
                             {canViewPermissions ? (
@@ -965,7 +967,7 @@ export function ManageMembersScreen() {
                                 className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-gray-600 transition hover:bg-gray-50"
                               >
                                 <ShieldCheck className="h-3.5 w-3.5" />
-                                {permissionsMemberId === member.id ? "Hide permissions" : "View permissions"}
+                                {permissionsMemberId === member.id ? "隐藏权限" : "查看权限"}
                               </button>
                             ) : null}
                             {!isInvited && access.canManageRoles ? (
@@ -980,7 +982,7 @@ export function ManageMembersScreen() {
                                 className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-gray-600 transition hover:bg-gray-50"
                               >
                                 <Settings className="h-3.5 w-3.5" />
-                                Edit role
+                                编辑角色
                               </button>
                             ) : !isInvited ? (
                               <button
@@ -990,7 +992,7 @@ export function ManageMembersScreen() {
                                 className="flex w-full cursor-not-allowed items-center gap-2 rounded-xl px-3 py-2 text-left text-gray-400"
                               >
                                 <Lock className="h-3.5 w-3.5" />
-                                Edit role
+                                编辑角色
                               </button>
                             ) : null}
                             {canTransferOwnershipToMember ? (
@@ -1001,7 +1003,7 @@ export function ManageMembersScreen() {
                                 className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
                               >
                                 <Shield className="h-3.5 w-3.5" />
-                                Transfer ownership
+                                转移所有权
                               </button>
                             ) : null}
                             {!isInvited && access.canManageTeams ? (
@@ -1020,7 +1022,7 @@ export function ManageMembersScreen() {
                                 className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-gray-600 transition hover:bg-gray-50"
                               >
                                 <Users className="h-3.5 w-3.5" />
-                                Manage teams
+                                管理团队
                               </button>
                             ) : null}
                             {!isInvited && access.canRemoveMembers && canManageMemberGrants ? (
@@ -1035,34 +1037,34 @@ export function ManageMembersScreen() {
                                     }
                                     setOpenMemberMenuId(null);
                                   } catch (error) {
-                                    setPageError(error instanceof Error ? error.message : "Could not remove member.");
+                                    setPageError(error instanceof Error ? error.message : "无法移除成员，请重试。");
                                   }
                                 }}
                                 disabled={mutationBusy === "remove-member"}
                                 className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
                               >
                                 <Trash2 className="h-3.5 w-3.5" />
-                                Remove member
+                                移除成员
                               </button>
                             ) : null}
                           </div>
                         ) : null}
                       </>
                     ) : (
-                      <span className="text-[13px] text-gray-500">Read only</span>
+                      <span className="text-[13px] text-gray-500">只读</span>
                     )}
                   </div>
                 </div>
                 {permissionsMemberId === member.id && canViewPermissions ? (
                   <div className="border-b border-gray-100 px-6 py-4" data-testid="member-permissions-panel">
                     <div className="mb-3 flex items-center justify-between gap-3">
-                      <h3 className="text-[13px] font-medium text-gray-900">Effective permissions</h3>
+                      <h3 className="text-[13px] font-medium text-gray-900">实际权限</h3>
                       <button
                         type="button"
                         onClick={() => setPermissionsMemberId(null)}
                         className="rounded text-[12px] text-gray-500 transition hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400"
                       >
-                        Hide
+                        隐藏
                       </button>
                     </div>
                     <MemberEffectivePermissions memberId={member.id} memberName={member.user.name} />
@@ -1073,7 +1075,7 @@ export function ManageMembersScreen() {
                     <div className="flex flex-wrap items-start gap-4">
                       <div className="flex-1">
                         <p className="mb-2 text-[12px] font-medium uppercase tracking-wide text-gray-400">
-                          Teams for {member.user.name}
+                          团队所属人员 {member.user.name}
                         </p>
                         <div className="flex flex-wrap gap-2">
                           {(orgContext?.teams ?? []).map((team) => {
@@ -1113,7 +1115,7 @@ export function ManageMembersScreen() {
                           onClick={() => setEditingMemberTeamsId(null)}
                           className="inline-flex h-8 items-center rounded-full border border-gray-200 bg-white px-3.5 text-[13px] font-medium text-gray-600 transition hover:bg-gray-50"
                         >
-                          Cancel
+                          取消
                         </button>
                         <button
                           type="button"
@@ -1133,12 +1135,12 @@ export function ManageMembersScreen() {
                               }
                               setEditingMemberTeamsId(null);
                             } catch (error) {
-                              setPageError(error instanceof Error ? error.message : "Could not update teams.");
+                              setPageError(error instanceof Error ? error.message : "无法更新团队，请重试。");
                             }
                           }}
                           className="inline-flex h-8 items-center rounded-full bg-gray-900 px-3.5 text-[13px] font-semibold text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-60"
                         >
-                          Save teams
+                          保存团队
                         </button>
                       </div>
                     </div>
@@ -1153,8 +1155,8 @@ export function ManageMembersScreen() {
 
       {activeTab === "teams" ? (
         <div>
-          {listToolbars ? <MemberListToolbar collection="teams" value={teamFilter} onChange={setTeamFilter} action={<DenButton size="sm" icon={access.canManageTeams ? Plus : Lock} disabled={!access.canManageTeams} title={!access.canManageTeams ? permissionLockReason("teams.manage") : undefined} onClick={() => { resetTeamEditor(); setShowTeamForm((current) => !current); }}>Create team</DenButton>} /> : <div className="mb-6 flex items-center justify-between gap-4">
-            <p className="text-[14px] text-gray-500">Manage teams and their members.</p>
+          {listToolbars ? <MemberListToolbar collection="teams" value={teamFilter} onChange={setTeamFilter} action={<DenButton size="sm" icon={access.canManageTeams ? Plus : Lock} disabled={!access.canManageTeams} title={!access.canManageTeams ? permissionLockReason("teams.manage") : undefined} onClick={() => { resetTeamEditor(); setShowTeamForm((current) => !current); }}>创建团队</DenButton>} /> : <div className="mb-6 flex items-center justify-between gap-4">
+            <p className="text-[14px] text-gray-500">管理团队及其成员。</p>
             {toolbarAction ? (
               <DenButton icon={Plus} onClick={toolbarAction.onClick}>
                 {toolbarAction.label}
@@ -1172,11 +1174,11 @@ export function ManageMembersScreen() {
                 icon={Globe}
                 name="Everyone"
                 href={getEveryoneRoute(orgSlug)}
-                subtitle="Every member, including people in no team"
+                subtitle="所有成员，包括未加入团队的人员"
                 lanes={(
                   <>
-                    {teamRoles ? <TeamsListLane testId="team-row-role">Member</TeamsListLane> : null}
-                    {agentPermissionsColumn ? <TeamsListLane testId="team-row-agent-permissions">Base for every team</TeamsListLane> : null}
+                    {teamRoles ? <TeamsListLane testId="team-row-role">成员</TeamsListLane> : null}
+                    {agentPermissionsColumn ? <TeamsListLane testId="team-row-agent-permissions">所有团队的基础设置</TeamsListLane> : null}
                     <TeamsListLane testId="team-row-members" tone="muted">{peopleCount(orgContext.members.length)}</TeamsListLane>
                   </>
                 )}
@@ -1186,7 +1188,7 @@ export function ManageMembersScreen() {
 
             {visibleTeams.length === 0 ? (
               <div className="px-5 py-6 text-[13px] text-gray-500" role="status">
-                {listToolbars && teamFilter.trim() ? "No teams match your filter." : "No teams yet."}
+                {listToolbars && teamFilter.trim() ? "没有符合筛选条件的团队。" : "暂无团队。"}
               </div>
             ) : (
               visibleTeams.map((team) => {
@@ -1209,9 +1211,9 @@ export function ManageMembersScreen() {
                     name={team.name}
                     href={access.canViewTeams ? getTeamRoute(orgSlug, team.id) : undefined}
                     badge={team.managedByScim ? (
-                      <span className="shrink-0 rounded-full bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-600">Managed by SCIM</span>
+                      <span className="shrink-0 rounded-full bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-600">由 SCIM 管理</span>
                     ) : null}
-                    subtitle={names.length > 0 ? names.join(", ") : team.memberIds.length > 0 ? peopleCount(team.memberIds.length) : "No members yet"}
+                    subtitle={names.length > 0 ? names.join(", ") : team.memberIds.length > 0 ? peopleCount(team.memberIds.length) : "暂无成员"}
                     // teamRoles: Admin is the team's role (Role tab), so the old checkbox goes away.
                     extra={teamRoles ? null : <TeamAdminCheckbox team={team} />}
                     lanes={(
@@ -1223,10 +1225,10 @@ export function ManageMembersScreen() {
                     )}
                     action={canEdit ? (
                       <ItemMenu
-                        label={`Actions for ${team.name}`}
+                        label={`${team.name} 的操作`}
                         entries={[
                           {
-                            label: "Edit",
+                            label: "编辑",
                             onSelect: () => {
                               setShowTeamForm(false);
                               setEditingTeamId(team.id);
@@ -1235,12 +1237,12 @@ export function ManageMembersScreen() {
                             },
                           },
                           {
-                            label: "Delete",
+                            label: "删除",
                             destructive: true,
                             disabled: mutationBusy === "delete-team",
                             confirm: {
-                              title: `Delete ${team.name}?`,
-                              description: `${team.memberIds.length > 0 ? `${peopleCount(team.memberIds.length)} ${team.memberIds.length === 1 ? "loses" : "lose"}` : "Nobody loses"} this team's ${teamLosses({ role: teamRoles, agentPermissions: agentPermissionsColumn })}. This cannot be undone.`,
+                              title: `删除 ${team.name}？`,
+                              description: `${team.memberIds.length > 0 ? `${peopleCount(team.memberIds.length)} 将失去` : "所有人都将保留"}此团队的${teamLosses({ role: teamRoles, agentPermissions: agentPermissionsColumn })}。此操作无法撤销。`,
                               action: "Delete team",
                             },
                             onSelect: async () => {
@@ -1254,7 +1256,7 @@ export function ManageMembersScreen() {
                     ) : (
                       <TeamsListLocked
                         reason={team.managedByScim
-                          ? "Managed by your identity provider"
+                          ? "由身份提供商管理"
                           : access.canManageTeams ? permissionLockReason("teams.manage_admin") : permissionLockReason("teams.manage")}
                       />
                     )}
@@ -1272,19 +1274,19 @@ export function ManageMembersScreen() {
 
 /** A team's agent permissions in the Teams list: its own overrides, or that it follows Everyone. */
 function TeamAgentPermissionsCell({ summary, failed }: { summary: string | null | undefined; failed: boolean }) {
-  if (failed) return <TeamsListLane testId="team-row-agent-permissions" title="Couldn't load agent permissions" tone="muted">—</TeamsListLane>;
-  if (summary === undefined) return <span role="status" aria-label="Loading agent permissions" data-testid="team-row-agent-permissions" className="hidden lg:block"><DenSkeleton className="h-3 w-24" /></span>;
+  if (failed) return <TeamsListLane testId="team-row-agent-permissions" title="无法加载代理权限" tone="muted">—</TeamsListLane>;
+  if (summary === undefined) return <span role="status" aria-label="正在加载代理权限" data-testid="team-row-agent-permissions" className="hidden lg:block"><DenSkeleton className="h-3 w-24" /></span>;
   return summary === null
-    ? <TeamsListLane testId="team-row-agent-permissions" tone="muted">Follows Everyone</TeamsListLane>
+    ? <TeamsListLane testId="team-row-agent-permissions" tone="muted">使用所有人的设置</TeamsListLane>
     : <TeamsListLane testId="team-row-agent-permissions" title={summary}>{summary}</TeamsListLane>;
 }
 
 function peopleCount(count: number): string {
-  return `${count} ${count === 1 ? "member" : "members"}`;
+  return `${count} 名成员`;
 }
 
 /** What a team's members stop getting when it is deleted, for the confirmation (DESIGN.md P9). */
 function teamLosses({ role, agentPermissions }: { role: boolean; agentPermissions: boolean }): string {
-  const parts = [role ? "role" : null, "access", agentPermissions ? "agent permissions" : null].filter((part): part is string => part !== null);
-  return parts.length === 1 ? parts[0] ?? "" : `${parts.slice(0, -1).join(", ")} and ${parts[parts.length - 1]}`;
+  const parts = [role ? "role" : null, "access", agentPermissions ? "代理权限" : null].filter((part): part is string => part !== null);
+  return parts.length === 1 ? parts[0] ?? "" : `${parts.slice(0, -1).join(", ")}和${parts[parts.length - 1]}`;
 }

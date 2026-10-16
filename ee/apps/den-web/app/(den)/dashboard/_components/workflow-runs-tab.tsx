@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE } from "../../../_lib/locale";
+
 import { CalendarClock, Trash2 } from "lucide-react";
 import type { WorkflowArtifactSnapshot, WorkflowDetail } from "@openwork/types/workflows";
 import { DenButton } from "../../_components/ui/button";
@@ -33,7 +35,7 @@ export type WorkflowRunsTabProps = {
 };
 
 function formatDate(value: string) {
-  return new Date(value).toLocaleString();
+  return new Date(value).toLocaleString(DEFAULT_DEN_LOCALE);
 }
 
 export function WorkflowRunsTab({
@@ -55,16 +57,16 @@ export function WorkflowRunsTab({
     : detail.currentVersion;
 
   return (
-    <div className="grid gap-6" data-tab="runs" role="tabpanel" aria-label="Runs">
+    <div className="grid gap-6" data-tab="runs" role="tabpanel" aria-label="运行记录">
       <DenCard>
         <DenSectionHeader
-          title="Past runs"
-          description="Choose a run to see the steps it took and the result it saved."
+          title="历史运行"
+          description="选择一次运行以查看执行步骤与保存结果。"
           action={<DenChip tone="neutral" size="sm">{snapshots.length}</DenChip>}
         />
         <div className="mt-5">
           {snapshots.length === 0 ? (
-            <p className="text-[13px] text-gray-400">No runs yet.</p>
+            <p className="text-[13px] text-gray-400">暂无运行记录。</p>
           ) : (
             <DenList>
               {snapshots.map((snapshot) => (
@@ -72,19 +74,19 @@ export function WorkflowRunsTab({
                   key={snapshot.receiptId}
                   focused={snapshot.receiptId === selectedReceiptId}
                   onClick={() => onSelectRun(snapshot.receiptId)}
-                  ariaLabel={`View run from ${formatDate(snapshot.finishedAt)}`}
+                  ariaLabel={`查看 ${formatDate(snapshot.finishedAt)} 的运行`}
                   title={formatDate(snapshot.finishedAt)}
                   chips={
                     <>
                       <DenChip tone={snapshot.status === "failed" ? "danger" : "success"}>
-                        {snapshot.status === "failed" ? "Failed" : "Succeeded"}
+                        {snapshot.status === "failed" ? "失败" : "成功"}
                       </DenChip>
-                      {snapshot.contentDeletedAt ? <DenChip tone="neutral">Result removed</DenChip> : null}
+                      {snapshot.contentDeletedAt ? <DenChip tone="neutral">结果已移除</DenChip> : null}
                     </>
                   }
                   meta={
                     <span>
-                      {snapshot.source === "manual" ? "Manual" : "Scheduled"}
+                      {snapshot.source === "manual" ? "手动" : "已安排"}
                       {technical ? ` · ${snapshot.receiptId}` : ""}
                     </span>
                   }
@@ -94,11 +96,11 @@ export function WorkflowRunsTab({
                         variant="ghost"
                         size="xs"
                         icon={Trash2}
-                        aria-label="Delete this run's saved result"
+                        aria-label="删除此次运行保存的结果"
                         disabled={pending}
                         onClick={(event) => {
                           event.stopPropagation();
-                          if (!window.confirm("Delete this run's saved input and result? Its date and status will remain.")) return;
+                          if (!window.confirm("删除此次运行保存的输入与结果？日期与状态将保留。")) return;
                           onDeleteRun(snapshot.receiptId);
                         }}
                       />
@@ -113,16 +115,16 @@ export function WorkflowRunsTab({
 
       <DenCard>
         <DenSectionHeader
-          title="Selected run"
-          description={selectedSnapshot ? `${formatDate(selectedSnapshot.finishedAt)} · ${selectedSnapshot.source === "manual" ? "Manual" : "Scheduled"}` : "Choose a past run above."}
+          title="所选运行"
+          description={selectedSnapshot ? `${formatDate(selectedSnapshot.finishedAt)} · ${selectedSnapshot.source === "manual" ? "手动" : "已安排"}` : "请选择上方的一次历史运行。"}
           action={selectedSnapshot ? (
             <span className="flex items-center gap-2 text-[12px] text-gray-500">
-              Show technical details
+              显示技术详情
               <DenSwitch
                 checked={technical}
                 onChange={onTechnicalChange}
                 size="sm"
-                aria-label="Show selected run technical details"
+                aria-label="显示所选运行的技术详情"
               />
             </span>
           ) : null}
@@ -154,19 +156,19 @@ export function WorkflowRunsTab({
 
       <DenCard>
         <DenSectionHeader
-          title="Versions"
-          description="Schedules stay on their saved version until you update them."
+          title="版本"
+          description="更新前，计划任务继续使用已保存的版本。"
         />
         <DenList className="mt-5">
           {detail.versions.map((version, index) => (
             <DenListRow
               key={version.id}
-              title={index === 0 ? "Current" : "Earlier"}
-              chips={index === 0 ? <DenChip tone="success">Current</DenChip> : <DenChip tone="neutral">Earlier</DenChip>}
+              title={index === 0 ? "当前" : "更早"}
+              chips={index === 0 ? <DenChip tone="success">当前</DenChip> : <DenChip tone="neutral">更早</DenChip>}
               meta={
                 <span>
-                  {new Date(version.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-                  {` · ${version.automationReferences.length} schedule${version.automationReferences.length === 1 ? "" : "s"}`}
+                  {new Date(version.createdAt).toLocaleDateString(DEFAULT_DEN_LOCALE, { month: "short", day: "numeric", year: "numeric" })}
+                  {` · ${version.automationReferences.length} 项计划`}
                   {technical ? ` · ${version.id}` : ""}
                 </span>
               }
@@ -179,7 +181,7 @@ export function WorkflowRunsTab({
                       size="xs"
                       disabled={pending}
                       onClick={() => {
-                        if (!window.confirm(`Update ${reference.name} to the current version? Its schedule and saved input will stay the same.`)) return;
+                        if (!window.confirm(`将 ${reference.name} 更新至当前版本？计划和已保存的输入将保持不变。`)) return;
                         onUpdateAutomation({
                           automationId: reference.id,
                           pluginId: detail.pluginId,
@@ -188,7 +190,7 @@ export function WorkflowRunsTab({
                         });
                       }}
                     >
-                      Update {reference.name}
+                      更新 {reference.name}
                     </DenButton>
                   ))}
                 </div>
@@ -200,14 +202,14 @@ export function WorkflowRunsTab({
 
       <DenCard>
         <DenSectionHeader
-          title="Schedules"
-          description={automationCount === 0 ? "No schedules yet." : `${automationCount} active schedule${automationCount === 1 ? "" : "s"}.`}
+          title="计划任务"
+          description={automationCount === 0 ? "暂无计划任务。" : `${automationCount} 项启用的计划。`}
           action={
             <div className="flex items-center gap-3">
               <DenChip tone="neutral" size="sm">{automationCount}</DenChip>
               {detail.canManage && automateHref ? (
                 <DenButton href={automateHref} target="_blank" rel="noopener noreferrer" icon={CalendarClock}>
-                  Automate
+                  自动执行
                 </DenButton>
               ) : null}
             </div>

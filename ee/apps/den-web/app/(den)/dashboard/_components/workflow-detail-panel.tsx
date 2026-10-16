@@ -14,7 +14,7 @@ export function WorkflowDetailPanel({ configObjectId, onClose }: { configObjectI
   if (state.loading || !state.detail || !state.fields) {
     return (
       <div data-testid="den-workflow-detail-panel">
-        <DenCard>{state.error ?? "Loading workflow…"}</DenCard>
+        <DenCard>{state.error ?? "正在加载工作流…"}</DenCard>
       </div>
     );
   }
@@ -28,17 +28,17 @@ export function WorkflowDetailPanel({ configObjectId, onClose }: { configObjectI
         className="justify-self-start"
         onClick={() => state.close(onClose)}
       >
-        Back
+        返回
       </DenButton>
       <DenPageHeader
         title={state.detail.title}
-        description={state.detail.description || "A saved, repeatable workflow you can run whenever you need it."}
+        description={state.detail.description || "已保存的可重复工作流，可在需要时运行。"}
       />
       {state.error ? <DenNotice tone="error" message={state.error} /> : null}
       {state.detail.freshness.state === "needs_attention" ? (
         <DenNotice
           tone="warning"
-          message={`${state.detail.freshness.reason} You can still open the last successful result.`}
+          message={`${state.detail.freshness.reason} 你仍可打开上次成功的结果。`}
         />
       ) : null}
       <WorkflowOverviewTab

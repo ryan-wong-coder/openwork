@@ -78,7 +78,7 @@ async function requestJson(path: string, init?: RequestInit) {
 }
 
 function formatRole(role: string | null | undefined) {
-  if (!role) return "Member";
+  if (!role) return "成员";
   return role
     .split(/[-_,\s]+/)
     .filter(Boolean)
@@ -141,8 +141,8 @@ export default function McpSelectOrganizationPage() {
   // OpenWork's own apps (Workbot): choosing a workspace is all there is to it.
   const firstParty = client.clientId !== null && FIRST_PARTY_APP_CLIENT_IDS.has(client.clientId);
   const redirect = useMcpRedirect(oauthQuery);
-  const appName = client.name ?? "this app";
-  const actor = client.name ?? "This app";
+  const appName = client.name ?? "此应用";
+  const actor = client.name ?? "此应用";
   const story = mcpStoryCopy(client);
   const selectedOrg = useMemo(() => orgs.find((org) => org.id === selectedOrgId) ?? null, [orgs, selectedOrgId]);
   const isBusy = flowState === "submitting" || flowState === "redirecting";
@@ -188,7 +188,7 @@ export default function McpSelectOrganizationPage() {
     });
     if (!active.response.ok) {
       setFlowState("ready");
-      setErrorMessage(getErrorMessage(active.payload, "Could not choose this workspace. Try again."));
+      setErrorMessage(getErrorMessage(active.payload, "无法选择此工作区，请重试。"));
       return;
     }
 
@@ -197,7 +197,7 @@ export default function McpSelectOrganizationPage() {
       body: JSON.stringify({ accept: true, scope: requestedScope, oauth_query: oauthQuery }),
     });
     if (!continued.response.ok) {
-      const message = describeMcpOAuthError(continued.payload, `Could not authorize ${appName}. Try again.`);
+      const message = describeMcpOAuthError(continued.payload, `无法授权 ${appName}，请重试。`);
       setFlowState(message === MCP_OAUTH_RESTART_MESSAGE ? "expired" : "ready");
       setErrorMessage(message);
       return;
@@ -227,7 +227,7 @@ export default function McpSelectOrganizationPage() {
     const org = created.response.ok ? parseCreatedOrg(created.payload) : null;
     if (!org) {
       setFlowState("empty");
-      setCreateError("Could not create the workspace. Try again.");
+      setCreateError("无法创建工作区，请重试。");
       return;
     }
 
@@ -268,25 +268,25 @@ export default function McpSelectOrganizationPage() {
   if (flowState === "expired") {
     return frame(
       <SetupPanelBody gap="md">
-        <SetupPanelTitle>This sign-in link expired</SetupPanelTitle>
+        <SetupPanelTitle>此登录链接已过期</SetupPanelTitle>
         <div className="flex flex-col gap-1.5">
-          <SetupLine>Start sign-in again from your agent.</SetupLine>
-          <SetupLine muted>Nothing was authorized.</SetupLine>
+          <SetupLine>请从代理中重新开始登录。</SetupLine>
+          <SetupLine muted>未授权任何内容。</SetupLine>
         </div>
       </SetupPanelBody>,
     );
   }
 
   if (flowState === "cancelled") {
-    return frame(<SetupStatus icon={<X className="size-5" strokeWidth={1.5} />} title="Nothing was authorized" line="You can close this tab." />);
+    return frame(<SetupStatus icon={<X className="size-5" strokeWidth={1.5} />} title="尚未授权任何内容" line="可以关闭此标签页。" />);
   }
 
   if (flowState === "signed_out") {
     return frame(
       <SetupPanelBody gap="md">
-        <SetupPanelTitle>Sign in to continue</SetupPanelTitle>
-        <SetupLine>Sign in to OpenWork, then {appName} can finish connecting.</SetupLine>
-        <a className="den-button-primary w-full" href={`/?${oauthQuery}`}>Sign in to OpenWork</a>
+        <SetupPanelTitle>登录后继续</SetupPanelTitle>
+        <SetupLine>请先登录 OpenWork，然后 {appName} 即可完成连接。</SetupLine>
+        <a className="den-button-primary w-full" href={`/?${oauthQuery}`}>登录 OpenWork</a>
       </SetupPanelBody>,
     );
   }
@@ -295,25 +295,25 @@ export default function McpSelectOrganizationPage() {
   const facts = [
     identity.app,
     identity.returnsTo,
-    { label: "Account", value: email ?? "…", testId: "mcp-account-email" },
+    { label: "账号", value: email ?? "…", testId: "mcp-account-email" },
   ];
 
   return frame(
     <SetupPanelBody>
-      <SetupPanelTitle>{creating ? "Name your workspace" : "Choose a workspace"}</SetupPanelTitle>
+      <SetupPanelTitle>{creating ? "为工作区命名" : "选择工作区"}</SetupPanelTitle>
 
       {flowState === "loading" ? <SetupSkeletonRows /> : null}
 
       {creating ? (
         <form id="mcp-create-workspace" className="flex flex-col gap-2" onSubmit={(event) => void createWorkspaceAndContinue(event)}>
-          <label htmlFor="mcp-workspace-name" className="den-label">Workspace name</label>
+          <label htmlFor="mcp-workspace-name" className="den-label">工作区名称</label>
           <input
             id="mcp-workspace-name"
             className="den-input"
             name="workspaceName"
             value={workspaceName}
             onChange={(event) => setWorkspaceName(event.target.value)}
-            placeholder="My work"
+            placeholder="我的工作"
             minLength={2}
             maxLength={120}
             autoComplete="organization"
@@ -328,9 +328,9 @@ export default function McpSelectOrganizationPage() {
       {!creating && orgs.length > 0 ? (
         <div className="flex flex-col gap-3">
           {orgWindow.showSearch ? (
-            <FilterInput size="md" value={orgWindow.query} onChange={orgWindow.setQuery} placeholder="Filter by name" />
+            <FilterInput size="md" value={orgWindow.query} onChange={orgWindow.setQuery} placeholder="按名称筛选" />
           ) : null}
-          <div role="radiogroup" aria-label="Workspace" className="flex flex-col border-t border-[var(--setup-hairline)]">
+          <div role="radiogroup" aria-label="工作区" className="flex flex-col border-t border-[var(--setup-hairline)]">
             {orgWindow.visible.map((org) => {
               const display = orgDisplayName(org);
               const isSelected = selectedOrgId === org.id;
@@ -353,17 +353,17 @@ export default function McpSelectOrganizationPage() {
                     <span className="text-[13px] leading-[18px] text-[var(--dls-text-secondary)]">{formatRole(org.role)}</span>
                   </span>
                   <span className="flex w-24 shrink-0 items-center justify-end gap-2.5 text-[13px] text-[var(--dls-text-secondary)]">
-                    {org.isActive ? <span>Current</span> : null}
+                    {org.isActive ? <span>当前</span> : null}
                     {isSelected ? <Check aria-hidden="true" className="size-4 text-[var(--dls-text-primary)]" strokeWidth={1.5} /> : null}
                   </span>
                 </label>
               );
             })}
           </div>
-          {orgWindow.filteredCount === 0 && orgWindow.query ? <SetupLine muted>No workspaces match.</SetupLine> : null}
+          {orgWindow.filteredCount === 0 && orgWindow.query ? <SetupLine muted>没有匹配的工作区。</SetupLine> : null}
           {orgWindow.hasMore ? (
             <SetupQuietButton className="self-start text-[var(--setup-ink-soft)]" onClick={orgWindow.showAll}>
-              Show {orgWindow.hiddenCount} more
+              再显示 {orgWindow.hiddenCount} 个
             </SetupQuietButton>
           ) : null}
         </div>
@@ -384,7 +384,7 @@ export default function McpSelectOrganizationPage() {
             className="den-button-primary w-full"
             disabled={isBusy || workspaceName.trim().length < 2}
           >
-            {isBusy ? (firstParty ? "Opening…" : "Authorizing…") : firstParty ? "Create workspace and continue" : "Create workspace and authorize"}
+            {isBusy ? (firstParty ? "正在打开…" : "正在授权…") : firstParty ? "创建工作区并继续" : "创建工作区并授权"}
           </button>
         ) : (
           <button
@@ -393,13 +393,13 @@ export default function McpSelectOrganizationPage() {
             onClick={() => void continueFlow()}
             disabled={isBusy || flowState === "loading" || !selectedOrgId}
           >
-            {isBusy ? (firstParty ? "Opening…" : "Authorizing…") : firstParty ? `Continue to ${client.name ?? "OpenWork"}` : client.name ? `Authorize ${client.name}` : "Authorize this app"}
+            {isBusy ? (firstParty ? "正在打开…" : "正在授权…") : firstParty ? `继续前往 ${client.name ?? "OpenWork"}` : client.name ? `授权 ${client.name}` : "授权此应用"}
           </button>
         )}
         <div className="flex items-start justify-between gap-4">
           <McpTechnicalDetails scope={requestedScope} clientId={client.clientId} redirect={redirect} />
           <SetupQuietButton onClick={() => void cancelFlow()} disabled={isBusy || flowState === "loading"}>
-            Cancel
+            取消
           </SetupQuietButton>
         </div>
       </div>

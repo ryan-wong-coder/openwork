@@ -10,11 +10,11 @@ const SessionCookieContext = createContext(false);
 export const useAdminSessionCookie = () => useContext(SessionCookieContext);
 
 const SECTIONS = [
-  { label: "Overview", href: "/admin", icon: LayoutDashboard },
-  { label: "Users", href: "/admin/users", icon: Users },
-  { label: "Organizations", href: "/admin/organizations", icon: Building2 },
-  { label: "Feature rollouts", href: "/admin/features", icon: Flag },
-  { label: "Free Auto usage", href: "/admin/free-auto", icon: ChartNoAxesCombined },
+  { label: "概览", href: "/admin", icon: LayoutDashboard },
+  { label: "用户", href: "/admin/users", icon: Users },
+  { label: "组织", href: "/admin/organizations", icon: Building2 },
+  { label: "功能发布", href: "/admin/features", icon: Flag },
+  { label: "免费 Auto 用量", href: "/admin/free-auto", icon: ChartNoAxesCombined },
 ];
 
 export function AdminShell({ hasSessionCookie, children }: { hasSessionCookie: boolean; children: ReactNode }) {
@@ -24,12 +24,12 @@ export function AdminShell({ hasSessionCookie, children }: { hasSessionCookie: b
   return (
     <SessionCookieContext.Provider value={hasSessionCookie}>
       <div className="min-h-screen bg-white">
-        <a href="#admin-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:p-3">Skip to content</a>
+        <a href="#admin-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:p-3">跳转到内容</a>
         <aside className="flex flex-col border-b border-slate-200 bg-slate-50/60 md:fixed md:inset-y-0 md:w-52 md:overflow-y-auto md:border-b-0 md:border-r">
           <div className="shrink-0 px-5 py-5">
-            <Link href="/admin" prefetch={false} className="text-sm font-semibold text-gray-900">OpenWork admin</Link>
+            <Link href="/admin" prefetch={false} className="text-sm font-semibold text-gray-900">OpenWork 管理后台</Link>
           </div>
-          <nav aria-label="Admin navigation" data-testid="admin-navigation" className="grid grid-cols-2 gap-1 px-3 pb-3 sm:grid-cols-3 md:flex md:shrink-0 md:flex-col">
+          <nav aria-label="管理后台导航" data-testid="admin-navigation" className="grid grid-cols-2 gap-1 px-3 pb-3 sm:grid-cols-3 md:flex md:shrink-0 md:flex-col">
             {SECTIONS.map(({ label, href, icon: Icon }) => {
               const active = href === "/admin" ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
               return (
@@ -42,12 +42,12 @@ export function AdminShell({ hasSessionCookie, children }: { hasSessionCookie: b
             })}
           </nav>
           <Link href="/" prefetch={false} className="flex shrink-0 items-center gap-2 px-6 py-4 text-sm text-slate-600 hover:text-slate-950 md:mt-auto">
-            <ArrowLeft size={16} strokeWidth={1.5} aria-hidden="true" />Back to cloud panel
+            <ArrowLeft size={16} strokeWidth={1.5} aria-hidden="true" />返回云端控制台
           </Link>
         </aside>
         <div className="md:pl-52">
           <main id="admin-content" className="mx-auto w-full max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
-            {!organizationDetail && section ? <AdminBreadcrumbs items={[{ id: "admin", label: "Admin", href: "/admin" }, { id: "section", label: section.label }]} /> : null}
+            {!organizationDetail && section ? <AdminBreadcrumbs items={[{ id: "admin", label: "管理员", href: "/admin" }, { id: "section", label: section.label }]} /> : null}
             {children}
           </main>
         </div>

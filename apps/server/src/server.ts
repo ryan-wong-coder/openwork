@@ -63,7 +63,11 @@ import {
 import { deleteSkill, listSkills, renderSkillContentForResponse, upsertSkill } from "./skills.js";
 import { deleteCommand, listCommands, repairCommands, upsertCommand } from "./commands.js";
 import { ApiError, formatError } from "./errors.js";
+import { restoreGatewayProvider } from "./gateway-config.js";
 import { readJsoncFile, updateJsoncTopLevel, writeJsoncFile } from "./jsonc.js";
+import { parse as parseJsonc } from "jsonc-parser";
+import { isDeepStrictEqual } from "node:util";
+import { withConfigurationWriteLock } from "./configuration-write-lock.js";
 import { recordAudit, readAuditEntries, readLastAudit } from "./audit.js";
 import { ReloadEventStore } from "./events.js";
 import { computeReloadFingerprint } from "./reload-fingerprint.js";
@@ -101,6 +105,7 @@ import { serve, type ServeResult } from "./serve-node.js";
 import { serveStaticUi } from "./static-ui.js";
 import { externalFetch, loopbackFetch, transferResponseBody } from "./server-fetch.js";
 import { registerCoreRoutes } from "./routes/core.js";
+import { registerGatewayRoutes } from "./routes/gateway.js";
 import { registerFileRoutes } from "./routes/files.js";
 import { registerOperationRoutes } from "./routes/operations.js";
 import { addRoute, matchRoute, type AuthMode, type RequestContext, type Route } from "./routes/registry.js";
@@ -785,6 +790,11 @@ export async function startServer(
   envServicesByConfig.set(config, env);
   const logger = createServerLogger(config);
   try {
+    await restoreGatewayProvider(config, env);
+  } catch {
+    logger.log("warn", "本地模型网关配置未恢复，请在设置中同步模型目录并重新保存。");
+  }
+  try {
     await reconcileLocalManagedMcpRuntimeEntries(config);
   } catch (error) {
     logger.log("warn", "Failed to reconcile OpenWork-managed MCP connections during startup.", {
@@ -822,7 +832,12 @@ export async function startServer(
         ...init, headers: { Authorization: `Bearer ${config.token}`, "Content-Type": "application/json" },
       }));
       const payload: unknown = await response.json();
-      if (!response.ok) throw new Error(`OpenWork read failed (${response.status})`);
+      if (!response.ok) {
+        const message = isRecord(payload) && typeof payload.message === "string" ? payload.message
+          : isRecord(payload) && isRecord(payload.error) && typeof payload.error.message === "string" ? payload.error.message
+          : `OpenWork 请求失败（${response.status}）`;
+        throw new ApiError(response.status, "host_request_failed", message);
+      }
       return payload;
     },
   });
@@ -1201,6 +1216,11 @@ export async function startServer(
 
   if (config.port !== server.port) {
     config.port = server.port;
+    try {
+      await restoreGatewayProvider(config, env);
+    } catch {
+      logger.log("warn", "网关本地连接尚未恢复，请在设置中重新同步模型目录。");
+    }
     try {
       await reconcileLocalManagedMcpRuntimeEntries(config);
     } catch (error) {
@@ -2726,6 +2746,21 @@ function createRoutes(
     return jsonResponse({ ...preferences, refresh });
   });
   const nativeEngineForWorkspace = createNativeCloudMcpResolver(engineV2Preview);
+  registerGatewayRoutes({
+    routes, config, env, readJsonBody, jsonResponse, ensureWritable, requireClientScope, resolveWorkspace,
+    reload: async () => {
+      try {
+        if (engineV2Preview.status().chatRouting) {
+          await engineV2Preview.refreshProviders();
+          return "reloaded";
+        }
+        return await applyManagedProviderReload(resolveEngineRuntimeWorkspace(config));
+      } catch {
+        cloudProviderSync.markReloadPending();
+        return "deferred";
+      }
+    },
+  });
   registerCoreRoutes({
     nativeEngineForWorkspace,
     routes,
@@ -3477,6 +3512,14 @@ function createRoutes(
     if (content === null) {
       throw new ApiError(400, "invalid_payload", "content must be a string");
     }
+    if (body.expectedContent !== undefined && body.expectedContent !== null && typeof body.expectedContent !== "string") {
+      throw new ApiError(400, "invalid_payload", "expectedContent must be a string or null");
+    }
+    const parseErrors: { error: number; offset: number; length: number }[] = [];
+    const parsedContent: unknown = parseJsonc(content, parseErrors, { allowTrailingComma: true });
+    if (parseErrors.length > 0 || !isRecord(parsedContent)) {
+      throw new ApiError(422, "invalid_jsonc", "配置必须是有效的 JSONC 对象，请修正后重试。");
+    }
 
     const configPath = resolveOpencodeConfigFilePath(scope, workspace.path);
     await requireApproval(ctx, {
@@ -3487,12 +3530,19 @@ function createRoutes(
     });
 
     const nextContent = content.endsWith("\n") ? content : `${content}\n`;
-    const current = await readRawOpencodeConfig(configPath);
-    const changed = !current.exists || current.content !== nextContent;
-    if (changed) {
-      await ensureDir(dirname(configPath));
-      await writeFile(configPath, nextContent, "utf8");
-    }
+    const changed = await withConfigurationWriteLock(configPath, async () => {
+      const current = await readRawOpencodeConfig(configPath);
+      const actualContent = current.exists ? current.content : null;
+      if (body.expectedContent !== undefined && body.expectedContent !== actualContent) {
+        throw new ApiError(409, "config_conflict", "配置已被其他操作修改。请重新加载后再保存。");
+      }
+      const changed = !current.exists || current.content !== nextContent;
+      if (changed) {
+        await ensureDir(dirname(configPath));
+        await writeFile(configPath, nextContent, "utf8");
+      }
+      return changed;
+    });
 
     await recordAudit(workspace.path, {
       id: shortId(),
@@ -3530,8 +3580,20 @@ function createRoutes(
     requireClientScope(ctx, "collaborator");
     const workspace = await resolveWorkspace(config, ctx.params.id);
     const body = await readJsonBody(ctx.request);
-    const opencode = body.opencode as Record<string, unknown> | undefined;
-    const openwork = body.openwork as Record<string, unknown> | undefined;
+    const opencode = isRecord(body.opencode) ? body.opencode : undefined;
+    const openwork = isRecord(body.openwork) ? body.openwork : undefined;
+    if ((body.opencode !== undefined && !opencode) || (body.openwork !== undefined && !openwork)) {
+      throw new ApiError(400, "invalid_payload", "opencode and openwork must be objects");
+    }
+    if (body.openworkReplace !== undefined && typeof body.openworkReplace !== "boolean") {
+      throw new ApiError(400, "invalid_payload", "openworkReplace must be a boolean");
+    }
+    if (body.expectedOpenwork !== undefined && !isRecord(body.expectedOpenwork)) {
+      throw new ApiError(400, "invalid_payload", "expectedOpenwork must be an object");
+    }
+    if ((body.openworkReplace || body.expectedOpenwork !== undefined) && (!openwork || opencode)) {
+      throw new ApiError(400, "invalid_payload", "Full-document writes must update only openwork");
+    }
     let runtimeChanged = false;
 
     if (!opencode && !openwork) {
@@ -3620,10 +3682,13 @@ function createRoutes(
       }
     }
     if (openwork) {
-      await writeOpenworkWorkspaceConfig(config, workspace.id, (current) => ({
-        ...current,
-        ...openwork,
-      }));
+      await readOpenworkConfigForWorkspace(config, workspace);
+      await writeOpenworkWorkspaceConfig(config, workspace.id, (current) => {
+        if (body.expectedOpenwork !== undefined && !isDeepStrictEqual(body.expectedOpenwork, current)) {
+          throw new ApiError(409, "config_conflict", "配置已被其他操作修改。请重新加载后再保存。");
+        }
+        return body.openworkReplace === true ? openwork : { ...current, ...openwork };
+      });
     }
 
     await recordAudit(workspace.path, {

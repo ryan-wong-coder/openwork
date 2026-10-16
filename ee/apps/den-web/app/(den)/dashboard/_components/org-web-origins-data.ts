@@ -29,11 +29,11 @@ export function useOrgWebOrigins(orgId: string, enabled = true) {
         15000,
       );
       if (!response.ok) {
-        throw new Error(getErrorMessage(payload, `Couldn't load approved origins (${response.status}).`));
+        throw new Error(getErrorMessage(payload, `无法加载已批准的来源（${response.status}）。`));
       }
       const parsed = organizationWebOriginListSchema.safeParse(payload);
       if (!parsed.success) {
-        throw new Error("Approved origins returned an unexpected response.");
+        throw new Error("已批准来源返回了无法识别的响应，请重试。");
       }
       return parsed.data;
     },
@@ -60,7 +60,7 @@ export function useApproveOrgWebOrigin(orgId: string) {
           15000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Couldn't approve ${origin} (${response.status}).`);
+          throw getRequestError(payload, response, `无法批准 ${origin}（${response.status}）。`);
         }
         const parsed = organizationWebOriginSchema.safeParse(payload);
         result.created = parsed.success ? parsed.data : null;
@@ -94,7 +94,7 @@ export function useRemoveOrgWebOrigin(orgId: string) {
           15000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Couldn't remove ${webOrigin.origin} (${response.status}).`);
+          throw getRequestError(payload, response, `无法移除 ${webOrigin.origin}（${response.status}）。`);
         }
       });
       return webOrigin;

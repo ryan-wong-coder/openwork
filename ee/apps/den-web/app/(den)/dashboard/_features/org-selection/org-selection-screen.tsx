@@ -52,7 +52,7 @@ const pillButtonClass =
   "inline-flex h-10 items-center justify-center gap-1.5 rounded-full border border-[var(--dls-border)] bg-[var(--dls-surface)] px-4 text-[13px] font-medium transition-colors hover:bg-[var(--dls-hover)] focus:outline-hidden focus:ring-2 focus:ring-[rgba(var(--dls-accent-rgb),0.2)]";
 
 function OrgRow({ org, pending, onPick }: { org: DenOrgSummary; pending: boolean; onPick: (slug: string) => void }) {
-  const memberSummary = `${formatRoleLabel(org.role)} · ${org.memberCount} ${org.memberCount === 1 ? "member" : "members"}`;
+  const memberSummary = `${formatRoleLabel(org.role)} · ${org.memberCount} 名成员`;
 
   return (
     <button
@@ -77,14 +77,14 @@ function ScreenActions({ onSignOut }: { onSignOut: () => void }) {
   return (
     <div className="mt-2 flex flex-wrap items-center gap-2" data-testid="org-chooser-actions">
       <Link href="/organization" className={`${pillButtonClass} text-[var(--dls-text-primary)]`}>
-        <Plus className="h-4 w-4" /> Create or join
+        <Plus className="h-4 w-4" /> 创建或加入
       </Link>
       <button
         type="button"
         onClick={onSignOut}
         className={`${pillButtonClass} text-[var(--dls-text-secondary)] hover:text-[var(--dls-text-primary)]`}
       >
-        <LogOut className="h-4 w-4" /> Sign out
+        <LogOut className="h-4 w-4" /> 退出登录
       </button>
     </div>
   );
@@ -157,10 +157,10 @@ export function OrgSelectionScreen({ orgs, pending, errorMessage, onPick, onSign
 
           <div className="mt-10 flex flex-col gap-2.5 sm:mt-14">
             <h1 className="text-[30px] font-semibold leading-[38px] tracking-[-0.03em] text-[var(--dls-text-primary)] sm:text-[38px] sm:leading-[46px]">
-              Choose an organization
+              选择组织
             </h1>
             <p className="text-[15px] leading-[23px] text-[var(--dls-text-secondary)]">
-              You belong to {orgs.length} {orgs.length === 1 ? "organization" : "organizations"}. Select one to continue.
+              你已加入 {orgs.length} 个组织，请选择一个以继续。
             </p>
           </div>
 
@@ -170,7 +170,7 @@ export function OrgSelectionScreen({ orgs, pending, errorMessage, onPick, onSign
                 type="search"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search organizations"
+                placeholder="搜索组织"
                 className="h-12 w-full rounded-xl border border-[var(--dls-border)] bg-[var(--dls-surface)] px-4 text-[15px] text-[var(--dls-text-primary)] placeholder:text-[var(--dls-text-secondary)] focus:outline-hidden focus:ring-2 focus:ring-[rgba(var(--dls-accent-rgb),0.2)]"
               />
             ) : null}
@@ -183,7 +183,7 @@ export function OrgSelectionScreen({ orgs, pending, errorMessage, onPick, onSign
 
             {filteredCount === 0 && query ? (
               <p className="text-[14px] text-[var(--dls-text-secondary)]">
-                No organizations match your search.
+                没有符合搜索条件的组织。
               </p>
             ) : null}
 
@@ -194,10 +194,10 @@ export function OrgSelectionScreen({ orgs, pending, errorMessage, onPick, onSign
                   onClick={showMore}
                   className="inline-flex h-9 items-center justify-center rounded-full border border-[var(--dls-border)] bg-[var(--dls-surface)] px-4 text-[13px] font-medium text-[var(--dls-text-primary)] transition-colors hover:bg-[var(--dls-hover)]"
                 >
-                  Show more
+                  显示更多
                 </button>
                 <p className="text-[12px] text-[var(--dls-text-secondary)]">
-                  Showing {visible.length} of {filteredCount} organizations
+                  正在显示 {visible.length} 个组织，共 {filteredCount} 个
                 </p>
               </div>
             ) : null}

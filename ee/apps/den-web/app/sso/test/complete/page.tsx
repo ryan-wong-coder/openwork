@@ -23,12 +23,12 @@ function CompleteContent() {
 
   return (
     <DenStatusScreen
-      title={failed ? "Authentication test failed" : "Authentication test finished"}
-      description="Return to SSO settings to review the result. You can close this window."
+      title={failed ? "身份验证测试失败" : "身份验证测试已完成"}
+      description="返回 SSO 设置以查看结果，你可以关闭此窗口。"
     />
   );
 }
 
 export default function SsoTestCompletePage() {
-  return <Suspense fallback={<DenStatusScreen title="Finishing your SSO test" description="Preparing the authentication result…" />}><CompleteContent /></Suspense>;
+  return <Suspense fallback={<DenStatusScreen title="正在完成 SSO 测试" description="正在准备身份验证结果…" />}><CompleteContent /></Suspense>;
 }

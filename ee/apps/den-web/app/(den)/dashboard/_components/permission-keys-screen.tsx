@@ -1,8 +1,10 @@
 "use client";
 
+import { getDenPermissionDefinition } from "../../../_lib/permission-copy";
+
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { getPermissionDefinition, isPermissionKey } from "@openwork/types/den/permissions";
+import { isPermissionKey } from "@openwork/types/den/permissions";
 import { DenButton } from "../../_components/ui/button";
 import { DenNotice } from "../../_components/ui/notice";
 import { getMembersRoute, getPermissionKeyRoute, getPermissionKeysRoute, getPermissionSetRoute, getPermissionsRoute, orgFeatureEnabled } from "../../_lib/den-org";
@@ -32,18 +34,18 @@ export function PermissionKeysScreen() {
   const permissions = usePermissionsAccess();
   const teamRoles = useTeamRolesOn();
   if (permissions.state !== "ready") {
-    return <PermissionsPage title="By permission" testId="permission-keys"><PermissionsAccessState access={permissions} /></PermissionsPage>;
+    return <PermissionsPage title="按权限" testId="permission-keys"><PermissionsAccessState access={permissions} /></PermissionsPage>;
   }
   const back = teamRoles
-    ? { href: `${getMembersRoute(permissions.orgSlug)}?tab=roles`, label: "Roles" }
-    : { href: getPermissionsRoute(permissions.orgSlug), label: "Permissions" };
+    ? { href: `${getMembersRoute(permissions.orgSlug)}?tab=roles`, label: "角色" }
+    : { href: getPermissionsRoute(permissions.orgSlug), label: "权限" };
   return (
-    <PermissionsPage title="By permission" back={back} testId="permission-keys">
+    <PermissionsPage title="按权限" back={back} testId="permission-keys">
       <div className="flex flex-col gap-6">
         {permissionAreas().map((area) => (
           <PermissionAreaSection key={area.key} label={area.label}>
             {area.keys.map((key) => {
-              const definition = getPermissionDefinition(key);
+              const definition = getDenPermissionDefinition(key);
               return (
                 <Link key={key} href={getPermissionKeyRoute(permissions.orgSlug, key)} className={rowClass} data-testid="permission-key-row" data-permission-key={key}>
                   <span className="min-w-0 flex-1">
@@ -70,12 +72,12 @@ export function PermissionKeyScreen({ permissionKey }: { permissionKey: string }
   const sharedRoles = useSharedRolesOn();
   const ready = permissions.state === "ready" ? permissions : null;
   const query = usePermissionKeyStatus(ready?.orgId ?? null, permissionKey);
-  const title = isPermissionKey(permissionKey) ? getPermissionDefinition(permissionKey).label : "Permission";
+  const title = isPermissionKey(permissionKey) ? getDenPermissionDefinition(permissionKey).label : "权限";
 
   if (!ready) {
     return <PermissionsPage title={title} testId="permission-key"><PermissionsAccessState access={permissions} /></PermissionsPage>;
   }
-  const back = { href: getPermissionKeysRoute(ready.orgSlug), label: "By permission" };
+  const back = { href: getPermissionKeysRoute(ready.orgSlug), label: "按权限" };
   const sets = [...(query.data?.sets ?? [])].sort((a, b) => SET_KIND_ORDER[a.kind] - SET_KIND_ORDER[b.kind]);
   const allowedCount = sets.filter((set) => set.status === "allow").length;
 
@@ -84,8 +86,8 @@ export function PermissionKeyScreen({ permissionKey }: { permissionKey: string }
       title={title}
       back={back}
       caption={[
-        isPermissionKey(permissionKey) ? getPermissionDefinition(permissionKey).description : undefined,
-        query.data ? `Allowed in ${allowedCount} of ${sets.length}` : undefined,
+        isPermissionKey(permissionKey) ? getDenPermissionDefinition(permissionKey).description : undefined,
+        query.data ? `已在 ${allowedCount} / ${sets.length} 项中允许` : undefined,
       ].filter(Boolean).join(" · ") || undefined}
       testId="permission-key"
     >
@@ -95,15 +97,15 @@ export function PermissionKeyScreen({ permissionKey }: { permissionKey: string }
             tone="error"
             className="w-full"
             message={query.error instanceof PermissionsRequestError && query.error.code === "permission_not_found"
-              ? "This permission doesn't exist. Go back to see every permission."
-              : query.error instanceof Error ? query.error.message : "Couldn't load this permission."}
+              ? "此权限不存在，请返回查看所有权限。"
+              : query.error instanceof Error ? query.error.message : "无法加载此权限，请重试。"}
           />
-          <DenButton variant="secondary" size="sm" disabled={query.isFetching} onClick={() => void query.refetch()}>Try again</DenButton>
+          <DenButton variant="secondary" size="sm" disabled={query.isFetching} onClick={() => void query.refetch()}>重试</DenButton>
         </div>
       ) : !query.data ? (
         <PermissionRowsSkeleton rows={3} />
       ) : (
-        <PermissionAreaSection label={teamRoles ? "Roles" : "Where it's allowed"} testId="permission-key-sets">
+        <PermissionAreaSection label={teamRoles ? "角色" : "允许此权限的位置"} testId="permission-key-sets">
           {sets.map((set) => (
             <Link key={set.id} href={getPermissionSetRoute(ready.orgSlug, set.id)} className={rowClass} data-testid="permission-key-set-row" data-status={set.status}>
               <span className="flex min-w-0 flex-1 flex-col gap-0.5">
@@ -115,7 +117,7 @@ export function PermissionKeyScreen({ permissionKey }: { permissionKey: string }
                 ) : (
                   <>
                     <span className="truncate text-[13px] font-medium text-gray-900">{set.name}</span>
-                    {set.kind === "team" ? <span className="truncate text-[12px] text-gray-500">{set.team?.name ?? "A deleted team"} team</span> : null}
+                    {set.kind === "team" ? <span className="truncate text-[12px] text-gray-500">{set.team?.name ?? "已删除的团队"} 团队</span> : null}
                   </>
                 )}
               </span>

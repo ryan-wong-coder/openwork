@@ -77,7 +77,7 @@ type PendingReauthMutation = {
 
 const OrgDashboardContext = createContext<OrgDashboardContextValue | null>(null);
 const ORG_SETTINGS_PATH = "/dashboard/org-settings";
-const ORG_SETTINGS_UPDATED_MESSAGE = "Workspace settings updated.";
+const ORG_SETTINGS_UPDATED_MESSAGE = "工作区设置已更新。";
 
 export function OrgDashboardProvider({
   children,
@@ -121,7 +121,7 @@ export function OrgDashboardProvider({
 
   function ensureActiveOrganizationSelected() {
     if (!activeOrgId) {
-      throw new Error("Organization not found.");
+      throw new Error("未找到组织。");
     }
   }
 
@@ -135,26 +135,26 @@ export function OrgDashboardProvider({
 
   function ensureCanManageSettings() {
     if (!getCurrentAccess().canManageSettings) {
-      throw new Error("You don't have permission to change organization settings.");
+      throw new Error("你没有更改组织设置的权限。");
     }
   }
 
   function ensureCanDeleteOrganization() {
     if (!getCurrentAccess().canDeleteOrganization) {
-      throw new Error("Only the workspace owner can delete this organization.");
+      throw new Error("仅工作区所有者可删除此组织。");
     }
   }
 
   function ensureRoleCanBeAssigned(role: string) {
     if (roleIncludesCanonicalRole(role, "owner")) {
-      throw new Error("The owner role cannot be assigned from this action.");
+      throw new Error("无法通过此操作分配所有者角色。");
     }
   }
 
   function ensureTargetIsNotOwner(memberId: string) {
     const target = orgContext?.members.find((member) => member.id === memberId) ?? null;
     if (target?.isOwner) {
-      throw new Error("The workspace owner cannot be changed or removed from this action.");
+      throw new Error("无法通过此操作更改或移除工作区所有者。");
     }
     return target;
   }
@@ -162,7 +162,7 @@ export function OrgDashboardProvider({
   async function loadOrgDirectory() {
     const { response, payload } = await requestJson("/v1/me/orgs", { method: "GET" }, 12000);
     if (!response.ok) {
-      throw new Error(getErrorMessage(payload, `Failed to load organizations (${response.status}).`));
+      throw new Error(getErrorMessage(payload, `无法加载组织列表（${response.status}）。`));
     }
 
     return parseOrgListPayload(payload);
@@ -179,7 +179,7 @@ export function OrgDashboardProvider({
     );
 
     if (!response.ok) {
-      throw new Error(getErrorMessage(payload, `Failed to switch organization (${response.status}).`));
+      throw new Error(getErrorMessage(payload, `无法切换组织（${response.status}）。`));
     }
   }
 
@@ -191,18 +191,18 @@ export function OrgDashboardProvider({
     );
     if (!response.ok) {
       if (response.status === 404) {
-        throw new OrganizationNotFoundError(getErrorMessage(payload, `Failed to load organization (${response.status}).`));
+        throw new OrganizationNotFoundError(getErrorMessage(payload, `无法加载组织（${response.status}）。`));
       }
 
-      throw new Error(getErrorMessage(payload, `Failed to load organization (${response.status}).`));
+      throw new Error(getErrorMessage(payload, `无法加载组织（${response.status}）。`));
     }
 
     const parsed = parseOrgContextPayload(payload);
     if (!parsed) {
-      throw new Error("Organization context response was incomplete.");
+      throw new Error("组织信息响应不完整，请重试。");
     }
     if (parsed.organization.id !== organizationId) {
-      throw new Error("Organization context did not match the requested workspace.");
+      throw new Error("组织信息与请求的工作区不匹配。");
     }
 
     return parsed;
@@ -212,13 +212,13 @@ export function OrgDashboardProvider({
     const displayedOrgId = orgContext?.organization.id;
     const generation = orgLoadRef.current.generation;
     if (!orgLoadRef.current.mounted || !displayedOrgId || orgBusy || orgLoadRef.current.switching || orgLoadRef.current.organizationId !== displayedOrgId) {
-      throw new Error("The active workspace changed. Retry the action in the selected workspace.");
+      throw new Error("当前工作区已更改，请在所选工作区中重试。");
     }
 
     setRequestOrgScope(displayedOrgId);
     await setActiveOrganization({ organizationId: displayedOrgId });
     if (generation !== orgLoadRef.current.generation) {
-      throw new Error("The active workspace changed. Retry the action in the selected workspace.");
+      throw new Error("当前工作区已更改，请在所选工作区中重试。");
     }
     setOrgDirectory((current) => current.map((entry) => ({ ...entry, isActive: entry.id === displayedOrgId })));
   }
@@ -258,7 +258,7 @@ export function OrgDashboardProvider({
         ? directoryPayload.orgs.find((entry) => entry.id === displayedOrgId) ?? null
         : null;
       if (setupOrganizationId && !displayedOrg) {
-        throw new Error("Your setup workspace is unavailable. Restore access before continuing setup.");
+        throw new Error("配置工作区不可用，请恢复访问权限后继续配置。");
       }
 
       if (displayedOrg && !displayedOrg.isActive) {
@@ -267,7 +267,7 @@ export function OrgDashboardProvider({
         directoryPayload = await loadOrgDirectory();
         if (!isCurrent()) return;
         if (setupOrganizationId && !directoryPayload.orgs.some((entry) => entry.id === setupOrganizationId)) {
-          throw new Error("Your setup workspace is unavailable. Restore access before continuing setup.");
+          throw new Error("配置工作区不可用，请恢复访问权限后继续配置。");
         }
       }
 
@@ -333,7 +333,7 @@ export function OrgDashboardProvider({
       setRequestOrgScope(null);
       setOrgContext(null);
       if (setupOrganizationId) {
-        setOrgError(error instanceof Error ? error.message : "Could not restore your setup workspace.");
+        setOrgError(error instanceof Error ? error.message : "无法恢复配置工作区，请重试。");
         return;
       }
       if (error instanceof OrganizationNotFoundError) {
@@ -341,12 +341,12 @@ export function OrgDashboardProvider({
           await recoverFromOrganizationNotFound(generation);
         } catch (recoveryError) {
           if (!isCurrent()) return;
-          setOrgError(recoveryError instanceof Error ? recoveryError.message : "Failed to load organization details.");
+          setOrgError(recoveryError instanceof Error ? recoveryError.message : "无法加载组织详情，请重试。");
         }
         return;
       }
 
-      setOrgError(error instanceof Error ? error.message : "Failed to load organization details.");
+      setOrgError(error instanceof Error ? error.message : "无法加载组织详情，请重试。");
     } finally {
       if (isCurrent()) setOrgBusy(false);
     }
@@ -392,7 +392,7 @@ export function OrgDashboardProvider({
       if (!organizationId || !userId || !orgLoadRef.current.mounted || orgLoadRef.current.switching
         || orgLoadRef.current.organizationId !== organizationId || orgLoadRef.current.userId !== userId
         || getRequestOrgScope() !== organizationId) {
-        throw new Error("The active workspace changed. Retry the action in the selected workspace.");
+        throw new Error("当前工作区已更改，请在所选工作区中重试。");
       }
       await action();
     };
@@ -492,12 +492,12 @@ export function OrgDashboardProvider({
 
   async function createOrganization(name: string) {
     if (isSingleOrgMode) {
-      throw new Error("This deployment uses one managed organization.");
+      throw new Error("此部署使用单一托管组织。");
     }
 
     const trimmed = name.trim();
     if (!trimmed) {
-      throw new Error("Enter an organization name.");
+      throw new Error("请输入组织名称。");
     }
 
     setMutationBusy("create-organization");
@@ -513,7 +513,7 @@ export function OrgDashboardProvider({
       );
 
       if (!response.ok) {
-        throw new Error(getErrorMessage(payload, `Failed to create organization (${response.status}).`));
+        throw new Error(getErrorMessage(payload, `无法创建组织（${response.status}）。`));
       }
 
       const organization =
@@ -523,7 +523,7 @@ export function OrgDashboardProvider({
       const nextSlug = typeof organization?.slug === "string" ? organization.slug : null;
 
       if (!nextSlug) {
-        throw new Error("Organization was created, but no slug was returned.");
+        throw new Error("组织已创建，但未返回组织标识，请刷新后重试。");
       }
 
       router.push(getOrgDashboardRoute(nextSlug));
@@ -584,12 +584,12 @@ export function OrgDashboardProvider({
             await recoverFromOrganizationNotFound(generation);
           } catch (recoveryError) {
             if (!isCurrent()) return;
-            setOrgError(recoveryError instanceof Error ? recoveryError.message : "Failed to switch organization.");
+            setOrgError(recoveryError instanceof Error ? recoveryError.message : "无法切换组织，请重试。");
           }
           return;
         }
 
-        setOrgError(error instanceof Error ? error.message : "Failed to switch organization.");
+        setOrgError(error instanceof Error ? error.message : "无法切换组织，请重试。");
       } finally {
         if (isCurrent()) {
           orgLoadRef.current.switching = false;
@@ -603,7 +603,7 @@ export function OrgDashboardProvider({
   async function updateOrganizationName(name: string) {
     const trimmed = name.trim();
     if (!trimmed) {
-      throw new Error("Enter an organization name.");
+      throw new Error("请输入组织名称。");
     }
 
     await updateOrganizationSettings({ name: trimmed });
@@ -616,7 +616,7 @@ export function OrgDashboardProvider({
     if (typeof input.name === "string") {
       const trimmed = input.name.trim();
       if (!trimmed) {
-        throw new Error("Enter an organization name.");
+        throw new Error("请输入组织名称。");
       }
       body.name = trimmed;
     }
@@ -654,7 +654,7 @@ export function OrgDashboardProvider({
       );
 
       if (!response.ok) {
-        throw getRequestError(payload, response, `Failed to update organization (${response.status}).`);
+        throw getRequestError(payload, response, `无法更新组织（${response.status}）。`);
       }
     });
 
@@ -675,7 +675,7 @@ export function OrgDashboardProvider({
       );
 
       if (!response.ok) {
-        throw getRequestError(payload, response, `Failed to delete organization (${response.status}).`);
+        throw getRequestError(payload, response, `无法删除组织（${response.status}）。`);
       }
     });
   }
@@ -683,7 +683,7 @@ export function OrgDashboardProvider({
   async function inviteMember(input: { email: string; role: string; teamId?: string | null }) {
     const access = getCurrentAccess();
     if (!access.canInviteMembers) {
-      throw new Error("You don't have permission to invite members.");
+      throw new Error("你没有邀请成员的权限。");
     }
     const invitationRole = access.canManageRoles ? input.role : "member";
     ensureRoleCanBeAssigned(invitationRole);
@@ -712,7 +712,7 @@ export function OrgDashboardProvider({
         if (limitError) {
           throw limitError;
         }
-        throw getRequestError(payload, response, `Failed to invite member (${response.status}).`);
+        throw getRequestError(payload, response, `无法邀请成员（${response.status}）。`);
       }
 
     });
@@ -738,14 +738,14 @@ export function OrgDashboardProvider({
         );
 
         if (!response.ok) {
-          throw getRequestError(payload, response, `Seat billing checkout failed (${response.status}).`);
+          throw getRequestError(payload, response, `席位计费结账失败（${response.status}）。`);
         }
 
         const url = payload && typeof payload === "object" && "url" in payload && typeof payload.url === "string"
           ? payload.url
           : null;
         if (!url) {
-          throw new Error("Seat billing checkout response did not include a URL.");
+          throw new Error("席位结账响应中缺少地址，请重试。");
         }
 
         window.location.href = url;
@@ -769,7 +769,7 @@ export function OrgDashboardProvider({
       );
 
       if (!response.ok) {
-        throw getRequestError(payload, response, `Failed to cancel invitation (${response.status}).`);
+        throw getRequestError(payload, response, `无法取消邀请（${response.status}）。`);
       }
     });
   }
@@ -789,7 +789,7 @@ export function OrgDashboardProvider({
       );
 
       if (!response.ok) {
-        throw getRequestError(payload, response, `Failed to get the invite link (${response.status}).`);
+        throw getRequestError(payload, response, `无法获取邀请链接（${response.status}）。`);
       }
 
       result.inviteLink = payload && typeof payload === "object" && "inviteLink" in payload && typeof payload.inviteLink === "string"
@@ -798,14 +798,14 @@ export function OrgDashboardProvider({
     });
 
     if (!result.inviteLink) {
-      throw new Error("The invite link response did not include a link.");
+      throw new Error("邀请响应中缺少链接，请重试。");
     }
     return result.inviteLink;
   }
 
   async function updateMemberRole(memberId: string, role: string) {
     if (!getCurrentAccess().canManageRoles) {
-      throw new Error("You don't have permission to change member roles.");
+      throw new Error("你没有更改成员角色的权限。");
     }
     ensureTargetIsNotOwner(memberId);
     ensureRoleCanBeAssigned(role);
@@ -822,7 +822,7 @@ export function OrgDashboardProvider({
       );
 
       if (!response.ok) {
-        throw getRequestError(payload, response, `Failed to update member (${response.status}).`);
+        throw getRequestError(payload, response, `无法更新成员（${response.status}）。`);
       }
     });
   }
@@ -842,19 +842,19 @@ export function OrgDashboardProvider({
       );
 
       if (response.status !== 204 && !response.ok) {
-        throw getRequestError(payload, response, `Failed to remove member (${response.status}).`);
+        throw getRequestError(payload, response, `无法移除成员（${response.status}）。`);
       }
     });
   }
 
   async function transferOwnership(memberId: string) {
     if (!getCurrentAccess().canTransferOwnership) {
-      throw new Error("Only the workspace owner can transfer ownership.");
+      throw new Error("仅工作区所有者可转移所有权。");
     }
     const target = ensureTargetIsNotOwner(memberId);
     const targetAccess = getOrgAccessFlags(target?.effectiveRole ?? "member", target?.isOwner ?? false);
     if (!target || !target.joinedAt || !targetAccess.isAdmin) {
-      throw new Error("Ownership can only be transferred to an active admin.");
+      throw new Error("所有权仅可转移给有效的管理员。");
     }
 
     await runMutation("transfer-ownership", async () => {
@@ -866,7 +866,7 @@ export function OrgDashboardProvider({
       );
 
       if (!response.ok) {
-        throw getRequestError(payload, response, `Failed to transfer ownership (${response.status}).`);
+        throw getRequestError(payload, response, `无法转让所有权（${response.status}）。`);
       }
     });
   }
@@ -888,7 +888,7 @@ export function OrgDashboardProvider({
       );
 
       if (!response.ok) {
-        throw getRequestError(payload, response, `Failed to create team (${response.status}).`);
+        throw getRequestError(payload, response, `无法创建团队（${response.status}）。`);
       }
     });
   }
@@ -910,7 +910,7 @@ export function OrgDashboardProvider({
       );
 
       if (!response.ok) {
-        throw getRequestError(payload, response, `Failed to update team (${response.status}).`);
+        throw getRequestError(payload, response, `无法更新团队（${response.status}）。`);
       }
     });
   }
@@ -929,7 +929,7 @@ export function OrgDashboardProvider({
       );
 
       if (response.status !== 204 && !response.ok) {
-        throw getRequestError(payload, response, `Failed to delete team (${response.status}).`);
+        throw getRequestError(payload, response, `无法删除团队（${response.status}）。`);
       }
       // Deletion removes role links in Den, not reusable shared roles. Refresh the
       // cached sets/details too, so switching tabs cannot resurrect a deleted team.
@@ -1019,8 +1019,8 @@ export function OrgDashboardProvider({
       {setupOrganizationId && (orgContext?.organization.id !== setupOrganizationId
         || activeOrgId !== setupOrganizationId || getRequestOrgScope() !== setupOrganizationId) ? (
         <div className="grid min-h-[420px] place-content-center gap-3 px-6 text-sm text-gray-600" data-testid="setup-workspace-restoring">
-          <p role={orgError ? "alert" : "status"}>{orgError ?? "Restoring your setup workspace..."}</p>
-          {!orgBusy ? <button type="button" onClick={() => void refreshOrgData()} className="font-medium text-gray-900 underline underline-offset-4">Retry setup workspace</button> : null}
+          <p role={orgError ? "alert" : "status"}>{orgError ?? "正在恢复配置工作区…"}</p>
+          {!orgBusy ? <button type="button" onClick={() => void refreshOrgData()} className="font-medium text-gray-900 underline underline-offset-4">重试配置工作区</button> : null}
         </div>
       ) : children}
       </DenSecretRevealProvider>

@@ -51,7 +51,7 @@ export function formatBytes(bytes: number): string {
 }
 
 export function InspectionHeaders({ headers }: { headers: ExternalMcpInspectionHeader[] }) {
-  if (headers.length === 0) return <p className="text-[11px] text-gray-400">No headers captured.</p>;
+  if (headers.length === 0) return <p className="text-[11px] text-gray-400">未捕获请求头。</p>;
   return (
     <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
       {headers.map((header, index) => (
@@ -71,27 +71,27 @@ export function InspectionBody({ body }: { body: ExternalMcpInspectionBody }) {
   return (
     <div>
       <div className="mb-1.5 flex items-center justify-between gap-3 text-[10px] text-gray-500">
-        <span>Raw body</span>
+        <span>原始正文</span>
         <span>
           {formatBytes(body.bytes)}
-          {body.truncated ? <span className="ml-1 font-semibold text-amber-700">· capture truncated</span> : null}
+          {body.truncated ? <span className="ml-1 font-semibold text-amber-700">· 捕获内容已截断</span> : null}
         </span>
       </div>
       {body.unavailable ? (
-        <div className="rounded-lg border border-[var(--dls-border)] bg-[var(--dls-hover)] px-3 py-2 text-[11px] text-[var(--dls-text-primary)]">The transport body could not be captured.</div>
+        <div className="rounded-lg border border-[var(--dls-border)] bg-[var(--dls-hover)] px-3 py-2 text-[11px] text-[var(--dls-text-primary)]">无法捕获传输正文。</div>
       ) : (
-        <pre className="max-h-80 overflow-auto whitespace-pre-wrap break-words rounded-lg bg-gray-950 p-3 text-[10px] leading-4 text-gray-100">{body.text || "(empty body)"}</pre>
+        <pre className="max-h-80 overflow-auto whitespace-pre-wrap break-words rounded-lg bg-gray-950 p-3 text-[10px] leading-4 text-gray-100">{body.text || "（空正文）"}</pre>
       )}
     </div>
   );
 }
 
 export function diagnosisLayerLabel(layer: ExternalMcpToolCallInspection["diagnosis"]["layer"]): string {
-  if (layer === "openwork") return "OpenWork before send";
-  if (layer === "network") return "Network / no response";
-  if (layer === "mcp_connection") return "MCP connection / setup";
-  if (layer === "remote_http") return "Remote MCP HTTP";
-  return "MCP tool response";
+  if (layer === "openwork") return "OpenWork 发送前";
+  if (layer === "network") return "网络 / 无响应";
+  if (layer === "mcp_connection") return "MCP 连接 / 配置";
+  if (layer === "remote_http") return "远程 MCP HTTP";
+  return "MCP 工具响应";
 }
 
 export type McpToolCallOutcome = {
@@ -108,8 +108,8 @@ type HopState = "succeeded" | "failed" | "unreached";
 
 function transportLabel(inspection: ExternalMcpToolCallInspection | null): string {
   if (inspection?.response) return `HTTP ${inspection.response.status}`;
-  if (inspection?.request && inspection.diagnosis.layer !== "openwork") return "No response";
-  return "Not sent";
+  if (inspection?.request && inspection.diagnosis.layer !== "openwork") return "无响应";
+  return "未发送";
 }
 
 function traceStates(outcome: McpToolCallOutcome): [HopState, HopState, HopState] {
@@ -139,7 +139,7 @@ function TracePill({ label, state }: { label: string; state: HopState }) {
 function DetailsUnavailable() {
   return (
     <div className="rounded-xl border border-[var(--dls-border)] bg-[var(--dls-hover)] px-4 py-3 text-[12px] leading-5 text-[var(--dls-text-primary)]" role="status">
-      Request and response details were unavailable. Refresh after the dashboard and its server are running the same version.
+      请求与响应详情不可用，请在控制台与服务器版本一致后刷新。
     </div>
   );
 }
@@ -147,7 +147,7 @@ function DetailsUnavailable() {
 function RedactionNotice() {
   return (
     <div className="rounded-lg border border-[var(--dls-border)] bg-[var(--dls-hover)] px-3 py-2 text-[10px] leading-4 text-[var(--dls-text-primary)]">
-      Credential and session headers are redacted. Bodies may contain sensitive provider data; this inspection is returned only for this run and is not stored in OpenWork logs.
+      凭据与会话请求头已隐藏。正文可能包含提供商敏感数据；检查结果仅在此次运行中返回，不保存到 OpenWork 日志。
     </div>
   );
 }
@@ -158,18 +158,18 @@ function RequestInspection({ inspection }: { inspection: ExternalMcpToolCallInsp
     <div className="space-y-4">
       <RedactionNotice />
       <div>
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">Outgoing request</p>
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">出站请求</p>
         {inspection.request ? (
           <div className="mt-2 rounded-lg bg-gray-950 px-3 py-2 font-mono text-[10px] leading-4 text-gray-100">
             <span className="font-semibold text-blue-300">{inspection.request.method}</span> <span className="break-all">{inspection.request.url}</span>
           </div>
         ) : (
-          <p className="mt-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-[11px] text-gray-500">No tools/call request left OpenWork.</p>
+          <p className="mt-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-[11px] text-gray-500">OpenWork 未发出工具调用请求。</p>
         )}
       </div>
       {inspection.request ? (
         <>
-          <div><p className="mb-1.5 text-[11px] font-medium text-gray-700">Headers</p><InspectionHeaders headers={inspection.request.headers} /></div>
+          <div><p className="mb-1.5 text-[11px] font-medium text-gray-700">请求头</p><InspectionHeaders headers={inspection.request.headers} /></div>
           <InspectionBody body={inspection.request.body} />
         </>
       ) : null}
@@ -183,19 +183,19 @@ function ResponseInspection({ inspection }: { inspection: ExternalMcpToolCallIns
     <div className="space-y-4">
       <RedactionNotice />
       <div>
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">Response received</p>
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">已收到响应</p>
         {inspection.response ? (
           <div className="mt-2 flex items-center justify-between gap-3 rounded-lg bg-gray-950 px-3 py-2 font-mono text-[10px] text-gray-100">
             <span><span className={inspection.response.status < 400 ? "text-emerald-300" : "text-red-300"}>HTTP {inspection.response.status}</span> {inspection.response.statusText}</span>
-            <span className="text-gray-400">{inspection.response.durationMs} ms</span>
+            <span className="text-gray-400">{inspection.response.durationMs} 毫秒</span>
           </div>
         ) : (
-          <p className="mt-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-[11px] text-gray-500">No HTTP response was captured.</p>
+          <p className="mt-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-[11px] text-gray-500">未捕获 HTTP 响应。</p>
         )}
       </div>
       {inspection.response ? (
         <>
-          <div><p className="mb-1.5 text-[11px] font-medium text-gray-700">Headers</p><InspectionHeaders headers={inspection.response.headers} /></div>
+          <div><p className="mb-1.5 text-[11px] font-medium text-gray-700">请求头</p><InspectionHeaders headers={inspection.response.headers} /></div>
           <InspectionBody body={inspection.response.body} />
         </>
       ) : null}
@@ -211,19 +211,19 @@ export function McpToolCallInspector({ outcome }: { outcome: McpToolCallOutcome 
     ?? outcome.errorMessage;
   const states = traceStates(outcome);
   return (
-    <section className="overflow-hidden rounded-2xl border border-gray-200 bg-white" aria-label="Tool call inspection">
+    <section className="overflow-hidden rounded-2xl border border-gray-200 bg-white" aria-label="工具调用检查">
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 px-4 py-3">
         <div className="flex min-w-0 flex-wrap items-center gap-2">
           {succeeded
             ? <CircleCheck className="h-4 w-4 text-emerald-600" aria-hidden="true" />
             : <CircleX className="h-4 w-4 text-red-500" aria-hidden="true" />}
-          <p className="text-[13px] font-semibold text-gray-900">{succeeded ? "Tool completed" : "Tool call failed"}</p>
+          <p className="text-[13px] font-semibold text-gray-900">{succeeded ? "工具已完成" : "工具调用失败"}</p>
           {!succeeded && summary ? <p className="text-[12px] text-gray-600">· {summary}</p> : null}
           {!succeeded && outcome.failureAttribution ? (
-            <span className="rounded-full border border-gray-200 bg-gray-50 px-1.5 py-0.5 text-[10px] font-medium text-gray-600">{outcome.failureAttribution.confidence}</span>
+            <span className="rounded-full border border-gray-200 bg-gray-50 px-1.5 py-0.5 text-[10px] font-medium text-gray-600">{outcome.failureAttribution.confidence === "Confirmed" ? "已确认" : "推测"}</span>
           ) : null}
         </div>
-        <p className="font-mono text-[10px] text-gray-500">{outcome.referenceId} · {outcome.durationMs} ms</p>
+        <p className="font-mono text-[10px] text-gray-500">{outcome.referenceId} · {outcome.durationMs} 毫秒</p>
       </div>
 
       <div className="flex flex-wrap items-center px-4 py-3">
@@ -231,15 +231,15 @@ export function McpToolCallInspector({ outcome }: { outcome: McpToolCallOutcome 
         <span className="h-px w-6 bg-gray-200" aria-hidden="true" />
         <TracePill label={transportLabel(outcome.inspection)} state={states[1]} />
         <span className="h-px w-6 bg-gray-200" aria-hidden="true" />
-        <TracePill label="Tool result" state={states[2]} />
+        <TracePill label="工具结果" state={states[2]} />
       </div>
 
       <UnderlineTabs
         className="px-4"
         tabs={[
-          { value: "result", label: "Result" },
-          { value: "request", label: "Request" },
-          { value: "response", label: "Response" },
+          { value: "result", label: "结果" },
+          { value: "request", label: "请求" },
+          { value: "response", label: "响应" },
         ]}
         activeTab={activeTab}
         onChange={setActiveTab}
@@ -249,7 +249,7 @@ export function McpToolCallInspector({ outcome }: { outcome: McpToolCallOutcome 
           <div className="space-y-2">
             <pre className="max-h-80 overflow-auto rounded-xl bg-gray-950 p-3 text-[11px] leading-[18px] text-gray-100">{formatJson(outcome.result)}</pre>
             <p className="inline-flex items-center gap-1.5 text-[10px] text-gray-500">
-              <LockKeyhole className="h-3 w-3" aria-hidden="true" /> Credential headers redacted. Returned only for this run — never stored in OpenWork logs.
+              <LockKeyhole className="h-3 w-3" aria-hidden="true" /> 凭据请求头已隐藏，结果仅在此次运行中返回，不保存到 OpenWork 日志。
             </p>
           </div>
         ) : activeTab === "request" ? (

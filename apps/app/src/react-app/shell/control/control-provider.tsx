@@ -21,6 +21,7 @@ import {
 } from "@openwork/types/openwork-affordance";
 import type { OpenworkContextSnapshot } from "@openwork/types/openwork-context";
 import { useUiControlMailbox } from "./use-ui-control-mailbox";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 
 export type OpenworkControlSideEffect = "none" | "navigation" | "mutation" | "external";
 
@@ -736,13 +737,12 @@ export function useControlActions(actions: readonly OpenworkControlAction[]) {
 import { SETTINGS_TAB_VALUES } from "../../../app/types";
 import { settingsNavigationFromPathname } from "../workspace-routes";
 
-const SETTINGS_TABS: ReadonlySet<string> = new Set<string>(
-  SETTINGS_TAB_VALUES.filter((tab) => tab !== "extensions"),
-);
-
 export function OpenworkRouteControlActions() {
   const navigate = useNavigate();
   const location = useLocation();
+  const localClient = isLocalGatewayClient();
+  const settingsTabs = useMemo(() => new Set<string>(SETTINGS_TAB_VALUES.filter((tab) => tab !== "extensions"
+    && (!localClient || !["cloud-account", "cloud-providers", "usage", "ollama"].includes(tab)))), [localClient]);
   // Read through a ref so the action list stays stable across route changes.
   const pathnameRef = useRef(location.pathname);
   pathnameRef.current = location.pathname;
@@ -775,8 +775,8 @@ export function OpenworkRouteControlActions() {
     },
     {
       id: "route.settings.providers",
-      label: "Open provider settings",
-      description: "Navigate to AI provider settings.",
+      label: localClient ? "打开模型网关设置" : "Open provider settings",
+      description: localClient ? "配置模型网关、密钥和对话与图片模型。" : "Navigate to AI provider settings.",
       sideEffect: "navigation",
       execute: () => openSettingsTab("ai"),
     },
@@ -805,18 +805,17 @@ export function OpenworkRouteControlActions() {
           name: "panel",
           type: "string",
           required: true,
-          description:
-            "Settings tab: general | ai | ollama | preferences | permissions | shell | environment | advanced | appearance | updates | recovery | debug | cloud-account | usage | cloud-providers",
+          description: `Settings tab: ${Array.from(settingsTabs).join(" | ")}`,
         },
       ],
       previewArgs: { panel: "ai" },
       execute: (args) => {
         const requested = (args as { panel?: unknown } | undefined)?.panel;
         const panel = typeof requested === "string" ? requested.trim() : "";
-        if (!SETTINGS_TABS.has(panel)) {
+        if (!settingsTabs.has(panel)) {
           return {
             ok: false,
-            error: `Unknown settings panel: ${panel || "(empty)"}. Expected one of ${Array.from(SETTINGS_TABS).join(", ")}.`,
+            error: `Unknown settings panel: ${panel || "(empty)"}. Expected one of ${Array.from(settingsTabs).join(", ")}.`,
           };
         }
         openSettingsTab(panel);
@@ -844,7 +843,17 @@ export function OpenworkRouteControlActions() {
       kind: "query",
       effects: { data: "read", ui: "none", external: false },
       sideEffect: "none",
-      execute: () => ({
+      execute: () => localClient ? {
+        capabilities: [
+          { id: "browse", label: "浏览器", description: "使用浏览器浏览网页、读取内容和执行网页任务。" },
+          { id: "providers", label: "模型网关", description: "通过已配置的模型网关使用对话模型和图片模型，图片生成功能可在网关设置中启停。" },
+          { id: "extensions", label: "扩展库", description: "管理本地技能、工具和第三方服务连接。" },
+          { id: "files", label: "文件管理", description: "读取、编辑和整理本地工作区内的文件。" },
+          { id: "code", label: "编写和运行代码", description: "在本地工作区生成、编辑和执行代码。" },
+          { id: "skills", label: "技能", description: "安装适合特定工作流程的技能。" },
+        ],
+        hint: "使用 settings.panel.open 打开 ai 模型网关或 advanced 配置编辑器；使用 route.extensions.skills 浏览扩展库。当前本地客户端不支持自动化调度。",
+      } : ({
         capabilities: [
           { id: "browse", label: "Browse the web", description: "Control a browser to navigate, scrape, and automate web tasks." },
           { id: "providers", label: "AI model providers", description: "Connect Anthropic, OpenAI, Google, OpenRouter, Ollama, or other LLM providers." },
@@ -858,7 +867,7 @@ export function OpenworkRouteControlActions() {
         hint: "Use settings.panel.open for settings such as AI providers, and route.extensions.skills to browse Library.",
       }),
     },
-  ], [navigate, openSettingsTab]);
+  ], [navigate, openSettingsTab, localClient, settingsTabs]);
 
   useControlActions(actions);
   return null;

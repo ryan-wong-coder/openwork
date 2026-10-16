@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE } from "../../../_lib/locale";
+
 import { useState } from "react";
 import { humanizeIdentifier } from "./workflow-plain-language";
 
@@ -39,7 +41,7 @@ function dateValue(value: unknown): Date | null {
 }
 
 function formatDateTime(value: Date): string {
-  return value.toLocaleString("en-US", {
+  return value.toLocaleString(DEFAULT_DEN_LOCALE, {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -49,11 +51,11 @@ function formatDateTime(value: Date): string {
 }
 
 function formatCardDate(value: Date): string {
-  return value.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  return value.toLocaleDateString(DEFAULT_DEN_LOCALE, { month: "short", day: "numeric" });
 }
 
 function formatCardTime(value: Date): string {
-  return value.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+  return value.toLocaleTimeString(DEFAULT_DEN_LOCALE, { hour: "numeric", minute: "2-digit" });
 }
 
 function LongText({ value }: { value: string }) {
@@ -63,16 +65,16 @@ function LongText({ value }: { value: string }) {
     <span>
       {expanded ? value : `${value.slice(0, 240).trimEnd()}…`}{" "}
       <button type="button" className="font-medium text-blue-700 hover:text-blue-800" onClick={() => setExpanded(!expanded)}>
-        {expanded ? "Show less" : "Show more"}
+        {expanded ? "收起" : "显示更多"}
       </button>
     </span>
   );
 }
 
 function ScalarValue({ value }: { value: unknown }) {
-  if (value === null || value === undefined || value === "") return <span className="text-gray-400">None</span>;
-  if (typeof value === "boolean") return <>{value ? "Yes" : "No"}</>;
-  if (typeof value === "number") return <>{value.toLocaleString()}</>;
+  if (value === null || value === undefined || value === "") return <span className="text-gray-400">无</span>;
+  if (typeof value === "boolean") return <>{value ? "是" : "否"}</>;
+  if (typeof value === "number") return <>{value.toLocaleString(DEFAULT_DEN_LOCALE)}</>;
   if (typeof value === "string") {
     const date = isoDate(value);
     return <LongText value={date ? formatDateTime(date) : decodeHtmlEntities(value)} />;
@@ -114,7 +116,7 @@ function ObjectValue({ value }: { value: Record<string, unknown> }) {
 
 function cardTitle(item: Record<string, unknown>, index: number): { key: string | null; text: string } {
   const key = CARD_TITLE_KEYS.find((candidate) => candidate in item && !isCollection(item[candidate]) && item[candidate] !== null);
-  if (!key) return { key: null, text: `Item ${index + 1}` };
+  if (!key) return { key: null, text: `第 ${index + 1} 项` };
   const value = item[key];
   return { key, text: typeof value === "string" ? decodeHtmlEntities(value) : String(value) };
 }
@@ -124,7 +126,7 @@ function cardDate(item: Record<string, unknown>): { keys: string[]; text: string
   const end = dateValue(item.end);
   const date = dateValue(item.date);
   if (start && end) {
-    const sameDay = start.toLocaleDateString("en-US") === end.toLocaleDateString("en-US");
+    const sameDay = start.toLocaleDateString(DEFAULT_DEN_LOCALE) === end.toLocaleDateString(DEFAULT_DEN_LOCALE);
     return {
       keys: ["start", "end"],
       text: sameDay
@@ -144,7 +146,7 @@ function NestedCardValue({ label, value }: { label: string; value: unknown }) {
       return (
         <div className="border-t border-gray-100 pt-3">
           <p className="text-[11px] font-medium text-gray-500">{humanizeIdentifier(label)}</p>
-          <p className="mt-1 text-[12px] text-gray-400">None</p>
+          <p className="mt-1 text-[12px] text-gray-400">无</p>
         </div>
       );
     }
@@ -152,7 +154,7 @@ function NestedCardValue({ label, value }: { label: string; value: unknown }) {
       <details className="border-t border-gray-100 pt-3">
         <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-[11px] font-medium text-gray-600">
           <span>{humanizeIdentifier(label)}</span>
-          <span className="text-gray-400">{value.length} {value.length === 1 ? "item" : "items"}</span>
+          <span className="text-gray-400">{value.length} {"项"}</span>
         </summary>
         <div className="mt-3"><FriendlyValueContent value={value} /></div>
       </details>
@@ -221,7 +223,7 @@ function ObjectArray({ value }: { value: Record<string, unknown>[] }) {
       ) : <ObjectTable items={shown} />}
       {value.length > 10 ? (
         <button type="button" className="text-[12px] font-medium text-blue-700 hover:text-blue-800" onClick={() => setShowAll(!showAll)}>
-          {showAll ? "Show first 10" : `Show all ${value.length}`}
+          {showAll ? "显示前 10 项" : `显示全部 ${value.length} 项`}
         </button>
       ) : null}
     </div>
@@ -237,13 +239,13 @@ function ScalarArray({ value }: { value: unknown[] }) {
           <ScalarValue value={item} />
         </span>
       ))}
-      {value.length > 20 ? <span className="rounded-full bg-gray-100 px-2.5 py-1 text-[11px] text-gray-500">+{value.length - 20} more</span> : null}
+      {value.length > 20 ? <span className="rounded-full bg-gray-100 px-2.5 py-1 text-[11px] text-gray-500">另有 {value.length - 20} 项</span> : null}
     </div>
   );
 }
 
 function ArrayValue({ value }: { value: unknown[] }) {
-  if (value.length === 0) return <span className="text-[13px] text-gray-400">None</span>;
+  if (value.length === 0) return <span className="text-[13px] text-gray-400">无</span>;
   if (isObjectArray(value)) return <ObjectArray value={value} />;
   if (value.every((item) => !isCollection(item))) return <ScalarArray value={value} />;
   return (
@@ -254,7 +256,7 @@ function ArrayValue({ value }: { value: unknown[] }) {
 }
 
 function EmptyValue() {
-  return <p className="text-[13px] text-gray-400">This run didn&apos;t return anything to show.</p>;
+  return <p className="text-[13px] text-gray-400">此次运行未返回可显示内容。</p>;
 }
 
 function FriendlyValueContent({ value }: { value: unknown }) {

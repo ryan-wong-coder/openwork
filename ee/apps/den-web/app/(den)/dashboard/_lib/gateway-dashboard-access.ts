@@ -1,4 +1,5 @@
-import { getPermissionDefinition, type PermissionKey } from "@openwork/types/den/permissions";
+import { getDenPermissionDefinition } from "../../../_lib/permission-copy";
+import { type PermissionKey } from "@openwork/types/den/permissions";
 import { type DenOrgAccessFlags, type DenOrgContext, getOrgAccessFlags } from "../../_lib/den-org";
 
 /**
@@ -36,11 +37,11 @@ export function canOpenGatewayArea(access: DenOrgAccessFlags, area: GatewayDashb
 
 /** Plain reason shown where a Gateway area is locked (DESIGN.md P4). */
 export function gatewayAreaLockedMessage(area: GatewayDashboardArea): string {
-  const labels = area === "any" ? [] : GATEWAY_AREA_KEYS[area].map((key) => `“${getPermissionDefinition(key).label}”`);
+  const labels = area === "any" ? [] : GATEWAY_AREA_KEYS[area].map((key) => `“${getDenPermissionDefinition(key).label}”`);
   const needs = labels.length === 0
-    ? "an AI Gateway permission"
-    : labels.length === 1 ? `the ${labels[0]} permission` : `the ${labels.slice(0, -1).join(", ")} and ${labels[labels.length - 1]} permissions`;
-  return `This needs ${needs}. Ask an organization owner or admin for access.`;
+    ? "AI 网关权限"
+    : labels.length === 1 ? `${labels[0]}权限` : `${labels.slice(0, -1).join(", ")}和${labels[labels.length - 1]}权限`;
+  return `此操作需要${needs}，请联系组织所有者或管理员获取权限。`;
 }
 
 /** Never use retained capabilities while the active workspace is unresolved. */

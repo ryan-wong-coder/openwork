@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE } from "../../../_lib/locale";
+
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Check, Globe, Plus, Users } from "lucide-react";
 
@@ -34,8 +36,8 @@ type AccessCandidate = {
 
 function formatAccessDate(value: string) {
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "recently";
-  return new Intl.DateTimeFormat("en-US", {
+  if (Number.isNaN(date.getTime())) return "最近";
+  return new Intl.DateTimeFormat(DEFAULT_DEN_LOCALE, {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -43,9 +45,9 @@ function formatAccessDate(value: string) {
 }
 
 function roleLabel(role: PluginAccessRole) {
-  if (role === "viewer") return "Viewer";
-  if (role === "editor") return "Editor";
-  return "Manager";
+  if (role === "viewer") return "查看者";
+  if (role === "editor") return "编辑者";
+  return "管理员";
 }
 
 function AccessRolePill({ role }: { role: PluginAccessRole }) {
@@ -71,7 +73,7 @@ function TeamIdentity({ name, memberCount }: { name: string; memberCount: number
       <div className="min-w-0">
         <p className="truncate text-[13px] font-medium text-gray-900">{name}</p>
         <p className="truncate text-[12px] text-gray-400">
-          {memberCount} {memberCount === 1 ? "member" : "members"}, future members included
+          {memberCount} {"名成员"}，包括未来加入的成员
         </p>
       </div>
     </div>
@@ -136,7 +138,7 @@ function AccessAddPicker({
     }
   }
 
-  const label = kind === "person" ? "person" : "team";
+  const label = kind === "person" ? "成员" : "团队";
 
   return (
     <div ref={ref} className="relative">
@@ -153,7 +155,7 @@ function AccessAddPicker({
         className="inline-flex items-center gap-1 rounded-full border border-dashed border-gray-300 px-3 py-1.5 text-[11.5px] text-gray-500 transition hover:border-gray-500 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <Plus className="h-3 w-3" aria-hidden />
-        Add {label}
+        添加 {label}
       </button>
 
       {open ? (
@@ -166,7 +168,7 @@ function AccessAddPicker({
           <div
             role="dialog"
             aria-modal="true"
-            aria-label={`Add ${label} access`}
+            aria-label={`添加${label}访问权限`}
             className="w-full max-w-[340px] rounded-2xl border border-gray-200 bg-white md:w-[340px]"
           >
             <div className="border-b border-gray-100 p-3">
@@ -174,13 +176,13 @@ function AccessAddPicker({
                 type="search"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder={`Search ${kind === "person" ? "people" : "teams"}...`}
+                placeholder={`搜索${kind === "person" ? "人" : "个团队"}…`}
                 autoFocus
               />
             </div>
             <div className="max-h-[220px] divide-y divide-gray-100 overflow-y-auto">
               {filteredCandidates.length === 0 ? (
-                <p className="px-4 py-5 text-center text-[12px] text-gray-400">No matches</p>
+                <p className="px-4 py-5 text-center text-[12px] text-gray-400">无匹配项</p>
               ) : (
                 filteredCandidates.map((candidate) => {
                   const selected = candidate.id === selectedId;
@@ -201,14 +203,14 @@ function AccessAddPicker({
             <div className="border-t border-gray-100 p-3">
               <div className="flex items-center gap-2">
                 <DenSelect
-                  aria-label={`Access role for ${label}`}
+                  aria-label={`${label} 的访问角色`}
                   value={role}
                   onChange={(event) => setRole(event.target.value === "editor" ? "editor" : "viewer")}
                   className="min-w-0 flex-1"
                   disabled={submitting}
                 >
-                  <option value="viewer">Can view (use in chat)</option>
-                  <option value="editor">Can edit</option>
+                  <option value="viewer">可查看（在对话中使用）</option>
+                  <option value="editor">可编辑</option>
                 </DenSelect>
                 <DenButton
                   size="sm"
@@ -216,12 +218,12 @@ function AccessAddPicker({
                   disabled={!selectedId}
                   onClick={() => void handleGrant()}
                 >
-                  Grant
+                  授予
                 </DenButton>
               </div>
               {role === "editor" ? (
                 <p className="mt-2 text-[11.5px] leading-5 text-amber-700">
-                  Can change this skill for everyone who has it.
+                  可更改此技能，对所有拥有此技能的人员生效。
                 </p>
               ) : null}
             </div>
@@ -314,17 +316,17 @@ export function PluginAccessSection({
 
   return (
     <section>
-      <div className="mb-3"><SectionTitle title="Who can use it" /></div>
+      <div className="mb-3"><SectionTitle title="谁可以使用" /></div>
 
       {error ? (
         <DenNotice
           tone="error"
-          message={error instanceof Error ? error.message : "Failed to load plugin access."}
+          message={error instanceof Error ? error.message : "无法加载插件访问权限，请重试。"}
         />
       ) : (
         <div className="rounded-2xl border border-gray-100 bg-white">
           {isLoading ? (
-            <p className="px-6 py-4 text-[13px] text-gray-400">Loading access…</p>
+            <p className="px-6 py-4 text-[13px] text-gray-400">正在加载访问权限…</p>
           ) : (
             <>
               <button
@@ -338,14 +340,14 @@ export function PluginAccessSection({
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-[14px] font-semibold tracking-[-0.01em] text-gray-900">
-                    Everyone in the organization
+                    组织中的所有人
                   </p>
                   <p className="mt-0.5 text-[12.5px] leading-[1.55] text-gray-500">
                     {orgWideGrant
-                      ? "All organization members can use this plugin in chat."
+                      ? "所有组织成员均可在对话中使用此插件。"
                       : orgWideLocked
                         ? permissionLockReason("sharing.share_org_wide")
-                        : "Only people and teams you add below can use this plugin in chat."}
+                        : "仅下方添加的人员与团队可在对话中使用此插件。"}
                   </p>
                 </div>
                 <div
@@ -362,8 +364,8 @@ export function PluginAccessSection({
                   const member = grant.orgMembershipId ? membersById.get(grant.orgMembershipId) : null;
                   const creatorGrant = grant.orgMembershipId === pluginCreatedByOrgMembershipId;
                   const sharedBy = grant.createdByOrgMembershipId === orgContext?.currentMember.id
-                    ? "you"
-                    : membersById.get(grant.createdByOrgMembershipId)?.user.name ?? "an organization member";
+                    ? "你"
+                    : membersById.get(grant.createdByOrgMembershipId)?.user.name ?? "一名组织成员";
                   return (
                     <div key={grant.id} className="flex flex-col gap-3 px-4 py-4 md:flex-row md:flex-wrap md:items-center md:px-6 md:py-3.5">
                       <div className="flex w-full min-w-0 items-start gap-3 md:w-auto md:min-w-[220px] md:flex-1 md:items-center">
@@ -371,17 +373,17 @@ export function PluginAccessSection({
                           {member ? (
                             <OrgMemberIdentity member={member} />
                           ) : (
-                            <p className="text-[13px] font-medium text-gray-500">Removed member</p>
+                            <p className="text-[13px] font-medium text-gray-500">已移除的成员</p>
                           )}
                         </div>
                         <AccessRolePill role={grant.role} />
                       </div>
                       {creatorGrant ? (
-                        <span className="text-[13px] text-[var(--dls-text-secondary)]">Creator</span>
+                        <span className="text-[13px] text-[var(--dls-text-secondary)]">创建者</span>
                       ) : (
                         <>
                           <p className="text-[11.5px] text-gray-400">
-                            shared by {sharedBy} · {formatAccessDate(grant.createdAt)}
+                            共享者 {sharedBy} · {formatAccessDate(grant.createdAt)}
                           </p>
                           <div className="flex w-full justify-end md:w-auto">
                             <DenButton
@@ -390,7 +392,7 @@ export function PluginAccessSection({
                               disabled={busy}
                               onClick={() => void handleRevoke(grant.id)}
                             >
-                              Revoke
+                              撤销
                             </DenButton>
                           </div>
                         </>
@@ -402,8 +404,8 @@ export function PluginAccessSection({
                 {teamGrants.map((grant) => {
                   const team = grant.teamId ? teamsById.get(grant.teamId) : null;
                   const sharedBy = grant.createdByOrgMembershipId === orgContext?.currentMember.id
-                    ? "you"
-                    : membersById.get(grant.createdByOrgMembershipId)?.user.name ?? "an organization member";
+                    ? "你"
+                    : membersById.get(grant.createdByOrgMembershipId)?.user.name ?? "一名组织成员";
                   return (
                     <div key={grant.id} className="flex flex-col gap-3 px-4 py-4 md:flex-row md:flex-wrap md:items-center md:px-6 md:py-3.5">
                       <div className="flex w-full min-w-0 items-start gap-3 md:w-auto md:min-w-[220px] md:flex-1 md:items-center">
@@ -411,13 +413,13 @@ export function PluginAccessSection({
                           {team ? (
                             <TeamIdentity name={team.name} memberCount={team.memberIds.length} />
                           ) : (
-                            <p className="text-[13px] font-medium text-gray-500">Removed team</p>
+                            <p className="text-[13px] font-medium text-gray-500">已移除的团队</p>
                           )}
                         </div>
                         <AccessRolePill role={grant.role} />
                       </div>
                       <p className="text-[11.5px] text-gray-400">
-                        shared by {sharedBy} · {formatAccessDate(grant.createdAt)}
+                        共享者 {sharedBy} · {formatAccessDate(grant.createdAt)}
                       </p>
                       <div className="flex w-full justify-end md:w-auto">
                         <DenButton
@@ -426,7 +428,7 @@ export function PluginAccessSection({
                           disabled={busy}
                           onClick={() => void handleRevoke(grant.id)}
                         >
-                          Revoke
+                          撤销
                         </DenButton>
                       </div>
                     </div>
@@ -436,9 +438,9 @@ export function PluginAccessSection({
                 {!hasGrantsBeyondCreator ? (
                   <div className="px-6 py-3.5">
                     <div className="rounded-xl border border-dashed border-gray-200 px-5 py-5 text-center">
-                      <p className="text-[13px] font-medium text-gray-900">Only you can use this plugin</p>
+                      <p className="text-[13px] font-medium text-gray-900">仅你自己可使用此插件</p>
                       <p className="mt-1 text-[12px] text-gray-500">
-                        Share it with a person or a team to give them instant access in chat.
+                        共享给人员或团队后，他们即可在对话中使用。
                       </p>
                     </div>
                   </div>
@@ -468,7 +470,7 @@ export function PluginAccessSection({
         <DenNotice
           tone="error"
           className="mt-3"
-          message={mutationError instanceof Error ? mutationError.message : "Failed to update plugin access."}
+          message={mutationError instanceof Error ? mutationError.message : "更新插件访问权限失败，请重试。"}
         />
       ) : null}
     </section>

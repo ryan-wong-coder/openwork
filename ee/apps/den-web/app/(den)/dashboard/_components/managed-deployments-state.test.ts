@@ -20,10 +20,10 @@ function deployment(provider: "aws" | "gcp" = "aws") {
 test("failed updates are not masked by operational health on either cloud", () => {
   for (const provider of ["aws", "gcp"] satisfies ("aws" | "gcp")[]) {
     const item = deployment(provider);
-    assert.deepEqual(deploymentStatus(item), { label: "Update failed", tone: "danger" });
+    assert.deepEqual(deploymentStatus(item), { label: "更新失败", tone: "danger" });
     if (!item.run) throw new Error("Missing fixture run");
     item.run.expired = true;
-    assert.deepEqual(deploymentStatus(item), { label: "Update stopped reporting", tone: "danger" });
+    assert.deepEqual(deploymentStatus(item), { label: "更新已停止报告", tone: "danger" });
   }
 });
 
@@ -31,11 +31,11 @@ test("pending approval names the cloud, not the last known health", () => {
   const item = deployment("gcp");
   if (!item.run) throw new Error("Missing fixture run");
   item.run.state = "awaiting_approval";
-  assert.equal(deploymentStatus(item).label, "Awaiting Google Cloud approval");
+  assert.equal(deploymentStatus(item).label, "等待 Google Cloud 审批");
   item.installedVersion = null;
-  assert.equal(deploymentStatus(item).label, "Awaiting Google Cloud approval");
+  assert.equal(deploymentStatus(item).label, "等待 Google Cloud 审批");
   item.run = null;
-  assert.equal(deploymentStatus(item).label, "Not launched");
+  assert.equal(deploymentStatus(item).label, "尚未启动");
 });
 
 test("completed runs return to health even after their approval expires", () => {
@@ -43,7 +43,7 @@ test("completed runs return to health even after their approval expires", () => 
   if (!item.run) throw new Error("Missing fixture run");
   item.run.state = "ready";
   item.run.expired = true;
-  assert.deepEqual(deploymentStatus(item), { label: "Operational", tone: "neutral" });
+  assert.deepEqual(deploymentStatus(item), { label: "运行正常", tone: "neutral" });
 });
 
 test("locks name the remediation owner and distinguish readiness causes", () => {
@@ -52,9 +52,9 @@ test("locks name the remediation owner and distinguish readiness causes", () => 
   assert.equal(new Set(messages).size, reasons.length);
   for (const message of messages) {
     assert.match(message, /Google Cloud/);
-    assert.match(message, /OpenWork operator/);
+    assert.match(message, /运营人员/);
     assert.doesNotMatch(message, /DEN_MANAGED/);
   }
-  assert.match(readinessMessage({ provider: "aws", available: false }), /publish and configure a verified installer/);
+  assert.match(readinessMessage({ provider: "aws", available: false }), /发布并配置经验证的安装程序/);
   assert.equal(providerName("azure"), "Azure");
 });

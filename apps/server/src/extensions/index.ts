@@ -58,7 +58,7 @@ export async function callExperimentalExtensionAction(config: ServerConfig, env:
   }
 
   if (extensionId === OPENAI_IMAGE_GENERATION_EXTENSION_ID) {
-    const result = await callOpenAiImageGenerationExtensionAction(config, env, action, args, context);
+    const result = await callOpenAiImageGenerationExtensionAction(config, env, action, args, context, signal);
     if (result) return result;
   }
 

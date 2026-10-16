@@ -1,15 +1,13 @@
 "use client";
 
+import { getDenPermissionDefinition, DEN_PERMISSION_AREA_LABELS } from "../../../_lib/permission-copy";
+
+import { DEFAULT_DEN_LOCALE } from "../../../_lib/locale";
+
 import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { ArrowLeft, LockKeyhole } from "lucide-react";
-import {
-  PERMISSION_AREAS,
-  PERMISSION_KEYS,
-  getPermissionDefinition,
-  type PermissionAreaKey,
-  type PermissionKey,
-} from "@openwork/types/den/permissions";
+import { PERMISSION_KEYS, type PermissionAreaKey, type PermissionKey } from "@openwork/types/den/permissions";
 import { buttonVariants } from "../../_components/ui/button";
 import { DenNotice } from "../../_components/ui/notice";
 import { DenPageHeader } from "../../_components/ui/page-header";
@@ -75,11 +73,11 @@ export function PermissionsFeatureOff() {
       <DenNotice
         tone="neutral"
         icon={LockKeyhole}
-        message="Permissions is an Enterprise feature. Contact us to turn it on for your organization."
+        message="权限管理是企业版功能，请联系我们为组织启用。"
         className="w-full"
       />
       <a href={ENTERPRISE_CONTACT_URL} target="_blank" rel="noreferrer" className={buttonVariants({ variant: "secondary", size: "sm" })}>
-        Contact us
+        联系我们
       </a>
     </div>
   );
@@ -88,11 +86,11 @@ export function PermissionsFeatureOff() {
 /** The page body for states that come before data: checking, error, feature off. */
 export function PermissionsAccessState({ access }: { access: PermissionsAccess }) {
   if (access.state === "feature_off") return <PermissionsFeatureOff />;
-  if (access.state === "error") return <DenNotice tone="error" message="Couldn't check your access to Permissions. Reload the page to try again." />;
+  if (access.state === "error") return <DenNotice tone="error" message="无法检查权限管理访问权限，请重新加载页面后重试。" />;
   return <PermissionRowsSkeleton />;
 }
 
-export function PermissionRowsSkeleton({ rows = 6, label = "Loading permissions" }: { rows?: number; label?: string }) {
+export function PermissionRowsSkeleton({ rows = 6, label = "正在加载权限" }: { rows?: number; label?: string }) {
   return (
     <div role="status" aria-label={label} className="flex flex-col" data-testid="permissions-loading">
       <DenSkeleton className="mb-2 h-3 w-32" />
@@ -107,22 +105,22 @@ export function PermissionRowsSkeleton({ rows = 6, label = "Loading permissions"
   );
 }
 
-const relativeFormat = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+const relativeFormat = new Intl.RelativeTimeFormat(DEFAULT_DEN_LOCALE, { numeric: "auto" });
 
 export function relativeTimeLabel(value: string, now = Date.now()): string {
   const timestamp = new Date(value).getTime();
   if (Number.isNaN(timestamp)) return "";
   const seconds = Math.round((timestamp - now) / 1000);
   const abs = Math.abs(seconds);
-  if (abs < 45) return "Just now";
+  if (abs < 45) return "刚刚";
   if (abs < 3600) return relativeFormat.format(Math.round(seconds / 60), "minute");
   if (abs < 86_400) return relativeFormat.format(Math.round(seconds / 3600), "hour");
   if (abs < 86_400 * 30) return relativeFormat.format(Math.round(seconds / 86_400), "day");
-  return new Date(timestamp).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+  return new Date(timestamp).toLocaleDateString(DEFAULT_DEN_LOCALE, { month: "short", day: "numeric", year: "numeric" });
 }
 
 export function RelativeTime({ value }: { value: string }) {
-  const exact = new Date(value).toLocaleString();
+  const exact = new Date(value).toLocaleString(DEFAULT_DEN_LOCALE);
   return <time dateTime={value} title={exact} className="shrink-0 text-[12px] text-gray-500">{relativeTimeLabel(value)}</time>;
 }
 
@@ -133,10 +131,10 @@ export function permissionAreas(include?: ReadonlySet<string>): PermissionArea[]
   const areas = new Map<PermissionAreaKey, PermissionKey[]>();
   for (const key of PERMISSION_KEYS) {
     if (include && !include.has(key)) continue;
-    const area = getPermissionDefinition(key).area;
+    const area = getDenPermissionDefinition(key).area;
     areas.set(area, [...(areas.get(area) ?? []), key]);
   }
-  return [...areas.entries()].map(([key, keys]) => ({ key, label: PERMISSION_AREAS[key].label, keys }));
+  return [...areas.entries()].map(([key, keys]) => ({ key, label: DEN_PERMISSION_AREA_LABELS[key], keys }));
 }
 
 export function PermissionAreaSection({ label, meta, children, testId }: { label: string; meta?: ReactNode; children: ReactNode; testId?: string }) {
@@ -153,7 +151,7 @@ export function PermissionAreaSection({ label, meta, children, testId }: { label
 
 /** The permission's description, shown under its title. */
 export function PermissionDescription({ permissionKey, id }: { permissionKey: PermissionKey; id?: string }) {
-  const definition = getPermissionDefinition(permissionKey);
+  const definition = getDenPermissionDefinition(permissionKey);
   if (!definition.description) return null;
   return <p id={id} className="mt-0.5 text-[12px] leading-4 text-gray-500">{definition.description}</p>;
 }
@@ -162,15 +160,15 @@ export function PermissionDescription({ permissionKey, id }: { permissionKey: Pe
 export function permissionMatchesSearch(key: PermissionKey, search: string): boolean {
   const needle = search.trim().toLowerCase();
   if (!needle) return true;
-  const definition = getPermissionDefinition(key);
-  return definition.label.toLowerCase().includes(needle) || (definition.description ?? "").toLowerCase().includes(needle);
+  const definition = getDenPermissionDefinition(key);
+  return key.toLowerCase().includes(needle) || definition.label.toLowerCase().includes(needle) || (definition.description ?? "").toLowerCase().includes(needle);
 }
 
 /** Compact filter over permission titles and descriptions, using the shared list control. */
 export function PermissionSearch({ value, onChange }: { value: string; onChange: (value: string) => void }) {
   return (
     <div className="w-[240px] max-w-full" data-testid="permission-search">
-      <FilterInput value={value} onChange={onChange} placeholder="Filter permissions" />
+      <FilterInput value={value} onChange={onChange} placeholder="筛选权限" />
     </div>
   );
 }
@@ -208,7 +206,7 @@ export function PermissionEditor({ rows, onToggle, readOnlyReasonId, beforeList 
       <PermissionSearch value={search} onChange={setSearch} />
       {beforeList}
       {areas.length === 0 ? (
-        <p className="py-3 text-[13px] text-gray-500" data-testid="permission-search-empty">No permissions match “{search.trim()}”.</p>
+        <p className="py-3 text-[13px] text-gray-500" data-testid="permission-search-empty">没有匹配的权限：“{search.trim()}”.</p>
       ) : (
         <div className="flex flex-col gap-6">
           {areas.map((area) => {
@@ -216,7 +214,7 @@ export function PermissionEditor({ rows, onToggle, readOnlyReasonId, beforeList 
               const row = byKey.get(key);
               return row ? [row] : [];
             });
-            const totalInArea = rows.filter((row) => getPermissionDefinition(row.key).area === area.key);
+            const totalInArea = rows.filter((row) => getDenPermissionDefinition(row.key).area === area.key);
             const allowed = totalInArea.filter((row) => row.draft === "allow").length;
             // "Allow all" acts on the rows shown (all of them unless a search is active) that can change.
             const toggleable = readOnly ? [] : areaRows.filter((row) => row.lockedReason === null);
@@ -234,15 +232,15 @@ export function PermissionEditor({ rows, onToggle, readOnlyReasonId, beforeList 
                 label={area.label}
                 meta={(
                   <span className="flex items-center gap-3">
-                    <span>{`${allowed} of ${totalInArea.length} allowed`}</span>
+                    <span>{`已允许 ${allowed} / ${totalInArea.length} 项`}</span>
                     <span className="flex items-center gap-2 text-gray-700">
-                      <span aria-hidden="true">Allow all</span>
+                      <span aria-hidden="true">全部允许</span>
                       <DenSwitch
                         size="sm"
                         checked={allOn}
                         disabled={toggleable.length === 0}
                         onChange={setAll}
-                        aria-label={`Allow all ${area.label} permissions`}
+                        aria-label={`允许全部 ${area.label} 权限`}
                         testId={`permission-area-allow-all-${area.key}`}
                       />
                     </span>
@@ -265,7 +263,7 @@ function PermissionEditorRowView({ row, onToggle, readOnlyReasonId }: {
   onToggle: (key: PermissionKey, next: PermissionStatus) => void;
   readOnlyReasonId?: string;
 }) {
-  const definition = getPermissionDefinition(row.key);
+  const definition = getDenPermissionDefinition(row.key);
   const baseId = `permission-${row.key.replace(/[^a-z0-9_]/g, "-")}`;
   const reasonId = `${baseId}-reason`;
   const descriptionId = `${baseId}-description`;
@@ -279,7 +277,7 @@ function PermissionEditorRowView({ row, onToggle, readOnlyReasonId }: {
         <p className={`text-[13px] font-medium ${disabled ? "text-gray-500" : "text-gray-900"}`}>{definition.label}</p>
         <PermissionDescription permissionKey={row.key} id={descriptionId} />
       </div>
-      {changed ? <span className="shrink-0 text-[12px] font-medium text-gray-700">Not saved</span> : null}
+      {changed ? <span className="shrink-0 text-[12px] font-medium text-gray-700">未保存</span> : null}
       {locked ? (
         <span id={reasonId} className="inline-flex shrink-0 items-center gap-1 text-[12px] text-gray-500">
           <LockKeyhole className="size-3.5" aria-hidden="true" strokeWidth={1.5} />
@@ -303,8 +301,8 @@ export function PermissionStatusLabel({ status, locked }: { status: PermissionSt
   return (
     <span className={`inline-flex shrink-0 items-center gap-1 text-[12px] ${status === "allow" ? "font-medium text-gray-900" : "text-gray-500"}`} data-status={status}>
       {locked ? <LockKeyhole className="size-3.5" aria-hidden="true" strokeWidth={1.5} /> : null}
-      {status === "allow" ? "Allowed" : "Not allowed"}
-      {locked ? <span className="sr-only">, always on</span> : null}
+      {status === "allow" ? "允许" : "不允许"}
+      {locked ? <span className="sr-only">，始终启用</span> : null}
     </span>
   );
 }

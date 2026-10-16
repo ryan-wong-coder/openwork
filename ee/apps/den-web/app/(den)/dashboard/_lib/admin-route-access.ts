@@ -1,4 +1,5 @@
-import { getPermissionDefinition, type PermissionKey } from "@openwork/types/den/permissions";
+import { getDenPermissionDefinition } from "../../../_lib/permission-copy";
+import { type PermissionKey } from "@openwork/types/den/permissions";
 import {
   type DenOrgAccessFlags,
   getAiGatewayRoute,
@@ -105,9 +106,9 @@ export function canOpenAdminRoute(pathname: string, access: DenOrgAccessFlags): 
 
 /** Plain reason for a locked admin page (DESIGN.md P4). */
 export function adminRouteLockedMessage(pathname: string): string {
-  const labels = (ruleFor(pathname)?.needs ?? []).map((key) => `“${getPermissionDefinition(key).label}”`);
+  const labels = (ruleFor(pathname)?.needs ?? []).map((key) => `“${getDenPermissionDefinition(key).label}”`);
   const needs = labels.length === 0
-    ? "an organization permission"
-    : labels.length === 1 ? `the ${labels[0]} permission` : `one of these permissions: ${labels.join(", ")}`;
-  return `This page needs ${needs}. Ask an organization owner or admin for access.`;
+    ? "组织权限"
+    : labels.length === 1 ? `${labels[0]}权限` : `以下任一权限：${labels.join(", ")}`;
+  return `此页面需要${needs}，请联系组织所有者或管理员获取权限。`;
 }

@@ -1,4 +1,5 @@
 import { freeAutoSwitchedOff } from "@/app/lib/inference-access";
+import { clientModelVisible } from "@/app/lib/client-profile";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import type { CloudImportedProvider } from "@/app/cloud/import-state";
 import type { Client, ModelOption, ModelRef } from "@/app/types";
@@ -93,7 +94,7 @@ export function useModelCatalog(input: UseModelCatalogInput): ModelCatalogView {
     return () => window.removeEventListener(newProvidersEvent, refresh);
   }, [input.client, refetch]);
 
-  const runtime = useMemo(() => providers.data?.all ? runtimeModelOptions(providers.data, input.isNewProvider) : null, [providers.data, input.isNewProvider]);
+  const runtime = useMemo(() => providers.data?.all ? runtimeModelOptions(providers.data, input.isNewProvider).filter(clientModelVisible) : null, [providers.data, input.isNewProvider]);
   const restrictToCloud = checkRestriction({ restriction: "allowCustomProviders" });
   const autoPresent = Boolean(runtime?.some(isAutoModel) || input.fallbackOptions?.some(isAutoModel) || (input.current && isAutoModel(input.current)));
   const { query: autoQuery } = useAutoAccess(autoPresent);
@@ -102,7 +103,7 @@ export function useModelCatalog(input: UseModelCatalogInput): ModelCatalogView {
   // hides it. A check that never runs (outside the desktop) leaves Auto as the engine lists it.
   const autoPending = autoPresent && autoQuery.isPending && autoQuery.fetchStatus !== "idle";
   const catalog = useMemo(() => buildModelCatalog({
-    runtime, fallback: input.fallbackOptions, pending: input.pendingOptions, imports: input.importedProviders,
+    runtime, fallback: input.fallbackOptions?.filter(clientModelVisible), pending: input.pendingOptions?.filter(clientModelVisible), imports: input.importedProviders,
     signedIn, restrictToCloud, checkRestriction, disabledProviders: input.disabledProviders,
     gatewayProviderIds: input.gatewayProviderIds, autoStatus, autoPending,
   }), [runtime, input.fallbackOptions, input.pendingOptions, input.importedProviders, signedIn, restrictToCloud, checkRestriction,

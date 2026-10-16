@@ -13,11 +13,11 @@ export function finishSetupHref(orgSlug: string | null, connection: Pick<Externa
 }
 
 export function signInSentence(connection: Pick<ExternalMcpConnection, "name" | "authType" | "credentialMode">): string {
-  if (connection.authType === "none") return "No sign-in needed";
+  if (connection.authType === "none") return "无需登录";
   if (connection.authType === "apikey") return connection.credentialMode === "per_member"
-    ? "Each person adds their own key"
-    : "Everyone uses the organization key";
+    ? "每人添加自己的密钥"
+    : "所有人使用组织密钥";
   return connection.credentialMode === "per_member"
-    ? `Each person signs in with their own ${connection.name} account`
-    : `Everyone uses one ${connection.name} account`;
+    ? `每个人使用自己的 ${connection.name} 账户登录`
+    : `所有人共用一个 ${connection.name} 账户`;
 }

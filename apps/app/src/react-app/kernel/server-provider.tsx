@@ -12,6 +12,7 @@ import {
 import { createOpencodeClient } from "@opencode-ai/sdk/v2/client";
 
 import { desktopFetch } from "../../app/lib/desktop";
+import { isLocalGatewayClient } from "../../app/lib/client-profile";
 import {
   getOpenworkGatewayOrigin,
   readOpenworkGatewayDenToken,
@@ -30,6 +31,22 @@ export function serverDisplayName(url: string): string {
   return url.replace(/^https?:\/\//, "").replace(/\/+$/, "");
 }
 
+export function localClientServerAllowed(value: string): boolean {
+  if (!isLocalGatewayClient()) return true;
+  try {
+    const url = new URL(value);
+    return ["http:", "https:"].includes(url.protocol)
+      && !url.username && !url.password
+      && (url.hostname === "localhost" || url.hostname === "[::1]" || /^127(?:\.\d{1,3}){3}$/.test(url.hostname));
+  } catch {
+    return false;
+  }
+}
+
+function serverStorageKey(suffix: "list" | "active"): string {
+  return isLocalGatewayClient() ? `openwork.local-gateway.server.${suffix}` : `openwork.server.${suffix}`;
+}
+
 type ServerContextValue = {
   url: string;
   name: string;
@@ -45,7 +62,7 @@ const ServerContext = createContext<ServerContextValue | undefined>(undefined);
 function readStoredList(): string[] {
   if (typeof window === "undefined") return [];
   try {
-    const raw = window.localStorage.getItem("openwork.server.list");
+    const raw = window.localStorage.getItem(serverStorageKey("list")) ?? window.localStorage.getItem("openwork.server.list");
     const parsed = raw ? (JSON.parse(raw) as unknown) : [];
     return Array.isArray(parsed) ? parsed.filter((item) => typeof item === "string") : [];
   } catch {
@@ -56,7 +73,7 @@ function readStoredList(): string[] {
 function readStoredActive(): string {
   if (typeof window === "undefined") return "";
   try {
-    const stored = window.localStorage.getItem("openwork.server.active");
+    const stored = window.localStorage.getItem(serverStorageKey("active")) ?? window.localStorage.getItem("openwork.server.active");
     return typeof stored === "string" ? stored : "";
   } catch {
     return "";
@@ -80,7 +97,7 @@ export function buildOpenworkHealthHeaders(url: string): Record<string, string> 
 }
 
 async function checkHealth(url: string): Promise<boolean> {
-  if (!url) return false;
+  if (!url || !localClientServerAllowed(url)) return false;
   const headers = buildOpenworkHealthHeaders(url);
   const client = createOpencodeClient({
     baseUrl: url,
@@ -108,7 +125,8 @@ export function ServerProvider({ children, defaultUrl }: ServerProviderProps) {
     if (typeof window === "undefined") return;
 
     const gatewayOrigin = getOpenworkGatewayOrigin();
-    const fallback = normalizeServerUrl(gatewayOrigin ? `${gatewayOrigin}/opencode` : defaultUrl) ?? "";
+    const configuredFallback = normalizeServerUrl(gatewayOrigin ? `${gatewayOrigin}/opencode` : defaultUrl) ?? "";
+    const fallback = localClientServerAllowed(configuredFallback) ? configuredFallback : "http://127.0.0.1:4096";
 
     // Hosted web deployments served by OpenWork must reuse the OpenCode proxy
     // rather than any persisted localhost target.
@@ -126,8 +144,9 @@ export function ServerProvider({ children, defaultUrl }: ServerProviderProps) {
       return;
     }
 
-    const storedList = readStoredList();
-    const storedActive = normalizeServerUrl(readStoredActive());
+    const storedList = readStoredList().filter(localClientServerAllowed);
+    const requestedActive = normalizeServerUrl(readStoredActive());
+    const storedActive = requestedActive && localClientServerAllowed(requestedActive) ? requestedActive : undefined;
 
     const initialList = storedList.length ? storedList : fallback ? [fallback] : [];
     const initialActive = storedActive || initialList[0] || fallback || "";
@@ -140,8 +159,8 @@ export function ServerProvider({ children, defaultUrl }: ServerProviderProps) {
     if (!readyRef.current) return;
     if (typeof window === "undefined") return;
     try {
-      window.localStorage.setItem("openwork.server.list", JSON.stringify(list));
-      window.localStorage.setItem("openwork.server.active", active);
+      window.localStorage.setItem(serverStorageKey("list"), JSON.stringify(list));
+      window.localStorage.setItem(serverStorageKey("active"), active);
     } catch {
       // ignore
     }
@@ -186,13 +205,13 @@ export function ServerProvider({ children, defaultUrl }: ServerProviderProps) {
 
   const setActive = useCallback((input: string) => {
     const next = normalizeServerUrl(input);
-    if (!next) return;
+    if (!next || !localClientServerAllowed(next)) return;
     dispatchServer({ type: "active", active: next });
   }, []);
 
   const add = useCallback((input: string) => {
     const next = normalizeServerUrl(input);
-    if (!next) return;
+    if (!next || !localClientServerAllowed(next)) return;
     dispatchServer({ type: "add", url: next });
   }, []);
 

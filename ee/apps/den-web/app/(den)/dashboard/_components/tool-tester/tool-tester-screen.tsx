@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE } from "../../../../_lib/locale";
+
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -69,19 +71,19 @@ function relativeDate(value: string | null): string | null {
   const timestamp = new Date(value).getTime();
   if (!Number.isFinite(timestamp)) return null;
   const elapsedMinutes = Math.max(0, Math.floor((Date.now() - timestamp) / 60000));
-  if (elapsedMinutes < 1) return "just now";
-  if (elapsedMinutes < 60) return `${elapsedMinutes}m ago`;
+  if (elapsedMinutes < 1) return "刚刚";
+  if (elapsedMinutes < 60) return `${elapsedMinutes} 分钟前`;
   const hours = Math.floor(elapsedMinutes / 60);
-  if (hours < 24) return `${hours}h ago`;
+  if (hours < 24) return `${hours} 小时前`;
   const days = Math.floor(hours / 24);
-  if (days < 30) return `${days}d ago`;
-  return new Date(timestamp).toLocaleDateString();
+  if (days < 30) return `${days} 天前`;
+  return new Date(timestamp).toLocaleDateString(DEFAULT_DEN_LOCALE);
 }
 
 function policyAttribution(policy: ExternalMcpToolPolicyView): string {
   if (!policy.updatedBy) return "";
   const updated = relativeDate(policy.updatedAt);
-  return updated ? ` by ${policy.updatedBy} · ${updated}` : ` by ${policy.updatedBy}`;
+  return updated ? `，由 ${policy.updatedBy} 设置 · ${updated}` : `，由 ${policy.updatedBy} 设置`;
 }
 
 function testableConnection(
@@ -245,11 +247,11 @@ export function ToolTesterScreen() {
     try {
       parsed = JSON.parse(argumentsText);
     } catch {
-      setLocalError("Arguments must be valid JSON before switching to Form.");
+      setLocalError("切换为表单前，参数必须是有效 JSON。");
       return;
     }
     if (!isRecord(parsed)) {
-      setLocalError("Arguments must be a JSON object before switching to Form.");
+      setLocalError("切换为表单前，参数必须是 JSON 对象。");
       return;
     }
     setFormValues(formValuesFromArguments(selectedTool.inputSchema, parsed));
@@ -268,7 +270,7 @@ export function ToolTesterScreen() {
       await updatePolicy.mutateAsync(nextPolicy);
       return true;
     } catch (error) {
-      setPolicyError(error instanceof Error ? error.message : "Failed to update the tool policy.");
+      setPolicyError(error instanceof Error ? error.message : "更新工具策略失败，请重试。");
       return false;
     }
   }
@@ -306,16 +308,16 @@ export function ToolTesterScreen() {
       try {
         parsed = JSON.parse(argumentsText);
       } catch {
-        setLocalError("Arguments must be valid JSON.");
+        setLocalError("参数必须是有效 JSON。");
         return;
       }
     }
     if (!isRecord(parsed)) {
-      setLocalError("Arguments must be a JSON object, such as {}.");
+      setLocalError("参数必须是 JSON 对象，例如 {}。");
       return;
     }
     if (selectedTool.annotations?.destructiveHint && !destructiveConfirmed) {
-      setLocalError("Confirm the destructive tool warning before running this tool.");
+      setLocalError("请先确认破坏性操作警告，再运行此工具。");
       return;
     }
 
@@ -368,10 +370,10 @@ export function ToolTesterScreen() {
             mayHaveSideEffects: selectedTool.annotations?.readOnlyHint !== true,
           })
         : null;
-      const message = error instanceof Error ? error.message : "The MCP tool failed.";
+      const message = error instanceof Error ? error.message : "MCP 工具执行失败。";
       const outcome: McpToolCallOutcome = {
         status: "failed",
-        referenceId: failureAttribution?.diagnosticReference ?? serverFailure?.diagnostic?.referenceId ?? "No reference",
+        referenceId: failureAttribution?.diagnosticReference ?? serverFailure?.diagnostic?.referenceId ?? "无引用",
         durationMs: inspection?.response?.durationMs ?? Date.now() - startedAt,
         result: { error: message, diagnostic: serverFailure?.diagnostic ?? null },
         inspection,
@@ -404,34 +406,34 @@ export function ToolTesterScreen() {
   return (
     <DashboardPageTemplate
       icon={Wrench}
-      title="Tool Tester"
-      description="Run any tool your connections expose, inspect the request on the wire, and control which tools your organization can use. Runs execute with your credential and are never written to OpenWork logs."
+      title="工具测试"
+      description="运行连接提供的工具、检查传输请求，并设置组织可用工具。使用你的凭据执行，运行记录不会写入 OpenWork 日志。"
     >
       {connectionsQuery.error ? (
-        <DenNotice className="mb-4" message={connectionsQuery.error instanceof Error ? connectionsQuery.error.message : "Failed to load connections."} />
+        <DenNotice className="mb-4" message={connectionsQuery.error instanceof Error ? connectionsQuery.error.message : "无法加载连接，请重试。"} />
       ) : null}
 
       {connectionsQuery.isLoading || presetsQuery.isLoading ? (
         <div className="flex items-center gap-2 rounded-2xl border border-gray-100 bg-white px-5 py-6 text-[13px] text-gray-500">
-          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> Loading testable connections…
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> 正在加载可测试连接…
         </div>
       ) : testableConnections.length === 0 ? (
         <DenNotice
           tone="neutral"
-          message={<span>No connected, testable MCP connections are available. <Link className="font-medium text-gray-900 underline" href={getMcpConnectionsRoute(orgSlug)}>Add or connect a connector first.</Link></span>}
+          message={<span>没有已连接且可测试的 MCP 连接。 <Link className="font-medium text-gray-900 underline" href={getMcpConnectionsRoute(orgSlug)}>请先添加或连接连接器。</Link></span>}
         />
       ) : selectedConnection ? (
         <div className="space-y-5">
           <div className="flex flex-col gap-3 rounded-2xl border border-gray-100 bg-white p-4 sm:flex-row sm:items-center">
             <div className="min-w-0 flex-1 sm:max-w-sm">
-              <DenSelect aria-label="Connection" value={selectedConnection.id} onChange={(event) => chooseConnection(event.target.value)}>
+              <DenSelect aria-label="连接" value={selectedConnection.id} onChange={(event) => chooseConnection(event.target.value)}>
                 {testableConnections.map((connection) => <option key={connection.id} value={connection.id}>{connection.name}</option>)}
               </DenSelect>
             </div>
             <DenBadge tone={selectedApiKeyStatus === "reconnect_required" ? "warning" : selectedApiKeyStatus === "saved_unverified" ? "neutral" : selectedConnection.connectedForMe ? "success" : "neutral"}>
               {selectedApiKeyStatus
                 ? personalApiKeyStatusLabel(selectedApiKeyStatus)
-                : selectedConnection.connectedForMe ? "Connected as you" : "Not connected"}
+                : selectedConnection.connectedForMe ? "已通过你的账户连接" : "未连接"}
             </DenBadge>
             <DenButton
               className="shrink-0 whitespace-nowrap sm:ml-auto"
@@ -441,23 +443,23 @@ export function ToolTesterScreen() {
               loading={catalog.isFetching}
               onClick={() => void catalog.refetch()}
             >
-              Refresh tools
+              刷新工具
             </DenButton>
           </div>
 
           {catalog.isLoading ? (
             <div className="flex items-center gap-2 rounded-2xl border border-gray-100 bg-white px-5 py-8 text-[13px] text-gray-500">
-              <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> Reading the MCP tool catalog…
+              <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> 正在读取 MCP 工具目录…
             </div>
           ) : catalog.error ? (
-            <DenNotice message={catalog.error instanceof Error ? catalog.error.message : "Could not read this MCP's tools."} />
+            <DenNotice message={catalog.error instanceof Error ? catalog.error.message : "无法读取此 MCP 的工具，请重试。"} />
           ) : policy ? (
             <>
               <div className="space-y-3">
                 <DenToggleRow
                   icon={Shield}
-                  title="Tools enabled for your organization"
-                  description={`Turn off to block every ${selectedConnection.name} tool at the OpenWork layer — agents can't discover or call them, members can't run them.`}
+                  title="组织已启用的工具"
+                  description={`关闭后，OpenWork 将阻止全部 ${selectedConnection.name} 工具，智能体无法发现或调用这些工具，成员也无法运行。`}
                   checked={!policy.allDisabled}
                   disabled={updatePolicy.isPending}
                   onChange={(checked) => {
@@ -471,14 +473,14 @@ export function ToolTesterScreen() {
                 {policy.allDisabled ? (
                   <DenNotice
                     tone="warning"
-                    message={`${selectedConnection.name} tools are disabled for your organization. Agents can't discover or call them, and members can't run them from OpenWork.${policy.updatedBy ? ` Turned off${policyAttribution(policy)}` : ""}`}
+                    message={`组织已禁用 ${selectedConnection.name} 工具。智能体无法发现或调用这些工具，成员也无法从 OpenWork 运行。${policy.updatedBy ? `已关闭${policyAttribution(policy)}` : ""}`}
                   />
                 ) : null}
                 {policyError ? <DenNotice message={policyError} /> : null}
               </div>
 
               {tools.length === 0 ? (
-                <DenNotice tone="neutral" message="This MCP is connected but does not currently expose any tools." />
+                <DenNotice tone="neutral" message="此 MCP 已连接，但目前没有提供任何工具。" />
               ) : (
                 <div className="flex flex-col items-start gap-4 lg:flex-row">
                   <ToolRail
@@ -500,13 +502,13 @@ export function ToolTesterScreen() {
                           <div className="flex flex-wrap items-center gap-2">
                             <h2 className="text-[16px] font-semibold tracking-tight text-gray-950">{toolTitle(selectedTool)}</h2>
                             {selectedTool.annotations?.readOnlyHint ? (
-                              <DenBadge tone="success">Read-only</DenBadge>
+                              <DenBadge tone="success">只读</DenBadge>
                             ) : selectedTool.annotations?.destructiveHint ? (
-                              <DenBadge tone="danger" icon={Trash2}>Destructive</DenBadge>
+                              <DenBadge tone="danger" icon={Trash2}>破坏性操作</DenBadge>
                             ) : (
-                              <DenBadge tone="warning" icon={AlertTriangle}>Not marked read-only</DenBadge>
+                              <DenBadge tone="warning" icon={AlertTriangle}>未标记为只读</DenBadge>
                             )}
-                            {selectedToolDisabled ? <DenBadge tone="neutral">Disabled</DenBadge> : null}
+                            {selectedToolDisabled ? <DenBadge tone="neutral">已禁用</DenBadge> : null}
                           </div>
                           {selectedTool.description ? <p className="mt-2 text-[12.5px] leading-5 text-gray-500">{selectedTool.description}</p> : null}
                         </div>
@@ -519,11 +521,11 @@ export function ToolTesterScreen() {
                         <div className="mt-5 space-y-3">
                           <DenNotice
                             tone="warning"
-                            message={`Disabled for your organization${policyAttribution(policy)}. Agents can't call it and members can't run it. Re-enable it to test it here.`}
+                            message={`组织已禁用此工具${policyAttribution(policy)}。智能体无法调用，成员也无法运行。重新启用后可在此测试。`}
                           />
                           <div className="flex flex-wrap gap-2">
-                            <DenButton size="md" icon={Play} disabled>Run tool</DenButton>
-                            <DenButton variant="secondary" size="md" loading={updatePolicy.isPending} onClick={() => void enableSelectedTool()}>Enable tool</DenButton>
+                            <DenButton size="md" icon={Play} disabled>运行工具</DenButton>
+                            <DenButton variant="secondary" size="md" loading={updatePolicy.isPending} onClick={() => void enableSelectedTool()}>启用工具</DenButton>
                           </div>
                         </div>
                       ) : (
@@ -552,22 +554,22 @@ export function ToolTesterScreen() {
                                 checked={destructiveConfirmed}
                                 onChange={(event) => setDestructiveConfirmed(event.target.checked)}
                               />
-                              <span><strong>Destructive tool warning.</strong> The provider says this tool may change or delete external data. I want to run it with these arguments.</span>
+                              <span><strong>破坏性操作警告。</strong> 提供商标记此工具可能更改或删除外部数据，我确认使用当前参数运行。</span>
                             </label>
                           ) : selectedTool.annotations?.readOnlyHint ? (
                             <p className="inline-flex items-center gap-1.5 text-[11px] font-medium text-blue-700">
-                              <Check className="h-3.5 w-3.5" /> Provider marks this tool as read-only.
+                              <Check className="h-3.5 w-3.5" /> 提供商将此工具标记为只读。
                             </p>
                           ) : (
                             <p className="inline-flex items-center gap-1.5 text-[11px] font-medium text-amber-700">
-                              <AlertTriangle className="h-3.5 w-3.5" /> The provider did not mark this tool as read-only. Review the arguments before running it.
+                              <AlertTriangle className="h-3.5 w-3.5" /> 提供商未将此工具标记为只读，请检查参数后运行。
                             </p>
                           )}
 
                           {localError ? <DenNotice message={localError} /> : null}
                           <div className="flex flex-wrap items-center gap-3">
-                            <DenButton size="md" icon={Play} loading={runTool.isPending} onClick={() => void handleRun()}>Run tool</DenButton>
-                            <p className="text-[11px] text-gray-500">Runs immediately against {selectedConnection.name}, as you.</p>
+                            <DenButton size="md" icon={Play} loading={runTool.isPending} onClick={() => void handleRun()}>运行工具</DenButton>
+                            <p className="text-[11px] text-gray-500">立即操作 {selectedConnection.name}，使用你的身份执行。</p>
                           </div>
                         </div>
                       )}
@@ -582,7 +584,7 @@ export function ToolTesterScreen() {
 
               <RecentToolRuns
                 runs={recentRuns}
-                caption="Kept in this browser for this session only — OpenWork never stores run results."
+                caption="仅在当前浏览器会话中保留，OpenWork 不保存运行结果。"
                 onLoad={loadRun}
               />
             </>
@@ -603,13 +605,13 @@ export function ToolTesterScreen() {
             <div className="flex items-start gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-600"><Shield className="h-5 w-5" aria-hidden="true" /></div>
               <div>
-                <h2 id="disable-tools-title" className="text-[18px] font-semibold tracking-[-0.02em] text-gray-950">Disable all {selectedConnection.name} tools?</h2>
-                <p id="disable-tools-description" className="mt-1 text-[13px] leading-6 text-gray-600">This immediately blocks every tool across your organization. Agents will stop discovering and calling them, and members will not be able to run them.</p>
+                <h2 id="disable-tools-title" className="text-[18px] font-semibold tracking-[-0.02em] text-gray-950">禁用全部 {selectedConnection.name} 工具？</h2>
+                <p id="disable-tools-description" className="mt-1 text-[13px] leading-6 text-gray-600">这将立即阻止组织内所有工具，代理将无法发现或调用，成员也无法运行。</p>
               </div>
             </div>
             {policyError ? <div className="mt-4"><DenNotice message={policyError} /></div> : null}
             <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-              <DenButton variant="secondary" disabled={updatePolicy.isPending} onClick={() => setDisableAllConfirmOpen(false)}>Cancel</DenButton>
+              <DenButton variant="secondary" disabled={updatePolicy.isPending} onClick={() => setDisableAllConfirmOpen(false)}>取消</DenButton>
               <DenButton
                 variant="destructive"
                 loading={updatePolicy.isPending}
@@ -617,7 +619,7 @@ export function ToolTesterScreen() {
                   if (saved) setDisableAllConfirmOpen(false);
                 })}
               >
-                Disable all tools
+                禁用全部工具
               </DenButton>
             </div>
           </div>

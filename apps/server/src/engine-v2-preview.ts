@@ -1,4 +1,6 @@
 import { createV2ContextBridge } from "./opencode-v2-context-bridge.js";
+import { GATEWAY_PROXY_TOKEN_ENV, gatewayProxyToken } from "./gateway-proxy-auth.js";
+import { createV2ImageSessionResolver } from "./opencode-v2-image-bridge.js";
 import { ApiError } from "./errors.js";
 import { hasV1Chat, hasV1ChatsSince, opencodeV1DatabasePath, runOpencodeV1HistoryMigration, type EngineV2MigrationStatus } from "./opencode-v2-migration.js";
 import { executionRules } from "./managed-policy-rules.js";
@@ -730,6 +732,7 @@ export function createEngineV2Preview(options: {
     const localKeys = await readLocalProviderApiKeys();
     const providerMap = { ...await localProviderDefinitions(config, localKeys, configured), ...configured };
     const credentials = new Map((await options.env?.list() ?? []).map((entry) => [entry.key, entry.value]));
+    credentials.set(GATEWAY_PROXY_TOKEN_ENV, gatewayProxyToken(config));
     const mapped = mapRuntimeProvidersToV2Specs(providerMap, credentials, localKeys);
     const specs = mapped.specs.filter((spec) => !disabled.has(spec.id));
     const nextMirroredProviderIds = specs.map((spec) => spec.id);
@@ -804,7 +807,15 @@ export function createEngineV2Preview(options: {
     // skills now use the same metadata/on-demand Connect path as v1.
     await rm(join(rootDir, "cloud-skills"), { recursive: true, force: true });
     const opencodeModelsUrl = await resolveOpencodeModelsUrl();
-    contextBridge = options.hostReadRequest ? await createV2ContextBridge(options.hostReadRequest) : undefined;
+    contextBridge = options.hostReadRequest ? await createV2ContextBridge(options.hostReadRequest, {
+      resolveImageSession: createV2ImageSessionResolver(config, async (path) => {
+        const active = sidecar;
+        if (!active) throw new Error("本地聊天引擎尚未连接，请稍后重试图片生成。");
+        const result = await active.fetchJson(path, { timeoutMs: 10_000 });
+        if (result.status < 200 || result.status >= 300) throw new Error("无法读取当前对话，请重新打开对话后重试图片生成。");
+        return result.json;
+      }),
+    }) : undefined;
     const globalSkills = globalSkillDirectories();
     const managed = await createManagedOpencodeV2Server({
       contextTools: contextBridge,

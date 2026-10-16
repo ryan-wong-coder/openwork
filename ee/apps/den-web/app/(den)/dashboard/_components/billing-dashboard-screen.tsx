@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE, denBillingIntervalLabel } from "../../../_lib/locale";
+
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Check, CreditCard, RefreshCw } from "lucide-react";
@@ -125,7 +127,7 @@ function formatBillingDate(value: string | null): string | null {
   if (!value) return null;
   const parsed = new Date(value);
   if (Number.isNaN(parsed.getTime())) return null;
-  return parsed.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
+  return parsed.toLocaleDateString(DEFAULT_DEN_LOCALE, { day: "numeric", month: "short", year: "numeric" });
 }
 
 function BillingStat({ label, value }: { label: string; value: string }) {
@@ -161,8 +163,8 @@ export function BillingDashboardScreen() {
   const canManageBillingSettings = access.canManageBilling;
   const canOpenPortal = access.canOpenBillingPortal;
   const billingLockNotice = [
-    canManageBillingSettings ? null : `Starting a subscription is locked. ${permissionLockReason("billing.manage")}`,
-    canOpenPortal ? null : `Payment details, invoices and cancelling are locked. ${permissionLockReason("billing_portal.use")}`,
+    canManageBillingSettings ? null : `无法开始订阅。${permissionLockReason("billing.manage")}`,
+    canOpenPortal ? null : `无法管理付款详情、发票和取消订阅。${permissionLockReason("billing_portal.use")}`,
   ].filter((line): line is string => line !== null).join(" ");
 
   async function refreshStripeBilling(quiet = false) {
@@ -178,16 +180,16 @@ export function BillingDashboardScreen() {
         { method: "GET", headers: { [ORG_SCOPE_HEADER]: expectedOrgId } },
         12000,
       );
-      if (!response.ok) throw new Error(getErrorMessage(payload, `Billing lookup failed (${response.status}).`));
+      if (!response.ok) throw new Error(getErrorMessage(payload, `无法查询账单（${response.status}）。`));
       const parsed = parseStripeBilling(payload);
-      if (!parsed) throw new Error("Billing response was incomplete.");
+      if (!parsed) throw new Error("账单响应不完整，请重试。");
       if (currentOrgIdRef.current !== expectedOrgId || billingRequestIdRef.current !== requestId) return null;
       setStripeBillingValue(parsed);
       setStripeBillingOrgId(expectedOrgId);
       return parsed;
     } catch (error) {
       if (!quiet && currentOrgIdRef.current === expectedOrgId && billingRequestIdRef.current === requestId) {
-        setStripeError(error instanceof Error ? error.message : "Could not load billing details.");
+        setStripeError(error instanceof Error ? error.message : "无法加载账单详情，请重试。");
       }
       return null;
     } finally {
@@ -222,12 +224,12 @@ export function BillingDashboardScreen() {
               12000,
             );
             if (!response.ok) {
-              setStripeError(getErrorMessage(payload, `Checkout sync failed (${response.status}).`));
+              setStripeError(getErrorMessage(payload, `结账状态同步失败（${response.status}）。`));
             }
           });
         } catch (error) {
           if (!cancelled) {
-            setStripeError(error instanceof Error ? error.message : "Could not sync the checkout session.");
+            setStripeError(error instanceof Error ? error.message : "无法同步结账会话，请重试。");
           }
         }
       }
@@ -268,13 +270,13 @@ export function BillingDashboardScreen() {
           { method: "POST", body: JSON.stringify({ type: "seat" }) },
           12000,
         );
-        if (!response.ok) throw getRequestError(payload, response, `Seat checkout failed (${response.status}).`);
+        if (!response.ok) throw getRequestError(payload, response, `席位结账失败（${response.status}）。`);
         const url = payload && typeof payload === "object" && "url" in payload && typeof payload.url === "string" ? payload.url : null;
-        if (!url) throw new Error("Seat checkout response did not include a URL.");
+        if (!url) throw new Error("席位结账响应缺少地址，请重试。");
         window.location.href = url;
       });
     } catch (error) {
-      setStripeError(error instanceof Error ? error.message : "Could not start seat billing checkout.");
+      setStripeError(error instanceof Error ? error.message : "无法开始席位结账，请重试。");
     } finally {
       setStripeActionBusy(null);
     }
@@ -291,13 +293,13 @@ export function BillingDashboardScreen() {
       await runReauthableAction("billing-portal", async () => {
         setStripeActionBusy("portal");
         const { response, payload } = await requestJson("/v1/billing/stripe/portal", { method: "POST" }, 12000);
-        if (!response.ok) throw getRequestError(payload, response, `Billing portal failed (${response.status}).`);
+        if (!response.ok) throw getRequestError(payload, response, `无法打开账单门户（${response.status}）。`);
         const url = payload && typeof payload === "object" && "url" in payload && typeof payload.url === "string" ? payload.url : null;
-        if (!url) throw new Error("Billing portal response did not include a URL.");
+        if (!url) throw new Error("账单门户响应缺少地址，请重试。");
         window.location.href = url;
       });
     } catch (error) {
-      setStripeError(error instanceof Error ? error.message : "Could not open the billing portal.");
+      setStripeError(error instanceof Error ? error.message : "无法打开账单门户，请重试。");
     } finally {
       setStripeActionBusy(null);
     }
@@ -360,12 +362,12 @@ export function BillingDashboardScreen() {
     <div data-testid="stripe-billing-screen">
       <DashboardPageTemplate
         icon={CreditCard}
-        title="Billing"
+        title="账单"
         description={webFeatureEnabled
           ? webComplimentary
-            ? "OpenWork Web is included for this organization at no charge. Team seats and built-in AI model access remain separate purchases."
-            : "OpenWork Web, team seats, and built-in AI model access are separate purchases. Your expected monthly total reflects the subscriptions shown below."
-          : "Team seats and built-in AI model access are separate purchases. Your expected monthly total reflects the subscriptions shown below."}
+            ? "此组织可免费使用 OpenWork Web。团队席位与内置 AI 模型访问权限仍需分别购买。"
+            : "OpenWork Web、团队席位与内置 AI 模型访问权限分别购买。预计每月总额包含下方显示的订阅。"
+          : "团队席位与内置 AI 模型访问权限分别购买。预计每月总额包含下方显示的订阅。"}
       >
       {stripeError && stripeBilling ? (
         <DenNotice message={stripeError} className="mb-6" />
@@ -379,7 +381,7 @@ export function BillingDashboardScreen() {
         <DenNotice
           tone="info"
           className="mb-6"
-          message="We're checking your subscription. This page will refresh automatically."
+          message="正在检查订阅，此页面会自动刷新。"
         />
       ) : null}
 
@@ -388,13 +390,13 @@ export function BillingDashboardScreen() {
           {stripeBusy ? (
             <div className="flex min-h-36 items-center justify-center gap-3 text-[14px] text-gray-500">
               <RefreshCw className="size-4 animate-spin text-[#635BFF]" aria-hidden="true" />
-              Loading billing details...
+              正在加载账单详情…
             </div>
           ) : (
             <div className="mx-auto grid max-w-lg justify-items-start gap-3">
-              <p className="text-[16px] font-medium text-gray-950">Billing details could not be loaded</p>
-              <p className="text-[13px] leading-6 text-gray-500">{stripeError ?? "The billing response did not include the details this page needs."}</p>
-              <DenButton icon={RefreshCw} onClick={() => void refreshStripeBilling(false)}>Try again</DenButton>
+              <p className="text-[16px] font-medium text-gray-950">无法加载账单详情</p>
+              <p className="text-[13px] leading-6 text-gray-500">{stripeError ?? "账单响应缺少本页所需的详情，请重试。"}</p>
+              <DenButton icon={RefreshCw} onClick={() => void refreshStripeBilling(false)}>重试</DenButton>
             </div>
           )}
         </DenCard>
@@ -403,15 +405,15 @@ export function BillingDashboardScreen() {
       <DenCard className="mb-6 !p-0" data-testid="billing-summary-card">
         <DenSectionHeader
           className="p-6 pb-4"
-          title="Your subscriptions"
+          title="你的订阅"
           description={webFeatureEnabled
             ? webComplimentary
-              ? "OpenWork Web is included without a Stripe subscription or per-member charge."
-              : "Each plan is billed separately. OpenWork Web is $50 per joined organization member each month."
-            : "Each plan is billed separately."}
+              ? "已包含 OpenWork Web，无需 Stripe 订阅或按成员付费。"
+              : "各套餐分别计费。OpenWork Web 按已加入组织的成员计费，每人每月 50 美元。"
+            : "各套餐分别计费。"}
           action={
             <DenButton variant="secondary" size="sm" icon={RefreshCw} loading={stripeBusy} onClick={() => void refreshStripeBilling(false)}>
-              Refresh
+              刷新
             </DenButton>
           }
         />
@@ -424,22 +426,22 @@ export function BillingDashboardScreen() {
                 active={seatsActive && billableSeatCount > 0}
               />
             }
-            title="Team seats"
+            title="团队席位"
             description={
               !seatsConfigured
-                ? `${activeMemberCount} active ${activeMemberCount === 1 ? "user" : "users"} · this deployment does not charge for seats`
+                ? `${activeMemberCount} 名活跃用户 · 此部署不收取席位费用`
                 : billableSeatCount > 0
-                  ? `${billableSeatCount} paid ${billableSeatCount === 1 ? "user" : "users"} beyond the free ${freeSeatCount}`
-                  : `${activeMemberCount} of ${freeSeatCount} included users · nothing to pay yet`
+                  ? `超过 ${freeSeatCount} 个免费席位的 ${billableSeatCount} 名付费用户`
+                  : `已使用 ${activeMemberCount} / ${freeSeatCount} 个免费用户席位 · 暂无费用`
             }
             value={seatsActive ? seatChargeLabel ?? "" : formatMoneyMinor(0, seatBilling?.currency ?? "usd")}
-            valueCaption={`per ${seatBilling?.interval ?? "month"}`}
+            valueCaption={`/ ${denBillingIntervalLabel(seatBilling?.interval ?? "month")}`}
             badge={
               !seatsConfigured
-                ? <DenBadge tone="neutral">Not billed</DenBadge>
+                ? <DenBadge tone="neutral">未计费</DenBadge>
                 : seatsActive
-                  ? <DenBadge tone="success" icon={Check}>Active</DenBadge>
-                  : <DenBadge tone="neutral">Included</DenBadge>
+                  ? <DenBadge tone="success" icon={Check}>已启用</DenBadge>
+                  : <DenBadge tone="neutral">已包含</DenBadge>
             }
           />
           {webFeatureEnabled ? (
@@ -449,63 +451,63 @@ export function BillingDashboardScreen() {
               title="OpenWork Web"
               description={
                 !webBilling
-                  ? "Billing details are unavailable · browser access remains locked"
+                  ? "账单详情不可用 · 浏览器访问权限仍锁定"
                   : webComplimentary
-                    ? `${getOpenWorkWebQuantityDescription(webBilling.quantity)} covered · complimentary access`
+                    ? `已覆盖${getOpenWorkWebQuantityDescription(webBilling.quantity)} · 免费使用权限`
                   : !webConfigured
-                    ? "This deployment does not sell OpenWork Web access"
+                    ? "此部署不销售 OpenWork Web 访问权限"
                     : webSubscribed
                       ? `${getOpenWorkWebQuantityDescription(webBilling.quantity)} × ${webPrice} · ${formatSubscriptionStatus(webStatus ?? "unknown")}`
-                      : `${getOpenWorkWebQuantityDescription(webBilling.quantity)} · not subscribed`
+                      : `${getOpenWorkWebQuantityDescription(webBilling.quantity)} · 尚未订阅`
               }
               value={webComplimentary ? formatMoneyMinor(0, webBilling?.currency ?? "usd") : webCountsTowardTotal ? webChargeLabel ?? "" : formatMoneyMinor(0, webBilling?.currency ?? "usd")}
-              valueCaption={webComplimentary ? "no charge" : `per ${webBilling?.interval ?? "month"}`}
+              valueCaption={webComplimentary ? "免费" : `/ ${denBillingIntervalLabel(webBilling?.interval ?? "month")}`}
               badge={
                 webComplimentary
-                  ? <DenBadge tone="success" icon={Check}>Complimentary</DenBadge>
+                  ? <DenBadge tone="success" icon={Check}>免费赠送</DenBadge>
                   : !webBilling || !webConfigured
-                  ? <DenBadge tone="neutral">Not billed</DenBadge>
+                  ? <DenBadge tone="neutral">未计费</DenBadge>
                   : webPaymentFailed
-                    ? <DenBadge tone="warning">Payment failed</DenBadge>
+                    ? <DenBadge tone="warning">支付失败</DenBadge>
                     : webCancelling
-                      ? <DenBadge tone="warning">Cancelling</DenBadge>
+                      ? <DenBadge tone="warning">正在取消</DenBadge>
                       : webEligible
-                        ? <DenBadge tone="success" icon={Check}>Active</DenBadge>
+                        ? <DenBadge tone="success" icon={Check}>已启用</DenBadge>
                         : webSubscribed
-                          ? <DenBadge tone="warning">Access locked</DenBadge>
-                          : <DenBadge tone="neutral">Off</DenBadge>
+                          ? <DenBadge tone="warning">访问权限已锁定</DenBadge>
+                          : <DenBadge tone="neutral">关闭</DenBadge>
               }
             />
           ) : null}
           <DenLineItemRow
             className="mx-4 rounded-[18px]"
             leading={<DenMarkTile label={`${activeMemberCount}x`} active={aiActive} />}
-            title="AI model access"
+            title="AI 模型访问权限"
             description={
               !aiConfigured
-                ? "This deployment does not sell model access · your team uses their own API keys"
+                ? "此部署不销售模型访问权限 · 团队使用自有 API 密钥"
                 : aiActive
-                  ? `${activeMemberCount} active ${activeMemberCount === 1 ? "member" : "members"} × ${stripePrice} · billed for every member`
-                  : "Not subscribed · your team uses their own API keys"
+                  ? `${activeMemberCount} 名活跃成员 × ${stripePrice} · 按每位成员计费`
+                  : "未订阅 · 团队使用自有 API 密钥"
             }
             value={aiActive ? aiChargeLabel ?? "" : formatMoneyMinor(0, stripeBilling.currency)}
-            valueCaption={`per ${stripeBilling.interval}`}
+            valueCaption={`/ ${denBillingIntervalLabel(stripeBilling.interval)}`}
             badge={
               !aiConfigured
-                ? <DenBadge tone="neutral">Not billed</DenBadge>
+                ? <DenBadge tone="neutral">未计费</DenBadge>
                 : aiPaymentFailed
-                  ? <DenBadge tone="warning">Payment failed</DenBadge>
+                  ? <DenBadge tone="warning">支付失败</DenBadge>
                   : aiActive
-                    ? <DenBadge tone="success" icon={Check}>Active</DenBadge>
-                    : <DenBadge tone="neutral">Off</DenBadge>
+                    ? <DenBadge tone="success" icon={Check}>已启用</DenBadge>
+                    : <DenBadge tone="neutral">关闭</DenBadge>
             }
           />
           <DenLineItemRow
             className="mt-1 border-t border-gray-200"
             emphasis
-            title="Expected monthly total"
+            title="预计每月总额"
             value={totalLabel ?? ""}
-            valueCaption={`per ${stripeBilling.interval}`}
+            valueCaption={`/ ${denBillingIntervalLabel(stripeBilling.interval)}`}
           />
         </div>
       </DenCard>
@@ -515,29 +517,29 @@ export function BillingDashboardScreen() {
           <DenSectionHeader
             title="OpenWork Web"
             description={webComplimentary
-              ? "Browser access is included for every joined organization member at no charge."
-              : "Browser access for your organization — $50 per joined member each month."}
+              ? "所有已加入组织的成员均可免费使用浏览器访问权限。"
+              : "组织浏览器访问权限，按已加入成员计费，每人每月 50 美元。"}
             action={
               webComplimentary
-                ? <DenBadge tone="success" icon={Check}>Complimentary</DenBadge>
+                ? <DenBadge tone="success" icon={Check}>免费赠送</DenBadge>
                 : !webBilling || !webConfigured
-                ? <DenBadge tone="neutral">Not billed</DenBadge>
+                ? <DenBadge tone="neutral">未计费</DenBadge>
                 : webPaymentFailed
-                  ? <DenBadge tone="warning">Payment failed</DenBadge>
+                  ? <DenBadge tone="warning">支付失败</DenBadge>
                   : webCancelling
-                    ? <DenBadge tone="warning">Cancelling</DenBadge>
+                    ? <DenBadge tone="warning">正在取消</DenBadge>
                     : webEligible
-                      ? <DenBadge tone="success" icon={Check}>Active</DenBadge>
+                      ? <DenBadge tone="success" icon={Check}>已启用</DenBadge>
                       : webSubscribed
-                        ? <DenBadge tone="warning">Access locked</DenBadge>
-                        : <DenBadge tone="neutral">Off</DenBadge>
+                        ? <DenBadge tone="warning">访问权限已锁定</DenBadge>
+                        : <DenBadge tone="neutral">关闭</DenBadge>
             }
           />
 
           {!webBilling ? (
             <DenNotice
               className="mt-5"
-              message="OpenWork Web billing details are unavailable. Browser access remains locked until the subscription can be confirmed."
+              message="OpenWork Web 账单详情不可用，确认订阅前浏览器访问权限将保持锁定。"
             />
           ) : (
             <>
@@ -546,53 +548,53 @@ export function BillingDashboardScreen() {
                 tone={webComplimentary ? "info" : !webConfigured ? "neutral" : webPaymentFailed ? "error" : webEligible ? "info" : "warning"}
                 message={
                   webComplimentary
-                    ? "OpenWork Web is included for this organization without a Stripe subscription or per-member charge."
+                    ? "此组织已包含 OpenWork Web，无需 Stripe 订阅或按成员付费。"
                     : !webConfigured
-                    ? "OpenWork Web billing is not configured for this deployment."
+                    ? "此部署尚未配置 OpenWork Web 计费。"
                     : webPaymentFailed
                       ? webPaymentStatus === "payment_failed"
-                        ? "The latest payment failed, so OpenWork Web is locked. Update the payment method to restore access."
-                        : `The payment is ${formatSubscriptionStatus(webPaymentStatus ?? "failed").toLowerCase()}, so OpenWork Web is locked. Update the payment method to restore access.`
+                        ? "最近一次付款失败，OpenWork Web 已锁定。请更新付款方式以恢复访问。"
+                        : `付款状态为${formatSubscriptionStatus(webPaymentStatus ?? "failed").toLowerCase()}，OpenWork Web 已暂停。请更新付款方式以恢复访问。`
                       : webCancelling
-                        ? `Cancellation is scheduled. Access continues through ${webRenewsOn ?? "the end of the current billing period"}; the subscription can be reactivated any time before then.`
+                        ? `已安排取消订阅，使用权限保留至${webRenewsOn ?? "当前计费周期结束时"}，此前可随时恢复订阅。`
                         : webEligible
-                          ? "OpenWork Web is active for this organization."
+                          ? "此组织的 OpenWork Web 已生效。"
                           : webSubscribed
-                            ? `This subscription is ${formatSubscriptionStatus(webStatus ?? "unknown").toLowerCase()}, so OpenWork Web is locked.`
-                            : "No OpenWork Web subscription is active. Purchase it from the OpenWork Web page."
+                            ? `订阅状态为${formatSubscriptionStatus(webStatus ?? "unknown").toLowerCase()}，OpenWork Web 已暂停。`
+                            : "没有生效的 OpenWork Web 订阅，可从 OpenWork Web 页面购买。"
                 }
               />
 
               <p className="mt-5 text-[14px] leading-6 text-gray-600" data-testid="billing-openwork-web-quantity-definition">
                 {webComplimentary
-                  ? "Every joined organization member is covered, including the owner. Pending invitations are not counted until they join."
+                  ? "包含组织所有已加入的成员及所有者，待接受的邀请在加入后才计入。"
                   : OPENWORK_WEB_QUANTITY_EXPLANATION}
               </p>
               <div className="mt-4 rounded-2xl border border-gray-200 bg-gray-50 p-4" data-testid="billing-openwork-web-price-breakdown">
                 <p className="text-[22px] font-semibold tracking-[-0.03em] text-gray-950">
                   {webComplimentary
-                    ? `${getOpenWorkWebQuantityDescription(webBilling.quantity)} covered`
+                    ? `已覆盖${getOpenWorkWebQuantityDescription(webBilling.quantity)}`
                     : `${getOpenWorkWebQuantityDescription(webBilling.quantity)} × ${webPrice}`}
                 </p>
                 <p className="mt-1 text-[14px] text-gray-600">
-                  {webComplimentary ? "$0.00 monthly charge" : `${webChargeLabel} per ${webBilling.interval}`}
+                  {webComplimentary ? "每月费用 0.00 美元" : `${webChargeLabel} / ${denBillingIntervalLabel(webBilling.interval)}`}
                 </p>
               </div>
 
               <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <BillingStat label="Plan" value="OpenWork Web" />
-                <BillingStat label={webComplimentary ? "Access" : "Unit price"} value={webComplimentary ? "Complimentary" : `${webPrice ?? "—"} / member / month`} />
-                <BillingStat label={webComplimentary ? "Members covered" : "Members billed"} value={String(webBilling.quantity)} />
-                <BillingStat label="Expected monthly total" value={webComplimentary ? "$0.00" : webChargeLabel ?? "—"} />
+                <BillingStat label="套餐" value="OpenWork Web" />
+                <BillingStat label={webComplimentary ? "访问权限" : "单价"} value={webComplimentary ? "免费赠送" : `${webPrice ?? "—"} / 人 / 月`} />
+                <BillingStat label={webComplimentary ? "已覆盖成员" : "计费成员"} value={String(webBilling.quantity)} />
+                <BillingStat label="预计每月总额" value={webComplimentary ? "$0.00" : webChargeLabel ?? "—"} />
               </div>
 
               {!webComplimentary ? (
                 <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3" data-testid="billing-openwork-web-lifecycle">
-                  <BillingStat label="Subscription status" value={webStatus ? formatSubscriptionStatus(webStatus) : "Not subscribed"} />
-                  <BillingStat label="Payment status" value={webPaymentStatus ? formatSubscriptionStatus(webPaymentStatus) : "Not available"} />
+                  <BillingStat label="订阅状态" value={webStatus ? formatSubscriptionStatus(webStatus) : "未订阅"} />
+                  <BillingStat label="付款状态" value={webPaymentStatus ? formatSubscriptionStatus(webPaymentStatus) : "不可用"} />
                   <BillingStat
-                    label={webCancelling ? "Access ends" : "Next renewal"}
-                    value={webRenewsOn ?? "Not available"}
+                    label={webCancelling ? "访问权限结束时间" : "下次续费"}
+                    value={webRenewsOn ?? "不可用"}
                   />
                 </div>
               ) : null}
@@ -601,23 +603,23 @@ export function BillingDashboardScreen() {
                 <DenNotice
                   className="mt-5"
                   tone="info"
-                  message={`Your organization now has ${webBilling.quantity} members; billing updates to match shortly.`}
+                  message={`组织现有 ${webBilling.quantity} 名成员，账单将很快同步更新。`}
                 />
               ) : null}
 
               <DenActionList className="mt-5">
                 <DenActionRow
                   description={webComplimentary
-                    ? "Every joined member is covered without a per-member charge. Manage membership without changing this grant."
-                    : "Add or remove members to change what your organization is billed. Pending invitations are never billed."}
-                  action={<DenButton variant="secondary" onClick={goToMembers}>Manage members</DenButton>}
+                    ? "所有已加入成员均被覆盖，无需按人付费。管理成员不会更改此授权。"
+                    : "添加或移除成员以调整组织费用，待接受的邀请不计费。"}
+                  action={<DenButton variant="secondary" onClick={goToMembers}>管理成员</DenButton>}
                 />
                 {webComplimentary ? null : webSubscribed ? (
                   <DenActionRow
                     description={
                       webCancelling
-                        ? "Open Stripe to reactivate before access ends, update payment details, or review invoices."
-                        : "Open Stripe to update payment details, review invoices, change the subscription, or cancel it."
+                        ? "打开 Stripe，以在访问权限结束前重新激活、更新付款信息或查看发票。"
+                        : "打开 Stripe 以更新付款信息、查看发票、更改或取消订阅。"
                     }
                     action={
                       <DenButton
@@ -626,14 +628,14 @@ export function BillingDashboardScreen() {
                         loading={stripeActionBusy === "portal"}
                         onClick={openStripePortal}
                       >
-                        {webPaymentFailed ? "Update payment method" : "Manage or cancel"}
+                        {webPaymentFailed ? "更新付款方式" : "管理或取消"}
                       </DenButton>
                     }
                   />
                 ) : (
                   <DenActionRow
-                    description={`Purchase from the OpenWork Web page — ${getOpenWorkWebQuantityDescription(webBilling.quantity)} × ${webPrice} per ${webBilling.interval}.`}
-                    action={<DenButton onClick={() => router.push(getWebRoute(activeOrg?.slug))}>View OpenWork Web</DenButton>}
+                    description={`在 OpenWork Web 页面购买，价格为${getOpenWorkWebQuantityDescription(webBilling.quantity)} × ${webPrice} / ${denBillingIntervalLabel(webBilling.interval)}。`}
+                    action={<DenButton onClick={() => router.push(getWebRoute(activeOrg?.slug))}>查看 OpenWork Web</DenButton>}
                   />
                 )}
               </DenActionList>
@@ -644,18 +646,18 @@ export function BillingDashboardScreen() {
 
       <DenCard className="mb-6" data-testid="billing-seats-card">
         <DenSectionHeader
-          title="Team seats"
+          title="团队席位"
           description={
             seatsConfigured
-              ? `Invite more than ${freeSeatCount} people. The first ${freeSeatCount} users are free; each additional user is ${seatPrice} per ${seatBilling?.interval ?? "month"}.`
-              : "Everyone you invite can use this workspace."
+              ? `可邀请超过 ${freeSeatCount} 人。前 ${freeSeatCount} 名用户免费，额外用户每人 ${seatPrice} / ${denBillingIntervalLabel(seatBilling?.interval ?? "month")}。`
+              : "所有受邀成员都可使用此工作区。"
           }
           action={
             !seatsConfigured
-              ? <DenBadge tone="neutral">Not billed</DenBadge>
+              ? <DenBadge tone="neutral">未计费</DenBadge>
               : seatsActive
-                ? <DenBadge tone="success" icon={Check}>Active</DenBadge>
-                : <DenBadge tone="neutral">Included</DenBadge>
+                ? <DenBadge tone="success" icon={Check}>已启用</DenBadge>
+                : <DenBadge tone="neutral">已包含</DenBadge>
           }
         />
 
@@ -664,53 +666,53 @@ export function BillingDashboardScreen() {
           className="mt-5"
           message={
             seatsConfigured
-              ? "Does not include AI model access. That is a separate subscription, below."
-              : "Seat billing is not set up on this deployment, so there is no member limit and no seat charge. AI model access is tracked separately, below."
+              ? "不包含 AI 模型访问权限，该权限在下方单独订阅。"
+              : "此部署未配置席位计费，因此不限制成员数量，也不收取席位费用。AI 模型访问权限在下方单独管理。"
           }
         />
 
         {seatsConfigured ? (
           <DenUsageMeter
             className="mt-5"
-            label={billableSeatCount > 0 ? `${activeMemberCount} users · ${freeSeatCount} free, ${billableSeatCount} paid` : "Free seats used"}
+            label={billableSeatCount > 0 ? `${activeMemberCount} 名用户 · ${freeSeatCount} 名免费，${billableSeatCount} 名付费` : "已用免费席位"}
             used={activeMemberCount}
             total={freeSeatCount}
             caption={
               billableSeatCount > 0
-                ? `You are charged ${seatChargeLabel} per ${seatBilling?.interval ?? "month"} for the ${billableSeatCount} ${billableSeatCount === 1 ? "user" : "users"} beyond the free ${freeSeatCount}.`
+                ? `超过 ${freeSeatCount} 个免费席位的 ${billableSeatCount} 名用户费用为 ${seatChargeLabel} / ${denBillingIntervalLabel(seatBilling?.interval ?? "month")}。`
                 : freeSeatsLeft > 0
-                  ? `${freeSeatsLeft} ${freeSeatsLeft === 1 ? "seat" : "seats"} left before charges begin.`
-                  : `Your free seats are full. The next invite costs ${seatPrice} per ${seatBilling?.interval ?? "month"}.`
+                  ? `开始计费前还可使用 ${freeSeatsLeft} 个免费席位。`
+                  : `免费席位已满，下一次邀请将产生 ${seatPrice} / ${denBillingIntervalLabel(seatBilling?.interval ?? "month")} 的费用。`
             }
           />
         ) : null}
 
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <BillingStat label="Active users" value={String(activeMemberCount)} />
-          <BillingStat label="Seat cost" value={seatsConfigured ? seatChargeLabel ?? "" : formatMoneyMinor(0, seatBilling?.currency ?? "usd")} />
+          <BillingStat label="活跃用户" value={String(activeMemberCount)} />
+          <BillingStat label="席位费用" value={seatsConfigured ? seatChargeLabel ?? "" : formatMoneyMinor(0, seatBilling?.currency ?? "usd")} />
         </div>
 
         <DenActionList className="mt-5">
           <DenActionRow
             description={
               seatsConfigured
-                ? "Invite, remove, or change roles. Removing someone frees their seat and lowers your AI bill."
-                : "Invite, remove, or change roles. There is no member limit on this deployment."
+                ? "邀请、移除成员或更改角色。移除成员会释放席位并降低 AI 费用。"
+                : "邀请、移除成员或更改角色。此部署不限制成员数量。"
             }
-            action={<DenButton variant="secondary" onClick={goToMembers}>Manage members</DenButton>}
+            action={<DenButton variant="secondary" onClick={goToMembers}>管理成员</DenButton>}
           />
           {!seatsConfigured ? null : seatsActive ? (
             <DenActionRow
-              description={`Opens Stripe. Change your card, download invoices, or cancel seat billing. You keep the free ${freeSeatCount} seats either way.`}
+              description={`打开 Stripe 以更换银行卡、下载发票或取消席位计费，${freeSeatCount} 个免费席位始终保留。`}
               action={
                 <DenButton variant="secondary" disabled={!canOpenPortal} loading={stripeActionBusy === "portal"} onClick={openStripePortal}>
-                  Manage subscription
+                  管理订阅
                 </DenButton>
               }
             />
           ) : (
             <DenActionRow
-              description={`Only needed once you pass ${freeSeatCount} users. Saves a card now, then charges ${seatPrice} per extra user each ${seatBilling?.interval ?? "month"}.`}
+              description={`仅在超过 ${freeSeatCount} 名用户时需要。现在保存银行卡，之后每位额外用户按 ${seatPrice} / ${denBillingIntervalLabel(seatBilling?.interval ?? "month")} 收费。`}
               action={
                 <DenButton
                  
@@ -718,7 +720,7 @@ export function BillingDashboardScreen() {
                   loading={stripeActionBusy === "seat-checkout"}
                   onClick={startSeatCheckout}
                 >
-                  Add paid seats
+                  添加付费席位
                 </DenButton>
               }
             />
@@ -728,16 +730,16 @@ export function BillingDashboardScreen() {
 
       <DenCard data-testid="billing-ai-card">
         <DenSectionHeader
-          title="AI model access"
-          description="Use OpenWork's built-in models with no API keys to manage. Separate from seats."
+          title="AI 模型访问权限"
+          description="使用 OpenWork 内置模型，无需管理 API 密钥。与席位分别计费。"
           action={
             !aiConfigured
-              ? <DenBadge tone="neutral">Not billed</DenBadge>
+              ? <DenBadge tone="neutral">未计费</DenBadge>
               : aiPaymentFailed
-                ? <DenBadge tone="warning">Payment failed</DenBadge>
+                ? <DenBadge tone="warning">支付失败</DenBadge>
                 : aiActive
-                  ? <DenBadge tone="success" icon={Check}>Active</DenBadge>
-                  : <DenBadge tone="neutral">Off</DenBadge>
+                  ? <DenBadge tone="success" icon={Check}>已启用</DenBadge>
+                  : <DenBadge tone="neutral">关闭</DenBadge>
           }
         />
 
@@ -746,22 +748,22 @@ export function BillingDashboardScreen() {
           className="mt-5"
           message={
             !aiConfigured
-              ? "Model billing is not set up on this deployment, so nothing is charged for AI access. Your team connects their own provider keys instead."
+              ? "此部署未配置模型计费，不收取 AI 访问费用。团队使用自有提供商密钥连接。"
               : aiPaymentFailed
-                ? `Your last payment failed. Models stop working for everyone until it is settled. Seats and team access are not affected.${aiStatus ? ` Stripe reports this subscription as ${formatSubscriptionStatus(aiStatus).toLowerCase()}.` : ""}`
-                : `Billed for every active member${seatsConfigured ? `, including the free ${freeSeatCount} seats` : ""}. Inviting someone increases this bill by ${stripePrice} per ${stripeBilling.interval}.`
+                ? `上次付款失败，所有人的模型访问将暂停至付款完成。席位和团队访问权限不受影响。${aiStatus ? `Stripe 报告的订阅状态为${formatSubscriptionStatus(aiStatus).toLowerCase()}。` : ""}`
+                : `按每位活跃成员计费${seatsConfigured ? `，包括 ${freeSeatCount} 个免费席位` : ""}，每邀请一人，账单增加 ${stripePrice} / ${denBillingIntervalLabel(stripeBilling.interval)}。`
           }
         />
 
         {aiConfigured ? (
           <div className="mt-5 flex flex-wrap items-baseline gap-x-2 gap-y-1">
             <span className="text-[13px] text-gray-500">
-              {activeMemberCount} active {activeMemberCount === 1 ? "member" : "members"} × {stripePrice} =
+              {activeMemberCount} 名活跃成员 × {stripePrice} =
             </span>
             <span className="text-[22px] font-semibold tracking-[-0.03em] text-gray-950">{aiChargeLabel}</span>
             <span className="text-[13px] text-gray-500">
-              per {stripeBilling.interval}
-              {aiActive && aiRenewsOn ? (aiCancelling ? ` · access ends ${aiRenewsOn}` : ` · renews ${aiRenewsOn}`) : ""}
+              / {stripeBilling.interval === "year" ? "年" : "月"}
+              {aiActive && aiRenewsOn ? (aiCancelling ? ` · 使用权限结束于 ${aiRenewsOn}` : ` · 续订于 ${aiRenewsOn}`) : ""}
             </span>
           </div>
         ) : null}
@@ -771,8 +773,8 @@ export function BillingDashboardScreen() {
             <DenActionRow
               description={
                 aiCancelling
-                  ? `Cancellation is scheduled. Access continues until ${aiRenewsOn ?? "the end of the period"}, and you can resume from Stripe before then.`
-                  : "Opens Stripe. Change your card, download invoices, or cancel. Access continues until the end of the period you already paid for."
+                  ? `已安排取消订阅，使用权限保留至${aiRenewsOn ?? "当前周期结束时"}，此前可在 Stripe 中恢复订阅。`
+                  : "打开 Stripe 以更换银行卡、下载发票或取消订阅。访问权限将保留至已支付的周期结束。"
               }
               action={
                 <DenButton
@@ -782,7 +784,7 @@ export function BillingDashboardScreen() {
                   loading={stripeActionBusy === "portal"}
                   onClick={openStripePortal}
                 >
-                  {aiPaymentFailed ? "Update payment method" : "Manage subscription"}
+                  {aiPaymentFailed ? "更新付款方式" : "管理订阅"}
                 </DenButton>
               }
             />
@@ -790,20 +792,20 @@ export function BillingDashboardScreen() {
             <DenActionRow
               description={
                 aiConfigured
-                  ? `Turning this on costs ${aiChargeLabel} per ${stripeBilling.interval} for your ${activeMemberCount} ${activeMemberCount === 1 ? "member" : "members"}, not ${stripePrice}. You subscribe from the OpenWork Models page.`
-                  : "See which models OpenWork ships with and how your team connects their own provider keys."
+                  ? `为 ${activeMemberCount} 名用户开启此功能的费用为 ${aiChargeLabel} / ${denBillingIntervalLabel(stripeBilling.interval)}，而非 ${stripePrice}。请在 OpenWork 模型页面订阅。`
+                  : "查看 OpenWork 内置的模型，以及团队如何连接自有提供商密钥。"
               }
               action={
                 <DenButton onClick={() => router.push(getInferenceRoute(activeOrg?.slug))}>
-                  View OpenWork Models
+                  查看 OpenWork 模型
                 </DenButton>
               }
             />
           )}
           {aiActive ? (
             <DenActionRow
-              description="To lower this bill, remove members you are no longer working with. There is no way to buy model access for only some of your team."
-              action={<DenButton variant="secondary" onClick={goToMembers}>Manage members</DenButton>}
+              description="移除不再协作的成员可降低费用，模型访问权限必须为整个团队购买。"
+              action={<DenButton variant="secondary" onClick={goToMembers}>管理成员</DenButton>}
             />
           ) : null}
         </DenActionList>

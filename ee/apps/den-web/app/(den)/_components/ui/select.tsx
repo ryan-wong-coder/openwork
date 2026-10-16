@@ -96,7 +96,7 @@ export function DenSelect({
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelledBy,
   searchLabel,
-  searchEmptyLabel = "No options match this search.",
+  searchEmptyLabel = "没有符合搜索条件的选项。",
   menuWidth = "content",
 }: DenSelectProps) {
   const fitTrigger = menuWidth === "trigger";

@@ -246,9 +246,17 @@ export function CapabilityCallLine({
   }
 
   const sentence = getCapabilityCallSentence(part, { connectionName: connector?.name })
-  const withoutService = (text: string) => groupService
-    ? text.replace(` · ${groupService}`, "").replace(new RegExp(`^(Search(?:ed|ing)) ${groupService.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")} for`), "$1 for")
-    : text
+  const withoutService = (text: string) => {
+    if (!groupService) return text
+    const line = text.replace(` · ${groupService}`, "")
+    for (const verb of ["search", "find", "query"]) {
+      for (const tense of ["past", "present"]) {
+        const prefix = t(`capability.verb.${verb}.${tense}`, { target: groupService })
+        if (line.startsWith(prefix)) return `${t(`capability.verb.${verb}.${tense}`, { target: "" }).trim()}${line.slice(prefix.length)}`
+      }
+    }
+    return line
+  }
   const line = withoutService(statusUnknown ? t("ui.action_status_unavailable", { action: sentence.present }) : inFlight ? sentence.present : sentence.past)
   return (
     <div data-capability-call={part.toolName} className={cn("group/step min-w-0", className)}>

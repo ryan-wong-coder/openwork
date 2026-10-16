@@ -37,6 +37,7 @@ import { isDesktopRuntime } from "@/app/lib/runtime-env";
 import type { ResolvedWorkspaceEndpoint } from "@/app/lib/workspace-endpoint";
 import type { WorkspaceConnectionState } from "@/app/types";
 import { normalizeDirectoryPath } from "@/app/utils";
+import { clientWorkspaceVisible, isLocalGatewayClient } from "@/app/lib/client-profile";
 import {
   createWorkspaceServerClientResolverState,
   useWorkspaceServerClient,
@@ -576,7 +577,7 @@ export function useWorkspaceRouteState(input: UseWorkspaceRouteStateInput) {
       if (isDesktopRuntime()) {
         try {
           desktopList = await withRouteRefreshTimeout(workspaceBootstrap(), "Desktop workspace bootstrap") as WorkspaceList;
-          desktopWorkspaces = (desktopList.workspaces ?? []).map(mapDesktopWorkspace);
+          desktopWorkspaces = (desktopList.workspaces ?? []).filter(clientWorkspaceVisible).map(mapDesktopWorkspace);
         } catch (error) {
           const message = describeRouteError(error);
           console.error("[session-route] workspaceBootstrap failed", error);
@@ -694,17 +695,12 @@ export function useWorkspaceRouteState(input: UseWorkspaceRouteStateInput) {
       // the user's last-active workspace from localStorage, the desktop's
       // activeId, the server's activeId, then the first known workspace.
       const persistedActiveId = readActiveWorkspaceId();
-      let nextWorkspaceId =
-        (routeWorkspaceIdRef.current && nextWorkspaces.some((w) => w.id === routeWorkspaceIdRef.current)
-          ? routeWorkspaceIdRef.current
-          : "") ||
-        (persistedActiveId && nextWorkspaces.some((w) => w.id === persistedActiveId)
-          ? persistedActiveId
-          : "") ||
-        resolveWorkspaceListSelectedId(desktopList) ||
-        workspaceListState.activeId ||
-        nextWorkspaces[0]?.id ||
-        "";
+      let nextWorkspaceId = [
+        routeWorkspaceIdRef.current,
+        persistedActiveId,
+        resolveWorkspaceListSelectedId(desktopList),
+        workspaceListState.activeId,
+      ].find((id) => id && nextWorkspaces.some((workspace) => workspace.id === id)) || nextWorkspaces[0]?.id || "";
       if (workspaceInferenceSessionIdRef.current) {
         const match = cachedEntries.find((entry) =>
           entry.sessions.some((session) => session?.id === workspaceInferenceSessionIdRef.current),
@@ -1106,7 +1102,7 @@ export function useWorkspaceRouteState(input: UseWorkspaceRouteStateInput) {
   // Desktop starts in the normal task UI; deployment sign-in and activation
   // gates are owned by the app root. Keep the non-desktop welcome path.
   useEffect(() => {
-    if (isDesktopRuntime()) return;
+    if (isDesktopRuntime() || isLocalGatewayClient()) return;
     if (loading) return;
     if (workspaces.length > 0) return;
     if (input.preservePendingConversationRoute || local.prefs.hasCompletedOnboarding) return;

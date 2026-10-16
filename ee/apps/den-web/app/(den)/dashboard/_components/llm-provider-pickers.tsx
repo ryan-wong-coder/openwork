@@ -24,7 +24,7 @@ export function buildCatalogProviderOptions(
         value: catalogProvider.id,
         label: catalogProvider.name,
         description: describe ? describe(catalogProvider) : catalogProvider.id,
-        meta: `${catalogProvider.modelCount} ${catalogProvider.modelCount === 1 ? "model" : "models"}`,
+        meta: `${catalogProvider.modelCount} 个模型`,
         icon: (
             <DenBrandMark
                 name={catalogProvider.name}
@@ -44,7 +44,7 @@ export function ProviderModelPicker({
     models,
     selectedModelIds,
     onChange,
-    emptyLabel = "Select a provider to browse its models.",
+    emptyLabel = "选择提供商以浏览其模型。",
     layout = "rows",
 }: {
     models: ProviderModelOption[] | null;
@@ -80,7 +80,7 @@ export function ProviderModelPicker({
                     icon={Search}
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
-                    placeholder="Search models..."
+                    placeholder="搜索模型…"
                 />
             </div>
             {models ? (
@@ -135,7 +135,7 @@ export function ProviderModelPicker({
                     )
                 ) : (
                     <div className="mt-4 rounded-[24px] border border-dashed border-gray-200 bg-gray-50 px-5 py-6 text-[15px] text-gray-500">
-                        No models match <span className="font-medium text-gray-700">&quot;{query}&quot;</span>.
+                        没有匹配的模型 <span className="font-medium text-gray-700">&quot;{query}&quot;</span>.
                     </div>
                 )
             ) : (
@@ -217,15 +217,15 @@ export function ProviderAccessPicker({
                 <DenToggleRow
                     icon={Users}
                     testId={`${testIdPrefix}-all-members`}
-                    title={`Everyone in ${orgContext?.organization.name ?? "this organization"}`}
-                    description={everyoneDescription ?? `All ${orgContext?.members.length ?? 0} current members — and anyone who joins later — can use these models.`}
+                    title={`${orgContext?.organization.name ?? "此组织"}中的所有人`}
+                    description={everyoneDescription ?? `当前 ${orgContext?.members.length ?? 0} 名成员，以及之后加入的成员均可使用这些模型。`}
                     checked={allMembers}
                     onChange={(checked) => onChange({ ...value, ...(singleAudience ? { memberIds: [], teamIds: [] } : {}), allMembers: checked })}
                 />
             </div>
 
             {allMembers ? (
-                <p className="mt-3 text-[13px] text-gray-400">Turn off “Everyone” to pick specific teams and people.</p>
+                <p className="mt-3 text-[13px] text-gray-400">关闭“所有人”以选择指定团队与人员。</p>
             ) : null}
 
             <div className={allMembers ? "pointer-events-none select-none opacity-45" : undefined} aria-disabled={allMembers}>
@@ -239,7 +239,7 @@ export function ProviderAccessPicker({
                         className={`inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 transition ${accessTab === "teams" ? "bg-white text-gray-900 shadow-xs" : "hover:text-gray-700"}`}
                     >
                         <Users className="h-4 w-4" />
-                        {`Teams (${teamIds.length})`}
+                        {`团队（${teamIds.length}）`}
                     </button>
                     <button
                         type="button"
@@ -250,7 +250,7 @@ export function ProviderAccessPicker({
                         className={`inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 transition ${accessTab === "people" ? "bg-white text-gray-900 shadow-xs" : "hover:text-gray-700"}`}
                     >
                         <User className="h-4 w-4" />
-                        {`People (${memberIds.length})`}
+                        {`人员（${memberIds.length}）`}
                     </button>
                 </div>
 
@@ -260,7 +260,7 @@ export function ProviderAccessPicker({
                         icon={Search}
                         value={accessQuery}
                         onChange={(event) => setAccessQuery(event.target.value)}
-                        placeholder={accessTab === "teams" ? "Search teams..." : "Search people..."}
+                        placeholder={accessTab === "teams" ? "搜索团队…" : "搜索人员…"}
                     />
                 </div>
 
@@ -274,19 +274,19 @@ export function ProviderAccessPicker({
                                         selected={teamIds.includes(team.id)}
                                         leading={<Users className="h-4 w-4 text-gray-400" />}
                                         title={team.name}
-                                        description={`${team.memberIds.length} ${team.memberIds.length === 1 ? "member" : "members"}`}
+                                        description={`${team.memberIds.length} 名成员`}
                                         onClick={() => toggleTeam(team.id)}
                                     />
                                 ))}
                             </div>
                         ) : (
                             <div className="mt-4 rounded-[24px] border border-dashed border-gray-200 bg-gray-50 px-5 py-6 text-[15px] text-gray-500">
-                                No teams match <span className="font-medium text-gray-700">&quot;{accessQuery}&quot;</span>.
+                                没有匹配的团队 <span className="font-medium text-gray-700">&quot;{accessQuery}&quot;</span>.
                             </div>
                         )
                     ) : (
                         <div className="mt-4 rounded-[24px] border border-dashed border-gray-200 bg-gray-50 px-5 py-6 text-[15px] text-gray-500">
-                            Create teams from the Members page before assigning team access.
+                            请先在“成员”页面创建团队，再分配团队访问权限。
                         </div>
                     )
                 ) : orgContext?.members.length ? (
@@ -314,7 +314,7 @@ export function ProviderAccessPicker({
                                         aside={
                                             locked ? (
                                                 <span className="rounded-full bg-gray-100 px-2.5 py-1 text-[11px] font-medium text-gray-500">
-                                                    Locked
+                                                    已锁定
                                                 </span>
                                             ) : undefined
                                         }
@@ -325,12 +325,12 @@ export function ProviderAccessPicker({
                         </div>
                     ) : (
                         <div className="mt-4 rounded-[24px] border border-dashed border-gray-200 bg-gray-50 px-5 py-6 text-[15px] text-gray-500">
-                            No people match <span className="font-medium text-gray-700">&quot;{accessQuery}&quot;</span>.
+                            没有匹配的人员 <span className="font-medium text-gray-700">&quot;{accessQuery}&quot;</span>.
                         </div>
                     )
                 ) : (
                     <div className="mt-4 rounded-[24px] border border-dashed border-gray-200 bg-gray-50 px-5 py-6 text-[15px] text-gray-500">
-                        No people are available to assign yet.
+                        暂无可分配的人员。
                     </div>
                 )}
             </div>

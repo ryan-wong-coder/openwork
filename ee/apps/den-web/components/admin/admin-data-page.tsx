@@ -35,7 +35,7 @@ export function AdminDataPage({ section }: { section: AdminDataSection }) {
         : await requestAdmin(path, (payload) => payload, controller.signal);
       if (!controller.signal.aborted) setState(result);
     } catch (error) {
-      if (!controller.signal.aborted) setState({ access: "error", message: error instanceof Error ? error.message : "Could not check admin access." });
+      if (!controller.signal.aborted) setState({ access: "error", message: error instanceof Error ? error.message : "无法检查管理员权限，请重试。" });
     }
   }, [hasSessionCookie, section]);
 

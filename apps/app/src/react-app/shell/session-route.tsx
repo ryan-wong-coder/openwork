@@ -1,5 +1,6 @@
 /** @jsxImportSource react */
 import { freeAutoSwitchedOff, modelForNewTask } from "@/app/lib/inference-access";
+import { clientModelVisible, DEFAULT_LOCAL_GATEWAY_CHAT_MODEL, isLocalGatewayClient, LOCAL_GATEWAY_PROVIDER_ID } from "@/app/lib/client-profile";
 import { useAutoAccess, useObservedAutoAccessSnapshot } from "@/react-app/domains/cloud/auto-access-ui";
 import { newSessionDraftSlot, newSessionDraftOwnerKey, openNewSessionDraft } from "@/react-app/domains/session/chat/new-session-destination";
 import { getSessionDraft, clearSessionDraft } from "@/react-app/domains/session/sync/draft-store";
@@ -420,7 +421,7 @@ export function SessionRoute() {
   // On desktop, Dashboard and Automations stay in the sidebar while signed
   // out: each page explains that it needs OpenWork Cloud and calls nothing.
   const denAuthChecking = denAuth.status === "checking";
-  const signedOutDesktopSurfaces = isDesktopRuntime() && !denAuthChecking && !denAuth.isSignedIn;
+  const signedOutDesktopSurfaces = !isLocalGatewayClient() && isDesktopRuntime() && !denAuthChecking && !denAuth.isSignedIn;
   const dashboardSurfaceAvailable = mcpAppsDashboardEnabled || signedOutDesktopSurfaces;
   const dashboardRouteActive = dashboardSurfaceAvailable && dashboardRouteRequested;
   const dashboardWorkspaceRoute = dashboardRouteRequested
@@ -432,14 +433,14 @@ export function SessionRoute() {
   // Desktop and Web share one Automations surface; the runtime only decides
   // the placement of what each creates. Den's deployment flag stays the gate.
   const automationsEnabled = automationDeploymentEnabled;
-  const automationsSurfaceAvailable = automationsEnabled || signedOutDesktopSurfaces;
+  const automationsSurfaceAvailable = !isLocalGatewayClient() && (automationsEnabled || signedOutDesktopSurfaces);
   const automationsRouteActive = automationsSurfaceAvailable && automationsRouteRequested;
   // The Calendar is an Automations view behind the automationCalendar feature.
   const calendarFeature = useCalendarFeature(useAutomationsDenContext());
   useBackgroundShellTasksFeature();
   useAppBuildProgressFeature();
   useRemoteSessionSubagentsFeature();
-  const calendarSurfaceAvailable = automationsEnabled && denAuth.isSignedIn && calendarFeature.data === true;
+  const calendarSurfaceAvailable = !isLocalGatewayClient() && automationsEnabled && denAuth.isSignedIn && calendarFeature.data === true;
   const calendarAvailabilityPending = denAuthChecking || (automationsEnabled && denAuth.isSignedIn && calendarFeature.isLoading);
   const calendarRouteActive = calendarSurfaceAvailable && calendarRouteRequested;
   const denSettings = readDenSettings();
@@ -455,10 +456,12 @@ export function SessionRoute() {
   }, [activityRouteRequested, navigate, shellConfig.notifications]);
   useEffect(() => {
     if (!automationsRouteRequested || denAuthChecking || automationsSurfaceAvailable) return;
+    if (isLocalGatewayClient()) toast.info("当前本地客户端不支持自动化调度。", { id: "local-automations-unavailable" });
     navigate("/", { replace: true });
   }, [automationsRouteRequested, automationsSurfaceAvailable, denAuthChecking, navigate]);
   useEffect(() => {
     if (!calendarRouteRequested || calendarAvailabilityPending || calendarSurfaceAvailable) return;
+    if (isLocalGatewayClient()) toast.info("当前本地客户端不支持日历服务。", { id: "local-calendar-unavailable" });
     navigate("/", { replace: true });
   }, [calendarAvailabilityPending, calendarRouteRequested, calendarSurfaceAvailable, navigate]);
   useEffect(() => {
@@ -573,7 +576,21 @@ export function SessionRoute() {
   const modelProfileId = useWorkspaceModelProfile();
   const workspaceDefaultScope = workspaceModelScope({ profileId: modelProfileId,
     workspaceId: selectedWorkspaceEndpoint?.workspaceId ?? selectedWorkspaceId, opencodeBaseUrl, localRuntime: isDesktopRuntime() });
-  const workspaceDefault = useWorkspaceDefaultModel(workspaceDefaultScope);
+  const savedWorkspaceDefault = useWorkspaceDefaultModel(workspaceDefaultScope);
+  const workspaceDefault = savedWorkspaceDefault && clientModelVisible(savedWorkspaceDefault.model) ? savedWorkspaceDefault : null;
+  const [localGatewayConfigured, setLocalGatewayConfigured] = useState<boolean | null>(null);
+  useEffect(() => {
+    if (!isLocalGatewayClient() || !client) return;
+    let cancelled = false;
+    void client.getGatewayConfig().then((config) => {
+      if (cancelled) return;
+      setLocalGatewayConfigured(config.configured && config.ready !== false);
+      local.setPrefs((previous) => previous.defaultModel?.providerID === LOCAL_GATEWAY_PROVIDER_ID ? previous : {
+        ...previous, defaultModel: { providerID: LOCAL_GATEWAY_PROVIDER_ID, modelID: config.chatModel }, modelVariant: null,
+      });
+    }).catch(() => { if (!cancelled) setLocalGatewayConfigured(false); });
+    return () => { cancelled = true; };
+  }, [client, local.setPrefs]);
   // An organization model this desktop confirms it cannot use falls back to the app's own default.
   const [unusableOrgDefaultKey, setUnusableOrgDefaultKey] = useState<string | null>(null);
   const orgNewTaskModel = useMemo(() => {
@@ -582,13 +599,15 @@ export function SessionRoute() {
   }, [orgConfiguredDefaultModel, opencodeBaseUrl, unusableOrgDefaultKey]);
   const newChatDefault = newChatDefaultModel({ workspaceDefault, orgDefault: orgNewTaskModel,
     appDefault: { model: local.prefs.defaultModel, variant: local.prefs.modelVariant ?? null } });
-  const configuredNewTaskModel = newChatDefault.model;
+  const configuredNewTaskModel = isLocalGatewayClient() && (!newChatDefault.model || !clientModelVisible(newChatDefault.model))
+    ? { providerID: LOCAL_GATEWAY_PROVIDER_ID, modelID: DEFAULT_LOCAL_GATEWAY_CHAT_MODEL }
+    : newChatDefault.model;
   // This route creates the provider below; use its same scope when choosing a new-task default.
   const autoAccessWorkspace = { openworkServerClient: selectedWorkspaceEndpoint?.client ?? null,
     workspaceId: selectedWorkspaceEndpoint?.workspaceId ?? "" };
   const observedAutoSnapshot = useObservedAutoAccessSnapshot(autoAccessWorkspace);
   const observedAutoStatus = observedAutoSnapshot?.status === "success" ? observedAutoSnapshot.data : undefined;
-  const autoChecking = isDesktopRuntime() && observedAutoSnapshot?.status !== "error" && !observedAutoStatus;
+  const autoChecking = !isLocalGatewayClient() && isDesktopRuntime() && observedAutoSnapshot?.status !== "error" && !observedAutoStatus;
   const newTaskModel = modelForNewTask(configuredNewTaskModel, observedAutoStatus, autoChecking);
   const newTaskVariant = newChatDefault.variant;
   // Background callers (automations, remote sessions) read this from the workspace's server.
@@ -1164,7 +1183,7 @@ export function SessionRoute() {
         restrictToCloud: restrictToCloudProviders,
         checkRestriction: checkDesktopRestriction,
       },
-    );
+    ).filter(clientModelVisible);
   }, [
     checkDesktopRestriction,
     cloudProviderList,
@@ -1180,7 +1199,7 @@ export function SessionRoute() {
   const { query: initialAutoAccess } = useAutoAccess(entitledModelOptions.some(isAutoModel) || Boolean(configuredNewTaskModel && isAutoModel(configuredNewTaskModel)), autoAccessWorkspace);
   useEffect(() => {
     if ((initialAutoAccess.isPending && initialAutoAccess.fetchStatus !== "idle") || freeAutoSwitchedOff(initialAutoAccess.data)) return;
-    if (!isDesktopRuntime() || loading || selectedSessionId || workspaceDefault || workspaceSessionGroups.some((group) => group.status !== "ready")) return;
+    if (isLocalGatewayClient() || !isDesktopRuntime() || loading || selectedSessionId || workspaceDefault || workspaceSessionGroups.some((group) => group.status !== "ready")) return;
     const available = providerListModelEntitlementOptions(cloudProviderList ?? providerListQuery.data);
     try {
       if (!shouldSelectInitialAuto({ available, current: local.prefs.defaultModel ?? null,
@@ -1286,7 +1305,9 @@ export function SessionRoute() {
     0,
   );
   const resolveModelAvailability = useCallback((model: ModelRef | null): ModelAvailability =>
-    modelAvailabilityGate.confirm(model, computeModelAvailability(model, {
+    isLocalGatewayClient() && (localGatewayConfigured !== true || (model && !clientModelVisible(model)))
+      ? { status: "unavailable", reason: "provider_not_connected" }
+      : modelAvailabilityGate.confirm(model, computeModelAvailability(model, {
       workspaceReady: Boolean(selectedWorkspaceId && opencodeClient),
       loading,
       signedIn: denAuth.isSignedIn,
@@ -1299,6 +1320,7 @@ export function SessionRoute() {
     })), [
     // The tick only forces re-evaluation of denials tracked by the gate.
     availabilityRecheckTick,
+    localGatewayConfigured,
     checkDesktopRestriction,
     cloudProviderList,
     cloudProviderSyncReady,
@@ -1329,6 +1351,10 @@ export function SessionRoute() {
   const selectedSessionModelSelection = useSessionModelStore((state) =>
     (selectedSessionId ? state.bySessionId[selectedSessionId] ?? null : null),
   );
+  useEffect(() => {
+    if (!isLocalGatewayClient() || !selectedSessionId || !selectedSessionModelSelection || clientModelVisible(selectedSessionModelSelection.model) || !local.prefs.defaultModel || !clientModelVisible(local.prefs.defaultModel)) return;
+    useSessionModelStore.getState().setModel(selectedSessionId, local.prefs.defaultModel, null);
+  }, [selectedSessionId, selectedSessionModelSelection, local.prefs.defaultModel]);
   const activeComposerModel = selectedSessionModelSelection?.model ?? (selectedSessionId ? local.prefs.defaultModel : newTaskModel) ?? null;
   const activeComposerAvailability = resolveModelAvailability(activeComposerModel);
   const activeComposerTargetsSession = Boolean(selectedSessionModelSelection && selectedSessionId);
@@ -1338,6 +1364,7 @@ export function SessionRoute() {
   const autoOpenedUnavailableModelRef = useRef<string | null>(null);
 
   useEffect(() => {
+    if (isLocalGatewayClient() && localGatewayConfigured !== true) return;
     if (hasPendingGatewayModelSelection()) return;
     if (!selectedModelUnavailableKey || activityRouteActive) {
       // The active composer's model is fine (or pending). If the picker was
@@ -1373,7 +1400,7 @@ export function SessionRoute() {
     modelPicker.setRecentProviderIds(new Set());
     modelPicker.setCompactOpen(false);
     modelPicker.setOpen(true);
-  }, [activityRouteActive, activeComposerTargetsSession, cloudProviderSyncReady, denAuth.isSignedIn, entitledOrgDefaultModel, modelPicker.setCompactOpen, modelPicker.setOpen, modelPicker.setQuery, modelPicker.setRecentProviderIds, organizationModelsEmpty, selectedModelUnavailableKey, selectedSessionId, workspaceDefault]);
+  }, [activityRouteActive, activeComposerTargetsSession, cloudProviderSyncReady, denAuth.isSignedIn, entitledOrgDefaultModel, localGatewayConfigured, modelPicker.setCompactOpen, modelPicker.setOpen, modelPicker.setQuery, modelPicker.setRecentProviderIds, organizationModelsEmpty, selectedModelUnavailableKey, selectedSessionId, workspaceDefault]);
 
   // Optimistic model selection: a remembered model is treated as valid until
   // the availability gate CONFIRMS it absent (selectedModelUnavailable).
@@ -1412,7 +1439,9 @@ export function SessionRoute() {
     );
     return String(source?.title ?? source?.slug ?? "").trim() || t("session.subagent_task");
   }, [activePermission, selectedSessionId, selectedWorkspaceId, sessionsByWorkspaceId, currentLocale()]);
-  const modelUnavailableMessage = organizationModelsEmpty
+  const modelUnavailableMessage = isLocalGatewayClient() && localGatewayConfigured === false
+    ? "先在设置中配置模型网关，即可开始对话和生成图片。"
+    : organizationModelsEmpty
     ? t("models.organization_models_empty")
     : selectedModelUnavailable
       ? t("models.model_unavailable_short")
@@ -1443,8 +1472,8 @@ export function SessionRoute() {
       const connected = hasCloudAuth
         ? (value.connected ?? [])
         : (value.connected ?? []).filter((id) => !isCloudManagedProviderKey(id));
-      setProviders(all);
-      setProviderConnectedIds(connected);
+      setProviders(isLocalGatewayClient() ? all.filter((provider) => provider.id === LOCAL_GATEWAY_PROVIDER_ID) : all);
+      setProviderConnectedIds(isLocalGatewayClient() ? connected.filter((id) => id === LOCAL_GATEWAY_PROVIDER_ID) : connected);
       // New-provider detection is handled globally by the provider auth
       // store's applyProviderListState, which fires dispatchNewProviders.
     };
@@ -2483,10 +2512,12 @@ export function SessionRoute() {
 
 
   const applyWorkspaceDefaultToSession = useCallback((sessionId: string, endpoint: ResolvedWorkspaceEndpoint) => {
-    if (getSessionModelSelection(sessionId)) return;
+    const selection = getSessionModelSelection(sessionId);
+    if (selection && clientModelVisible(selection.model)) return;
     const scope = workspaceModelScope({ profileId: modelProfileId, workspaceId: endpoint.workspaceId,
       opencodeBaseUrl: endpoint.opencodeBaseUrl, localRuntime: isDesktopRuntime() });
-    const { model, variant } = newChatDefaultModel({ workspaceDefault: readWorkspaceDefaultModel(scope),
+    const savedDefault = readWorkspaceDefaultModel(scope);
+    const { model, variant } = newChatDefaultModel({ workspaceDefault: savedDefault && clientModelVisible(savedDefault.model) ? savedDefault : null,
       orgDefault: orgDefaultModelForEngine(orgConfiguredDefaultModel, endpoint.opencodeBaseUrl),
       appDefault: { model: local.prefs.defaultModel, variant: local.prefs.modelVariant ?? null } });
     const availableModel = modelForNewTask(model, observedAutoStatus, autoChecking);
@@ -3103,6 +3134,10 @@ export function SessionRoute() {
       { name: "providerId", type: "string" as const, required: false, description: "Provider id to pre-select, e.g. 'anthropic', 'openai', 'google'." },
     ],
     execute: async (rawArgs: unknown) => {
+      if (isLocalGatewayClient()) {
+        handleOpenSettings("/settings/ai");
+        return { ok: true, opened: "gateway_settings" };
+      }
       const providerId = typeof rawArgs === "object" && rawArgs !== null
         ? (rawArgs as Record<string, unknown>).providerId
         : undefined;
@@ -3115,10 +3150,14 @@ export function SessionRoute() {
       );
       return { ok: true, opened: "provider_auth_modal", preferredProviderId: preferred ?? null };
     },
-  }), [sessionProviderAuthStore, currentLocale()]);
+  }), [handleOpenSettings, sessionProviderAuthStore, currentLocale()]);
   useControlAction(addProviderControlAction);
 
   const handleOpenProviderAuth = useCallback(() => {
+    if (isLocalGatewayClient()) {
+      handleOpenSettings("/settings/ai");
+      return;
+    }
     if (sessionProviderAuthStore.isProviderAddRestricted()) {
       restrictionNotice.show({
         title: t("restrictions.add_custom_providers_disabled_title"),
@@ -3753,7 +3792,7 @@ export function SessionRoute() {
       onChatFirstTask={handleChatFirstTask}
       chatFirstBusy={createWorkspaceBusy}
       newTaskComposer={newTaskComposerContext}
-      providerAuthModal={sessionProviderAuthSnapshot.providerAuthModalOpen ? {
+      providerAuthModal={!isLocalGatewayClient() && sessionProviderAuthSnapshot.providerAuthModalOpen ? {
         open: true,
         loading: false,
         submitting: sessionProviderAuthSnapshot.providerAuthBusy,
@@ -3797,7 +3836,7 @@ export function SessionRoute() {
         />
       }
       // Page titles match their sidebar labels.
-      primaryTitle={activityRouteActive ? t("activity.title") : appsRouteActive ? "Dashboard" : automationsRouteActive ? "Automations" : calendarRouteActive ? "Calendar" : dashboardRouteActive ? "Dashboard" : undefined}
+      primaryTitle={activityRouteActive ? t("activity.title") : appsRouteActive ? t("interface.dashboard") : automationsRouteActive ? t("interface.automations") : calendarRouteActive ? t("interface.calendar") : dashboardRouteActive ? t("interface.dashboard") : undefined}
       // Dashboard, Automations and Library share one flat page surface.
       primarySurface={activityRouteActive || dashboardRouteActive || automationsRouteActive || calendarRouteActive || extensionsMainOpen ? "flat" : undefined}
       primarySlotIsConversation={!activityRouteActive && Boolean(pendingConversation)}

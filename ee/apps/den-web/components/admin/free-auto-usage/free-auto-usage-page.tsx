@@ -29,11 +29,11 @@ import { formatCount, formatRelative, formatShare, formatTokens, formatUsd } fro
 const FreeAutoConversions = lazy(() => import("./conversions").then((module) => ({ default: module.FreeAutoConversions })));
 const FreeAutoSpendChart = lazy(() => import("./spend-chart"));
 const SORTS: Array<{ value: OrganizationSort; label: string }> = [
-  { value: "spend", label: "Spend" },
-  { value: "requests", label: "Requests" },
-  { value: "people", label: "Active people" },
-  { value: "limit", label: "At weekly limit" },
-  { value: "recent", label: "Last used" },
+  { value: "spend", label: "费用" },
+  { value: "requests", label: "请求数" },
+  { value: "people", label: "活跃人员" },
+  { value: "limit", label: "已达每周限额" },
+  { value: "recent", label: "上次使用" },
 ];
 
 function Stat({ label, value, detail }: { label: string; value: ReactNode; detail?: ReactNode }) {
@@ -74,45 +74,45 @@ function downloadCsv(report: FreeAutoUsageReport) {
 function organizationColumns(now: number): DenTableColumn<FreeAutoOrganizationUsage>[] {
   return [
     {
-      key: "organization", header: "Organization", render: (row) => (
+      key: "organization", header: "组织", render: (row) => (
         <div className="min-w-[12rem]">
           <p className="font-medium text-gray-900">{row.name}</p>
-          {row.subscribed ? <div className="mt-1 flex flex-wrap items-center gap-1.5"><DenBadge tone="info">Pays for Models</DenBadge></div> : null}
+          {row.subscribed ? <div className="mt-1 flex flex-wrap items-center gap-1.5"><DenBadge tone="info">已订阅模型</DenBadge></div> : null}
         </div>
       ),
     },
-    { key: "people", header: "Active / members", align: "right", render: (row) => <span className="tabular-nums">{formatCount(row.activePeople)} / {formatCount(row.memberCount)}</span> },
+    { key: "people", header: "活跃人数 / 成员数", align: "right", render: (row) => <span className="tabular-nums">{formatCount(row.activePeople)} / {formatCount(row.memberCount)}</span> },
     {
-      key: "requests", header: "Requests", align: "right", render: (row) => (
+      key: "requests", header: "请求数", align: "right", render: (row) => (
         <span className="tabular-nums">
           {formatCount(row.requests)}
-          {row.estimatedRequests ? <span className="block text-[12px] text-gray-400">{formatCount(row.estimatedRequests)} estimated</span> : null}
+          {row.estimatedRequests ? <span className="block text-[12px] text-gray-400">估算 {formatCount(row.estimatedRequests)}</span> : null}
         </span>
       ),
     },
     {
-      key: "tokens", header: "Tokens in / out", align: "right", render: (row) => (
+      key: "tokens", header: "输入 / 输出 Token", align: "right", render: (row) => (
         <span className="tabular-nums">
           {formatTokens(row.inputTokens)} / {formatTokens(row.outputTokens)}
-          {row.cachedInputTokens ? <span className="block text-[12px] text-gray-400">{formatShare(row.cachedInputTokens, row.inputTokens)} of input cached</span> : null}
+          {row.cachedInputTokens ? <span className="block text-[12px] text-gray-400">{formatShare(row.cachedInputTokens, row.inputTokens)} 输入已缓存</span> : null}
         </span>
       ),
     },
     {
-      key: "spend", header: "Spend", align: "right", render: (row) => (
+      key: "spend", header: "费用", align: "right", render: (row) => (
         <span className="tabular-nums font-medium text-gray-900">
           {formatUsd(row.costMicroUsd)}
-          {row.activePeople ? <span className="block text-[12px] font-normal text-gray-400">{formatUsd(Math.round(row.costMicroUsd / row.activePeople))} per person</span> : null}
+          {row.activePeople ? <span className="block text-[12px] font-normal text-gray-400">{formatUsd(Math.round(row.costMicroUsd / row.activePeople))} 每人</span> : null}
         </span>
       ),
     },
     {
-      key: "limit", header: "At weekly limit", align: "right", render: (row) => row.peopleAtWeeklyLimit
-        ? <DenBadge tone="warning">{formatCount(row.peopleAtWeeklyLimit)} {row.peopleAtWeeklyLimit === 1 ? "person" : "people"}</DenBadge>
+      key: "limit", header: "已达每周限额", align: "right", render: (row) => row.peopleAtWeeklyLimit
+        ? <DenBadge tone="warning">{formatCount(row.peopleAtWeeklyLimit)} {"人"}</DenBadge>
         : <span className="text-gray-400">—</span>,
     },
     {
-      key: "last", header: "Last used", align: "right", render: (row) => (
+      key: "last", header: "上次使用", align: "right", render: (row) => (
         <span className="whitespace-nowrap text-gray-500" title={row.lastUsedAt ?? undefined}>{formatRelative(row.lastUsedAt, now)}</span>
       ),
     },
@@ -129,61 +129,60 @@ function Report({ report, refreshKey }: { report: FreeAutoUsageReport; refreshKe
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-wrap items-center gap-2" aria-label="Free Auto settings">
-        <DenBadge tone={settings.membersEnabled ? "success" : "neutral"}>Members {settings.membersEnabled ? "on" : "off"}</DenBadge>
-        <DenBadge>{formatUsd(settings.weeklyLimitMicroUsd)} a week per person</DenBadge>
+      <div className="flex flex-wrap items-center gap-2" aria-label="免费 Auto 设置">
+        <DenBadge tone={settings.membersEnabled ? "success" : "neutral"}>成员 {settings.membersEnabled ? "已开启" : "已关闭"}</DenBadge>
+        <DenBadge>{formatUsd(settings.weeklyLimitMicroUsd)} 每人每周</DenBadge>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <Stat label="Free spend" value={formatUsd(totals.costMicroUsd)} detail={`Members ${formatUsd(members.costMicroUsd)} · Guests ${formatUsd(guests.costMicroUsd)}`} />
-        <Stat label="Requests" value={formatCount(totals.requests)} detail={`${formatShare(totals.estimatedRequests, totals.requests)} charged the estimate`} />
-        <Stat label="Active people" value={formatCount(members.activePeople)} detail={`Signed in, across ${formatCount(totals.activeOrganizations)} organizations`} />
-        <Stat label="At weekly limit" value={formatCount(week.peopleAtWeeklyLimit)} detail={`of ${formatCount(week.activePeople)} active this week`} />
+        <Stat label="免费用量费用" value={formatUsd(totals.costMicroUsd)} detail={`成员 ${formatUsd(members.costMicroUsd)} · 访客 ${formatUsd(guests.costMicroUsd)}`} />
+        <Stat label="请求数" value={formatCount(totals.requests)} detail={`${formatShare(totals.estimatedRequests, totals.requests)} 按估算值计费`} />
+        <Stat label="活跃人员" value={formatCount(members.activePeople)} detail={`已登录，来自 ${formatCount(totals.activeOrganizations)} 个组织`} />
+        <Stat label="已达每周限额" value={formatCount(week.peopleAtWeeklyLimit)} detail={`本周共有 ${formatCount(week.activePeople)} 名活跃人员`} />
       </div>
 
-      <AdminDeferredContent label="Show activity after the free limit" placeholderClassName="h-96" eager={params.has("conversionStage") || params.has("search") || params.has("page")}>
-        {() => <Suspense fallback={<div className="h-96 bg-slate-50" aria-busy="true" aria-label="Loading conversion activity" />}><FreeAutoConversions days={report.range.days} refreshKey={refreshKey} /></Suspense>}
+      <AdminDeferredContent label="显示达到免费限额后的活动" placeholderClassName="h-96" eager={params.has("conversionStage") || params.has("search") || params.has("page")}>
+        {() => <Suspense fallback={<div className="h-96 bg-slate-50" aria-busy="true" aria-label="正在加载转化活动" />}><FreeAutoConversions days={report.range.days} refreshKey={refreshKey} /></Suspense>}
       </AdminDeferredContent>
 
-      <Section title="Daily spend" description="What free Auto cost each UTC day, split between signed-in members and signed-out desktops.">
-        <AdminDeferredContent label="Show daily free Auto spend" placeholderClassName="h-64">
-          {() => <Suspense fallback={<div className="h-64 bg-slate-50" aria-busy="true" aria-label="Loading daily spend chart" />}><FreeAutoSpendChart daily={report.daily} /></Suspense>}
+      <Section title="每日费用" description="免费 Auto 在每个 UTC 自然日的费用，分别统计已登录成员与未登录桌面端。">
+        <AdminDeferredContent label="显示每日免费 Auto 费用" placeholderClassName="h-64">
+          {() => <Suspense fallback={<div className="h-64 bg-slate-50" aria-busy="true" aria-label="正在加载每日费用图表" />}><FreeAutoSpendChart daily={report.daily} /></Suspense>}
         </AdminDeferredContent>
       </Section>
 
-      <AdminDeferredContent label="Show organization usage" placeholderClassName="h-96">
+      <AdminDeferredContent label="显示组织用量" placeholderClassName="h-96">
       {() => <Section
-        title="Organizations"
-        description="Signed-in members' usage by organization. The weekly allowance is per person, so someone at their limit counts in every organization they used this week."
-        action={<DenButton variant="secondary" size="sm" icon={Download} onClick={() => downloadCsv(report)}>Export CSV</DenButton>}
+        title="组织"
+        description="按组织查看已登录成员的用量。每周额度按人分配，达到限额的人员会计入其本周使用过的每个组织。"
+        action={<DenButton variant="secondary" size="sm" icon={Download} onClick={() => downloadCsv(report)}>导出 CSV</DenButton>}
       >
         <div className="flex flex-wrap items-center gap-3">
           <div className="min-w-[14rem] flex-1">
-            <DenInput icon={Search} value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search organizations" aria-label="Search organizations" />
+            <DenInput icon={Search} value={search} onChange={(event) => setSearch(event.target.value)} placeholder="搜索组织" aria-label="搜索组织" />
           </div>
-          <DenSelect aria-label="Sort organizations" value={sort} onChange={(event) => setSort(event.target.value as OrganizationSort)}>
-            {SORTS.map((option) => <option key={option.value} value={option.value}>Sort: {option.label}</option>)}
+          <DenSelect aria-label="排序组织" value={sort} onChange={(event) => setSort(event.target.value as OrganizationSort)}>
+            {SORTS.map((option) => <option key={option.value} value={option.value}>排序： {option.label}</option>)}
           </DenSelect>
         </div>
         <DenTable columns={organizationColumns(now)} rows={rows} getRowKey={(row) => row.id} density="compact"
-          emptyLabel={search ? "No organizations match this search." : "No organizations have used free Auto in this range."} />
+          emptyLabel={search ? "没有符合搜索条件的组织。" : "此范围内没有组织使用免费 Auto。"} />
         {report.otherOrganizations ? (
           <p className="text-[13px] text-gray-500">
-            Plus {formatCount(report.otherOrganizations.organizations)} more organizations with {formatCount(report.otherOrganizations.requests)} requests
-            and {formatUsd(report.otherOrganizations.costMicroUsd)} of spend.
+            另有 {formatCount(report.otherOrganizations.organizations)} 个组织，共有 {formatCount(report.otherOrganizations.requests)} 次请求，以及 {formatUsd(report.otherOrganizations.costMicroUsd)} 费用。
           </p>
         ) : null}
       </Section>}
       </AdminDeferredContent>
 
-      <Section title="Signed-out desktops" description="Guests have no account or organization, so they are only shown as totals.">
+      <Section title="未登录的桌面端" description="访客没有账户或组织，因此仅显示汇总数据。">
         <dl className="grid gap-4 sm:grid-cols-5">
           {[
-            ["Spend", formatUsd(guests.costMicroUsd)],
-            ["Requests", formatCount(guests.requests)],
-            ["Charged the estimate", formatShare(guests.estimatedRequests, guests.requests)],
-            ["Tokens in / out", `${formatTokens(guests.inputTokens)} / ${formatTokens(guests.outputTokens)}`],
-            ["Input cached", formatShare(guests.cachedInputTokens, guests.inputTokens)],
+            ["费用", formatUsd(guests.costMicroUsd)],
+            ["请求数", formatCount(guests.requests)],
+            ["按估算值计费", formatShare(guests.estimatedRequests, guests.requests)],
+            ["输入 / 输出 Token", `${formatTokens(guests.inputTokens)} / ${formatTokens(guests.outputTokens)}`],
+            ["已缓存输入", formatShare(guests.cachedInputTokens, guests.inputTokens)],
           ].map(([label, value]) => (
             <div key={label}>
               <dt className="text-[12px] text-gray-500">{label}</dt>
@@ -194,8 +193,7 @@ function Report({ report, refreshKey }: { report: FreeAutoUsageReport; refreshKe
       </Section>
 
       <p className="text-[12px] leading-5 text-gray-400">
-        Spend is what free Auto charged each allowance: OpenAI&apos;s reported tokens at list price, or a fixed estimate when OpenAI reported no usage.
-        Days are UTC. Updated {formatRelative(report.generatedAt)}.
+        费用为免费 Auto 从各额度扣除的金额：按 OpenAI 报告的 Token 与公开价格计算；未报告用量时使用固定估算值。日期均为 UTC。更新于 {formatRelative(report.generatedAt)}.
       </p>
     </div>
   );
@@ -220,15 +218,15 @@ export function FreeAutoUsagePage() {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <DenPageHeader title="Free Auto usage" description="What free Auto costs and who uses it, across every organization and signed-out desktop." />
+        <DenPageHeader title="免费 Auto 用量" description="查看所有组织和未登录桌面端的免费 Auto 费用与使用情况。" />
         <div className="flex flex-wrap items-center gap-2">
-          <DenSegmented aria-label="Date range" value={String(days)} onChange={setDays}
-            options={FREE_AUTO_RANGES.map((range) => ({ value: String(range), label: `${range} days` }))} />
-          <DenButton variant="secondary" size="sm" icon={RefreshCw} loading={state.status === "loading" && report !== null} onClick={() => { refresh(); setRefreshKey((value) => value + 1); }}>Refresh</DenButton>
+          <DenSegmented aria-label="日期范围" value={String(days)} onChange={setDays}
+            options={FREE_AUTO_RANGES.map((range) => ({ value: String(range), label: `${range} 天` }))} />
+          <DenButton variant="secondary" size="sm" icon={RefreshCw} loading={state.status === "loading" && report !== null} onClick={() => { refresh(); setRefreshKey((value) => value + 1); }}>刷新</DenButton>
         </div>
       </div>
       {state.status === "error" ? (
-        <DenNotice message={<span>{state.message} <button type="button" className="underline underline-offset-2" onClick={refresh}>Try again</button></span>} />
+        <DenNotice message={<span>{state.message} <button type="button" className="underline underline-offset-2" onClick={refresh}>重试</button></span>} />
       ) : null}
       {report ? <Report report={report} refreshKey={refreshKey} /> : null}
     </div>

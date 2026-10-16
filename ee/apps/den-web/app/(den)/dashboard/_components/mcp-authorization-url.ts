@@ -12,12 +12,12 @@ export function safeMcpAuthorizationUrl(rawUrl: string): string {
   try {
     url = new URL(rawUrl)
   } catch {
-    throw new Error("The MCP provider returned an invalid authorization URL.")
+    throw new Error("MCP 提供商返回的授权地址无效。")
   }
   const allowedProtocol = url.protocol === "https:"
     || (url.protocol === "http:" && isLoopbackHostname(url.hostname))
   if (!allowedProtocol || url.username || url.password) {
-    throw new Error("The MCP provider returned an unsafe authorization URL.")
+    throw new Error("MCP 提供商返回的授权地址不安全。")
   }
   return url.toString()
 }
@@ -138,7 +138,7 @@ export function mcpAuthorizationTabUrl(state: {
 
 export function parseMcpAuthorizationTabState(searchParams: URLSearchParams): McpAuthorizationTabState {
   const connectionId = searchParams.get("connection")?.trim() ?? ""
-  const connectionName = searchParams.get("name")?.trim() || "this provider"
+  const connectionName = searchParams.get("name")?.trim() || "此提供商"
   const failure = searchParams.get("outcome") === "failed"
     ? parseFailurePayload(searchParams.get("failure"))
     : undefined
@@ -158,30 +158,30 @@ export function describeMcpAuthorizationFailure(input: {
   const { connectionName, message, details } = input
   if (details?.diagnosticCode === "MCP_OAUTH_REDIRECT_URI_NOT_ALLOWED") {
     return {
-      title: `${connectionName} hasn't approved OpenWork yet`,
-      description: `${connectionName}'s sign-in server only accepts apps it has pre-approved, and OpenWork's sign-in address isn't on its list yet. Retrying won't help — ${connectionName} has to add OpenWork.`,
+      title: `${connectionName} 尚未批准 OpenWork`,
+      description: `${connectionName} 的登录服务器仅接受预先批准的应用，OpenWork 的登录地址尚未加入允许列表。请联系 ${connectionName} 添加 OpenWork，重新尝试无法解决此问题。`,
       advice: [
         details.redirectUri
-          ? `Ask ${connectionName} to allowlist this redirect URI: ${details.redirectUri}`
-          : `Ask ${connectionName} to allowlist OpenWork's redirect URI.`,
-        "Share the diagnostic reference with them.",
-        "Ask a workspace admin whether the provider offers a pre-registered OAuth app to configure instead.",
+          ? `请联系 ${connectionName} 将此跳转 URI 加入允许列表：${details.redirectUri}`
+          : `请联系 ${connectionName} 将 OpenWork 的跳转 URI 加入允许列表。`,
+        "请将诊断引用提供给他们。",
+        "请联系工作区管理员，确认能否改用提供商预先注册的 OAuth 应用。",
       ],
       retryable: false,
       copyable: [
-        ...(details.redirectUri ? [{ label: "Redirect URI", value: details.redirectUri }] : []),
-        ...(details.diagnosticReference ? [{ label: "Reference", value: details.diagnosticReference }] : []),
+        ...(details.redirectUri ? [{ label: "重定向 URI", value: details.redirectUri }] : []),
+        ...(details.diagnosticReference ? [{ label: "引用", value: details.diagnosticReference }] : []),
       ],
     }
   }
 
   if (details?.errorCode === "response_unreadable") {
     return {
-      title: "OpenWork couldn't read its own API's answer",
+      title: "OpenWork 无法读取自身 API 的响应",
       description: message,
       advice: [
-        "Try again.",
-        "If it keeps happening, tell a workspace admin the time of this attempt.",
+        "请重试。",
+        "若问题持续，请将此次尝试的时间告知工作区管理员。",
       ],
       retryable: true,
       copyable: [],
@@ -190,21 +190,21 @@ export function describeMcpAuthorizationFailure(input: {
 
   const retryable = details?.retryable !== false
   const ownerAdvice = details?.actionOwner === "provider_admin"
-    ? `${connectionName} has to fix this on their side; share the reference below with them.`
+    ? `需要由 ${connectionName} 修复此问题，请将下方参考信息提供给他们。`
     : details?.actionOwner === "organization_admin"
-      ? "Ask your workspace admin to review this connection's setup."
+      ? "请联系工作区管理员检查此连接的配置。"
       : details?.actionOwner === "member"
-        ? retryable ? "Try connecting again." : undefined
+        ? retryable ? "请重新连接。" : undefined
         : details?.actionOwner === "openwork"
-          ? "Contact OpenWork support with the reference below."
+          ? "请携带下方引用联系 OpenWork 支持。"
           : undefined
   return {
-    title: `Couldn't start the ${connectionName} sign-in`,
+    title: `无法启动 ${connectionName} 登录`,
     description: message,
-    advice: ownerAdvice ? [ownerAdvice] : retryable ? ["Try again."] : [],
+    advice: ownerAdvice ? [ownerAdvice] : retryable ? ["请重试。"] : [],
     retryable,
     copyable: details?.diagnosticReference
-      ? [{ label: "Reference", value: details.diagnosticReference }]
+      ? [{ label: "引用", value: details.diagnosticReference }]
       : [],
   }
 }
@@ -241,7 +241,7 @@ export function openMcpAuthorizationTab(input: {
   const tabName = `openwork-mcp-authorization-${crypto.randomUUID()}`
   const tab = window.open(mcpAuthorizationTabUrl(input), tabName)
   if (!tab) {
-    throw new Error("OpenWork could not open the sign-in tab. Allow popups for OpenWork, then try again.")
+    throw new Error("OpenWork 无法打开登录标签页，请允许弹出窗口后重试。")
   }
   tab.opener = null
   return tab

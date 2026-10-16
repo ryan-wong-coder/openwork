@@ -18,7 +18,7 @@ export function connectionMcpSetupUrl(publicApiUrl: string, connectionId: string
   }
 }
 
-export function McpConnectionAppSetup({ connection, publicApiUrl, enabled, className = "", label = "Use in another app" }: {
+export function McpConnectionAppSetup({ connection, publicApiUrl, enabled, className = "", label = "在其他应用中使用" }: {
   connection: Pick<ExternalMcpConnection, "id" | "exposeDirectly" | "nativeProviderKey">;
   publicApiUrl: string;
   enabled: boolean;
@@ -48,22 +48,22 @@ export function McpConnectionAppSetup({ connection, publicApiUrl, enabled, class
       <div className="mt-3 space-y-2 text-[12px] leading-5 text-gray-600">
         <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white p-2">
           <p className="min-w-0 flex-1 break-all font-mono text-[11px] text-gray-800">
-            {url || "Public MCP URL unavailable. Try reloading this page."}
+            {url || "公开 MCP 地址不可用，请重新加载页面。"}
           </p>
           <DenButton type="button" variant="secondary" size="sm" disabled={!url || status === "copying"} onClick={() => void copyUrl()}>
-            {status === "copied" ? "Copied" : "Copy"}
+            {status === "copied" ? "已复制" : "复制"}
           </DenButton>
         </div>
-        {status === "copied" ? <p role="status">MCP URL copied.</p> : null}
-        {status === "error" ? <p role="alert" className="text-red-600">Could not copy the URL. Select and copy it manually.</p> : null}
+        {status === "copied" ? <p role="status">MCP 地址已复制。</p> : null}
+        {status === "error" ? <p role="alert" className="text-red-600">无法复制地址，请选中后手动复制。</p> : null}
         {url ? (
           <>
             <ol className="list-decimal space-y-1 pl-4">
-              <li>Add a remote HTTP MCP server in your app.</li>
-              <li>Paste this MCP URL.</li>
-              <li>Choose OAuth and sign in to your OpenWork organization.</li>
+              <li>在应用中添加远程 HTTP MCP 服务器。</li>
+              <li>粘贴此 MCP 地址。</li>
+              <li>选择 OAuth 并登录 OpenWork 组织。</li>
             </ol>
-            <p>You may still need to connect your provider account in OpenWork. Existing access grants and tool policies still apply.</p>
+            <p>你可能仍需在 OpenWork 中连接提供商账户，现有访问授权与工具策略继续适用。</p>
           </>
         ) : null}
       </div>

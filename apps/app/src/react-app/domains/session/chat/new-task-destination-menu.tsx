@@ -32,10 +32,10 @@ export function NewTaskDestinationMenu(props: Props) {
   const hasDestinationChoices = hasGroups || canChooseWorkspace;
   if (!hasDestinationChoices && !props.hasDraft) return null;
 
-  const workspaceLabel = workspaces.find((workspace) => workspace.id === props.destination.workspaceId)?.label ?? "Workspace";
+  const workspaceLabel = workspaces.find((workspace) => workspace.id === props.destination.workspaceId)?.label ?? t("session.workspace_fallback");
   const groupLabel = props.destination.groupId
-    ? props.groups.find((group) => group.id === props.destination.groupId)?.label ?? "Unavailable group"
-    : "No group";
+    ? props.groups.find((group) => group.id === props.destination.groupId)?.label ?? t("session_management.no_group")
+    : t("session_management.no_group");
 
   return (
     <span className="min-w-0 max-w-full text-muted-foreground">

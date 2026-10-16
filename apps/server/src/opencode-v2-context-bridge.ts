@@ -6,6 +6,7 @@ import { openworkReadTransport, type OpenworkReadTransport } from "./opencode-pl
 import { createV2ReadAdapter, readV2SessionActivity } from "./opencode-v2-read-adapter.js";
 import { isRecord } from "./workspace-kv-store.js";
 import { createV2BrowserBridge } from "./opencode-v2-browser-bridge.js";
+import { createV2ImageBridge, type V2ImageSessionResolver } from "./opencode-v2-image-bridge.js";
 
 const requestSchema = z.object({ name: z.enum(["openwork_context", "openwork_query", "openwork_skills"]), input: z.unknown() });
 // Advertise only reads this bridge executes. Native MCP discovery owns remote
@@ -24,7 +25,10 @@ function readAffordances(value: unknown): unknown {
  * Build this host entry as one bundle: packaged desktops relocate engine plugin
  * files, and the shared factory and its request-local transport must use the
  * same AsyncLocalStorage instance rather than separately bundled copies. */
-export async function createV2ContextBridge(hostRequest: (path: string, init?: RequestInit) => Promise<unknown>) {
+export async function createV2ContextBridge(
+  hostRequest: (path: string, init?: RequestInit) => Promise<unknown>,
+  options?: { resolveImageSession?: V2ImageSessionResolver },
+) {
   const token = randomBytes(32).toString("base64url");
   const plugin = await OpenWorkExtensionsPreview();
   const server = await serve({ hostname: "127.0.0.1", port: 0, fetch: async request => {
@@ -74,6 +78,12 @@ export async function createV2ContextBridge(hostRequest: (path: string, init?: R
     }
   } });
   const browser = await createV2BrowserBridge().catch(async error => { await server.stop(); await plugin.dispose(); throw error; });
+  const image = options?.resolveImageSession
+    ? await createV2ImageBridge(hostRequest, options.resolveImageSession).catch(async (error) => {
+      await browser.close(); await server.stop(); await plugin.dispose(); throw error;
+    })
+    : undefined;
   return { url: `http://127.0.0.1:${server.port}/read`, token, browser: { url: browser.url, token: browser.token },
-    close: async () => { await browser.close(); await server.stop(); await plugin.dispose(); } };
+    ...(image ? { image: { url: image.url, token: image.token } } : {}),
+    close: async () => { await image?.close(); await browser.close(); await server.stop(); await plugin.dispose(); } };
 }

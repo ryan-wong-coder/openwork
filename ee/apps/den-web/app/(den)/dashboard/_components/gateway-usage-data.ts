@@ -57,7 +57,7 @@ export function useGatewayUsage(orgId: string, groupBy: GatewayUsageGroupBy, fil
       const abort = () => controller.abort();
       if (signal.aborted) abort();
       signal.addEventListener("abort", abort, { once: true });
-      const timeout = setTimeout(() => controller.abort(new DOMException("Gateway usage request timed out. Try again.", "TimeoutError")), 15_000);
+      const timeout = setTimeout(() => controller.abort(new DOMException("网关用量请求超时，请重试。", "TimeoutError")), 15_000);
       const { response, payload } = await requestJson(`/v1/inference-providers/usage?${params}`, {
         method: "GET",
         headers: { [ORG_SCOPE_HEADER]: orgId },
@@ -67,9 +67,9 @@ export function useGatewayUsage(orgId: string, groupBy: GatewayUsageGroupBy, fil
         clearTimeout(timeout);
         signal.removeEventListener("abort", abort);
       });
-      if (!response.ok) throw new Error(getErrorMessage(payload, "Could not load Gateway usage. Try again."));
+      if (!response.ok) throw new Error(getErrorMessage(payload, "无法加载网关用量，请重试。"));
       const parsed = usageResponseSchema.safeParse(payload);
-      if (!parsed.success) throw new Error("Gateway usage returned an invalid response. Try again once the usage API is available.");
+      if (!parsed.success) throw new Error("网关用量响应无效，请在用量 API 可用后重试。");
       const { usage } = parsed.data;
       const seriesIds = new Set(usage.series.map((series) => series.id));
       const from = Date.parse(`${usage.from}T00:00:00Z`);
@@ -96,7 +96,7 @@ export function useGatewayUsage(orgId: string, groupBy: GatewayUsageGroupBy, fil
            || Object.values(day.costValues).reduce((sum: number, value) => sum + (value ?? 0), 0) !== day.totalCostMicroUsd)
         || daily.reduce((sum, day) => sum + day.totalTokens, 0) !== usage.totalTokens
         || daily.reduce((sum, day) => sum + day.totalCostMicroUsd, 0) !== usage.totalCostMicroUsd) {
-        throw new Error("Gateway usage returned inconsistent daily totals. Try again.");
+        throw new Error("网关每日用量汇总不一致，请重试。");
       }
       return { ...usage, daily };
     },

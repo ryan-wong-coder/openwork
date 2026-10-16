@@ -24,10 +24,10 @@ const ROW = "grid grid-cols-[minmax(0,1fr)_28px] items-center gap-4 px-5";
 export function TeamsListHeader({ columns, role, agentPermissions }: { columns: string; role: boolean; agentPermissions: boolean }) {
   return (
     <div className={`${ROW} border-b border-gray-100 py-2.5 text-[12px] font-medium leading-4 text-gray-500 ${columns}`}>
-      <span>Team</span>
-      {role ? <span className="hidden lg:block">Role</span> : null}
-      {agentPermissions ? <span className="hidden lg:block">Agent permissions</span> : null}
-      <span className="hidden lg:block">Members</span>
+      <span>团队</span>
+      {role ? <span className="hidden lg:block">角色</span> : null}
+      {agentPermissions ? <span className="hidden lg:block">代理权限</span> : null}
+      <span className="hidden lg:block">成员</span>
       <span aria-hidden />
     </div>
   );
@@ -94,7 +94,7 @@ const ICON_ACTION = "flex h-7 w-7 items-center justify-center rounded-lg text-gr
 /** Everyone's action lane: opens its page, the same size as a team's menu. */
 export function TeamsListOpenLink({ href, name }: { href: string; name: string }) {
   return (
-    <Link href={href} aria-label={`Open ${name}`} title="Open" className={ICON_ACTION}>
+    <Link href={href} aria-label={`打开 ${name}`} title="打开" className={ICON_ACTION}>
       <ChevronRight className="h-4 w-4" aria-hidden />
     </Link>
   );

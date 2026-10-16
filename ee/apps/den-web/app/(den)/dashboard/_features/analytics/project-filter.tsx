@@ -20,16 +20,16 @@ export function ProjectFilter({ options, value, onValueChange }: {
   return (
     <div className="flex flex-wrap items-center gap-3">
       <label className="text-xs font-medium text-[#637291]" htmlFor={FILTER_INPUT_ID}>
-        Project
+        项目
       </label>
       <DenSelect
         id={FILTER_INPUT_ID}
-        aria-label="Project analytics filter"
+        aria-label="项目分析筛选"
         className="h-9 w-56 max-w-full"
         value={value}
         onChange={(event) => onValueChange(event.target.value)}
       >
-        <option value="">All projects</option>
+        <option value="">所有项目</option>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
@@ -38,7 +38,7 @@ export function ProjectFilter({ options, value, onValueChange }: {
       </DenSelect>
       {activeOption ? (
         <span className="text-[12px] text-[#637291]">
-          {activeOption.sessionCount} {activeOption.sessionCount === 1 ? "session" : "sessions"}
+          {activeOption.sessionCount} {"次会话"}
         </span>
       ) : null}
     </div>

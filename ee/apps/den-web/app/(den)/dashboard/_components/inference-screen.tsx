@@ -25,15 +25,15 @@ import { UsageLimitsCard } from "../_features/analytics/usage-limits-card";
  * unmapped models still render with sane defaults.
  */
 const MODEL_DETAILS: Record<string, { bestFor: string; monogram: string } | undefined> = {
-  "moonshotai/kimi-k3": { bestFor: "Research & synthesis", monogram: "MS" },
-  "z-ai/glm-5.2": { bestFor: "Multi-step tasks", monogram: "ZA" },
-  "moonshotai/kimi-k2.7-code": { bestFor: "Spreadsheets & scripts", monogram: "MS" },
-  "tencent/hy3-preview": { bestFor: "Long documents", monogram: "TC" },
-  "moonshotai/kimi-k2.6": { bestFor: "Everyday drafting", monogram: "MS" },
-  "deepseek/deepseek-v4-flash": { bestFor: "Quick summaries", monogram: "DS" },
-  "minimax/minimax-m2.7": { bestFor: "Tools & integrations", monogram: "MM" },
-  "minimax/minimax-m3": { bestFor: "Images & screenshots", monogram: "MM" },
-  "z-ai/glm-5.1": { bestFor: "Balanced default", monogram: "ZA" },
+  "moonshotai/kimi-k3": { bestFor: "研究与综合分析", monogram: "MS" },
+  "z-ai/glm-5.2": { bestFor: "多步骤任务", monogram: "ZA" },
+  "moonshotai/kimi-k2.7-code": { bestFor: "电子表格与脚本", monogram: "MS" },
+  "tencent/hy3-preview": { bestFor: "长文档", monogram: "TC" },
+  "moonshotai/kimi-k2.6": { bestFor: "日常写作", monogram: "MS" },
+  "deepseek/deepseek-v4-flash": { bestFor: "快速总结", monogram: "DS" },
+  "minimax/minimax-m2.7": { bestFor: "工具与集成", monogram: "MM" },
+  "minimax/minimax-m3": { bestFor: "图像与截图", monogram: "MM" },
+  "z-ai/glm-5.1": { bestFor: "均衡的默认选择", monogram: "ZA" },
 };
 
 type LineupModel = {
@@ -50,7 +50,7 @@ const MODEL_LINEUP: LineupModel[] = Object.entries(INFERENCE_MODEL_ALIASES)
     return {
       id,
       name: model.displayName.replace(/^OpenWork:\s*/, ""),
-      bestFor: detail?.bestFor ?? "General knowledge work",
+      bestFor: detail?.bestFor ?? "通用知识工作",
       monogram: detail?.monogram ?? id.split("/")[0].slice(0, 2).toUpperCase(),
     };
   });
@@ -58,7 +58,7 @@ const MODEL_LINEUP: LineupModel[] = Object.entries(INFERENCE_MODEL_ALIASES)
 const MODEL_COLUMNS: readonly DenTableColumn<LineupModel>[] = [
   {
     key: "model",
-    header: "Model",
+    header: "模型",
     render: (model) => (
       <div className="flex items-center gap-3">
         <span
@@ -73,13 +73,13 @@ const MODEL_COLUMNS: readonly DenTableColumn<LineupModel>[] = [
   },
   {
     key: "bestFor",
-    header: "Best for",
+    header: "适用场景",
     width: "190px",
     render: (model) => <span className="text-[13px] text-gray-500">{model.bestFor}</span>,
   },
   {
     key: "id",
-    header: "Model ID",
+    header: "模型 ID",
     width: "230px",
     render: (model) => <span className="whitespace-nowrap font-mono text-[12px] text-gray-500">{model.id}</span>,
   },
@@ -89,11 +89,11 @@ function ModelsLineup({ subscribed }: { subscribed: boolean }) {
   return (
     <section className="grid gap-3.5">
       <DenSectionHeader
-        title="Models"
+        title="模型"
         description={
           subscribed
-            ? `Every member of your workspace can use all ${MODEL_LINEUP.length} models.`
-            : `Every member of your workspace can use all ${MODEL_LINEUP.length} models, the moment you subscribe.`
+            ? `工作区的每位成员都可以使用全部 ${MODEL_LINEUP.length} 个模型。`
+            : `订阅后，工作区的每位成员都可以立即使用全部 ${MODEL_LINEUP.length} 个模型。`
         }
       />
       <div className="overflow-hidden rounded-[16px] border border-gray-100 bg-white">
@@ -124,12 +124,12 @@ export function InferenceScreen({ embedded = false }: { embedded?: boolean }) {
   if (dashboard.orgError && !checking) return <DenNotice tone="error" message={dashboard.orgError} />;
   if (locked) {
     return <div data-testid="models-access-state" data-access-state="denied">
-      <DenNotice tone="neutral" icon={LockKeyhole} message="Viewing OpenWork Models needs the “View OpenWork Models settings” permission. Ask an organization owner or admin for access." />
+      <DenNotice tone="neutral" icon={LockKeyhole} message="查看 OpenWork 模型需要“查看 OpenWork 模型设置”权限，请联系组织所有者或管理员授权。" />
     </div>;
   }
   if (checking || redirect) {
     return <div className="flex min-h-[320px] items-center justify-center px-6 text-[14px] text-gray-500" data-testid="models-access-state" data-access-state={checking ? "checking" : "redirecting"}>
-      {checking ? "Checking workspace access..." : "Redirecting to your providers..."}
+      {checking ? "正在检查工作区访问权限…" : "正在跳转到提供商…"}
     </div>;
   }
 
@@ -162,15 +162,15 @@ function InferenceContent({ embedded }: { embedded: boolean }) {
     try {
       const { response, payload } = await requestJson("/v1/inference", { method: "GET" }, 12000);
       if (!response.ok) {
-        throw new Error(getErrorMessage(payload, `Failed to load inference settings (${response.status}).`));
+        throw new Error(getErrorMessage(payload, `无法加载推理设置（${response.status}）。`));
       }
       const parsed = parseInferencePayload(payload);
       if (!parsed) {
-        throw new Error("Inference settings response was incomplete.");
+        throw new Error("推理设置返回的信息不完整，请重试。");
       }
       setStatus(parsed);
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : "Failed to load inference settings.");
+      setError(loadError instanceof Error ? loadError.message : "无法加载推理设置，请重试。");
     } finally {
       setLoading(false);
     }
@@ -185,7 +185,7 @@ function InferenceContent({ embedded }: { embedded: boolean }) {
   // status/portal view.
   async function startSubscribeCheckout() {
     if (!canSubscribe) {
-      setError("Starting OpenWork Models checkout needs the “Manage billing” permission.");
+      setError("购买 OpenWork 模型需要“管理账单”权限。");
       return;
     }
 
@@ -199,16 +199,16 @@ function InferenceContent({ embedded }: { embedded: boolean }) {
           12000,
         );
         if (!response.ok) {
-          throw getRequestError(payload, response, `Checkout failed (${response.status}).`);
+          throw getRequestError(payload, response, `结账失败（${response.status}）。`);
         }
         const url = payload && typeof payload === "object" && "url" in payload && typeof payload.url === "string" ? payload.url : null;
         if (!url) {
-          throw new Error("Checkout response did not include a URL.");
+          throw new Error("结账响应缺少地址，请重试。");
         }
         window.location.href = url;
       });
     } catch (checkoutError) {
-      setError(checkoutError instanceof Error ? checkoutError.message : "Could not start checkout.");
+      setError(checkoutError instanceof Error ? checkoutError.message : "无法开始结账，请重试。");
       setSubscribeBusy(false);
     }
   }
@@ -220,7 +220,7 @@ function InferenceContent({ embedded }: { embedded: boolean }) {
       return;
     }
     if (!canToggleModels) {
-      setError("Turning OpenWork Models on needs the “Manage OpenWork Models” permission.");
+      setError("启用 OpenWork 模型需要“管理 OpenWork 模型”权限。");
       return;
     }
     setError(null);
@@ -237,11 +237,11 @@ function InferenceContent({ embedded }: { embedded: boolean }) {
             20000,
           );
           if (!response.ok) {
-            throw getRequestError(payload, response, `Failed to update inference settings (${response.status}).`);
+            throw getRequestError(payload, response, `无法更新推理设置（${response.status}）。`);
           }
           const parsed = parseInferencePayload(payload);
           if (!parsed) {
-            throw new Error("Inference settings response was incomplete.");
+            throw new Error("推理设置返回的信息不完整，请重试。");
           }
           setStatus(parsed);
           await refreshOrgData();
@@ -250,7 +250,7 @@ function InferenceContent({ embedded }: { embedded: boolean }) {
         }
       });
     } catch (saveError) {
-      setError(saveError instanceof Error ? saveError.message : "Failed to update inference settings.");
+      setError(saveError instanceof Error ? saveError.message : "更新推理设置失败，请重试。");
     }
   }
 
@@ -258,18 +258,18 @@ function InferenceContent({ embedded }: { embedded: boolean }) {
   const subscribed = status?.subscribed === true;
   const showGettingStarted = !loading && status !== null && !subscribed;
   const memberCount = status?.memberCount ?? 0;
-  const actionLabel = subscribed ? (enabled ? "Manage subscription" : "Enable") : "Subscribe";
+  const actionLabel = subscribed ? (enabled ? "管理订阅" : "启用") : "订阅";
   const memberCaption = memberCount > 0
-    ? `${memberCount} active member${memberCount === 1 ? "" : "s"}`
-    : "billed per active member";
+    ? `${memberCount} 名活跃成员`
+    : "按活跃成员计费";
 
-  const description = "Reliable, hand-picked models for knowledge work. No API keys to manage.";
-  const caption = `$10 / user / month · ${memberCaption}`;
+  const description = "为知识工作精选的可靠模型，无需管理 API 密钥。";
+  const caption = `10 美元 / 人 / 月 · ${memberCaption}`;
   const actionLockReason = !subscribed
-    ? (canSubscribe ? null : "Subscribing needs the “Manage billing” permission.")
+    ? (canSubscribe ? null : "订阅需要“管理账单”权限。")
     : enabled
-      ? (access.canViewBilling ? null : "Managing the subscription needs the “View billing” permission.")
-      : (canToggleModels ? null : "Turning OpenWork Models on needs the “Manage OpenWork Models” permission.");
+      ? (access.canViewBilling ? null : "管理订阅需要“查看账单”权限。")
+      : (canToggleModels ? null : "启用 OpenWork 模型需要“管理 OpenWork 模型”权限。");
   const action = <DenButton type="button" onClick={subscribed ? toggleEnabled : () => void startSubscribeCheckout()}
     loading={loading || saving || subscribeBusy} disabled={actionLockReason !== null} variant={enabled ? "secondary" : "primary"}>
     {actionLabel}
@@ -277,9 +277,9 @@ function InferenceContent({ embedded }: { embedded: boolean }) {
 
   return (
     <div className={embedded ? "grid gap-6" : "mx-auto grid w-full max-w-[960px] gap-6 px-4 pb-12 pt-5 sm:px-6 lg:px-8"}>
-      {embedded ? <DenSectionHeader title="OpenWork Models"
+      {embedded ? <DenSectionHeader title="OpenWork 模型"
         description={<>{description}<span className="block">{caption}</span></>}
-        action={action} /> : <DenPageHeader title="OpenWork Models"
+        action={action} /> : <DenPageHeader title="OpenWork 模型"
         description={description} caption={caption} action={action} />}
 
       {error ? <DenNotice message={error} tone="error" /> : null}
@@ -288,12 +288,12 @@ function InferenceContent({ embedded }: { embedded: boolean }) {
         <DenNotice
           tone="neutral"
           icon={LockKeyhole}
-          message={`${actionLockReason} Ask an organization owner or admin for access.`}
+          message={`${actionLockReason} 请联系组织所有者或管理员获取权限。`}
         />
       )}
 
       {showGettingStarted ? <DenCard>
-        <p className="text-sm leading-6 text-[#637291]">One subscription activates models for everyone in your workspace. After subscribing, choose a model from the OpenWork group in the app and start a task.</p>
+        <p className="text-sm leading-6 text-[#637291]">一次订阅即可为工作区所有人启用模型。订阅后，在应用的 OpenWork 分组中选择模型并开始任务。</p>
       </DenCard> : null}
 
       {enabled && status ? <UsageLimitsCard buckets={status.buckets} /> : null}
@@ -301,9 +301,9 @@ function InferenceContent({ embedded }: { embedded: boolean }) {
       <ModelsLineup subscribed={subscribed} />
 
       <p className="text-[13px] text-gray-400">
-        Prefer your own provider accounts?{" "}
+        希望使用自有提供商账户？{" "}
         <Link href={getCustomLlmProvidersRoute(activeOrgSlug)} className="text-gray-900 underline">
-          Set up Bring your Own Keys.
+          配置自有密钥。
         </Link>
       </p>
     </div>

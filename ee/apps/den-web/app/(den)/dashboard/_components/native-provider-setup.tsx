@@ -36,24 +36,24 @@ const PROVIDERS: Record<NativeProviderKey, ProviderCopy> = {
   [GOOGLE_WORKSPACE_QUICK_ADD_ID]: {
     name: "Google Workspace",
     url: "https://workspace.google.com",
-    consoleLabel: "Open Google Cloud Console",
+    consoleLabel: "打开 Google Cloud 控制台",
     consoleUrl: "https://console.cloud.google.com/apis/credentials",
     defaultFeatures: GOOGLE_WORKSPACE_DEFAULT_FEATURES,
     groups: GOOGLE_WORKSPACE_PERMISSION_GROUPS,
     tenant: false,
     clientIdPlaceholder: "1234567890-abc.apps.googleusercontent.com",
-    secretPlaceholder: "Client secret",
+    secretPlaceholder: "客户端密钥",
   },
   [MICROSOFT_365_QUICK_ADD_ID]: {
     name: "Microsoft 365",
     url: "https://www.microsoft.com/microsoft-365",
-    consoleLabel: "Open Entra app registrations",
+    consoleLabel: "打开 Entra 应用注册",
     consoleUrl: "https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade",
     defaultFeatures: MICROSOFT_365_DEFAULT_FEATURES,
     groups: MICROSOFT_365_PERMISSION_GROUPS,
     tenant: true,
-    clientIdPlaceholder: "Application (client) ID",
-    secretPlaceholder: "Client secret value, not its ID",
+    clientIdPlaceholder: "应用程序（客户端）ID",
+    secretPlaceholder: "客户端密钥值，而非密钥 ID",
   },
 };
 
@@ -106,7 +106,7 @@ export function NativeProviderSettings({ providerKey, clientProviderId, create, 
   const saving = createNative.isPending || saveClient.isPending;
   const credentialsIncomplete = showCredentials && (!clientId.trim() || !clientSecret.trim() || (provider.tenant && !tenantId.trim()));
   const disabled = clientConfig.isLoading || saving || credentialsIncomplete || (creatingGoogle && !name.trim());
-  const label = configured && !replacing ? "Save permissions" : configured ? "Save new credentials" : `Add ${provider.name}`;
+  const label = configured && !replacing ? "保存权限" : configured ? "保存新凭据" : `添加 ${provider.name}`;
 
   function toggle(feature: string) {
     setFeatures((current) => current.includes(feature) ? current.filter((entry) => entry !== feature) : [...current, feature]);
@@ -118,7 +118,7 @@ export function NativeProviderSettings({ providerKey, clientProviderId, create, 
       await navigator.clipboard.writeText(redirectUri);
       setCopied(true);
     } catch {
-      setError("Could not copy it. Select the address and copy it yourself.");
+      setError("复制失败，请选中地址后手动复制。");
     }
   }
 
@@ -142,7 +142,7 @@ export function NativeProviderSettings({ providerKey, clientProviderId, create, 
       setClientSecret("");
       onSaved(clientProviderId, provider.name);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "That did not save.");
+      setError(cause instanceof Error ? cause.message : "保存失败，请重试。");
     }
   }
 
@@ -150,57 +150,57 @@ export function NativeProviderSettings({ providerKey, clientProviderId, create, 
     <div className="flex flex-col gap-6" data-testid={`native-provider-${providerKey}`}>
       {creatingGoogle ? (
         <section className="flex flex-col gap-2.5">
-          <SectionTitle title="Name" />
-          <DenInput value={name} onChange={(event) => setName(event.target.value)} aria-label="Name" placeholder={provider.name} />
+          <SectionTitle title="名称" />
+          <DenInput value={name} onChange={(event) => setName(event.target.value)} aria-label="名称" placeholder={provider.name} />
         </section>
       ) : null}
 
       <section className="flex flex-col gap-2.5">
         <SectionTitle
-          title="Redirect URI"
+          title="重定向 URI"
           meta={<a href={provider.consoleUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-gray-600 underline-offset-2 hover:text-gray-900 hover:underline">{provider.consoleLabel}</a>}
         />
         <div className="flex items-center gap-2">
           <p className="min-w-0 flex-1 truncate rounded-lg border border-gray-200 bg-white px-3 py-2.5 font-mono text-[12px] text-gray-900" data-testid="native-provider-redirect-uri">
-            {redirectUri || (clientConfig.error ? "The address did not load. Reload the page." : "Loading...")}
+            {redirectUri || (clientConfig.error ? "地址加载失败，请重新加载页面。" : "正在加载…")}
           </p>
-          <DenButton variant="secondary" size="sm" disabled={!redirectUri} onClick={() => void copy()}>{copied ? "Copied" : "Copy"}</DenButton>
+          <DenButton variant="secondary" size="sm" disabled={!redirectUri} onClick={() => void copy()}>{copied ? "已复制" : "复制"}</DenButton>
         </div>
       </section>
 
       <section className="flex flex-col gap-2.5">
         <SectionTitle
-          title="OAuth app"
+          title="OAuth 应用"
           meta={configured && !replacing ? (
             <button type="button" className="font-medium text-gray-600 underline-offset-2 hover:text-gray-900 hover:underline" onClick={() => {
               setClientId(clientConfig.data?.clientId ?? "");
               setTenantId(clientConfig.data?.tenantId ?? "");
               setClientSecret("");
               setReplacing(true);
-            }}>Replace credentials</button>
+            }}>替换凭据</button>
           ) : replacing ? (
-            <button type="button" className="font-medium text-gray-600 underline-offset-2 hover:text-gray-900 hover:underline" onClick={() => setReplacing(false)}>Keep saved credentials</button>
+            <button type="button" className="font-medium text-gray-600 underline-offset-2 hover:text-gray-900 hover:underline" onClick={() => setReplacing(false)}>保留已保存的凭据</button>
           ) : undefined}
         />
-        {clientConfig.isLoading ? <ItemPanel><p className="px-5 py-3 text-[13px] text-gray-500">Checking saved credentials...</p></ItemPanel> : null}
+        {clientConfig.isLoading ? <ItemPanel><p className="px-5 py-3 text-[13px] text-gray-500">正在检查已保存的凭据…</p></ItemPanel> : null}
         {configured && !replacing ? (
           <DetailRows rows={[
-            ...(provider.tenant ? [{ label: "Tenant ID", value: <span className="font-mono">{clientConfig.data?.tenantId ?? "Saved"}</span> }] : []),
-            { label: "Client ID", value: <span className="font-mono">{clientConfig.data?.clientId ?? "Saved"}</span> },
-            { label: "Client secret", value: "Saved" },
+            ...(provider.tenant ? [{ label: "租户 ID", value: <span className="font-mono">{clientConfig.data?.tenantId ?? "已保存"}</span> }] : []),
+            { label: "客户端 ID", value: <span className="font-mono">{clientConfig.data?.clientId ?? "已保存"}</span> },
+            { label: "客户端密钥", value: "Saved" },
           ]} />
         ) : null}
         {showCredentials ? (
           <div className="flex flex-col gap-3">
             {provider.tenant ? (
-              <Field label="Directory (tenant) ID">
+              <Field label="目录（租户）ID">
                 <McpCredentialInput kind="identifier" name={`${providerKey}-tenant-id`} data-testid="native-provider-tenant-id" value={tenantId} onChange={(event) => setTenantId(event.target.value)} placeholder="00000000-0000-0000-0000-000000000000" />
               </Field>
             ) : null}
-            <Field label="Client ID">
+            <Field label="客户端 ID">
               <McpCredentialInput kind="identifier" name={`${providerKey}-oauth-client-id`} data-testid="native-provider-client-id" value={clientId} onChange={(event) => setClientId(event.target.value)} placeholder={provider.clientIdPlaceholder} />
             </Field>
-            <Field label="Client secret">
+            <Field label="客户端密钥">
               <McpCredentialInput kind="secret" name={`${providerKey}-oauth-client-secret`} data-testid="native-provider-client-secret" value={clientSecret} onChange={setClientSecret} placeholder={provider.secretPlaceholder} />
             </Field>
           </div>
@@ -208,7 +208,7 @@ export function NativeProviderSettings({ providerKey, clientProviderId, create, 
       </section>
 
       <section className="flex flex-col gap-2.5">
-        <SectionTitle title="What your AI can do" meta={`${features.length} on`} />
+        <SectionTitle title="你的 AI 可以做什么" meta={`${features.length} 已开启`} />
         <ItemPanel>
           {provider.groups.map((group) => (
             <fieldset key={group.name} className="flex flex-col gap-2 px-5 py-3.5">
@@ -250,21 +250,21 @@ export function NativeProviderSetupScreen({ providerKey }: { providerKey: Native
   return (
     <ItemPage testId="connector-setup">
       <ItemHeader
-        back={{ href: getAddConnectorRoute(orgSlug), label: "Add a connector" }}
+        back={{ href: getAddConnectorRoute(orgSlug), label: "添加连接器" }}
         logo={<ConnectorLogo name={provider.name} url={provider.url} size="md" />}
-        title={`Add ${provider.name}`}
+        title={`添加 ${provider.name}`}
       />
       <NativeProviderSettings
         providerKey={providerKey}
         clientProviderId={providerKey}
         create
         onSaved={(connectionId, name) => {
-          toast({ title: `${name} is ready`, description: "Each person signs in with their own account." });
+          toast({ title: `${name} 已就绪`, description: "每人使用自己的账户登录。" });
           router.push(getMcpConnectionRoute(orgSlug, connectionId));
         }}
         footer={({ save, saving, disabled, label }) => (
-          <StepFooter note="Each person signs in with their own account">
-            <DenButton variant="secondary" disabled={saving} onClick={() => router.push(getMcpConnectionsRoute(orgSlug))}>Cancel</DenButton>
+          <StepFooter note="每人使用自己的账户登录">
+            <DenButton variant="secondary" disabled={saving} onClick={() => router.push(getMcpConnectionsRoute(orgSlug))}>取消</DenButton>
             <DenButton loading={saving} disabled={disabled} onClick={save} data-testid="native-provider-save">{label}</DenButton>
           </StepFooter>
         )}

@@ -39,7 +39,7 @@ export const auditPageSize = 50;
 
 export class AuditReadError extends Error {
   constructor(readonly status: number, readonly code: string | null) {
-    super(status === 403 ? "Audit history is unavailable for this account." : "Could not verify audit history. Try again.");
+    super(status === 403 ? "此账户无法查看审计历史。" : "无法验证审计历史，请重试。");
   }
 }
 
@@ -61,7 +61,7 @@ async function readAudit<T>(scope: AuditScope, path: string, schema: z.ZodType<T
     throw new AuditReadError(response.status, code);
   }
   const result = schema.safeParse(payload);
-  if (!result.success) throw new Error("Audit history returned an invalid response. Refresh to verify it.");
+  if (!result.success) throw new Error("审计历史响应无效，请刷新以验证。");
   return result.data;
 }
 
@@ -75,7 +75,7 @@ function verifyPage(page: { nextCursor: string | null; snapshotAt: string }, par
   if ((param.snapshot !== null && page.snapshotAt !== param.snapshot)
     || ids.length > auditPageSize || new Set(ids).size !== ids.length || ids.some((id) => param.ids.includes(id))
     || (page.nextCursor !== null && (!page.nextCursor || !ids.length || page.nextCursor === param.cursor || param.cursors.includes(page.nextCursor)))) {
-    throw new Error("Audit pagination changed. Refresh from the first page to verify history.");
+    throw new Error("审计分页已更改，请从第一页刷新以验证历史记录。");
   }
 }
 
@@ -105,7 +105,7 @@ export async function getAuditEvents(scope: AuditScope, operationId: string, par
   if (param.cursor) params.set("cursor", param.cursor);
   const page = await readAudit(scope, `/v1/audit/operations/${encodeURIComponent(operationId)}/events?${params}`, auditEventsResponseSchema, signal);
   if (page.events.some((event) => event.organizationId !== scope.orgId || event.operationId !== operationId)) {
-    throw new Error("Audit events did not match this workspace and operation. Refresh to verify history.");
+    throw new Error("审计事件与当前工作区及操作不匹配，请刷新以验证历史记录。");
   }
   verifyPage(page, param, page.events.map((event) => event.id));
   return page;
@@ -128,7 +128,7 @@ export function useAuditEventTypes(scope: AuditScope) {
 }
 
 function verifyAuditUsage(scope: AuditScope, usage: AuditUsageResponse) {
-  if (usage.policy && usage.policy.organizationId !== scope.orgId) throw new Error("Audit policy did not match this workspace. Refresh to verify it.");
+  if (usage.policy && usage.policy.organizationId !== scope.orgId) throw new Error("审计策略与当前工作区不匹配，请刷新以验证。");
   return usage;
 }
 
@@ -163,14 +163,14 @@ export async function updateAuditCapture(scope: AuditScope, input: AuditCaptureU
     throw new AuditReadError(response.status, code);
   }
   const result = auditUsageResponseSchema.safeParse(payload);
-  if (!result.success) throw new Error("Capture returned an invalid response. Refresh status to verify it.");
+  if (!result.success) throw new Error("审计记录设置响应无效，请刷新状态以验证。");
   return verifyAuditUsage(scope, result.data);
 }
 
 export function auditCaptureLockReason(usage: AuditUsageResponse): string | null {
-  if (!usage.entitlement.enabled) return "Capture requires Enterprise or instance entitlement. Ask an organization owner or instance operator to review availability.";
-  if (!usage.captureAvailable) return "Capture is unavailable in this deployment. Ask an instance operator to enable capture rollout.";
-  if (!usage.policy) return "Audit defaults could not be verified. Refresh status or ask an instance admin to check the service.";
+  if (!usage.entitlement.enabled) return "记录审计需要企业版或实例授权，请联系组织所有者或实例运维人员检查可用性。";
+  if (!usage.captureAvailable) return "此部署无法记录审计，请联系实例运维人员启用。";
+  if (!usage.policy) return "无法验证审计默认设置，请刷新状态或联系实例管理员检查服务。";
   return null;
 }
 
@@ -219,7 +219,7 @@ export function useAuditCapture(scope: AuditScope, onAccessError: (error: AuditR
     } catch (error) {
       if (!isCurrent(session)) return;
       if (isAuditAccessError(error)) onAccessError(error);
-      else setFeedback({ tone: "error", message: "Could not verify capture status. Refresh status before changing capture." });
+      else setFeedback({ tone: "error", message: "无法验证审计记录状态，请先刷新状态再更改。" });
     } finally {
       if (isCurrent(session)) setRefreshing(false);
     }
@@ -240,14 +240,14 @@ export function useAuditCapture(scope: AuditScope, onAccessError: (error: AuditR
       let sent = false;
       let canSend = true;
       const ensureCurrent = () => {
-        if (!isCurrent(session)) throw new Error("The workspace or membership changed.");
+        if (!isCurrent(session)) throw new Error("工作区或成员关系已更改。");
       };
       try {
         await client.cancelQueries({ queryKey: key, exact: true });
         ensureCurrent();
         await dashboard.runReauthableAction("update-audit-capture", async () => {
           ensureCurrent();
-          if (!canSend) throw new Error("Refresh status before changing capture.");
+          if (!canSend) throw new Error("请先刷新状态再更改审计记录设置。");
           canSend = false;
           sent = true;
           let result: AuditUsageResponse;
@@ -269,14 +269,14 @@ export function useAuditCapture(scope: AuditScope, onAccessError: (error: AuditR
           || (error.status === 409 && ["audit_policy_changed", "audit_policy_not_configured", "audit_capture_unavailable"].includes(error.code ?? "")));
         if (changed) {
           setFeedback({ tone: "neutral", message: error.code === "audit_policy_changed"
-            ? "Capture settings changed. Review the latest status and try again."
-            : "Capture availability changed. Review the latest restrictions before trying again." });
+            ? "审计记录设置已更改，请检查最新状态后重试。"
+            : "审计记录可用性已更改，请检查最新限制后重试。" });
           await refreshStatus(session, true);
         } else {
           setNeedsRefresh(sent);
           setFeedback({ tone: "error", message: sent
-            ? "The capture change could not be verified. Refresh status before trying again."
-            : "Capture change was not sent. Confirm your session and try again." });
+            ? "无法验证审计记录设置更改，请刷新状态后重试。"
+            : "审计记录设置更改尚未发送，请确认会话后重试。" });
         }
       } finally {
         canSend = false;

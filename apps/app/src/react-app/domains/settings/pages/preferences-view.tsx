@@ -44,6 +44,8 @@ export type PreferencesViewProps = {
   onDesktopNotificationsChange: (value: DesktopNotificationPreference) => void;
   linkOpenDestination: LinkOpenDestination;
   onLinkOpenDestinationChange: (value: LinkOpenDestination) => void;
+  askBeforeOpeningLinks?: boolean;
+  onAskBeforeOpeningLinksChange?: (value: boolean) => void;
 };
 
 function desktopNotificationPreferenceLabel(value: DesktopNotificationPreference) {
@@ -184,6 +186,14 @@ export function PreferencesView(props: PreferencesViewProps) {
               </LayoutSectionItemHeaderActions>
             </LayoutSectionItemHeader>
           </LayoutSectionItem>
+          {props.onAskBeforeOpeningLinksChange ? <LayoutSectionItem>
+            <LayoutSectionItemHeader className="min-h-10 items-center">
+              <LayoutSectionItemTitle>打开链接前询问</LayoutSectionItemTitle>
+              <LayoutSectionItemHeaderActions className="self-center">
+                <Switch aria-label="打开链接前询问" checked={props.askBeforeOpeningLinks !== false} onCheckedChange={props.onAskBeforeOpeningLinksChange} disabled={props.busy} />
+              </LayoutSectionItemHeaderActions>
+            </LayoutSectionItemHeader>
+          </LayoutSectionItem> : null}
         </LayoutSection>
       ) : null}
 

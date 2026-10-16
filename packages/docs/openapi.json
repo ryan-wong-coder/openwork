@@ -2426,6 +2426,8 @@
           "key": {
             "type": "string",
             "enum": [
+              "gatewayImageGeneration",
+              "visualConfiguration",
               "secureSecretFields",
               "memberListToolbars",
               "appBuildProgress",
@@ -2627,6 +2629,12 @@
                 "capabilities": {
                   "type": "object",
                   "properties": {
+                    "gatewayImageGeneration": {
+                      "type": "boolean"
+                    },
+                    "visualConfiguration": {
+                      "type": "boolean"
+                    },
                     "secureSecretFields": {
                       "type": "boolean"
                     },
@@ -2716,6 +2724,8 @@
                     }
                   },
                   "required": [
+                    "gatewayImageGeneration",
+                    "visualConfiguration",
                     "secureSecretFields",
                     "memberListToolbars",
                     "appBuildProgress",
@@ -2749,6 +2759,118 @@
                 "featureStates": {
                   "type": "object",
                   "properties": {
+                    "gatewayImageGeneration": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
+                    "visualConfiguration": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
                     "secureSecretFields": {
                       "type": "object",
                       "properties": {
@@ -4263,6 +4385,8 @@
                     }
                   },
                   "required": [
+                    "gatewayImageGeneration",
+                    "visualConfiguration",
                     "secureSecretFields",
                     "memberListToolbars",
                     "appBuildProgress",
@@ -4659,6 +4783,12 @@
                 "capabilities": {
                   "type": "object",
                   "properties": {
+                    "gatewayImageGeneration": {
+                      "type": "boolean"
+                    },
+                    "visualConfiguration": {
+                      "type": "boolean"
+                    },
                     "secureSecretFields": {
                       "type": "boolean"
                     },
@@ -4748,6 +4878,8 @@
                     }
                   },
                   "required": [
+                    "gatewayImageGeneration",
+                    "visualConfiguration",
                     "secureSecretFields",
                     "memberListToolbars",
                     "appBuildProgress",
@@ -4781,6 +4913,118 @@
                 "featureStates": {
                   "type": "object",
                   "properties": {
+                    "gatewayImageGeneration": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
+                    "visualConfiguration": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
                     "secureSecretFields": {
                       "type": "object",
                       "properties": {
@@ -6295,6 +6539,8 @@
                     }
                   },
                   "required": [
+                    "gatewayImageGeneration",
+                    "visualConfiguration",
                     "secureSecretFields",
                     "memberListToolbars",
                     "appBuildProgress",
@@ -29915,6 +30161,12 @@
                     "capabilities": {
                       "type": "object",
                       "properties": {
+                        "gatewayImageGeneration": {
+                          "type": "boolean"
+                        },
+                        "visualConfiguration": {
+                          "type": "boolean"
+                        },
                         "secureSecretFields": {
                           "type": "boolean"
                         },
@@ -30004,6 +30256,8 @@
                         }
                       },
                       "required": [
+                        "gatewayImageGeneration",
+                        "visualConfiguration",
                         "secureSecretFields",
                         "memberListToolbars",
                         "appBuildProgress",
@@ -30037,6 +30291,118 @@
                     "featureStates": {
                       "type": "object",
                       "properties": {
+                        "gatewayImageGeneration": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
+                        "visualConfiguration": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
                         "secureSecretFields": {
                           "type": "object",
                           "properties": {
@@ -31551,6 +31917,8 @@
                         }
                       },
                       "required": [
+                        "gatewayImageGeneration",
+                        "visualConfiguration",
                         "secureSecretFields",
                         "memberListToolbars",
                         "appBuildProgress",
@@ -31696,6 +32064,12 @@
                     "capabilities": {
                       "type": "object",
                       "properties": {
+                        "gatewayImageGeneration": {
+                          "type": "boolean"
+                        },
+                        "visualConfiguration": {
+                          "type": "boolean"
+                        },
                         "secureSecretFields": {
                           "type": "boolean"
                         },
@@ -31785,6 +32159,8 @@
                         }
                       },
                       "required": [
+                        "gatewayImageGeneration",
+                        "visualConfiguration",
                         "secureSecretFields",
                         "memberListToolbars",
                         "appBuildProgress",
@@ -31818,6 +32194,118 @@
                     "featureStates": {
                       "type": "object",
                       "properties": {
+                        "gatewayImageGeneration": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
+                        "visualConfiguration": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
                         "secureSecretFields": {
                           "type": "object",
                           "properties": {
@@ -33332,6 +33820,8 @@
                         }
                       },
                       "required": [
+                        "gatewayImageGeneration",
+                        "visualConfiguration",
                         "secureSecretFields",
                         "memberListToolbars",
                         "appBuildProgress",

@@ -12,6 +12,7 @@ import {
 } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+import { nativeText, nativeTemplate } from "./native-locale.mjs";
 
 /** @typedef {import("@openwork/types/desktop-ipc").DesktopIntegrationIssue} DesktopIntegrationIssue */
 /** @typedef {import("@openwork/types/desktop-ipc").DesktopIntegrationResult} DesktopIntegrationResult */
@@ -545,13 +546,13 @@ export function createLinuxDesktopIntegration({
 
     const { response, checkboxChecked } = await dialog.showMessageBox(window, {
       type: "question",
-      title: "Add OpenWork to your applications?",
-      message: "Add OpenWork to your application launcher and register browser sign-in callbacks?",
-      detail: `The launcher will use this AppImage in its current location:\n${appImagePath}\n\nIf you move or update it later, OpenWork repairs the launcher automatically. You can change or remove this in Settings → Preferences → AppImage desktop integration.`,
-      buttons: ["Not now", "Integrate"],
+      title: nativeText("Add OpenWork to your applications?"),
+      message: nativeText("Add OpenWork to your application launcher and register browser sign-in callbacks?"),
+      detail: nativeTemplate("The launcher will use this AppImage in its current location:\n{path}\n\nIf you move or update it later, OpenWork repairs the launcher automatically. You can change or remove this in Settings → Preferences → AppImage desktop integration.", { path: appImagePath }),
+      buttons: [nativeText("Not now"), nativeText("Integrate")],
       defaultId: 1,
       cancelId: 0,
-      checkboxLabel: "Don’t ask again for this AppImage",
+      checkboxLabel: nativeText("Don’t ask again for this AppImage"),
       checkboxChecked: false,
     });
 
@@ -564,10 +565,10 @@ export function createLinuxDesktopIntegration({
     if (!result.ok) {
       await dialog.showMessageBox(window, {
         type: "warning",
-        title: "Desktop integration failed",
-        message: "OpenWork could not complete desktop integration.",
-        detail: result.error ?? "Unknown error",
-        buttons: ["OK"],
+        title: nativeText("Desktop integration failed"),
+        message: nativeText("OpenWork could not complete desktop integration."),
+        detail: result.error ?? nativeText("Unknown error"),
+        buttons: [nativeText("OK")],
       });
     }
     return result.status;

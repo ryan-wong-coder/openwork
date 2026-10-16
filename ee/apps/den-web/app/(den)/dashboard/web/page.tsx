@@ -71,7 +71,7 @@ export function getWebPageAccessState({
   return billing.hasAccess ? "eligible" : "unsubscribed";
 }
 
-function CheckingWorkspaceAccess({ message = "Checking workspace access" }: { message?: string }) {
+function CheckingWorkspaceAccess({ message = "正在检查工作区访问权限" }: { message?: string }) {
   return (
     <div className="flex min-h-[420px] items-center justify-center px-6" data-testid="web-access-state" data-access-state="loading">
       <div className="w-full max-w-sm rounded-2xl border border-gray-200 bg-white p-6 shadow-[0_12px_40px_-28px_rgba(15,23,42,0.35)]">
@@ -81,7 +81,7 @@ function CheckingWorkspaceAccess({ message = "Checking workspace access" }: { me
           </div>
           <div>
             <p className="text-[15px] font-medium text-gray-950">{message}</p>
-            <p className="mt-1 text-[13px] leading-5 text-gray-500">Loading this organization’s subscription.</p>
+            <p className="mt-1 text-[13px] leading-5 text-gray-500">正在加载组织订阅。</p>
           </div>
         </div>
       </div>
@@ -92,7 +92,7 @@ function CheckingWorkspaceAccess({ message = "Checking workspace access" }: { me
 export function WebOpenButton({ openworkWebUrl }: { openworkWebUrl: string }) {
   return (
     <DenButton href={openworkWebUrl} target="_blank" rel="noopener noreferrer" icon={ExternalLink}>
-      Open OpenWork Web
+      打开 OpenWork Web
     </DenButton>
   );
 }
@@ -100,7 +100,7 @@ export function WebOpenButton({ openworkWebUrl }: { openworkWebUrl: string }) {
 export function WebPurchaseButton({ disabled, loading, onClick }: { disabled: boolean; loading: boolean; onClick: () => void }) {
   return (
     <DenButton disabled={disabled} loading={loading} onClick={onClick}>
-      Purchase OpenWork Web — $50 per member/month
+      购买 OpenWork Web，每名成员每月 50 美元
     </DenButton>
   );
 }
@@ -153,9 +153,9 @@ export default function WebPage() {
         { method: "GET", headers: { [ORG_SCOPE_HEADER]: expectedOrgId } },
         12000,
       );
-      if (!response.ok) throw new Error(getErrorMessage(payload, `OpenWork Web billing lookup failed (${response.status}).`));
+      if (!response.ok) throw new Error(getErrorMessage(payload, `无法查询 OpenWork Web 账单（${response.status}）。`));
       const parsed = parseStripeWebBilling(payload);
-      if (!parsed) throw new Error("OpenWork Web billing response was incomplete.");
+      if (!parsed) throw new Error("OpenWork Web 账单响应不完整，请重试。");
       if (!mountedRef.current || currentOrgIdRef.current !== expectedOrgId) return null;
       setBillingRecord({ orgId: expectedOrgId, billing: parsed });
       setErrorRecord(null);
@@ -164,7 +164,7 @@ export default function WebPage() {
       if (!quiet && mountedRef.current && currentOrgIdRef.current === expectedOrgId) {
         setErrorRecord({
           orgId: expectedOrgId,
-          message: error instanceof Error ? error.message : "Could not load OpenWork Web billing.",
+          message: error instanceof Error ? error.message : "无法加载 OpenWork Web 账单，请重试。",
         });
       }
       return null;
@@ -195,7 +195,7 @@ export default function WebPage() {
       setReturnChecking(false);
       setErrorRecord({
         orgId,
-        message: "Checkout was canceled and no payment was made. You can purchase whenever you're ready.",
+        message: "结账已取消，未产生付款，可在准备好后购买。",
       });
       clearStripeReturnParameters();
       return;
@@ -225,7 +225,7 @@ export default function WebPage() {
                 },
                 12000,
               );
-              if (!response.ok) throw getRequestError(payload, response, `Checkout confirmation failed (${response.status}).`);
+              if (!response.ok) throw getRequestError(payload, response, `无法确认结账结果（${response.status}）。`);
               synced = Boolean(payload && typeof payload === "object" && "synced" in payload && payload.synced === true);
             });
             return synced;
@@ -233,13 +233,13 @@ export default function WebPage() {
           syncedSessionsRef.current.set(syncKey, syncPromise);
         }
         const synced = await syncPromise;
-        if (!synced) throw new Error("This checkout could not be confirmed for the current organization. If you completed payment, access opens shortly.");
+        if (!synced) throw new Error("无法为当前组织确认此次结账。若已完成付款，访问权限将很快开启。");
       } catch (error) {
         if (!stopped && mountedRef.current && currentOrgIdRef.current === expectedOrgId) {
           setReturnChecking(false);
           setErrorRecord({
             orgId: expectedOrgId,
-            message: error instanceof Error ? error.message : "Could not confirm this checkout. OpenWork Web remains locked.",
+            message: error instanceof Error ? error.message : "无法确认此次结账，OpenWork Web 仍保持锁定。",
           });
           clearStripeReturnParameters();
         }
@@ -260,7 +260,7 @@ export default function WebPage() {
           setReturnChecking(false);
           setErrorRecord({
             orgId: expectedOrgId,
-            message: "Your payment is still being confirmed. Access opens automatically once confirmation completes — check back in a moment.",
+            message: "付款仍在确认，确认完成后访问权限会自动开启，请稍后查看。",
           });
           clearStripeReturnParameters();
           return;
@@ -281,11 +281,11 @@ export default function WebPage() {
   async function startWebCheckout() {
     if (!orgId || checkoutStartingRef.current) return;
     if (!canPurchaseWeb) {
-      setErrorRecord({ orgId, message: "Purchasing OpenWork Web needs the “Manage billing” permission. Ask an organization owner or admin." });
+      setErrorRecord({ orgId, message: "购买 OpenWork Web 需要“管理账单”权限，请联系组织所有者或管理员。" });
       return;
     }
     if (!billing?.configured) {
-      setErrorRecord({ orgId, message: "OpenWork Web billing is not configured for this deployment." });
+      setErrorRecord({ orgId, message: "此部署尚未配置 OpenWork Web 计费。" });
       return;
     }
     if (billing.hasAccess || hasOngoingWebSubscription(billing)) return;
@@ -308,17 +308,17 @@ export default function WebPage() {
           await requestWebBilling(orgId, false);
           return;
         }
-        if (!response.ok) throw getRequestError(payload, response, `OpenWork Web checkout failed (${response.status}).`);
+        if (!response.ok) throw getRequestError(payload, response, `OpenWork Web 结账失败（${response.status}）。`);
         const url = payload && typeof payload === "object" && "url" in payload && typeof payload.url === "string" ? payload.url : null;
-        if (!url) throw new Error("OpenWork Web checkout response did not include a URL.");
+        if (!url) throw new Error("OpenWork Web 结账响应中缺少地址，请重试。");
         if (!mountedRef.current || currentOrgIdRef.current !== orgId) {
-          throw new Error("The active organization changed before checkout opened. Please try again.");
+          throw new Error("打开结账页面前，当前组织已更改，请重试。");
         }
         window.location.href = url;
       });
     } catch (error) {
       if (mountedRef.current && currentOrgIdRef.current === orgId) {
-        setErrorRecord({ orgId, message: error instanceof Error ? error.message : "Could not start OpenWork Web checkout." });
+        setErrorRecord({ orgId, message: error instanceof Error ? error.message : "无法开始 OpenWork Web 结账，请重试。" });
       }
     } finally {
       checkoutStartingRef.current = false;
@@ -356,15 +356,15 @@ export default function WebPage() {
     <DashboardPageTemplate
       icon={Globe}
       title="OpenWork Web"
-      description="Use OpenWork in your browser with an organization subscription."
+      description="通过组织订阅在浏览器中使用 OpenWork。"
     >
       <div data-testid="openwork-web-access" data-access-state={accessState} data-access-source={billing?.accessSource ?? "none"}>
         {accessState === "error" ? (
           <DenCard size="spacious" data-testid="openwork-web-error">
-            <p className="text-[18px] font-medium text-gray-950">OpenWork Web remains locked</p>
-            <DenNotice className="mt-4" message={billingError ?? "Billing could not be confirmed."} />
+            <p className="text-[18px] font-medium text-gray-950">OpenWork Web 仍处于锁定状态</p>
+            <DenNotice className="mt-4" message={billingError ?? "无法确认账单，请重试。"} />
             <DenButton className="mt-5" variant="secondary" icon={RefreshCw} onClick={() => void retryBilling()}>
-              Try again
+              重试
             </DenButton>
           </DenCard>
         ) : null}
@@ -374,9 +374,9 @@ export default function WebPage() {
             <div className="flex items-start gap-4">
               <Loader2 className="mt-1 size-5 animate-spin text-blue-600" aria-hidden="true" />
               <div>
-                <p className="text-[18px] font-medium text-gray-950">Confirming your OpenWork Web subscription</p>
+                <p className="text-[18px] font-medium text-gray-950">正在确认 OpenWork Web 订阅</p>
                 <p className="mt-2 text-[14px] leading-6 text-gray-500">
-                  This usually takes a moment. Access opens automatically as soon as your payment is confirmed.
+                  通常只需片刻，付款确认后访问权限将自动开启。
                 </p>
               </div>
             </div>
@@ -386,30 +386,30 @@ export default function WebPage() {
         {accessState === "unsubscribed" && billing ? (
           <DenCard size="spacious" data-testid="openwork-web-purchase">
             <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-blue-600">OpenWork Web</p>
-            <h2 className="mt-2 text-[22px] font-semibold tracking-[-0.03em] text-gray-950">Browser access for your organization</h2>
+            <h2 className="mt-2 text-[22px] font-semibold tracking-[-0.03em] text-gray-950">组织浏览器访问权限</h2>
             <p className="mt-3 text-[14px] leading-6 text-gray-600">{OPENWORK_WEB_QUANTITY_EXPLANATION}</p>
             <div className="mt-5 rounded-2xl border border-gray-200 bg-gray-50 p-4" data-testid="openwork-web-price-breakdown">
               <p className="text-[22px] font-semibold tracking-[-0.03em] text-gray-950">
                 {getOpenWorkWebQuantityDescription(billing.quantity)} × {unitPrice}
               </p>
               <p className="mt-1 text-[14px] text-gray-600">
-                {expectedTotal} per {billing.interval}
+                {expectedTotal} / 月
               </p>
             </div>
             <p className="mt-5 text-[13px] leading-5 text-gray-600" data-testid="openwork-web-checkout-explainer">
-              Access opens as soon as your payment is confirmed. Billing follows your joined member count automatically as your team changes — pending invitations are never billed.
+              付款确认后即可访问。费用会随已加入成员数量自动调整，待接受的邀请不计费。
             </p>
             {!billing.configured ? (
-              <DenNotice className="mt-5" tone="neutral" message="OpenWork Web billing is not configured for this deployment." />
+              <DenNotice className="mt-5" tone="neutral" message="此部署尚未配置 OpenWork Web 计费。" />
             ) : hasOngoingSubscription ? (
               <div className="mt-5 grid gap-4">
                 <DenNotice
                   tone="warning"
                   message={billing.subscription?.paymentStatus === "payment_failed"
-                    ? "This organization already has an OpenWork Web subscription with a failed payment. Update the payment method from Billing to restore access."
-                    : `This organization already has an OpenWork Web subscription (${formatSubscriptionStatus(billing.subscription?.status ?? "unknown").toLowerCase()}). Manage the existing subscription from Billing.`}
+                    ? "此组织已有 OpenWork Web 订阅，但付款失败。请在“账单”中更新付款方式以恢复访问。"
+                    : `此组织已有 OpenWork Web 订阅（${formatSubscriptionStatus(billing.subscription?.status ?? "unknown").toLowerCase()}），请在“账单”中管理现有订阅。`}
                 />
-                <DenButton variant="secondary" href={getBillingRoute(activeOrg?.slug)}>View billing</DenButton>
+                <DenButton variant="secondary" href={getBillingRoute(activeOrg?.slug)}>查看账单</DenButton>
               </div>
             ) : canPurchaseWeb ? (
               <div className="mt-5">
@@ -419,7 +419,7 @@ export default function WebPage() {
               <DenNotice
                 className="mt-5"
                 tone="warning"
-                message="Ask someone who manages billing for this organization to purchase OpenWork Web. You'll get access as soon as it's active."
+                message="请联系组织账单管理员购买 OpenWork Web，订阅生效后即可访问。"
               />
             )}
           </DenCard>
@@ -428,17 +428,17 @@ export default function WebPage() {
         {accessState === "eligible" && billing ? (
           <DenCard size="spacious" data-testid="openwork-web-eligible">
             <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-emerald-700">
-              {billing.accessSource === "complimentary" ? "Complimentary access" : "Subscription active"}
+              {billing.accessSource === "complimentary" ? "免费访问权限" : "订阅已生效"}
             </p>
-            <h2 className="mt-2 text-[22px] font-semibold tracking-[-0.03em] text-gray-950">OpenWork Web is ready</h2>
+            <h2 className="mt-2 text-[22px] font-semibold tracking-[-0.03em] text-gray-950">OpenWork Web 已就绪</h2>
             <p className="mt-3 text-[14px] leading-6 text-gray-600">
               {billing.accessSource === "complimentary"
-                ? `OpenWork Web is included for all ${getOpenWorkWebQuantityDescription(billing.quantity)} in this organization, with no Stripe subscription or per-member charge.`
-                : `OpenWork Web is active for ${getOpenWorkWebQuantityDescription(billing.quantity)} in this organization.`}
+                ? `此组织的全部${getOpenWorkWebQuantityDescription(billing.quantity)}均可使用 OpenWork Web，无需 Stripe 订阅或按人付费。`
+                : `此组织的${getOpenWorkWebQuantityDescription(billing.quantity)}已启用 OpenWork Web。`}
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
               <WebOpenButton openworkWebUrl={runtimeConfig.openworkWebUrl} />
-              <DenButton variant="secondary" href={getBillingRoute(activeOrg?.slug)}>View billing</DenButton>
+              <DenButton variant="secondary" href={getBillingRoute(activeOrg?.slug)}>查看账单</DenButton>
             </div>
           </DenCard>
         ) : null}

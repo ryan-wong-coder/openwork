@@ -51,17 +51,17 @@ import { DenCatalogList, DenCatalogRow } from "../../_components/ui/catalog-row"
 import { CatalogIdentityTile } from "./catalog-identity-tile";
 
 const COMPONENT_TYPE_LABELS: Record<string, { singular: string; plural: string }> = {
-  skill: { singular: "skill", plural: "skills" },
-  agent: { singular: "agent", plural: "agents" },
-  command: { singular: "command", plural: "commands" },
-  hook: { singular: "hook", plural: "hooks" },
-  mcp: { singular: "MCP server", plural: "MCP servers" },
-  mcp_server: { singular: "MCP server", plural: "MCP servers" },
-  lsp_server: { singular: "LSP server", plural: "LSP servers" },
-  monitor: { singular: "monitor", plural: "monitors" },
-  workflow: { singular: "Workflow", plural: "Workflows" },
-  app: { singular: "App", plural: "Apps" },
-  settings: { singular: "setting", plural: "settings" },
+  skill: { singular: "项技能", plural: "项技能" },
+  agent: { singular: "个智能体", plural: "个智能体" },
+  command: { singular: "条命令", plural: "条命令" },
+  hook: { singular: "个钩子", plural: "个钩子" },
+  mcp: { singular: "MCP 服务器", plural: "MCP 服务器" },
+  mcp_server: { singular: "MCP 服务器", plural: "MCP 服务器" },
+  lsp_server: { singular: "LSP 服务器", plural: "LSP 服务器" },
+  monitor: { singular: "个监控", plural: "个监控" },
+  workflow: { singular: "工作流", plural: "工作流" },
+  app: { singular: "应用", plural: "应用" },
+  settings: { singular: "项设置", plural: "项设置" },
 };
 
 function componentTypeLabel(type: string, count: number) {
@@ -130,7 +130,7 @@ export function MarketplaceDetailScreen({ marketplaceId }: { marketplaceId: stri
     return (
       <div className="mx-auto max-w-[860px] px-6 py-8 md:px-8">
         <div className="rounded-2xl border border-gray-100 bg-white px-5 py-8 text-[13px] text-gray-400">
-          Loading collection…
+          正在加载集合…
         </div>
       </div>
     );
@@ -140,7 +140,7 @@ export function MarketplaceDetailScreen({ marketplaceId }: { marketplaceId: stri
     return (
       <div className="mx-auto max-w-[860px] px-6 py-8 md:px-8">
         <div className="rounded-2xl border border-red-100 bg-red-50 px-5 py-3.5 text-[13px] text-red-600">
-          {error instanceof Error ? error.message : "That collection could not be found."}
+          {error instanceof Error ? error.message : "未找到此集合。"}
         </div>
       </div>
     );
@@ -158,10 +158,10 @@ export function MarketplaceDetailScreen({ marketplaceId }: { marketplaceId: stri
     }
   }
   const tabs: readonly TabItem<MarketplaceDetailTab>[] = [
-    { value: "plugins", label: "Plugins", icon: Puzzle, count: plugins.length },
-    { value: "members", label: "Members", icon: Users },
+    { value: "plugins", label: "插件", icon: Puzzle, count: plugins.length },
+    { value: "members", label: "成员", icon: Users },
 
-    { value: "configure", label: "Configure", icon: Plug, count: configurationTargets.length },
+    { value: "configure", label: "配置", icon: Plug, count: configurationTargets.length },
   ];
 
   return (
@@ -172,7 +172,7 @@ export function MarketplaceDetailScreen({ marketplaceId }: { marketplaceId: stri
           className="inline-flex items-center gap-1.5 text-[13px] text-gray-400 transition hover:text-gray-700"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back
+          返回
         </Link>
         {access.canManageMarketplaces && marketplace.canDelete ? (
           <div ref={actionsRef} className="relative">
@@ -180,7 +180,7 @@ export function MarketplaceDetailScreen({ marketplaceId }: { marketplaceId: stri
               type="button"
               onClick={() => setActionsOpen((current) => !current)}
               className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-500 transition hover:border-gray-300 hover:bg-gray-50 hover:text-gray-900"
-              aria-label={`More actions for ${marketplace.name}`}
+              aria-label={`${marketplace.name} 的更多操作`}
               aria-haspopup="menu"
               aria-expanded={actionsOpen}
               data-testid="marketplace-actions-trigger"
@@ -190,7 +190,7 @@ export function MarketplaceDetailScreen({ marketplaceId }: { marketplaceId: stri
             {actionsOpen ? (
               <div
                 role="menu"
-                aria-label={`Actions for ${marketplace.name}`}
+                aria-label={`${marketplace.name} 的操作`}
                 className="absolute right-0 top-10 z-30 w-44 overflow-hidden rounded-2xl border border-gray-100 bg-white p-1.5 text-[13px] shadow-xl shadow-gray-900/10"
               >
                 <button
@@ -203,7 +203,7 @@ export function MarketplaceDetailScreen({ marketplaceId }: { marketplaceId: stri
                   className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-gray-600 transition hover:bg-gray-50 hover:text-gray-900"
                 >
                   <Pencil className="h-3.5 w-3.5" aria-hidden />
-                  Edit
+                  编辑
                 </button>
                 <div className="my-1 border-t border-gray-100" />
                 <button
@@ -218,7 +218,7 @@ export function MarketplaceDetailScreen({ marketplaceId }: { marketplaceId: stri
                   data-testid="delete-marketplace-action"
                 >
                   <Trash2 className="h-3.5 w-3.5" aria-hidden />
-                  Delete
+                  删除
                 </button>
               </div>
             ) : null}
@@ -242,7 +242,7 @@ export function MarketplaceDetailScreen({ marketplaceId }: { marketplaceId: stri
             <p className="mt-1 text-[13px] leading-[1.55] text-gray-500">{marketplace.description}</p>
           ) : null}
           <p className="mt-1.5 text-[11.5px] text-gray-400">
-            {plugins.length} plugin{plugins.length === 1 ? "" : "s"} · Added{" "}
+            {plugins.length} 个插件 · 添加于{" "}
             {formatMarketplaceTimestamp(marketplace.createdAt)}
           </p>
         </div>
@@ -257,11 +257,11 @@ export function MarketplaceDetailScreen({ marketplaceId }: { marketplaceId: stri
 
       <div className="mt-6">
         {activeTab === "plugins" ? (
-          <div role="tabpanel" aria-label="Plugins" className="space-y-6">
+          <div role="tabpanel" aria-label="插件" className="space-y-6">
             {source ? (
               <section>
                 <h2 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400">
-                  Source
+                  源码
                 </h2>
                 <Link
                   href={getGithubIntegrationSetupRoute(orgSlug, source.connectorInstanceId)}
@@ -275,7 +275,7 @@ export function MarketplaceDetailScreen({ marketplaceId }: { marketplaceId: stri
                       {source.repositoryFullName}
                     </p>
                     <p className="mt-0.5 truncate text-[12.5px] text-gray-500">
-                      {source.accountLogin ? `@${source.accountLogin}` : "GitHub connector"}
+                      {source.accountLogin ? `@${source.accountLogin}` : "GitHub 连接器"}
                       {source.branch ? (
                         <>
                           <span className="mx-1.5 text-gray-300">·</span>
@@ -293,10 +293,10 @@ export function MarketplaceDetailScreen({ marketplaceId }: { marketplaceId: stri
               <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
                 <div>
                   <h2 className="text-[14px] font-semibold tracking-[-0.01em] text-gray-900">
-                    Plugins in this collection
+                    此集合中的插件
                   </h2>
                   <p className="mt-0.5 text-[12.5px] text-gray-500">
-                    Everyone with access to this collection gets these in the desktop app.
+                    拥有此集合访问权限的人员均可在桌面应用中使用这些插件。
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -306,7 +306,7 @@ export function MarketplaceDetailScreen({ marketplaceId }: { marketplaceId: stri
                       className={buttonVariants({ variant: "primary", size: "sm" })}
                     >
                       <Plus className="h-4 w-4" aria-hidden />
-                      Add a plugin
+                      添加插件
                     </Link>
                   ) : null}
                 </div>
@@ -315,15 +315,15 @@ export function MarketplaceDetailScreen({ marketplaceId }: { marketplaceId: stri
               {plugins.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-gray-200 bg-white px-5 py-10 text-center">
                   <p className="text-[14px] font-medium tracking-[-0.02em] text-gray-800">
-                    No plugins in this collection yet
+                    此集合暂无插件
                   </p>
                   <p className="mx-auto mt-2 max-w-[420px] text-[13px] leading-6 text-gray-500">
-                    Plugins appear here as they're imported from the source repository.
+                    从源仓库导入的插件将显示在此处。
                   </p>
                 </div>
               ) : (
                 <DenCatalogList
-                  label={`${plugins.length} plugin${plugins.length === 1 ? "" : "s"}`}
+                  label={`${plugins.length} 个插件`}
                   valueLabel="Components"
                   valueWidth="150px"
                 >
@@ -337,13 +337,13 @@ export function MarketplaceDetailScreen({ marketplaceId }: { marketplaceId: stri
         ) : null}
 
         {activeTab === "members" ? (
-          <div role="tabpanel" aria-label="Members">
+          <div role="tabpanel" aria-label="成员">
             <MarketplaceAccessSection marketplaceId={marketplace.id} />
           </div>
         ) : null}
 
         {activeTab === "configure" ? (
-          <div role="tabpanel" aria-label="Configure">
+          <div role="tabpanel" aria-label="配置">
             <MarketplaceConfigureSection
               targets={configurationTargets}
               presets={presets}
@@ -435,14 +435,14 @@ function EditMarketplaceDialog({
         onClick={(event) => event.stopPropagation()}
       >
         <h2 id="edit-marketplace-title" className="text-[16px] font-semibold tracking-[-0.01em] text-gray-950">
-          Edit collection
+          编辑集合
         </h2>
         <p className="mt-1 text-[13px] leading-6 text-gray-500">
-          Update how this collection appears to your organization.
+          更新此集合向组织显示的信息。
         </p>
 
         <label className="mt-4 block">
-          <span className="mb-1.5 block text-[12px] font-medium text-gray-700">Name</span>
+          <span className="mb-1.5 block text-[12px] font-medium text-gray-700">名称</span>
           <DenInput
             value={name}
             onChange={(event) => setName(event.target.value)}
@@ -452,7 +452,7 @@ function EditMarketplaceDialog({
           />
         </label>
         <label className="mt-3 block">
-          <span className="mb-1.5 block text-[12px] font-medium text-gray-700">Description (optional)</span>
+          <span className="mb-1.5 block text-[12px] font-medium text-gray-700">描述（可选）</span>
           <DenTextarea
             value={description}
             onChange={(event) => setDescription(event.target.value)}
@@ -464,13 +464,13 @@ function EditMarketplaceDialog({
 
         {updateMarketplace.error ? (
           <p className="mt-3 text-[12.5px] text-red-600">
-            {updateMarketplace.error instanceof Error ? updateMarketplace.error.message : "Failed to update collection."}
+            {updateMarketplace.error instanceof Error ? updateMarketplace.error.message : "更新集合失败，请重试。"}
           </p>
         ) : null}
 
         <div className="mt-5 flex items-center justify-end gap-2">
           <DenButton variant="secondary" onClick={onClose} disabled={updateMarketplace.isPending}>
-            Cancel
+            取消
           </DenButton>
           <DenButton
             loading={updateMarketplace.isPending}
@@ -478,7 +478,7 @@ function EditMarketplaceDialog({
             onClick={() => void handleSave()}
             data-testid="marketplace-edit-save"
           >
-            Save changes
+            保存更改
           </DenButton>
         </div>
       </div>
@@ -519,26 +519,26 @@ function DeleteMarketplaceDialog({
           </div>
           <div className="min-w-0 flex-1">
             <h2 id="delete-marketplace-title" className="text-[18px] font-semibold tracking-[-0.02em] text-gray-950">
-              Delete {marketplaceName}?
+              删除 {marketplaceName}?
             </h2>
             <p id="delete-marketplace-description" className="mt-1 text-[13px] leading-6 text-gray-600">
-              This action cannot be undone.
+              此操作无法撤销。
             </p>
           </div>
         </div>
 
         {error ? (
           <p className="mt-4 rounded-xl bg-red-50 px-3 py-2 text-[12.5px] text-red-600">
-            {error instanceof Error ? error.message : "Failed to delete collection."}
+            {error instanceof Error ? error.message : "删除集合失败，请重试。"}
           </p>
         ) : null}
 
         <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <DenButton variant="secondary" onClick={onClose} disabled={busy}>
-            Cancel
+            取消
           </DenButton>
           <DenButton variant="destructive" icon={Trash2} loading={busy} onClick={onConfirm} data-testid="confirm-delete-marketplace">
-            Delete collection
+            删除集合
           </DenButton>
         </div>
       </div>
@@ -608,7 +608,7 @@ function MarketplaceAccessSection({ marketplaceId }: { marketplaceId: string }) 
     <section>
       <div className="mb-3 flex items-baseline justify-between gap-3">
         <h2 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400">
-          Who can access this
+          可访问人员
         </h2>
         {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin text-gray-400" aria-hidden /> : null}
       </div>
@@ -625,12 +625,12 @@ function MarketplaceAccessSection({ marketplaceId }: { marketplaceId: string }) 
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-[14px] font-semibold tracking-[-0.01em] text-gray-900">
-              Everyone in {orgContext?.organization.name ?? "this organization"}
+              所有人，所属组织： {orgContext?.organization.name ?? "此组织"}
             </p>
             <p className="mt-0.5 text-[12.5px] leading-[1.55] text-gray-500">
               {orgWideGrant
-                ? "All org members can see this collection."
-                : "Only people you add below, and people who manage everything shared, can see this collection."}
+                ? "所有组织成员均可查看此集合。"
+                : "仅下方添加的人员，以及拥有所有共享内容管理权限的人员可查看此集合。"}
             </p>
           </div>
           <div
@@ -649,37 +649,37 @@ function MarketplaceAccessSection({ marketplaceId }: { marketplaceId: string }) 
         </button>
 
         <AccessRowGroup
-          label="Teams"
+          label="团队"
           icon={Users}
-          emptyLabel="No team access yet"
+          emptyLabel="尚未向团队授予访问权限"
           items={teamGrants.map((grant) => {
             const team = grant.teamId ? teamsById.get(grant.teamId) : null;
             return {
               grantId: grant.id,
-              title: team?.name ?? "Removed team",
-              subtitle: team ? `${team.memberIds.length} member${team.memberIds.length === 1 ? "" : "s"}` : null,
+              title: team?.name ?? "已移除的团队",
+              subtitle: team ? `${team.memberIds.length} 名成员` : null,
             };
           })}
           availableOptions={teamsAvailable.map((team) => ({
             id: team.id,
             label: team.name,
-            subtitle: `${team.memberIds.length} member${team.memberIds.length === 1 ? "" : "s"}`,
+            subtitle: `${team.memberIds.length} 名成员`,
           }))}
-          availableEmptyLabel="All teams already have access"
+          availableEmptyLabel="所有团队均已获得访问权限"
           onAdd={(id) => void handleAddTeam(id)}
           onRemove={(id) => void handleRevoke(id)}
           disabled={grantMutation.isPending || revokeMutation.isPending}
         />
 
         <AccessRowGroup
-          label="People"
+          label="人员"
           icon={Users}
-          emptyLabel="No individual access yet"
+          emptyLabel="尚未向个人授予访问权限"
           items={memberGrants.map((grant) => {
             const member = grant.orgMembershipId ? membersById.get(grant.orgMembershipId) : null;
             return {
               grantId: grant.id,
-              title: member?.user.name ?? "Removed member",
+              title: member?.user.name ?? "已移除的成员",
               subtitle: member?.user.email ?? null,
             };
           })}
@@ -688,7 +688,7 @@ function MarketplaceAccessSection({ marketplaceId }: { marketplaceId: string }) 
             label: member.user.name,
             subtitle: member.user.email,
           }))}
-          availableEmptyLabel="Everyone already has access"
+          availableEmptyLabel="所有人均已获得访问权限"
           onAdd={(id) => void handleAddMember(id)}
           onRemove={(id) => void handleRevoke(id)}
           disabled={grantMutation.isPending || revokeMutation.isPending}
@@ -697,17 +697,17 @@ function MarketplaceAccessSection({ marketplaceId }: { marketplaceId: string }) 
 
       {accessQuery.error ? (
         <p className="mt-2 text-[12px] text-red-600">
-          {accessQuery.error instanceof Error ? accessQuery.error.message : "Failed to load access."}
+          {accessQuery.error instanceof Error ? accessQuery.error.message : "无法加载访问权限，请重试。"}
         </p>
       ) : null}
       {grantMutation.error ? (
         <p className="mt-2 text-[12px] text-red-600">
-          {grantMutation.error instanceof Error ? grantMutation.error.message : "Failed to grant access."}
+          {grantMutation.error instanceof Error ? grantMutation.error.message : "授予访问权限失败，请重试。"}
         </p>
       ) : null}
       {revokeMutation.error ? (
         <p className="mt-2 text-[12px] text-red-600">
-          {revokeMutation.error instanceof Error ? revokeMutation.error.message : "Failed to revoke access."}
+          {revokeMutation.error instanceof Error ? revokeMutation.error.message : "撤销访问权限失败，请重试。"}
         </p>
       ) : null}
     </section>
@@ -757,7 +757,7 @@ function AccessRowGroup({
               ) : null}
               <button
                 type="button"
-                aria-label={`Remove ${entry.title}`}
+                aria-label={`移除 ${entry.title}`}
                 disabled={disabled}
                 onClick={() => onRemove(entry.grantId)}
                 className="inline-flex h-5 w-5 items-center justify-center rounded-full text-gray-400 transition hover:bg-gray-200 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-50"
@@ -833,7 +833,7 @@ function AccessAddPicker({
         className="inline-flex items-center gap-1 rounded-full border border-dashed border-gray-200 px-2.5 py-1 text-[11.5px] text-gray-500 transition hover:border-gray-400 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <Plus className="h-3 w-3" aria-hidden />
-        Add {label.toLowerCase().replace(/s$/, "")}
+        添加 {label.toLowerCase().replace(/s$/, "")}
       </button>
 
       {open ? (
@@ -843,14 +843,14 @@ function AccessAddPicker({
               type="search"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder={`Search ${label.toLowerCase()}...`}
+              placeholder={`搜索${label.toLowerCase()}…`}
               className="w-full bg-transparent text-[12.5px] text-gray-900 placeholder:text-gray-400 focus:outline-hidden"
               autoFocus
             />
           </div>
           <div className="max-h-[240px] overflow-y-auto py-1">
             {filtered.length === 0 ? (
-              <p className="px-3 py-3 text-[12px] text-gray-400">No matches</p>
+              <p className="px-3 py-3 text-[12px] text-gray-400">无匹配项</p>
             ) : (
               filtered.map((option) => (
                 <button
@@ -901,9 +901,9 @@ function MarketplaceConfigureSection({
   if (targets.length === 0) {
     return (
       <div className="rounded-2xl border border-gray-100 bg-white px-5 py-10 text-center">
-        <p className="text-[14px] font-semibold tracking-[-0.01em] text-gray-900">Everything is configured</p>
+        <p className="text-[14px] font-semibold tracking-[-0.01em] text-gray-900">全部配置完成</p>
         <p className="mx-auto mt-1.5 max-w-[420px] text-[13px] leading-6 text-gray-500">
-          This collection has no MCP configuration actions waiting.
+          此集合没有待处理的 MCP 配置操作。
         </p>
       </div>
     );
@@ -914,14 +914,14 @@ function MarketplaceConfigureSection({
       <div className="mb-3 flex items-baseline justify-between gap-3">
         <div>
           <h2 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400">
-            Actions required
+            需要处理
           </h2>
           <p className="mt-1 text-[12.5px] text-gray-500">
-            Configure services that need setup, or connect accounts that are ready.
+            配置需要设置的服务，或连接已就绪的账户。
           </p>
         </div>
         <p className="shrink-0 text-[11px] font-medium text-amber-700">
-          {targets.length} needed
+          需要 {targets.length} 项
         </p>
       </div>
 
@@ -945,7 +945,7 @@ function MarketplaceConfigureSection({
                 />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[13.5px] font-semibold text-gray-900">{serviceName}</p>
-                  <p className="mt-0.5 truncate text-[11.5px] text-gray-500">Required by {target.plugin.name}</p>
+                  <p className="mt-0.5 truncate text-[11.5px] text-gray-500">要求来源 {target.plugin.name}</p>
                 </div>
                 {needsAdminSetup ? (
                   canManageConnections ? (
@@ -956,10 +956,10 @@ function MarketplaceConfigureSection({
                       className="h-8 shrink-0 px-3 text-[11.5px]"
                       onClick={() => onSetup(target)}
                     >
-                      Configure
+                      配置
                     </DenButton>
                   ) : (
-                    <span className="shrink-0 text-[11px] font-medium text-gray-500">Admin setup needed</span>
+                    <span className="shrink-0 text-[11px] font-medium text-gray-500">需要管理员配置</span>
                   )
                 ) : readinessAction ? (
                   <DenButton
@@ -970,7 +970,7 @@ function MarketplaceConfigureSection({
                     loading={connectingConnectionId === readinessAction.connectionId || pollingConnectionId === readinessAction.connectionId}
                     onClick={() => onConnect(readinessAction.connectionId)}
                   >
-                    Connect
+                    连接
                   </DenButton>
                 ) : null}
               </div>
@@ -981,12 +981,12 @@ function MarketplaceConfigureSection({
 
               <details className="group/connection ml-12 mt-1.5">
                 <summary className="inline-flex cursor-pointer list-none items-center gap-1 text-[10.5px] text-gray-400 transition hover:text-gray-600 [&::-webkit-details-marker]:hidden">
-                  Details
+                  详情
                   <ChevronDown className="h-2.5 w-2.5 transition-transform group-open/connection:rotate-180" aria-hidden="true" />
                 </summary>
                 <div className="mt-1.5 rounded-lg bg-gray-50 px-2.5 py-2">
                   <p className="break-all font-mono text-[10px] leading-4 text-gray-500">
-                    Plugin-declared URL (read-only): {target.connection.url}
+                    插件声明的地址（只读）： {target.connection.url}
                   </p>
                   {readinessAction ? (
                     <p className="mt-1 text-[11px] leading-4 text-gray-600">{readinessAction.note}</p>
@@ -1018,10 +1018,10 @@ function MarketplacePluginRow({
 
   const fallbackCaption =
     plugin.memberCount > 0
-      ? `${plugin.memberCount} imported object${plugin.memberCount === 1 ? "" : "s"}`
+      ? `${plugin.memberCount} 个导入对象`
       : plugin.sourceFormat === "openwork-builtin"
-        ? "Built into the desktop app"
-        : "Not imported yet";
+        ? "内置于桌面应用"
+        : "尚未导入";
 
   return (
     <DenCatalogRow
@@ -1056,15 +1056,15 @@ function renderCloudReadinessBadge(readiness?: MarketplacePluginCloudReadiness) 
 function cloudReadinessLabel(state: MarketplacePluginCloudReadinessState) {
   switch (state) {
     case "ready":
-      return "Cloud ready";
+      return "云端已就绪";
     case "needs_signin":
-      return "Members need sign-in";
+      return "成员需要登录";
     case "needs_admin_setup":
-      return "Needs connection";
+      return "需要连接";
     case "desktop_only":
-      return "Desktop only";
+      return "仅桌面端";
     case "not_synced":
-      return "Sync pending";
+      return "等待同步";
   }
 }
 
@@ -1087,7 +1087,7 @@ export function PluginMcpSetupDialog({
 
   const preset = target ? findPresetForRequirement(presets, target.connection) : null;
   const authAssumed = pluginSetupInitialState(preset).authAssumed;
-  const serviceName = target ? serviceNameForRequirement(target.connection, preset) : "MCP server";
+  const serviceName = target ? serviceNameForRequirement(target.connection, preset) : "MCP 服务器";
   const requiresOAuthClient = authType === "oauth" && preset?.requiresOAuthClient === true;
   const resolvedCredentialMode = pluginSetupCredentialMode(authType, credentialMode);
   const successCopy = target ? pluginSetupSuccessCopy({
@@ -1151,26 +1151,26 @@ export function PluginMcpSetupDialog({
       >
         {result ? (
           <>
-            <h2 className="text-[18px] font-semibold tracking-[-0.02em] text-gray-950">Connection configured</h2>
+            <h2 className="text-[18px] font-semibold tracking-[-0.02em] text-gray-950">连接已配置</h2>
             <p className="mt-2 text-[13px] leading-6 text-gray-600">
               {successCopy?.body}
             </p>
             <div className="mt-6 flex justify-end">
-              <DenButton variant="primary" onClick={onClose}>Done</DenButton>
+              <DenButton variant="primary" onClick={onClose}>完成</DenButton>
             </div>
           </>
         ) : (
           <>
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
-                <h2 className="text-[18px] font-semibold tracking-[-0.02em] text-gray-950">Configure {serviceName}</h2>
+                <h2 className="text-[18px] font-semibold tracking-[-0.02em] text-gray-950">配置 {serviceName}</h2>
                 <p className="mt-1 text-[12.5px] leading-5 text-gray-500">
-                  Required by {target.plugin.name}. Access follows this collection.
+                  要求来源 {target.plugin.name}。访问权限随此集合设置。
                 </p>
               </div>
               <button
                 type="button"
-                aria-label="Close"
+                aria-label="关闭"
                 className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
                 onClick={onClose}
               >
@@ -1181,14 +1181,14 @@ export function PluginMcpSetupDialog({
             <div className="mt-4 space-y-4">
               <div className="divide-y divide-gray-100 overflow-hidden rounded-xl border border-gray-100 bg-gray-50">
                 <div className="flex items-center gap-3 px-3.5 py-2.5">
-                  <span className="w-[92px] shrink-0 text-[11.5px] font-medium text-gray-500">MCP server</span>
+                  <span className="w-[92px] shrink-0 text-[11.5px] font-medium text-gray-500">MCP 服务器</span>
                   <span className="min-w-0 truncate font-mono text-[11.5px] text-gray-700" title={target.connection.url}>
                     {target.connection.url}
                   </span>
                 </div>
                 {!authAssumed ? (
                   <div className="flex items-center gap-3 px-3.5 py-2.5">
-                    <span className="w-[92px] shrink-0 text-[11.5px] font-medium text-gray-500">Authentication</span>
+                    <span className="w-[92px] shrink-0 text-[11.5px] font-medium text-gray-500">身份验证</span>
                     <span className="rounded-full bg-white px-2 py-0.5 text-[11px] font-medium text-gray-700 ring-1 ring-gray-200">
                       {pluginSetupAuthLabel(authType)}
                     </span>
@@ -1198,7 +1198,7 @@ export function PluginMcpSetupDialog({
 
               {authAssumed ? (
                 <div>
-                  <label className="mb-1.5 block text-[12px] font-medium text-gray-700">Authentication method</label>
+                  <label className="mb-1.5 block text-[12px] font-medium text-gray-700">身份验证方式</label>
                   <DenSelect
                     value={authType}
                     onChange={(event) => {
@@ -1208,72 +1208,72 @@ export function PluginMcpSetupDialog({
                     }}
                   >
                     <option value="oauth">OAuth</option>
-                    <option value="apikey">API key</option>
-                    <option value="none">No authentication</option>
+                    <option value="apikey">API密钥</option>
+                    <option value="none">无需身份验证</option>
                   </DenSelect>
                   <p className="mt-1.5 text-[11.5px] leading-4 text-gray-500">
-                    No matching preset. Confirm how this server authenticates.
+                    没有匹配的预设，请确认此服务器的身份验证方式。
                   </p>
                 </div>
               ) : null}
 
               {authType === "apikey" ? (
                 <div>
-                  <label className="mb-1.5 block text-[12px] font-medium text-gray-700">{serviceName} API key</label>
+                  <label className="mb-1.5 block text-[12px] font-medium text-gray-700">{serviceName} API密钥</label>
                   <McpCredentialInput
                     kind="secret"
                     name="marketplace-mcp-api-key"
                     value={apiKey}
                     onChange={setApiKey}
-                    placeholder="API key"
+                    placeholder="API密钥"
                   />
                   <p className="mt-1.5 text-[11.5px] leading-4 text-gray-500">
-                    Stored securely as a shared collection credential.
+                    作为集合共享凭据安全保存。
                   </p>
                 </div>
               ) : null}
 
               {authType === "oauth" ? (
                 <div>
-                  <label className="mb-1.5 block text-[12px] font-medium text-gray-700">Account access</label>
+                  <label className="mb-1.5 block text-[12px] font-medium text-gray-700">账户访问权限</label>
                   <DenSelect value={credentialMode} onChange={(event) => setCredentialMode(event.target.value === "shared" ? "shared" : "per_member")}>
-                    <option value="per_member">Each user connects their own account</option>
-                    <option value="shared">Organization-shared account</option>
+                    <option value="per_member">每人连接自己的账户</option>
+                    <option value="shared">组织共享账户</option>
                   </DenSelect>
                   <p className="mt-1.5 text-[11.5px] leading-4 text-gray-500">
                     {credentialMode === "per_member"
-                      ? "Each assigned member connects their own account."
-                      : "An admin connects one account for the organization."}
+                      ? "每名已分配成员连接自己的账户。"
+                      : "由管理员为组织连接一个共用账户。"}
                   </p>
                 </div>
               ) : authType === "none" ? (
                 <div className="rounded-xl border border-gray-100 bg-gray-50 px-3.5 py-2.5 text-[12px] text-gray-600">
-                  No credentials are required.
+                  无需凭据。
                 </div>
               ) : null}
 
               {requiresOAuthClient ? (
                 <div className="rounded-xl border border-gray-100 bg-gray-50 p-3.5">
-                  <p className="text-[12.5px] font-semibold text-gray-900">OAuth credentials</p>
+                  <p className="text-[12.5px] font-semibold text-gray-900">OAuth 凭据</p>
                   <div className="mt-3 space-y-3">
                     <div>
-                      <label className="mb-1.5 block text-[12px] font-medium text-gray-700">Client ID</label>
+                      <label className="mb-1.5 block text-[12px] font-medium text-gray-700">客户端 ID</label>
                       <McpCredentialInput
                         kind="identifier"
                         name="marketplace-mcp-oauth-client-id"
                         value={clientId}
                         onChange={(event) => setClientId(event.target.value)}
-                        placeholder="Client ID"
+                        placeholder="客户端 ID"
                       />
                     </div>
                     <div>
-                      <label className="mb-1.5 block text-[12px] font-medium text-gray-700">Client secret</label>
+                      <label className="mb-1.5 block text-[12px] font-medium text-gray-700">客户端密钥</label>
                       <McpCredentialInput
                         kind="secret"
                         name="marketplace-mcp-oauth-client-secret"
                         value={clientSecret}
                         onChange={setClientSecret}
-                        placeholder="Client secret"
+                        placeholder="客户端密钥"
                       />
                     </div>
                   </div>
@@ -1282,13 +1282,13 @@ export function PluginMcpSetupDialog({
             </div>
 
             {configureConnection.error ? (
-              <p className="mt-3 text-[13px] text-red-600">{configureConnection.error instanceof Error ? configureConnection.error.message : "Failed to configure connection."}</p>
+              <p className="mt-3 text-[13px] text-red-600">{configureConnection.error instanceof Error ? configureConnection.error.message : "配置连接失败，请重试。"}</p>
             ) : null}
 
             <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-              <DenButton variant="secondary" onClick={onClose} disabled={configureConnection.isPending}>Cancel</DenButton>
+              <DenButton variant="secondary" onClick={onClose} disabled={configureConnection.isPending}>取消</DenButton>
               <DenButton variant="primary" loading={configureConnection.isPending} disabled={saveDisabled} onClick={() => void submit()}>
-                Configure
+                配置
               </DenButton>
             </div>
           </>

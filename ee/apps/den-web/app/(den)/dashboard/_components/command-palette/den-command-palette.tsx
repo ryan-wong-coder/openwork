@@ -186,7 +186,7 @@ export function DenCommandPalette({ open, onOpenChange }: DenCommandPaletteProps
       label: plugin.name,
       href: getPluginRoute(activeOrg.slug, plugin.id),
       icon: Box,
-      hint: "Plugin",
+      hint: "插件",
       keywords: [plugin.slug, plugin.description, "skill", "marketplace"],
     }));
   }, [access.canManageAllShared, activeOrg, pluginsQuery.data]);
@@ -200,7 +200,7 @@ export function DenCommandPalette({ open, onOpenChange }: DenCommandPaletteProps
         label: item.automation.name,
         href: `${getAutomationsRoute(activeOrg.slug)}?automation=${encodeURIComponent(item.automation.id)}`,
         icon: CalendarClock,
-        hint: "Automation",
+        hint: "自动化",
         keywords: [item.automation.state, "schedule", "recurring"],
       }));
   }, [activeOrg, automationsQuery.data, capabilities.workflows]);
@@ -208,19 +208,19 @@ export function DenCommandPalette({ open, onOpenChange }: DenCommandPaletteProps
   const actionEntries = useMemo<PaletteEntry[]>(() => [
     {
       id: "action:docs",
-      label: "Open docs",
+      label: "打开文档",
       href: OPENWORK_DOCS_URL,
       icon: FileText,
-      hint: "Action",
+      hint: "操作",
       keywords: ["documentation", "help"],
     },
     ...(runtimeConfigLoaded && runtimeConfig.orgMode === "multi_org"
       ? [{
           id: "action:feedback",
-          label: "Send feedback",
+          label: "发送反馈",
           href: buildDenFeedbackUrl({ pathname, orgSlug: activeOrg?.slug }),
           icon: MessageSquare,
-          hint: "Action",
+          hint: "操作",
           keywords: ["support", "report"],
         }]
       : []),
@@ -269,39 +269,39 @@ export function DenCommandPalette({ open, onOpenChange }: DenCommandPaletteProps
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Search or jump to"
+        aria-label="搜索或跳转"
         data-testid="den-command-palette"
         className="w-full max-w-xl overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-[0_24px_80px_-36px_rgba(15,23,42,0.7)]"
       >
-        <Command label="Search or jump to" filter={paletteFilter} loop>
+        <Command label="搜索或跳转" filter={paletteFilter} loop>
           <Command.Input
             autoFocus
             value={query}
             onValueChange={setQuery}
-            placeholder="Search or jump to…"
+            placeholder="搜索或跳转…"
             data-testid="den-command-palette-input"
             className="h-12 w-full border-b border-gray-100 bg-transparent px-4 text-[14px] text-gray-900 outline-hidden placeholder:text-gray-500"
           />
           <Command.List className="max-h-[min(60vh,420px)] overflow-y-auto p-2">
             <Command.Empty className="px-3 py-10 text-center text-[12px] text-gray-500">
-              {`No matches for “${query}”.`}
+              {`没有与“${query}”匹配的结果。`}
             </Command.Empty>
-            <PaletteGroup heading="Recent" entries={recentEntries} onSelect={selectEntry} />
-            <PaletteGroup heading="Pages" entries={pageEntries} onSelect={selectEntry} />
+            <PaletteGroup heading="最近使用" entries={recentEntries} onSelect={selectEntry} />
+            <PaletteGroup heading="页面" entries={pageEntries} onSelect={selectEntry} />
             <PaletteGroup
-              heading="Plugins"
+              heading="插件"
               entries={visibleDataEntries(pluginEntries, query)}
               onSelect={selectEntry}
             />
             <PaletteGroup
-              heading="Automations"
+              heading="自动化"
               entries={visibleDataEntries(automationEntries, query)}
               onSelect={selectEntry}
             />
-            <PaletteGroup heading="Actions" entries={actionEntries} onSelect={selectEntry} />
+            <PaletteGroup heading="操作" entries={actionEntries} onSelect={selectEntry} />
           </Command.List>
           <div data-testid="den-command-palette-footer" className="border-t border-gray-100 px-4 py-2.5 text-[11px] text-gray-500">
-            ↑↓ navigate · ↵ open · esc close
+            ↑↓ 选择 · ↵ 打开 · esc 关闭
           </div>
         </Command>
       </div>

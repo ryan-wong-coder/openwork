@@ -23,6 +23,7 @@ import { getErrorMessage, getRequestError, requestJson } from "../../_lib/den-fl
 import {
     getLlmProviderRoute,
     getLlmProvidersRoute,
+    orgFeatureEnabled,
 } from "../../_lib/den-org";
 import { useOrgDashboard } from "../_providers/org-dashboard-provider";
 import {
@@ -55,6 +56,8 @@ import {
     type DenModelsDevProviderSummary,
 } from "./llm-provider-data";
 import { isGatewayOnlyNpm } from "./inference-provider-request";
+import { StructuredConfigEditor } from "./structured-config-editor";
+import { structuredProviderModelCount } from "./structured-config-value";
 import { RuntimeEnvKeyChip, RuntimeEnvKeyNote, resolveRuntimeEnvKeys } from "./runtime-env-key";
 import {
     buildCatalogProviderOptions,
@@ -63,8 +66,8 @@ import {
 } from "./llm-provider-pickers";
 
 const SOURCE_TABS = [
-    { value: "models_dev" as const, label: "Catalog provider", icon: Cpu },
-    { value: "custom" as const, label: "Custom provider", icon: CodeXml },
+    { value: "models_dev" as const, label: "目录提供商", icon: Cpu },
+    { value: "custom" as const, label: "自定义提供商", icon: CodeXml },
 ];
 
 type EditableLlmProviderSource = (typeof SOURCE_TABS)[number]["value"];
@@ -83,6 +86,7 @@ export function LlmProviderEditorScreen({
 }) {
     const router = useRouter();
     const { orgId, orgSlug, orgContext, runReauthableAction } = useOrgDashboard();
+    const visualConfiguration = orgFeatureEnabled(orgContext, "visualConfiguration");
     const { llmProviders, busy, error, reloadProviders } =
         useOrgLlmProviders(orgId);
     const provider = useMemo(
@@ -120,6 +124,7 @@ export function LlmProviderEditorScreen({
     const [customModelsText, setCustomModelsText] = useState("");
     const [customEnvNames, setCustomEnvNames] = useState<string[]>([]);
     const [customJsonHint, setCustomJsonHint] = useState<string | null>(null);
+    const [structuredConfigValid, setStructuredConfigValid] = useState(true);
     const [probeState, setProbeState] = useState<"idle" | "probing" | "ok" | "failed">("idle");
     const [probeResult, setProbeResult] = useState<LlmProviderProbeResult | null>(null);
     const [selectedCustomModelIds, setSelectedCustomModelIds] = useState<string[]>([]);
@@ -141,7 +146,7 @@ export function LlmProviderEditorScreen({
     const [verifyBusy, setVerifyBusy] = useState(false);
     const [verifyFailures, setVerifyFailures] = useState<LlmProviderModelVerification[]>([]);
     // Verification outcome for the exact inputs it ran against, so a second
-    // click ("Save anyway") does not re-run completions.
+    // click ("仍然保存") does not re-run completions.
     const verifiedRef = useRef<{ key: string; npm: string } | null>(null);
 
     useEffect(() => {
@@ -164,7 +169,7 @@ export function LlmProviderEditorScreen({
                     setCatalogError(
                         loadError instanceof Error
                             ? loadError.message
-                            : "Failed to load the provider catalog.",
+                            : "无法加载提供商目录，请重试。",
                     );
                 }
             })
@@ -273,7 +278,7 @@ export function LlmProviderEditorScreen({
                     setDetailError(
                         loadError instanceof Error
                             ? loadError.message
-                            : "Failed to load provider details.",
+                            : "无法加载提供商详情，请重试。",
                     );
                 }
             })
@@ -444,9 +449,9 @@ export function LlmProviderEditorScreen({
             : parseGuidedModelIds(customModelsText);
 
     const summaryModelCount =
-        source === "models_dev" ? selectedModelIds.length : resolvedCustomModelIds.length;
+        source === "models_dev" ? selectedModelIds.length : customMode === "json" ? structuredProviderModelCount(customConfigText) : resolvedCustomModelIds.length;
 
-    // "Save anyway" stays armed only while the inputs still match the run
+    // "仍然保存" stays armed only while the inputs still match the run
     // that produced the failures; any edit re-verifies on the next save.
     const currentVerifyKey = [
         customBaseUrl.trim(),
@@ -516,7 +521,7 @@ export function LlmProviderEditorScreen({
 
     function switchCustomModeToJson() {
         const modelIds = resolvedCustomModelIds;
-        if (!validateGuidedCustomProvider({
+        if (visualConfiguration || !validateGuidedCustomProvider({
             providerId: resolvedCustomProviderId,
             baseUrl: customBaseUrl,
             modelIds,
@@ -543,7 +548,7 @@ export function LlmProviderEditorScreen({
         const guided = readGuidedCustomProviderFieldsFromText(customConfigText);
         if (!guided) {
             setCustomJsonHint(
-                "This config uses advanced fields the form cannot represent — keep editing it as JSON.",
+                visualConfiguration ? "此提供商包含额外参数，请继续使用高级选项以保留全部设置。" : "此配置包含表单暂不支持的高级字段，请继续编辑 JSON。",
             );
             return;
         }
@@ -558,27 +563,27 @@ export function LlmProviderEditorScreen({
 
     async function saveProvider() {
         if (!orgId) {
-            setSaveError("Organization not found.");
+            setSaveError("未找到组织。");
             return;
         }
 
         if (provider?.source === "openwork") {
-            setSaveError("OpenWork-managed providers are controlled from OpenWork Models settings.");
+            setSaveError("OpenWork 托管提供商由“OpenWork 模型”设置管理。");
             return;
         }
 
         if (!effectiveName) {
-            setSaveError("Pick a provider so the key gets a name, or rename it yourself.");
+            setSaveError("选择提供商以自动命名密钥，也可自行重命名。");
             return;
         }
 
         if (source === "models_dev") {
             if (!selectedProviderId) {
-                setSaveError("Select a provider.");
+                setSaveError("请选择提供商。");
                 return;
             }
             if (!selectedModelIds.length) {
-                setSaveError("Select at least one model.");
+                setSaveError("请至少选择一个模型。");
                 return;
             }
         }
@@ -596,14 +601,18 @@ export function LlmProviderEditorScreen({
         }
 
         if (source === "custom" && customMode === "json" && !customConfigText.trim()) {
-            setSaveError("Paste a custom provider config.");
+            setSaveError("请填写提供商选项。");
+            return;
+        }
+        if (source === "custom" && customMode === "json" && visualConfiguration && !structuredConfigValid) {
+            setSaveError("请先修正提供商选项中标出的内容。");
             return;
         }
 
         // Verify-on-save: run one real completion per picked model. Models
         // that reject max_tokens (GPT-5/o-series on Azure) silently switch
         // the provider to the OpenAI request shape; models that fail both
-        // shapes surface a per-model message and require "Save anyway".
+        // shapes surface a per-model message and require "仍然保存".
         let guidedNpm: string | null = null;
         if (source === "custom" && customMode === "form" && probeCredential) {
             const verifyKey = [
@@ -637,7 +646,7 @@ export function LlmProviderEditorScreen({
                     setVerifyFailures(failures);
                     if (failures.length > 0) {
                         setSaveError(
-                            "Some models did not answer a test completion. Fix the model list, or press Save anyway to keep them.",
+                            "部分模型未响应测试请求。请修复模型列表，或选择“仍然保存”以保留。",
                         );
                         return;
                     }
@@ -709,7 +718,7 @@ export function LlmProviderEditorScreen({
             );
 
             if (!response.ok) {
-                throw getRequestError(payload, response, `Failed to save provider (${response.status}).`);
+                throw getRequestError(payload, response, `保存提供商失败（HTTP ${response.status}），请重试。`);
             }
 
             const nextProvider =
@@ -727,7 +736,7 @@ export function LlmProviderEditorScreen({
                     : (provider?.id ?? null);
             if (!nextProviderId) {
                 throw new Error(
-                    "The provider was saved, but no provider id was returned.",
+                    "提供商已保存，但未返回提供商 ID，请刷新后重试。",
                 );
             }
 
@@ -739,7 +748,7 @@ export function LlmProviderEditorScreen({
             setSaveError(
                 nextError instanceof Error
                     ? nextError.message
-                    : "Could not save the provider.",
+                    : "无法保存提供商，请重试。",
             );
         } finally {
             setSaveBusy(false);
@@ -750,7 +759,7 @@ export function LlmProviderEditorScreen({
         return (
             <div className="mx-auto max-w-[1180px] px-6 py-8 md:px-8">
                 <div className="rounded-[28px] border border-gray-200 bg-white px-6 py-10 text-[15px] text-gray-500">
-                    Loading provider details...
+                    正在加载提供商详情…
                 </div>
             </div>
         );
@@ -760,7 +769,7 @@ export function LlmProviderEditorScreen({
         return (
             <div className="mx-auto max-w-[1180px] px-6 py-8 md:px-8">
                 <div className="rounded-[28px] border border-red-200 bg-red-50 px-6 py-4 text-[15px] text-red-700">
-                    {error ?? "That provider could not be found."}
+                    {error ?? "未找到此提供商。"}
                 </div>
             </div>
         );
@@ -792,20 +801,17 @@ export function LlmProviderEditorScreen({
     const credentialFields = credentialEnvNames.length > 1 ? (
                     <div className="grid gap-6">
                         <p className="text-[14px] text-gray-500">
-                            This provider reads several environment variables.
-                            Add a value for each one — values left blank keep
-                            what is already saved.
+                            此提供商需要多个环境变量。请分别填写，留空将保留已保存的值。
                         </p>
                         {credentialEnvNames.includes("AZURE_RESOURCE_NAME") ? (
                             <div className="rounded-[22px] border border-sky-100 bg-sky-50 px-5 py-4 text-[13px] leading-6 text-sky-900">
-                                <p className="font-semibold">Azure resource name</p>
+                                <p className="font-semibold">Azure 资源名称</p>
                                 <p className="mt-1 text-sky-800">
-                                    Azure Foundry may show a project URL such as{" "}
+                                    Azure Foundry 可能显示项目地址，例如{" "}
                                     <code className="rounded-sm bg-white/70 px-1.5 py-0.5 font-mono text-[12px]">
                                         https://yourFoundryResourceName.services.ai.azure.com/api/projects/your-project
                                     </code>
-                                    . Paste that full URL here and we will save just the
-                                    resource name, for example{" "}
+                                    。粘贴完整地址后将仅保存资源名称，例如{" "}
                                     <code className="rounded-sm bg-white/70 px-1.5 py-0.5 font-mono text-[12px]">
                                         yourFoundryResourceName
                                     </code>
@@ -826,7 +832,7 @@ export function LlmProviderEditorScreen({
                                         </code>
                                         {configured ? (
                                             <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-medium text-emerald-700">
-                                                Saved
+                                                已保存
                                             </span>
                                         ) : null}
                                      </span>
@@ -842,8 +848,8 @@ export function LlmProviderEditorScreen({
                                             }
                                             placeholder={
                                                 configured
-                                                    ? "Leave blank to keep current value"
-                                                    : "Paste the resource name or Azure Foundry project URL"
+                                                    ? "留空以保留当前值"
+                                                    : "粘贴资源名称或 Azure Foundry 项目地址"
                                             }
                                         />
                                     ) : (
@@ -857,8 +863,8 @@ export function LlmProviderEditorScreen({
                                                 }))
                                             }
                                             saved={configured}
-                                            placeholder={`Paste the ${envName} value`}
-                                            savedPlaceholder="Leave blank to keep current value"
+                                            placeholder={`粘贴 ${envName} 的值`}
+                                            savedPlaceholder="留空以保留当前值"
                                         />
                                     )}
                                 </label>
@@ -868,15 +874,15 @@ export function LlmProviderEditorScreen({
                 ) : (
                     <label className="grid gap-3">
                         <span className="text-[14px] font-medium text-gray-700">
-                            API key / credential
+                            API 密钥 / 凭据
                         </span>
                         <DenSecretInput
                             autoComplete="new-password"
                             value={apiKey}
                             onChange={setApiKey}
                             saved={provider?.hasApiKey === true}
-                            placeholder="Paste the provider credential"
-                            savedPlaceholder="Leave blank to keep current credential"
+                            placeholder="粘贴提供商凭据"
+                            savedPlaceholder="留空以保留当前凭据"
                         />
                     </label>
                 );
@@ -885,18 +891,17 @@ export function LlmProviderEditorScreen({
         <div className="mx-auto max-w-[1180px] px-6 py-8 md:px-8">
             <div className="mb-8 flex flex-col gap-3">
                 <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-gray-400">
-                    {provider ? "Edit provider" : "Add provider"}
+                    {provider ? "编辑提供商" : "添加提供商"}
                 </p>
                 <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
                     <div>
                         <h1 className="text-[34px] font-semibold tracking-[-0.07em] text-gray-950">
                             {provider
                                 ? (effectiveName || provider.name)
-                                : "Add a new LLM provider"}
+                                : "添加新的模型提供商"}
                         </h1>
                         <p className="mt-3 max-w-[720px] text-[16px] leading-8 text-gray-500">
-                            Pick a provider, paste a credential, choose models
-                            and who can use them. We name it for you.
+                            选择提供商、填写凭据，并设置可用模型与使用权限。名称将自动生成。
                         </p>
                     </div>
                 </div>
@@ -912,7 +917,7 @@ export function LlmProviderEditorScreen({
                     className="inline-flex items-center gap-2 text-[15px] font-medium text-gray-500 transition hover:text-gray-900"
                 >
                     <ArrowLeft className="h-5 w-5" />
-                    Back
+                    返回
                 </Link>
             </div>
 
@@ -934,7 +939,7 @@ export function LlmProviderEditorScreen({
 
             <section className="mb-8 rounded-[36px] border border-gray-200 bg-white p-8 shadow-[0_18px_48px_-34px_rgba(15,23,42,0.24)]">
                 <h2 className="mb-6 text-[24px] font-semibold tracking-[-0.05em] text-gray-950">
-                    Provider
+                    提供商
                 </h2>
                 <UnderlineTabs
                     tabs={SOURCE_TABS}
@@ -946,22 +951,22 @@ export function LlmProviderEditorScreen({
                     <div className="mt-8 grid gap-6">
                         <div className="grid gap-3">
                             <span className="text-[14px] font-medium text-gray-700">
-                                Provider
+                                提供商
                             </span>
                             <DenCombobox
                                 value={selectedProviderId}
                                 options={catalogProviderOptions}
                                 onChange={setSelectedProviderId}
-                                ariaLabel="Provider"
-                                placeholder="Select a provider..."
-                                searchPlaceholder="Search providers..."
-                                emptyLabel="No providers match"
+                                ariaLabel="提供商"
+                                placeholder="选择提供商…"
+                                searchPlaceholder="搜索提供商…"
+                                emptyLabel="没有匹配的提供商"
                             />
                         </div>
 
                         {catalogBusy ? (
                             <p className="text-[14px] text-gray-500">
-                                Loading provider catalog...
+                                正在加载提供商目录…
                             </p>
                         ) : null}
                         {catalogError ? (
@@ -972,7 +977,7 @@ export function LlmProviderEditorScreen({
 
                         {detailBusy ? (
                             <p className="text-[14px] text-gray-500">
-                                Loading provider details...
+                                正在加载提供商详情…
                             </p>
                         ) : null}
                         {detailError ? (
@@ -986,27 +991,27 @@ export function LlmProviderEditorScreen({
                                 <div className="grid gap-4 md:grid-cols-2">
                                     <div>
                                         <p className="text-[12px] font-semibold uppercase text-gray-400">
-                                            NPM package
+                                            NPM 软件包
                                         </p>
                                         <p className="mt-2">
                                             <span className="inline-flex max-w-full rounded-md bg-white px-3 py-1.5 font-mono text-[11px] leading-5 text-gray-700 ring-1 ring-inset ring-gray-200">
-                                                {providerNpm ?? "Not set"}
+                                                {providerNpm ?? "未设置"}
                                             </span>
                                         </p>
                                     </div>
                                     <div>
                                         <p className="text-[12px] font-semibold uppercase text-gray-400">
-                                            API base
+                                            API 基础地址
                                         </p>
                                         <p className="mt-2">
                                             <span className="inline-flex max-w-full break-all rounded-md bg-white px-3 py-1.5 font-mono text-[11px] leading-5 text-gray-700 ring-1 ring-inset ring-gray-200">
-                                                {providerApiBase ?? "Not set"}
+                                                {providerApiBase ?? "未设置"}
                                             </span>
                                         </p>
                                     </div>
                                     <div>
                                         <p className="text-[12px] font-semibold uppercase text-gray-400">
-                                            Env keys
+                                            环境变量密钥
                                         </p>
                                         {runtimeEnvKeys.length > 0 ? (
                                             <>
@@ -1024,18 +1029,18 @@ export function LlmProviderEditorScreen({
                                         ) : (
                                             <p className="mt-2">
                                                 <span className="inline-flex max-w-full rounded-md bg-white px-3 py-1.5 font-mono text-[11px] leading-5 text-gray-700 ring-1 ring-inset ring-gray-200">
-                                                    None listed
+                                                    未列出
                                                 </span>
                                             </p>
                                         )}
                                     </div>
                                     <div>
                                         <p className="text-[12px] font-semibold uppercase text-gray-400">
-                                            Docs
+                                            文档
                                         </p>
                                         <p className="mt-2">
                                             <span className="inline-flex max-w-full break-all rounded-md bg-white px-3 py-1.5 font-mono text-[11px] leading-5 text-gray-700 ring-1 ring-inset ring-gray-200">
-                                                {providerDoc ?? "Not set"}
+                                                {providerDoc ?? "未设置"}
                                             </span>
                                         </p>
                                     </div>
@@ -1046,14 +1051,12 @@ export function LlmProviderEditorScreen({
                 ) : customMode === "form" ? (
                     <div className="mt-8 grid gap-6">
                         <p className="text-[15px] text-gray-500">
-                            Connect any OpenAI-compatible endpoint — Azure AI
-                            Foundry, LiteLLM, vLLM, or an internal gateway — by
-                            describing it below. No JSON required.
+                            填写下方选项即可连接兼容 OpenAI API 的端点，包括 Azure AI Foundry、LiteLLM、vLLM 或内部网关。
                         </p>
 
                         <label className="grid gap-3">
                             <span className="text-[14px] font-medium text-gray-700">
-                                Provider ID
+                                提供商 ID
                             </span>
                             <DenInput
                                 value={resolvedCustomProviderId}
@@ -1067,19 +1070,17 @@ export function LlmProviderEditorScreen({
                             />
                         </label>
                         <p className="-mt-3 text-[13px] text-gray-500">
-                            A short identifier for this provider. Filled in from
-                            the name automatically.
+                            此提供商的简短标识，将根据名称自动填写。
                         </p>
 
                         {credentialFields}
                         <p className="-mt-3 text-[13px] text-gray-500">
-                            Used right away to check the endpoint and list the
-                            models it serves.
+                            用于立即检查端点，并列出其提供的模型。
                         </p>
 
                         <label className="grid gap-3">
                             <span className="text-[14px] font-medium text-gray-700">
-                                Base URL
+                                基础地址
                             </span>
                             <DenInput
                                 value={customBaseUrl}
@@ -1092,33 +1093,31 @@ export function LlmProviderEditorScreen({
                             />
                         </label>
                         <p className="-mt-3 text-[13px] text-gray-500">
-                            The OpenAI-compatible endpoint of the provider
-                            (usually ends in{" "}
+                            提供商兼容 OpenAI API 的端点（通常以{" "}
                             <code className="rounded-sm bg-gray-100 px-1 py-0.5">
                                 /v1
                             </code>
-                            ).
+                            结束）。
                         </p>
 
                         {probeState === "probing" ? (
                             <p className="-mt-2 text-[13px] text-gray-500">
-                                Checking the endpoint…
+                                正在检查端点…
                             </p>
                         ) : null}
                         {probeState === "ok" && probeResult ? (
                             <p className="-mt-2 text-[13px] text-emerald-700">
-                                Endpoint reachable — {probeResult.models.length}{" "}
-                                {probeResult.models.length === 1 ? "model" : "models"} available.
+                                端点可访问，提供 {probeResult.models.length} 个模型。
                             </p>
                         ) : null}
                         {probeState === "failed" ? (
                             <p className="-mt-2 text-[13px] text-red-600">
-                                {probeResult?.hint ?? "Could not reach the endpoint with this URL and key."}
+                                {probeResult?.hint ?? "无法使用此地址与密钥连接端点，请检查后重试。"}
                             </p>
                         ) : null}
                         {probeState === "idle" && customBaseUrl.trim() && !probeCredential ? (
                             <p className="-mt-2 text-[13px] text-gray-500">
-                                Enter the API key above to load the models this endpoint serves.
+                                在上方输入 API 密钥，以加载此端点提供的模型。
                             </p>
                         ) : null}
 
@@ -1126,11 +1125,11 @@ export function LlmProviderEditorScreen({
                             <div className="grid gap-3">
                                 <div className="flex flex-wrap items-center gap-3">
                                     <span className="text-[14px] font-medium text-gray-700">
-                                        Models
+                                        模型
                                     </span>
                                     <span className="rounded-full bg-gray-200 px-3 py-1 text-[12px] font-medium text-gray-700">
                                         {resolvedCustomModelIds.length}{" "}
-                                        {resolvedCustomModelIds.length === 1 ? "model selected" : "models selected"}
+                                        {resolvedCustomModelIds.length === 1 ? "个模型已选择" : "个模型已选择"}
                                     </span>
                                 </div>
                                 <DenInput
@@ -1138,7 +1137,7 @@ export function LlmProviderEditorScreen({
                                     icon={Search}
                                     value={customModelQuery}
                                     onChange={(event) => setCustomModelQuery(event.target.value)}
-                                    placeholder="Search models..."
+                                    placeholder="搜索模型…"
                                 />
                                 {filteredProbeModels.length ? (
                                     <div className="max-h-72 overflow-y-auto overflow-hidden rounded-[16px] border border-gray-200 bg-white divide-y divide-gray-200">
@@ -1151,8 +1150,8 @@ export function LlmProviderEditorScreen({
                                                     title={model.id}
                                                     description={
                                                         probeResult.vendor === "azure"
-                                                            ? "Deployment"
-                                                            : "Model"
+                                                            ? "部署"
+                                                            : "模型"
                                                     }
                                                     onClick={() =>
                                                         setSelectedCustomModelIds((current) =>
@@ -1167,7 +1166,7 @@ export function LlmProviderEditorScreen({
                                     </div>
                                 ) : (
                                     <p className="text-[13px] text-gray-500">
-                                        No models match &quot;{customModelQuery}&quot;.
+                                        没有与“{customModelQuery}”匹配的模型。
                                     </p>
                                 )}
                                 <button
@@ -1175,14 +1174,14 @@ export function LlmProviderEditorScreen({
                                     onClick={() => setCustomManualModels(true)}
                                     className="justify-self-start text-[13px] font-medium text-gray-500 underline underline-offset-2 transition hover:text-gray-900"
                                 >
-                                    My model isn&apos;t listed — enter IDs manually
+                                    未列出我的模型，手动输入 ID
                                 </button>
                             </div>
                         ) : (
                             <>
                                 <label className="grid gap-3">
                                     <span className="text-[14px] font-medium text-gray-700">
-                                        Model IDs
+                                        模型 ID
                                     </span>
                                     <DenTextarea
                                         value={customModelsText}
@@ -1194,9 +1193,7 @@ export function LlmProviderEditorScreen({
                                     />
                                 </label>
                                 <p className="-mt-3 text-[13px] text-gray-500">
-                                    One per line (or comma-separated). Use the model IDs
-                                    the endpoint serves — on Azure AI Foundry these are
-                                    your deployment names.
+                                    每行一个模型 ID，或用逗号分隔。请使用端点实际提供的模型 ID；在 Azure AI Foundry 中即部署名称。
                                 </p>
                                 {probeState === "ok" && probeResult ? (
                                     <button
@@ -1204,7 +1201,7 @@ export function LlmProviderEditorScreen({
                                         onClick={() => setCustomManualModels(false)}
                                         className="-mt-2 justify-self-start text-[13px] font-medium text-gray-500 underline underline-offset-2 transition hover:text-gray-900"
                                     >
-                                        Pick from the endpoint&apos;s model list instead
+                                        改为从端点模型列表中选择
                                     </button>
                                 ) : null}
                             </>
@@ -1215,15 +1212,20 @@ export function LlmProviderEditorScreen({
                             onClick={switchCustomModeToJson}
                             className="justify-self-start text-[13px] font-medium text-gray-500 underline underline-offset-2 transition hover:text-gray-900"
                         >
-                            Advanced: edit as JSON
+                            {visualConfiguration ? "高级选项" : "高级：编辑 JSON"}
                         </button>
                     </div>
                 ) : (
                     <div className="mt-8 grid gap-3">
                         <span className="text-[14px] font-medium text-gray-700">
-                            Custom provider JSON / JSONC
+                            {visualConfiguration ? "提供商选项" : "自定义提供商 JSON / JSONC"}
                         </span>
-                        <DenTextarea
+                        {visualConfiguration ? <StructuredConfigEditor
+                            text={customConfigText}
+                            onChange={setCustomConfigText}
+                            onValidChange={setStructuredConfigValid}
+                            disabled={saveBusy}
+                        /> : <><DenTextarea
                             value={customConfigText}
                             onChange={(event) =>
                                 setCustomConfigText(event.target.value)
@@ -1231,13 +1233,12 @@ export function LlmProviderEditorScreen({
                             rows={18}
                         />
                         <p className="text-[13px] text-gray-500">
-                            Paste a models.dev provider, a single provider block,
-                            or a full{" "}
+                            可粘贴 models.dev 提供商、单个提供商配置，或完整的{" "}
                             <code className="rounded-sm bg-gray-100 px-1 py-0.5">
                                 opencode.jsonc
                             </code>
-                            . Model maps are imported automatically.
-                        </p>
+                            。模型列表会自动导入。
+                        </p></>}
                         {customJsonHint ? (
                             <p className="text-[13px] text-amber-700">
                                 {customJsonHint}
@@ -1248,7 +1249,7 @@ export function LlmProviderEditorScreen({
                             onClick={switchCustomModeToForm}
                             className="justify-self-start text-[13px] font-medium text-gray-500 underline underline-offset-2 transition hover:text-gray-900"
                         >
-                            Use the guided form instead
+                            返回基本设置
                         </button>
                     </div>
                 )}
@@ -1257,7 +1258,7 @@ export function LlmProviderEditorScreen({
                     <DenAutoNameField
                         value={effectiveName}
                         auto={!nameTouched || !providerName.trim()}
-                        placeholder="Pick a provider first"
+                        placeholder="请先选择提供商"
                         testId="llm-provider-name"
                         onChange={(nextName) => {
                             if (nextName === null) {
@@ -1279,12 +1280,12 @@ export function LlmProviderEditorScreen({
                     <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                         <div>
                             <h2 className="text-[24px] font-semibold tracking-[-0.05em] text-gray-950">
-                                Credential
+                                凭据
                             </h2>
                         </div>
                         {provider?.hasApiKey ? (
                             <span className="rounded-full bg-emerald-50 px-4 py-2 text-[13px] font-medium text-emerald-700">
-                                Existing credential saved
+                                已有凭据已保存
                             </span>
                         ) : null}
                     </div>
@@ -1292,7 +1293,7 @@ export function LlmProviderEditorScreen({
                     {credentialFields}
                     {runtimeEnvKeys.some((envKey) => envKey.tag !== null) ? (
                         <p className="mt-6 text-[13px] leading-6 text-gray-500">
-                            On members&apos; machines and cloud workers this provider reads{" "}
+                            在成员计算机和云端工作实例上，此提供商读取{" "}
                             {runtimeEnvKeys.map((envKey, index) => (
                                 <span key={envKey.declared}>
                                     {index > 0 ? ", " : null}
@@ -1303,8 +1304,8 @@ export function LlmProviderEditorScreen({
                                 </span>
                             ))}
                             {runtimeEnvKeys.some((envKey) => envKey.pending)
-                                ? ". The 5-character tag is assigned when the provider is created and stays fixed."
-                                : ", so it never collides with a key someone set themselves or with another provider of the same kind."}
+                                ? "。五字符标签在创建提供商时分配，之后保持不变。"
+                                : "，因此不会与成员自行设置的密钥或同类其他提供商冲突。"}
                         </p>
                     ) : null}
                 </section>
@@ -1316,45 +1317,37 @@ export function LlmProviderEditorScreen({
                         <div>
                             <div className="flex flex-wrap items-center gap-3">
                                 <h2 className="text-[24px] font-semibold tracking-[-0.05em] text-gray-950">
-                                    Models
+                                    模型
                                 </h2>
                                 {catalogDetail ? (
                                     <span className="rounded-full bg-gray-200 px-3 py-1 text-[12px] font-medium text-gray-700">
                                         {selectedModelIds.length}{" "}
                                         {selectedModelIds.length === 1
-                                            ? "model selected"
-                                            : "models selected"}
+                                            ? "个模型已选择"
+                                            : "个模型已选择"}
                                     </span>
                                 ) : null}
                             </div>
                             <p className="mt-2 text-[15px] text-gray-500">
-                                Pick the exact models this provider should
-                                allow.
+                                选择此提供商允许使用的模型。
                             </p>
                             {isAzureCatalog ? (
                                 azureProbeState === "ok" && azureProbeResult ? (
                                     <p className="mt-2 text-[13px] text-emerald-700">
-                                        Showing the {azureProbeResult.models.length}{" "}
-                                        {azureProbeResult.models.length === 1
-                                            ? "deployment"
-                                            : "deployments"}{" "}
-                                        available on your Azure resource.
+                                        显示此 Azure 资源可用的 {azureProbeResult.models.length} 个部署。
                                     </p>
                                 ) : azureProbeState === "probing" ? (
                                     <p className="mt-2 text-[13px] text-gray-500">
-                                        Checking your Azure resource for
-                                        deployments…
+                                        正在检查 Azure 资源中的部署…
                                     </p>
                                 ) : azureProbeState === "failed" ? (
                                     <p className="mt-2 text-[13px] text-red-600">
                                         {azureProbeResult?.hint ??
-                                            "Could not list the deployments on this resource — check the resource name and key."}
+                                            "无法列出此资源中的部署，请检查资源名称与密钥。"}
                                     </p>
                                 ) : (
                                     <p className="mt-2 text-[13px] text-gray-500">
-                                        Enter the resource name and API key
-                                        above to list only the deployments your
-                                        resource actually serves.
+                                        在上方输入资源名称与 API 密钥，以列出该资源实际提供的部署。
                                     </p>
                                 )
                             ) : null}
@@ -1373,10 +1366,10 @@ export function LlmProviderEditorScreen({
             <section className="rounded-[36px] border border-gray-200 bg-white p-8 shadow-[0_18px_48px_-34px_rgba(15,23,42,0.24)]">
                 <div>
                     <h2 className="text-[24px] font-semibold tracking-[-0.05em] text-gray-950">
-                        Who can use it
+                        谁可以使用
                     </h2>
                     <p className="mt-2 text-[15px] text-gray-500">
-                        Grant everyone access, or pick teams and people.
+                        向所有人授予访问权限，或选择团队与人员。
                     </p>
                 </div>
 
@@ -1403,7 +1396,7 @@ export function LlmProviderEditorScreen({
                     <>
                         {autoNameProviderId ? (
                             <DenBrandMark
-                                name={effectiveName || "Provider"}
+                                name={effectiveName || "提供商"}
                                 simpleIconSlug={getProviderIconSlug(autoNameProviderId)}
                                 serviceUrl={providerDoc}
                                 className="h-6 w-6 rounded-[8px]"
@@ -1411,17 +1404,17 @@ export function LlmProviderEditorScreen({
                             />
                         ) : null}
                         <span className="truncate font-medium text-gray-950">
-                            {effectiveName || "New provider"}
+                            {effectiveName || "新提供商"}
                         </span>
                         <span className="text-gray-300">·</span>
                         <span className="whitespace-nowrap">
-                            {summaryModelCount} {summaryModelCount === 1 ? "model" : "models"}
+                            {summaryModelCount} 个模型
                         </span>
                         <span className="text-gray-300">·</span>
                         <span className="truncate">
                             {allMembers
-                                ? `Everyone in ${orgContext?.organization.name ?? "the organization"}`
-                                : `${selectedTeamIds.length} ${selectedTeamIds.length === 1 ? "team" : "teams"} · ${selectedMemberIds.length} ${selectedMemberIds.length === 1 ? "person" : "people"}`}
+                                ? `${orgContext?.organization.name ?? "组织"} 中的所有人`
+                                : `${selectedTeamIds.length} 个团队 · ${selectedMemberIds.length} 人`}
                         </span>
                     </>
                 }
@@ -1434,20 +1427,21 @@ export function LlmProviderEditorScreen({
                     }
                     className="px-2 text-[13px] font-medium text-gray-500 transition hover:text-gray-900"
                 >
-                    Cancel
+                    取消
                 </Link>
                 <DenButton
                     data-testid="llm-provider-save"
                     loading={saveBusy}
+                    disabled={source === "custom" && customMode === "json" && visualConfiguration && !structuredConfigValid}
                     onClick={() => void saveProvider()}
                 >
                     {verifyBusy
-                        ? "Verifying models..."
+                        ? "正在验证模型…"
                         : saveAnywayArmed
-                          ? "Save anyway"
+                          ? "仍然保存"
                           : provider
-                            ? "Save Provider"
-                            : "Create Provider"}
+                            ? "保存提供商"
+                            : "创建提供商"}
                 </DenButton>
             </DenStickyActionBar>
         </div>

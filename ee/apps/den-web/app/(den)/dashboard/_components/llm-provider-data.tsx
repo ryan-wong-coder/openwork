@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_DEN_LOCALE } from "../../../_lib/locale";
+
 import { useEffect, useState } from "react";
 import { getErrorMessage, requestJson } from "../../_lib/den-flow";
 
@@ -67,8 +69,8 @@ export type DenLlmProvider = {
   };
 };
 
-export const LLM_PROVIDER_DETAILS_HIDDEN_MESSAGE = "Details are hidden because you can't edit or use this provider.";
-export const LLM_PROVIDER_MEMBERS_HIDDEN_MESSAGE = "Names are hidden because you can't edit this provider.";
+export const LLM_PROVIDER_DETAILS_HIDDEN_MESSAGE = "你无权编辑或使用此提供商，因此详情已隐藏。";
+export const LLM_PROVIDER_MEMBERS_HIDDEN_MESSAGE = "你无权编辑此提供商，因此名称已隐藏。";
 
 export type DenModelsDevProviderSummary = {
   id: string;
@@ -340,15 +342,15 @@ export function getProviderApiBase(config: Record<string, unknown>): string | nu
 
 export function formatProviderTimestamp(value: string | null) {
   if (!value) {
-    return "Recently updated";
+    return "最近更新";
   }
 
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
-    return "Recently updated";
+    return "最近更新";
   }
 
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(DEFAULT_DEN_LOCALE, {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -359,7 +361,7 @@ export function buildCustomProviderTemplate() {
   return JSON.stringify(
     {
       id: "custom-provider",
-      name: "Custom Provider",
+      name: "自定义提供商",
       npm: "@ai-sdk/openai-compatible",
       env: ["CUSTOM_PROVIDER_API_KEY"],
       doc: "https://example.com/docs/models",
@@ -367,7 +369,7 @@ export function buildCustomProviderTemplate() {
       models: [
         {
           id: "custom-provider/example-model",
-          name: "Example Model",
+          name: "示例模型",
           attachment: false,
           reasoning: false,
           tool_call: true,
@@ -466,11 +468,11 @@ export async function requestLlmProviderTestConnection(input: {
     timeoutMs,
   );
   if (!response.ok) {
-    throw new Error(getErrorMessage(payload, `Endpoint test failed (${response.status}).`));
+    throw new Error(getErrorMessage(payload, `端点测试失败（${response.status}）。`));
   }
   const result = isRecord(payload) ? asProbeResult(payload.result) : null;
   if (!result) {
-    throw new Error("Endpoint test returned an unexpected response.");
+    throw new Error("端点测试返回了无法识别的响应，请重试。");
   }
   const verifications = isRecord(payload) && Array.isArray(payload.verifications)
     ? payload.verifications
@@ -483,7 +485,7 @@ export async function requestLlmProviderTestConnection(input: {
 export async function requestLlmProviderCatalog(orgId: string) {
   const { response, payload } = await requestJson(`/v1/llm-provider-catalog`, { method: "GET" }, 20000);
   if (!response.ok) {
-    throw new Error(getErrorMessage(payload, `Failed to load the provider catalog (${response.status}).`));
+    throw new Error(getErrorMessage(payload, `无法加载提供商目录（${response.status}）。`));
   }
 
   return isRecord(payload) && Array.isArray(payload.providers)
@@ -499,16 +501,16 @@ export async function requestLlmProviderCatalogDetail(orgId: string, providerId:
   );
 
   if (!response.ok) {
-    throw new Error(getErrorMessage(payload, `Failed to load provider details (${response.status}).`));
+    throw new Error(getErrorMessage(payload, `无法加载提供商详情（${response.status}）。`));
   }
 
   if (!isRecord(payload) || !payload.provider) {
-    throw new Error("Provider details were missing from the response.");
+    throw new Error("响应中缺少提供商详情。");
   }
 
   const detail = asCatalogProviderDetail(payload.provider);
   if (!detail) {
-    throw new Error("Provider details could not be parsed.");
+    throw new Error("无法解析提供商详情。");
   }
 
   return detail;
@@ -526,7 +528,7 @@ export function useOrgLlmProviders(
   async function loadProviders() {
     if (!orgId) {
       setLlmProviders([]);
-      setError("Organization not found.");
+      setError("未找到组织。");
       return;
     }
 
@@ -539,7 +541,7 @@ export function useOrgLlmProviders(
         15000,
       );
       if (!response.ok) {
-        throw new Error(getErrorMessage(payload, `Failed to load providers (${response.status}).`));
+        throw new Error(getErrorMessage(payload, `无法加载提供商（${response.status}）。`));
       }
 
       const nextProviders = isRecord(payload) && Array.isArray(payload.llmProviders)
@@ -547,7 +549,7 @@ export function useOrgLlmProviders(
         : [];
       setLlmProviders(nextProviders);
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : "Failed to load the provider library.");
+      setError(loadError instanceof Error ? loadError.message : "无法加载提供商资源库，请重试。");
     } finally {
       setBusy(false);
     }

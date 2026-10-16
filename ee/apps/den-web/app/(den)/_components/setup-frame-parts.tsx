@@ -155,8 +155,8 @@ export function SetupStatus({ icon, title, line, children }: { icon?: ReactNode;
 export function SetupCanList({ actor, items }: { actor: string; items: string[] }) {
   if (items.length === 0) return null;
   return (
-    <section className="flex flex-col gap-2.5" aria-label={`${actor} can`} data-testid="setup-can-list">
-      <p className="m-0 text-[13px] font-medium leading-[18px] text-[var(--dls-text-primary)]">{actor} can</p>
+    <section className="flex flex-col gap-2.5" aria-label={`${actor} 可以`} data-testid="setup-can-list">
+      <p className="m-0 text-[13px] font-medium leading-[18px] text-[var(--dls-text-primary)]">{actor} 可以</p>
       <ul className="m-0 flex list-none flex-col gap-2.5 p-0">
         {items.map((item) => (
           <li key={item} className="flex items-start gap-2.5 text-[13px] leading-[18px] text-[var(--dls-text-primary)]">
@@ -184,7 +184,7 @@ export function SetupTechnicalDetails({ children }: { children: ReactNode }) {
     <details className="group min-w-0 text-xs leading-4 text-[var(--dls-text-secondary)]">
       <summary className="flex cursor-pointer list-none items-center gap-1 [&::-webkit-details-marker]:hidden">
         <ChevronRight aria-hidden="true" className="size-4 shrink-0 transition-transform duration-150 ease-out group-open:rotate-90 motion-reduce:transition-none" strokeWidth={1.5} />
-        Technical details
+        技术详情
       </summary>
       <div className="mt-2 grid gap-1 break-all pl-5 font-mono">{children}</div>
     </details>
@@ -194,7 +194,7 @@ export function SetupTechnicalDetails({ children }: { children: ReactNode }) {
 /** Skeleton rows that hold the place of workspaces while they load. */
 export function SetupSkeletonRows({ count = 2 }: { count?: number }) {
   return (
-    <div className="flex flex-col border-t border-[var(--setup-hairline)]" aria-busy="true" aria-label="Loading workspaces" data-testid="setup-skeleton-rows">
+    <div className="flex flex-col border-t border-[var(--setup-hairline)]" aria-busy="true" aria-label="正在加载工作区" data-testid="setup-skeleton-rows">
       {Array.from({ length: count }, (_, index) => (
         <div key={index} className="flex min-h-13 items-center gap-3 border-b border-[var(--setup-hairline)]">
           <span className="size-8 shrink-0 rounded-lg bg-[#f0f0f0] motion-safe:animate-pulse" />
@@ -221,7 +221,7 @@ export type SetupTerminalLine = { text: string; muted?: boolean };
  */
 export function SetupTerminal({ lines }: { lines: SetupTerminalLine[] }) {
   return (
-    <figure className="m-0 mt-10 w-full max-w-110" aria-label="Your terminal" data-testid="setup-terminal">
+    <figure className="m-0 mt-10 w-full max-w-110" aria-label="你的终端" data-testid="setup-terminal">
       <div className={styles.appWindow}>
         <div className={styles.appTitlebar}>
           <span className="flex gap-1.5" aria-hidden="true">
@@ -229,7 +229,7 @@ export function SetupTerminal({ lines }: { lines: SetupTerminalLine[] }) {
             <i className="size-2.25 rounded-full bg-[var(--dls-border)]" />
             <i className="size-2.25 rounded-full bg-[var(--dls-border)]" />
           </span>
-          <span className="pl-2 text-xs font-normal text-[#888]">Terminal</span>
+          <span className="pl-2 text-xs font-normal text-[#888]">终端</span>
         </div>
         <pre className="m-0 overflow-hidden whitespace-pre-wrap px-4 pb-4 pt-3.5 font-mono text-xs leading-5">
           {lines.map((line, index) => (

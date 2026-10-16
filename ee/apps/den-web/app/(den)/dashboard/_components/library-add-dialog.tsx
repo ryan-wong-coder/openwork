@@ -11,9 +11,9 @@ import { ItemRow } from "./item-list";
 export type LibraryAddChoice = "connector" | "skill" | "plugin";
 
 const CHOICES: { value: LibraryAddChoice; title: string; description: string; icon: LucideIcon }[] = [
-  { value: "connector", title: "Connector", description: "Let your AI work in Slack, Notion, Linear and more.", icon: Plug },
-  { value: "skill", title: "Skill", description: "Teach the AI how you do a task, in plain words.", icon: FileText },
-  { value: "plugin", title: "Plugin", description: "A set of skills, commands and connectors, added in one go.", icon: Boxes },
+  { value: "connector", title: "连接器", description: "让 AI 使用 Slack、Notion、Linear 等服务开展工作。", icon: Plug },
+  { value: "skill", title: "技能", description: "用日常语言教 AI 如何完成任务。", icon: FileText },
+  { value: "plugin", title: "插件", description: "一次添加一组技能、命令和连接器。", icon: Boxes },
 ];
 
 const CONNECTOR_LOGOS = ["Slack", "Notion", "Microsoft 365", "Linear"];
@@ -45,13 +45,13 @@ export function LibraryAddDialog({ open, onOpenChange, hrefFor }: {
         >
           <div className="flex items-start justify-between gap-4 px-6 pb-3 pt-6">
             <div>
-              <Dialog.Title className="text-[18px] font-semibold leading-6 text-gray-900">Add to library</Dialog.Title>
+              <Dialog.Title className="text-[18px] font-semibold leading-6 text-gray-900">添加到资源库</Dialog.Title>
             </div>
-            <Dialog.Close aria-label="Close" className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 transition-colors hover:bg-gray-200 hover:text-gray-900">
+            <Dialog.Close aria-label="关闭" className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 transition-colors hover:bg-gray-200 hover:text-gray-900">
               <X className="h-4 w-4" aria-hidden />
             </Dialog.Close>
           </div>
-          <div role="radiogroup" aria-label="What to add" className="flex flex-col gap-1 px-3 pb-3">
+          <div role="radiogroup" aria-label="选择添加内容" className="flex flex-col gap-1 px-3 pb-3">
             {CHOICES.map((entry) => {
               const selected = entry.value === choice;
               const Icon = entry.icon;
@@ -63,12 +63,12 @@ export function LibraryAddDialog({ open, onOpenChange, hrefFor }: {
             })}
           </div>
           <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 px-4 py-3">
-            <p className="pl-1 text-[12px] leading-4 text-gray-500">Only you can use it until you share it.</p>
+            <p className="pl-1 text-[12px] leading-4 text-gray-500">分享前仅供你使用。</p>
             <div className="flex items-center gap-2">
               <Dialog.Close className="inline-flex h-9 items-center rounded-lg border border-gray-200 bg-white px-4 text-[13px] font-medium text-gray-700 transition-colors hover:bg-gray-50">
-                Cancel
+                取消
               </Dialog.Close>
-              <DenButton size="sm" className="h-9 px-4 text-[13px]" onClick={() => router.push(hrefFor(choice))}>Continue</DenButton>
+              <DenButton size="sm" className="h-9 px-4 text-[13px]" onClick={() => router.push(hrefFor(choice))}>继续</DenButton>
             </div>
           </div>
         </Dialog.Popup>

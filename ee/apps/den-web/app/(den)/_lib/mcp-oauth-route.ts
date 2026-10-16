@@ -12,7 +12,7 @@ export function getMcpOAuthSelectOrganizationRoute(search: string) {
 }
 
 export const MCP_OAUTH_RESTART_MESSAGE =
-  "This sign-in link expired. Start sign-in again from your agent.";
+  "此登录链接已过期，请从代理中重新开始登录。";
 
 /**
  * better-auth signs the authorize query with an `exp` (seconds). Once it has

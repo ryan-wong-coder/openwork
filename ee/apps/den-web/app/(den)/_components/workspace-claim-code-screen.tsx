@@ -67,10 +67,10 @@ export function WorkspaceClaimCodeScreen({ initialUserCode }: { initialUserCode:
       const { response, payload } = await requestJson(`/v1/bootstrap/claim-codes/${encodeURIComponent(userCode.replace(/-/g, ""))}`, { method: "GET" }, 12000);
       if (cancelled) return;
       if (!response.ok) {
-        setCodeState({ kind: "invalid", message: "This code is invalid or has expired. Ask your agent for a new one." });
+        setCodeState({ kind: "invalid", message: "此代码无效或已过期，请让代理提供新代码。" });
         return;
       }
-      setCodeState({ kind: "pending", organizationName: readOrganizationName(payload) ?? "this workspace" });
+      setCodeState({ kind: "pending", organizationName: readOrganizationName(payload) ?? "此工作区" });
     })();
     return () => {
       cancelled = true;
@@ -88,7 +88,7 @@ export function WorkspaceClaimCodeScreen({ initialUserCode }: { initialUserCode:
     );
     setBusy(false);
     if (!response.ok) {
-      setError(getErrorMessage(payload, "Could not claim this workspace. Ask your agent for a new code."));
+      setError(getErrorMessage(payload, "无法认领此工作区，请让代理提供新代码。"));
       return;
     }
     setCodeState({ kind: "claimed", organizationName: readOrganizationName(payload) ?? codeState.organizationName });
@@ -98,16 +98,16 @@ export function WorkspaceClaimCodeScreen({ initialUserCode }: { initialUserCode:
 
   const frame = (children: ReactNode) => (
     <SetupFrame
-      title="Claim your workspace."
-      description={workspaceName ? `Your agent set up ${workspaceName} for you.` : "Your agent set up a workspace for you."}
+      title="认领工作区"
+      description={workspaceName ? `你的智能体已为你设置 ${workspaceName}。` : "代理已为你配置工作区。"}
       panelVisual={<OnboardingTexture />}
       aside={(
         <SetupStoryTiles
           linked={codeState.kind === "claimed"}
-          from={{ label: "Your agent", mark: <SetupStoryTile><Terminal className="size-6 text-[var(--dls-text-primary)]" strokeWidth={1.5} /></SetupStoryTile> }}
+          from={{ label: "你的代理", mark: <SetupStoryTile><Terminal className="size-6 text-[var(--dls-text-primary)]" strokeWidth={1.5} /></SetupStoryTile> }}
           to={workspaceName
             ? { label: workspaceName, mark: <SetupLetterTile name={workspaceName} size="lg" /> }
-            : { label: "Your workspace", mark: <SetupStoryTile><Folder className="size-5 text-[var(--dls-text-secondary)]" strokeWidth={1.5} /></SetupStoryTile> }}
+            : { label: "你的工作区", mark: <SetupStoryTile><Folder className="size-5 text-[var(--dls-text-secondary)]" strokeWidth={1.5} /></SetupStoryTile> }}
         />
       )}
     >
@@ -118,7 +118,7 @@ export function WorkspaceClaimCodeScreen({ initialUserCode }: { initialUserCode:
   if (!sessionHydrated) {
     return frame(
       <SetupPanelBody>
-        <SetupPanelTitle>Claim your workspace</SetupPanelTitle>
+        <SetupPanelTitle>认领工作区</SetupPanelTitle>
         <SetupSkeletonRows count={1} />
       </SetupPanelBody>,
     );
@@ -127,14 +127,14 @@ export function WorkspaceClaimCodeScreen({ initialUserCode }: { initialUserCode:
   if (!user) {
     return frame(
       <SetupPanelBody>
-        {userCode ? <SetupFacts rows={[{ label: "Code", value: <SetupCode code={userCode} testId="claim-user-code" /> }]} /> : null}
+        {userCode ? <SetupFacts rows={[{ label: "代码", value: <SetupCode code={userCode} testId="claim-user-code" /> }]} /> : null}
         <AuthPanel
           bare
           emailFirstFlow
           socialFirst
           socialProviders={["google"]}
           prefillKey={userCode}
-          emailStepContent={{ title: "Sign in to OpenWork" }}
+          emailStepContent={{ title: "登录 OpenWork" }}
         />
       </SetupPanelBody>,
     );
@@ -149,9 +149,9 @@ export function WorkspaceClaimCodeScreen({ initialUserCode }: { initialUserCode:
           if (draftCode.trim()) setUserCode(formatUserCode(draftCode));
         }}
       >
-        <SetupPanelTitle>Enter the code from your agent</SetupPanelTitle>
+        <SetupPanelTitle>输入代理提供的代码</SetupPanelTitle>
         <label className="flex flex-col gap-2">
-          <span className="den-label">Code</span>
+          <span className="den-label">代码</span>
           <input
             className="den-input font-mono uppercase tracking-[0.12em]"
             value={draftCode}
@@ -161,16 +161,16 @@ export function WorkspaceClaimCodeScreen({ initialUserCode }: { initialUserCode:
             autoFocus
           />
         </label>
-        <SetupFacts rows={[{ label: "Account", value: user.email }]} />
-        <button type="submit" className="den-button-primary w-full" disabled={!draftCode.trim()}>Continue</button>
+        <SetupFacts rows={[{ label: "账号", value: user.email }]} />
+        <button type="submit" className="den-button-primary w-full" disabled={!draftCode.trim()}>继续</button>
       </form>,
     );
   }
 
   if (codeState.kind === "claimed") {
     return frame(
-      <SetupStatus icon={<Check className="size-5" strokeWidth={1.5} />} title={`${codeState.organizationName} is yours`}>
-        <Link href={getOrgDashboardRoute()} className="den-button-primary px-6">Open workspace</Link>
+      <SetupStatus icon={<Check className="size-5" strokeWidth={1.5} />} title={`${codeState.organizationName} 已归你所有`}>
+        <Link href={getOrgDashboardRoute()} className="den-button-primary px-6">打开工作区</Link>
       </SetupStatus>,
     );
   }
@@ -178,10 +178,10 @@ export function WorkspaceClaimCodeScreen({ initialUserCode }: { initialUserCode:
   if (codeState.kind === "invalid") {
     return frame(
       <SetupPanelBody gap="md">
-        <SetupPanelTitle>This code can’t be used</SetupPanelTitle>
+        <SetupPanelTitle>此代码不可用</SetupPanelTitle>
         <SetupLine>{codeState.message}</SetupLine>
         <button type="button" className="den-button-secondary self-start" onClick={() => { setUserCode(""); setCodeState({ kind: "idle" }); }}>
-          Enter a different code
+          输入其他代码
         </button>
       </SetupPanelBody>,
     );
@@ -195,24 +195,24 @@ export function WorkspaceClaimCodeScreen({ initialUserCode }: { initialUserCode:
       <span className="flex size-10 items-center justify-center rounded-full bg-[var(--dls-hover)] text-[var(--dls-text-primary)]" aria-hidden="true">
         <Flag className="size-5" strokeWidth={1.5} />
       </span>
-      <SetupPanelTitle>{`Claim ${organizationName}?`}</SetupPanelTitle>
+      <SetupPanelTitle>{`认领 ${organizationName}？`}</SetupPanelTitle>
       <SetupFacts
         rows={[
-          { label: "Code", value: <SetupCode code={userCode} testId="claim-user-code" /> },
-          { label: "Owner", value: user.email },
-          { label: "Keep as", value: "A new organization" },
+          { label: "代码", value: <SetupCode code={userCode} testId="claim-user-code" /> },
+          { label: "所有者", value: user.email },
+          { label: "保留为", value: "A new organization" },
         ]}
       />
       <p className="m-0 text-[13px] leading-5 text-[var(--setup-ink-soft)]" data-testid="claim-consent-line">
-        You become the owner of {organizationName} and everything your agent added to it. The agent’s temporary access ends now.
+        你将成为以下工作区的所有者： {organizationName} ，并拥有代理添加的全部内容。代理的临时访问权限将立即结束。
       </p>
       <div className="flex flex-col gap-3.5">
         {error ? <SetupErrorLine>{error}</SetupErrorLine> : null}
         <button type="button" className="den-button-primary w-full" onClick={() => void claim()} disabled={checking || busy}>
-          {busy ? "Claiming…" : "Claim workspace"}
+          {busy ? "正在认领…" : "认领工作区"}
         </button>
         <SetupQuietButton className="self-start" onClick={() => void signOut()} disabled={busy}>
-          Use a different account
+          使用其他账户
         </SetupQuietButton>
       </div>
     </SetupPanelBody>,

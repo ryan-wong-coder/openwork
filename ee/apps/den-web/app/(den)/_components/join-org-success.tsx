@@ -39,7 +39,7 @@ function ReturnToOpenWorkStatus({
   if (status === "consumed") {
     return (
       <div className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700" data-testid="desktop-connected" aria-live="polite">
-        Connected — {organizationName} is ready in OpenWork.
+        已连接， {organizationName} 已在 OpenWork 中就绪。
       </div>
     );
   }
@@ -48,17 +48,17 @@ function ReturnToOpenWorkStatus({
     return (
       <div className="grid gap-3 rounded-2xl bg-slate-50 p-4 text-sm text-slate-600" data-testid="desktop-handoff-troubleshoot" aria-live="polite">
         <p className="m-0">
-          Nothing opened?{" "}
+          没有打开应用？{" "}
           <button type="button" className="font-medium text-slate-950 underline-offset-4 hover:underline" onClick={() => window.location.assign(openworkUrl)}>
-            Return to OpenWork again
+            重新返回 OpenWork
           </button>
         </p>
         <div className="grid gap-2">
-          <p className="m-0">Still stuck? Copy this sign-in link into OpenWork:</p>
+          <p className="m-0">仍无法打开？请将此登录链接复制到 OpenWork：</p>
           <div className="flex flex-col gap-2 sm:flex-row">
             <input className="den-input min-w-0 flex-1 text-xs" value={openworkUrl} readOnly onFocus={(event) => event.currentTarget.select()} />
             <button type="button" className="den-button-secondary sm:w-auto" onClick={() => void copyOpenworkUrl()}>
-              {copied ? "Copied" : "Copy link"}
+              {copied ? "已复制" : "复制链接"}
             </button>
           </div>
         </div>
@@ -68,7 +68,7 @@ function ReturnToOpenWorkStatus({
 
   return (
     <p className="m-0 text-sm text-slate-500" aria-live="polite">
-      Returning to OpenWork…
+      正在返回 OpenWork…
     </p>
   );
 }
@@ -151,7 +151,7 @@ export function JoinOrgSuccess({
       setDownloadHref(href);
       startInstallerDownload(href);
     } catch (error) {
-      setActionError(error instanceof Error ? error.message : "Could not prepare your download.");
+      setActionError(error instanceof Error ? error.message : "无法准备下载，请重试。");
     } finally {
       setInstallBusy(false);
     }
@@ -168,13 +168,13 @@ export function JoinOrgSuccess({
         12000,
       );
       if (!response.ok) {
-        setActionError(getErrorMessage(payload, `Could not return to OpenWork (${response.status}).`));
+        setActionError(getErrorMessage(payload, `无法返回 OpenWork（${response.status}）。`));
         return;
       }
 
       const openworkUrl = getDesktopHandoffOpenworkUrl(payload);
       if (!openworkUrl) {
-        setActionError("OpenWork sign-in was prepared, but no app link was returned.");
+        setActionError("OpenWork 登录已准备完成，但未返回应用链接，请重试。");
         return;
       }
 
@@ -184,7 +184,7 @@ export function JoinOrgSuccess({
       setDesktopGrant(grant);
       window.location.assign(openworkUrl);
     } catch (error) {
-      setActionError(error instanceof Error ? error.message : "Could not return to OpenWork.");
+      setActionError(error instanceof Error ? error.message : "无法返回 OpenWork，请重试。");
     } finally {
       setHandoffBusy(false);
     }
@@ -197,12 +197,12 @@ export function JoinOrgSuccess({
     try {
       const { response, payload } = await requestJson("/v1/me/send-download-link", { method: "POST" }, 12000);
       if (!response.ok) {
-        setActionError(getErrorMessage(payload, `Could not send the download link (${response.status}).`));
+        setActionError(getErrorMessage(payload, `无法发送下载链接（${response.status}）。`));
         return;
       }
       setEmailSent(true);
     } catch (error) {
-      setActionError(error instanceof Error ? error.message : "Could not send the download link.");
+      setActionError(error instanceof Error ? error.message : "无法发送下载链接，请重试。");
     } finally {
       setEmailBusy(false);
     }
@@ -214,29 +214,29 @@ export function JoinOrgSuccess({
         <OnboardingCard organization={{ name: organizationName, brand }}>
           <div className="grid gap-3">
             <h1 className="m-0 grid max-w-full gap-1 text-[30px] font-semibold leading-[38px] tracking-[-0.03em] text-slate-950 sm:text-[38px] sm:leading-[46px]">
-              <span>You&apos;re in, welcome to</span>
+              <span>已加入，欢迎来到</span>
               {/* No horizontal gap: the possessive must hug the org identity
                   ("Acme Robotics's OpenWork", not "Acme Robotics 's"). */}
               <span className="flex min-w-0 flex-wrap items-center gap-y-1">
                 <OrganizationBrandIdentity organizationName={organizationName} brand={brand} />
-                <span className="whitespace-nowrap">&apos;s {brand.appName}</span>
+                <span className="whitespace-nowrap">的 {brand.appName}</span>
               </span>
             </h1>
             <p className="m-0 max-w-2xl text-[15px] leading-[23px] text-slate-600">
               {desktopAuthRequested
-                ? "Your team setup is ready. Return to OpenWork to continue where you left off."
-                : "The desktop app is where OpenWork runs on your computer and puts your team's setup to work."}
+                ? "团队配置已就绪，请返回 OpenWork 继续工作。"
+                : "桌面应用在你的计算机上运行 OpenWork，并应用团队配置。"}
             </p>
           </div>
 
           {isMobile === null ? (
-            <p className="m-0 text-sm text-slate-500">Preparing your next step...</p>
+            <p className="m-0 text-sm text-slate-500">正在准备下一步…</p>
           ) : isMobile ? (
             <div className="grid gap-3">
               <div className="grid gap-2 rounded-2xl bg-slate-50 p-4" data-testid="join-org-mobile-note">
-                <p className="m-0 text-sm font-medium text-slate-950">OpenWork runs on your computer.</p>
+                <p className="m-0 text-sm font-medium text-slate-950">OpenWork 在你的计算机上运行。</p>
                 <p className="m-0 text-sm leading-6 text-slate-600">
-                  Email the install link to yourself and continue when you&apos;re back at your desk.
+                  将安装链接发送到自己的邮箱，返回计算机后继续。
                 </p>
               </div>
               <button
@@ -246,9 +246,9 @@ export function JoinOrgSuccess({
                 disabled={emailBusy || emailSent}
                 data-testid="join-org-email-download"
               >
-                {emailBusy ? "Sending..." : emailSent ? "Sent" : "Email me the download link"}
+                {emailBusy ? "正在发送…" : emailSent ? "已发送" : "发送下载链接到我的邮箱"}
               </button>
-              {emailSent ? <div className="den-notice is-info">Sent — check your inbox when you&apos;re back at your desk.</div> : null}
+              {emailSent ? <div className="den-notice is-info">已发送，请返回计算机后检查收件箱。</div> : null}
             </div>
           ) : desktopAuthRequested ? (
             desktopOpenworkUrl ? (
@@ -261,11 +261,11 @@ export function JoinOrgSuccess({
                 disabled={handoffBusy}
                 data-testid="join-org-return-openwork"
               >
-                {handoffBusy ? "Returning to OpenWork..." : "Return to OpenWork"}
+                {handoffBusy ? "正在返回 OpenWork…" : "返回 OpenWork"}
               </button>
             )
           ) : !platformReady ? (
-            <p className="m-0 text-sm text-slate-500">Preparing your next step...</p>
+            <p className="m-0 text-sm text-slate-500">正在准备下一步…</p>
           ) : (
             <div className="grid gap-3">
               <button
@@ -276,7 +276,7 @@ export function JoinOrgSuccess({
                 data-testid="join-org-get-app"
                 data-download-href={downloadHref ?? undefined}
               >
-                {installBusy ? "Preparing your download..." : `${downloadCtaLabel(detected?.os ?? null)} →`}
+                {installBusy ? "正在准备下载…" : `${downloadCtaLabel(detected?.os ?? null)} →`}
               </button>
               <button
                 type="button"
@@ -285,14 +285,14 @@ export function JoinOrgSuccess({
                 disabled={handoffBusy}
                 data-testid="join-org-open-app"
               >
-                {handoffBusy ? "Opening OpenWork..." : "Already have OpenWork? Open it."}
+                {handoffBusy ? "正在打开 OpenWork…" : "已安装 OpenWork？打开应用"}
               </button>
             </div>
           )}
 
           {desktopAuthRequested && desktopOpenworkUrl ? null : (
             <div className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700" data-testid="join-org-connected">
-              Connected — OpenWork is set up for {organizationName}
+              已连接，OpenWork 已配置为 {organizationName}
             </div>
           )}
 
@@ -302,7 +302,7 @@ export function JoinOrgSuccess({
             onClick={onContinueInBrowser}
             data-testid="join-org-continue-browser"
           >
-            Continue in the browser
+            在浏览器中继续
           </button>
 
           {actionError ? (
@@ -310,7 +310,7 @@ export function JoinOrgSuccess({
               <div className="den-notice is-error">{actionError}</div>
               {desktopAuthRequested ? null : (
                 <a href={OPENWORK_DOWNLOAD_URL} className="den-button-secondary min-h-12 w-full">
-                  Open the public download page
+                  打开公开下载页面
                 </a>
               )}
             </div>

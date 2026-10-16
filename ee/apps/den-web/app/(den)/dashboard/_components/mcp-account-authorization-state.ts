@@ -1,11 +1,11 @@
 export const MCP_AUTHORIZATION_WINDOW_CLOSED_MESSAGE =
-  "The sign-in tab closed before OpenWork confirmed the connection. Review the provider error, then try again.";
+  "OpenWork 确认连接前，登录标签页已关闭，请检查提供商错误后重试。";
 
 export const MCP_AUTHORIZATION_TIMEOUT_MESSAGE =
-  "OpenWork could not confirm the connection. Review the provider error in this tab, then try again.";
+  "OpenWork 无法确认连接，请检查此标签页中的提供商错误后重试。";
 
 export const MCP_AUTHORIZATION_UNCONFIRMED_CONNECTED_MESSAGE =
-  "The provider responded, but OpenWork could not confirm this account connection. Review the provider configuration, then try again.";
+  "提供商已响应，但 OpenWork 无法确认账户连接，请检查提供商配置后重试。";
 
 export type McpAuthorizationPollOutcome = "connected" | "window_closed" | "timeout" | "pending";
 

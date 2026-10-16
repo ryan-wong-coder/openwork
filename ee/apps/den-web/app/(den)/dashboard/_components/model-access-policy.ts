@@ -7,7 +7,7 @@ import {
 
 export type ModelAccessMode = "open" | "managed";
 
-export const ADMIN_EXCEPTION_POLICY_NAME = "Admins may add providers";
+export const ADMIN_EXCEPTION_POLICY_NAME = "管理员可添加提供商";
 const ADMIN_EXCEPTION_ROLES: DenDesktopPolicyRole[] = ["owner", "admin"];
 
 export type ModelAccessState = {
@@ -62,7 +62,7 @@ export async function saveModelAccess(
   next: { mode: ModelAccessMode; adminException: boolean; zenAllowed: boolean },
 ) {
   const { defaultPolicy, adminExceptionPolicies } = state;
-  if (!defaultPolicy) throw new Error("Default desktop policy not found.");
+  if (!defaultPolicy) throw new Error("未找到默认桌面策略。");
   const managed = next.mode === "managed";
   await updateDesktopPolicy(defaultPolicy.id, {
     policyName: defaultPolicy.policyName,
