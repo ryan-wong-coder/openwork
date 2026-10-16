@@ -1,9 +1,12 @@
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { readFile } from 'node:fs/promises';
 import { parseRelease } from '../../apps/zeno-site/src/releases.js';
 const require = createRequire(new URL('../../apps/desktop/package.json', import.meta.url));
 const YAML = require('yaml');
 const origin = 'https://www.zeno.ryan-wong.cn';
+const expectedVersion = process.argv[2] || JSON.parse(await readFile(new URL('../../apps/desktop/package.json', import.meta.url), 'utf8')).version;
+assert.match(expectedVersion, /^\d+\.\d+\.\d+$/); assert.ok(process.argv.length <= 3);
 async function request(path, options = {}) {
   const url = new URL(path, origin);
   assert.equal(url.origin, origin);
@@ -19,7 +22,7 @@ for (const path of ['/app.js', '/releases.js', '/styles.css']) {
 const api = await request('/api/releases/latest.json');
 assert.equal(api.status, 200); assert.match(api.headers.get('cache-control'), /no-store/);
 const release = parseRelease(await api.json(), origin);
-assert.equal(release.version, '1.0.0'); assert.equal(release.artifacts.length, 10);
+assert.equal(release.version, expectedVersion); assert.equal(release.artifacts.length, 10);
 const targets = new Set();
 for (const artifact of release.artifacts) {
   targets.add(`${artifact.platform}/${artifact.arch}`);

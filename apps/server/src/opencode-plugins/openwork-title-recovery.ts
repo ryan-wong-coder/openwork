@@ -1,3 +1,5 @@
+import { createTitleModelRouting } from "../title-model-routing.js";
+
 /** Recover only explicitly rejected, optional title-generation parameters.
  * The correlation header is removed unless already covered by an AWS signature.
  * No prompts, response bodies, URLs, or credentials enter diagnostics.
@@ -169,6 +171,7 @@ export const OpenWorkTitleRecovery = async (input: {
     } }).catch(() => undefined);
   };
   return {
+    ...createTitleModelRouting(process.env.OPENWORK_CLIENT_PROFILE),
     "chat.headers": async (request: {
       sessionID: string; agent: string; model: { id: string; providerID: string };
     }, output: { headers: Record<string, string> }) => {

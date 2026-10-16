@@ -23,6 +23,8 @@ async function verifyFile(path, expected) {
 export async function preparePublication(input, output, publishedAt) {
   const release = JSON.parse(await readFile(join(input, 'zeno-release.json'), 'utf8'));
   if (!/^\d+\.\d+\.\d+$/.test(release.version) || !Array.isArray(release.platforms) || release.platforms.length !== 6 || !Number.isFinite(Date.parse(publishedAt))) throw Error('Invalid release metadata');
+  const notes = release.notes ?? (release.version === '1.0.0' ? ['泽诺的第一个正式版本。', '中文界面，本地与自部署，独立版本更新。'] : undefined);
+  if (!Array.isArray(notes) || !notes.length || notes.some(note => typeof note !== 'string' || !note.trim() || note.length > 240)) throw Error('Missing or invalid version-specific release notes');
   const targets = new Set();
   const files = new Set();
   const artifacts = [];
@@ -68,7 +70,7 @@ export async function preparePublication(input, output, publishedAt) {
     }
   }
   await mkdir(join(output, 'api', 'releases'), { recursive: true });
-  const document = { version: release.version, publishedAt, notes: ['泽诺的第一个正式版本。', '中文界面，本地与自部署，独立版本更新。'], artifacts };
+  const document = { version: release.version, publishedAt, notes, artifacts };
   await writeFile(join(output, 'api', 'releases', 'latest.json'), JSON.stringify(document, null, 2) + '\n');
   await copyFile(join(input, 'zeno-release.json'), join(output, 'zeno-release.json'));
   return document;

@@ -210,5 +210,5 @@ jobs:
             fi
             gh release upload "$RELEASE_TAG" dist-zeno-release/* --clobber
           else
-            gh release create "$RELEASE_TAG" dist-zeno-release/* --verify-tag --latest=false --title "泽诺 Zeno $RELEASE_VERSION" --notes-file dist-zeno-release/RELEASE-NOTES.md
+            gh release create "$RELEASE_TAG" dist-zeno-release/* --draft --verify-tag --latest=false --title "泽诺 Zeno $RELEASE_VERSION" --notes-file dist-zeno-release/RELEASE-NOTES.md
           fi

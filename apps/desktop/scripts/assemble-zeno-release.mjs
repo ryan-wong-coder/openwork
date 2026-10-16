@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { copyFileSync, linkSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const [inputPath, outputPath] = process.argv.slice(2);
 if (!inputPath || !outputPath) throw new Error("Expected downloaded artifacts and release output directories.");
@@ -23,6 +24,9 @@ for (const platform of ["darwin", "win32", "linux"]) for (const arch of ["x64", 
   }
   platforms.push({ ...info, manifestAsset });
 }
-writeFileSync(resolve(output, "zeno-release.json"), JSON.stringify({ version, platforms }, null, 2) + "\n");
-writeFileSync(resolve(output, "RELEASE-NOTES.md"), `# 泽诺 Zeno ${version}\n\nWindows、Linux、macOS，分别提供 x64 与 arm64 安装包。\n\nmacOS 的 self-signed 包使用持久自签证书，未取得 Apple 公证；首次打开可能需要系统确认。后续更新必须保持同一签名身份。Windows 未签安装包可能显示未知发布者。\n\n各架构更新目录与 SHA-256/SHA-512 校验见 zeno-release.json。\n`);
+const releaseNotes = JSON.parse(readFileSync(fileURLToPath(new URL('../zeno-release-notes.json', import.meta.url)), 'utf8'));
+const notes = releaseNotes[version];
+if (!Array.isArray(notes) || !notes.length || notes.some(note => typeof note !== 'string' || !note.trim() || note.length > 240)) throw Error('Add the version-specific Zeno release notes before packaging.');
+writeFileSync(resolve(output, "zeno-release.json"), JSON.stringify({ version, notes, platforms }, null, 2) + "\n");
+writeFileSync(resolve(output, "RELEASE-NOTES.md"), `# 泽诺 Zeno ${version}\n\n${notes.map(note => `- ${note}`).join('\n')}\n\nWindows、Linux、macOS，分别提供 x64 与 arm64 安装包。\n\nmacOS 的 self-signed 包使用持久自签证书，未取得 Apple 公证；首次打开可能需要系统确认。后续更新必须保持同一签名身份。Windows 未签安装包可能显示未知发布者。\n\n各架构更新目录与 SHA-256/SHA-512 校验见 zeno-release.json。\n`);
 console.log(JSON.stringify({ version, platforms: platforms.length, output }));
