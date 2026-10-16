@@ -1,0 +1,210 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-16T13:42:30.505593+00:00",
+  "origin": "https://www.zeno.ryan-wong.cn",
+  "historicalVersion": "1.0.0",
+  "baselineCapturedAt": "2026-10-16T13:09:11.741Z",
+  "scope": "HEAD sizes and first/last 64-byte ranges compared with pre-activation; not a full historical file rehash",
+  "artifacts": [
+    {
+      "name": "zeno-mac-x64-1.0.0.dmg",
+      "url": "/downloads/1.0.0/zeno-mac-x64-1.0.0.dmg",
+      "size": 452008594,
+      "headMatched": true,
+      "sampled": [
+        {
+          "start": 0,
+          "end": 63,
+          "sha256": "2cf9fdf5665ca5d5892511105f79a3ea4d738425fb8b2cf761e2cc4016a7c624",
+          "matched": true
+        },
+        {
+          "start": 452008530,
+          "end": 452008593,
+          "sha256": "70c5a207f7a051c6bb393684d9fb357375087425dd3d2cf1898f8d4105d2a7b7",
+          "matched": true
+        }
+      ]
+    },
+    {
+      "name": "zeno-mac-x64-1.0.0.zip",
+      "url": "/downloads/1.0.0/zeno-mac-x64-1.0.0.zip",
+      "size": 450485918,
+      "headMatched": true,
+      "sampled": [
+        {
+          "start": 0,
+          "end": 63,
+          "sha256": "e9fb1c6674f2e9f0bf9e309fb70d88d1019f213e140cc17a6da2e42c3cca8f8b",
+          "matched": true
+        },
+        {
+          "start": 450485854,
+          "end": 450485917,
+          "sha256": "b0b654b43151ace363f65b7cf86f861675c8d3cd69c2329042eccb3e52ccbd9d",
+          "matched": true
+        }
+      ]
+    },
+    {
+      "name": "zeno-mac-arm64-1.0.0.dmg",
+      "url": "/downloads/1.0.0/zeno-mac-arm64-1.0.0.dmg",
+      "size": 432748703,
+      "headMatched": true,
+      "sampled": [
+        {
+          "start": 0,
+          "end": 63,
+          "sha256": "5476dda83a2f997886212fa6aef5a763b04d52a8f6ddba05de651a3a8270038f",
+          "matched": true
+        },
+        {
+          "start": 432748639,
+          "end": 432748702,
+          "sha256": "12eb049cda4b716a466ab728884f0cfe4a19b11bf7fd141e6c3fc38200bf999d",
+          "matched": true
+        }
+      ]
+    },
+    {
+      "name": "zeno-mac-arm64-1.0.0.zip",
+      "url": "/downloads/1.0.0/zeno-mac-arm64-1.0.0.zip",
+      "size": 431100608,
+      "headMatched": true,
+      "sampled": [
+        {
+          "start": 0,
+          "end": 63,
+          "sha256": "668489faa772af800bb08e51df4ad738e92a0b70a9dec5f9b01d7f9564447838",
+          "matched": true
+        },
+        {
+          "start": 431100544,
+          "end": 431100607,
+          "sha256": "10673c7f4b02b94ab579ecca1701d14c3f20e4517b7072c7f40e2785a32a79da",
+          "matched": true
+        }
+      ]
+    },
+    {
+      "name": "zeno-win-x64-1.0.0.exe",
+      "url": "/downloads/1.0.0/zeno-win-x64-1.0.0.exe",
+      "size": 379417761,
+      "headMatched": true,
+      "sampled": [
+        {
+          "start": 0,
+          "end": 63,
+          "sha256": "720facc4408fc9406eb3c06f41676fe828405dc69d1b16dcf492f3aa6fea6287",
+          "matched": true
+        },
+        {
+          "start": 379417697,
+          "end": 379417760,
+          "sha256": "c50781b86c6b32407d91ee3e746db3fd4fad05143dacc51901d9e18c475361ce",
+          "matched": true
+        }
+      ]
+    },
+    {
+      "name": "zeno-win-arm64-1.0.0.exe",
+      "url": "/downloads/1.0.0/zeno-win-arm64-1.0.0.exe",
+      "size": 359987770,
+      "headMatched": true,
+      "sampled": [
+        {
+          "start": 0,
+          "end": 63,
+          "sha256": "720facc4408fc9406eb3c06f41676fe828405dc69d1b16dcf492f3aa6fea6287",
+          "matched": true
+        },
+        {
+          "start": 359987706,
+          "end": 359987769,
+          "sha256": "676ff213fcb029c4cb67184752615c28cada90960d441817593bf9a3b4fddf23",
+          "matched": true
+        }
+      ]
+    },
+    {
+      "name": "zeno-linux-x64-1.0.0.AppImage",
+      "url": "/downloads/1.0.0/zeno-linux-x64-1.0.0.AppImage",
+      "size": 312187633,
+      "headMatched": true,
+      "sampled": [
+        {
+          "start": 0,
+          "end": 63,
+          "sha256": "76ce835ec4bacbb391ebdab9b26a56397f09989403bae11d3eed71cc22262290",
+          "matched": true
+        },
+        {
+          "start": 312187569,
+          "end": 312187632,
+          "sha256": "5248a6e32ff5de5b0093238f3f9262eaadc972c504d5d4c375271b64bafde43c",
+          "matched": true
+        }
+      ]
+    },
+    {
+      "name": "zeno-linux-x64-1.0.0.deb",
+      "url": "/downloads/1.0.0/zeno-linux-x64-1.0.0.deb",
+      "size": 392502216,
+      "headMatched": true,
+      "sampled": [
+        {
+          "start": 0,
+          "end": 63,
+          "sha256": "606395a32da02ca38a8a78ca536fffd4e5dc88563fcc42323777046a23446511",
+          "matched": true
+        },
+        {
+          "start": 392502152,
+          "end": 392502215,
+          "sha256": "0a61a3332b6f888785f06d180ae89fbf963f2cca895509b3ef30fe1bc8e6ed8f",
+          "matched": true
+        }
+      ]
+    },
+    {
+      "name": "zeno-linux-arm64-1.0.0.AppImage",
+      "url": "/downloads/1.0.0/zeno-linux-arm64-1.0.0.AppImage",
+      "size": 310067643,
+      "headMatched": true,
+      "sampled": [
+        {
+          "start": 0,
+          "end": 63,
+          "sha256": "8451ad57c6c5b6a271b73eff0e227c1980e81eefbed6535bfbb8b6e933eff2c8",
+          "matched": true
+        },
+        {
+          "start": 310067579,
+          "end": 310067642,
+          "sha256": "2a04451b45a0aafc2c8da6ca8d417bc668c915cd261c0343a0c9cc7ecf5fb25f",
+          "matched": true
+        }
+      ]
+    },
+    {
+      "name": "zeno-linux-arm64-1.0.0.deb",
+      "url": "/downloads/1.0.0/zeno-linux-arm64-1.0.0.deb",
+      "size": 376576220,
+      "headMatched": true,
+      "sampled": [
+        {
+          "start": 0,
+          "end": 63,
+          "sha256": "606395a32da02ca38a8a78ca536fffd4e5dc88563fcc42323777046a23446511",
+          "matched": true
+        },
+        {
+          "start": 376576156,
+          "end": 376576219,
+          "sha256": "7c28e7796909fec9ce9518ecdd495997448a39583c0a9c5b2241aa4e44fd7798",
+          "matched": true
+        }
+      ]
+    }
+  ]
+}

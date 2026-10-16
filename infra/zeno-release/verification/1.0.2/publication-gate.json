@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "version": "1.0.2",
+  "productCommit": "672ec6556b46d288cf07a4f71c9645e6f6411035",
+  "activatedAt": "2026-10-16T13:40:59.000Z",
+  "origin": "https://www.zeno.ryan-wong.cn",
+  "releaseBundle": "1.0.2-672ec6556",
+  "serverGate": {
+    "tool": "infra/zeno-release/prepare-publication.mjs",
+    "files": 22,
+    "checks": [
+      "safe package names",
+      "six architecture targets and own-site feeds",
+      "file size",
+      "full SHA-256",
+      "full SHA-512",
+      "all expected installer formats",
+      "manifest presence",
+      "macOS signed identity declaration"
+    ],
+    "activation": "All checks passed before output bundle creation and atomic release-current symlink switch."
+  },
+  "retention": "Version 1.0.0 persistent download directory retained; sample verification recorded separately."
+}

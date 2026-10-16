@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-16T14:07:22.817385+00:00",
+  "method": "Unauthenticated public GitHub Release API; full asset metadata compared with pre-publication audit",
+  "releaseId": 414981904,
+  "url": "https://github.com/ryan-wong-coder/openwork/releases/tag/zeno-v1.0.2",
+  "tag": "zeno-v1.0.2",
+  "draft": false,
+  "publishedAt": "2026-10-16T14:06:16Z",
+  "assetCount": 24,
+  "assetMetadataMatchesAudit": true
+}
