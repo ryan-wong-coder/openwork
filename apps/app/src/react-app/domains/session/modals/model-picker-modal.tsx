@@ -9,7 +9,7 @@ import { useSetWorkspaceDefaultModel } from "@/react-app/kernel/use-workspace-mo
 import { ModelPickerList } from "@/react-app/domains/models/model-picker-list";
 import { buildModelCatalog, resolveRetainedSelection, withoutBlockedSelection } from "@/react-app/domains/models/catalog";
 import { useModelChoice } from "@/react-app/domains/models/use-model-catalog";
-import { FAST_PRICING_WARNING, getModelBehaviorControls, getModelBehaviorSelection } from "@/app/lib/model-behavior";
+import { FAST_PRICING_WARNING, getModelBehaviorControls, getModelBehaviorSelection, getModelEffortState } from "@/app/lib/model-behavior";
 import { readDenSettings } from "@/app/lib/den";
 import { denDashboardUrl } from "@/app/lib/den-dashboard-links";
 import { usePlatform } from "@/react-app/kernel/platform";
@@ -89,6 +89,7 @@ export function ModelPickerModal(props: ModelPickerModalProps) {
   const selected = options.find((option) => option.providerID === props.current.providerID && option.modelID === props.current.modelID && !option.disabled);
   const behavior = getModelBehaviorSelection(selected?.behaviorOptions ?? [], props.currentBehaviorValue !== undefined ? props.currentBehaviorValue : selected?.behaviorValue ?? null);
   const controls = getModelBehaviorControls(behavior.options, behavior.value);
+  const effortState = getModelEffortState(selected?.behaviorOptions ?? [], selected?.reasoning, behavior.value);
   const autoVisible = retained?.reason !== "policy" && retained?.reason !== "disabled" && (options.some(isAutoModel) || isAutoModel(props.current));
   useEffect(() => { if (props.open) { props.setQuery(""); setAdvanced(false); } }, [props.open]);
   const openSettings = () => { props.onClose({ restorePromptFocus: false }); (props.onOpenProviderSettings ?? openAutoProviderSettings)(); };
@@ -105,9 +106,9 @@ export function ModelPickerModal(props: ModelPickerModalProps) {
         <summary onClick={(event) => { event.preventDefault(); setAdvanced((value) => !value); }} className="flex h-11 cursor-pointer list-none items-center gap-2 text-sm"><ChevronRight className="size-4 transition-transform group-open/advanced:rotate-90" />{t("interface.advanced_options")}</summary>
         {advanced ? <div className="pb-2 pl-6">
           {selected && !isAutoModel(selected) ? <>
-            <div className="flex h-11 items-center justify-between text-sm"><span>{t("interface.effort")}</span><span className="text-muted-foreground">{behavior.label}</span></div>
-            <p role="status" className="pb-2 text-xs text-muted-foreground">{getModelBehaviorSelection(behavior.options, controls.fast ? controls.toggleValue ?? null : behavior.value).description}</p>
-            <div role="group" aria-label={t("interface.thinking_and_effort")} className="flex flex-wrap gap-1">{controls.options.map((option) => <Button key={option.value ?? "default"} size="sm" variant="ghost" aria-pressed={option.value === behavior.value} onClick={() => props.onBehaviorChange(props.current, option.value)}>{option.label}</Button>)}</div>
+            <div className="flex h-11 items-center justify-between text-sm"><span>{t("interface.effort")}</span><span className="text-muted-foreground">{effortState.adjustable || effortState.resetAvailable ? behavior.label : effortState.label}</span></div>
+            <p role="status" className="pb-2 text-xs text-muted-foreground">{effortState.adjustable || effortState.resetAvailable ? getModelBehaviorSelection(behavior.options, controls.fast ? controls.toggleValue ?? null : behavior.value).description : effortState.description}</p>
+            {effortState.adjustable || effortState.resetAvailable ? <div role="group" aria-label={t("interface.thinking_and_effort")} className="flex flex-wrap gap-1">{controls.options.map((option) => <Button key={option.value ?? "default"} size="sm" variant="ghost" aria-pressed={option.value === behavior.value} onClick={() => props.onBehaviorChange(props.current, option.value)}>{option.label}</Button>)}</div> : null}
             {controls.hasFast ? <div className="flex h-11 items-center justify-between text-sm" title={FAST_PRICING_WARNING}><span>{t("interface.fast_mode")}</span><Switch aria-label={t("interface.fast_mode")} size="sm" checked={controls.fast} disabled={controls.toggleValue === undefined} onCheckedChange={() => { if (controls.toggleValue !== undefined) props.onBehaviorChange(props.current, controls.toggleValue); }} /></div> : null}
           </> : <p className="text-sm text-muted-foreground">{isAutoModel(props.current) ? t("interface.auto_manages_its_model_settings") : t("interface.choose_an_available_model_to_change_its_settings")}</p>}
         </div> : null}

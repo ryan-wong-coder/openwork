@@ -8,6 +8,7 @@ import { syncManagedProviderAuth } from "./managed-provider-auth.js";
 import type { ServerConfig } from "./types.js";
 import { withConfigurationWriteLock } from "./configuration-write-lock.js";
 import { GATEWAY_PROXY_TOKEN_ENV, gatewayProxyBaseURL } from "./gateway-proxy-auth.js";
+import { fillGatewayRuntimeModelMetadata, gatewayReasoningMetadata, parseGatewayReasoningMetadata, type GatewayReasoningMetadata } from "./gateway-model-capabilities.js";
 
 export const GATEWAY_PROVIDER_ID = "modelhelm";
 export const DEFAULT_GATEWAY_BASE_URL = "https://api.modelhelm.com/v1";
@@ -25,7 +26,7 @@ export type GatewaySettings = {
   requestTimeoutMs: number;
   imageGenerationEnabled: boolean;
 };
-export type GatewayModel = { id: string; name: string; kind: "chat" | "image" | "other" };
+export type GatewayModel = { id: string; name: string; kind: "chat" | "image" | "other" } & GatewayReasoningMetadata;
 export type GatewayConfigInput = Partial<GatewaySettings> & { apiKey?: string };
 
 const fields = {
@@ -119,11 +120,11 @@ function runtimeGatewayReady(providers: unknown, settings: GatewaySettings, conf
   return options?.baseURL === gatewayProxyBaseURL(config) && options.gatewayBaseURL === settings.baseURL && isRecord(provider.models) && isRecord(provider.models[settings.chatModel]);
 }
 
-async function materializeGatewayProvider(config: ServerConfig, settings: GatewaySettings, models: GatewayModel[] | null) {
+async function materializeGatewayProvider(config: ServerConfig, settings: GatewaySettings, models: GatewayModel[] | null, preserveMetadata = true) {
   const written = await writeGlobalRuntimeOpencodeConfig(config, (runtime) => {
     if (!models && (!isRecord(runtime.provider) || !(GATEWAY_PROVIDER_ID in runtime.provider))) return runtime;
     const provider = isRecord(runtime.provider) ? { ...runtime.provider } : {};
-    if (models) provider[GATEWAY_PROVIDER_ID] = buildGatewayProvider(settings, models, config);
+    if (models) provider[GATEWAY_PROVIDER_ID] = buildGatewayProvider(settings, models, config, preserveMetadata ? provider[GATEWAY_PROVIDER_ID] : undefined);
     else delete provider[GATEWAY_PROVIDER_ID];
     return { ...runtime, provider };
   });
@@ -146,7 +147,18 @@ export async function restoreGatewayProvider(config: ServerConfig, env: Pick<Env
   const current = await readGlobalRuntimeOpencodeConfig(config);
   // Older profiles may already own a correctly routed provider. A catalog
   // with a failed endpoint/key binding is never reused for a changed gateway.
-  if (apiKey && cache.status === "missing" && runtimeGatewayReady(current.provider, settings, config)) return { changed: false, ready: true };
+  if (apiKey && cache.status === "missing" && runtimeGatewayReady(current.provider, settings, config)) {
+    const written = await writeGlobalRuntimeOpencodeConfig(config, (runtime) => {
+      const provider = isRecord(runtime.provider) ? runtime.provider : {};
+      const gateway = provider[GATEWAY_PROVIDER_ID];
+      if (!isRecord(gateway) || !isRecord(gateway.models)) return runtime;
+      const models = Object.fromEntries(Object.entries(gateway.models).map(([id, model]) => [id, isRecord(model)
+        ? fillGatewayRuntimeModelMetadata(settings.baseURL, id, model) : model]));
+      return { ...runtime, provider: { ...provider, [GATEWAY_PROVIDER_ID]: { ...gateway, models } } };
+    });
+    if (written.changed) await writeOpenworkRuntimeConfigFile(config);
+    return { changed: written.changed, ready: true };
+  }
   return { changed: await materializeGatewayProvider(config, settings, null), ready: false };
 }
 
@@ -155,11 +167,12 @@ export async function syncGatewayModels(config: ServerConfig, env: EnvService, s
   return withConfigurationWriteLock("gateway-configuration", async () => {
     signal?.throwIfAborted();
     const { settings, apiKey } = await readGatewaySettings(env);
+    const previousCatalog = await cachedCatalog(env, settings, apiKey);
     const models = parseGatewayModels(await gatewayRequest(settings, apiKey, "models", {}, signal));
     const syncedAt = Date.now();
     if (config.readOnly) return { models, syncedAt, changed: false };
     await env.upsertMany([{ key: GATEWAY_MODEL_CATALOG_ENV, value: catalogValue(settings, apiKey, models, syncedAt) }]);
-    const changed = await materializeGatewayProvider(config, settings, models);
+    const changed = await materializeGatewayProvider(config, settings, models, previousCatalog.status !== "invalid");
     const auth = await syncManagedProviderAuth({ config, env });
     return { models, syncedAt, changed: changed || auth.delivered.length > 0 || auth.removed.length > 0 };
   });
@@ -198,7 +211,7 @@ export function parseGatewayModels(payload: unknown): GatewayModel[] {
     const name = typeof entry.name === "string" && entry.name.trim() ? entry.name.trim() : id;
     const kind = /image|imagen|dall-e|flux|stable-diffusion/i.test(id) ? "image"
       : /embedding|rerank|video|tts|audio|ocr|whisper/i.test(id) ? "other" : "chat";
-    return [{ id, name, kind }];
+    return [{ id, name, kind, ...parseGatewayReasoningMetadata(entry) }];
   });
 }
 
@@ -208,19 +221,33 @@ export async function listGatewayModels(env: Pick<EnvService, "list">, signal?: 
   return { models, syncedAt: Date.now() };
 }
 
-export function buildGatewayProvider(settings: GatewaySettings, models: GatewayModel[], config: Pick<ServerConfig, "port">) {
+export function buildGatewayProvider(settings: GatewaySettings, models: GatewayModel[], config: Pick<ServerConfig, "port">, previous?: unknown) {
+  const previousOptions = isRecord(previous) && isRecord(previous.options) ? previous.options : {};
+  const sameGateway = isRecord(previous) && previous.npm === "@ai-sdk/openai-compatible"
+    && Array.isArray(previous.env) && previous.env.includes(GATEWAY_PROXY_TOKEN_ENV)
+    && previousOptions.baseURL === gatewayProxyBaseURL(config) && previousOptions.gatewayBaseURL === settings.baseURL;
+  const previousModels = sameGateway && isRecord(previous.models) ? previous.models : {};
   return {
     npm: "@ai-sdk/openai-compatible",
     name: "ModelHelm",
     env: [GATEWAY_PROXY_TOKEN_ENV],
     options: { baseURL: gatewayProxyBaseURL(config), gatewayBaseURL: settings.baseURL, timeout: settings.requestTimeoutMs },
     // Model IDs are routing identities: retain their provider namespace verbatim.
-    models: Object.fromEntries(models.filter((model) => model.kind === "chat").map((model) => [model.id, {
-      name: model.name,
-      tool_call: true,
-      attachment: false,
-      modalities: { input: ["text"], output: ["text"] },
-    }])),
+    models: Object.fromEntries(models.filter((model) => model.kind === "chat").map((model) => {
+      const existing = previousModels[model.id];
+      const materialized = {
+        name: model.name,
+        tool_call: true,
+        attachment: false,
+        modalities: { input: ["text"], output: ["text"] },
+        ...gatewayReasoningMetadata(settings.baseURL, model.id, model),
+      };
+      if (!isRecord(existing)) return [model.id, materialized];
+      const filled = fillGatewayRuntimeModelMetadata(settings.baseURL, model.id, existing);
+      return [model.id, { ...filled, ...materialized, ...existing,
+        ...(existing.reasoning === false && !Object.hasOwn(existing, "variants") ? { variants: filled.variants } : {}),
+      }];
+    })),
   };
 }
 
@@ -275,7 +302,8 @@ export async function saveGatewayConfig(config: ServerConfig, env: EnvService, i
     ]);
     await writeGlobalRuntimeOpencodeConfig(config, (runtime) => {
       const provider = isRecord(runtime.provider) ? { ...runtime.provider } : {};
-      if (apiKey) provider[GATEWAY_PROVIDER_ID] = buildGatewayProvider(settings, models, config);
+      if (apiKey) provider[GATEWAY_PROVIDER_ID] = buildGatewayProvider(settings, models, config,
+        apiKey === current.apiKey && settings.baseURL === current.settings.baseURL ? provider[GATEWAY_PROVIDER_ID] : undefined);
       else delete provider[GATEWAY_PROVIDER_ID];
       return { ...runtime, provider };
     });

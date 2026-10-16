@@ -435,6 +435,8 @@ export type ModelOption = {
   behaviorDescription: string;
   behaviorValue: string | null;
   behaviorOptions?: ModelBehaviorOption[];
+  /** Reasoning capability reported by the engine; absent means unverified. */
+  reasoning?: boolean;
   disabled?: boolean;
   isFree: boolean;
   /** A free model of the engine's built-in OpenCode Zen provider that nobody configured: the silent fallback. */

@@ -30,6 +30,7 @@ export function runtimeModelOptions(data: ProviderList, isNewProvider: (provider
       ...ref, title: model.name || id, description: provider.name,
       behaviorTitle: summary.title, behaviorLabel: summary.label, behaviorDescription: summary.description,
       behaviorValue: summary.value, behaviorOptions: summary.options,
+      reasoning: model.capabilities?.reasoning,
       isFree: isAutoModel(ref) || costsNothing(model),
       // Zen with the person's own key or subscription (OpenWork, `opencode auth login`, env or config) is a real
       // provider and stays listed in full; only the credential-less built-in Zen is a fallback.

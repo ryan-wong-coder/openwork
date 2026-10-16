@@ -6,7 +6,7 @@ import * as React from "react";
 import { Check, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { ModelOption, ModelRef } from "@/app/types";
-import { FAST_PRICING_WARNING, getModelBehaviorControls, getModelBehaviorSelection } from "@/app/lib/model-behavior";
+import { FAST_PRICING_WARNING, getModelBehaviorControls, getModelBehaviorSelection, getModelEffortState } from "@/app/lib/model-behavior";
 import { FAST_DEFAULT_VARIANT } from "@openwork/types/cloud-model-fast";
 import { fastModeShortcutLabel } from "@/react-app/shell/fast-mode-shortcut";
 import { resolveThinkingModeShortcutOs, thinkingModeShortcutLabel } from "@/react-app/shell/thinking-mode-shortcut";
@@ -87,9 +87,10 @@ export function ModelSelect({ open, value, hideValue = false, onOpenChange, onCh
     return () => { if (sessionId) useModelPickerCatalogStore.getState().release(sessionId, owner); };
   }, [sessionId]);
   const selected = options.find((option) => option.providerID === value.providerID && option.modelID === value.modelID);
-  const selectedBehavior = getModelBehaviorSelection(selected?.behaviorOptions ?? behaviorOptions, behaviorValue);
+  const availableBehaviors = selected?.behaviorOptions ?? behaviorOptions;
+  const selectedBehavior = getModelBehaviorSelection(availableBehaviors, behaviorValue);
   const controls = getModelBehaviorControls(selectedBehavior.options, selectedBehavior.value);
-  const hasEffort = behaviorValue !== null || (selected?.behaviorOptions ?? behaviorOptions).some((option) => option.value !== null);
+  const effortState = getModelEffortState(availableBehaviors, selected?.reasoning, behaviorValue);
   // Fast shows on its own as a quiet "· Fast" after the model name; the effort beside it is the base level ("High", not "High + Fast").
   const fastOn = controls.fast && !isAutoModel(value);
   const summary = fastOn
@@ -99,8 +100,8 @@ export function ModelSelect({ open, value, hideValue = false, onOpenChange, onCh
   const fastShortcutLabel = fastModeShortcutLabel(shortcutOs);
   const effortShortcutLabel = thinkingModeShortcutLabel(shortcutOs);
   const autoSelected = isAutoModel(value);
-  const canChangeEffort = Boolean(selected && onBehaviorChange && !autoSelected && hasEffort);
-  const effortValueLabel = autoSelected ? t("ui.managed_by_auto") : hasEffort ? controls.options.find((option) => option.value === behaviorValue)?.label ?? selectedBehavior.label : t("connect.diagnostics_evidence_unavailable");
+  const canChangeEffort = Boolean(selected && !selected.disabled && onBehaviorChange && !autoSelected && (effortState.adjustable || effortState.resetAvailable));
+  const effortValueLabel = autoSelected ? t("ui.managed_by_auto") : effortState.resetAvailable ? selectedBehavior.label : effortState.adjustable ? controls.options.find((option) => option.value === behaviorValue)?.label ?? selectedBehavior.label : effortState.label;
   const select = (option: ModelOption) => choice.choose(option, () => {
     onChange({ providerID: option.providerID, modelID: option.modelID });
     onOpenChange(false);

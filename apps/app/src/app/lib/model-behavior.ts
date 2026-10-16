@@ -53,6 +53,18 @@ export function getModelBehaviorControls<T extends Pick<ModelBehaviorOption, "va
   };
 }
 
+/** Only advertised non-Fast variants make effort adjustable. A saved value or
+ * model name cannot establish a capability missing from the current catalog. */
+export function getModelEffortState(options: readonly Pick<ModelBehaviorOption, "value">[], reasoning?: boolean, savedValue: string | null = null) {
+  const adjustable = getModelBehaviorControls(options, null).options.some((option) => option.value !== null);
+  return {
+    adjustable,
+    resetAvailable: savedValue !== null && !options.some((option) => option.value === savedValue),
+    label: adjustable ? null : reasoning === true ? t("model_behavior.label_model_managed") : t("model_behavior.label_no_adjustable_effort"),
+    description: adjustable ? null : reasoning === true ? t("model_behavior.desc_builtin") : t("model_behavior.desc_no_adjustable_effort"),
+  };
+}
+
 const sortVariantKeys = (keys: string[]) =>
   keys.slice().sort((a, b) => {
     const aIndex = WELL_KNOWN_VARIANT_ORDER.indexOf(a as (typeof WELL_KNOWN_VARIANT_ORDER)[number]);
@@ -102,7 +114,18 @@ const getBehaviorTitle = (
   return t("model_behavior.title_standard_generation");
 };
 
-const getVariantLabel = (key: string) => key.charAt(0).toUpperCase() + key.slice(1);
+const getVariantLabel = (key: string) => {
+  switch (key) {
+    case "none": return t("model_behavior.label_none");
+    case "minimal": return t("model_behavior.label_minimal");
+    case "low": return t("model_behavior.label_light");
+    case "medium": return t("model_behavior.label_balanced");
+    case "high": return t("model_behavior.label_deep");
+    case "xhigh": return t("model_behavior.label_extra_high");
+    case "max": return t("model_behavior.label_maximum");
+    default: return key;
+  }
+};
 
 /** Cycle supplied choices, including the provider's Default (null). */
 export const nextModelBehaviorValue = (
@@ -194,8 +217,8 @@ export const getModelBehaviorSelection = (
   const selected = options.find((option) => option.value === value);
   return {
     value,
-    label: selected?.label ?? `${JSON.stringify(value)} (not in current catalog)`,
-    description: selected?.description ?? "This saved setting is not listed in the current model configuration. It is kept unchanged; choose Default or a listed setting to replace it.",
+    label: selected?.label ?? t("model_behavior.saved_not_in_catalog", { value: JSON.stringify(value) }),
+    description: selected?.description ?? t("model_behavior.desc_saved_not_in_catalog"),
     options,
   };
 };
