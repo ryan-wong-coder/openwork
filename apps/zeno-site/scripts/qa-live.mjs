@@ -40,6 +40,11 @@ async function choose(id, value) {
   await evaluate(`(()=>{const field=document.getElementById(${JSON.stringify(id)});field.value=${JSON.stringify(value)};field.dispatchEvent(new Event('change',{bubbles:true}));})()`);
 }
 async function shot(name) {
+  // A native source reload after crossing the responsive breakpoint is async.
+  // Capture its decoded frame, not the outgoing wide frame or loading instant.
+  if (await evaluate('Boolean(document.getElementById("heroFilm"))')) {
+    await until('(()=>{const video=document.getElementById("heroFilm"),narrow=matchMedia("(max-width: 700px)").matches;return video.currentSrc.endsWith(narrow?"/hero-worklife-v3-mobile.mp4":"/hero-worklife-v3.mp4")&&video.videoWidth===(narrow?720:1920)&&video.readyState>=2})()');
+  }
   await evaluate('Promise.all(Array.from(document.images).filter(image=>image.loading!=="lazy"||image.naturalWidth>0).map(image=>image.decode().catch(()=>{})))');
   await evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
   await evaluate('Promise.all(document.getAnimations().map(animation=>animation.finished.catch(()=>{})))');

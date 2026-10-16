@@ -1,0 +1,16 @@
+{
+  "websiteCommit": "8ccf2cfca",
+  "releaseVersion": "1.0.2",
+  "fixtureOnly": false,
+  "viewport": [
+    390,
+    844
+  ],
+  "state": "Desktop target resized to narrow without source reselection",
+  "finding": "P2: desktop film remains selected; mobile focal crop shows empty wall. First narrow navigation was correct.",
+  "screenshots": [
+    "site-live-mobile.png",
+    "site-live-mobile-dark.png"
+  ],
+  "supersededBy": "Post-fix live verification in parent directory"
+}

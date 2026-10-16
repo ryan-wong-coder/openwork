@@ -110,6 +110,14 @@ ZENO_SITE_CDP=http://127.0.0.1:<port> node apps/zeno-site/scripts/qa-v3-regressi
 证据在 `verification/releases/<version>/`。影片 HTTPS/MIME/Range/全量哈希及
 安装包与更新 feed 仍须单独执行正式发布验收。
 
+V3 的真实媒体验收另用
+`node apps/zeno-site/scripts/qa-hero-live-v3.mjs <version> <website-commit>`：
+不拦截公网 API，连续实际播放一整轮后确认循环，重新导航验证手机只取竖片，
+采集三场景并核对四份小型媒体的全量哈希/MIME/Range、参考 PNG 的 404 与
+既有 party 站点的 200。不下载大型安装包。当前网站提交 `3e74875ff`（首版 `8ccf2cfca` 后补断点切换修复）、客户端下载
+1.0.2 已分别真实验收；结果与截图在 `verification/releases/1.0.2/`，详见
+[独立上线记录](design-qa-v3.md#独立真实上线验收102)。
+
 ## 安装说明依据
 
 macOS 自签安装的安全选项参考 [Apple 的应用安全说明](https://support.apple.com/en-us/102445)。Windows 只保留系统策略与管理员检查方向，参考 [Microsoft 应用与浏览器控制](https://support.microsoft.com/en-us/windows/security/windows-security/app-browser-control-in-the-windows-security-app)，不提供关闭安全保护的命令。未从当前打包配置确认的系统最低版本不作承诺。

@@ -1,0 +1,948 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-16T13:55:47.789Z",
+  "fixtureOnly": false,
+  "apiIntercepted": false,
+  "site": "https://www.zeno.ryan-wong.cn",
+  "websiteCommit": "3e74875ff",
+  "source": "https://www.zeno.ryan-wong.cn/api/releases/latest.json",
+  "releaseVersion": "1.0.2",
+  "viewport": [
+    1440,
+    1000
+  ],
+  "narrowViewport": [
+    390,
+    844
+  ],
+  "narrowUa": "Mac desktop UA retained to exercise CPU choices",
+  "systemClipboard": "Not accessed",
+  "installerDownloads": false,
+  "targetClosed": true,
+  "browserContextDisposed": true,
+  "checks": [
+    {
+      "name": "native-autoplay-loop-muted-inline-and-no-user-motion-controls",
+      "passed": true,
+      "initial": {
+        "src": null,
+        "currentSrc": "/assets/hero-film-v3/hero-worklife-v3.mp4",
+        "poster": "/assets/hero-film-v3/hero-worklife-v3-poster.webp",
+        "width": 1920,
+        "height": 1080,
+        "time": 0.124484,
+        "duration": 19.5,
+        "paused": false,
+        "loop": true,
+        "muted": true,
+        "autoplay": true,
+        "playsInline": true,
+        "controls": false,
+        "error": null
+      },
+      "advanced": {
+        "src": null,
+        "currentSrc": "/assets/hero-film-v3/hero-worklife-v3.mp4",
+        "poster": "/assets/hero-film-v3/hero-worklife-v3-poster.webp",
+        "width": 1920,
+        "height": 1080,
+        "time": 0.52634,
+        "duration": 19.5,
+        "paused": false,
+        "loop": true,
+        "muted": true,
+        "autoplay": true,
+        "playsInline": true,
+        "controls": false,
+        "error": null
+      }
+    },
+    {
+      "name": "uninterrupted-real-19.5-second-playback-and-native-loop",
+      "passed": true,
+      "started": 822.6000000014901,
+      "last": 1.317011,
+      "peak": 19.358344,
+      "wraps": 1,
+      "pauses": 0,
+      "samples": [
+        {
+          "time": 0.763602,
+          "elapsed": 236
+        },
+        {
+          "time": 1.029468,
+          "elapsed": 502
+        },
+        {
+          "time": 1.295127,
+          "elapsed": 767
+        },
+        {
+          "time": 1.560899,
+          "elapsed": 1033
+        },
+        {
+          "time": 1.826187,
+          "elapsed": 1298
+        },
+        {
+          "time": 2.091583,
+          "elapsed": 1564
+        },
+        {
+          "time": 2.357794,
+          "elapsed": 1830
+        },
+        {
+          "time": 2.622323,
+          "elapsed": 2095
+        },
+        {
+          "time": 2.88837,
+          "elapsed": 2361
+        },
+        {
+          "time": 3.154679,
+          "elapsed": 2627
+        },
+        {
+          "time": 3.420097,
+          "elapsed": 2892
+        },
+        {
+          "time": 3.686309,
+          "elapsed": 3159
+        },
+        {
+          "time": 3.952257,
+          "elapsed": 3425
+        },
+        {
+          "time": 4.217041,
+          "elapsed": 3689
+        },
+        {
+          "time": 4.48296,
+          "elapsed": 3955
+        },
+        {
+          "time": 4.749061,
+          "elapsed": 4221
+        },
+        {
+          "time": 5.014761,
+          "elapsed": 4487
+        },
+        {
+          "time": 5.28032,
+          "elapsed": 4753
+        },
+        {
+          "time": 5.545154,
+          "elapsed": 5018
+        },
+        {
+          "time": 5.811342,
+          "elapsed": 5284
+        },
+        {
+          "time": 6.077141,
+          "elapsed": 5549
+        },
+        {
+          "time": 6.342612,
+          "elapsed": 5815
+        },
+        {
+          "time": 6.607892,
+          "elapsed": 6080
+        },
+        {
+          "time": 6.873817,
+          "elapsed": 6346
+        },
+        {
+          "time": 7.139448,
+          "elapsed": 6612
+        },
+        {
+          "time": 7.404502,
+          "elapsed": 6877
+        },
+        {
+          "time": 7.670809,
+          "elapsed": 7143
+        },
+        {
+          "time": 7.935753,
+          "elapsed": 7408
+        },
+        {
+          "time": 8.201537,
+          "elapsed": 7674
+        },
+        {
+          "time": 8.467388,
+          "elapsed": 7940
+        },
+        {
+          "time": 8.733425,
+          "elapsed": 8206
+        },
+        {
+          "time": 8.997672,
+          "elapsed": 8470
+        },
+        {
+          "time": 9.264801,
+          "elapsed": 8737
+        },
+        {
+          "time": 9.529131,
+          "elapsed": 9001
+        },
+        {
+          "time": 9.794341,
+          "elapsed": 9267
+        },
+        {
+          "time": 10.061035,
+          "elapsed": 9533
+        },
+        {
+          "time": 10.327237,
+          "elapsed": 9800
+        },
+        {
+          "time": 10.592135,
+          "elapsed": 10064
+        },
+        {
+          "time": 10.856981,
+          "elapsed": 10329
+        },
+        {
+          "time": 11.123246,
+          "elapsed": 10596
+        },
+        {
+          "time": 11.388181,
+          "elapsed": 10860
+        },
+        {
+          "time": 11.654496,
+          "elapsed": 11127
+        },
+        {
+          "time": 11.920259,
+          "elapsed": 11393
+        },
+        {
+          "time": 12.186104,
+          "elapsed": 11658
+        },
+        {
+          "time": 12.452218,
+          "elapsed": 11924
+        },
+        {
+          "time": 12.715939,
+          "elapsed": 12188
+        },
+        {
+          "time": 12.981669,
+          "elapsed": 12454
+        },
+        {
+          "time": 13.248921,
+          "elapsed": 12721
+        },
+        {
+          "time": 13.514295,
+          "elapsed": 12987
+        },
+        {
+          "time": 13.779949,
+          "elapsed": 13252
+        },
+        {
+          "time": 14.04535,
+          "elapsed": 13518
+        },
+        {
+          "time": 14.311636,
+          "elapsed": 13784
+        },
+        {
+          "time": 14.576882,
+          "elapsed": 14049
+        },
+        {
+          "time": 14.842553,
+          "elapsed": 14315
+        },
+        {
+          "time": 15.10806,
+          "elapsed": 14580
+        },
+        {
+          "time": 15.373595,
+          "elapsed": 14846
+        },
+        {
+          "time": 15.639015,
+          "elapsed": 15111
+        },
+        {
+          "time": 15.904873,
+          "elapsed": 15377
+        },
+        {
+          "time": 16.169968,
+          "elapsed": 15642
+        },
+        {
+          "time": 16.436069,
+          "elapsed": 15908
+        },
+        {
+          "time": 16.702168,
+          "elapsed": 16174
+        },
+        {
+          "time": 16.967114,
+          "elapsed": 16439
+        },
+        {
+          "time": 17.232008,
+          "elapsed": 16704
+        },
+        {
+          "time": 17.498792,
+          "elapsed": 16971
+        },
+        {
+          "time": 17.76486,
+          "elapsed": 17237
+        },
+        {
+          "time": 18.02945,
+          "elapsed": 17502
+        },
+        {
+          "time": 18.295578,
+          "elapsed": 17768
+        },
+        {
+          "time": 18.561271,
+          "elapsed": 18034
+        },
+        {
+          "time": 18.826257,
+          "elapsed": 18299
+        },
+        {
+          "time": 19.092002,
+          "elapsed": 18564
+        },
+        {
+          "time": 19.358344,
+          "elapsed": 18831
+        },
+        {
+          "time": 0.000111,
+          "elapsed": 18982
+        },
+        {
+          "time": 0.253686,
+          "elapsed": 19236
+        },
+        {
+          "time": 0.519868,
+          "elapsed": 19502
+        },
+        {
+          "time": 0.785756,
+          "elapsed": 19768
+        },
+        {
+          "time": 1.051294,
+          "elapsed": 20033
+        },
+        {
+          "time": 1.317011,
+          "elapsed": 20299
+        }
+      ],
+      "elapsed": 20536
+    },
+    {
+      "name": "real-manifest-cpu-downloads-and-visible-file-metadata",
+      "passed": true,
+      "version": "1.0.2",
+      "choices": [
+        {
+          "text": "下载 Apple Silicon 版",
+          "href": "/downloads/1.0.2/zeno-mac-arm64-1.0.2.dmg"
+        },
+        {
+          "text": "下载 Intel 版",
+          "href": "/downloads/1.0.2/zeno-mac-x64-1.0.2.dmg"
+        }
+      ],
+      "metadata": [
+        "DMG · 412.7 MiB · 自签名",
+        "DMG · 431.1 MiB · 自签名"
+      ],
+      "layout": {
+        "width": 1440,
+        "contentWidth": 1425,
+        "height": 1000,
+        "scrollWidth": 1425,
+        "download": {
+          "x": 0,
+          "y": 0,
+          "width": 1425,
+          "height": 1000,
+          "bottom": 1000
+        },
+        "heroFilm": {
+          "x": 0,
+          "y": 0,
+          "width": 1425,
+          "height": 1000,
+          "bottom": 1000
+        },
+        "releaseMetadata": {
+          "x": 72.5,
+          "y": 682.59375,
+          "width": 440,
+          "height": 20,
+          "bottom": 702.59375
+        },
+        "installLink": {
+          "x": 72.5,
+          "y": 706.59375,
+          "width": 59.453125,
+          "height": 36,
+          "bottom": 742.59375
+        }
+      }
+    },
+    {
+      "name": "three-real-scenes-decoded-and-screenshotted",
+      "passed": true
+    },
+    {
+      "name": "native-loop-wraps-without-manual-restart",
+      "passed": true,
+      "duration": 19.5,
+      "afterWrap": {
+        "src": null,
+        "currentSrc": "/assets/hero-film-v3/hero-worklife-v3.mp4",
+        "poster": "/assets/hero-film-v3/hero-worklife-v3-poster.webp",
+        "width": 1920,
+        "height": 1080,
+        "time": 0.041637,
+        "duration": 19.5,
+        "paused": false,
+        "loop": true,
+        "muted": true,
+        "autoplay": true,
+        "playsInline": true,
+        "controls": false,
+        "error": null
+      }
+    },
+    {
+      "name": "canonical-download-matches-selected-cpu",
+      "passed": true
+    },
+    {
+      "name": "below-fold-install-guidance-and-technical-offscreen-pause-resume",
+      "passed": true
+    },
+    {
+      "name": "dark-preference-preserves-contrast-and-video",
+      "passed": true,
+      "layout": {
+        "width": 1440,
+        "contentWidth": 1425,
+        "height": 1000,
+        "scrollWidth": 1425,
+        "download": {
+          "x": 0,
+          "y": 0,
+          "width": 1425,
+          "height": 1000,
+          "bottom": 1000
+        },
+        "heroFilm": {
+          "x": 0,
+          "y": 0,
+          "width": 1425,
+          "height": 1000,
+          "bottom": 1000
+        },
+        "releaseMetadata": {
+          "x": 72.5,
+          "y": 682.59375,
+          "width": 440,
+          "height": 20,
+          "bottom": 702.59375
+        },
+        "installLink": {
+          "x": 72.5,
+          "y": 706.59375,
+          "width": 59.453125,
+          "height": 36,
+          "bottom": 742.59375
+        }
+      }
+    },
+    {
+      "name": "bidirectional-breakpoint-reselection-and-no-duplicate-first-load",
+      "passed": true,
+      "desktopInitialRequests": [
+        "/assets/hero-film-v3/hero-worklife-v3.mp4"
+      ],
+      "mobile": {
+        "src": null,
+        "currentSrc": "/assets/hero-film-v3/hero-worklife-v3-mobile.mp4",
+        "poster": "/assets/hero-film-v3/hero-worklife-v3-mobile-poster.webp",
+        "width": 720,
+        "height": 1280,
+        "time": 0,
+        "duration": 19.5,
+        "paused": false,
+        "loop": true,
+        "muted": true,
+        "autoplay": true,
+        "playsInline": true,
+        "controls": false,
+        "error": null
+      },
+      "desktop": {
+        "src": null,
+        "currentSrc": "/assets/hero-film-v3/hero-worklife-v3.mp4",
+        "poster": "/assets/hero-film-v3/hero-worklife-v3-poster.webp",
+        "width": 1920,
+        "height": 1080,
+        "time": 0.047971,
+        "duration": 19.5,
+        "paused": false,
+        "loop": true,
+        "muted": true,
+        "autoplay": true,
+        "playsInline": true,
+        "controls": false,
+        "error": null
+      }
+    },
+    {
+      "name": "mobile-native-source-only-and-three-scenes-fit-viewport",
+      "passed": true,
+      "mobile": {
+        "src": null,
+        "currentSrc": "/assets/hero-film-v3/hero-worklife-v3-mobile.mp4",
+        "poster": "/assets/hero-film-v3/hero-worklife-v3-mobile-poster.webp",
+        "width": 720,
+        "height": 1280,
+        "time": 0.129059,
+        "duration": 19.5,
+        "paused": false,
+        "loop": true,
+        "muted": true,
+        "autoplay": true,
+        "playsInline": true,
+        "controls": false,
+        "error": null
+      },
+      "mediaRequests": [
+        "/assets/hero-film-v3/hero-worklife-v3-mobile.mp4",
+        "/assets/hero-film-v3/hero-worklife-v3-mobile.mp4"
+      ],
+      "layout": {
+        "width": 390,
+        "contentWidth": 390,
+        "height": 844,
+        "scrollWidth": 390,
+        "download": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 844,
+          "bottom": 844
+        },
+        "heroFilm": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 844,
+          "bottom": 844
+        },
+        "releaseMetadata": {
+          "x": 20,
+          "y": 736,
+          "width": 350,
+          "height": 20,
+          "bottom": 756
+        },
+        "installLink": {
+          "x": 20,
+          "y": 760,
+          "width": 59.453125,
+          "height": 36,
+          "bottom": 796
+        }
+      }
+    },
+    {
+      "name": "explicit-user-request-keeps-looping-film-in-reduce-but-removes-ui-transitions",
+      "passed": true
+    },
+    {
+      "name": "real-product-preview-and-openwork-attribution-preserved",
+      "passed": true
+    },
+    {
+      "name": "no-runtime-exceptions-external-requests-or-installer-downloads",
+      "passed": true
+    }
+  ],
+  "screenshots": [
+    "hero-live-01-desktop-coding.png",
+    "hero-live-02-desktop-data.png",
+    "hero-live-03-desktop-life.png",
+    "hero-live-04-install-help.png",
+    "hero-live-05-desktop-dark.png",
+    "hero-live-06-mobile-coding.png",
+    "hero-live-07-mobile-data.png",
+    "hero-live-08-mobile-life.png",
+    "hero-live-09-mobile-reduced-motion.png",
+    "hero-live-10-workspace-preview.png"
+  ],
+  "exceptions": [],
+  "requests": [
+    {
+      "phase": "desktop",
+      "path": "/",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Document"
+    },
+    {
+      "phase": "desktop",
+      "path": "/styles.css",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "desktop",
+      "path": "/app.js",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Script"
+    },
+    {
+      "phase": "desktop",
+      "path": "/motion.js",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Script"
+    },
+    {
+      "phase": "desktop",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-poster.webp",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Image"
+    },
+    {
+      "phase": "desktop",
+      "path": "/assets/mark-reverse.svg",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Image"
+    },
+    {
+      "phase": "desktop",
+      "path": "/assets/logo-reverse.svg",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Image"
+    },
+    {
+      "phase": "desktop",
+      "path": "/assets/hero-film-v3/hero-worklife-v3.mp4",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Media"
+    },
+    {
+      "phase": "desktop",
+      "path": "/releases.js",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Script"
+    },
+    {
+      "phase": "desktop",
+      "path": "/api/releases/latest.json",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Fetch"
+    },
+    {
+      "phase": "desktop",
+      "path": "/favicon.ico",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Other"
+    },
+    {
+      "phase": "desktop",
+      "path": "/favicon.ico",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Other"
+    },
+    {
+      "phase": "dark",
+      "path": "/",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Document"
+    },
+    {
+      "phase": "dark",
+      "path": "/styles.css",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "dark",
+      "path": "/app.js",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Script"
+    },
+    {
+      "phase": "dark",
+      "path": "/motion.js",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Script"
+    },
+    {
+      "phase": "dark",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-poster.webp",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Image"
+    },
+    {
+      "phase": "dark",
+      "path": "/assets/mark-reverse.svg",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Image"
+    },
+    {
+      "phase": "dark",
+      "path": "/assets/logo-reverse.svg",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Image"
+    },
+    {
+      "phase": "dark",
+      "path": "/assets/hero-film-v3/hero-worklife-v3.mp4",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Media"
+    },
+    {
+      "phase": "dark",
+      "path": "/releases.js",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Script"
+    },
+    {
+      "phase": "dark",
+      "path": "/api/releases/latest.json",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Fetch"
+    },
+    {
+      "phase": "dark",
+      "path": "/favicon.ico",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Other"
+    },
+    {
+      "phase": "resize-mobile",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-mobile-poster.webp",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Image"
+    },
+    {
+      "phase": "resize-mobile",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-mobile.mp4",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Media"
+    },
+    {
+      "phase": "resize-desktop",
+      "path": "/assets/hero-film-v3/hero-worklife-v3.mp4",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Media"
+    },
+    {
+      "phase": "mobile",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-mobile.mp4",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Media"
+    },
+    {
+      "phase": "mobile",
+      "path": "/",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Document"
+    },
+    {
+      "phase": "mobile",
+      "path": "/styles.css",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "mobile",
+      "path": "/app.js",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Script"
+    },
+    {
+      "phase": "mobile",
+      "path": "/motion.js",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Script"
+    },
+    {
+      "phase": "mobile",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-poster.webp",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Image"
+    },
+    {
+      "phase": "mobile",
+      "path": "/assets/mark-reverse.svg",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Image"
+    },
+    {
+      "phase": "mobile",
+      "path": "/assets/logo-reverse.svg",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Image"
+    },
+    {
+      "phase": "mobile",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-mobile.mp4",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Media"
+    },
+    {
+      "phase": "mobile",
+      "path": "/releases.js",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Script"
+    },
+    {
+      "phase": "mobile",
+      "path": "/api/releases/latest.json",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Fetch"
+    },
+    {
+      "phase": "mobile",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-mobile-poster.webp",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Image"
+    },
+    {
+      "phase": "mobile",
+      "path": "/favicon.ico",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Other"
+    },
+    {
+      "phase": "reduced",
+      "path": "/",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Document"
+    },
+    {
+      "phase": "reduced",
+      "path": "/styles.css",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "reduced",
+      "path": "/app.js",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Script"
+    },
+    {
+      "phase": "reduced",
+      "path": "/motion.js",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Script"
+    },
+    {
+      "phase": "reduced",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-poster.webp",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Image"
+    },
+    {
+      "phase": "reduced",
+      "path": "/assets/mark-reverse.svg",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Image"
+    },
+    {
+      "phase": "reduced",
+      "path": "/assets/logo-reverse.svg",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Image"
+    },
+    {
+      "phase": "reduced",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-mobile.mp4",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Media"
+    },
+    {
+      "phase": "reduced",
+      "path": "/releases.js",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Script"
+    },
+    {
+      "phase": "reduced",
+      "path": "/api/releases/latest.json",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Fetch"
+    },
+    {
+      "phase": "reduced",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-mobile-poster.webp",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Image"
+    },
+    {
+      "phase": "reduced",
+      "path": "/favicon.ico",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Other"
+    },
+    {
+      "phase": "reduced",
+      "path": "/favicon.ico",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Other"
+    },
+    {
+      "phase": "reduced",
+      "path": "/assets/product-dark.webp",
+      "origin": "https://www.zeno.ryan-wong.cn",
+      "type": "Image"
+    }
+  ],
+  "failure": null
+}
