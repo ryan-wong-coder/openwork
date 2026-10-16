@@ -1,0 +1,76 @@
+name: Zeno real macOS update smoke
+
+# Independent of upstream CI/release. Push only after the public 1.0.0 feeds
+# exist. No pull_request trigger: persistent signing secrets stay trusted.
+on:
+  push:
+    branches: [personal]
+    paths:
+      - .github/workflows/zeno-update-smoke.yml
+      - apps/desktop/scripts/zeno-update-smoke.mjs
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: zeno-real-update-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  macos-update:
+    if: github.ref == 'refs/heads/personal'
+    name: Real update ${{ matrix.arch }}
+    runs-on: ${{ matrix.runner }}
+    # Verified baseline acquisition, real public update, signing and restart.
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15-intel
+            arch: x64
+          - runner: macos-15
+            arch: arm64
+    env:
+      PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.4.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Install existing validation and signing libraries only
+        run: pnpm --filter @openwork/desktop... install --frozen-lockfile --ignore-scripts
+      - name: Check the smoke's validation and ASAR preservation logic
+        run: node apps/desktop/scripts/zeno-update-smoke.mjs --self-test
+      - name: Verify runner architecture
+        env:
+          EXPECTED_ARCH: ${{ matrix.arch }}
+        run: node -e 'if(process.arch!==process.env.EXPECTED_ARCH)throw Error("Runner architecture does not match release feed")'
+      - name: Reuse the successful release build only for the private baseline
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 38883434626
+          name: zeno-darwin-${{ matrix.arch }}
+          path: ${{ runner.temp }}/zeno-release-baseline
+      - name: Verify the baseline against the live feed and run the real public update
+        env:
+          ZENO_UPDATE_BASELINE_DIR: ${{ runner.temp }}/zeno-release-baseline
+          ZENO_MAC_CODESIGN_P12_BASE64: ${{ secrets.ZENO_MAC_CODESIGN_P12_BASE64 }}
+          ZENO_MAC_CODESIGN_PASSWORD: ${{ secrets.ZENO_MAC_CODESIGN_PASSWORD }}
+        run: node apps/desktop/scripts/zeno-update-smoke.mjs
+      - name: Keep only sanitized results, never profiles, logs or signing material
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zeno-real-update-${{ matrix.arch }}
+          path: |
+            ${{ runner.temp }}/zeno-update-smoke-evidence/report.json
+            ${{ runner.temp }}/zeno-update-smoke-evidence/updated-app.png
+          if-no-files-found: warn
+          retention-days: 14
