@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "version": "1.0.3",
+  "productCommit": "5cbcc11f8d37b88e5e6772869bcfd1d974632dd2",
+  "activatedAt": "2026-10-16T15:05:20.000Z",
+  "origin": "https://www.zeno.ryan-wong.cn",
+  "releaseBundle": "1.0.3-5cbcc11f8",
+  "serverGate": {
+    "tool": "infra/zeno-release/prepare-publication.mjs",
+    "files": 22,
+    "checks": [
+      "safe package names",
+      "six architecture targets and own-site feeds",
+      "file size",
+      "full SHA-256",
+      "full SHA-512",
+      "all expected installer formats",
+      "manifest presence",
+      "macOS signed identity declaration"
+    ],
+    "activation": "All checks passed before output bundle creation and atomic release-current symlink switch."
+  },
+  "retention": "Version 1.0.0 and 1.0.2 persistent download directories retained; public first/last range comparison recorded separately.",
+  "transport": "Server direct downloads timed out on large assets. All 24 assets were downloaded to a private local stage with full GitHub SHA-256 checks, uploaded over SSH, then independently checked by the server publication gate before activation. Upload bases copied from the preceding version only optimized transfer; no historical package was modified."
+}
