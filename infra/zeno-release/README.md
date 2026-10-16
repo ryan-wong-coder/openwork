@@ -5,7 +5,7 @@
 ## 构建与发布
 
 1. 桌面版本在 `apps/desktop/package.json`。提交到 `personal` 后，推送匹配的 `zeno-vX.Y.Z` 标签；不要使用上游 `v*` 标签。
-2. `.github/workflows/zeno-release.yml` 构建 macOS、Windows、Linux 的 x64 和 arm64。六个目标全部通过校验后才创建 GitHub Release。
+2. `.github/workflows/zeno-release.yml` 构建 macOS、Windows、Linux 的 x64 和 arm64。六个目标全部通过校验后创建草稿 GitHub Release；保留草稿状态完成后续部署与验收，再公开发布。
 3. 下载该 Release 的所有文件到一个新目录，执行：
 
    ```sh

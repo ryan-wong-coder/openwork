@@ -1,0 +1,56 @@
+{
+  "passed": true,
+  "target": "1.0.0",
+  "baseline": "0.999.0",
+  "platform": "darwin",
+  "arch": "arm64",
+  "publicOrigin": "https://www.zeno.ryan-wong.cn",
+  "phases": [
+    {
+      "version": "1.0.0",
+      "feed": "https://www.zeno.ryan-wong.cn/updates/darwin/arm64/",
+      "artifactName": "zeno-mac-arm64-1.0.0.zip",
+      "bytes": 431100608,
+      "sha256": "6fba1fc265830414b270d5b83a55a1b5c34287e22af563059f9294b899b64631",
+      "source": "verified-build-artifact",
+      "name": "verified-public-feed-and-zip"
+    },
+    {
+      "version": "0.999.0",
+      "codeChanges": "package version and matching Info.plist/integrity only",
+      "name": "prepared-private-same-identity-baseline"
+    },
+    {
+      "nativeVersion": "0.999.0",
+      "storedSession": true,
+      "storedMessage": true,
+      "name": "baseline-server-and-history-ready"
+    },
+    {
+      "latestVersion": "1.0.0",
+      "bytes": 431100608,
+      "name": "native-check-real-public-feed"
+    },
+    {
+      "name": "native-download-and-squirrel-staging-complete"
+    },
+    {
+      "nativeVersion": "1.0.0",
+      "diskVersion": "1.0.0",
+      "publishedCode": true,
+      "profile": true,
+      "workspace": true,
+      "history": true,
+      "embeddedServer": true,
+      "rendererExceptions": 0,
+      "name": "real-restart-target-server-and-preservation-verified"
+    }
+  ],
+  "isolation": "ephemeral github-hosted runner; no pre-existing native state; private bundle/profile/workspace",
+  "nativeUpdateExecuted": true,
+  "baselineSource": "verified-build-artifact",
+  "cleanup": "owned app, profile, private keychain and fresh-run caches removed after native processes exited",
+  "networkOrigins": [
+    "http://127.0.0.1:49204"
+  ]
+}
