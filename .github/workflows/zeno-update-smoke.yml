@@ -1,14 +1,19 @@
 name: Zeno real macOS update smoke
 
-# Independent of upstream CI/release. Push only after the public 1.0.0 feeds
-# exist. No pull_request trigger: persistent signing secrets stay trusted.
+# Explicitly run after the target's public website feeds are deployed. Both
+# native architectures use the original 1.0.0 baseline without any re-signing.
 on:
-  push:
-    branches: [personal]
-    paths:
-      - .github/workflows/zeno-update-smoke.yml
-      - apps/desktop/scripts/zeno-update-smoke.mjs
   workflow_dispatch:
+    inputs:
+      baseline_run_id:
+        description: Successful Release Zeno run containing the original 1.0.0 artifacts
+        type: string
+        required: true
+        default: "38883434626"
+      target_run_id:
+        description: Successful Release Zeno run matching the checked-out desktop version
+        type: string
+        required: true
 
 permissions:
   actions: read
@@ -23,7 +28,7 @@ jobs:
     if: github.ref == 'refs/heads/personal'
     name: Real update ${{ matrix.arch }}
     runs-on: ${{ matrix.runner }}
-    # Verified baseline acquisition, real public update, signing and restart.
+    # Verified original baseline, real public download, install and restart.
     timeout-minutes: 75
     strategy:
       fail-fast: false
@@ -43,43 +48,79 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 24
-      - name: Install existing validation and signing libraries only
+      - name: Derive the target version and validate explicit artifact runs
+        id: release
+        env:
+          BASELINE_RUN_ID: ${{ inputs.baseline_run_id }}
+          TARGET_RUN_ID: ${{ inputs.target_run_id }}
+        run: |
+          node --input-type=module <<'JS'
+          import { readFileSync, appendFileSync } from 'node:fs';
+          import assert from 'node:assert/strict';
+          const target = JSON.parse(readFileSync('apps/desktop/package.json', 'utf8')).version;
+          assert.match(target, /^\d+\.\d+\.\d+$/);
+          const parts = target.split('.').map(Number);
+          assert.ok(parts[0] > 1 || (parts[0] === 1 && (parts[1] > 0 || parts[2] > 0)), 'The target must be newer than 1.0.0.');
+          for (const id of [process.env.BASELINE_RUN_ID, process.env.TARGET_RUN_ID]) assert.match(id, /^[1-9]\d*$/);
+          assert.notEqual(process.env.BASELINE_RUN_ID, process.env.TARGET_RUN_ID, 'Baseline and target must be separate release builds.');
+          appendFileSync(process.env.GITHUB_OUTPUT, `target=${target}\n`);
+          JS
+      - name: Install existing validation libraries only
         run: pnpm --filter @openwork/desktop... install --frozen-lockfile --ignore-scripts
-      - name: Check the smoke's validation and ASAR preservation logic
+      - name: Check historical hashes, target integrity and isolation logic
         run: node apps/desktop/scripts/zeno-update-smoke.mjs --self-test
       - name: Verify runner architecture
         env:
           EXPECTED_ARCH: ${{ matrix.arch }}
         run: node -e 'if(process.arch!==process.env.EXPECTED_ARCH)throw Error("Runner architecture does not match release feed")'
-      - name: Reuse the successful release build only for the private baseline
+      - name: Read the original public GitHub release metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          HISTORICAL_DIRECTORY: ${{ runner.temp }}/zeno-baseline-metadata
+        run: |
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import { execFileSync } from 'node:child_process';
+          import { mkdirSync } from 'node:fs';
+          const tag = 'zeno-v1.0.0';
+          const release = JSON.parse(execFileSync('gh', ['release', 'view', tag, '--json', 'isDraft,tagName'], { encoding: 'utf8' }));
+          assert.equal(release.isDraft, false, 'The historical baseline must be a public release.');
+          assert.equal(release.tagName, tag);
+          mkdirSync(process.env.HISTORICAL_DIRECTORY);
+          execFileSync('gh', ['release', 'download', tag, '--pattern', 'zeno-release.json', '--dir', process.env.HISTORICAL_DIRECTORY], { stdio: 'inherit' });
+          JS
+      - name: Download the original 1.0.0 build for the private baseline
         uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
-          run-id: 38883434626
+          run-id: ${{ inputs.baseline_run_id }}
           name: zeno-darwin-${{ matrix.arch }}
           path: ${{ runner.temp }}/zeno-release-baseline
-      - name: Wait for the verified public release to finish deployment
+      - name: Download the target build only for published-code verification
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.target_run_id }}
+          name: zeno-darwin-${{ matrix.arch }}
+          path: ${{ runner.temp }}/zeno-release-target
+      - name: Require the checked-out target to be deployed publicly
+        env:
+          TARGET_VERSION: ${{ steps.release.outputs.target }}
         run: |
           node --input-type=module <<'JS'
-          const deadline = Date.now() + 15 * 60 * 1000;
-          let ready = false;
-          while (Date.now() < deadline) {
-            try {
-              const response = await fetch('https://www.zeno.ryan-wong.cn/api/releases/latest.json', { redirect: 'error', cache: 'no-store', signal: AbortSignal.timeout(10000) });
-              if (response.ok) {
-                const release = await response.json();
-                if (release.version === '1.0.0' && Array.isArray(release.artifacts) && release.artifacts.length === 10) { ready = true; break; }
-              }
-            } catch { /* Deployment may still be switching its verified bundle. */ }
-            await new Promise(resolve => setTimeout(resolve, 10000));
-          }
-          if (!ready) throw Error('The real public 1.0.0 release was not deployed; no native update was attempted.');
+          import assert from 'node:assert/strict';
+          const response = await fetch('https://www.zeno.ryan-wong.cn/api/releases/latest.json', { redirect: 'error', cache: 'no-store', signal: AbortSignal.timeout(10000) });
+          assert.equal(response.status, 200, 'The public target API is unavailable.');
+          const release = await response.json();
+          assert.equal(release.version, process.env.TARGET_VERSION, 'Deploy the target before manually running the native smoke.');
+          assert.equal(release.artifacts?.length, 10);
           JS
-      - name: Verify the baseline against the live feed and run the real public update
+      - name: Verify both original packages and run the real public update
         env:
           ZENO_UPDATE_BASELINE_DIR: ${{ runner.temp }}/zeno-release-baseline
-          ZENO_MAC_CODESIGN_P12_BASE64: ${{ secrets.ZENO_MAC_CODESIGN_P12_BASE64 }}
-          ZENO_MAC_CODESIGN_PASSWORD: ${{ secrets.ZENO_MAC_CODESIGN_PASSWORD }}
+          ZENO_UPDATE_BASELINE_METADATA: ${{ runner.temp }}/zeno-baseline-metadata/zeno-release.json
+          ZENO_UPDATE_TARGET_DIR: ${{ runner.temp }}/zeno-release-target
         run: node apps/desktop/scripts/zeno-update-smoke.mjs
       - name: Keep only sanitized results, never profiles, logs or signing material
         if: always()

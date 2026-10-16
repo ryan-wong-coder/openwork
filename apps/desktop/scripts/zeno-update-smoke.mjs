@@ -1,30 +1,29 @@
 import assert from "node:assert/strict";
 import { spawn, spawnSync } from "node:child_process";
-import { createHash, randomBytes } from "node:crypto";
-import { chmodSync, constants, createReadStream, existsSync, lstatSync, mkdirSync, mkdtempSync, openSync, readFileSync, readlinkSync, readdirSync, realpathSync, renameSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import { createHash, randomBytes, X509Certificate } from "node:crypto";
+import { constants, createReadStream, existsSync, lstatSync, mkdirSync, mkdtempSync, openSync, readFileSync, readdirSync, realpathSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { createServer } from "node:net";
-import { createRequire } from "node:module";
 import { homedir, tmpdir } from "node:os";
 import { basename, dirname, isAbsolute, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { pipeline } from "node:stream/promises";
-import { Readable, Transform } from "node:stream";
+import { Transform } from "node:stream";
 import { createWriteStream } from "node:fs";
 import asar from "@electron/asar";
 import YAML from "yaml";
-import { prepareZenoSelfSigning } from "./zeno-macos-signing.mjs";
+import { compareStableVersions } from "../electron/recovery.mjs";
 
 // This is deliberately NOT a local desktop test. Zeno preserves OpenWork's
 // bundle ID, hence Squirrel's native ShipIt domain. Only an ephemeral GitHub-
 // hosted macOS runner with no existing installation/cache is safe. No native
-// execution override exists. --self-test exercises pure validation/ASAR only.
+// execution override exists. --self-test never launches a native application.
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const ORIGIN = "https://www.zeno.ryan-wong.cn";
-const TARGET = "1.0.0";
-const BASELINE = "0.999.0";
+const TARGET = JSON.parse(readFileSync(join(REPO, "apps/desktop/package.json"), "utf8")).version;
+const BASELINE = "1.0.0";
+assert.ok(/^\d+\.\d+\.\d+$/.test(TARGET) && compareStableVersions(TARGET, BASELINE) === 1, "The checked-out target must be a stable version newer than the original baseline.");
 const BUNDLE_ID = "com.differentai.openwork";
 const PRODUCT = "泽诺 Zeno";
-const ENTITLEMENTS = join(REPO, "apps/desktop/build/entitlements.mac.plist");
 const pause = milliseconds => new Promise(resolvePause => setTimeout(resolvePause, milliseconds));
 const digest = (bytes, algorithm = "sha256", encoding = "hex") => createHash(algorithm).update(bytes).digest(encoding);
 
@@ -38,7 +37,37 @@ export function assertHostedRunner(environment, platform, arch) {
   assert.ok(/^\d+$/.test(environment.GITHUB_RUN_ID || ""), "Missing GitHub run identity.");
   assert.equal(environment.GITHUB_REF, "refs/heads/personal", "Only the personal branch may run this smoke.");
   assert.ok(environment.RUNNER_TEMP && isAbsolute(environment.RUNNER_TEMP), "Missing runner-owned temporary directory.");
-  assert.ok(environment.ZENO_MAC_CODESIGN_P12_BASE64 && environment.ZENO_MAC_CODESIGN_PASSWORD, "The persistent release signing secrets are required.");
+  assert.ok(environment.ZENO_UPDATE_BASELINE_DIR && environment.ZENO_UPDATE_TARGET_DIR && environment.ZENO_UPDATE_BASELINE_METADATA, "Both explicit release artifact sources and historical release metadata are required.");
+}
+
+export function validateHistoricalRelease(release, arch) {
+  assert.ok(["arm64", "x64"].includes(arch), "Unsupported baseline architecture.");
+  assert.equal(release?.version, BASELINE, "Historical release must be the original baseline.");
+  assert.ok(Array.isArray(release.platforms) && release.platforms.length === 6, "Historical release must contain all six published targets.");
+  const targets = new Set();
+  for (const lane of release.platforms) {
+    assert.ok(["darwin", "win32", "linux"].includes(lane.platform) && ["arm64", "x64"].includes(lane.arch), "Invalid historical target.");
+    assert.equal(lane.version, BASELINE, "Mixed historical release versions.");
+    const key = `${lane.platform}/${lane.arch}`;
+    assert.ok(!targets.has(key), "Duplicate historical target."); targets.add(key);
+  }
+  const lanes = release.platforms.filter(lane => lane.platform === "darwin" && lane.arch === arch);
+  assert.equal(lanes.length, 1, "Historical Mac target is missing or duplicated.");
+  const lane = lanes[0];
+  const feed = `${ORIGIN}/updates/darwin/${arch}/`;
+  assert.equal(lane.version, BASELINE);
+  assert.equal(lane.feedUrl, feed);
+  assert.equal(lane.signing, "self-signed");
+  assert.equal(lane.updatesEnabled, true);
+  assert.ok(Array.isArray(lane.files), "Historical target files are missing.");
+  const expectedName = `zeno-mac-${arch}-${BASELINE}.zip`;
+  const files = lane.files.filter(file => file.name === expectedName);
+  assert.equal(files.length, 1, "Exactly one original baseline ZIP is required.");
+  const file = files[0];
+  assert.equal(file.url, new URL(expectedName, feed).href, "Historical ZIP URL is inconsistent.");
+  assert.ok(Number.isSafeInteger(file.size) && file.size > 0, "Historical ZIP size is missing.");
+  assert.ok(/^[a-f\d]{64}$/i.test(file.sha256), "Historical ZIP SHA-256 is missing.");
+  return { name: expectedName, size: file.size, sha256: file.sha256.toLowerCase(), sha512: sha512Hex(file.sha512) };
 }
 
 function sha512Hex(value) {
@@ -110,14 +139,6 @@ async function publicFetch(url, timeout = 30_000) {
   return response;
 }
 
-async function downloadVerified(file, destination) {
-  // The public site may provide ~10 Mbps shared across both architecture jobs.
-  const response = await publicFetch(file.url, 1_800_000);
-  const length = response.headers.get("content-length");
-  if (length) assert.equal(Number(length), file.size, "Download Content-Length mismatch.");
-  await writeVerifiedZip(Readable.fromWeb(response.body), file, destination);
-}
-
 async function writeVerifiedZip(source, file, destination) {
   const sha256 = createHash("sha256"); const sha512 = createHash("sha512"); let size = 0;
   await pipeline(source, new Transform({ transform(chunk, _encoding, callback) {
@@ -130,66 +151,66 @@ async function writeVerifiedZip(source, file, destination) {
   assert.equal(sha512.digest("hex"), file.sha512, "Downloaded ZIP SHA-512 mismatch.");
 }
 
-export async function copyVerifiedBaseline(directory, temporaryRoot, file, destination) {
-  assert.ok(isAbsolute(directory) && isAbsolute(temporaryRoot), "Baseline paths must be absolute.");
-  assert.equal(basename(file.name), file.name, "Baseline name must equal the published filename.");
+export async function copyVerifiedArtifact(directory, temporaryRoot, file, destination) {
+  assert.ok(isAbsolute(directory) && isAbsolute(temporaryRoot), "Artifact paths must be absolute.");
+  assert.equal(basename(file.name), file.name, "Artifact name must equal the published filename.");
   const root = resolve(temporaryRoot); const folder = resolve(directory); const path = join(folder, file.name);
   const inside = value => value === "" || (!value.startsWith("..") && !isAbsolute(value));
   const local = relative(root, folder);
-  assert.ok(inside(local), "Baseline must be inside RUNNER_TEMP.");
+  assert.ok(inside(local), "Artifact must be inside RUNNER_TEMP.");
   let ancestor = root;
   for (const part of ["", ...local.split("/").filter(Boolean)]) {
     ancestor = join(ancestor, part);
     const info = lstatSync(ancestor);
-    assert.ok(info.isDirectory() && !info.isSymbolicLink(), "Baseline directories must not contain symlinks.");
+    assert.ok(info.isDirectory() && !info.isSymbolicLink(), "Artifact directories must not contain symlinks.");
   }
   const info = lstatSync(path);
-  assert.ok(info.isFile() && !info.isSymbolicLink(), "Baseline must be a regular file, never a symlink.");
-  assert.ok(inside(relative(realpathSync(root), realpathSync(path))), "Baseline resolved outside RUNNER_TEMP.");
-  assert.equal(info.size, file.size, "Build artifact size differs from the live public release.");
+  assert.ok(info.isFile() && !info.isSymbolicLink(), "Artifact must be a regular file, never a symlink.");
+  assert.ok(inside(relative(realpathSync(root), realpathSync(path))), "Artifact resolved outside RUNNER_TEMP.");
+  assert.equal(info.size, file.size, "Build artifact size differs from the published release.");
   // O_NOFOLLOW also refuses a final-component symlink swapped after lstat.
   // Hash the bytes actually copied; neither an artifact name nor its CI run
-  // is trusted in place of the live API + feed's SHA-256/SHA-512 and size.
+  // is trusted in place of the published metadata's SHA-256/SHA-512 and size.
   await writeVerifiedZip(createReadStream(path, { flags: constants.O_RDONLY | constants.O_NOFOLLOW }), file, destination);
-}
-
-// Reproduce every original packed/unpacked file, mode and symlink. A plain
-// createPackage() would incorrectly pack native .node dependencies into ASAR.
-export async function rewriteArchiveVersion(archive, scratch) {
-  const extracted = join(scratch, "extracted");
-  asar.extractAll(archive, extracted);
-  const packagePath = join(extracted, "package.json");
-  const metadata = JSON.parse(readFileSync(packagePath, "utf8"));
-  assert.equal(metadata.version, TARGET);
-  writeFileSync(packagePath, `${JSON.stringify({ ...metadata, version: BASELINE }, null, 2)}\n`);
-  const entries = asar.listPackage(archive).map(name => name.replace(/^\//, ""));
-  const streams = entries.map(name => {
-    const entry = asar.statFile(archive, name, false); const path = join(extracted, name); const stat = lstatSync(path);
-    return { path: name, stat, unpacked: entry.unpacked === true,
-      type: stat.isDirectory() ? "directory" : stat.isSymbolicLink() ? "link" : "file",
-      ...(stat.isSymbolicLink() ? { symlink: readlinkSync(path) } : {}), streamGenerator: () => createReadStream(path) };
-  });
-  const next = join(scratch, "app.asar");
-  await asar.createPackageFromStreams(next, streams);
-  for (const name of entries) {
-    const before = asar.statFile(archive, name, false); const after = asar.statFile(next, name, false);
-    assert.equal(after.unpacked === true, before.unpacked === true, "ASAR unpacked boundary changed.");
-    assert.equal(after.executable === true, before.executable === true, "ASAR executable mode changed.");
-    if ("link" in before) assert.equal(after.link, before.link, "ASAR symlink changed.");
-    else if (!("files" in before) && name !== "package.json") assert.ok(asar.extractFile(archive, name).equals(asar.extractFile(next, name)), "Only package.json may change inside ASAR.");
-  }
-  const changed = JSON.parse(asar.extractFile(next, "package.json").toString());
-  assert.deepEqual(changed, { ...metadata, version: BASELINE });
-  asar.uncacheAll();
-  rmSync(archive, { force: true }); rmSync(`${archive}.unpacked`, { recursive: true, force: true });
-  renameSync(next, archive);
-  if (existsSync(`${next}.unpacked`)) renameSync(`${next}.unpacked`, `${archive}.unpacked`);
-  return metadata;
 }
 
 function plist(bundle) { return join(bundle, "Contents/Info.plist"); }
 function bundleVersion(bundle) { return quiet("/usr/libexec/PlistBuddy", ["-c", "Print :CFBundleShortVersionString", plist(bundle)]); }
 function archivePath(bundle) { return join(bundle, "Contents/Resources/app.asar"); }
+
+function unpackOriginalApp(zip, destination) {
+  const entries = quiet("/usr/bin/unzip", ["-Z1", zip]).split("\n");
+  assert.ok(entries.every(entry => !isAbsolute(entry) && !entry.split("/").includes("..")), "Unsafe published ZIP path.");
+  mkdirSync(destination);
+  quiet("/usr/bin/ditto", ["-x", "-k", zip, destination]);
+  const bundle = join(destination, `${PRODUCT}.app`);
+  assert.ok(existsSync(bundle), "Published ZIP lacks the branded app.");
+  assert.equal(readdirSync(destination).filter(name => name.endsWith(".app")).length, 1);
+  return bundle;
+}
+
+function verifyOriginalApp(bundle, version, feed, requirement) {
+  const metadata = JSON.parse(asar.extractFile(archivePath(bundle), "package.json").toString());
+  assert.equal(metadata.version, version); assert.equal(metadata.openworkBrand, "zeno"); assert.equal(metadata.openworkDistribution, "public");
+  assert.equal(metadata.zenoReleaseUpdatesEnabled, true); assert.equal(metadata.zenoReleaseSigning, "self-signed");
+  const info = JSON.parse(quiet("/usr/bin/plutil", ["-convert", "json", "-o", "-", plist(bundle)]));
+  assert.equal(info.CFBundleIdentifier, BUNDLE_ID);
+  assert.equal(info.CFBundleShortVersionString, version); assert.equal(info.CFBundleVersion, version);
+  const config = YAML.parse(readFileSync(join(bundle, "Contents/Resources/app-update.yml"), "utf8"));
+  assert.equal(config.provider, "generic"); assert.equal(config.url, feed);
+  quiet("/usr/bin/codesign", ["--verify", "--deep", "--strict", "--all-architectures", ...(requirement ? [`-R=${requirement}`] : []), bundle]);
+  return config;
+}
+
+export function certificateRequirement(certificate) {
+  const leaf = new X509Certificate(certificate);
+  return `identifier "${BUNDLE_ID}" and certificate leaf = H"${digest(leaf.raw, "sha1")}"`;
+}
+
+export function assertInstalledArchive(archive, expectedHash) {
+  assert.ok(/^[a-f\d]{64}$/.test(expectedHash), "Missing verified target archive hash.");
+  assert.equal(digest(readFileSync(archive)), expectedHash, "Installed code is not the verified published target archive.");
+}
 
 export function validateUpdaterCacheName(cacheName) {
   // electron-builder flattens the scoped package name to one cache leaf,
@@ -342,9 +363,9 @@ function publishRelaunchEnvironment(environment) {
 }
 
 async function selfTest() {
-  const env = { CI: "true", GITHUB_ACTIONS: "true", RUNNER_ENVIRONMENT: "github-hosted", RUNNER_OS: "macOS", GITHUB_RUN_ID: "1", GITHUB_REF: "refs/heads/personal", RUNNER_TEMP: "/tmp/runner", ZENO_MAC_CODESIGN_P12_BASE64: "fixture", ZENO_MAC_CODESIGN_PASSWORD: "fixture" };
+  const env = { CI: "true", GITHUB_ACTIONS: "true", RUNNER_ENVIRONMENT: "github-hosted", RUNNER_OS: "macOS", GITHUB_RUN_ID: "1", GITHUB_REF: "refs/heads/personal", RUNNER_TEMP: "/tmp/runner", ZENO_UPDATE_BASELINE_DIR: "/tmp/runner/baseline", ZENO_UPDATE_TARGET_DIR: "/tmp/runner/target", ZENO_UPDATE_BASELINE_METADATA: "/tmp/runner/history/zeno-release.json" };
   assertHostedRunner(env, "darwin", "arm64");
-  for (const key of ["CI", "GITHUB_ACTIONS", "RUNNER_ENVIRONMENT", "GITHUB_REF", "ZENO_MAC_CODESIGN_PASSWORD"]) assert.throws(() => assertHostedRunner({ ...env, [key]: "" }, "darwin", "arm64"));
+  for (const key of ["CI", "GITHUB_ACTIONS", "RUNNER_ENVIRONMENT", "GITHUB_REF", "ZENO_UPDATE_TARGET_DIR", "ZENO_UPDATE_BASELINE_METADATA"]) assert.throws(() => assertHostedRunner({ ...env, [key]: "" }, "darwin", "arm64"));
   assert.throws(() => assertHostedRunner(env, "linux", "arm64"));
   assert.equal(validateUpdaterCacheName("@openworkdesktop-updater"), "@openworkdesktop-updater");
   assert.equal(validateUpdaterCacheName("openwork-updater"), "openwork-updater");
@@ -353,8 +374,16 @@ async function selfTest() {
   const release = { version: TARGET, publishedAt: "2026-10-16T00:00:00Z", artifacts: [{ platform: "darwin", arch: "arm64", name, url: `/downloads/${TARGET}/${name}`, size: 100, sha256, sha512, signature: "self-signed", format: "zip" }] };
   const manifest = { version: TARGET, files: [{ url: name, size: 100, sha512: Buffer.from(sha512, "hex").toString("base64") }] };
   assert.equal(validateRelease(release, manifest, "arm64").zip.sha512, sha512);
-  for (const bad of [{ version: "1.0.1" }, { files: [] }, { files: [{ ...manifest.files[0], url: `https://outside.invalid/${name}` }] }, { files: [{ ...manifest.files[0], size: 101 }] }, { files: [{ ...manifest.files[0], sha512: "3".repeat(128) }] }]) assert.throws(() => validateRelease(release, { ...manifest, ...bad }, "arm64"));
+  for (const bad of [{ version: BASELINE }, { files: [] }, { files: [{ ...manifest.files[0], url: `https://outside.invalid/${name}` }] }, { files: [{ ...manifest.files[0], size: 101 }] }, { files: [{ ...manifest.files[0], sha512: "3".repeat(128) }] }]) assert.throws(() => validateRelease(release, { ...manifest, ...bad }, "arm64"));
   assert.throws(() => validateRelease({ ...release, artifacts: [{ ...release.artifacts[0], url: "/downloads/wrong.zip" }] }, manifest, "arm64"));
+  const historical = { version: BASELINE, platforms: ["darwin", "win32", "linux"].flatMap(platform => ["arm64", "x64"].map(arch => ({
+    platform, arch, version: BASELINE, feedUrl: `${ORIGIN}/updates/${platform}/${arch}/`, signing: platform === "darwin" ? "self-signed" : "unsigned", updatesEnabled: true,
+    files: [{ name: `zeno-mac-${arch}-${BASELINE}.zip`, url: `${ORIGIN}/updates/${platform}/${arch}/zeno-mac-${arch}-${BASELINE}.zip`, size: 100, sha256, sha512 }],
+  }))) };
+  assert.equal(validateHistoricalRelease(historical, "arm64").name, `zeno-mac-arm64-${BASELINE}.zip`);
+  assert.equal(validateHistoricalRelease(historical, "x64").sha512, sha512);
+  for (const changed of [{ ...historical, version: TARGET }, { ...historical, platforms: historical.platforms.slice(1) }, { ...historical, platforms: historical.platforms.map((lane, index) => index ? lane : { ...lane, signing: "adhoc" }) }, { ...historical, platforms: historical.platforms.map((lane, index) => index ? lane : { ...lane, files: [{ ...lane.files[0], sha256: "short" }] }) }]) assert.throws(() => validateHistoricalRelease(changed, "arm64"));
+  assert.throws(() => certificateRequirement(Buffer.from("invalid certificate")));
   const privateExecutable = "/tmp/private-bundle/泽诺 Zeno.app/Contents/MacOS/泽诺 Zeno";
   const ownedPid = process.pid + 10_000;
   assert.deepEqual(privateMainPids(`${ownedPid} ${privateExecutable}\n${ownedPid + 1} ${privateExecutable} --argument\n${ownedPid + 2} ${privateExecutable}-helper\n${ownedPid + 3} /Applications/泽诺 Zeno.app/Contents/MacOS/泽诺 Zeno\n1 ${privateExecutable}\n${process.pid} ${privateExecutable}`, privateExecutable), [ownedPid]);
@@ -367,30 +396,33 @@ async function selfTest() {
     const baseline = join(root, "baseline"); mkdirSync(baseline);
     const content = Buffer.from("release fixture bytes"); const file = { name, size: content.length, sha256: digest(content), sha512: digest(content, "sha512") };
     writeFileSync(join(baseline, name), content);
-    await copyVerifiedBaseline(baseline, root, file, join(root, "verified.zip"));
+    await copyVerifiedArtifact(baseline, root, file, join(root, "verified.zip"));
     assert.ok(readFileSync(join(root, "verified.zip")).equals(content));
-    await assert.rejects(copyVerifiedBaseline(baseline, root, { ...file, size: file.size + 1 }, join(root, "wrong-size.zip")));
-    await assert.rejects(copyVerifiedBaseline(baseline, root, { ...file, sha256: "0".repeat(64) }, join(root, "wrong-sha256.zip")));
-    await assert.rejects(copyVerifiedBaseline(baseline, root, { ...file, sha512: "0".repeat(128) }, join(root, "wrong-sha512.zip")));
-    await assert.rejects(copyVerifiedBaseline(dirname(root), root, file, join(root, "outside.zip")));
-    await assert.rejects(copyVerifiedBaseline(baseline, root, { ...file, name: `../${name}` }, join(root, "wrong-name.zip")));
+    await assert.rejects(copyVerifiedArtifact(baseline, root, { ...file, size: file.size + 1 }, join(root, "wrong-size.zip")));
+    await assert.rejects(copyVerifiedArtifact(baseline, root, { ...file, sha256: "0".repeat(64) }, join(root, "wrong-sha256.zip")));
+    await assert.rejects(copyVerifiedArtifact(baseline, root, { ...file, sha512: "0".repeat(128) }, join(root, "wrong-sha512.zip")));
+    await assert.rejects(copyVerifiedArtifact(dirname(root), root, file, join(root, "outside.zip")));
+    await assert.rejects(copyVerifiedArtifact(baseline, root, { ...file, name: `../${name}` }, join(root, "wrong-name.zip")));
     const linkDirectory = join(root, "linked-directory"); symlinkSync(baseline, linkDirectory);
-    await assert.rejects(copyVerifiedBaseline(linkDirectory, root, file, join(root, "symlink-directory.zip")));
+    await assert.rejects(copyVerifiedArtifact(linkDirectory, root, file, join(root, "symlink-directory.zip")));
     const linkedFile = join(root, "linked-file"); mkdirSync(linkedFile); symlinkSync(join(baseline, name), join(linkedFile, name));
-    await assert.rejects(copyVerifiedBaseline(linkedFile, root, file, join(root, "symlink-file.zip")));
+    await assert.rejects(copyVerifiedArtifact(linkedFile, root, file, join(root, "symlink-file.zip")));
     const source = join(root, "source"); mkdirSync(join(source, "native"), { recursive: true });
     writeFileSync(join(source, "package.json"), JSON.stringify({ version: TARGET, openworkBrand: "zeno" }));
     writeFileSync(join(source, "native/fixture.node"), "not an executable"); writeFileSync(join(source, "unchanged.js"), "fixture");
-    chmodSync(join(source, "unchanged.js"), 0o755); symlinkSync("../unchanged.js", join(source, "native/fixture-link"));
     const archive = join(root, "app.asar"); await asar.createPackageWithOptions(source, archive, { unpack: "*.node" });
-    await rewriteArchiveVersion(archive, join(root, "rewrite"));
-    assert.equal(JSON.parse(asar.extractFile(archive, "package.json").toString()).version, BASELINE);
+    const archiveHash = digest(readFileSync(archive));
+    assertInstalledArchive(archive, archiveHash);
+    assert.equal(JSON.parse(asar.extractFile(archive, "package.json").toString()).version, TARGET);
     assert.equal(asar.statFile(archive, "native/fixture.node").unpacked, true);
     assert.equal(asar.extractFile(archive, "native/fixture.node").toString(), "not an executable");
-    assert.equal(asar.statFile(archive, "unchanged.js").executable, true);
-    assert.equal(asar.statFile(archive, "native/fixture-link", false).link, "unchanged.js");
+    writeFileSync(join(source, "unchanged.js"), "same version, different code");
+    const wrongArchive = join(root, "wrong-app.asar"); await asar.createPackageWithOptions(source, wrongArchive, { unpack: "*.node" });
+    assert.equal(JSON.parse(asar.extractFile(wrongArchive, "package.json").toString()).version, TARGET);
+    assert.throws(() => assertInstalledArchive(wrongArchive, archiveHash), /target archive/);
+    assert.throws(() => assertInstalledArchive(archive, ""), /archive hash/);
   } finally { asar.uncacheAll(); rmSync(root, { recursive: true, force: true }); }
-  console.log("Zeno update smoke self-test passed (validation and ASAR only; no native update was run).");
+  console.log("Zeno update smoke self-test passed (historical/target integrity only; no native update was run).");
 }
 
 async function main() {
@@ -403,7 +435,7 @@ async function main() {
   const evidence = join(runnerTemp, "zeno-update-smoke-evidence"); mkdirSync(evidence, { recursive: true });
   const report = { passed: false, target: TARGET, baseline: BASELINE, platform: "darwin", arch: process.arch, publicOrigin: ORIGIN, phases: [], isolation: "ephemeral github-hosted runner; no pre-existing native state; private bundle/profile/workspace", nativeUpdateExecuted: false };
   const phase = (name, values = {}) => { report.phases.push({ ...values, name }); console.log(`[zeno-update-smoke] ${name}`); };
-  let identity; let child; let client; let browser; let port; let privateBundle; let restoreRelaunchEnvironment; let nativePaths = []; let ownsNativeCache = false;
+  let child; let client; let browser; let port; let privateBundle; let restoreRelaunchEnvironment; let nativePaths = []; let ownsNativeCache = false;
   const exceptions = []; const origins = new Set();
   try {
     const releaseResponse = await publicFetch(`${ORIGIN}/api/releases/latest.json`);
@@ -411,52 +443,45 @@ async function main() {
     const feed = `${ORIGIN}/updates/darwin/${process.arch}/`;
     const manifestText = await (await publicFetch(`${feed}latest-mac.yml`)).text();
     const selected = validateRelease(release, YAML.parse(manifestText), process.arch);
-    const zip = join(root, selected.zip.name);
-    const baselineDirectory = process.env.ZENO_UPDATE_BASELINE_DIR;
-    if (baselineDirectory) await copyVerifiedBaseline(baselineDirectory, runnerTemp, selected.zip, zip);
-    else await downloadVerified(selected.zip, zip);
-    const source = baselineDirectory ? "verified-build-artifact" : "verified-public-download";
-    report.baselineSource = source;
-    // Only baseline acquisition is deduplicated. The native updater below
-    // still checks and downloads the complete ZIP from the real public feed.
-    phase("verified-public-feed-and-zip", { version: TARGET, feed, artifactName: selected.zip.name, bytes: selected.zip.size, sha256: selected.zip.sha256, source });
-    const entries = quiet("/usr/bin/unzip", ["-Z1", zip]).split("\n");
-    assert.ok(entries.every(entry => !isAbsolute(entry) && !entry.split("/").includes("..")), "Unsafe published ZIP path.");
-    const install = join(root, "installation"); mkdirSync(install);
-    quiet("/usr/bin/ditto", ["-x", "-k", zip, install]);
-    privateBundle = join(install, `${PRODUCT}.app`);
-    assert.ok(existsSync(privateBundle), "Published ZIP lacks the branded app.");
-    assert.equal(readdirSync(install).filter(name => name.endsWith(".app")).length, 1);
-    const archive = archivePath(privateBundle); const metadata = JSON.parse(asar.extractFile(archive, "package.json").toString());
-    assert.equal(metadata.version, TARGET); assert.equal(metadata.openworkBrand, "zeno"); assert.equal(metadata.openworkDistribution, "public");
-    assert.equal(metadata.zenoReleaseUpdatesEnabled, true); assert.equal(metadata.zenoReleaseSigning, "self-signed");
-    const config = YAML.parse(readFileSync(join(privateBundle, "Contents/Resources/app-update.yml"), "utf8"));
-    assert.equal(config.provider, "generic"); assert.equal(config.url, selected.feed);
+    const historicalPath = process.env.ZENO_UPDATE_BASELINE_METADATA;
+    assert.ok(isAbsolute(historicalPath), "Historical release metadata path must be absolute.");
+    const historicalRelative = relative(runnerTemp, historicalPath);
+    assert.ok(!historicalRelative.startsWith("..") && !isAbsolute(historicalRelative), "Historical metadata must be inside RUNNER_TEMP.");
+    const historicalInfo = lstatSync(historicalPath);
+    assert.ok(historicalInfo.isFile() && !historicalInfo.isSymbolicLink(), "Historical release metadata must be a regular file.");
+    const historicalReal = relative(realpathSync(runnerTemp), realpathSync(historicalPath));
+    assert.ok(!historicalReal.startsWith("..") && !isAbsolute(historicalReal), "Historical metadata resolved outside RUNNER_TEMP.");
+    const historical = JSON.parse(readFileSync(historicalPath, { encoding: "utf8", flag: constants.O_RDONLY | constants.O_NOFOLLOW }));
+    const baseline = validateHistoricalRelease(historical, process.arch);
+    const baselineZip = join(root, baseline.name);
+    const targetZip = join(root, selected.zip.name);
+    await copyVerifiedArtifact(process.env.ZENO_UPDATE_BASELINE_DIR, runnerTemp, baseline, baselineZip);
+    await copyVerifiedArtifact(process.env.ZENO_UPDATE_TARGET_DIR, runnerTemp, selected.zip, targetZip);
+    report.baselineSource = "original-historical-release-build-artifact";
+    report.targetSource = "build-artifact-verified-against-live-api-and-feed";
+    phase("verified-original-baseline-zip", { version: BASELINE, artifactName: baseline.name, bytes: baseline.size, sha256: baseline.sha256 });
+    phase("verified-public-target-artifact", { version: TARGET, feed, artifactName: selected.zip.name, bytes: selected.zip.size, sha256: selected.zip.sha256 });
+
+    // Neither original bundle is changed or re-signed. The historical ZIP is
+    // anchored to its public GitHub release index; the target ZIP is anchored
+    // to the live website API and native feed with both cryptographic hashes.
+    privateBundle = unpackOriginalApp(baselineZip, join(root, "installation"));
+    const config = verifyOriginalApp(privateBundle, BASELINE, selected.feed);
+    const originalBaselineArchiveHash = digest(readFileSync(archivePath(privateBundle)));
+    const certificatePrefix = join(root, "baseline-public-certificate-");
+    quiet("/usr/bin/codesign", ["--display", `--extract-certificates=${certificatePrefix}`, privateBundle]);
+    const requirement = certificateRequirement(readFileSync(`${certificatePrefix}0`));
+    quiet("/usr/bin/codesign", ["--verify", "--deep", "--strict", "--all-architectures", `-R=${requirement}`, privateBundle]);
+    const targetBundle = unpackOriginalApp(targetZip, join(root, "verified-target"));
+    const targetConfig = verifyOriginalApp(targetBundle, TARGET, selected.feed, requirement);
+    assert.equal(targetConfig.updaterCacheDirName, config.updaterCacheDirName, "The release update cache identity changed.");
+    const publishedArchiveHash = digest(readFileSync(archivePath(targetBundle)));
+    rmSync(join(root, "verified-target"), { recursive: true, force: true });
+    assertInstalledArchive(archivePath(privateBundle), originalBaselineArchiveHash);
     nativePaths = assertPristineMachine(config.updaterCacheDirName);
-    identity = prepareZenoSelfSigning();
-    const requirement = `identifier "${BUNDLE_ID}" and certificate leaf = H"${identity.environment.ZENO_MAC_CERT_SHA1}"`;
-    quiet("/usr/bin/codesign", ["--verify", "--deep", "--strict", "--all-architectures", `-R=${requirement}`, privateBundle]);
-    const publishedArchiveHash = digest(readFileSync(archive));
-    assert.equal(bundleVersion(privateBundle), TARGET);
-    await rewriteArchiveVersion(archive, join(root, "asar-baseline"));
-    const info = JSON.parse(quiet("/usr/bin/plutil", ["-convert", "json", "-o", "-", plist(privateBundle)]));
-    assert.equal(info.CFBundleIdentifier, BUNDLE_ID);
-    info.CFBundleShortVersionString = BASELINE; info.CFBundleVersion = BASELINE;
-    if (info.ElectronAsarIntegrity) {
-      assert.ok(info.ElectronAsarIntegrity["Resources/app.asar"], "Unexpected ASAR integrity location.");
-      info.ElectronAsarIntegrity["Resources/app.asar"] = { algorithm: "SHA256", hash: digest(asar.getRawHeader(archive).headerString) };
-    }
-    const temporaryPlist = join(root, "baseline-info.json"); writeFileSync(temporaryPlist, JSON.stringify(info));
-    quiet("/usr/bin/plutil", ["-convert", "xml1", "-o", plist(privateBundle), temporaryPlist]);
-    const require = createRequire(import.meta.url); const builderRequire = createRequire(require.resolve("electron-builder"));
-    const appBuilderRequire = createRequire(builderRequire.resolve("app-builder-lib")); const { signAsync } = appBuilderRequire("@electron/osx-sign");
-    await signAsync({ app: privateBundle, platform: "darwin", identity: identity.environment.ZENO_MAC_CERT_SHA1, keychain: identity.environment.ZENO_MAC_KEYCHAIN,
-      identityValidation: false, preAutoEntitlements: false, preEmbedProvisioningProfile: false,
-      optionsForFile: file => ({ entitlements: ENTITLEMENTS, hardenedRuntime: true, timestamp: "none", ...(file === privateBundle ? { requirements: `=designated => ${requirement}` } : {}) }) });
-    quiet("/usr/bin/codesign", ["--verify", "--deep", "--strict", "--all-architectures", `-R=${requirement}`, privateBundle]);
-    identity.release(); identity = null;
-    assert.equal(bundleVersion(privateBundle), BASELINE);
-    phase("prepared-private-same-identity-baseline", { version: BASELINE, codeChanges: "package version and matching Info.plist/integrity only" });
+    phase("verified-unmodified-original-baseline-and-signing-continuity", { version: BASELINE, originalSignature: true, codeChanges: "none", targetArchiveSha256: publishedArchiveHash });
+    // Only the original baseline is launched. The actual target ZIP transfer
+    // below is performed by its native updater against the public Zeno feed.
 
     const profile = join(root, "profile"); const workspace = join(root, "workspace"); const state = join(root, "state");
     for (const folder of [profile, workspace, state, "config", "data", "cache", "logs"].map(folder => isAbsolute(folder) ? folder : join(root, folder))) mkdirSync(folder, { recursive: true });
@@ -515,7 +540,7 @@ async function main() {
     client.socket.close(); client = null; browser.socket.close(); browser = null;
     await until(() => bundleVersion(privateBundle), value => value === TARGET, 120_000, "Squirrel replaces the private bundle");
     await shipItIdle(120_000);
-    assert.equal(digest(readFileSync(archivePath(privateBundle))), publishedArchiveHash, "Installed code is not the published target archive.");
+    assertInstalledArchive(archivePath(privateBundle), publishedArchiveHash);
     quiet("/usr/bin/codesign", ["--verify", "--deep", "--strict", "--all-architectures", `-R=${requirement}`, privateBundle]);
     client = await attach(port, privateBundle, exceptions, origins);
     const updatedBuild = await client.invoke("appBuildInfo"); assert.equal(updatedBuild.version, TARGET);
@@ -536,7 +561,6 @@ async function main() {
     report.error = error.message;
     throw error;
   } finally {
-    identity?.release();
     try {
       if (port && child && privateBundle) {
         const targets = await (await fetch(`http://127.0.0.1:${port}/json/list`, { signal: AbortSignal.timeout(1_000) })).json();
@@ -555,7 +579,7 @@ async function main() {
       // existing user's native state or remove a bundle while ShipIt uses it.
       if (ownsNativeCache) for (const path of nativePaths.filter(path => path.includes("/Library/Caches/") || path.endsWith(`${BUNDLE_ID}.ShipIt.plist`))) rmSync(path, { recursive: true, force: true });
       rmSync(root, { recursive: true, force: true });
-      report.cleanup = "owned app, profile, private keychain and fresh-run caches removed after native processes exited";
+      report.cleanup = "original app copy, profile and fresh-run caches removed after native processes exited";
     } catch { report.cleanup = "native processes did not settle; preserved private files for runner disposal"; report.passed = false; process.exitCode = 1; }
     report.networkOrigins = [...origins];
     writeFileSync(join(evidence, "report.json"), `${JSON.stringify(report, null, 2)}\n`, { mode: 0o600 });
