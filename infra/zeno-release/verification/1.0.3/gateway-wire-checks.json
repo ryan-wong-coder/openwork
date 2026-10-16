@@ -1,0 +1,213 @@
+{
+  "passed": true,
+  "checkedOn": "2026-10-16",
+  "origin": "https://api.modelhelm.com",
+  "syntheticPromptsOnly": true,
+  "scope": "Authenticated direct gateway wire checks, separately from native engine integration and release packaging. No response text, reasoning text, signatures, request IDs or credentials retained.",
+  "catalog": {
+    "status": 200,
+    "models": 70,
+    "fields": [
+      "id",
+      "object",
+      "created",
+      "owned_by"
+    ],
+    "capabilitiesAdvertised": false
+  },
+  "gpt61": {
+    "model": "openai/gpt-6.1-sol",
+    "chatPath": "/v1/chat/completions",
+    "parameter": "reasoning_effort",
+    "sameSyntheticArithmeticPrompt": true,
+    "efforts": [
+      {
+        "value": "low",
+        "status": 200,
+        "reasoningTokens": 58,
+        "answerPresent": true
+      },
+      {
+        "value": "high",
+        "status": 200,
+        "reasoningTokens": 68,
+        "answerPresent": true
+      },
+      {
+        "value": "invalid-probe",
+        "status": 400,
+        "supportedValues": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      }
+    ],
+    "chatToolRoundTrip": {
+      "effort": "low",
+      "firstStatus": 200,
+      "firstFinish": "tool_calls",
+      "syntheticTool": "calculate",
+      "toolCount": 1,
+      "secondStatus": 200,
+      "secondFinish": "stop",
+      "answerMatched": true,
+      "externalToolSideEffects": false
+    },
+    "responsesProbe": {
+      "path": "/v1/responses",
+      "reasoning": {
+        "effort": "low"
+      },
+      "status": 200,
+      "outputTypes": [
+        "message"
+      ],
+      "toolsTested": false
+    },
+    "officialDirectApiBoundary": "OpenAI requires Responses for GPT-6.1 tool calling; the two-turn Chat Completions result describes this ModelHelm compatibility route only."
+  },
+  "claudeCompatibleNegativeControls": {
+    "model": "anthropic/claude-sonnet-5",
+    "path": "/v1/chat/completions",
+    "reasoningEffortLowHighInvalidAllStatus": 200,
+    "arithmeticMaxTokens": 384,
+    "arithmeticLowHighFinish": "length",
+    "arithmeticReasoningTokens": 0,
+    "otherInvalidFieldsAccepted": [
+      "output_config.effort",
+      "reasoning.effort",
+      "thinking.type"
+    ],
+    "conclusion": "A 200 from the compatible route does not prove native effort is applied. Anthropic documents reasoning_effort as ignored by its compatibility layer."
+  },
+  "claudeNative": {
+    "path": "/claude/v1/messages",
+    "authenticationHeaders": [
+      "x-api-key",
+      "anthropic-version"
+    ],
+    "anthropicVersion": "2023-06-01",
+    "thinking": {
+      "type": "adaptive",
+      "display": "summarized"
+    },
+    "parameter": "output_config.effort",
+    "supportedValues": [
+      "low",
+      "medium",
+      "high",
+      "xhigh",
+      "max"
+    ],
+    "models": [
+      {
+        "id": "anthropic/claude-fable-5",
+        "lowStatus": 200,
+        "maxTokens": 128,
+        "stopReason": "end_turn",
+        "textPresent": true
+      },
+      {
+        "id": "anthropic/claude-opus-5",
+        "lowStatus": 200,
+        "maxTokens": 128,
+        "stopReason": "end_turn",
+        "textPresent": true
+      },
+      {
+        "id": "anthropic/claude-sonnet-5",
+        "lowStatus": 200,
+        "highStatus": 200,
+        "invalidStatus": 400,
+        "arithmeticMaxTokens": 1024,
+        "arithmeticAnswerMatched": true,
+        "highThinkingTokens": 0
+      },
+      {
+        "id": "anthropic/claude-opus-5.5",
+        "lowStatus": 200,
+        "highStatus": 200,
+        "invalidStatus": 400,
+        "arithmeticMaxTokens": 1024,
+        "arithmeticAnswerMatched": true,
+        "lowThinkingTokens": 0,
+        "highThinkingTokens": 32,
+        "highContentBlockTypes": [
+          "thinking",
+          "text"
+        ]
+      }
+    ],
+    "streaming": [
+      {
+        "id": "anthropic/claude-sonnet-5",
+        "effort": "xhigh",
+        "status": 200,
+        "mime": "text/event-stream",
+        "parseErrors": 0,
+        "answerMatched": true,
+        "thinkingTokens": 0
+      },
+      {
+        "id": "anthropic/claude-opus-5.5",
+        "effort": "xhigh",
+        "status": 200,
+        "mime": "text/event-stream",
+        "parseErrors": 0,
+        "answerMatched": true,
+        "thinkingTokens": 32
+      }
+    ],
+    "incorrectUnprefixedPath": {
+      "path": "/v1/messages",
+      "status": 404
+    },
+    "adaptiveBoundary": "Thinking is selected per task; a simple prompt may return text without a thinking block even at high effort."
+  },
+  "claudeNativeV2MessageEffort": {
+    "model": "anthropic/claude-opus-5.5",
+    "source": "Pinned OpenCode 2.0.26 first-request structure captured from synthetic native integration",
+    "effortLocation": "messages[0].output_config.effort",
+    "messageRole": "system",
+    "messageContent": [],
+    "topLevelOutputConfigPresent": false,
+    "thinking": {
+      "type": "adaptive",
+      "display": "summarized",
+      "block_binding": {
+        "prefix_mismatch_behavior": "drop_block"
+      }
+    },
+    "anthropicBeta": "interleaved-thinking-2025-05-14,mid-conversation-output-config-2026-07-01,thinking-binding-controls-2026-08-01",
+    "high": {
+      "status": 200,
+      "stopReason": "end_turn",
+      "contentBlockTypes": [
+        "text"
+      ],
+      "strictIntegerAnswerMatched": false
+    },
+    "invalid": {
+      "status": 400,
+      "validatedField": "messages.0.output_config.effort",
+      "supportedValues": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ]
+    },
+    "boundary": "The legal request proves acceptance of the SDK format, not a successful strict-answer-format assertion. No compatibility override was added."
+  },
+  "sources": [
+    "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+    "https://platform.claude.com/docs/en/build-with-claude/effort",
+    "https://platform.claude.com/docs/en/cli-sdks-libraries/libraries/openai-sdk",
+    "https://modelhelm.com/",
+    "https://modelhelm.com/api/status"
+  ]
+}

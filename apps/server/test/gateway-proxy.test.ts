@@ -140,7 +140,7 @@ test("invalid, oversized and unconfigured requests never leave the host", async 
 });
 
 let nativeFixtureSource: Promise<string> | undefined;
-async function nativeTransportResult(deadline = false) {
+async function nativeTransportResult(deadline = false, messages = false) {
   // Bun 1.3.x rejects fetch body reads after abort but leaves its HTTP socket
   // open. Node's fetch transport gets an independent strict close assertion.
   // Electron uses electron.net.fetch and is not exercised by this fixture.
@@ -155,7 +155,7 @@ async function nativeTransportResult(deadline = false) {
   try {
     const path = join(directory, "proxy.mjs");
     await writeFile(path, await nativeFixtureSource);
-    const process = Bun.spawn(["node", path, ...(deadline ? ["--deadline"] : [])], { stdout: "pipe", stderr: "pipe" });
+    const process = Bun.spawn(["node", path, ...(deadline ? ["--deadline"] : []), ...(messages ? ["--messages"] : [])], { stdout: "pipe", stderr: "pipe" });
     const [stdout, stderr, code] = await Promise.all([new Response(process.stdout).text(), new Response(process.stderr).text(), process.exited]);
     expect(code).toBe(0);
     expect(stderr).not.toContain("synthetic-cancellation-key");
@@ -169,6 +169,17 @@ test("caller cancellation closes both HTTP streams on the standalone Node transp
 
 test("the configured deadline terminates an already streaming response and closes upstream", async () => {
   const result = await nativeTransportResult(true);
+  expect(result).toMatchObject({ readerCancelled: true, upstreamCancelled: true });
+  expect(result.elapsedMs).toBeGreaterThanOrEqual(9500);
+  expect(result.elapsedMs).toBeLessThan(15000);
+}, 20000);
+
+test("native Messages cancellation closes both real Node HTTP streams", async () => {
+  expect(await nativeTransportResult(false, true)).toEqual({ readerCancelled: true, upstreamCancelled: true });
+});
+
+test("native Messages deadline closes an already streaming upstream", async () => {
+  const result = await nativeTransportResult(true, true);
   expect(result).toMatchObject({ readerCancelled: true, upstreamCancelled: true });
   expect(result.elapsedMs).toBeGreaterThanOrEqual(9500);
   expect(result.elapsedMs).toBeLessThan(15000);

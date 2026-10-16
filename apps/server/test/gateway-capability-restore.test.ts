@@ -32,10 +32,13 @@ function config(name: string): ServerConfig {
     startedAt: Date.now(), tokenSource: "cli", hostTokenSource: "cli", logFormat: "pretty", logRequests: false };
 }
 
-for (const cached of [true, false]) {
-  test(`startup migrates existing ready gateway capabilities offline (${cached ? "validated private cache" : "legacy profile without cache"})`, async () => {
-    const profile = config(cached ? "cached" : "legacy");
-    const env = new EnvService({ path: join(directory, cached ? "cached-env.json" : "legacy-env.json") });
+for (const migration of [{ id: modelId, disabled: "medium" }, { id: "openai/gpt-6.1-sol", disabled: "none" },
+  { id: "anthropic/claude-sonnet-5", disabled: "none" }]) for (const cached of [true, false]) {
+  test(`startup migrates existing ready gateway capabilities offline (${migration.id}, ${cached ? "validated private cache" : "legacy profile without cache"})`, async () => {
+    const modelId = migration.id;
+    const suffix = `${cached ? "cached" : "legacy"}-${modelId.replaceAll("/", "-")}`;
+    const profile = config(suffix);
+    const env = new EnvService({ path: join(directory, `${suffix}-env.json`) });
     await env.upsertMany([{ key: GATEWAY_API_KEY_ENV, value: key },
       { key: "OPENWORK_GATEWAY_BASE_URL", value: DEFAULT_GATEWAY_BASE_URL },
       { key: "OPENWORK_GATEWAY_CHAT_MODEL", value: modelId },
@@ -52,8 +55,11 @@ for (const cached of [true, false]) {
     } }, unrelated: { name: "Preserved" } } }));
     expect(await restoreGatewayProvider(profile, env)).toEqual({ ready: true, changed: true });
     const runtime = await readGlobalRuntimeOpencodeConfig(profile);
+    const nativeClaude = modelId === "anthropic/claude-sonnet-5";
     expect(runtime.provider?.modelhelm).toMatchObject({ models: { [modelId]: {
-      reasoning: true, variants: { high: { reasoningEffort: "high" }, medium: { disabled: true } },
+      reasoning: true, variants: { high: nativeClaude ? { effort: "high", thinking: { type: "adaptive", display: "summarized" } }
+        : { reasoningEffort: "high" }, [migration.disabled]: { disabled: true } },
+      ...(nativeClaude ? { provider: { npm: "@ai-sdk/anthropic" }, options: { thinking: { type: "adaptive", display: "summarized" } } } : {}),
     } } });
     expect(runtime.provider?.unrelated).toEqual({ name: "Preserved" });
     expect(JSON.stringify(runtime)).not.toContain(key);
@@ -70,9 +76,9 @@ test("an unconfigured or cleared gateway never gains a provider or implied capab
   expect(await restoreGatewayProvider(profile, env)).toEqual({ ready: false, changed: false });
 });
 
-for (const cached of [true, false]) for (const baseURL of [DEFAULT_GATEWAY_BASE_URL, "https://custom-gateway.invalid/v1"]) {
-  test(`startup preserves complete explicit model config twice (${cached ? "cache" : "legacy"}, ${baseURL === DEFAULT_GATEWAY_BASE_URL ? "ModelHelm" : "custom"})`, async () => {
-    const suffix = `${cached}-${baseURL === DEFAULT_GATEWAY_BASE_URL}`;
+for (const modelId of ["deepseek/deepseek-v4-flash", "openai/gpt-6.1-sol", "anthropic/claude-sonnet-5"]) for (const cached of [true, false]) for (const baseURL of [DEFAULT_GATEWAY_BASE_URL, "https://custom-gateway.invalid/v1"]) {
+  test(`startup preserves complete explicit model config twice (${modelId}, ${cached ? "cache" : "legacy"}, ${baseURL === DEFAULT_GATEWAY_BASE_URL ? "ModelHelm" : "custom"})`, async () => {
+    const suffix = `${modelId.replaceAll("/", "-")}-${cached}-${baseURL === DEFAULT_GATEWAY_BASE_URL}`;
     const profile = config(`explicit-${suffix}`);
     const env = new EnvService({ path: join(directory, `explicit-env-${suffix}.json`) });
     await env.upsertMany([{ key: GATEWAY_API_KEY_ENV, value: key }, { key: "OPENWORK_GATEWAY_BASE_URL", value: baseURL },
@@ -88,7 +94,9 @@ for (const cached of [true, false]) for (const baseURL of [DEFAULT_GATEWAY_BASE_
       variants: { careful: { reasoningEffort: "high", temperature: 0.2 },
         budget: { thinking: { type: "enabled", budgetTokens: 8192 } }, high: { disabled: true } },
       tool_call: true, attachment: false, modalities: { input: ["text"], output: ["text"] },
-      options: { custom: "preserved" }, limit: { context: 32000, output: 8192 },
+      options: { custom: "preserved", ...(modelId === "anthropic/claude-sonnet-5" ? { thinking: { type: "adaptive", display: "omitted" } } : {}) },
+      ...(modelId === "anthropic/claude-sonnet-5" ? { provider: { npm: "@ai-sdk/anthropic", api: "https://explicit.invalid" } } : {}),
+      limit: { context: 32000, output: 8192 },
     };
     await writeGlobalRuntimeOpencodeConfig(profile, () => ({ provider: { modelhelm: { ...provider, models: { [modelId]: explicit } } } }));
     for (let start = 0; start < 2; start++) {
@@ -103,6 +111,51 @@ for (const cached of [true, false]) for (const baseURL of [DEFAULT_GATEWAY_BASE_
     }
   });
 }
+
+
+for (const cached of [true, false]) for (const npm of ["@ai-sdk/openai-compatible", "@fixture/custom-sdk"]) {
+  test(`startup respects conflicting local Claude SDK and explicit variants (${cached ? "cache" : "legacy"}, ${npm})`, async () => {
+    const id = "anthropic/claude-sonnet-5";
+    const suffix = `${cached}-${npm.replaceAll("/", "-")}`;
+    const profile = config(`conflicting-${suffix}`);
+    const env = new EnvService({ path: join(directory, `conflicting-env-${suffix}.json`) });
+    await env.upsertMany([{ key: GATEWAY_API_KEY_ENV, value: key },
+      { key: "OPENWORK_GATEWAY_BASE_URL", value: DEFAULT_GATEWAY_BASE_URL }, { key: "OPENWORK_GATEWAY_CHAT_MODEL", value: id },
+      ...(cached ? [{ key: GATEWAY_MODEL_CATALOG_ENV, value: JSON.stringify({ version: 1,
+        fingerprint: createHash("sha256").update(DEFAULT_GATEWAY_BASE_URL).update("\0").update(key).digest("hex"),
+        models: [{ id, name: "Catalog Claude", kind: "chat" }], syncedAt: 1,
+      }) }] : []),
+    ]);
+    const { settings } = await readGatewaySettings(env);
+    const provider = buildGatewayProvider(settings, [{ id, name: "Claude", kind: "chat" }], profile);
+    const local = { name: "User Claude", provider: { npm }, options: { custom: "retained" } };
+    await writeGlobalRuntimeOpencodeConfig(profile, () => ({ provider: { modelhelm: { ...provider, models: { [id]: local } } } }));
+    for (let start = 0; start < 2; start++) {
+      const restored = await restoreGatewayProvider(profile, env);
+      expect(restored.ready).toBe(true);
+      if (start > 0) expect(restored.changed).toBe(false);
+      const gateway = (await readGlobalRuntimeOpencodeConfig(profile)).provider?.modelhelm;
+      if (!record(gateway) || !record(gateway.models) || !record(gateway.models[id])) throw new Error("Missing local model");
+      const model = gateway.models[id];
+      expect(model.provider).toEqual(local.provider);
+      expect(model.options).toEqual(local.options);
+      expect(model.reasoning).toBeUndefined();
+      expect(record(model.variants) && Object.values(model.variants).every(value => record(value) && value.disabled === true)).toBe(true);
+    }
+    const explicit = { ...local, variants: { custom: { reasoningEffort: "high", temperature: 0.2 } } };
+    await writeGlobalRuntimeOpencodeConfig(profile, runtime => ({ ...runtime, provider: { modelhelm: { ...provider, models: { [id]: explicit } } } }));
+    await restoreGatewayProvider(profile, env);
+    const gateway = (await readGlobalRuntimeOpencodeConfig(profile)).provider?.modelhelm;
+    if (!record(gateway) || !record(gateway.models)) throw new Error("Missing explicit model");
+    const restored = gateway.models[id];
+    if (!record(restored)) throw new Error("Missing explicit model config");
+    expect(restored.provider).toEqual(explicit.provider);
+    expect(restored.options).toEqual(explicit.options);
+    expect(restored.variants).toEqual(explicit.variants);
+    expect(restored.reasoning).toBeUndefined();
+  });
+}
+
 
 test("explicit model overrides do not cross a changed endpoint or key, including a repaired stale catalog", async () => {
   const syntheticModel = "synthetic/reasoner";

@@ -226,9 +226,21 @@ export function renderOpencodeV2Config(input: {
     for (const model of provider.models) {
       if (!passesModelFilters(provider, model)) continue;
       const config = model.config ?? {};
+      const modelProvider = isRecord(config.provider) ? config.provider : {};
+      // Per-model SDK overrides use only the same built-in adapter vocabulary
+      // accepted by provider mapping; never load an arbitrary npm package.
+      const modelPackages: Record<string, string> = {
+        "@ai-sdk/openai": "@opencode/ai/providers/openai",
+        "@ai-sdk/anthropic": "@opencode/ai/providers/anthropic",
+        "@openrouter/ai-sdk-provider": "@opencode/ai/providers/openrouter",
+        "@ai-sdk/openai-compatible": "@opencode/ai/providers/openai-compatible",
+      };
+      const modelPackage = typeof modelProvider.npm === "string" && Object.hasOwn(modelPackages, modelProvider.npm)
+        ? modelPackages[modelProvider.npm] : providerPackage;
       const modalities = isRecord(config.modalities) ? config.modalities : {};
       models[model.id] = {
         name: model.name,
+        ...(modelPackage !== providerPackage ? { package: modelPackage } : {}),
         ...(typeof config.id === "string" ? { modelID: config.id } : {}),
         capabilities: {
           tools: typeof config.tool_call === "boolean" ? config.tool_call : true,
@@ -243,7 +255,7 @@ export function renderOpencodeV2Config(input: {
         // An absent variants key lets the engine infer reasoning efforts even
         // when the provider explicitly says this model cannot reason.
         ...(isRecord(config.variants) || config.reasoning === false ? {
-          variants: nativeModelVariants(config.variants, providerPackage),
+          variants: nativeModelVariants(config.variants, modelPackage),
         } : {}),
         ...(isRecord(config.headers) ? { headers: config.headers } : {}),
         ...(isDeprecatedModel(model) ? { disabled: true } : {}),

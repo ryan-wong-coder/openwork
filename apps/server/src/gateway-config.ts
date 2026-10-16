@@ -8,7 +8,7 @@ import { syncManagedProviderAuth } from "./managed-provider-auth.js";
 import type { ServerConfig } from "./types.js";
 import { withConfigurationWriteLock } from "./configuration-write-lock.js";
 import { GATEWAY_PROXY_TOKEN_ENV, gatewayProxyBaseURL } from "./gateway-proxy-auth.js";
-import { fillGatewayRuntimeModelMetadata, gatewayReasoningMetadata, parseGatewayReasoningMetadata, type GatewayReasoningMetadata } from "./gateway-model-capabilities.js";
+import { canUseModelHelmClaudeSdk, fillGatewayRuntimeModelMetadata, gatewayNativeModelDefaults, gatewayReasoningMetadata, isModelHelmClaudeModel, parseGatewayReasoningMetadata, type GatewayReasoningMetadata } from "./gateway-model-capabilities.js";
 
 export const GATEWAY_PROVIDER_ID = "modelhelm";
 export const DEFAULT_GATEWAY_BASE_URL = "https://api.modelhelm.com/v1";
@@ -235,16 +235,22 @@ export function buildGatewayProvider(settings: GatewaySettings, models: GatewayM
     // Model IDs are routing identities: retain their provider namespace verbatim.
     models: Object.fromEntries(models.filter((model) => model.kind === "chat").map((model) => {
       const existing = previousModels[model.id];
+      const conflictingSdk = isRecord(existing) && isModelHelmClaudeModel(settings.baseURL, model.id)
+        && !canUseModelHelmClaudeSdk(settings.baseURL, model.id, existing);
       const materialized = {
         name: model.name,
         tool_call: true,
         attachment: false,
         modalities: { input: ["text"], output: ["text"] },
-        ...gatewayReasoningMetadata(settings.baseURL, model.id, model),
+        ...(!conflictingSdk ? { ...gatewayNativeModelDefaults(settings.baseURL, model.id),
+          ...gatewayReasoningMetadata(settings.baseURL, model.id, model) } : {}),
       };
       if (!isRecord(existing)) return [model.id, materialized];
       const filled = fillGatewayRuntimeModelMetadata(settings.baseURL, model.id, existing);
       return [model.id, { ...filled, ...materialized, ...existing,
+        ...(isRecord(filled.provider) ? { provider: filled.provider } : {}),
+        ...(isRecord(filled.options) ? { options: filled.options } : {}),
+        ...(conflictingSdk && existing.variants === undefined ? { variants: filled.variants } : {}),
         ...(existing.reasoning === false && !Object.hasOwn(existing, "variants") ? { variants: filled.variants } : {}),
       }];
     })),

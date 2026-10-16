@@ -5,7 +5,7 @@ import {
   readGatewaySettings, saveGatewayConfig, syncGatewayModels, testGatewayConnection,
 } from "../gateway-config.js";
 import { generateGatewayImage } from "../gateway-images.js";
-import { forwardGatewayChat } from "../gateway-proxy.js";
+import { forwardGatewayChat, forwardGatewayMessages } from "../gateway-proxy.js";
 import type { ServerConfig, WorkspaceInfo } from "../types.js";
 import { addRoute, type RequestContext, type Route } from "./registry.js";
 
@@ -27,6 +27,7 @@ export function registerGatewayRoutes(options: {
     return response;
   };
   addRoute(routes, "POST", "/gateway/openai/chat/completions", "none", async (ctx) => forwardGatewayChat(config, env, ctx.request));
+  addRoute(routes, "POST", "/gateway/openai/messages", "none", async (ctx) => forwardGatewayMessages(config, env, ctx.request));
   addRoute(routes, "GET", "/gateway/status", "client", async () => privateResponse(await gatewayStatus(env, config)));
   addRoute(routes, "GET", "/gateway/config", "host-token", async () => privateResponse(await publicGatewayConfig(env, config)));
   addRoute(routes, "PUT", "/gateway/config", "host-token", async (ctx) => {
