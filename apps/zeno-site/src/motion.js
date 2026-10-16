@@ -9,12 +9,20 @@ const syncPoster = () => {
   film.poster = `/assets/hero-film-v3/hero-worklife-v3${narrow.matches ? '-mobile' : ''}-poster.webp`;
 };
 syncPoster();
-narrow.addEventListener('change', syncPoster);
 let visible = true;
 function resume() {
   if (!visible || document.hidden) return;
   void film.play().catch(() => { /* Browser policy or media failure keeps its poster. */ });
 }
+const syncMedia = () => {
+  syncPoster();
+  // <source media> selects correctly at initial load, but browsers do not
+  // automatically reselect it when a window crosses the breakpoint.
+  film.load();
+  if (visible && !document.hidden) resume();
+  else film.pause();
+};
+narrow.addEventListener('change', syncMedia);
 film.muted = true;
 film.loop = true;
 const observer = new IntersectionObserver(entries => {
@@ -27,6 +35,6 @@ document.addEventListener('visibilitychange', () => { if (document.hidden) film.
 window.addEventListener('pageshow', resume);
 window.addEventListener('pagehide', event => {
   film.pause();
-  if (!event.persisted) { observer.disconnect(); narrow.removeEventListener('change', syncPoster); }
+  if (!event.persisted) { observer.disconnect(); narrow.removeEventListener('change', syncMedia); }
 });
 resume();
