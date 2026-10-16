@@ -236,12 +236,22 @@ async function connect(webSocketUrl, onEvent = () => {}) {
   }); } };
 }
 
+export function privateMainTarget(target, bundle) {
+  if (target?.type !== "page" || typeof target.url !== "string") return false;
+  try {
+    const url = new URL(target.url);
+    // Production renderer assets live beside app.asar, not inside it.
+    // Query/hash routing is allowed only on this exact private HTML file.
+    return url.protocol === "file:" && !url.host && !url.username && !url.password
+      && resolve(fileURLToPath(url)) === join(bundle, "Contents/Resources/app-dist/index.html");
+  } catch { return false; }
+}
+
 async function attach(port, bundle, exceptions, origins) {
-  const prefix = `${pathToFileURL(bundle).href}/`;
   const target = await until(async () => {
     const response = await fetch(`http://127.0.0.1:${port}/json/list`, { signal: AbortSignal.timeout(1_000) });
     const targets = await response.json();
-    return targets.find(item => item.type === "page" && item.url.startsWith(prefix) && item.url.includes("/app.asar/"));
+    return targets.find(item => privateMainTarget(item, bundle));
   }, Boolean, 120_000, "private packaged main window");
   const client = await connect(target.webSocketDebuggerUrl, event => {
     if (event.method === "Runtime.exceptionThrown") exceptions.push("renderer-exception");
@@ -348,6 +358,10 @@ async function selfTest() {
   const privateExecutable = "/tmp/private-bundle/泽诺 Zeno.app/Contents/MacOS/泽诺 Zeno";
   const ownedPid = process.pid + 10_000;
   assert.deepEqual(privateMainPids(`${ownedPid} ${privateExecutable}\n${ownedPid + 1} ${privateExecutable} --argument\n${ownedPid + 2} ${privateExecutable}-helper\n${ownedPid + 3} /Applications/泽诺 Zeno.app/Contents/MacOS/泽诺 Zeno\n1 ${privateExecutable}\n${process.pid} ${privateExecutable}`, privateExecutable), [ownedPid]);
+  const privateBundle = "/tmp/private-bundle/泽诺 Zeno.app";
+  const renderer = pathToFileURL(join(privateBundle, "Contents/Resources/app-dist/index.html")).href;
+  for (const suffix of ["", "#/settings/about", "?smoke=true#/workspace/owned/session"]) assert.equal(privateMainTarget({ type: "page", url: renderer + suffix }, privateBundle), true);
+  for (const target of [{ type: "iframe", url: renderer }, { type: "page", url: renderer.replace("app-dist", "app.asar") }, { type: "page", url: renderer.replace("private-bundle", "other-bundle") }, { type: "page", url: "https://www.zeno.ryan-wong.cn/index.html" }, { type: "page", url: "about:blank" }]) assert.equal(privateMainTarget(target, privateBundle), false);
   const root = mkdtempSync(join(tmpdir(), "zeno-smoke-self-test-"));
   try {
     const baseline = join(root, "baseline"); mkdirSync(baseline);
@@ -526,7 +540,7 @@ async function main() {
     try {
       if (port && child && privateBundle) {
         const targets = await (await fetch(`http://127.0.0.1:${port}/json/list`, { signal: AbortSignal.timeout(1_000) })).json();
-        assert.ok(targets.some(target => target.type === "page" && target.url.startsWith(`${pathToFileURL(privateBundle).href}/`)), "Refusing to close an unowned browser.");
+        assert.ok(targets.some(target => privateMainTarget(target, privateBundle)), "Refusing to close an unowned browser.");
         const version = await (await fetch(`http://127.0.0.1:${port}/json/version`, { signal: AbortSignal.timeout(1_000) })).json();
         const ownedBrowser = await connect(version.webSocketDebuggerUrl);
         await ownedBrowser.send("Browser.close", {}, 5_000).catch(() => {}); ownedBrowser.socket.close();
