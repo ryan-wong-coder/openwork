@@ -1,0 +1,67 @@
+{
+  "passed": true,
+  "fixtureOnly": true,
+  "scope": "Real ModelSelect, ModelPickerList, BaseUI primitives and existing app CSS; catalog/workspace hooks replaced with explicit synthetic metadata. Does not prove native/model-provider capability.",
+  "mutations": "No backend APIs used; callbacks only update temporary harness React state",
+  "checks": [
+    {
+      "mode": "automatic",
+      "text": "思考深度模型自动控制⌃T",
+      "disabled": true
+    },
+    {
+      "mode": "unknown",
+      "text": "思考深度未提供可调深度⌃T",
+      "disabled": true
+    },
+    {
+      "mode": "manual",
+      "text": "思考深度默认⌃T",
+      "disabled": false,
+      "labels": [
+        "默认",
+        "轻量",
+        "均衡",
+        "深入",
+        "最高"
+      ],
+      "nativeValue": "max"
+    },
+    {
+      "mode": "saved",
+      "text": "思考深度未列出：\"saved-unverified-depth\"⌃T",
+      "disabled": false,
+      "labels": [
+        "默认"
+      ],
+      "nativeValue": null
+    }
+  ],
+  "exceptions": [],
+  "blocked": [
+    {
+      "method": "GET",
+      "path": "/modelhelm"
+    },
+    {
+      "method": "GET",
+      "path": "/modelhelm"
+    },
+    {
+      "method": "GET",
+      "path": "/modelhelm"
+    },
+    {
+      "method": "GET",
+      "path": "/modelhelm"
+    },
+    {
+      "method": "GET",
+      "path": "/modelhelm"
+    }
+  ],
+  "failure": null,
+  "temporaryServerClosed": true,
+  "targetClosed": true,
+  "browserContextDisposed": true
+}
