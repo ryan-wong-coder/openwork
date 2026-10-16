@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { createContext, useCallback, useContext, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState, type ReactNode, type Ref } from "react";
 import type { ModelOption, ModelRef } from "@/app/types";
 import { denSessionUpdatedEvent, denSettingsChangedEvent } from "@/app/lib/den-session-events";
@@ -135,11 +136,11 @@ export function GatewayModelAccessProvider(props: {
       {props.children}
       <Dialog open={selection !== null} onOpenChange={(open) => { if (!open) cancel(); }}>
         <DialogContent className="lg:max-w-sm" showCloseButton={false}>
-          <DialogHeader><DialogTitle>Log in to this provider to use the models</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{t("interface.log_in_to_this_provider_to_use_the_models")}</DialogTitle></DialogHeader>
           {error ? <p role="alert" className="text-sm text-destructive">{error}</p> : null}
           <DialogFooter>
-            <Button variant="outline" onClick={cancel}>Cancel</Button>
-            <Button disabled={busy} onClick={() => void login()}>Login</Button>
+            <Button variant="outline" onClick={cancel}>{t("settings.environment.cancel")}</Button>
+            <Button disabled={busy} onClick={() => void login()}>{t("interface.login")}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

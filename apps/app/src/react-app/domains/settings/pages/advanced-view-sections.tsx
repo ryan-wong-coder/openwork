@@ -387,7 +387,7 @@ export function AdvancedCloudMcpDiagnosticsSection(props: AdvancedCloudMcpDiagno
     try {
       await props.onRefresh();
     } catch (error) {
-      setRefreshError(error instanceof Error ? error.message : "Could not refresh Cloud MCP diagnostics.");
+      setRefreshError(error instanceof Error ? error.message : t("settings_extra.could_not_refresh_cloud_mcp_diagnostics"));
     } finally {
       setBusy(false);
     }
@@ -396,32 +396,24 @@ export function AdvancedCloudMcpDiagnosticsSection(props: AdvancedCloudMcpDiagno
   const copy = async () => {
     const payload = JSON.stringify({ cloudMcpHealth: safeHealth }, null, 2);
     await navigator.clipboard.writeText(payload);
-    setCopyStatus("Copied sanitized Cloud diagnostic.");
+    setCopyStatus(t("settings_extra.copied_sanitized_cloud_diagnostic"));
   };
 
   return (
     <LayoutSection id="advanced-agent-access">
       <LayoutSectionHeader>
-        <LayoutSectionTitle>Agent access diagnostics</LayoutSectionTitle>
-        <LayoutSectionDescription>
-          Technical details for OpenWork Cloud MCP delivery. Tokens and Authorization headers are redacted before display or copy.
-        </LayoutSectionDescription>
+        <LayoutSectionTitle>{t("interface.agent_access_diagnostics")}</LayoutSectionTitle>
+        <LayoutSectionDescription>{t("interface.technical_details_for_openwork_cloud_mcp_delivery_tokens_and_authorization_headers_are_redacted_befo")} </LayoutSectionDescription>
       </LayoutSectionHeader>
 
       <LayoutSectionItem>
         <LayoutSectionItemHeader>
-          <LayoutSectionItemTitle>OpenWork Cloud MCP health</LayoutSectionItemTitle>
-          <LayoutSectionItemDescription>
-            Use this when support needs exact runtime state. The main Connect card stays user-facing.
-          </LayoutSectionItemDescription>
+          <LayoutSectionItemTitle>{t("interface.openwork_cloud_mcp_health")}</LayoutSectionItemTitle>
+          <LayoutSectionItemDescription>{t("interface.use_this_when_support_needs_exact_runtime_state_the_main_connect_card_stays_user_facing")} </LayoutSectionItemDescription>
           <LayoutSectionItemHeaderActions>
             <Button type="button" variant="outline" size="sm" onClick={() => void refresh()} disabled={busy}>
-              <RefreshCcw size={14} className={busy ? "animate-spin" : ""} />
-              Refresh
-            </Button>
-            <Button type="button" variant="outline" size="sm" onClick={() => void copy()} disabled={!props.cloudMcpHealth}>
-              Copy sanitized diagnostic
-            </Button>
+              <RefreshCcw size={14} className={busy ? "animate-spin" : ""} />{t("skills.refresh")} </Button>
+            <Button type="button" variant="outline" size="sm" onClick={() => void copy()} disabled={!props.cloudMcpHealth}>{t("interface.copy_sanitized_diagnostic")} </Button>
           </LayoutSectionItemHeaderActions>
         </LayoutSectionItemHeader>
 
@@ -430,57 +422,57 @@ export function AdvancedCloudMcpDiagnosticsSection(props: AdvancedCloudMcpDiagno
         {props.cloudMcpHealth ? (
           <div className="space-y-2 rounded-xl border border-gray-6 bg-gray-1/60 p-3">
             <div className="grid gap-2">
-              <DiagnosticRow label="Active workspace" value={`${props.cloudMcpHealth.workspace.id} (${props.cloudMcpHealth.workspace.directory ?? "no directory"})`} />
-              <DiagnosticRow label="Desired revision" value={props.cloudMcpHealth.desired.revision ?? "none"} />
-              <DiagnosticRow label="Applied revision" value={props.cloudMcpHealth.delivery.appliedRevision ?? "none"} />
-              <DiagnosticRow label="Delivery" value={`${props.cloudMcpHealth.delivery.state}${props.cloudMcpHealth.delivery.trigger ? ` / ${props.cloudMcpHealth.delivery.trigger}` : ""}`} />
-              <DiagnosticRow label="Engine status" value={props.cloudMcpHealth.engine.status} />
+              <DiagnosticRow label={t("interface.active_workspace")} value={`${props.cloudMcpHealth.workspace.id} (${props.cloudMcpHealth.workspace.directory ?? "no directory"})`} />
+              <DiagnosticRow label={t("interface.desired_revision")} value={props.cloudMcpHealth.desired.revision ?? "none"} />
+              <DiagnosticRow label={t("interface.applied_revision")} value={props.cloudMcpHealth.delivery.appliedRevision ?? "none"} />
+              <DiagnosticRow label={t("interface.delivery")} value={`${props.cloudMcpHealth.delivery.state}${props.cloudMcpHealth.delivery.trigger ? ` / ${props.cloudMcpHealth.delivery.trigger}` : ""}`} />
+              <DiagnosticRow label={t("interface.engine_status")} value={props.cloudMcpHealth.engine.status} />
               {props.cloudMcpHealth.engineInspection?.checked ? (
                 <DiagnosticRow
-                  label="Engine MCP servers"
+                  label={t("interface.engine_mcp_servers")}
                   value={(props.cloudMcpHealth.engineInspection.servers ?? []).length
                     ? (props.cloudMcpHealth.engineInspection.servers ?? []).map((server) => `${server.name} ${server.status}${server.error ? ` (${server.error})` : ""}`).join("; ")
                     : "none tracked"}
                 />
               ) : null}
-              <DiagnosticRow label="Provider/model" value={projection?.checked ? `${projection.provider ?? "unknown"}/${projection.model ?? "unknown"}; source ${projection.source ?? "unknown"}; tool calling ${formatMaybe(projection.toolCalling)}; present ${joinList(projection.present)}; missing ${joinList(projection.missing)}${projection.limitation ? `; limitation: ${projection.limitation}` : ""}` : "not checked"} />
-              <DiagnosticRow label="Cloud tools" value={`derived present ${joinList(props.cloudMcpHealth.tools.present)}; missing ${joinList(props.cloudMcpHealth.tools.missing)}`} />
-              <DiagnosticRow label="Direct tools/list" value={`checked ${props.cloudMcpHealth.tools.direct.checked ? "yes" : "no"}; present ${joinList(props.cloudMcpHealth.tools.direct.present)}; missing ${joinList(props.cloudMcpHealth.tools.direct.missing)}`} />
+              <DiagnosticRow label={t("interface.provider_model")} value={projection?.checked ? `${projection.provider ?? "unknown"}/${projection.model ?? "unknown"}; source ${projection.source ?? "unknown"}; tool calling ${formatMaybe(projection.toolCalling)}; present ${joinList(projection.present)}; missing ${joinList(projection.missing)}${projection.limitation ? `; limitation: ${projection.limitation}` : ""}` : "not checked"} />
+              <DiagnosticRow label={t("interface.cloud_tools")} value={`derived present ${joinList(props.cloudMcpHealth.tools.present)}; missing ${joinList(props.cloudMcpHealth.tools.missing)}`} />
+              <DiagnosticRow label={t("interface.direct_tools_list")} value={`checked ${props.cloudMcpHealth.tools.direct.checked ? "yes" : "no"}; present ${joinList(props.cloudMcpHealth.tools.direct.present)}; missing ${joinList(props.cloudMcpHealth.tools.direct.missing)}`} />
               {props.cloudMcpHealth.tools.direct.trace ? (
                 <DiagnosticRow
-                  label="Direct probe"
+                  label={t("interface.direct_probe")}
                   value={`${props.cloudMcpHealth.tools.direct.trace.endpoint ?? "unknown endpoint"} · ${props.cloudMcpHealth.tools.direct.trace.latencyMs} ms · ${props.cloudMcpHealth.tools.direct.trace.steps.map((step) => `${step.step} ${step.ok ? "ok" : "failed"}${step.httpStatus !== undefined ? ` (HTTP ${step.httpStatus})` : ""} ${Math.max(0, Math.round(step.latencyMs))}ms`).join(" → ") || "no steps"}`}
                 />
               ) : null}
               {props.cloudMcpHealth.firstFailure ? (
                 <DiagnosticRow
-                  label="First failure"
+                  label={t("interface.first_failure")}
                   value={`${props.cloudMcpHealth.firstFailure.code} (stage ${props.cloudMcpHealth.firstFailure.stage}; ${props.cloudMcpHealth.firstFailure.retryable ? "retryable" : "not retryable"}): ${props.cloudMcpHealth.firstFailure.message}`}
                 />
               ) : null}
-              <DiagnosticRow label="Plugin canaries" value={`present ${joinList(props.cloudMcpHealth.pluginCanaries.present)}; missing ${joinList(props.cloudMcpHealth.pluginCanaries.missing)}`} />
-              <DiagnosticRow label="Safe capabilities" value={`schema v${props.cloudMcpHealth.schemaVersion}; connect catalog ${props.cloudMcpHealth.connectCatalogEnabled ? "enabled" : "disabled"}`} />
+              <DiagnosticRow label={t("interface.plugin_canaries")} value={`present ${joinList(props.cloudMcpHealth.pluginCanaries.present)}; missing ${joinList(props.cloudMcpHealth.pluginCanaries.missing)}`} />
+              <DiagnosticRow label={t("interface.safe_capabilities")} value={`schema v${props.cloudMcpHealth.schemaVersion}; connect catalog ${props.cloudMcpHealth.connectCatalogEnabled ? "enabled" : "disabled"}`} />
               {compatibility ? (
                 <>
-                  <DiagnosticRow label="OpenWork versions" value={`server ${formatMaybe(compatibility.openwork.serverVersion)}; app ${formatMetadataRecord(compatibility.openwork.app)}`} />
-                  <DiagnosticRow label="OpenCode compatibility" value={`expected ${formatMaybe(compatibility.opencode.expectedVersion)}; actual ${formatMaybe(compatibility.opencode.actualVersion)}; probe ${compatibility.opencode.probe}`} />
-                  <DiagnosticRow label="Feature probes" value={formatSupportedFeatures(compatibility.supportedFeatures)} />
-                  <DiagnosticRow label="Experimental tool IDs" value={formatMcpToolExposure(compatibility.experimentalToolIds)} />
-                  <DiagnosticRow label="Experimental provider tools" value={formatMcpToolExposure(compatibility.experimentalProviderTools)} />
-                  <DiagnosticRow label="Plugin hashes" value={formatPluginHashes(compatibility.pluginFileHashes)} />
+                  <DiagnosticRow label={t("interface.openwork_versions")} value={`server ${formatMaybe(compatibility.openwork.serverVersion)}; app ${formatMetadataRecord(compatibility.openwork.app)}`} />
+                  <DiagnosticRow label={t("interface.opencode_compatibility")} value={`expected ${formatMaybe(compatibility.opencode.expectedVersion)}; actual ${formatMaybe(compatibility.opencode.actualVersion)}; probe ${compatibility.opencode.probe}`} />
+                  <DiagnosticRow label={t("interface.feature_probes")} value={formatSupportedFeatures(compatibility.supportedFeatures)} />
+                  <DiagnosticRow label={t("interface.experimental_tool_ids")} value={formatMcpToolExposure(compatibility.experimentalToolIds)} />
+                  <DiagnosticRow label={t("interface.experimental_provider_tools")} value={formatMcpToolExposure(compatibility.experimentalProviderTools)} />
+                  <DiagnosticRow label={t("interface.plugin_hashes")} value={formatPluginHashes(compatibility.pluginFileHashes)} />
                 </>
               ) : null}
-              <DiagnosticRow label="Live verification" value={props.cloudMcpHealth.checkedAt} />
+              <DiagnosticRow label={t("interface.live_verification")} value={props.cloudMcpHealth.checkedAt} />
             </div>
             <details className="rounded-lg bg-gray-3 p-2">
-              <summary className="cursor-pointer text-[11px] font-medium text-gray-11">Show sanitized health JSON</summary>
+              <summary className="cursor-pointer text-[11px] font-medium text-gray-11">{t("interface.show_sanitized_health_json")}</summary>
               <pre className="mt-2 max-h-72 overflow-auto font-mono text-[11px] text-gray-11">
                 {JSON.stringify(safeHealth, null, 2)}
               </pre>
             </details>
           </div>
         ) : (
-          <SettingsNotice>No Cloud MCP health has been loaded for this workspace yet.</SettingsNotice>
+          <SettingsNotice>{t("interface.no_cloud_mcp_health_has_been_loaded_for_this_workspace_yet")}</SettingsNotice>
         )}
       </LayoutSectionItem>
     </LayoutSection>
@@ -538,24 +530,24 @@ function RuntimeConfigSummary(props: { config: Record<string, unknown> }) {
   return (
     <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
       <div className="rounded-lg border border-gray-6 bg-gray-2/60 p-2">
-        <div className="text-[10px] uppercase tracking-wide text-gray-8">Default agent</div>
+        <div className="text-[10px] uppercase tracking-wide text-gray-8">{t("session.default_agent")}</div>
         <div className="mt-1 truncate font-mono text-[11px] text-gray-12" title={defaultAgent}>{defaultAgent}</div>
       </div>
       <div className="rounded-lg border border-gray-6 bg-gray-2/60 p-2">
-        <div className="text-[10px] uppercase tracking-wide text-gray-8">Providers / models</div>
-        <div className="mt-1 font-mono text-[11px] text-gray-12">{providers} providers, {models} models</div>
+        <div className="text-[10px] uppercase tracking-wide text-gray-8">{t("interface.providers_models")}</div>
+        <div className="mt-1 font-mono text-[11px] text-gray-12">{providers}{t("interface.providers")} {models}{t("interface.models")}</div>
       </div>
       <div className="rounded-lg border border-gray-6 bg-gray-2/60 p-2">
-        <div className="text-[10px] uppercase tracking-wide text-gray-8">Agents / plugins</div>
-        <div className="mt-1 font-mono text-[11px] text-gray-12">{agents} agents, {plugins} plugins</div>
+        <div className="text-[10px] uppercase tracking-wide text-gray-8">{t("interface.agents_plugins")}</div>
+        <div className="mt-1 font-mono text-[11px] text-gray-12">{agents}{t("interface.agents")} {plugins}{t("interface.plugins")}</div>
       </div>
       <div className="rounded-lg border border-gray-6 bg-gray-2/60 p-2">
-        <div className="text-[10px] uppercase tracking-wide text-gray-8">MCP / permissions</div>
-        <div className="mt-1 font-mono text-[11px] text-gray-12">{mcps} MCPs, {permissions} permission keys</div>
+        <div className="text-[10px] uppercase tracking-wide text-gray-8">{t("interface.mcp_permissions")}</div>
+        <div className="mt-1 font-mono text-[11px] text-gray-12">{mcps}{t("interface.mcps")} {permissions}{t("interface.permission_keys")}</div>
       </div>
       {disabledProviders ? (
         <div className="rounded-lg border border-gray-6 bg-gray-2/60 p-2 sm:col-span-2 lg:col-span-4">
-          <div className="text-[10px] uppercase tracking-wide text-gray-8">Disabled providers</div>
+          <div className="text-[10px] uppercase tracking-wide text-gray-8">{t("interface.disabled_providers")}</div>
           <div className="mt-1 font-mono text-[11px] text-gray-12">{disabledProviders}</div>
         </div>
       ) : null}
@@ -578,12 +570,12 @@ function RuntimeConfigSourceBlock(props: {
         <div className="font-medium text-gray-12">{props.title}</div>
         <div className="text-[11px] text-gray-9">{props.description}</div>
         {props.path ? <div className="mt-1 break-all font-mono text-[11px] text-gray-8">{props.path}</div> : null}
-        {props.exists !== undefined ? <div className="text-[11px] text-gray-9">{props.exists ? "Found" : "Not found"}</div> : null}
-        <div className="text-[11px] text-gray-9">Keys: {formatKeys(props.keys)}</div>
+        {props.exists !== undefined ? <div className="text-[11px] text-gray-9">{props.exists ? t("interface.found") : t("interface.not_found")}</div> : null}
+        <div className="text-[11px] text-gray-9">{t("interface.keys")} {formatKeys(props.keys)}</div>
       </div>
       <RuntimeConfigSummary config={safeConfig} />
       <details className="rounded-lg bg-gray-3 p-2">
-        <summary className="cursor-pointer text-[11px] font-medium text-gray-11">Show raw JSON</summary>
+        <summary className="cursor-pointer text-[11px] font-medium text-gray-11">{t("interface.show_raw_json")}</summary>
         <pre className="mt-2 max-h-56 overflow-auto font-mono text-[11px] text-gray-11">
           {JSON.stringify(safeConfig, null, 2)}
         </pre>
@@ -600,18 +592,14 @@ export function AdvancedRuntimeConfigSourcesSection(props: AdvancedRuntimeConfig
   return (
     <LayoutSection id="advanced-config-sources">
       <LayoutSectionHeader>
-        <LayoutSectionTitle>OpenCode config sources</LayoutSectionTitle>
-        <LayoutSectionDescription>
-          Inspect what OpenWork controls at runtime versus what belongs to your workspace config. This works through the OpenWork server and does not require the OpenCode engine to be healthy.
-        </LayoutSectionDescription>
+        <LayoutSectionTitle>{t("interface.opencode_config_sources")}</LayoutSectionTitle>
+        <LayoutSectionDescription>{t("interface.inspect_what_openwork_controls_at_runtime_versus_what_belongs_to_your_workspace_config_this_works_th")} </LayoutSectionDescription>
       </LayoutSectionHeader>
 
       <LayoutSectionItem>
         <LayoutSectionItemHeader>
-          <LayoutSectionItemTitle>Config source snapshot</LayoutSectionItemTitle>
-          <LayoutSectionItemDescription>
-            Shows the OpenWork runtime database, the injected runtime config, and the workspace-owned OpenCode config files.
-          </LayoutSectionItemDescription>
+          <LayoutSectionItemTitle>{t("interface.config_source_snapshot")}</LayoutSectionItemTitle>
+          <LayoutSectionItemDescription>{t("interface.shows_the_openwork_runtime_database_the_injected_runtime_config_and_the_workspace_owned_opencode_con")} </LayoutSectionItemDescription>
           <LayoutSectionItemHeaderActions>
             <Button
               type="button"
@@ -620,22 +608,18 @@ export function AdvancedRuntimeConfigSourcesSection(props: AdvancedRuntimeConfig
               onClick={() => void props.onRefresh()}
               disabled={props.busy || props.configStatusBusy || !props.canInspect}
             >
-              <RefreshCcw size={14} className={props.configStatusBusy ? "animate-spin" : ""} />
-              Refresh
-            </Button>
+              <RefreshCcw size={14} className={props.configStatusBusy ? "animate-spin" : ""} />{t("skills.refresh")} </Button>
           </LayoutSectionItemHeaderActions>
         </LayoutSectionItemHeader>
         {props.configStatusError ? <SettingsNotice>{props.configStatusError}</SettingsNotice> : null}
         {props.configStatus ? (
           <div className="space-y-3 rounded-xl border border-gray-6 bg-gray-1/60 p-3 text-xs text-gray-10">
             <div className="space-y-2 rounded-xl border border-blue-6/50 bg-blue-2/40 p-3">
-              <div className="font-medium text-gray-12">Desired OpenWork runtime config</div>
-              <div className="text-[11px] text-gray-9">
-                This is the OpenWork-built config object requested for the runtime database and injected safely by the server. Sensitive headers are redacted here.
-              </div>
+              <div className="font-medium text-gray-12">{t("interface.desired_openwork_runtime_config")}</div>
+              <div className="text-[11px] text-gray-9">{t("interface.this_is_the_openwork_built_config_object_requested_for_the_runtime_database_and_injected_safely_by_t")} </div>
               <RuntimeConfigSummary config={effectiveRuntimeConfig ?? {}} />
               <details className="rounded-lg bg-gray-3 p-2">
-                <summary className="cursor-pointer text-[11px] font-medium text-gray-11">Show desired JSON</summary>
+                <summary className="cursor-pointer text-[11px] font-medium text-gray-11">{t("interface.show_desired_json")}</summary>
                 <pre className="mt-2 max-h-72 overflow-auto font-mono text-[11px] text-gray-11">
                   {JSON.stringify(effectiveRuntimeConfig, null, 2)}
                 </pre>
@@ -644,53 +628,51 @@ export function AdvancedRuntimeConfigSourcesSection(props: AdvancedRuntimeConfig
             {props.configStatus.sources ? (
               <div className="space-y-3">
                 <div>
-                  <div className="font-medium text-gray-12">OpenCode source breakdown</div>
-                  <div className="text-[11px] text-gray-9">
-                    OpenCode also reads its own project and global config files. OpenWork injects the runtime config separately; for OpenWork-managed keys, the injected config is the source to inspect.
-                  </div>
+                  <div className="font-medium text-gray-12">{t("interface.opencode_source_breakdown")}</div>
+                  <div className="text-[11px] text-gray-9">{t("interface.opencode_also_reads_its_own_project_and_global_config_files_openwork_injects_the_runtime_config_sepa")} </div>
                 </div>
                 <RuntimeConfigSourceBlock
-                  title="Project opencode config"
-                  description="Workspace-level OpenCode config owned by the user/project."
+                  title={t("interface.project_opencode_config")}
+                  description={t("interface.workspace_level_opencode_config_owned_by_the_user_project")}
                   path={props.configStatus.sources.projectOpencode.path}
                   exists={props.configStatus.sources.projectOpencode.exists}
                   keys={props.configStatus.sources.projectOpencode.keys}
                   config={props.configStatus.sources.projectOpencode.config}
                 />
                 <RuntimeConfigSourceBlock
-                  title="Global opencode config"
-                  description="User-level OpenCode config under ~/.config/opencode."
+                  title={t("interface.global_opencode_config")}
+                  description={t("interface.user_level_opencode_config_under_config_opencode")}
                   path={props.configStatus.sources.globalOpencode.path}
                   exists={props.configStatus.sources.globalOpencode.exists}
                   keys={props.configStatus.sources.globalOpencode.keys}
                   config={props.configStatus.sources.globalOpencode.config}
                 />
                 <RuntimeConfigSourceBlock
-                  title="OpenWork runtime DB"
-                  description="OpenWork-managed runtime values stored outside workspace files."
+                  title={t("interface.openwork_runtime_db")}
+                  description={t("interface.openwork_managed_runtime_values_stored_outside_workspace_files")}
                   keys={props.configStatus.sources.runtimeDatabase.keys}
                   config={props.configStatus.sources.runtimeDatabase.config}
                 />
                 <RuntimeConfigSourceBlock
-                  title="OpenWork injected config"
-                  description="The object OpenWork injects into OpenCode at runtime."
+                  title={t("interface.openwork_injected_config")}
+                  description={t("interface.the_object_openwork_injects_into_opencode_at_runtime")}
                   keys={props.configStatus.sources.injected.keys}
                   config={props.configStatus.sources.injected.config}
                 />
               </div>
             ) : null}
             <div>
-              <div className="font-medium text-gray-12">Runtime database</div>
-              <div>Stored keys: {formatKeys(props.configStatus.runtimeKeys)}</div>
+              <div className="font-medium text-gray-12">{t("interface.runtime_database")}</div>
+              <div>{t("interface.stored_keys")} {formatKeys(props.configStatus.runtimeKeys)}</div>
             </div>
             <div>
-              <div className="font-medium text-gray-12">User opencode.jsonc</div>
+              <div className="font-medium text-gray-12">{t("interface.user_opencode_jsonc")}</div>
               <div className="break-all">{props.configStatus.userOpencode.path}</div>
-              <div>{props.configStatus.userOpencode.exists ? "Found" : "Not found"}</div>
-              <div>User-owned keys: {formatKeys(props.configStatus.userOpencode.keys)}</div>
+              <div>{props.configStatus.userOpencode.exists ? t("interface.found") : t("interface.not_found")}</div>
+              <div>{t("interface.user_owned_keys")} {formatKeys(props.configStatus.userOpencode.keys)}</div>
             </div>
             <div>
-              <div className="font-medium text-gray-12">Runtime DB JSON</div>
+              <div className="font-medium text-gray-12">{t("interface.runtime_db_json")}</div>
               <pre className="mt-1 max-h-48 overflow-auto rounded-lg bg-gray-3 p-2 font-mono text-[11px] text-gray-11">
                 {JSON.stringify(runtimeConfig, null, 2)}
               </pre>
@@ -708,28 +690,24 @@ export function AdvancedWorkspaceRunModeSection() {
   return (
     <LayoutSection id="advanced-workspace-run-mode">
       <LayoutSectionHeader>
-        <LayoutSectionTitle>Workspace run mode</LayoutSectionTitle>
-        <LayoutSectionDescription>Experimental approval controls in the composer.</LayoutSectionDescription>
+        <LayoutSectionTitle>{t("interface.workspace_run_mode")}</LayoutSectionTitle>
+        <LayoutSectionDescription>{t("interface.experimental_approval_controls_in_the_composer")}</LayoutSectionDescription>
       </LayoutSectionHeader>
       <LayoutSectionItem>
         <LayoutSectionItemHeader>
-          <LayoutSectionItemTitle>Show workspace run mode</LayoutSectionItemTitle>
-          <LayoutSectionItemDescription>
-            Choose when OpenWork asks before acting, using the icon beside attachments. Off by default. Available with the standard desktop engine.
-          </LayoutSectionItemDescription>
+          <LayoutSectionItemTitle>{t("interface.show_workspace_run_mode")}</LayoutSectionItemTitle>
+          <LayoutSectionItemDescription>{t("interface.choose_when_openwork_asks_before_acting_using_the_icon_beside_attachments_off_by_default_available_w")} </LayoutSectionItemDescription>
           <LayoutSectionItemHeaderActions>
             <Switch
               data-testid="workspace-run-mode-flag"
-              aria-label="Show workspace run mode"
+              aria-label={t("interface.show_workspace_run_mode")}
               checked={workspaceRunModeEnabled}
               disabled={restricted || !isDesktopRuntime()}
               onCheckedChange={toggleWorkspaceRunMode}
             />
           </LayoutSectionItemHeaderActions>
         </LayoutSectionItemHeader>
-        <LayoutSectionItemFootnote>
-          This switch only shows or hides the control. Hiding it does not reset workspace permissions; choose Workspace defaults in the menu first if you want to remove the override.
-        </LayoutSectionItemFootnote>
+        <LayoutSectionItemFootnote>{t("interface.this_switch_only_shows_or_hides_the_control_hiding_it_does_not_reset_workspace_permissions_choose_wo")} </LayoutSectionItemFootnote>
       </LayoutSectionItem>
     </LayoutSection>
   );
@@ -738,39 +716,39 @@ export function AdvancedWorkspaceRunModeSection() {
 export function AdvancedEngineV2PreviewSection(props: { client: OpenworkServerClient | null }) {
   const engine = useOpencodeEngineControls(props.client);
   const runtimeError = engine.status?.enabled ? engine.status.lastError : undefined;
-  const engineNote = engine.blockedReason ?? (engine.migrating ? "Wait for chat migration to finish." : undefined);
+  const engineNote = engine.blockedReason ?? (engine.migrating ? t("settings_extra.wait_for_chat_migration_to_finish") : undefined);
   return (
     <LayoutSection id="advanced-experimental-engine">
-      <LayoutSectionHeader><LayoutSectionTitle>OpenCode engine</LayoutSectionTitle></LayoutSectionHeader>
+      <LayoutSectionHeader><LayoutSectionTitle>{t("settings.opencode_engine_sidecar")}</LayoutSectionTitle></LayoutSectionHeader>
       <LayoutSectionItem>
         <LayoutSectionItemHeader>
-          <LayoutSectionItemTitle>Chat engine</LayoutSectionItemTitle>
+          <LayoutSectionItemTitle>{t("interface.chat_engine")}</LayoutSectionItemTitle>
           <LayoutSectionItemHeaderActions>
-            <ToggleGroup aria-label="Chat engine" value={[engine.selected]} variant="outline" disabled={engine.disabled}
+            <ToggleGroup aria-label={t("interface.chat_engine")} value={[engine.selected]} variant="outline" disabled={engine.disabled}
               onValueChange={(value) => { if (value[0] === "v1" || value[0] === "v2") engine.select(value[0]); }}>
-              <ToggleGroupItem value="v1" data-engine="v1">OpenCode v1</ToggleGroupItem>
-              <ToggleGroupItem value="v2" data-engine="v2">OpenCode v2 (preview)</ToggleGroupItem>
+              <ToggleGroupItem value="v1" data-engine="v1">{t("interface.opencode_v1")}</ToggleGroupItem>
+              <ToggleGroupItem value="v2" data-engine="v2">{t("interface.opencode_v2_preview")}</ToggleGroupItem>
             </ToggleGroup>
           </LayoutSectionItemHeaderActions>
         </LayoutSectionItemHeader>
         {engineNote ? <p className="text-xs text-muted-foreground">{engineNote}</p> : null}
-        {engine.status?.enabled && !engine.status.running && !engine.status.lastError ? <p role="status" className="text-xs text-muted-foreground">OpenCode v2 is starting…</p> : null}
+        {engine.status?.enabled && !engine.status.running && !engine.status.lastError ? <p role="status" className="text-xs text-muted-foreground">{t("interface.opencode_v2_is_starting")}</p> : null}
         {engine.error || runtimeError ? <p role="alert" className="text-xs text-destructive">{engine.error ?? runtimeError}</p> : null}
       </LayoutSectionItem>
       <LayoutSectionItem>
         <LayoutSectionItemHeader>
-          <LayoutSectionItemTitle>V1 chat history</LayoutSectionItemTitle>
+          <LayoutSectionItemTitle>{t("interface.v1_chat_history")}</LayoutSectionItemTitle>
           <LayoutSectionItemHeaderActions>
             {engine.migrating
               ? <Button variant="outline" size="sm" onClick={showEngineMigrationProgress}>{t("engine_migration.show_progress")}</Button>
-              : <Button variant="outline" size="sm" disabled={engine.disabled || !engine.status?.migration} onClick={engine.openMigration}>Migrate chats to OpenCode v2</Button>}
+              : <Button variant="outline" size="sm" disabled={engine.disabled || !engine.status?.migration} onClick={engine.openMigration}>{t("interface.migrate_chats_to_opencode_v2")}</Button>}
           </LayoutSectionItemHeaderActions>
         </LayoutSectionItemHeader>
         {engine.message ? <p role="status" className="text-xs text-muted-foreground">{engine.message}</p> : null}
       </LayoutSectionItem>
-      <details className="text-xs text-muted-foreground"><summary>Engine details</summary>
-        <p className="py-2">Each engine has its own chat history. Switching engines does not migrate chats.</p>
-        {engine.status?.running ? <p>OpenCode {engine.status.version} · {engine.status.mirroredProviderIds.length} providers · {engine.status.catalogModelIds.length} models</p> : null}
+      <details className="text-xs text-muted-foreground"><summary>{t("interface.engine_details")}</summary>
+        <p className="py-2">{t("interface.each_engine_has_its_own_chat_history_switching_engines_does_not_migrate_chats")}</p>
+        {engine.status?.running ? <p>OpenCode {engine.status.version} · {engine.status.mirroredProviderIds.length}{t("interface.providers_e1fe12cb")} {engine.status.catalogModelIds.length}{t("interface.models")}</p> : null}
       </details>
     </LayoutSection>
   );

@@ -34,7 +34,7 @@ import type { SessionStatus } from "@opencode-ai/sdk/v2/client"
 import { openDesktopUrl, revealDesktopItemInDir } from "@/app/lib/desktop"
 import { isElectronRuntime } from "@/app/lib/runtime-env"
 import { SYNTHETIC_SESSION_ERROR_MESSAGE_PREFIX } from "@/app/types"
-import { t } from "@/i18n"
+import { currentLocale, subscribeLocale, t } from "@/i18n"
 import { useOpenTargets } from "@/lib/target-provider"
 import { openTargetFromUrl } from "@/react-app/domains/session/artifacts/open-target"
 import { presentOpencodeSessionError, sessionErrorPresentationFromUIMessage } from "@/react-app/domains/session/sync/session-error"
@@ -214,7 +214,7 @@ class ToolMessage extends React.Component<ToolMessageProps, { failed: boolean }>
   render() {
     if (this.state.failed) {
       return (
-        <div className="text-xs text-muted-foreground">Tool step unavailable</div>
+        <div className="text-xs text-muted-foreground">{t("ui.tool_step_unavailable")}</div>
       )
     }
     return <ToolMessageInner part={this.props.part} />
@@ -314,8 +314,8 @@ const ToolMessageInner = ({ part }: ToolMessageProps) => {
       >
         <CirclePause aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
         <div>
-          <div className="font-medium">Waiting for your action</div>
-          <div className="text-xs text-amber-11">Choose an option or approve the request to continue.</div>
+          <div className="font-medium">{t("ui.waiting_for_your_action")}</div>
+          <div className="text-xs text-amber-11">{t("ui.choose_an_option_or_approve_the_request_to_continue")}</div>
         </div>
       </div>
     )
@@ -327,7 +327,7 @@ const ToolMessageInner = ({ part }: ToolMessageProps) => {
       <div className="text-sm text-muted-foreground" data-tool-lifecycle="unknown">
         {part.type === "dynamic-tool" ? (
           <CapabilityCallLine part={part} connector={resolveConnectorToolIdentity(part, connectorIdentities)} statusUnknown />
-        ) : "Tool activity — status unavailable"}
+        ) : t("ui.tool_activity_status_unavailable")}
       </div>
     )
   }
@@ -501,7 +501,7 @@ function FileMessage({ part, tone }: FileMessageProps) {
             type="button"
             variant="ghost"
             size="icon-xs"
-            aria-label={`More actions for ${title}`}
+            aria-label={t("ui.more_actions_named", { title })}
           >
             <MoreHorizontal />
           </Button>
@@ -511,13 +511,13 @@ function FileMessage({ part, tone }: FileMessageProps) {
         {downloadUrl ? (
           <DropdownMenuItem onClick={handleDownload}>
             <Download />
-            Download
+            {t("settings.update_download_button")}
           </DropdownMenuItem>
         ) : null}
         {canReveal ? (
           <DropdownMenuItem onClick={handleReveal}>
             <FolderOpen />
-            Reveal in Finder
+            {t("workspace_list.reveal_finder")}
           </DropdownMenuItem>
         ) : null}
       </DropdownMenuContent>
@@ -530,7 +530,7 @@ function FileMessage({ part, tone }: FileMessageProps) {
 
   if (tone === "user" && revealPath && !isChatAttachmentUrl(part.url)) {
     return (
-      <button type="button" className="inline rounded-lg align-middle" onClick={() => openArtifactPath(revealPath)} title={`Open ${title} in Artifacts`}>
+      <button type="button" className="inline rounded-lg align-middle" onClick={() => openArtifactPath(revealPath)} title={t("ui.open_in_artifacts", { name: title })}>
         <ComposerBadgeChip badge={fileMentionBadge(revealPath)} className="mx-0" />
       </button>
     )
@@ -569,7 +569,7 @@ function FileMessage({ part, tone }: FileMessageProps) {
           type="button"
           className="flex min-w-0 items-center gap-2 pe-2 text-left transition-opacity hover:opacity-80"
           onClick={() => openArtifactPath(revealPath)}
-          title={`Open ${title} in Artifacts`}
+          title={t("ui.open_in_artifacts", { name: title })}
         >
           {fileContent}
         </button>
@@ -608,11 +608,11 @@ function CopyMessageButton({ messages }: CopyMessageButtonProps) {
   }
 
   return (
-    <MessageAction tooltip={copied ? "Copied!" : "Copy"}>
+    <MessageAction tooltip={copied ? t("ui.copied") : t("config.copy")}>
       <Button
         variant="ghost"
         size="icon"
-        aria-label="Copy message"
+        aria-label={t("ui.copy_message")}
         onClick={() => void onCopy()}
       >
         {copied ? <Check /> : <Copy />}
@@ -632,6 +632,8 @@ type AssistantMessageProps = {
 
 const AssistantMessage = React.memo(
   ({ message, isStreaming, hideReasoning }: AssistantMessageProps) => {
+    React.useSyncExternalStore(subscribeLocale, currentLocale, currentLocale)
+
     const { showThinking, highlightQuery } = useMessageList()
     const assistantRenderGroups = React.useMemo(
       () => {
@@ -938,6 +940,8 @@ function renderUserText(text: string, highlightQuery: string | undefined, refere
 
 const UserMessage = React.memo(
   ({ message, isStreaming }: UserMessageProps) => {
+    React.useSyncExternalStore(subscribeLocale, currentLocale, currentLocale)
+
     const { onRevertToUserMessage, onForkAtMessage, forkingMessageId, onEditUserMessage, highlightQuery, readOnly } = useMessageList()
     const references = useSessionReferencesMaybe()
     const branching = forkingMessageId === message.id
@@ -960,12 +964,12 @@ const UserMessage = React.memo(
     const hasContent = inlineParts.length > 0
     const menuActions: MenuAction[] = []
     if (messageText) menuActions.push(
-      { type: "item", id: "edit", label: "Edit message", icon: <Pencil className="size-4" />, disabled: readOnly || Boolean(wall), onSelect: () => onEditUserMessage(message.id, messageText) },
-      { type: "item", id: "copy", label: "Copy", icon: <Copy className="size-4" />, onSelect: () => navigator.clipboard.writeText(messageText) },
+      { type: "item", id: "edit", label: t("ui.edit_message"), icon: <Pencil className="size-4" />, disabled: readOnly || Boolean(wall), onSelect: () => onEditUserMessage(message.id, messageText) },
+      { type: "item", id: "copy", label: t("config.copy"), icon: <Copy className="size-4" />, onSelect: () => navigator.clipboard.writeText(messageText) },
     )
     if (!wall) menuActions.push(
-      { type: "item", id: "branch", label: branching ? "Branching..." : "Branch in new chat", icon: <Split className="size-4 rotate-90" />, disabled: Boolean(forkingMessageId), onSelect: () => onForkAtMessage(message.id) },
-      { type: "item", id: "revert", label: "Revert", icon: <Undo2 className="size-4" />, disabled: readOnly, onSelect: () => onRevertToUserMessage(message.id) },
+      { type: "item", id: "branch", label: branching ? t("ui.branching") : t("ui.branch_in_new_chat"), icon: <Split className="size-4 rotate-90" />, disabled: Boolean(forkingMessageId), onSelect: () => onForkAtMessage(message.id) },
+      { type: "item", id: "revert", label: t("session.revert_label"), icon: <Undo2 className="size-4" />, disabled: readOnly, onSelect: () => onRevertToUserMessage(message.id) },
     )
 
     return (
@@ -1036,11 +1040,11 @@ const UserMessage = React.memo(
                     <MessageTimestamp message={message} className="mr-1.5" />
                     <CopyMessageButton messages={[message]} />
                     {messageText ? (
-                      <MessageAction tooltip="Edit message">
+                      <MessageAction tooltip={t("ui.edit_message")}>
                         <Button
                           variant="ghost"
                           size="icon"
-                          aria-label="Edit message"
+                          aria-label={t("ui.edit_message")}
                           disabled={readOnly}
                           onClick={() => onEditUserMessage(message.id, messageText)}
                         >
@@ -1048,11 +1052,11 @@ const UserMessage = React.memo(
                         </Button>
                       </MessageAction>
                     ) : null}
-                    <MessageAction tooltip={branching ? "Branching..." : "Branch in new chat"}>
+                    <MessageAction tooltip={branching ? t("ui.branching") : t("ui.branch_in_new_chat")}>
                       <Button
                         variant="ghost"
                         size="icon"
-                        aria-label={branching ? "Branching..." : "Branch in new chat"}
+                        aria-label={branching ? t("ui.branching") : t("ui.branch_in_new_chat")}
                         aria-busy={branching || undefined}
                         disabled={Boolean(forkingMessageId)}
                         onClick={() => onForkAtMessage(message.id)}
@@ -1060,12 +1064,12 @@ const UserMessage = React.memo(
                         {branching ? <LoaderCircle className="motion-safe:animate-spin" /> : <Split className="rotate-90" />}
                       </Button>
                     </MessageAction>
-                    {branching ? <span role="status" className="sr-only">Branching...</span> : null}
-                    <MessageAction tooltip="Revert">
+                    {branching ? <span role="status" className="sr-only">{t("ui.branching")}</span> : null}
+                    <MessageAction tooltip={t("session.revert_label")}>
                       <Button
                         variant="ghost"
                         size="icon"
-                        aria-label="Revert"
+                        aria-label={t("session.revert_label")}
                         disabled={readOnly}
                         onClick={() => onRevertToUserMessage(message.id)}
                       >
@@ -1095,12 +1099,14 @@ type MessageComponentProps = {
 
 const MessageComponent = React.memo(
   ({ message, isLastMessage, isStreaming, isLastStep, hideReasoning }: MessageComponentProps) => {
+    React.useSyncExternalStore(subscribeLocale, currentLocale, currentLocale)
+
     if (isSessionErrorMessage(message)) {
       const presentation = sessionErrorPresentationFromUIMessage(message)
       if (presentation?.autoAccessWall) return <TranscriptAutoAccessNotice wall={presentation.autoAccessWall} />
       return (
         <ErrorMessage
-          error={getMessagesText([message]) || "Session failed"}
+          error={getMessagesText([message]) || t("ui.session_failed")}
           description={presentation?.description}
           showDescriptionOnResume={presentation?.kind !== "aborted" && presentation?.kind !== "provider-timeout"}
           resumePrompt={presentation?.recoveryPrompt}
@@ -1157,6 +1163,8 @@ const LoadingMessage = React.memo(({ elapsedSeconds, starting, backgroundShells 
   backgroundShells?: BackgroundShell[]
   backgroundStale?: boolean
 }) => {
+    React.useSyncExternalStore(subscribeLocale, currentLocale, currentLocale)
+
   const background = backgroundShells.length > 0 ? (
     <>
       <span aria-hidden="true"> · </span>
@@ -1169,7 +1177,7 @@ const LoadingMessage = React.memo(({ elapsedSeconds, starting, backgroundShells 
         {/* One shimmer sweeps the whole line, so Working and the count move as
             one. A count the connection cannot confirm stays outside it, still. */}
         <span className="ow-text-shimmer tabular-nums">
-          {starting ? "Starting…" : `Working ${formatElapsedSeconds(elapsedSeconds)}`}
+          {starting ? t("ui.starting") : t("ui.working_elapsed", { duration: formatElapsedSeconds(elapsedSeconds) })}
           {backgroundStale ? null : background}
         </span>
         {backgroundStale ? background : null}
@@ -1201,6 +1209,8 @@ export function reconnectingLastConfirmedLabel(
  * row settles from authoritative status, never from elapsed time.
  */
 const ReconnectingMessage = React.memo(({ lastConfirmedAt }: { lastConfirmedAt: number | null }) => {
+    React.useSyncExternalStore(subscribeLocale, currentLocale, currentLocale)
+
   const [now, setNow] = React.useState(() => Date.now())
   React.useEffect(() => {
     // The health store stops changing once its failure counter caps, so keep
@@ -1217,8 +1227,8 @@ const ReconnectingMessage = React.memo(({ lastConfirmedAt }: { lastConfirmedAt: 
       >
         <WifiOff aria-hidden="true" className="size-4 shrink-0" />
         <span className="min-w-0 truncate">
-          Connection lost — reconnecting…
-          {lastConfirmedLabel ? ` · last update ${lastConfirmedLabel}` : ""}
+          {t("ui.connection_lost_reconnecting")}
+          {lastConfirmedLabel ? t("ui.last_update", { time: lastConfirmedLabel }) : ""}
         </span>
       </div>
     </Message>
@@ -1255,7 +1265,7 @@ function ErrorMessage({ error, description, showDescriptionOnResume, resumePromp
   const displayDetails = selection?.technicalDetails ?? technicalDetails
   const resumable = Boolean(resumePrompt && onResumeInterrupted)
   return (
-    <TaskRecovery title={displayError ?? "Task failed"} state={resumable ? "paused" : "failed"}
+    <TaskRecovery title={displayError ?? t("ui.task_failed")} state={resumable ? "paused" : "failed"}
       testId={resumable ? "session-error-interrupted" : undefined}
       description={showDescriptionOnResume && displayDescription
         ? <span data-testid="session-error-interruption-warning">{displayDescription}</span>
@@ -1266,12 +1276,12 @@ function ErrorMessage({ error, description, showDescriptionOnResume, resumePromp
       actions={gatewaySelectionRequired || selection || changeModel || gatewayConnectUrl !== undefined ? <>
         {gatewaySelectionRequired || selection ? <Button variant="ghost" size="xs" data-testid="session-error-gateway-selection"
           onClick={() => window.dispatchEvent(new CustomEvent(openModelPickerEvent, { detail: { sessionId, initialTab: "available" } }))}>
-          Choose group and credential set
+          {t("ui.choose_group_and_credential_set")}
         </Button> : null}
         {changeModel && !gatewaySelectionRequired && !selection ? <Button variant="ghost" size="xs"
-          onClick={() => window.dispatchEvent(new CustomEvent(openModelPickerEvent, { detail: { sessionId, initialTab: "available" } }))}>Change model</Button> : null}
+          onClick={() => window.dispatchEvent(new CustomEvent(openModelPickerEvent, { detail: { sessionId, initialTab: "available" } }))}>{t("ui.change_model")}</Button> : null}
         {gatewayConnectUrl !== undefined ? <Button variant="ghost" size="xs" data-testid="session-error-gateway-connect"
-          onClick={() => dispatchAction({ target: "settings", action: "open", section: "providers" })}>Connect</Button> : null}
+          onClick={() => dispatchAction({ target: "settings", action: "open", section: "providers" })}>{t("composer.plus_connect")}</Button> : null}
       </> : null} />
   )
 }
@@ -1281,6 +1291,8 @@ interface RetryMessageProps {
 }
 
 const RetryMessage = React.memo(({ status }: RetryMessageProps) => {
+    React.useSyncExternalStore(subscribeLocale, currentLocale, currentLocale)
+
   const { dispatchAction } = useMessageList()
   const [seconds, setSeconds] = React.useState(() => retryDelaySeconds(status))
 
@@ -1298,8 +1310,8 @@ const RetryMessage = React.memo(({ status }: RetryMessageProps) => {
   }, [status])
 
   const info = seconds > 0
-    ? `Retrying in ${seconds}s · attempt ${status.attempt}`
-    : `Retrying · attempt ${status.attempt}`
+    ? t("ui.retry_in_attempt", { seconds, attempt: status.attempt })
+    : t("ui.retry_attempt", { attempt: status.attempt })
   const action = status.action
   const freeModelLimit = action?.reason === "free_tier_limit"
   const presentation = presentOpencodeSessionError({ name: "APIError", data: { message: status.message } })
@@ -1307,16 +1319,16 @@ const RetryMessage = React.memo(({ status }: RetryMessageProps) => {
   // and show progress instead of echoing the raw fetch error.
   const reconnecting = !freeModelLimit && !action
     && ["network-unavailable", "provider-unreachable", "provider-connection-dropped"].includes(presentation.kind)
-  const progress = seconds > 0 ? `Attempt ${status.attempt}, next try in ${seconds}s` : `Attempt ${status.attempt}`
+  const progress = seconds > 0 ? t("ui.attempt_next_try", { attempt: status.attempt, seconds }) : t("ui.attempt_number", { attempt: status.attempt })
 
   return (
     <TaskRecovery state="retrying" testId="session-retrying"
-      title={reconnecting ? "Reconnecting to the model"
-        : `${(freeModelLimit ? "The free starter model is busy right now" : action?.title ?? presentation.title).replace(/[.!?…]+$/, "")}. Retrying…`}
-      description={freeModelLimit ? "To keep working now, connect your own model provider." : reconnecting ? progress : action?.message}
+      title={reconnecting ? t("ui.reconnecting_to_the_model")
+        : t("ui.action_retrying", { title: (freeModelLimit ? t("ui.the_free_starter_model_is_busy_right_now") : action?.title ?? presentation.title).replace(/[.!?…。！？]+$/, "") })}
+      description={freeModelLimit ? t("ui.to_keep_working_now_connect_your_own_model_provider") : reconnecting ? progress : action?.message}
       technicalDetails={[info, presentation.technicalDetails].join("\n")}
       actions={freeModelLimit ? <Button variant="ghost" size="xs"
-        onClick={() => dispatchAction({ target: "settings", action: "open", section: "providers" })}>Connect a model provider</Button>
+        onClick={() => dispatchAction({ target: "settings", action: "open", section: "providers" })}>{t("ui.connect_a_model_provider")}</Button>
         : action?.link ? <Button variant="ghost" size="xs" onClick={openDesktopUrl.bind(null, action.link)}>{action.label}</Button> : null} />
   )
 })
@@ -1403,7 +1415,7 @@ function CompletedStepRun({ label, modelLabel, children }: { label: string; mode
       <div className="mx-auto flex w-full max-w-3xl px-2 md:px-10">
         <CollapsibleTrigger
           className="group flex cursor-pointer items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
-          aria-label={`${label}${modelLabel ? ` · ${modelLabel}` : ""}. ${open ? "Hide steps" : "Show steps"}`}
+          aria-label={`${label}${modelLabel ? ` · ${modelLabel}` : ""}. ${open ? t("ui.hide_steps") : t("ui.show_steps")}`}
           data-testid="completed-work-rail"
         >
           <ChevronRight
@@ -1501,6 +1513,8 @@ function MessageGroup({
   isStreaming,
   newestAppCallIds,
 }: AssistantMessageGroupProps) {
+  React.useSyncExternalStore(subscribeLocale, currentLocale, currentLocale)
+
   const { onRevertToUserMessage, onForkAtMessage, forkingMessageId, showThinking, readOnly, getConnectionDecision } = useMessageList()
   const connectionCardParts = React.useMemo(() => connectionCardPartIds(items, getConnectionDecision), [items, getConnectionDecision])
   const newestAppCalls = React.useMemo(() => new Set(newestAppCallIds.split("\n")), [newestAppCallIds])
@@ -1557,7 +1571,7 @@ function MessageGroup({
       className="mx-auto flex w-full max-w-3xl flex-col px-2 empty:hidden md:px-10"
     >
       {builtMcpAppId(part) && !newestAppCalls.has(part.toolCallId)
-        ? <p className="mt-2 text-xs text-muted-foreground">This App has a newer version below.</p>
+        ? <p className="mt-2 text-xs text-muted-foreground">{t("ui.this_app_has_a_newer_version_below")}</p>
         : builtAppSummary(part) ? null : <McpAppFrame part={part} />}
     </Message>
   )
@@ -1594,10 +1608,10 @@ function MessageGroup({
     ) + proseReasoning.length
   const stepRunLabel =
     stepsStartedAt !== null && stepsEndedAt !== null && stepsEndedAt > stepsStartedAt
-      ? `Worked for ${formatToolCallDuration(stepsEndedAt - stepsStartedAt)}`
+      ? t("ui.worked_duration", { duration: formatToolCallDuration(stepsEndedAt - stepsStartedAt) })
       : stepRowCount === 1
-        ? "1 step"
-        : `${stepRowCount} steps`
+        ? t("ui.steps_one")
+        : t("ui.steps_count", { count: stepRowCount })
   // A short finished run reads fine as a list, so only long ones fold away.
   const collapseSteps =
     !isLiveGroup && stepItems.length > 0 && stepRowCount > COLLAPSED_STEP_RUN_MIN_ROWS
@@ -1607,7 +1621,7 @@ function MessageGroup({
   const pinnedRemoteIds = pinnedRemoteThreads.length > 0 ? new Set(pinnedRemoteThreads.map(({ part }) => part.toolCallId)) : NO_PINNED_REMOTE_THREADS
   const replyStartedAt = stepsStartedAt ?? (lastRealItem ? getMessageCreated(lastRealItem.message) : null)
   const replySummaryLabel = replyStartedAt !== null && stepsEndedAt !== null && stepsEndedAt > replyStartedAt
-    ? `Worked for ${formatToolCallDuration(stepsEndedAt - replyStartedAt)}${stepRowCount ? ` · ${stepRowCount} ${stepRowCount === 1 ? "step" : "steps"}` : ""}`
+    ? t("ui.worked_duration_steps", { duration: formatToolCallDuration(stepsEndedAt - replyStartedAt), steps: stepRowCount ? ` · ${t("ui.steps_count", { count: stepRowCount })}` : "" })
     : stepRowCount ? stepRunLabel : ""
   const foldedReasoning = collapseSteps
     ? proseReasoning.map((reasoning) => (
@@ -1720,11 +1734,11 @@ function MessageGroup({
             <CopyMessageButton messages={renderableItems.map((item) => item.message)} />
             {lastRealItem ? (
               <>
-                <MessageAction tooltip={forkingMessageId === lastRealItem.message.id ? "Branching..." : "Branch in new chat"}>
+                <MessageAction tooltip={forkingMessageId === lastRealItem.message.id ? t("ui.branching") : t("ui.branch_in_new_chat")}>
                   <Button
                     variant="ghost"
                     size="icon"
-                    aria-label={forkingMessageId === lastRealItem.message.id ? "Branching..." : "Branch in new chat"}
+                    aria-label={forkingMessageId === lastRealItem.message.id ? t("ui.branching") : t("ui.branch_in_new_chat")}
                     aria-busy={forkingMessageId === lastRealItem.message.id || undefined}
                     disabled={Boolean(forkingMessageId)}
                     onClick={() => onForkAtMessage(lastRealItem.message.id)}
@@ -1732,12 +1746,12 @@ function MessageGroup({
                     {forkingMessageId === lastRealItem.message.id ? <LoaderCircle className="motion-safe:animate-spin" /> : <Split className="rotate-90" />}
                   </Button>
                 </MessageAction>
-                {forkingMessageId === lastRealItem.message.id ? <span role="status" className="sr-only">Branching...</span> : null}
-                <MessageAction tooltip="Revert">
+                {forkingMessageId === lastRealItem.message.id ? <span role="status" className="sr-only">{t("ui.branching")}</span> : null}
+                <MessageAction tooltip={t("session.revert_label")}>
                   <Button
                     variant="ghost"
                     size="icon"
-                    aria-label="Revert"
+                    aria-label={t("session.revert_label")}
                     disabled={readOnly}
                     onClick={() => onRevertToUserMessage(lastRealItem.message.id)}
                   >
@@ -1984,7 +1998,7 @@ export function MessageList({ messages: transcript, messageIdReplacements, statu
         }}
       >
         {!runActive && backgroundCount > 0 && <div data-background-agents className="flex items-center gap-3 px-3 py-2 text-sm text-muted-foreground md:px-5">
-          <span>{syncDegraded ? "Background activity — reconnecting…" : `${backgroundCount} ${backgroundCount === 1 ? "agent" : "agents"} running`}</span>
+          <span>{syncDegraded ? t("ui.background_activity_reconnecting") : t("ui.agents_running", { count: backgroundCount })}</span>
           {/* Stops only the background helpers; the chat itself is already idle. */}
           {onStopSubagentSession && !syncDegraded ? (
             <button
@@ -1999,7 +2013,7 @@ export function MessageList({ messages: transcript, messageIdReplacements, statu
                   .finally(() => setStoppingBackground(false))
               }}
             >
-              {stoppingBackground ? "Stopping…" : backgroundCount === 1 ? "Stop" : "Stop all"}
+              {stoppingBackground ? t("composer.stopping") : backgroundCount === 1 ? t("composer.stop") : t("ui.stop_all")}
             </button>
           ) : null}
         </div>}

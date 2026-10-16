@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { useState, type ReactNode } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Ellipsis, Play, Sparkles, Trash2, Minus, ExternalLink, RefreshCw } from "lucide-react";
@@ -58,27 +59,27 @@ export function AppActionsMenu({ appId, title, canManage: appCanManage, canDelet
       <DropdownMenuContent align="end" className="w-64 min-w-0 max-w-[calc(100vw-2rem)]">
         {hasActions ? <DropdownMenuGroup>
           {badge ? <DropdownMenuLabel><span className="block">{title}</span>{badge}</DropdownMenuLabel> : null}
-          {onOpen ? <DropdownMenuItem onClick={onOpen} aria-label={`Open ${title}`}><ExternalLink />Open artifact</DropdownMenuItem> : null}
-          {onRefresh ? <DropdownMenuItem onClick={onRefresh} disabled={refreshing} aria-label={`Refresh ${title}`}><RefreshCw />Refresh</DropdownMenuItem> : null}
-          {onRun ? <DropdownMenuItem onClick={onRun}><Play />Run again</DropdownMenuItem> : null}
-          {canManage && onEdit ? <DropdownMenuItem onClick={onEdit}><Sparkles />Ask for changes</DropdownMenuItem> : null}
-          {canManage && onUpdate ? <DropdownMenuItem onClick={onUpdate} disabled={busy}><Sparkles />Update artifact</DropdownMenuItem> : null}
-          {canManage && onRemove ? <DropdownMenuItem onClick={onRemove} aria-label={`Remove ${title} from dashboard`}><Minus />Remove from dashboard</DropdownMenuItem> : null}
+          {onOpen ? <DropdownMenuItem onClick={onOpen} aria-label={`Open ${title}`}><ExternalLink />{t("interface.open_artifact")}</DropdownMenuItem> : null}
+          {onRefresh ? <DropdownMenuItem onClick={onRefresh} disabled={refreshing} aria-label={`Refresh ${title}`}><RefreshCw />{t("skills.refresh")}</DropdownMenuItem> : null}
+          {onRun ? <DropdownMenuItem onClick={onRun}><Play />{t("interface.run_again")}</DropdownMenuItem> : null}
+          {canManage && onEdit ? <DropdownMenuItem onClick={onEdit}><Sparkles />{t("interface.ask_for_changes")}</DropdownMenuItem> : null}
+          {canManage && onUpdate ? <DropdownMenuItem onClick={onUpdate} disabled={busy}><Sparkles />{t("interface.update_artifact")}</DropdownMenuItem> : null}
+          {canManage && onRemove ? <DropdownMenuItem onClick={onRemove} aria-label={`Remove ${title} from dashboard`}><Minus />{t("interface.remove_from_dashboard")}</DropdownMenuItem> : null}
         </DropdownMenuGroup> : null}
         {hasActions && showDelete ? <DropdownMenuSeparator /> : null}
-        {showDelete ? <DropdownMenuGroup><DropdownMenuItem variant="destructive" aria-label={`Delete ${title}`} onClick={() => { deletion.reset(); setOpen(true); }}><Trash2 />Delete artifact</DropdownMenuItem></DropdownMenuGroup> : null}
+        {showDelete ? <DropdownMenuGroup><DropdownMenuItem variant="destructive" aria-label={`Delete ${title}`} onClick={() => { deletion.reset(); setOpen(true); }}><Trash2 />{t("interface.delete_artifact")}</DropdownMenuItem></DropdownMenuGroup> : null}
       </DropdownMenuContent>
     </DropdownMenu>
     <Dialog open={showDelete && open} onOpenChange={(next) => { if (!deletion.isPending) setOpen(next); }}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete “{title}”?</DialogTitle>
-          <DialogDescription>This removes the saved artifact from everyone’s dashboards and the artifact list. Past results stay available.</DialogDescription>
+          <DialogTitle>{t("interface.delete")}{title}”?</DialogTitle>
+          <DialogDescription>{t("interface.this_removes_the_saved_artifact_from_everyone_s_dashboards_and_the_artifact_list_past_results_stay_a")}</DialogDescription>
         </DialogHeader>
         {deletion.error ? <p role="alert" className="text-sm text-destructive">{deletion.error.message}</p> : null}
         <DialogFooter>
-          <Button variant="outline" disabled={deletion.isPending} onClick={() => setOpen(false)}>Cancel</Button>
-          <Button variant="destructive" disabled={deletion.isPending} onClick={() => deletion.mutate()}>{deletion.isPending ? "Deleting…" : "Delete artifact"}</Button>
+          <Button variant="outline" disabled={deletion.isPending} onClick={() => setOpen(false)}>{t("settings.environment.cancel")}</Button>
+          <Button variant="destructive" disabled={deletion.isPending} onClick={() => deletion.mutate()}>{deletion.isPending ? t("settings.environment.deleting") : t("interface.delete_artifact")}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

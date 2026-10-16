@@ -1,3 +1,4 @@
+import { currentLocale, t } from "@/i18n";
 import DOMPurify from "dompurify";
 import { gemoji } from "gemoji";
 import { Marked, Renderer, TextRenderer, type MarkedExtension, type Token, type Tokens } from "marked";
@@ -161,21 +162,21 @@ function emojiShortcodes(): MarkedExtension<string, string> {
   };
 }
 
-const COPY_LABELS = {
-  code: { copy: "Copy code block", copied: "Code block copied" },
-  quote: { copy: "Copy quote", copied: "Quote copied" },
-};
+const copyLabels = () => ({
+  code: { copy: t("ui.copy_code_block"), copied: t("ui.code_block_copied") },
+  quote: { copy: t("ui.copy_quote"), copied: t("ui.quote_copied") },
+});
 
 function copyButton(attribute: string, label: string) {
   return `<button type="button" ${attribute} class="absolute right-2 top-2 z-10 inline-flex h-7 w-7 items-center justify-center rounded-md border border-border/70 bg-background/95 text-muted-foreground shadow-sm transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label="${label}" title="${label}">${CODE_COPY_ICON}${CODE_COPIED_ICON}<span data-openwork-code-copy-label="" class="sr-only" aria-live="polite">${label}</span></button>`;
 }
 
 function codeCopyButton() {
-  return copyButton(`data-openwork-code-copy=""`, COPY_LABELS.code.copy);
+  return copyButton(`data-openwork-code-copy=""`, copyLabels().code.copy);
 }
 
 function codeWrapButton() {
-  return `<button type="button" data-openwork-code-wrap="" class="absolute right-11 top-2 z-10 inline-flex h-7 w-7 items-center justify-center rounded-md border border-border/70 bg-background/95 text-muted-foreground shadow-sm transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label="Enable word wrap" aria-pressed="false" title="Enable word wrap">${CODE_WRAP_ICON}</button>`;
+  return `<button type="button" data-openwork-code-wrap="" class="absolute right-11 top-2 z-10 inline-flex h-7 w-7 items-center justify-center rounded-md border border-border/70 bg-background/95 text-muted-foreground shadow-sm transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label="${escapeAttribute(t("ui.enable_wrap"))}" aria-pressed="false" title="${escapeAttribute(t("ui.enable_wrap"))}">${CODE_WRAP_ICON}</button>`;
 }
 
 function chatCodeBlockContainer(html: string, shiki: boolean) {
@@ -194,7 +195,7 @@ function chatCodeBlockHtml(text: string, lang: string | undefined) {
 // A quote is often a draft meant to be pasted elsewhere: it copies its own
 // Markdown, bullets included.
 function chatBlockquoteHtml(html: string, copyText: string | null) {
-  const button = copyText === null ? "" : copyButton(`data-openwork-quote-copy="${escapeAttribute(copyText)}"`, COPY_LABELS.quote.copy);
+  const button = copyText === null ? "" : copyButton(`data-openwork-quote-copy="${escapeAttribute(copyText)}"`, copyLabels().quote.copy);
   const padding = copyText === null ? "pr-4" : "pr-11";
   return `<blockquote data-openwork-quote="" class="relative my-4 rounded-r-lg border-l border-border bg-muted/40 py-1 pl-4 ${padding} italic text-muted-foreground">${button}${html}</blockquote>`;
 }
@@ -216,7 +217,7 @@ function mermaidBlockHtml(text: string, presentation: MarkdownPresentation) {
   const backgroundClass = presentation === "surface" ? "bg-gray-1/80" : "bg-gray-2/60";
   const buttonClass = "rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50";
 
-  return `<div data-openwork-mermaid="" data-openwork-mermaid-state="source" aria-busy="false" class="my-4 overflow-hidden rounded-[18px] border ${borderClass} ${backgroundClass}"><div class="flex min-h-10 items-center gap-2 border-b ${borderClass} px-3 py-2"><span class="me-auto text-xs font-medium text-muted-foreground">Mermaid diagram</span><div role="group" aria-label="Diagram view" class="flex items-center gap-1"><button type="button" data-openwork-mermaid-view="rendered" class="${buttonClass}" aria-pressed="false" disabled>Rendered</button><button type="button" data-openwork-mermaid-view="source" class="${buttonClass}" aria-pressed="true">Source</button><button type="button" data-openwork-mermaid-download="" class="${buttonClass}" aria-label="Download diagram as SVG" hidden>Download SVG</button></div></div><div data-openwork-mermaid-rendered="" class="overflow-auto p-4 [&amp;&gt;svg]:mx-auto [&amp;&gt;svg]:h-auto [&amp;&gt;svg]:max-w-full" hidden></div><pre data-openwork-mermaid-source="" class="overflow-x-auto p-4 text-xs leading-6 text-foreground"><code class="language-mermaid">${escapeHtml(text)}</code></pre><p data-openwork-mermaid-status="" class="border-t ${borderClass} px-3 py-2 text-xs text-muted-foreground" aria-live="polite">Diagram source</p></div>`;
+  return `<div data-openwork-mermaid="" data-openwork-mermaid-state="source" aria-busy="false" class="my-4 overflow-hidden rounded-[18px] border ${borderClass} ${backgroundClass}"><div class="flex min-h-10 items-center gap-2 border-b ${borderClass} px-3 py-2"><span class="me-auto text-xs font-medium text-muted-foreground">${escapeAttribute(t("ui.mermaid_diagram"))}</span><div role="group" aria-label="${escapeAttribute(t("ui.diagram_view"))}" class="flex items-center gap-1"><button type="button" data-openwork-mermaid-view="rendered" class="${buttonClass}" aria-pressed="false" disabled>${escapeAttribute(t("ui.diagram_rendered"))}</button><button type="button" data-openwork-mermaid-view="source" class="${buttonClass}" aria-pressed="true">${escapeAttribute(t("ui.diagram_source_label"))}</button><button type="button" data-openwork-mermaid-download="" class="${buttonClass}" aria-label="${escapeAttribute(t("ui.download_diagram_svg"))}" hidden>${escapeAttribute(t("ui.download_svg"))}</button></div></div><div data-openwork-mermaid-rendered="" class="overflow-auto p-4 [&amp;&gt;svg]:mx-auto [&amp;&gt;svg]:h-auto [&amp;&gt;svg]:max-w-full" hidden></div><pre data-openwork-mermaid-source="" class="overflow-x-auto p-4 text-xs leading-6 text-foreground"><code class="language-mermaid">${escapeHtml(text)}</code></pre><p data-openwork-mermaid-status="" class="border-t ${borderClass} px-3 py-2 text-xs text-muted-foreground" aria-live="polite">${escapeAttribute(t("ui.diagram_source"))}</p></div>`;
 }
 
 function parseShikiLanguage(lang: string) {
@@ -243,14 +244,14 @@ export function syncMarkdownImagePreviews(root: HTMLElement) {
 }
 
 export function setCopyButtonState(button: HTMLButtonElement, copied: boolean) {
-  const labels = button.hasAttribute("data-openwork-quote-copy") ? COPY_LABELS.quote : COPY_LABELS.code;
+  const labels = button.hasAttribute("data-openwork-quote-copy") ? copyLabels().quote : copyLabels().code;
   const label = button.querySelector("[data-openwork-code-copy-label]");
   if (label) label.textContent = copied ? labels.copied : labels.copy;
 
   button.querySelector("[data-openwork-code-copy-icon]")?.toggleAttribute("hidden", copied);
   button.querySelector("[data-openwork-code-copy-check-icon]")?.toggleAttribute("hidden", !copied);
 
-  button.title = copied ? "Copied" : labels.copy;
+  button.title = copied ? t("connect.diagnostics_copied") : labels.copy;
   button.setAttribute("aria-label", copied ? labels.copied : labels.copy);
 }
 
@@ -275,8 +276,8 @@ export function setCodeWrapButtonState(button: HTMLButtonElement, wrapped: boole
   pre?.classList.toggle("whitespace-pre-wrap", wrapped);
   pre?.classList.toggle("break-words", wrapped);
   button.setAttribute("aria-pressed", String(wrapped));
-  button.setAttribute("aria-label", wrapped ? "Disable word wrap" : "Enable word wrap");
-  button.title = wrapped ? "Disable word wrap" : "Enable word wrap";
+  button.setAttribute("aria-label", wrapped ? t("ui.disable_word_wrap") : t("ui.enable_word_wrap"));
+  button.title = wrapped ? t("ui.disable_word_wrap") : t("ui.enable_word_wrap");
 }
 
 function sanitizeMarkdownHtml(value: string) {
@@ -400,7 +401,7 @@ function renderLinkHtml(profile: MarkdownProfile, href: string, title: string | 
       const fileIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-muted-foreground"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v5h5"/></svg>`;
       const chevron = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-muted-foreground"><path d="m6 9 6 6 6-6"/></svg>`;
 
-      return `<span class="inline-flex items-stretch overflow-hidden rounded-md border border-border/60 bg-muted/40 text-xs font-medium text-foreground align-middle"><a href="${safe}" data-openwork-link-href="${originalHref}"${titleAttr} target="_blank" rel="noreferrer noopener" class="inline-flex items-center gap-1 px-1.5 py-0.5 no-underline transition-colors hover:bg-muted">${fileIcon}${text}</a><button type="button" data-openwork-link-chevron="${originalHref}" class="inline-flex items-center border-l border-border/60 px-1 transition-colors hover:bg-muted" aria-label="Open with">${chevron}</button></span>`;
+      return `<span class="inline-flex items-stretch overflow-hidden rounded-md border border-border/60 bg-muted/40 text-xs font-medium text-foreground align-middle"><a href="${safe}" data-openwork-link-href="${originalHref}"${titleAttr} target="_blank" rel="noreferrer noopener" class="inline-flex items-center gap-1 px-1.5 py-0.5 no-underline transition-colors hover:bg-muted">${fileIcon}${text}</a><button type="button" data-openwork-link-chevron="${originalHref}" class="inline-flex items-center border-l border-border/60 px-1 transition-colors hover:bg-muted" aria-label="${escapeAttribute(t("ui.open_with"))}">${chevron}</button></span>`;
     }
 
     const favicon = faviconUrlForHref(href);
@@ -421,7 +422,7 @@ function renderImage(profile: MarkdownProfile, href: string, title: string | nul
   const titleAttr = title ? ` title="${escapeAttribute(title)}"` : "";
 
   if (profile.imagePresentation === "chat") {
-    return `<button type="button" data-openwork-image-preview="" class="my-4 inline-block max-w-full cursor-zoom-in align-top text-left transition-opacity hover:opacity-90" aria-label="Expand ${escapeAttribute(text)}"><img src="${safe}" alt="${escapeAttribute(text)}"${titleAttr} loading="lazy" decoding="async" class="block h-auto w-auto rounded-lg border border-border/70 object-contain" style="max-height: ${MARKDOWN_IMAGE_PREVIEW_MAX_HEIGHT}px; max-width: ${MARKDOWN_IMAGE_PREVIEW_MAX_WIDTH}px"></button>`;
+    return `<button type="button" data-openwork-image-preview="" class="my-4 inline-block max-w-full cursor-zoom-in align-top text-left transition-opacity hover:opacity-90" aria-label="${escapeAttribute(t("ui.expand_image", { alt: text }))}"><img src="${safe}" alt="${escapeAttribute(text)}"${titleAttr} loading="lazy" decoding="async" class="block h-auto w-auto rounded-lg border border-border/70 object-contain" style="max-height: ${MARKDOWN_IMAGE_PREVIEW_MAX_HEIGHT}px; max-width: ${MARKDOWN_IMAGE_PREVIEW_MAX_WIDTH}px"></button>`;
   }
 
   return `<img src="${safe}" alt="${escapeAttribute(text)}"${titleAttr} loading="lazy" decoding="async" class="my-4 max-w-full rounded-[18px] border border-dls-border/70">`;
@@ -494,7 +495,7 @@ function createMarkedOptions(profile: MarkdownProfile, presentation: MarkdownPre
         if (reference) return sessionReferenceHtml(reference);
         const path = profile.linkPresentation === "chat" && !suppressReferences ? inlineCodeArtifactPath(text) : null;
         const pathAttributes = path
-          ? ` data-openwork-inline-code-path="${escapeAttribute(path)}" role="button" tabindex="0" aria-label="Open ${escapeAttribute(path)}"`
+          ? ` data-openwork-inline-code-path="${escapeAttribute(path)}" role="button" tabindex="0" aria-label="${escapeAttribute(t("ui.open_named_path", { path }))}"`
           : "";
         const pathClassName = path ? " cursor-pointer transition-colors hover:bg-gray-3/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" : "";
         const html = `<code${pathAttributes} class="${profile.codeSpanClassName}${pathClassName}">${escapeHtml(text)}</code>`;
@@ -515,7 +516,7 @@ function createMarkedOptions(profile: MarkdownProfile, presentation: MarkdownPre
           // A recognized but unavailable internal destination must not fall
           // through to file handling or the browser. Keep its original label.
           const label = this.parser.parseInline(tokens, new TextRenderer());
-          return `<span title="Task reference unavailable">${new Renderer().text({ type: "text", raw: label, text: label })}</span>`;
+          return `<span title="${escapeAttribute(t("ui.task_reference_unavailable"))}">${new Renderer().text({ type: "text", raw: label, text: label })}</span>`;
         }
         return withoutReferences(() => renderLink(profile, href, title, this.parser.parseInline(tokens)));
       },
@@ -617,19 +618,28 @@ function createMarkdownParsers(presentation: MarkdownPresentation, resolveRefere
   return { markdownParser, highlightedMarkdownParser, unsafeReferenceTokens };
 }
 
-const chatParsers = createMarkdownParsers("chat");
-const surfaceParsers = createMarkdownParsers("surface");
-
-// One parser pair per inventory revision, shared by all message blocks. Never
-// mutate the global parsers with a workspace/user resolver.
-const referenceParsers = new WeakMap<ResolveSessionReference, ReturnType<typeof createMarkdownParsers>>();
+// Parser profiles contain translated controls, so retain one per language.
+const parsersByLocale = new Map<string, { chat: ReturnType<typeof createMarkdownParsers>; surface: ReturnType<typeof createMarkdownParsers> }>();
+const referenceParsers = new WeakMap<ResolveSessionReference, Map<string, ReturnType<typeof createMarkdownParsers>>>();
 function parsersForPresentation(presentation: MarkdownPresentation, resolveReference?: ResolveSessionReference) {
-  if (presentation === "surface") return surfaceParsers;
-  if (!resolveReference) return chatParsers;
-  let parsers = referenceParsers.get(resolveReference);
+  const locale = currentLocale();
+  if (presentation === "surface" || !resolveReference) {
+    let parsers = parsersByLocale.get(locale);
+    if (!parsers) {
+      parsers = { chat: createMarkdownParsers("chat"), surface: createMarkdownParsers("surface") };
+      parsersByLocale.set(locale, parsers);
+    }
+    return parsers[presentation];
+  }
+  let byLocale = referenceParsers.get(resolveReference);
+  if (!byLocale) {
+    byLocale = new Map();
+    referenceParsers.set(resolveReference, byLocale);
+  }
+  let parsers = byLocale.get(locale);
   if (!parsers) {
     parsers = createMarkdownParsers("chat", resolveReference);
-    referenceParsers.set(resolveReference, parsers);
+    byLocale.set(locale, parsers);
   }
   return parsers;
 }

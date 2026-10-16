@@ -43,7 +43,7 @@ import type {
   WorkspaceDisplay,
   WorkspaceSessionGroup,
 } from "@/app/types";
-import { currentLocale, t, setLocale, type Language } from "@/i18n";
+import { currentLocale, t, setLocale } from "@/i18n";
 import { useModelPicker } from "@/react-app/domains/session/modals/use-model-picker";
 import { GatewayModelAccessProvider } from "@/react-app/domains/connections/provider-auth/gateway-model-access";
 import {
@@ -2477,7 +2477,7 @@ function SettingsRouteContent(props: SettingsSurfaceProps = {}) {
             busy={busy}
             themeMode={themeMode}
             setThemeMode={setThemeModeState}
-            language={currentLocale() as Language}
+            language={currentLocale()}
             setLanguage={setLocale}
             hideTitlebar={hideTitlebar}
             toggleHideTitlebar={() => setHideTitlebar((current) => !current)}

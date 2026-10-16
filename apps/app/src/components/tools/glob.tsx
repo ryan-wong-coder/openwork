@@ -1,5 +1,7 @@
 "use client"
 
+import { t } from "@/i18n";
+
 import { Tool } from "@/components/ui/tool"
 import type { GlobToolPart } from "@/lib/build-in-tools"
 import { parseFilename, toolDisplayTitle, truncateText } from "@/components/tools/path"
@@ -13,15 +15,15 @@ function getGlobToolTitle(part: GlobToolPart): string | null {
 
   if (part.state === "output-error") {
     return pattern
-      ? `Search attempted ${truncateText(pattern, 44)}`
-      : "Search attempted"
+      ? t("ui.search_pattern_attempted", { pattern: truncateText(pattern, 44) })
+      : t("ui.search_attempted")
   }
 
   if (part.state !== "output-available") {
     return null
   }
 
-  return pattern ? `Searched ${truncateText(pattern, 44)}` : "Searched code"
+  return pattern ? t("ui.searched_pattern", { pattern: truncateText(pattern, 44) }) : t("ui.searched_code")
 }
 
 function getGlobToolDetail(part: GlobToolPart): string | undefined {
@@ -30,7 +32,7 @@ function getGlobToolDetail(part: GlobToolPart): string | undefined {
     return undefined
   }
 
-  return `in ${parseFilename(root)}`
+  return t("ui.in_folder", { folder: parseFilename(root) })
 }
 
 export function GlobTool({ part }: GlobToolProps) {

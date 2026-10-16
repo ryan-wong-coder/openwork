@@ -1,5 +1,7 @@
 "use client"
 
+import { t } from "@/i18n";
+
 import { createContext, use, useEffect, useImperativeHandle, useRef, useState, type ReactNode, type Ref } from "react"
 import { Eye, EyeOff } from "lucide-react"
 import { SECRET_INPUT_ATTRIBUTES, SECRET_REGION_ATTRIBUTES, useMultilineSecretSupported, useSecretReveal } from "@openwork/ui/secret-input"
@@ -107,7 +109,7 @@ export function SecretField({ id, label, labelHidden = false, labelClassName, de
   }
   const reveal = multiline ? areaReveal : inputReveal
   const toggle = !canReveal ? null : (
-    <InputGroupButton size="icon-xs" aria-controls={id} {...reveal.toggleProps}>
+    <InputGroupButton size="icon-xs" aria-controls={id} {...reveal.toggleProps} aria-label={reveal.revealed ? t("ui.hide_secret") : t("ui.show_secret_typing")} title={reveal.revealed ? t("ui.hide_secret") : t("ui.show_secret_typing")}>
       {reveal.revealed ? <EyeOff aria-hidden="true" strokeWidth={1.5} /> : <Eye aria-hidden="true" strokeWidth={1.5} />}
     </InputGroupButton>
   )

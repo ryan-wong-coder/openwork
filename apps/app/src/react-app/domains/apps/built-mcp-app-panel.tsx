@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { McpAppFrame } from "@/components/chat/mcp-app-frame";
 import { resolveExtensionIconSrc } from "@/react-app/design-system/extension-icon-src";
 import { X } from "lucide-react";
@@ -24,7 +25,7 @@ export function BuiltMcpAppPanel({
         <div className="flex min-w-0 items-center gap-2">
           <img src={resolveExtensionIconSrc("/openwork-mark.svg")} alt="" className="size-4 dark:invert" />
           <span className="truncate text-sm font-medium">{tab.label}</span>
-          <span role="status" className={`shrink-0 text-xs ${tab.updating ? "text-muted-foreground" : "text-emerald-700 dark:text-emerald-400"}`}>{tab.updating ? "Updating" : "Ready"}</span>
+          <span role="status" className={`shrink-0 text-xs ${tab.updating ? "text-muted-foreground" : "text-emerald-700 dark:text-emerald-400"}`}>{tab.updating ? t("interface.updating") : t("settings.sandbox_ready")}</span>
         </div>
         <div className="flex items-center gap-1">
           {!tab.origin.readOnly && summary ? (
@@ -33,14 +34,12 @@ export function BuiltMcpAppPanel({
               title={summary.title}
             />
           ) : (
-            <Button variant="ghost" size="sm" disabled>
-              Share
-            </Button>
+            <Button variant="ghost" size="sm" disabled>{t("extensions.detail_share")} </Button>
           )}
           <Button
             variant="ghost"
             size="icon-sm"
-            aria-label="Close panel"
+            aria-label={t("interface.close_panel")}
             onClick={onClose}
           >
             <X className="size-4" />

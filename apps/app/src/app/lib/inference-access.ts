@@ -1,3 +1,4 @@
+import { currentLocale, t } from "@/i18n";
 import { z } from "zod";
 import type { ModelRef } from "../types";
 import { AUTO_MODEL_ID, AUTO_PROVIDER_ID, isAutoModel } from "@/react-app/domains/models/model-catalog";
@@ -64,10 +65,10 @@ export function autoQuietlyUnavailable(status: { code?: string | null } | null |
 }
 function notOfferedCopy(code?: string | null) {
   switch (code) {
-    case "free_not_enrolled": return { subtitle: "Not on for your organization yet", detail: "Your organization hasn’t turned on Auto yet. An admin can turn it on. Other models still work." };
-    case "free_not_offered": case "admin_disabled": return { subtitle: "Turned off by your organization", detail: "Your organization has turned off Auto. Other models still work." };
-    case "managed_models_disabled_for_dpa": return { subtitle: "Not available for your organization", detail: "Auto isn’t available under your organization’s data agreement. Other models still work." };
-    default: return { subtitle: "Not available for this account", detail: "Auto isn’t available for this account. Other models still work." };
+    case "free_not_enrolled": return { subtitle: t("settings_extra.not_on_for_your_organization_yet"), detail: t("settings_extra.your_organization_hasn_t_turned_on_auto_yet_an_admin_can_turn_it_on_other_models_stil") };
+    case "free_not_offered": case "admin_disabled": return { subtitle: t("settings_extra.turned_off_by_your_organization"), detail: t("settings_extra.your_organization_has_turned_off_auto_other_models_still_work") };
+    case "managed_models_disabled_for_dpa": return { subtitle: t("settings_extra.not_available_for_your_organization"), detail: t("settings_extra.auto_isn_t_available_under_your_organization_s_data_agreement_other_models_still_work") };
+    default: return { subtitle: t("settings_extra.not_available_for_this_account"), detail: t("settings_extra.auto_isn_t_available_for_this_account_other_models_still_work") };
   }
 }
 
@@ -130,21 +131,21 @@ export type AutoPickerState = "ready" | "exhausted" | "update_required" | "unava
 /** "v0.18.51 or newer" when the gateway told us the lowest version it accepts. */
 export function autoUpdateTarget(minimumVersion?: string | null) {
   const version = minimumVersion?.trim().replace(/^v/, "");
-  return version ? `OpenWork v${version} or newer` : "OpenWork";
+  return version ? t("settings_extra.openwork_v_version_or_newer", { version }) : "OpenWork";
 }
 export function autoPickerCopy(state: AutoPickerState, signedIn: boolean, minimumVersion?: string | null, code?: string | null, resetsAt?: string | null) {
   switch (state) {
     case "not_offered": return { ...notOfferedCopy(code), action: null };
     case "exhausted": {
       const back = autoResetPhrase(resetsAt ?? undefined)?.replace(/^on /, "");
-      return { subtitle: back ? `Limit used up · resets ${back}` : "Limit used up",
-        detail: signedIn ? "This week’s free limit is used up. Pick another model to keep going." : "This week’s free limit is used up. Sign in for a larger free limit.",
-        action: signedIn ? null : "Sign in" };
+      return { subtitle: back ? t("settings_extra.limit_used_up_resets_time", { time: back }) : t("ui.model_limit_used"),
+        detail: signedIn ? t("settings_extra.this_week_s_free_limit_is_used_up_pick_another_model_to_keep_going") : t("settings_extra.this_week_s_free_limit_is_used_up_sign_in_for_a_larger_free_limit"),
+        action: signedIn ? null : t("den.signin_button") };
     }
-    case "update_required": return { subtitle: "Needs an OpenWork update", detail: minimumVersion?.trim() ? `Update to ${autoUpdateTarget(minimumVersion)} to keep using Auto. Your draft is kept.` : "Update OpenWork to keep using Auto. Your draft is kept.", action: "Update" };
-    case "unavailable": return { subtitle: "Temporarily unavailable", detail: "Auto is having trouble right now. Other models still work.", action: "Retry" };
-    case "sync": return { subtitle: "Finishing setup", detail: "Auto is almost ready. Reload the workspace if it doesn’t appear.", action: "Reload" };
-    case "ready": return { subtitle: "OpenWork picks the model", detail: "Free access ready", action: null };
+    case "update_required": return { subtitle: t("settings_extra.needs_an_openwork_update"), detail: minimumVersion?.trim() ? t("settings_extra.update_to_version_to_keep_using_auto_your_draft_is_kept", { version: autoUpdateTarget(minimumVersion) }) : t("settings_extra.update_openwork_to_keep_using_auto_your_draft_is_kept"), action: t("extensions.update_button") };
+    case "unavailable": return { subtitle: t("settings_extra.temporarily_unavailable"), detail: t("settings_extra.auto_is_having_trouble_right_now_other_models_still_work"), action: t("activity.retry") };
+    case "sync": return { subtitle: t("settings_extra.finishing_setup"), detail: t("settings_extra.auto_is_almost_ready_reload_the_workspace_if_it_doesn_t_appear"), action: t("interface.reload") };
+    case "ready": return { subtitle: t("ui.model_auto_picks"), detail: t("settings_extra.free_access_ready"), action: null };
   }
 }
 
@@ -153,20 +154,20 @@ export function autoResetPhrase(resetsAt: string | undefined, now = Date.now()):
   const at = resetsAt ? Date.parse(resetsAt) : NaN;
   if (!Number.isFinite(at) || at <= now) return null;
   const minutes = Math.ceil((at - now) / 60_000);
-  if (minutes < 60) return `in ${minutes} minute${minutes === 1 ? "" : "s"}`;
+  if (minutes < 60) return t("settings_extra.auto_reset_minutes", { count: minutes });
   const hours = Math.round(minutes / 60);
-  if (hours < 24) return `in ${hours} hour${hours === 1 ? "" : "s"}`;
-  return `on ${new Date(at).toLocaleDateString(undefined, { weekday: "long" })}`;
+  if (hours < 24) return t("settings_extra.auto_reset_hours", { count: hours });
+  return t("settings_extra.on_weekday", { weekday: new Date(at).toLocaleDateString(currentLocale(), { weekday: "long" }) });
 }
 
-const NEXT_STEP = "Pick another model to keep going.";
+const NEXT_STEP_KEY = "settings_extra.pick_another_model_to_keep_going";
 /** Codes with their own words; anything else that keeps Auto from this person reads as the free limit. */
 function limitCopy(wall: AutoAccessWall, signedIn: boolean, now: number) {
   const back = wall.state === "limit" ? autoResetPhrase(wall.resetsAt, now) : null;
-  const more = signedIn ? "" : " Sign in for more free use, or pick another model.";
+  const nextStep = signedIn ? t(NEXT_STEP_KEY) : t("settings_extra.sign_in_for_more_free_use_or_pick_another_model");
   return {
-    title: back ? "You’ve used your free Auto for now" : "You’ve reached the free Auto limit",
-    detail: back ? `It’s back ${back}.${more || ` ${NEXT_STEP}`}` : (more.trim() || NEXT_STEP),
+    title: back ? t("settings_extra.you_ve_used_your_free_auto_for_now") : t("settings_extra.you_ve_reached_the_free_auto_limit"),
+    detail: back ? t("settings_extra.it_s_back_time_nextstep", { time: back, nextStep }) : nextStep,
   };
 }
 
@@ -180,11 +181,11 @@ export function autoWallCopy(wall: AutoAccessWall, signedIn: boolean, now = Date
     .filter(Boolean).join("\n") || null;
   const copy = (() => {
     switch (wall.state) {
-      case "unavailable": return { title: "Auto is busy right now", detail: "Pick another model to keep going, or try Auto again in a bit." };
-      case "sync": return { title: "Auto is still getting ready", detail: "Wait a moment, or pick another model to keep going." };
+      case "unavailable": return { title: t("settings_extra.auto_is_busy_right_now"), detail: t("settings_extra.pick_another_model_to_keep_going_or_try_auto_again_in_a_bit") };
+      case "sync": return { title: t("settings_extra.auto_is_still_getting_ready"), detail: t("settings_extra.wait_a_moment_or_pick_another_model_to_keep_going") };
       case "not_offered":
-        if (wall.code === "free_not_enrolled") return { title: "Auto isn’t on for your organization yet", detail: `An admin can turn it on. ${NEXT_STEP}` };
-        if (wall.code === "managed_models_disabled_for_dpa") return { title: "Auto isn’t available for your organization", detail: NEXT_STEP };
+        if (wall.code === "free_not_enrolled") return { title: t("settings_extra.auto_isn_t_on_for_your_organization_yet"), detail: t("settings_extra.an_admin_can_turn_it_on_nextstep", { nextStep: t(NEXT_STEP_KEY) }) };
+        if (wall.code === "managed_models_disabled_for_dpa") return { title: t("settings_extra.auto_isn_t_available_for_your_organization"), detail: t(NEXT_STEP_KEY) };
         return limitCopy(wall, signedIn, now);
       case "limit": case "update": return limitCopy(wall, signedIn, now);
     }

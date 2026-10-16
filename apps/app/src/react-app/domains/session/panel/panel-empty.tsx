@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import * as React from "react";
 import { ArrowLeft, ArrowRight, FileText, Globe, Puzzle } from "lucide-react";
 
@@ -33,8 +34,8 @@ export function getPanelDestinations(
   if (actions.onOpenBrowser) {
     destinations.push({
       id: "browser",
-      label: "Browser",
-      description: "Open a new page in the built-in browser.",
+      label: t("session_copy.browser"),
+      description: t("session_copy.open_a_new_page_in_the_built_in_browser"),
       icon: <Globe aria-hidden="true" />,
       activate: actions.onOpenBrowser,
     });
@@ -42,8 +43,8 @@ export function getPanelDestinations(
 
   destinations.push({
     id: "files",
-    label: "Files & artifacts",
-    description: "View files and artifacts created in this session.",
+    label: t("session_copy.files_artifacts"),
+    description: t("session_copy.view_files_and_artifacts_created_in_this_session"),
     icon: <FileText aria-hidden="true" />,
     activate: onOpenFiles,
   });
@@ -51,8 +52,8 @@ export function getPanelDestinations(
   if (actions.onOpenExtensions) {
     destinations.push({
       id: "extensions",
-      label: "Library",
-      description: "Browse the skills and connections available to your agent.",
+      label: t("session_copy.library"),
+      description: t("session_copy.browse_the_skills_and_connections_available_to_your_agent"),
       icon: <Puzzle aria-hidden="true" />,
       activate: actions.onOpenExtensions,
     });
@@ -73,17 +74,13 @@ export function PanelEmpty({ onOpenBrowser, onOpenExtensions }: PanelEmptyAction
           className="mb-6 w-fit gap-2"
           onClick={() => setDestination("chooser")}
         >
-          <ArrowLeft />
-          All destinations
-        </Button>
+          <ArrowLeft />{t("interface.all_destinations")} </Button>
         <div className="m-auto max-w-sm text-center">
           <span className="mx-auto mb-4 flex size-11 items-center justify-center rounded-xl bg-muted text-muted-foreground">
             <FileText aria-hidden="true" />
           </span>
-          <h2 className="text-base font-medium text-foreground">No files or artifacts yet</h2>
-          <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            Files and artifacts created in this session will appear here automatically.
-          </p>
+          <h2 className="text-base font-medium text-foreground">{t("interface.no_files_or_artifacts_yet")}</h2>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">{t("interface.files_and_artifacts_created_in_this_session_will_appear_here_automatically")} </p>
         </div>
       </div>
     );
@@ -97,11 +94,9 @@ export function PanelEmpty({ onOpenBrowser, onOpenExtensions }: PanelEmptyAction
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-y-auto p-4 sm:p-6">
       <div className="my-auto w-full max-w-xl self-center">
-        <h2 className="text-base font-medium text-foreground">Choose a destination</h2>
-        <p className="mt-1 text-sm leading-6 text-muted-foreground">
-          Open a tool or return here whenever you want to switch.
-        </p>
-        <div className="mt-5 grid gap-2" aria-label="Panel destinations">
+        <h2 className="text-base font-medium text-foreground">{t("interface.choose_a_destination")}</h2>
+        <p className="mt-1 text-sm leading-6 text-muted-foreground">{t("interface.open_a_tool_or_return_here_whenever_you_want_to_switch")} </p>
+        <div className="mt-5 grid gap-2" aria-label={t("interface.panel_destinations")}>
           {destinations.map((item) => (
             <button
               key={item.id}

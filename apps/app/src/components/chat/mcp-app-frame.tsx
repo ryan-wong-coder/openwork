@@ -278,7 +278,7 @@ function isRetiredFirstPartyConfirmation(toolName: string, result: PreservedMcpA
       || launch?.resourceUri === "ui://openwork/plugin-flow/v1/view.html")
 }
 
-const CHAT_MCP_APP_UNAVAILABLE_NOTICE = "Interactive view unavailable. The normal tool result is still available."
+const chatMcpAppUnavailableNotice = () => t("ui.interactive_view_unavailable_the_normal_tool_result_is_still_available")
 
 export function McpAppDiagnosticNotice({ error, notice, onRetry }: { error: McpAppDiagnostic; notice: string; onRetry?: () => void }) {
   const [detailsCopied, setDetailsCopied] = useState(false)
@@ -287,14 +287,14 @@ export function McpAppDiagnosticNotice({ error, notice, onRetry }: { error: McpA
     <div className="mt-2 text-xs text-muted-foreground" role="status">
       <p>{notice} {error.message}</p>
       {error.causeCode === "server_unavailable" || error.causeCode === "mcp_unreachable" ? (
-        <p className="mt-1">The connection was not ready. Retry, or check the connection under Settings &gt; Library.</p>
+        <p className="mt-1">{t("ui.the_connection_was_not_ready_retry_or_check_the_connection_under_settings_gt_library")}</p>
       ) : null}
       {onRetry ? (
         <Button type="button" variant="link" size="xs" className="mt-1 px-0" onClick={onRetry}>{t("common.retry")}</Button>
       ) : null}
       <details className="mt-1">
-        <summary className="cursor-pointer select-none">Technical details ({error.code})</summary>
-        <p className="mt-1">Copy these details when reporting the rendering problem.</p>
+        <summary className="cursor-pointer select-none">{t("ui.technical_details_code", { code: error.code })}</summary>
+        <p className="mt-1">{t("ui.copy_these_details_when_reporting_the_rendering_problem")}</p>
         <pre className="mt-1 max-h-48 overflow-auto whitespace-pre-wrap rounded-md bg-muted p-2 font-mono text-[11px] text-foreground">{details}</pre>
         <button
           type="button"
@@ -306,7 +306,7 @@ export function McpAppDiagnosticNotice({ error, notice, onRetry }: { error: McpA
               .catch(() => setDetailsCopied(false))
           }}
         >
-          {detailsCopied ? "Copied" : "Copy details"}
+          {detailsCopied ? t("connect.diagnostics_copied") : t("ui.copy_details")}
         </button>
       </details>
     </div>
@@ -1101,15 +1101,15 @@ function EmbeddedMcpAppFrame({ part, origin: surfaceOrigin }: { part: DynamicToo
   const revisionId = result?._meta?.viewRevisionId
   if (app && resolvedFor.current === resolution && typeof viewId === "string" && typeof revisionId === "string" && app.resourceUri === `ui://openwork/artifacts/${viewId}/views/${revisionId}/index.html`) {
     const artifact = result?.structuredContent?.artifact
-    const title = typeof result?._meta?.appTitle === "string" ? result._meta.appTitle : isRecord(artifact) && typeof artifact.title === "string" ? artifact.title : "Artifact preview"
+    const title = typeof result?._meta?.appTitle === "string" ? result._meta.appTitle : isRecord(artifact) && typeof artifact.title === "string" ? artifact.title : t("ui.artifact_preview")
     const receiptId = isRecord(artifact) && typeof artifact.receiptId === "string" ? artifact.receiptId : undefined
     return <AppChatArtifact key={`${viewId}:${revisionId}:${receiptId}`} appId={viewId} revisionId={revisionId} title={title} receiptId={receiptId} />
   }
   if (!result) return null
-  if (!origin) return <p role="status">This artifact is missing its conversation origin. Reopen the conversation to use it.</p>
-  if (error) return <McpAppDiagnosticNotice error={error} notice={CHAT_MCP_APP_UNAVAILABLE_NOTICE} onRetry={() => setResolveToken((token) => token + 1)} />
+  if (!origin) return <p role="status">{t("ui.this_artifact_is_missing_its_conversation_origin_reopen_the_conversation_to_use_it")}</p>
+  if (error) return <McpAppDiagnosticNotice error={error} notice={chatMcpAppUnavailableNotice()} onRetry={() => setResolveToken((token) => token + 1)} />
   if (!app || resolvedFor.current !== resolution) return launch && resolvedFor.current !== resolution
-    ? stagedLoading ? <McpAppLoading /> : <p role="status">Opening artifact…</p> : null
+    ? stagedLoading ? <McpAppLoading /> : <p role="status">{t("ui.opening_artifact")}</p> : null
   if (appConnection) return <DashboardConnectionCard toolName={appConnection.toolName} toolCallId={`${part.toolCallId}:app`}
     output={appConnection.output} onConnected={() => { setAppConnection(null); setResolveToken((token) => token + 1) }} />
   return (
@@ -1121,7 +1121,7 @@ function EmbeddedMcpAppFrame({ part, origin: surfaceOrigin }: { part: DynamicToo
       inputArguments={inputArguments}
       result={result}
       connectionController={connectionController}
-      unavailableNotice={CHAT_MCP_APP_UNAVAILABLE_NOTICE}
+      unavailableNotice={chatMcpAppUnavailableNotice()}
       openKey={JSON.stringify([scope, part.toolCallId, resolveToken])}
       onRequestTeardown={() => {
         if (app.launchId) void origin.client.releaseMcpApp(origin.workspaceId, app.launchId).catch(() => undefined)

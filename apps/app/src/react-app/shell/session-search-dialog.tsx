@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { currentLocale, t } from "@/i18n";
 import { useEffect, useMemo, useState } from "react";
 import fuzzysort from "fuzzysort";
 import { ClockIcon, TypeIcon } from "lucide-react";
@@ -74,7 +75,7 @@ export function SessionSearchDialog(props: SessionSearchDialogProps) {
           kind: "recent" as const,
           session,
         }));
-      return recent.length > 0 ? [{ value: "Recent sessions", items: recent }] : [];
+      return recent.length > 0 ? [{ value: t("session_copy.recent_sessions"), items: recent }] : [];
     }
 
     const titleItems = fuzzysort
@@ -84,18 +85,18 @@ export function SessionSearchDialog(props: SessionSearchDialogProps) {
         kind: "title" as const,
         session: hit.obj,
       }));
-    return titleItems.length > 0 ? [{ value: "Sessions", items: titleItems }] : [];
-  }, [sessions, trimmedQuery]);
+    return titleItems.length > 0 ? [{ value: t("session_copy.sessions"), items: titleItems }] : [];
+  }, [sessions, trimmedQuery, currentLocale()]);
 
   const resultCount = useMemo(
     () => groups.reduce((sum, group) => sum + group.items.length, 0),
     [groups],
   );
 
-  const emptyText = trimmedQuery ? "No session titles match your search." : "No sessions yet.";
+  const emptyText = trimmedQuery ? t("session_copy.no_session_titles_match_your_search") : t("session_copy.no_sessions_yet");
   const statusText = trimmedQuery
-    ? `${resultCount.toLocaleString()} ${resultCount === 1 ? "result" : "results"}`
-    : "Recent sessions";
+    ? t("session_copy.result_count", { count: resultCount })
+    : t("session_copy.recent_sessions");
 
   return (
     <CommandDialog
@@ -105,7 +106,7 @@ export function SessionSearchDialog(props: SessionSearchDialogProps) {
       }}
     >
       <CommandDialogPopup>
-        <CommandDialogTitle>Search sessions</CommandDialogTitle>
+        <CommandDialogTitle>{t("workspace_list.search_sessions")}</CommandDialogTitle>
         <Command
           items={groups}
           filter={null}
@@ -113,7 +114,7 @@ export function SessionSearchDialog(props: SessionSearchDialogProps) {
           onValueChange={setQuery}
         >
           <CommandHeader>
-            <CommandInput className="w-full" placeholder="Search session titles…" />
+            <CommandInput className="w-full" placeholder={t("interface.search_session_titles")} />
           </CommandHeader>
           <CommandPanel>
             <CommandEmpty>{emptyText}</CommandEmpty>
@@ -159,7 +160,7 @@ export function SessionSearchDialog(props: SessionSearchDialogProps) {
           </CommandPanel>
           <CommandFooter>
             <span>{statusText}</span>
-            <span>↑↓ to navigate · ↵ to open</span>
+            <span>{t("interface.to_navigate_to_open")}</span>
           </CommandFooter>
         </Command>
       </CommandDialogPopup>

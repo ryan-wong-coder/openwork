@@ -1,5 +1,7 @@
 "use client"
 
+import { t } from "@/i18n";
+
 import { useState } from "react"
 import { AlertTriangle, CalendarClock, Check } from "lucide-react"
 import type { DynamicToolUIPart } from "ai"
@@ -101,7 +103,7 @@ export function OpenWorkAutomationProposalTool({ part }: { part: DynamicToolUIPa
     : null
 
   if (!proposal) {
-    return <Tool toolPart={part} title="Proposed an Automation" />
+    return <Tool toolPart={part} title={t("ui.proposed_an_automation")} />
   }
 
   // Pin the workspace of the pane this card renders in — renderer-owned state.
@@ -110,11 +112,11 @@ export function OpenWorkAutomationProposalTool({ part }: { part: DynamicToolUIPa
   const pinnedWorkspaceId = workspaceContext?.workspaceId?.trim() || null
 
   const blocker = !automationsEnabled
-    ? "Automations are disabled for this deployment."
+    ? t("ui.automations_are_disabled_for_this_deployment")
     : !signedIn
-      ? "Sign in to OpenWork Cloud to create this Automation."
+      ? t("ui.sign_in_to_openwork_cloud_to_create_this_automation")
       : modelLookupFailed
-        ? "Model availability could not be checked. Try again before creating this Automation."
+        ? t("ui.model_availability_could_not_be_checked_try_again_before_creating_this_automation")
         : null
 
   const create = async () => {
@@ -140,9 +142,9 @@ export function OpenWorkAutomationProposalTool({ part }: { part: DynamicToolUIPa
             ...(pinnedWorkspaceId ? { workspaceId: pinnedWorkspaceId } : {}),
           })
       setCreated(detail.automation.id)
-      toast.success("Automation created and active")
+      toast.success(t("ui.automation_created_and_active"))
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not create the Automation")
+      toast.error(error instanceof Error ? error.message : t("ui.could_not_create_the_automation"))
     } finally {
       setBusy(false)
     }
@@ -164,14 +166,14 @@ export function OpenWorkAutomationProposalTool({ part }: { part: DynamicToolUIPa
         </div>
         <div className="min-w-0 flex-1">
           <h3 className="text-sm font-semibold text-dls-primary">
-            {created ? "Automation created and active" : "Suggested Automation"}
+            {created ? t("ui.automation_created_and_active") : t("ui.suggested_automation")}
           </h3>
           <p className="mt-0.5 text-xs text-dls-secondary">
             {created
               ? placement === "cloud"
-                ? "It runs on the schedule below in OpenWork Cloud."
-                : "It runs on the schedule below while this desktop is connected."
-              : "Nothing was created yet. Review it, then create it if it looks right."}
+                ? t("ui.it_runs_on_the_schedule_below_in_openwork_cloud")
+                : t("ui.it_runs_on_the_schedule_below_while_this_desktop_is_connected")
+              : t("ui.nothing_was_created_yet_review_it_then_create_it_if_it_looks_right")}
           </p>
         </div>
       </div>
@@ -180,15 +182,15 @@ export function OpenWorkAutomationProposalTool({ part }: { part: DynamicToolUIPa
         <div>
           <p className="truncate text-sm font-medium text-dls-primary" title={proposal.name}>{proposal.name}</p>
           <p className="text-xs text-dls-secondary">{formatAutomationSchedule(proposal.schedule)}</p>
-          {modelLabel ? <p className="text-xs text-dls-secondary">Runs with {modelLabel}</p> : null}
-          {pinnedWorkspaceId && placement === "desktop" ? <p className="text-xs text-dls-secondary" data-automation-pinned-workspace={pinnedWorkspaceId}>Runs in this workspace</p> : null}
+          {modelLabel ? <p className="text-xs text-dls-secondary">{t("ui.runs_with")} {modelLabel}</p> : null}
+          {pinnedWorkspaceId && placement === "desktop" ? <p className="text-xs text-dls-secondary" data-automation-pinned-workspace={pinnedWorkspaceId}>{t("ui.runs_in_this_workspace")}</p> : null}
         </div>
         <p className="whitespace-pre-wrap text-sm text-dls-secondary">{proposal.instructions}</p>
       </div>
 
       <div className="flex items-center justify-between gap-3 border-t border-dls-border px-4 py-3">
         <p className="min-w-0 flex-1 text-xs text-dls-secondary">
-          {blocker ?? (placement === "cloud" ? "Automations run headlessly in OpenWork Cloud." : "Automations run on this desktop while it is connected.")}
+          {blocker ?? (placement === "cloud" ? t("ui.automations_run_headlessly_in_openwork_cloud") : t("ui.automations_run_on_this_desktop_while_it_is_connected"))}
         </p>
         {created ? (
           <Button
@@ -199,7 +201,7 @@ export function OpenWorkAutomationProposalTool({ part }: { part: DynamicToolUIPa
             data-open-automation={created}
             onClick={() => navigate(automationsRoute())}
           >
-            Open Automation
+            {t("ui.open_automation")}
           </Button>
         ) : (
           <Button
@@ -210,7 +212,7 @@ export function OpenWorkAutomationProposalTool({ part }: { part: DynamicToolUIPa
             data-create-automation
             onClick={() => void create()}
           >
-            {busy ? "Creating…" : "Create Automation"}
+            {busy ? t("ui.creating_8c4f12") : t("ui.create_automation")}
           </Button>
         )}
       </div>
@@ -225,7 +227,7 @@ export function OpenWorkAutomationProposalTool({ part }: { part: DynamicToolUIPa
         <div className="flex items-center gap-2 border-t border-dls-border px-4 py-2 text-xs text-amber-11">
           <AlertTriangle className="size-3.5 shrink-0" />
           <span className="min-w-0 flex-1">
-            The proposed model isn't available for Automations. Choose a supported model in a new proposal or in Automations before creating. No replacement model was selected.
+            {t("ui.the_proposed_model_isn_t_available_for_automations_choose_a_supported_model_in_a_new_propo")}
           </span>
         </div>
       ) : null}

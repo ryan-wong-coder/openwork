@@ -1,4 +1,5 @@
-import { memo, useCallback } from "react";
+import { currentLocale, subscribeLocale, t } from "@/i18n";
+import { memo, useCallback, useSyncExternalStore } from "react";
 import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -25,6 +26,7 @@ type JumpToStartButtonProps = {
 const JumpToStartButton = memo(function JumpToStartButton({
   onJumpToStartOfMessage,
 }: JumpToStartButtonProps) {
+  useSyncExternalStore(subscribeLocale, currentLocale, currentLocale);
   const handleClick = useCallback(() => {
     onJumpToStartOfMessage("smooth");
   }, [onJumpToStartOfMessage]);
@@ -34,9 +36,7 @@ const JumpToStartButton = memo(function JumpToStartButton({
       type="button"
       className="rounded-full px-3 py-1.5 text-xs text-dls-text transition-colors hover:bg-dls-hover"
       onClick={handleClick}
-    >
-      Jump to start
-    </button>
+    >{t("interface.jump_to_start")} </button>
   );
 });
 
@@ -47,6 +47,7 @@ type JumpToLatestButtonProps = {
 const JumpToLatestButton = memo(function JumpToLatestButton({
   onJumpToLatest,
 }: JumpToLatestButtonProps) {
+  useSyncExternalStore(subscribeLocale, currentLocale, currentLocale);
   const handleClick = useCallback(() => {
     onJumpToLatest("smooth");
   }, [onJumpToLatest]);
@@ -56,9 +57,7 @@ const JumpToLatestButton = memo(function JumpToLatestButton({
       type="button"
       className="rounded-full px-3 py-1.5 text-xs text-dls-text transition-colors hover:bg-dls-hover"
       onClick={handleClick}
-    >
-      Jump to latest
-    </button>
+    >{t("interface.jump_to_latest")} </button>
   );
 });
 
@@ -79,6 +78,7 @@ export const SessionScrollOverlay = memo(function SessionScrollOverlay({
   onJumpToLatest,
   onJumpToStartOfMessage,
 }: SessionScrollOverlayProps) {
+  useSyncExternalStore(subscribeLocale, currentLocale, currentLocale);
   const { isAtBottom, topClippedMessageId } = useSessionScrollOverlayState(sessionScrollKey(sessionId, owner));
   const isMobile = useIsMobile();
   if (isMobile && !isDesktopRuntime()) {
@@ -92,7 +92,7 @@ export const SessionScrollOverlay = memo(function SessionScrollOverlay({
           onClick={() => onJumpToLatest(window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth")}
         >
           <ArrowDown aria-hidden strokeWidth={1.5} />
-          <span className="sr-only">Jump to latest</span>
+          <span className="sr-only">{t("interface.jump_to_latest")}</span>
         </Button>
       </div>
     );

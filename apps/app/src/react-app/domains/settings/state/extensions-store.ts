@@ -365,7 +365,7 @@ export function createExtensionsStore(options: {
         config: config as never,
       })) as { ok: boolean; stderr?: string; stdout?: string };
       if (!result.ok) {
-        throw new Error(result.stderr || result.stdout || "Failed to write .opencode/openwork.json");
+        throw new Error(result.stderr || result.stdout || t("settings_extra.failed_to_write_opencode_openwork_json"));
       }
       return true;
     }
@@ -437,7 +437,7 @@ export function createExtensionsStore(options: {
     const nextConfig = withWorkspaceCloudImports(config, nextCloudImports);
     const persisted = await writeWorkspaceOpenworkConfigRecord(nextConfig);
     if (!persisted) {
-      throw new Error("OpenWork server unavailable. Connect to manage imported cloud plugins.");
+      throw new Error(t("settings_extra.openwork_server_unavailable_connect_to_manage_imported_cloud_plugins"));
     }
     setStateField("importedCloudPlugins", nextPlugins);
     void refreshPendingCloudPluginChanges(nextPlugins);
@@ -458,7 +458,7 @@ export function createExtensionsStore(options: {
     }
 
     if (hasOpenworkTarget) {
-      throw new Error("OpenWork server cannot remove skills for this workspace.");
+      throw new Error(t("settings_extra.openwork_server_cannot_remove_skills_for_this_workspace"));
     }
 
 
@@ -489,7 +489,7 @@ export function createExtensionsStore(options: {
       await openworkClient.removeMcp(openworkWorkspaceId, name);
       return;
     }
-    throw new Error("OpenWork server unavailable. Connect to remove imported MCP servers from this workspace.");
+    throw new Error(t("settings_extra.openwork_server_unavailable_connect_to_remove_imported_mcp_servers_from_this_workspac"));
   };
 
   const deletePluginWorkspaceFiles = async (files: Array<{ path: string; recursive?: boolean }>) => {
@@ -512,7 +512,7 @@ export function createExtensionsStore(options: {
       }
       return;
     }
-    throw new Error("OpenWork server unavailable. Connect to remove imported plugin files from this workspace.");
+    throw new Error(t("settings_extra.openwork_server_unavailable_connect_to_remove_imported_plugin_files_from_this_workspa"));
   };
 
   const invalidateWorkspaceCaches = () => {
@@ -593,7 +593,7 @@ export function createExtensionsStore(options: {
         ...current,
         cloudOrgMarketplaces: [],
         cloudOrgMarketplacesStatus:
-          error instanceof Error ? error.message : "Failed to load organization marketplaces.",
+          error instanceof Error ? error.message : t("settings_extra.failed_to_load_organization_marketplaces"),
       }));
     } finally {
       if (refreshCloudOrgMarketplacesInFlightKey === loadKey) {
@@ -626,12 +626,12 @@ export function createExtensionsStore(options: {
         void refreshPendingCloudPluginChanges();
         return {
           ok: true,
-          message: `Removed ${result.item.name}.`,
+          message: t("den.removed_provider", { name: result.item.name }),
         };
       }
 
       const imported = snapshot.importedCloudPlugins[pluginId];
-      if (!imported) throw new Error("Marketplace package is not installed in this workspace.");
+      if (!imported) throw new Error(t("settings_extra.marketplace_package_is_not_installed_in_this_workspace"));
 
       const removedMcpNames: string[] = [];
       const fileDeletes: Array<{ path: string; recursive?: boolean }> = [];
@@ -663,7 +663,7 @@ export function createExtensionsStore(options: {
         refreshCloudOrgMarketplaces({ force: true }),
       ]);
 
-      return { ok: true, message: `Removed ${imported.name}.` };
+      return { ok: true, message: t("den.removed_provider", { name: imported.name }) };
     } catch (error) {
       const message = error instanceof Error ? error.message : t("skills.unknown_error");
       options.setError(addOpencodeCacheHint(message));
@@ -758,7 +758,7 @@ export function createExtensionsStore(options: {
       mutateState((current) => ({
         ...current,
         skills: [],
-        skillsStatus: "OpenWork server cannot read skills for this workspace.",
+        skillsStatus: t("settings_extra.openwork_server_cannot_read_skills_for_this_workspace"),
       }));
       return;
     }
@@ -808,7 +808,7 @@ export function createExtensionsStore(options: {
       mutateState((current) => ({
         ...current,
         skills: [],
-        skillsStatus: "OpenWork server unavailable. Connect to load skills.",
+        skillsStatus: t("settings_extra.openwork_server_unavailable_connect_to_load_skills"),
       }));
       return;
     }
@@ -822,7 +822,7 @@ export function createExtensionsStore(options: {
     try {
       setStateField("skillsStatus", null);
       const rawClient = client as unknown as { _client?: { get: (input: { url: string }) => Promise<unknown> } };
-      if (!rawClient._client) throw new Error("OpenCode client unavailable.");
+      if (!rawClient._client) throw new Error(t("settings_extra.opencode_client_unavailable"));
       const result = await rawClient._client.get({ url: "/skill" }) as {
         data?: Array<{ name: string; description: string; location: string }>;
         error?: unknown;
@@ -878,9 +878,9 @@ export function createExtensionsStore(options: {
     if (scope !== "project" && !isLocalWorkspace) {
       mutateState((current) => ({
         ...current,
-        pluginStatus: "Global plugins are only available for local workers.",
+        pluginStatus: t("settings_extra.global_plugins_are_only_available_for_local_workers"),
         pluginList: [],
-        sidebarPluginStatus: "Global plugins require a local worker.",
+        sidebarPluginStatus: t("settings_extra.global_plugins_require_a_local_worker"),
         sidebarPluginList: [],
       }));
       refreshPluginsInFlight = false;
@@ -905,7 +905,7 @@ export function createExtensionsStore(options: {
           ...current,
           pluginList: list,
           sidebarPluginList: list.map((entry) => entry.name),
-          pluginStatus: list.length ? null : "No plugins configured yet.",
+          pluginStatus: list.length ? null : t("plugins.empty"),
           sidebarPluginStatus: null,
           pluginsContextKey: getWorkspaceContextKey(),
         }));
@@ -915,8 +915,8 @@ export function createExtensionsStore(options: {
           ...current,
           pluginList: [],
           sidebarPluginList: [],
-          sidebarPluginStatus: "Failed to load plugins.",
-          pluginStatus: error instanceof Error ? error.message : "Failed to load plugins.",
+          sidebarPluginStatus: t("settings_extra.failed_to_load_plugins"),
+          pluginStatus: error instanceof Error ? error.message : t("settings_extra.failed_to_load_plugins"),
         }));
       } finally {
         refreshPluginsInFlight = false;
@@ -927,9 +927,9 @@ export function createExtensionsStore(options: {
     if (scope === "project" && hasOpenworkTarget) {
       mutateState((current) => ({
         ...current,
-        pluginStatus: "OpenWork server cannot read plugins for this workspace.",
+        pluginStatus: t("settings_extra.openwork_server_cannot_read_plugins_for_this_workspace"),
         pluginList: [],
-        sidebarPluginStatus: "OpenWork server cannot read plugins for this workspace.",
+        sidebarPluginStatus: t("settings_extra.openwork_server_cannot_read_plugins_for_this_workspace"),
         sidebarPluginList: [],
       }));
       refreshPluginsInFlight = false;
@@ -951,9 +951,9 @@ export function createExtensionsStore(options: {
     if (!isLocalWorkspace && !canUseOpenworkServer) {
       mutateState((current) => ({
         ...current,
-        pluginStatus: "OpenWork server unavailable. Connect to manage plugins.",
+        pluginStatus: t("settings_extra.openwork_server_unavailable_connect_to_manage_plugins"),
         pluginList: [],
-        sidebarPluginStatus: "Connect an OpenWork server to load plugins.",
+        sidebarPluginStatus: t("settings_extra.connect_an_openwork_server_to_load_plugins"),
         sidebarPluginList: [],
       }));
       refreshPluginsInFlight = false;
@@ -1054,7 +1054,7 @@ export function createExtensionsStore(options: {
     }
 
     if (snapshot.pluginScope !== "project" && !isLocalWorkspace) {
-      setStateField("pluginStatus", "Global plugins are only available for local workers.");
+      setStateField("pluginStatus", t("settings_extra.global_plugins_are_only_available_for_local_workers"));
       return;
     }
 
@@ -1066,13 +1066,13 @@ export function createExtensionsStore(options: {
         if (isManualInput) setStateField("pluginInput", "");
         await refreshPlugins("project");
       } catch (error) {
-        setStateField("pluginStatus", error instanceof Error ? error.message : "Failed to add plugin.");
+        setStateField("pluginStatus", error instanceof Error ? error.message : t("settings_extra.failed_to_add_plugin"));
       }
       return;
     }
 
     if (snapshot.pluginScope === "project" && hasOpenworkTarget) {
-      setStateField("pluginStatus", "OpenWork server cannot write plugins for this workspace.");
+      setStateField("pluginStatus", t("settings_extra.openwork_server_cannot_write_plugins_for_this_workspace"));
       return;
     }
 
@@ -1082,7 +1082,7 @@ export function createExtensionsStore(options: {
     }
 
     if (!isLocalWorkspace) {
-      setStateField("pluginStatus", "OpenWork server unavailable. Connect to manage plugins.");
+      setStateField("pluginStatus", t("settings_extra.openwork_server_unavailable_connect_to_manage_plugins"));
       return;
     }
 
@@ -1134,7 +1134,7 @@ export function createExtensionsStore(options: {
     const triggerName = stripPluginVersion(name);
     const existingPlugin = snapshot.pluginList.find((entry) => entry.name === name);
     if (existingPlugin && !existingPlugin.removable) {
-      setStateField("pluginStatus", "Directory-discovered plugins are read-only.");
+      setStateField("pluginStatus", t("settings_extra.directory_discovered_plugins_are_read_only"));
       return;
     }
 
@@ -1146,7 +1146,7 @@ export function createExtensionsStore(options: {
       openworkSnapshot.openworkServerCapabilities?.plugins?.write !== false;
 
     if (snapshot.pluginScope !== "project" && !isLocalWorkspace) {
-      setStateField("pluginStatus", "Global plugins are only available for local workers.");
+      setStateField("pluginStatus", t("settings_extra.global_plugins_are_only_available_for_local_workers"));
       return;
     }
 
@@ -1157,13 +1157,13 @@ export function createExtensionsStore(options: {
         options.markReloadRequired?.("plugins", { type: "plugin", name: triggerName, action: "removed" });
         await refreshPlugins("project");
       } catch (error) {
-        setStateField("pluginStatus", error instanceof Error ? error.message : "Failed to remove plugin.");
+        setStateField("pluginStatus", error instanceof Error ? error.message : t("settings_extra.failed_to_remove_plugin"));
       }
       return;
     }
 
     if (snapshot.pluginScope === "project" && hasOpenworkTarget) {
-      setStateField("pluginStatus", "OpenWork server cannot write plugins for this workspace.");
+      setStateField("pluginStatus", t("settings_extra.openwork_server_cannot_write_plugins_for_this_workspace"));
       return;
     }
 
@@ -1173,7 +1173,7 @@ export function createExtensionsStore(options: {
     }
 
     if (!isLocalWorkspace) {
-      setStateField("pluginStatus", "OpenWork server unavailable. Connect to manage plugins.");
+      setStateField("pluginStatus", t("settings_extra.openwork_server_unavailable_connect_to_manage_plugins"));
       return;
     }
 
@@ -1189,7 +1189,7 @@ export function createExtensionsStore(options: {
       const config = (await readOpencodeConfig(scope, targetDir)) as OpencodeConfigFile;
       const raw = config.content ?? "";
       if (!raw.trim()) {
-        setStateField("pluginStatus", "No plugins configured yet.");
+        setStateField("pluginStatus", t("plugins.empty"));
         return;
       }
 
@@ -1197,7 +1197,7 @@ export function createExtensionsStore(options: {
       const desired = stripPluginVersion(name).toLowerCase();
       const next = plugins.filter((entry) => stripPluginVersion(entry).toLowerCase() !== desired);
       if (next.length === plugins.length) {
-        setStateField("pluginStatus", "Plugin not found.");
+        setStateField("pluginStatus", t("settings_extra.plugin_not_found"));
         return;
       }
 
@@ -1219,7 +1219,7 @@ export function createExtensionsStore(options: {
       return;
     }
     if (!isLocalWorkspace) {
-      options.setError("Local workers are required to import skills.");
+      options.setError(t("settings_extra.local_workers_are_required_to_import_skills"));
       return;
     }
     const targetDir = options.projectDir().trim();
@@ -1284,7 +1284,7 @@ export function createExtensionsStore(options: {
     }
 
     if (hasOpenworkTarget) {
-      const message = "OpenWork server cannot write skills for this workspace.";
+      const message = t("settings_extra.openwork_server_cannot_write_skills_for_this_workspace");
       setStateField("skillsStatus", message);
       return { ok: false, message };
     }
@@ -1295,7 +1295,7 @@ export function createExtensionsStore(options: {
       return { ok: false, message };
     }
     if (!isLocalWorkspace) {
-      const message = "Local workers are required to install skills.";
+      const message = t("settings_extra.local_workers_are_required_to_install_skills");
       options.setError(message);
       setStateField("skillsStatus", message);
       return { ok: false, message };
@@ -1420,7 +1420,7 @@ export function createExtensionsStore(options: {
     }
 
     if (hasOpenworkTarget) {
-      setStateField("skillsStatus", "OpenWork server cannot read skills for this workspace.");
+      setStateField("skillsStatus", t("settings_extra.openwork_server_cannot_read_skills_for_this_workspace"));
       return null;
     }
 
@@ -1434,7 +1434,7 @@ export function createExtensionsStore(options: {
       return null;
     }
     if (!isLocalWorkspace) {
-      setStateField("skillsStatus", "Local workers are required to view skills.");
+      setStateField("skillsStatus", t("settings_extra.local_workers_are_required_to_view_skills"));
       return null;
     }
 
@@ -1472,7 +1472,7 @@ export function createExtensionsStore(options: {
         });
         options.markReloadRequired?.("skills", { type: "skill", name: trimmed, action: "updated" });
         await refreshSkills({ force: true });
-        setStateField("skillsStatus", "Saved.");
+        setStateField("skillsStatus", t("settings_extra.saved"));
       } catch (error) {
         const message = error instanceof Error ? error.message : t("skills.unknown_error");
         options.setError(addOpencodeCacheHint(message));
@@ -1483,7 +1483,7 @@ export function createExtensionsStore(options: {
     }
 
     if (hasOpenworkTarget) {
-      setStateField("skillsStatus", "OpenWork server cannot write skills for this workspace.");
+      setStateField("skillsStatus", t("settings_extra.openwork_server_cannot_write_skills_for_this_workspace"));
       return;
     }
 
@@ -1497,7 +1497,7 @@ export function createExtensionsStore(options: {
       return;
     }
     if (!isLocalWorkspace) {
-      setStateField("skillsStatus", "Local workers are required to edit skills.");
+      setStateField("skillsStatus", t("settings_extra.local_workers_are_required_to_edit_skills"));
       return;
     }
 
@@ -1509,7 +1509,7 @@ export function createExtensionsStore(options: {
       if (!result.ok) {
         setStateField("skillsStatus", result.stderr || result.stdout || t("skills.unknown_error"));
       } else {
-        setStateField("skillsStatus", result.stdout || "Saved.");
+        setStateField("skillsStatus", result.stdout || t("settings_extra.saved"));
         options.markReloadRequired?.("skills", { type: "skill", name: trimmed, action: "updated" });
       }
       await refreshSkills({ force: true });

@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { useCallback, useMemo, useState } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import type { AutomationRun } from "@openwork/types/automations"
@@ -21,11 +22,11 @@ export const AUTOMATIONS_SLOW_POLL_MS = 60_000
 
 export function describeAutomationError(error: unknown) {
   if (error instanceof DenApiError) {
-    if (error.status === 401 || error.status === 403) return "Sign in to the selected Den organization to access Automations."
-    if (error.status === 404) return "This Automation is no longer available."
+    if (error.status === 401 || error.status === 403) return t("ui_extra.automations_signin_required")
+    if (error.status === 404) return t("ui_extra.automation_unavailable")
     return error.message
   }
-  return error instanceof Error ? error.message : "Automations could not be loaded."
+  return error instanceof Error ? error.message : t("ui_extra.automations_load_failed")
 }
 
 export type AutomationsDenContext = {

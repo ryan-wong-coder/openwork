@@ -335,7 +335,7 @@ function describeTaskCreateError(error: unknown) {
     : null;
   const code = typeof directCode === "string" ? directCode : serializedCode;
   if (code === "opencode_unconfigured") {
-    return "Choose a model for this workspace, then try again.";
+    return t("session_copy.choose_a_model_for_this_workspace_then_try_again");
   }
   const lower = message.toLowerCase();
   if (
@@ -347,7 +347,7 @@ function describeTaskCreateError(error: unknown) {
     lower.includes("internal_error") ||
     lower.includes("unexpected server error")
   ) {
-    return "OpenCode is unavailable for this workspace. Retry once it restarts, or restart OpenWork if the problem continues.";
+    return t("session_copy.opencode_is_unavailable_for_this_workspace_retry_once_it_restarts_or_restart_openwork_if_the_problem_cont");
   }
   return message;
 }
@@ -598,7 +598,7 @@ export function SessionRoute() {
     const scope = workspaceModelScope({ profileId: modelProfileId,
       workspaceId: selectedWorkspaceEndpoint?.workspaceId ?? selectedWorkspaceId, opencodeBaseUrl, localRuntime: isDesktopRuntime() });
     if (scope) {
-      if (!setWorkspaceDefaultModel(scope, model, variant)) toast.error("Workspace default could not be saved.");
+      if (!setWorkspaceDefaultModel(scope, model, variant)) toast.error(t("session_copy.workspace_default_could_not_be_saved"));
     } else if (!selectedWorkspaceId) {
       local.setPrefs((previous) => ({ ...previous, defaultModel: model, modelVariant: variant }));
     }
@@ -777,7 +777,7 @@ export function SessionRoute() {
               t("session.untitled"),
           }];
         }),
-    [sessionsByWorkspaceId],
+    [sessionsByWorkspaceId, currentLocale()],
   );
   const selectSessionChildIds = useMemo(createSessionChildIdsSelector, []);
   const sessionChildIdsByWorkspaceId = useSessionActivityStore(selectSessionChildIds);
@@ -1130,7 +1130,7 @@ export function SessionRoute() {
           : isGatewaySetConnected(provider, sessionProviderAuthStore.getSnapshot().importedCloudProviders)),
       });
       if (!connected && !signal.aborted && !request) {
-        toast.error(GATEWAY_CONNECT_TIMEOUT_MESSAGE, { action: { label: "Retry sign-in", onClick: () => {
+        toast.error(GATEWAY_CONNECT_TIMEOUT_MESSAGE, { action: { label: t("session_copy.retry_sign_in"), onClick: () => {
           if (!signal.aborted) void connect(provider);
         } } });
       }
@@ -1411,7 +1411,7 @@ export function SessionRoute() {
       (session) => session.id === activePermission.sessionID,
     );
     return String(source?.title ?? source?.slug ?? "").trim() || t("session.subagent_task");
-  }, [activePermission, selectedSessionId, selectedWorkspaceId, sessionsByWorkspaceId]);
+  }, [activePermission, selectedSessionId, selectedWorkspaceId, sessionsByWorkspaceId, currentLocale()]);
   const modelUnavailableMessage = organizationModelsEmpty
     ? t("models.organization_models_empty")
     : selectedModelUnavailable
@@ -1617,7 +1617,7 @@ export function SessionRoute() {
         const generation = getQueuedSendGeneration(targetSessionId);
         const assertCurrent = () => {
           assertQueuedSendCurrent(targetSessionId, generation);
-          if (sessionWorkHeld(opencodeBaseUrl, targetSessionId)) throw new Error("This conversation is being archived.");
+          if (sessionWorkHeld(opencodeBaseUrl, targetSessionId)) throw new Error(t("session_copy.this_conversation_is_being_archived"));
         };
         const text = (draft.resolvedText ?? draft.text).trim();
         if (!text && draft.attachments.length === 0) {
@@ -1636,7 +1636,7 @@ export function SessionRoute() {
           // Send-time validation targets the exact provider/model identity this
           // conversation displays and will submit — not the global default.
           if (resolveModelAvailability(sendModel ?? null).status === "unavailable") {
-            throw new Error("Selected model is unavailable. Choose another model before sending.");
+            throw new Error(t("session_copy.selected_model_is_unavailable_choose_another_model_before_sending"));
           }
 
           return submitWithCloudMcpReadiness({
@@ -1650,7 +1650,7 @@ export function SessionRoute() {
                 : createClient(opencodeBaseUrl, selectedWorkspaceRoot || undefined,
                   { token: selectedWorkspaceServerToken, mode: "openwork" }, { desktopTransport: "main" });
               if (unwrap(await promptClient.session.get({ sessionID: targetSessionId })).time.archived) {
-                throw new Error("This session is archived. Restore it before sending.");
+                throw new Error(t("session_copy.this_session_is_archived_restore_it_before_sending"));
               }
               assertCurrent();
               await sendWithRevertRollback({
@@ -1911,7 +1911,7 @@ export function SessionRoute() {
     sessionsByWorkspaceId,
     submitWithCloudMcpReadiness,
     token,
-  ]);
+  , currentLocale()]);
   const resolvePaneRuntime = useCallback((session: OpenSessionTab): SessionPagePaneRuntime => {
     const candidateWorkspace = workspaces.find((candidate) => candidate.id === session.workspaceId);
     const workspaceTitle = session.workspaceTitle?.trim()
@@ -1949,7 +1949,7 @@ export function SessionRoute() {
         status: "unavailable",
         workspaceId: paneEndpoint.workspaceId,
         workspaceTitle: paneEndpoint.workspaceTitle,
-        message: "The session runtime is still preparing.",
+        message: t("session_copy.the_session_runtime_is_still_preparing"),
       };
     }
 
@@ -1999,7 +1999,7 @@ export function SessionRoute() {
         const generation = getQueuedSendGeneration(targetSessionId);
         const assertCurrent = () => {
           assertQueuedSendCurrent(targetSessionId, generation);
-          if (sessionWorkHeld(endpoint.opencodeBaseUrl, targetSessionId)) throw new Error("This conversation is being archived.");
+          if (sessionWorkHeld(endpoint.opencodeBaseUrl, targetSessionId)) throw new Error(t("session_copy.this_conversation_is_being_archived"));
         };
         const text = (draft.resolvedText ?? draft.text).trim();
         if (!targetSessionId || (!text && draft.attachments.length === 0)) {
@@ -2022,7 +2022,7 @@ export function SessionRoute() {
                 : createClient(endpoint.opencodeBaseUrl, workspaceRoot || undefined,
                   { token: endpoint.token, mode: "openwork" }, { desktopTransport: "main" });
               if (unwrap(await promptClient.session.get({ sessionID: targetSessionId })).time.archived) {
-                throw new Error("This session is archived. Restore it before sending.");
+                throw new Error(t("session_copy.this_session_is_archived_restore_it_before_sending"));
               }
               assertCurrent();
               await sendWithRevertRollback({
@@ -2274,22 +2274,22 @@ export function SessionRoute() {
       workspaceOptions: workspaces.map((workspace) => ({ id: workspace.id, label: workspace.displayNameResolved })),
       onChangeDestination: (source, destination, state) => {
         const targetKey = newSessionDraftOwnerKey(sessionDraftScope, destination);
-        if (!targetKey) throw new Error("Workspace is unavailable. Try again.");
+        if (!targetKey) throw new Error(t("session_copy.workspace_is_unavailable_try_again"));
         const existing = useComposerStateStore.getState().sessions[targetKey];
         const occupied = existing?.draft || existing?.attachments.length || getSessionDraft(sessionDraftScope, destination.workspaceId, newSessionDraftSlot(destination))?.text;
         if (occupied && (state.draft || state.attachments.length)) {
-          throw new Error("Destination already has a draft. Open or discard it first.");
+          throw new Error(t("session_copy.destination_already_has_a_draft_open_or_discard_it_first"));
         }
         if (!occupied) {
           const saved = saveSessionDraft(sessionDraftScope, destination.workspaceId, newSessionDraftSlot(destination), { text: persistableComposerDraftText(state.draft), mode: "prompt" });
-          if (saved.status === "conflict") throw new Error("Destination draft changed. Try again.");
+          if (saved.status === "conflict") throw new Error(t("session_copy.destination_draft_changed_try_again"));
           useComposerStateStore.setState((current) => ({ sessions: { ...current.sessions, [targetKey]: state } }));
         }
         clearSessionDraft(sessionDraftScope, source.workspaceId, newSessionDraftSlot(source));
         useComposerStateStore.getState().clearSession(newSessionDraftOwnerKey(sessionDraftScope, source));
         if (destination.parent) {
           const workbench = useWorkbenchStore.getState();
-          const tab = { workspaceId: destination.workspaceId, sessionId: newSessionDraftSlot(destination), title: "Draft", draftDestination: destination };
+          const tab = { workspaceId: destination.workspaceId, sessionId: newSessionDraftSlot(destination), title: t("session_copy.draft"), draftDestination: destination };
           workbench.openTab(tab);
           workbench.setSideChat(destination.parent, tab);
           workbench.closeTab({ workspaceId: source.workspaceId, sessionId: newSessionDraftSlot(source) });
@@ -2385,7 +2385,7 @@ export function SessionRoute() {
     location.search,
     navigate,
     workspaces,
-  ]);
+  , currentLocale()]);
 
   const handleOpenCreateWorkspace = useCallback(() => {
     if (!canCreateWorkspaces()) return;
@@ -2398,9 +2398,9 @@ export function SessionRoute() {
       checkDesktopRestriction({ restriction: "allowMultipleWorkspaces" })
     ) {
       restrictionNotice.show({
-        title: "Additional workspaces are restricted",
+        title: t("session_copy.additional_workspaces_are_restricted"),
         message:
-          "Your organization administrator has restricted access to adding additional workspaces.",
+          t("session_copy.your_organization_administrator_has_restricted_access_to_adding_additional_workspaces"),
       });
       return;
     }
@@ -2426,7 +2426,7 @@ export function SessionRoute() {
     setRenameWorkspaceBusy(true);
     try {
       if (!client) {
-        toast.error("OpenWork server is unavailable. Reconnect the server before renaming workspaces.");
+        toast.error(t("session_copy.openwork_server_is_unavailable_reconnect_the_server_before_renaming_workspaces"));
         return;
       }
       await client.updateWorkspaceDisplayName(renameWorkspaceId, trimmed);
@@ -2434,7 +2434,7 @@ export function SessionRoute() {
       setRenameWorkspaceTitle("");
       await refreshRouteState();
     } catch (error) {
-      toast.error("Workspace rename failed", {
+      toast.error(t("session_copy.workspace_rename_failed"), {
         description: describeRouteError(error),
       });
     } finally {
@@ -2458,7 +2458,7 @@ export function SessionRoute() {
       if (typeof window !== "undefined") {
         const message =
           t("workspace_list.remove_confirm") ||
-          "Remove this workspace from the sidebar?";
+          t("session_copy.remove_this_workspace_from_the_sidebar");
         if (!window.confirm(message)) return;
       }
       // Remove from both stores so the next refresh can't resurrect the row
@@ -2820,7 +2820,7 @@ export function SessionRoute() {
     if (activeSessionId && selection) useSessionModelStore.getState().setVariant(activeSessionId, decision.next);
     else if (!activeSessionId) changeNewTaskModel(model, decision.next);
     else local.setPrefs((previous) => ({ ...previous, modelVariant: decision.next }));
-    return decision.fastOn ? "Fast on" : "Fast off";
+    return decision.fastOn ? t("session_copy.fast_on") : t("session_copy.fast_off");
   }, [local, modelBehaviorOptions, modelVariantValue, providerCatalog, newTaskModel, newTaskVariant, newTaskBehavior.options, changeNewTaskModel]);
 
   const toggleFastModeControlAction = useMemo<OpenworkControlAction>(() => ({
@@ -3115,7 +3115,7 @@ export function SessionRoute() {
       );
       return { ok: true, opened: "provider_auth_modal", preferredProviderId: preferred ?? null };
     },
-  }), [sessionProviderAuthStore]);
+  }), [sessionProviderAuthStore, currentLocale()]);
   useControlAction(addProviderControlAction);
 
   const handleOpenProviderAuth = useCallback(() => {
@@ -3224,7 +3224,7 @@ export function SessionRoute() {
     if (opencodeClient) {
       items.push({
         id: "session.rename",
-        title: "Rename session…",
+        title: t("session_copy.rename_session"),
         detail: currentSessionForGroupMove.title,
         meta: "Session",
         keywords: ["rename", "title", "name", "edit title"],
@@ -3236,7 +3236,7 @@ export function SessionRoute() {
       });
     }
     return items;
-  }, [currentSessionForGroupMove, currentSessionPinned, opencodeClient, selectedSessionId, selectedWorkspaceId]);
+  }, [currentSessionForGroupMove, currentSessionPinned, opencodeClient, selectedSessionId, selectedWorkspaceId, currentLocale()]);
 
   const currentSessionGroupId = selectedSessionId
     ? selectedWorkspaceGroupState?.assignments[selectedSessionId] ?? null
@@ -3249,22 +3249,22 @@ export function SessionRoute() {
 
   const sessionSearchPaletteItem = useMemo<PaletteItem>(() => ({
     id: "session-search.open",
-    title: "Search sessions",
-    detail: "Find a session by title in any workspace",
+    title: t("session_copy.search_sessions"),
+    detail: t("session_copy.find_a_session_by_title_in_any_workspace"),
     meta: "Cmd/Ctrl+Shift+F",
     searchText: "search find sessions titles history",
     action: () => {
       setCommandPaletteOpen(false);
       setSessionSearchOpen(true);
     },
-  }), []);
+  }), [currentLocale()]);
 
   const sessionFindPaletteItem = useMemo<PaletteItem | null>(() => {
     if (!selectedSessionId) return null;
     return {
       id: "session-find.open",
-      title: "Find in conversation",
-      detail: "Search within the current conversation",
+      title: t("session_copy.find_in_conversation"),
+      detail: t("session_copy.search_within_the_current_conversation"),
       meta: "Cmd/Ctrl+F",
       searchText: "find search current conversation session messages transcript",
       action: () => {
@@ -3272,13 +3272,13 @@ export function SessionRoute() {
         useSessionFindStore.getState().openFind({ sessionId: selectedSessionId });
       },
     };
-  }, [selectedSessionId]);
+  }, [selectedSessionId, currentLocale()]);
 
   const terminalPaletteItems = useMemo<PaletteItem[]>(() => platform.capabilities.terminal ? [
     {
       id: "terminal.toggle",
-      title: terminalOpen ? "Hide terminal" : "Show terminal",
-      detail: "Toggle the integrated terminal panel for this workspace",
+      title: terminalOpen ? t("session_copy.hide_terminal") : t("session_copy.show_terminal"),
+      detail: t("session_copy.toggle_the_integrated_terminal_panel_for_this_workspace"),
       meta: "Cmd/Ctrl+J",
       searchText: "terminal shell command line console show hide toggle",
       action: () => {
@@ -3286,7 +3286,7 @@ export function SessionRoute() {
         setTerminalOpen((value) => !value);
       },
     },
-  ] : [], [platform.capabilities.terminal, terminalOpen]);
+  ] : [], [platform.capabilities.terminal, terminalOpen, currentLocale()]);
 
   const developerModePaletteItem = useMemo<PaletteItem>(() => ({
     id: "developer-mode.toggle",
@@ -3302,7 +3302,7 @@ export function SessionRoute() {
         return next;
       });
     },
-  }), [developerMode]);
+  }), [developerMode, currentLocale()]);
 
   const buildCommandDiagnosticsBundle = useCallback(() => buildDiagnosticsBundleJson({
     anyActiveRuns: activeReloadBlockingSessions.length > 0,
@@ -3339,7 +3339,7 @@ export function SessionRoute() {
         toast.error(t("session.diagnostics_failed"), { description: describeRouteError(error) });
       }
     },
-  }), [buildCommandDiagnosticsBundle]);
+  }), [buildCommandDiagnosticsBundle, currentLocale()]);
 
   const diagnosticsExportPaletteItem = useMemo<PaletteItem>(() => ({
     id: "diagnostics.export",
@@ -3357,31 +3357,31 @@ export function SessionRoute() {
         toast.error(t("session.diagnostics_failed"), { description: describeRouteError(error) });
       }
     },
-  }), [buildCommandDiagnosticsBundle]);
+  }), [buildCommandDiagnosticsBundle, currentLocale()]);
 
   const nextSessionTabPaletteItem = useMemo<PaletteItem>(() => ({
     id: "session-tab.next",
-    title: "Next session tab",
-    detail: "Switch to the next session in this workspace",
+    title: t("session_copy.next_session_tab"),
+    detail: t("session_copy.switch_to_the_next_session_in_this_workspace"),
     meta: "Cmd/Ctrl+T",
     searchText: "next session tab switch forward",
     action: () => {
       setCommandPaletteOpen(false);
       goToNextSessionTab();
     },
-  }), [goToNextSessionTab]);
+  }), [goToNextSessionTab, currentLocale()]);
 
   const prevSessionTabPaletteItem = useMemo<PaletteItem>(() => ({
     id: "session-tab.previous",
-    title: "Previous session tab",
-    detail: "Switch to the previous session in this workspace",
+    title: t("session_copy.previous_session_tab"),
+    detail: t("session_copy.switch_to_the_previous_session_in_this_workspace"),
     meta: "Cmd/Ctrl+Shift+T",
     searchText: "previous session tab switch back",
     action: () => {
       setCommandPaletteOpen(false);
       goToPrevSessionTab();
     },
-  }), [goToPrevSessionTab]);
+  }), [goToPrevSessionTab, currentLocale()]);
 
   const reloadConfigPaletteItem = useMemo<PaletteItem>(() => ({
     id: "reload-opencode-config",
@@ -3396,7 +3396,7 @@ export function SessionRoute() {
       if (!reloadCoordinator.canReloadWorkspaceEngine) return;
       void reloadCoordinator.reloadWorkspaceEngine();
     },
-  }), [reloadCoordinator.canReloadWorkspaceEngine, reloadCoordinator.reloadWorkspaceEngine]);
+  }), [reloadCoordinator.canReloadWorkspaceEngine, reloadCoordinator.reloadWorkspaceEngine, currentLocale()]);
 
   const handleReorderWorkspaces = useCallback((workspaceIds: string[]) => {
     const activeWorkspaceIds = new Set(workspacesRef.current.map((workspace) => workspace.id));
@@ -3466,7 +3466,7 @@ export function SessionRoute() {
           .catch(() => null);
       }
       if (!list) {
-        throw new Error("OpenWork server is unavailable. Start or reconnect the server before creating a workspace.");
+        throw new Error(t("session_copy.openwork_server_is_unavailable_start_or_reconnect_the_server_before_creating_a_workspace"));
       }
       const createdId = resolveWorkspaceListSelectedId(list) || list.workspaces[list.workspaces.length - 1]?.id || "";
       let targetWorkspaceId = createdId;
@@ -3501,7 +3501,7 @@ export function SessionRoute() {
       await refreshRouteState();
       if (onPrepared) {
         const endpoint = targetWorkspace ? resolveWorkspaceEndpoint(targetWorkspace, { baseUrl: sessionBaseUrl, token: sessionToken }) : null;
-        if (!targetWorkspaceId || !endpoint) throw new Error("Created workspace is unavailable. Reconnect and retry.");
+        if (!targetWorkspaceId || !endpoint) throw new Error(t("session_copy.created_workspace_is_unavailable_reconnect_and_retry"));
         captureAnalyticsEvent("workspace_created", { workspace_type: "local" });
         onPrepared({ workspaceId: targetWorkspaceId, title: workspaceName, path: targetWorkspace?.path?.trim() || folder, endpoint });
         return;
@@ -3592,7 +3592,7 @@ export function SessionRoute() {
       if (!prepared) {
         if (!isDesktopRuntime()) {
           if (canCreateWorkspaces()) handleOpenCreateWorkspace();
-          throw new Error("Choose a workspace before retrying this message.");
+          throw new Error(t("session_copy.choose_a_workspace_before_retrying_this_message"));
         }
         // The first workspace's engine instance reads its providers when this
         // chat starts. Let the organization provider sync begun at sign-in
@@ -3608,10 +3608,10 @@ export function SessionRoute() {
         }
         const home = await getDesktopHomeDir().catch(() => "");
         const folder = home ? await joinDesktopPath(home, "OpenWork Chat").catch(() => "") : "";
-        if (!folder) throw new Error("Choose a workspace before retrying this message.");
+        if (!folder) throw new Error(t("session_copy.choose_a_workspace_before_retrying_this_message"));
         await handleCreateWorkspace("starter", folder, undefined, (workspace) => { prepared = workspace; });
       }
-      if (!prepared) throw new Error("Workspace is unavailable. Reconnect and retry.");
+      if (!prepared) throw new Error(t("session_copy.workspace_is_unavailable_reconnect_and_retry"));
       bindPendingConversationWorkspace(pending.id, prepared.workspaceId);
       const refreshed = workspacesRef.current.find((workspace) => workspace.id === prepared?.workspaceId);
       return createRouteSessionOnEngine((refreshed && endpointForWorkspace(refreshed)) || prepared.endpoint, prepared.path || undefined);
@@ -3670,7 +3670,7 @@ export function SessionRoute() {
 
   const startAppConversation = async (prompt: string) => {
     const sessionId = await handleCreateTaskInWorkspaceWithOpenMode(selectedWorkspaceId, "primary");
-    if (!sessionId) throw new Error("Could not start a conversation. Check that your workspace is connected.");
+    if (!sessionId) throw new Error(t("session_copy.could_not_start_a_conversation_check_that_your_workspace_is_connected"));
     saveSessionDraft(sessionDraftScope, selectedWorkspaceId, sessionId, { text: prompt, mode: "prompt" });
     focusPromptSoon();
   };
@@ -3930,7 +3930,7 @@ export function SessionRoute() {
           handoff?.consume?.();
           if (destination.parent) {
             const workbench = useWorkbenchStore.getState();
-            const tab = { workspaceId, sessionId: newSessionDraftSlot(destination), title: prompt.trim() || "New session", draftDestination: destination, pendingConversationId: pending.id };
+            const tab = { workspaceId, sessionId: newSessionDraftSlot(destination), title: prompt.trim() || t("session_copy.new_session"), draftDestination: destination, pendingConversationId: pending.id };
             workbench.openTab(tab);
             workbench.setSideChat(destination.parent, tab);
           } else {
@@ -3941,9 +3941,9 @@ export function SessionRoute() {
           const workspace = workspaces.find((item) => item.id === workspaceId);
           void createPendingConversation(pending.id, async () => {
             const currentWorkspace = workspacesRef.current.find((item) => item.id === workspaceId) ?? workspace;
-            if (!currentWorkspace) throw new Error("Workspace is unavailable. Try again.");
+            if (!currentWorkspace) throw new Error(t("session_copy.workspace_is_unavailable_try_again"));
             const workspaceEndpoint = endpointForWorkspace(currentWorkspace);
-            if (!workspaceEndpoint?.token) throw new Error("Workspace is disconnected. Reconnect and try again.");
+            if (!workspaceEndpoint?.token) throw new Error(t("session_copy.workspace_is_disconnected_reconnect_and_try_again"));
             return createRouteSessionOnEngine(workspaceEndpoint, currentWorkspace.path?.trim() || undefined);
           }, (created) => publishCreatedConversation(pending, created, agent, workspace?.displayNameResolved));
         },
@@ -4021,7 +4021,7 @@ export function SessionRoute() {
           />
         ) : cloudWorkspaceMainContentTakeover
       }
-      mainContentTitle={extensionsMainOpen ? t("settings.tab_extensions") : cloudWorkspaceMainContentTakeover ? "Cloud workspace" : undefined}
+      mainContentTitle={extensionsMainOpen ? t("settings.tab_extensions") : cloudWorkspaceMainContentTakeover ? t("session_copy.cloud_workspace") : undefined}
       mainContentHeaderActionsRef={extensionsMainOpen ? setLibraryHeaderActionsTarget
         : cloudWorkspaceMainContentTakeover ? undefined
         : dashboardRouteActive ? setDashboardHeaderActionsTarget

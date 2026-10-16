@@ -1,4 +1,5 @@
 import { sideChatSystemContext } from "../chat/workbench-store";
+import { currentLocale } from "@/i18n";
 import type { OpenworkServerClient } from "../../../../app/lib/openwork-server";
 import { readOpenworkEnvPendingChanges } from "../../../../app/lib/openwork-env-runtime";
 import { readOpenworkRuntimeFacts, renderOpenworkRuntimeContext } from "./runtime-context";
@@ -89,7 +90,8 @@ export async function buildOpenworkSessionSystemContext(
   } = {},
 ): Promise<string> {
   const envContext = await buildOpenworkEnvSystemContext(client, options);
-  const runtimeContext = renderOpenworkRuntimeContext(readOpenworkRuntimeFacts());
+  const language = currentLocale();
+  const runtimeContext = renderOpenworkRuntimeContext(readOpenworkRuntimeFacts({ locale: language === "zh" ? "zh-CN" : language }));
   const sideChatContext = options.workspaceId && options.cacheKey
     ? sideChatSystemContext(options.workspaceId, options.cacheKey) : undefined;
   return [runtimeContext, envContext, sideChatContext].filter(Boolean).join("\n\n");

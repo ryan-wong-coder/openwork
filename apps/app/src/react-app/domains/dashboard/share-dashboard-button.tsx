@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { useRef, useState, type FormEvent } from "react";
 import { Check, Loader2, Share2 } from "lucide-react";
 import type { SavedAppSummary } from "@openwork/types/workflows";
@@ -21,11 +22,11 @@ export function ShareDashboardButton({ apps }: { apps: SavedAppSummary[] }) {
   };
   if (!canManage) return null;
   return <Dialog open={open} onOpenChange={(next) => { if (!pending) { if (next) setOpen(true); else close(); } }}>
-    <Button variant="outline" onClick={() => setOpen(true)}><Share2 className="size-4" />Share</Button>
+    <Button variant="outline" onClick={() => setOpen(true)}><Share2 className="size-4" />{t("extensions.detail_share")}</Button>
     {open ? <DialogContent className="max-h-[90dvh] overflow-y-auto">
       <DialogHeader>
-        <DialogTitle>Share your dashboard</DialogTitle>
-        <DialogDescription>Choose artifacts to add to a teammate’s dashboard. They must belong to your organization.</DialogDescription>
+        <DialogTitle>{t("interface.share_your_dashboard")}</DialogTitle>
+        <DialogDescription>{t("interface.choose_artifacts_to_add_to_a_teammate_s_dashboard_they_must_belong_to_your_organization")}</DialogDescription>
       </DialogHeader>
       <ShareDashboardForm apps={apps.filter((app) => app.canManage)} pending={pending} setPending={setPending} onClose={close}
         onVerifiedSession={(commit) => { commitSession.current = commit; }} />
@@ -83,41 +84,41 @@ function ShareDashboardForm({ apps, pending, setPending, onClose, onVerifiedSess
     }
   };
   if (!apps.length) return <div className="space-y-4">
-    <p className="text-sm text-muted-foreground">Add an artifact you manage to your dashboard first. Company artifacts and artifacts shared with you keep their existing access settings.</p>
-    <Button variant="outline" onClick={onClose}>Done</Button>
+    <p className="text-sm text-muted-foreground">{t("interface.add_an_artifact_you_manage_to_your_dashboard_first_company_artifacts_and_artifacts_shared_with_you_k")}</p>
+    <Button variant="outline" onClick={onClose}>{t("skills.share_done")}</Button>
   </div>;
   if (complete) return <div className="space-y-4">
-    <p role="status" className="text-sm">Shared {shared.length} {shared.length === 1 ? "app" : "apps"} with {email.trim()}. They’ll appear when your teammate opens or reloads their dashboard.</p>
-    <Button onClick={onClose}>Done</Button>
+    <p role="status" className="text-sm">{t("interface.shared")} {shared.length} {shared.length === 1 ? t("interface.app") : t("interface.apps")}{t("interface.with")} {email.trim()}. They’ll appear when your teammate opens or reloads their dashboard.</p>
+    <Button onClick={onClose}>{t("skills.share_done")}</Button>
   </div>;
   return <form className="space-y-4" onSubmit={(event) => void share(event)}>
     <label className="block space-y-2 text-sm font-medium">
-      <span>Teammate’s email</span>
-      <Input type="email" autoComplete="email" placeholder="teammate@company.com" required maxLength={320} value={email}
+      <span>{t("interface.teammate_s_email")}</span>
+      <Input type="email" autoComplete="email" placeholder={t("interface.teammate_company_com")} required maxLength={320} value={email}
         disabled={pending || needsReauth || shared.length > 0} onChange={(event) => setEmail(event.target.value)} />
     </label>
     <fieldset disabled={pending || needsReauth} className="space-y-2">
-      <legend className="mb-2 text-sm font-medium">Artifacts to share</legend>
+      <legend className="mb-2 text-sm font-medium">{t("interface.artifacts_to_share")}</legend>
       <div className="max-h-60 space-y-2 overflow-auto">
         {apps.map((app) => <label key={app.view.id} className="flex items-center gap-3 rounded-lg border p-3 text-sm">
           <input type="checkbox" className="size-4" checked={selected.has(app.view.id)} disabled={shared.includes(app.view.id)}
             onChange={(event) => setSelected((current) => { const next = new Set(current); if (event.target.checked) next.add(app.view.id); else next.delete(app.view.id); return next; })} />
           <span className="min-w-0 flex-1 break-words">{app.view.title}</span>
-          {shared.includes(app.view.id) ? <span className="flex items-center gap-1 text-xs"><Check className="size-3.5" />Shared</span> : null}
+          {shared.includes(app.view.id) ? <span className="flex items-center gap-1 text-xs"><Check className="size-3.5" />{t("interface.shared")}</span> : null}
         </label>)}
       </div>
     </fieldset>
-    <p className="text-xs text-muted-foreground">Sharing gives view access to each artifact’s underlying workflow, its saved results, and other artifacts built from that workflow. Existing permissions stay in place. Company-managed artifacts are not included.</p>
-    {error ? <p role="alert" className="text-sm text-destructive">{error} Apps marked Shared are already available to your teammate. Retry to share the remaining apps.</p> : null}
+    <p className="text-xs text-muted-foreground">{t("interface.sharing_gives_view_access_to_each_artifact_s_underlying_workflow_its_saved_results_and_other_artifac")}</p>
+    {error ? <p role="alert" className="text-sm text-destructive">{error}{t("interface.apps_marked_shared_are_already_available_to_your_teammate_retry_to_share_the_remaining_apps")}</p> : null}
     {needsReauth ? <DenReauthNotice onVerified={async (nextClient, commit) => {
       verifiedClient.current = nextClient;
       onVerifiedSession(commit);
       await shareApps(nextClient);
     }} onCancel={() => setNeedsReauth(false)} /> : null}
     <div className="flex justify-end gap-2">
-      <Button type="button" variant="outline" disabled={pending} onClick={onClose}>Cancel</Button>
+      <Button type="button" variant="outline" disabled={pending} onClick={onClose}>{t("settings.environment.cancel")}</Button>
       <Button type="submit" disabled={pending || needsReauth || !selected.size || !email.trim() || !client || !orgId}>
-        {pending ? <><Loader2 className="size-4 animate-spin" />Sharing…</> : "Share artifacts"}
+        {pending ? <><Loader2 className="size-4 animate-spin" />{t("interface.sharing")}</> : t("interface.share_artifacts")}
       </Button>
     </div>
   </form>;

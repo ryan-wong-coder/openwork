@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import * as React from "react"
 
 import {
@@ -115,7 +116,7 @@ export const Image = ({
         type="button"
         className="inline-block max-w-full cursor-zoom-in rounded-md text-left transition-opacity hover:opacity-90"
         onClick={() => setOpen(true)}
-        aria-label={`Expand ${alt}`}
+        aria-label={t("ui.expand_image", { alt })}
         title={alt}
       >
         {image}

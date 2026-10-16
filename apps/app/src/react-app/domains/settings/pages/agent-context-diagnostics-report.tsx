@@ -364,8 +364,8 @@ function AgentEvidence(props: {
         />
       </div>
       <div className="flex flex-wrap gap-2">
-        <Marker label="search_capabilities" value={agent.prompt.markers.searchCapabilities} />
-        <Marker label="execute_capability" value={agent.prompt.markers.executeCapability} />
+        <Marker label={t("interface.search_capabilities")} value={agent.prompt.markers.searchCapabilities} />
+        <Marker label={t("interface.execute_capability")} value={agent.prompt.markers.executeCapability} />
         <Marker label={t("connect.diagnostics_artifacts_marker")} value={agent.prompt.markers.artifacts} />
       </div>
       <div className="space-y-1.5">

@@ -1,5 +1,7 @@
 "use client"
 
+import { t } from "@/i18n";
+
 import {
   HoverCard,
   HoverCardContent,
@@ -111,7 +113,7 @@ export function SourceContent({
         </div>
         <div className="line-clamp-2 text-sm font-medium">{title}</div>
         <div className="text-muted-foreground line-clamp-2 text-sm">
-          {description ? description : <span className="text-muted-foreground">No description available</span>}
+          {description ? description : <span className="text-muted-foreground">{t("ui.no_description_available")}</span>}
         </div>
       </a>
     </HoverCardContent>

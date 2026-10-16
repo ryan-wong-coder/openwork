@@ -763,7 +763,7 @@ export function AppSidebar(props: AppSidebarProps) {
           >
             <img
               src={brandLogoUrl}
-              alt="Organization logo"
+              alt={t("interface.organization_logo")}
               className="max-h-9 w-auto max-w-[min(140px,100%)] object-contain object-left"
             />
           </div>
@@ -791,7 +791,7 @@ export function AppSidebar(props: AppSidebarProps) {
                 <SquarePen className="size-4" />
                 <span className="flex-1 truncate">{t("session.new_task")}</span>
                 <kbd className="ml-auto font-sans text-[11px] text-sidebar-foreground/50 max-lg:hidden pointer-coarse:hidden">
-                  {isMacPlatform() ? "⌘N" : "Ctrl+N"}
+                  {isMacPlatform() ? "⌘N" : t("interface.ctrl_n")}
                 </kbd>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -799,7 +799,7 @@ export function AppSidebar(props: AppSidebarProps) {
               <SidebarDestination
                 active={props.dashboardActive === true}
                 icon={Blocks}
-                label="Dashboard"
+                label={t("interface.dashboard")}
                 onSelect={props.onOpenDashboard}
               />
             ) : null}
@@ -807,15 +807,15 @@ export function AppSidebar(props: AppSidebarProps) {
               <SidebarDestination
                 active={props.automationsActive === true}
                 icon={Clock3}
-                label="Automations"
+                label={t("interface.automations")}
                 labelContent={(
                   <span className="flex min-w-0 flex-1 items-center gap-2">
-                    <span className="truncate">Automations</span>
+                    <span className="truncate">{t("interface.automations")}</span>
                     {props.automationsNeedAttention ? (
                       <AlertTriangle
                         data-automations-attention-indicator
                         className="ml-auto size-3.5 shrink-0 text-warning"
-                        aria-label="An Automation needs attention"
+                        aria-label={t("interface.an_automation_needs_attention")}
                       />
                     ) : null}
                   </span>
@@ -827,7 +827,7 @@ export function AppSidebar(props: AppSidebarProps) {
               <SidebarDestination
                 active={props.calendarActive === true}
                 icon={CalendarDays}
-                label="Calendar"
+                label={t("interface.calendar")}
                 onSelect={props.onOpenCalendar}
               />
             ) : null}
@@ -1341,8 +1341,8 @@ export function NewSessionDraftRow({ workspaceId, group }: { workspaceId: string
   const draft = useNewSessionDraft(workspaceId, group?.id);
   return <>
     {draft.pending.map((entry) => <DraftSessionRow key={entry.id} workspaceId={workspaceId} groupId={group?.id}
-      title={persistableComposerDraftText(entry.submitted.draft).trim() || "New session"} pending={entry} />)}
-    {draft.hasSourceDraft ? <DraftSessionRow workspaceId={workspaceId} groupId={group?.id} title={draft.preview || "New session"} /> : null}
+      title={persistableComposerDraftText(entry.submitted.draft).trim() || t("session.new_task")} pending={entry} />)}
+    {draft.hasSourceDraft ? <DraftSessionRow workspaceId={workspaceId} groupId={group?.id} title={draft.preview || t("session.new_task")} /> : null}
   </>;
 }
 
@@ -1356,7 +1356,7 @@ function DraftSessionRow({ workspaceId, groupId, title, pending }: { workspaceId
     && location.pathname.endsWith("/session")
     && (new URLSearchParams(location.search).get("pendingConversation") || undefined) === pending?.id
     && (new URLSearchParams(location.search).get("draftGroup") || undefined) === groupId;
-  const metadata = pending ? pending.phase === "creation-failed" ? "Not sent" : "" : "Draft";
+  const metadata = pending ? pending.phase === "creation-failed" ? t("session_copy.not_sent") : "" : t("session_copy.draft");
   return <SidebarMenuSubItem className="flex items-center" data-sidebar-draft-workspace-id={workspaceId} data-sidebar-draft-group-id={groupId ?? ""} data-sidebar-pending-conversation={pending?.id}>
     <div className="relative min-w-0 flex-1 select-none">
       <SidebarMenuSubButton

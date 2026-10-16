@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { type Token, type Tokens, Renderer } from "marked";
 import { Tokenizer } from "htmlparser2";
 import { sessionReferenceHref, type SessionReference } from "@/components/chat/session-reference";
@@ -16,7 +17,7 @@ function escape(value: string) {
 export function sessionReferenceHtml(reference: SessionReference) {
   const href = escape(sessionReferenceHref(reference));
   const title = escape(reference.title);
-  return `<a href="${href}" data-openwork-session-reference="${href}" aria-label="Open ${reference.archived ? "archived task" : "task"}: ${title}" title="${title}" class="${SESSION_REFERENCE_LINK_CLASS_NAME}"><img src="${escape(resolveExtensionIconSrc("/openwork-sidebar-mark.svg"))}" alt="" aria-hidden="true" class="size-4 shrink-0 object-contain dark:invert"><span class="min-w-0 max-w-64 truncate">${title}</span></a>`;
+  return `<a href="${href}" data-openwork-session-reference="${href}" aria-label="${escape(t("ui.open_task", { title: reference.title }))}" title="${title}" class="${SESSION_REFERENCE_LINK_CLASS_NAME}"><img src="${escape(resolveExtensionIconSrc("/openwork-sidebar-mark.svg"))}" alt="" aria-hidden="true" class="size-4 shrink-0 object-contain dark:invert"><span class="min-w-0 max-w-64 truncate">${title}</span></a>`;
 }
 
 // Raw HTML may contain an anchor, button, or another interactive element that

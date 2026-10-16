@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { useEffect, useState } from "react";
 import type { DynamicToolUIPart } from "ai";
 import { ChevronRight } from "lucide-react";
@@ -92,8 +93,8 @@ export function CodeModeTool({ part, calls: allCalls, lifecycle, connectors }: {
   // in the child sentence ("Creating a note" versus "Creating note").
   const comparable = (value: string) => value.toLowerCase().replace(/\b(?:a|an|the)\b/g, "").replace(/\s+/g, " ").trim();
   const distinctCurrent = currentSentence && !comparable(summary).startsWith(comparable(currentSentence));
-  const label = statusUnknown ? `${summary}, status unavailable`
-    : waiting ? "Waiting for your action"
+  const label = statusUnknown ? t("ui.action_status_unavailable", { action: summary })
+    : waiting ? t("ui.waiting_for_your_action")
       : !open && distinctCurrent ? `${summary} · ${currentSentence}` : summary;
 
   // A finished script that only read the tool catalog did no work the
@@ -157,13 +158,13 @@ export function CodeModeTool({ part, calls: allCalls, lifecycle, connectors }: {
       <div className="group/step flex min-w-0 items-center gap-2">
         <CollapsibleTrigger
           className="group flex min-w-0 max-w-full items-center gap-2 text-start text-sm text-muted-foreground hover:text-foreground"
-          aria-label={`${label}. ${open ? "Hide steps" : "Show steps"}`}
+          aria-label={`${label}. ${open ? t("ui.hide_steps") : t("ui.show_steps")}`}
         >
           <ChevronRight aria-hidden="true" className={cn("size-4 shrink-0 transition-transform duration-150 ease-out motion-reduce:transition-none", open && "rotate-90")} />
           <span className={cn("min-w-0 truncate", running && !current && "ow-text-shimmer")}>{label}</span>
-          {calls.length > 0 ? <span className="shrink-0 text-xs">{calls.length} {calls.length === 1 ? "step" : "steps"}</span> : null}
-          {waitingOn ? <span className="shrink-0 text-xs">Waiting on {waitingOn}</span> : null}
-          {failedCalls.length > 0 ? <span className="shrink-0 text-xs">{failedCalls.length} failed</span> : null}
+          {calls.length > 0 ? <span className="shrink-0 text-xs">{t("ui.steps_count", { count: calls.length })}</span> : null}
+          {waitingOn ? <span className="shrink-0 text-xs">{t("ui.waiting_on")} {waitingOn}</span> : null}
+          {failedCalls.length > 0 ? <span className="shrink-0 text-xs">{t("ui.failed_count", { count: failedCalls.length })}</span> : null}
           {duration ? <span className="shrink-0 text-xs tabular-nums text-muted-foreground/70">{duration}</span> : null}
         </CollapsibleTrigger>
         <DetailsToggle open={detailsOpen} onToggle={() => setDetailsOpen(!detailsOpen)} label={label} alwaysVisible={failed} />
@@ -184,7 +185,7 @@ export function CodeModeTool({ part, calls: allCalls, lifecycle, connectors }: {
               shimmer={running && call.toolCallId === current?.toolCallId}
             />
           ))}
-          {calls.length === 0 && running ? <span className="text-xs text-muted-foreground">Starting…</span> : null}
+          {calls.length === 0 && running ? <span className="text-xs text-muted-foreground">{t("ui.starting")}</span> : null}
         </div>
       </CollapsibleContent>
     </Collapsible>

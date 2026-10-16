@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { Message, MessageContent } from "@/components/ui/message";
 import { TaskRecovery } from "@/components/chat/task-recovery";
 import { presentOpencodeSessionError } from "../sync/session-error";
@@ -23,7 +24,7 @@ export function PendingConversationView({ conversation, composer }: { conversati
             </MessageContent>
           </Message>
           {failed ? <TaskRecovery state="failed"
-            title="Couldn’t send your message"
+            title={t("interface.couldn_t_send_your_message")}
             technicalDetails={error?.technicalDetails}
             retryLabel="Retry sending"
             onRetry={() => { void retryPendingConversation(conversation.id); }}

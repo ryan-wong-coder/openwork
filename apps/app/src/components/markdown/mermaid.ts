@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import DOMPurify from "dompurify";
 import { useEffect, useSyncExternalStore, type RefObject } from "react";
 import type { MermaidConfig } from "mermaid";
@@ -126,15 +127,15 @@ function estimateMermaidNodes(source: string) {
 
 export function guardMermaidSource(source: string): MermaidGuardResult {
   if (source.length > MERMAID_LIMITS.maxSourceBytes) {
-    return { ok: false, reason: "size", message: "Diagram source is too large to render safely." };
+    return { ok: false, reason: "size", message: t("ui.diagram_source_is_too_large_to_render_safely") };
   }
   const sourceBytes = new TextEncoder().encode(source).byteLength;
   if (sourceBytes > MERMAID_LIMITS.maxSourceBytes) {
-    return { ok: false, reason: "size", message: "Diagram source is too large to render safely." };
+    return { ok: false, reason: "size", message: t("ui.diagram_source_is_too_large_to_render_safely") };
   }
 
   if (hasUnsafeMermaidSource(source)) {
-    return { ok: false, reason: "unsafe", message: "Diagram source contains unsafe directives or resources." };
+    return { ok: false, reason: "unsafe", message: t("ui.diagram_source_contains_unsafe_directives_or_resources") };
   }
 
   const lines = source.split("\n").length;
@@ -148,7 +149,7 @@ export function guardMermaidSource(source: string): MermaidGuardResult {
     edges > MERMAID_LIMITS.maxEdges ||
     nodes > MERMAID_LIMITS.maxNodes
   ) {
-    return { ok: false, reason: "complexity", message: "Diagram is too complex to render safely." };
+    return { ok: false, reason: "complexity", message: t("ui.diagram_is_too_complex_to_render_safely") };
   }
 
   return { ok: true };
@@ -296,12 +297,12 @@ export async function renderMermaidSource(
 }
 
 function sourceStatus(reason: Exclude<MermaidRenderResult, { status: "rendered" }>["reason"]) {
-  if (reason === "size") return "Diagram source is too large. Showing source.";
-  if (reason === "complexity") return "Diagram is too complex. Showing source.";
-  if (reason === "unsafe") return "Diagram contains unsafe directives or resources. Showing source.";
-  if (reason === "timeout") return "Diagram rendering timed out. Showing source.";
-  if (reason === "unavailable") return "Diagram rendering is unavailable. Showing source.";
-  return "Diagram could not be rendered. Showing source.";
+  if (reason === "size") return t("ui.diagram_source_is_too_large_showing_source");
+  if (reason === "complexity") return t("ui.diagram_is_too_complex_showing_source");
+  if (reason === "unsafe") return t("ui.diagram_contains_unsafe_directives_or_resources_showing_source");
+  if (reason === "timeout") return t("ui.diagram_rendering_timed_out_showing_source");
+  if (reason === "unavailable") return t("ui.diagram_rendering_is_unavailable_showing_source");
+  return t("ui.diagram_could_not_be_rendered_showing_source");
 }
 
 function setMermaidView(element: HTMLElement, view: "rendered" | "source") {
@@ -334,7 +335,7 @@ async function enhanceMermaidElement(element: HTMLElement, theme: ResolvedThemeM
   element.setAttribute("aria-busy", "true");
   if (status instanceof HTMLElement) {
     status.hidden = false;
-    status.textContent = "Rendering diagram…";
+    status.textContent = t("ui.rendering_diagram");
   }
 
   const result = await renderMermaidSource(code.textContent ?? "", theme);

@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import {
   useCallback,
   useEffect,
@@ -67,7 +68,7 @@ export function ConnectLinkProvider({ children }: ConnectLinkProviderProps) {
       setError({ code: result.code, message: result.message });
       setPhase("error");
     }).catch(() => {
-      setError({ code: "invalid_token", message: "Could not verify the connect link." });
+      setError({ code: "invalid_token", message: t("ui_extra.connect_link_verify_failed") });
       setPhase("error");
     });
   }, []);
@@ -118,7 +119,7 @@ export function ConnectLinkProvider({ children }: ConnectLinkProviderProps) {
       await refreshDenBootstrapConfigFromShell();
       dismiss();
     }).catch(() => {
-      setError({ code: "invalid_token", message: "Could not apply the connect link." });
+      setError({ code: "invalid_token", message: t("ui_extra.connect_link_apply_failed") });
       setPhase("error");
     });
   }, [dismiss]);

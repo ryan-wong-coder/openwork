@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import { useState } from "react";
 
 import {
@@ -33,38 +34,38 @@ type AttributionOption = {
   icon: typeof BotIcon;
 };
 
-const options: AttributionOption[] = [
+function attributionOptions(): AttributionOption[] { return [
   {
     source: "ai_assistant",
-    label: "An AI assistant",
+    label: t("ui_extra.attribution_ai"),
     description: "ChatGPT, Claude, Gemini, Perplexity...",
     icon: BotIcon,
   },
   {
     source: "search",
-    label: "Search",
+    label: t("ui_extra.attribution_search"),
     description: "Google, Bing, DuckDuckGo...",
     icon: SearchIcon,
   },
   {
     source: "social",
-    label: "Social media",
+    label: t("ui_extra.attribution_social"),
     description: "X, LinkedIn, YouTube, Reddit...",
     icon: MessageCircleIcon,
   },
   {
     source: "github",
-    label: "GitHub or open source community",
-    description: "Repos, stars, awesome lists...",
+    label: t("ui_extra.attribution_github"),
+    description: t("ui_extra.attribution_github_description"),
     icon: GithubIcon,
   },
   {
     source: "friend_or_colleague",
-    label: "A friend or colleague",
-    description: "Someone recommended it directly.",
+    label: t("ui_extra.attribution_friend"),
+    description: t("ui_extra.attribution_friend_description"),
     icon: UsersIcon,
   },
-];
+]; }
 
 type AttributionStepProps = {
   onSubmit: (source: AttributionSource, aiPrompt?: string) => void;
@@ -87,22 +88,18 @@ export function AttributionStep({ onSubmit, onSkip }: AttributionStepProps) {
 
       <div className="relative z-10 mx-6 w-full max-w-md rounded-3xl border border-border bg-background px-8 py-10">
         <PageHeader className="mb-8 text-center">
-          <PageTitle>How did you hear about OpenWork?</PageTitle>
-          <PageDescription>
-            One quick question — it helps us know where to show up.
-          </PageDescription>
+          <PageTitle>{t("interface.how_did_you_hear_about_openwork")}</PageTitle>
+          <PageDescription>{t("interface.one_quick_question_it_helps_us_know_where_to_show_up")} </PageDescription>
         </PageHeader>
 
         {aiSelected ? (
           <div className="space-y-3">
-            <div className="text-sm font-medium text-foreground">
-              What did you ask the AI?
-            </div>
+            <div className="text-sm font-medium text-foreground">{t("interface.what_did_you_ask_the_ai")} </div>
             <Textarea
               autoFocus
               value={aiPrompt}
               onChange={(event) => setAiPrompt(event.target.value)}
-              placeholder={'e.g. "best open source alternative to Claude Cowork"'}
+              placeholder={t("interface.e_g_best_open_source_alternative_to_claude_cowork")}
               rows={3}
             />
             <div className="flex items-center justify-end gap-2 pt-1">
@@ -110,17 +107,13 @@ export function AttributionStep({ onSubmit, onSkip }: AttributionStepProps) {
                 variant="ghost"
                 size="sm"
                 onClick={() => onSubmit("ai_assistant")}
-              >
-                Skip this part
-              </Button>
-              <Button size="sm" onClick={() => onSubmit("ai_assistant", aiPrompt)}>
-                Continue
-              </Button>
+              >{t("interface.skip_this_part")} </Button>
+              <Button size="sm" onClick={() => onSubmit("ai_assistant", aiPrompt)}>{t("extensions.mcp_check_continue")} </Button>
             </div>
           </div>
         ) : (
           <div className="space-y-3">
-            {options.map((option) => (
+            {attributionOptions().map((option) => (
               <button
                 key={option.source}
                 type="button"
@@ -147,9 +140,7 @@ export function AttributionStep({ onSubmit, onSkip }: AttributionStepProps) {
 
             <div className="pt-1 text-center">
               <Button variant="ghost" size="sm" onClick={onSkip}>
-                <SkipForwardIcon className="mr-1.5 size-3.5" />
-                Skip
-              </Button>
+                <SkipForwardIcon className="mr-1.5 size-3.5" />{t("interface.skip")} </Button>
             </div>
           </div>
         )}

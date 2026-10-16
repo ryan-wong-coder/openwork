@@ -1,4 +1,6 @@
 /** @jsxImportSource react */
+import { formatRangeLabel, formatTime } from "./calendar-locale"
+import { t } from "@/i18n";
 import { useEffect, useMemo, useState } from "react"
 import { AlertCircle, CalendarDays, ChevronLeft, ChevronRight, Lock, Plus, RefreshCw } from "lucide-react"
 import { useNavigate, useSearchParams } from "react-router"
@@ -33,8 +35,6 @@ import {
   calendarRange,
   type CalendarView,
   dateKey,
-  formatRangeLabel,
-  formatTime,
   type LocalDate,
   localDateOf,
   nextOpenSlot,
@@ -89,11 +89,11 @@ function ProviderLogo({ provider }: { provider: CalendarProviderId }) {
 function blockedCopy(error: CalendarConnectionError): { label: string; reason: string; canConnect: boolean } {
   const name = CALENDAR_PROVIDER_LABEL[error.provider]
   switch (error.kind) {
-    case "not_connected": return { label: `Connect ${name}`, reason: error.message, canConnect: true }
-    case "auth_expired": return { label: `Reconnect ${name}`, reason: error.message, canConnect: true }
-    case "permission_missing": return { label: `${name} needs calendar access`, reason: error.message, canConnect: true }
-    case "policy_blocked": return { label: `${name} is blocked by your organization`, reason: error.message, canConnect: false }
-    case "unsupported": return { label: `${name} unavailable`, reason: error.message, canConnect: false }
+    case "not_connected": return { label: t("ui_extra.connect_named", { name }), reason: error.message, canConnect: true }
+    case "auth_expired": return { label: t("ui_extra.reconnect_named", { name }), reason: error.message, canConnect: true }
+    case "permission_missing": return { label: t("ui_extra.calendar_access_needed", { name }), reason: error.message, canConnect: true }
+    case "policy_blocked": return { label: t("ui_extra.blocked_by_org", { name }), reason: error.message, canConnect: false }
+    case "unsupported": return { label: t("ui_extra.named_unavailable", { name }), reason: error.message, canConnect: false }
     default: return { label: name, reason: error.message, canConnect: false }
   }
 }
@@ -104,7 +104,7 @@ function isBlocked(error: CalendarConnectionError) {
 
 function CalendarSkeleton() {
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-3 p-4" role="status" aria-label="Loading calendar">
+    <div className="flex min-h-0 flex-1 flex-col gap-3 p-4" role="status" aria-label={t("interface.loading_calendar")}>
       <Skeleton className="h-8 w-80 rounded-lg" />
       <div className="grid flex-1 grid-cols-7 gap-px">
         {Array.from({ length: 7 }, (_, index) => <Skeleton key={index} className="h-full min-h-96 rounded-md" />)}
@@ -222,7 +222,7 @@ export function CalendarPage(props: {
         <CloudSignInBanner
           testId="calendar-sign-in-banner"
           media={<CloudSignInBannerIcon><CalendarDays /></CloudSignInBannerIcon>}
-          message="Sign in to OpenWork Cloud to see your Automations next to your meetings."
+          message={t("interface.sign_in_to_openwork_cloud_to_see_your_automations_next_to_your_meetings")}
           onSignIn={props.onSignIn}
         />
       </div>
@@ -233,9 +233,9 @@ export function CalendarPage(props: {
       <Empty className="pt-16" data-calendar-no-organization>
         <EmptyHeader>
           <EmptyMedia variant="icon"><CalendarDays /></EmptyMedia>
-          <EmptyTitle>Select an organization</EmptyTitle>
+          <EmptyTitle>{t("interface.select_an_organization")}</EmptyTitle>
         </EmptyHeader>
-        <Button variant="outline" onClick={() => navigate(globalSettingsRoute("cloud-account"))}>Open account settings</Button>
+        <Button variant="outline" onClick={() => navigate(globalSettingsRoute("cloud-account"))}>{t("interface.open_account_settings")}</Button>
       </Empty>
     )
   }
@@ -245,10 +245,10 @@ export function CalendarPage(props: {
       <Empty className="pt-16" data-calendar-locked>
         <EmptyHeader>
           <EmptyMedia variant="icon"><Lock /></EmptyMedia>
-          <EmptyTitle>Calendar is not on for your organization</EmptyTitle>
-          <EmptyDescription>OpenWork turns the Calendar on per organization. Your Automations are still on the Automations page.</EmptyDescription>
+          <EmptyTitle>{t("interface.calendar_is_not_on_for_your_organization")}</EmptyTitle>
+          <EmptyDescription>{t("interface.openwork_turns_the_calendar_on_per_organization_your_automations_are_still_on_the_automations_page")}</EmptyDescription>
         </EmptyHeader>
-        <Button variant="outline" onClick={() => navigate("/automations")}>Open Automations</Button>
+        <Button variant="outline" onClick={() => navigate("/automations")}>{t("interface.open_automations")}</Button>
       </Empty>
     )
   }
@@ -257,10 +257,10 @@ export function CalendarPage(props: {
       <div className="mx-auto flex max-w-xl flex-col items-center gap-4 p-6 pt-16 text-center" role="alert">
         <AlertCircle className="size-8 text-destructive" aria-hidden="true" />
         <div>
-          <h2 className="font-medium">Automations could not be loaded</h2>
+          <h2 className="font-medium">{t("interface.automations_could_not_be_loaded")}</h2>
           <p className="mt-2 text-sm text-muted-foreground">{describeAutomationError(listQuery.error)}</p>
         </div>
-        <Button variant="outline" onClick={() => void listQuery.refetch()}><RefreshCw />Retry</Button>
+        <Button variant="outline" onClick={() => void listQuery.refetch()}><RefreshCw />{t("updates.retry")}</Button>
       </div>
     )
   }
@@ -272,10 +272,10 @@ export function CalendarPage(props: {
   return (
     <div className="flex h-full min-h-0 flex-col" data-calendar-page>
       <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-border px-4 py-2.5" data-calendar-toolbar>
-        <Button variant="outline" size="sm" onClick={goToday}>Today</Button>
+        <Button variant="outline" size="sm" onClick={goToday}>{t("activity.today")}</Button>
         <div className="flex items-center">
-          <Button variant="ghost" size="icon-sm" aria-label="Previous" onClick={() => setAnchor((current) => shiftAnchor(view, current, -1))}><ChevronLeft /></Button>
-          <Button variant="ghost" size="icon-sm" aria-label="Next" onClick={() => setAnchor((current) => shiftAnchor(view, current, 1))}><ChevronRight /></Button>
+          <Button variant="ghost" size="icon-sm" aria-label={t("interface.previous")} onClick={() => setAnchor((current) => shiftAnchor(view, current, -1))}><ChevronLeft /></Button>
+          <Button variant="ghost" size="icon-sm" aria-label={t("common.next")} onClick={() => setAnchor((current) => shiftAnchor(view, current, 1))}><ChevronRight /></Button>
         </div>
         <h2 className="text-[15px] font-semibold tracking-[-0.2px]" data-calendar-range-label>{formatRangeLabel(range, anchor)}</h2>
         <Button
@@ -287,11 +287,10 @@ export function CalendarPage(props: {
             setCreating({ slot: nextOpenSlot(Date.now(), timeZone), x: box.left, y: box.bottom + 8 })
           }}
         >
-          <Plus />New automation
-        </Button>
+          <Plus />{t("interface.new_automation_db87a63d")} </Button>
         <ToggleGroup
           className="ml-auto"
-          aria-label="Calendar view"
+          aria-label={t("interface.calendar_view")}
           variant="segmented"
           spacing={0.5}
           size="xs"
@@ -301,28 +300,28 @@ export function CalendarPage(props: {
             if (next === "day" || next === "week" || next === "month") setView(next)
           }}
         >
-          <ToggleGroupItem value="day">Day</ToggleGroupItem>
-          <ToggleGroupItem value="week">Week</ToggleGroupItem>
-          <ToggleGroupItem value="month">Month</ToggleGroupItem>
+          <ToggleGroupItem value="day">{t("interface.day")}</ToggleGroupItem>
+          <ToggleGroupItem value="week">{t("interface.week")}</ToggleGroupItem>
+          <ToggleGroupItem value="month">{t("interface.month")}</ToggleGroupItem>
         </ToggleGroup>
       </div>
 
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 border-b border-border px-4 py-2 text-sm">
         <label className="flex items-center gap-2" data-calendar-layer="automations">
           <Checkbox checked={layers.automations} onCheckedChange={(checked) => setLayers((current) => ({ ...current, automations: checked === true }))} />
-          <span>Your Automations</span>
+          <span>{t("interface.your_automations")}</span>
           {runsQuery.isFetching && !runsQuery.data ? <Skeleton className="h-3 w-10 rounded" /> : null}
           {runsQuery.data && !runsQuery.data.complete ? (
             <Tooltip>
-              <TooltipTrigger render={<span className="text-xs text-muted-foreground" data-calendar-runs-incomplete />}>Some runs not shown</TooltipTrigger>
-              <TooltipContent>This range has more runs than one view loads. Open Automations for full history.</TooltipContent>
+              <TooltipTrigger render={<span className="text-xs text-muted-foreground" data-calendar-runs-incomplete />}>{t("interface.some_runs_not_shown")}</TooltipTrigger>
+              <TooltipContent>{t("interface.this_range_has_more_runs_than_one_view_loads_open_automations_for_full_history")}</TooltipContent>
             </Tooltip>
           ) : null}
-          {runsQuery.error ? <span className="text-xs text-muted-foreground">Run history unavailable</span> : null}
+          {runsQuery.error ? <span className="text-xs text-muted-foreground">{t("interface.run_history_unavailable")}</span> : null}
         </label>
         <label className="flex items-center gap-2" data-calendar-layer="meetings">
           <Checkbox checked={layers.meetings} onCheckedChange={(checked) => setLayers((current) => ({ ...current, meetings: checked === true }))} />
-          <span>Your meetings</span>
+          <span>{t("interface.your_meetings")}</span>
         </label>
         {layers.meetings ? providersOffered.map((provider) => {
           const query = meetingQueries[provider]
@@ -332,8 +331,7 @@ export function CalendarPage(props: {
             return (
               <span key={provider} className="flex items-center gap-1.5 text-xs text-muted-foreground" data-calendar-provider-status={provider} data-state="not_connected">
                 <ProviderLogo provider={provider} />
-                <Button variant="link" size="xs" className="h-auto p-0" onClick={() => info.connectionId ? void orgConnections.connect(info.connectionId) : props.onOpenConnections?.()}>
-                  Connect {CALENDAR_PROVIDER_LABEL[provider]}
+                <Button variant="link" size="xs" className="h-auto p-0" onClick={() => info.connectionId ? void orgConnections.connect(info.connectionId) : props.onOpenConnections?.()}>{t("join_org.connect_button")} {CALENDAR_PROVIDER_LABEL[provider]}
                 </Button>
               </span>
             )
@@ -352,8 +350,8 @@ export function CalendarPage(props: {
                     ) : <span>{copy.label}</span>
                   ) : (
                     <>
-                      <span>Couldn't load {CALENDAR_PROVIDER_LABEL[provider]}</span>
-                      <Button variant="link" size="xs" className="h-auto p-0" onClick={() => void query.refetch()}>Retry</Button>
+                      <span>{t("interface.couldn_t_load")} {CALENDAR_PROVIDER_LABEL[provider]}</span>
+                      <Button variant="link" size="xs" className="h-auto p-0" onClick={() => void query.refetch()}>{t("updates.retry")}</Button>
                     </>
                   )}
                 </TooltipTrigger>
@@ -375,14 +373,14 @@ export function CalendarPage(props: {
               <ProviderLogo provider={provider} />
               <span>{CALENDAR_PROVIDER_LABEL[provider]}</span>
               {query.isFetching && !query.data ? <Skeleton className="h-3 w-8 rounded" /> : null}
-              {query.data && !query.data.complete ? <span className="text-muted-foreground">· Some meetings may be missing</span> : null}
+              {query.data && !query.data.complete ? <span className="text-muted-foreground">{t("interface.some_meetings_may_be_missing")}</span> : null}
               {query.error && query.data ? (
-                <span className="text-muted-foreground" data-calendar-provider-stale>· Showing meetings from {formatTime(query.dataUpdatedAt, timeZone)}</span>
+                <span className="text-muted-foreground" data-calendar-provider-stale>{t("interface.showing_meetings_from")} {formatTime(query.dataUpdatedAt, timeZone)}</span>
               ) : null}
             </label>
           )
         }) : null}
-        {transport?.kind === "mock" ? <span className="ml-auto rounded bg-amber-3 px-1.5 py-0.5 text-[11px] text-amber-11" data-calendar-mock>Mock calendar</span> : null}
+        {transport?.kind === "mock" ? <span className="ml-auto rounded bg-amber-3 px-1.5 py-0.5 text-[11px] text-amber-11" data-calendar-mock>{t("interface.mock_calendar")}</span> : null}
       </div>
 
       <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto lg:flex-row lg:overflow-hidden">
@@ -414,8 +412,8 @@ export function CalendarPage(props: {
           {noAutomations && layers.automations ? (
             <div className="pointer-events-none absolute inset-x-0 bottom-6 flex justify-center">
               <div className="pointer-events-auto flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-2.5 text-sm shadow-[var(--dls-card-shadow)]" data-calendar-empty>
-                <span>No automations yet.</span>
-                <Button size="sm" onClick={() => navigate("/automations?create=1")}>New automation</Button>
+                <span>{t("interface.no_automations_yet_4c27eb15")}</span>
+                <Button size="sm" onClick={() => navigate("/automations?create=1")}>{t("interface.new_automation_db87a63d")}</Button>
               </div>
             </div>
           ) : null}
@@ -434,7 +432,7 @@ export function CalendarPage(props: {
             onCreated={(detail) => {
               setCreating(null)
               setSelection({ kind: "automation", automationId: detail.automation.id, itemKey: null })
-              toast.success("Automation created")
+              toast.success(t("ui_extra.automation_created"))
             }}
           />
         ) : null}
@@ -466,16 +464,16 @@ export function CalendarPage(props: {
               onOpenRun: openRun,
               onPause: () => void act("deactivate", async () => {
                 await client.deactivateAutomation(organizationId, selectedAutomation.automation.id)
-              }, "Automation paused. A run already in progress will continue."),
+              }, t("ui_extra.automation_paused")),
               onResume: () => void act("activate", async () => {
                 await client.activateAutomation(organizationId, selectedAutomation.automation.id)
-              }, "Automation resumed"),
+              }, t("ui_extra.automation_resumed")),
               onRunNow: () => void act("run", async () => {
                 await client.runAutomationNow(organizationId, selectedAutomation.automation.id)
-              }, "Run queued"),
+              }, t("ui_extra.run_queued")),
               onSaveSchedule: (schedule) => act("schedule", async () => {
                 await client.updateAutomation(organizationId, selectedAutomation.automation.id, { schedule })
-              }, "Schedule saved"),
+              }, t("ui_extra.schedule_saved")),
             }}
           />
         ) : selectedMeeting ? (

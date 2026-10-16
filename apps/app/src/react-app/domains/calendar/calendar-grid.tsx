@@ -1,4 +1,6 @@
 /** @jsxImportSource react */
+import { formatDayHeader, formatHourLabel, formatTime, formatDate } from "./calendar-locale"
+import { t } from "@/i18n";
 import { useEffect, useMemo, useRef } from "react"
 import { CheckCircle2, Cloud, Loader2, Lock, MinusCircle, Monitor, Plus, XCircle } from "lucide-react"
 
@@ -11,9 +13,6 @@ import {
   type CalendarEvent,
   type CalendarRange,
   compareDates,
-  formatDayHeader,
-  formatHourLabel,
-  formatTime,
   isSameDate,
   layoutOverlappingBlocks,
   type LocalDate,
@@ -21,7 +20,6 @@ import {
   minutesIntoDay,
   startOfDay,
   dateKey,
-  formatDate,
   slotAt,
   type CalendarSlot,
 } from "@openwork/calendar"
@@ -48,13 +46,13 @@ type GridProps = {
 }
 
 const STATUS_LABEL: Record<AutomationCalendarItem["status"], string> = {
-  succeeded: "Completed",
-  failed: "Failed",
-  cancelled: "Cancelled",
-  skipped: "Skipped",
-  running: "Running",
-  upcoming: "Scheduled",
-  blocked: "Blocked until fixed",
+  succeeded: "ui_extra.calendar_status_succeeded",
+  failed: "ui_extra.calendar_status_failed",
+  cancelled: "ui_extra.calendar_status_cancelled",
+  skipped: "ui_extra.calendar_status_skipped",
+  running: "ui_extra.calendar_status_running",
+  upcoming: "ui_extra.calendar_status_upcoming",
+  blocked: "ui_extra.calendar_status_blocked",
 }
 
 export function AutomationStatusIcon({ item, className }: { item: Pick<AutomationCalendarItem, "status" | "executionTarget">; className?: string }) {
@@ -94,7 +92,7 @@ function meetingBlockClass(selected: boolean) {
 }
 
 function automationAriaLabel(item: AutomationCalendarItem, timeZone: string) {
-  return `${item.name}, ${STATUS_LABEL[item.status]}, ${formatTime(item.at, timeZone)}`
+  return `${item.name}, ${t(STATUS_LABEL[item.status])}, ${formatTime(item.at, timeZone)}`
 }
 
 function AutomationBlock(props: { item: AutomationCalendarItem; timeZone: string; selected: boolean; compact?: boolean; fill?: boolean; onSelect: () => void }) {
@@ -106,7 +104,7 @@ function AutomationBlock(props: { item: AutomationCalendarItem; timeZone: string
       data-calendar-status={item.status}
       aria-pressed={props.selected}
       aria-label={automationAriaLabel(item, props.timeZone)}
-      title={`${item.name} · ${STATUS_LABEL[item.status]}`}
+      title={`${item.name} · ${t(STATUS_LABEL[item.status])}`}
       className={cn(automationBlockClass(item, props.selected), props.fill && "h-full")}
       onClick={props.onSelect}
     >
@@ -115,7 +113,7 @@ function AutomationBlock(props: { item: AutomationCalendarItem; timeZone: string
         <span className="block truncate font-medium">{item.name}</span>
         {props.compact ? null : (
           <span className="block truncate opacity-75">
-            {formatTime(item.at, props.timeZone)}{item.status === "blocked" ? " · Needs attention" : ""}
+            {formatTime(item.at, props.timeZone)}{item.status === "blocked" ? t("interface.needs_attention") : ""}
           </span>
         )}
       </span>
@@ -132,7 +130,7 @@ function MeetingBlock(props: { event: CalendarEvent; timeZone: string; selected:
       data-calendar-meeting={event.key}
       data-calendar-provider={event.provider}
       aria-pressed={props.selected}
-      aria-label={`${event.title}, ${source}${event.timing.kind === "timed" ? `, ${formatTime(event.timing.start, props.timeZone)}` : ", all day"}`}
+      aria-label={`${event.title}, ${source}${event.timing.kind === "timed" ? `, ${formatTime(event.timing.start, props.timeZone)}` : t("ui_extra.all_day_suffix")}`}
       title={`${event.title}, ${source}`}
       className={cn(meetingBlockClass(props.selected), props.fill && "h-full")}
       onClick={props.onSelect}
@@ -215,7 +213,7 @@ export function CalendarTimeGrid(props: GridProps) {
       </div>
       {showAllDayLane ? (
         <div className="grid border-b border-border" style={{ gridTemplateColumns: columns }} data-calendar-all-day>
-          <div className="px-2 py-1 text-[11px] text-muted-foreground">All day</div>
+          <div className="px-2 py-1 text-[11px] text-muted-foreground">{t("interface.all_day")}</div>
           {props.range.days.map((day) => (
             <div key={`all-day-${day.year}-${day.month}-${day.day}`} className="flex min-w-0 flex-col gap-0.5 border-l border-border p-0.5">
               {allDay.filter((event) => allDayCovers(event, day)).map((event) => (
@@ -258,7 +256,7 @@ export function CalendarTimeGrid(props: GridProps) {
                       key={`slot-${index}`}
                       type="button"
                       tabIndex={-1}
-                      aria-label={`New automation on ${formatDate(day)} at ${time}`}
+                      aria-label={t("ui_extra.new_automation_at", { date: formatDate(day), time })}
                       data-calendar-slot={`${dateKey(day)}T${String(slot.hour).padStart(2, "0")}:${String(slot.minute).padStart(2, "0")}`}
                       className="group absolute inset-x-0 z-0 px-0.5 focus-visible:outline-none"
                       style={{ top: index * (HOUR_HEIGHT_PX / 2) + 1, height: HOUR_HEIGHT_PX / 2 - 2 }}
@@ -266,7 +264,7 @@ export function CalendarTimeGrid(props: GridProps) {
                     >
                       <span className="hidden h-full items-center gap-1 rounded-md border border-dashed border-foreground/35 bg-foreground/[0.04] px-1.5 text-xs group-hover:flex">
                         <Plus className="size-3 shrink-0" aria-hidden="true" />
-                        <span className="truncate font-medium">New automation</span>
+                        <span className="truncate font-medium">{t("interface.new_automation_db87a63d")}</span>
                         <span className="shrink-0 text-muted-foreground">{time}</span>
                       </span>
                     </button>
@@ -351,7 +349,7 @@ export function CalendarMonthGrid(props: GridProps & { anchorMonth: number; onOp
             <button
               type="button"
               className={cn("self-start rounded px-1 text-xs hover:bg-muted", outside ? "text-muted-foreground" : "text-foreground", isToday && "bg-primary text-primary-foreground hover:bg-primary")}
-              aria-label={`Open ${formatDayHeader(day).weekday} ${day.day}`}
+              aria-label={t("ui_extra.open_day", { weekday: formatDayHeader(day).weekday, day: day.day })}
               onClick={() => props.onOpenDay(day)}
             >
               {day.day}
@@ -377,8 +375,7 @@ export function CalendarMonthGrid(props: GridProps & { anchorMonth: number; onOp
             ))}
             {entries.length > MONTH_CELL_LIMIT ? (
               <button type="button" className="self-start px-1 text-[11px] text-muted-foreground hover:text-foreground" onClick={() => props.onOpenDay(day)}>
-                {entries.length - MONTH_CELL_LIMIT} more
-              </button>
+                {entries.length - MONTH_CELL_LIMIT}{t("interface.more")} </button>
             ) : null}
           </div>
         )

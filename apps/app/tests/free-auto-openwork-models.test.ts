@@ -1,7 +1,11 @@
-import { expect, test } from "bun:test";
+import { beforeEach, expect, test } from "bun:test";
+import { setLocale } from "../src/i18n";
+import { autoPickerCopy, autoResetPhrase, autoUpdateTarget, autoWallCopy } from "../src/app/lib/inference-access";
 import { buildModelCatalog, resolveRetainedSelection } from "../src/react-app/domains/models/catalog";
 import { AUTO_MODEL_ID, AUTO_PROVIDER_ID, isAutoModel, modelTitle, openWorkModelsLunaReplacement, shouldSelectInitialAuto, starterModel } from "../src/react-app/domains/models/model-catalog";
 import type { ModelOption } from "../src/app/types";
+
+beforeEach(() => setLocale("en"));
 
 const auto: ModelOption = { providerID: AUTO_PROVIDER_ID, modelID: AUTO_MODEL_ID, title: "Auto", isFree: true };
 const openWorkModel: ModelOption = { providerID: "openwork", modelID: "anthropic/claude-sonnet", title: "Claude Sonnet" };
@@ -49,4 +53,31 @@ test("a saved free Auto choice moves to Luna from OpenWork Models", () => {
   expect(openWorkModelsLunaReplacement(auto, [auto, openWorkModel, luna])).toBe(luna);
   expect(openWorkModelsLunaReplacement(auto, [auto, openWorkModel])).toBeUndefined();
   expect(openWorkModelsLunaReplacement(other, [auto, luna])).toBeUndefined();
+});
+
+
+test("Auto copy preserves English reset intervals and evaluates the active language at call time", () => {
+  const now = new Date(2026, 0, 3, 12).getTime();
+  expect(autoResetPhrase(new Date(now + 60_000).toISOString(), now)).toBe("in 1 minute");
+  expect(autoResetPhrase(new Date(now + 20 * 60_000).toISOString(), now)).toBe("in 20 minutes");
+  expect(autoResetPhrase(new Date(now + 60 * 60_000).toISOString(), now)).toBe("in 1 hour");
+  expect(autoResetPhrase(new Date(now + 3 * 60 * 60_000).toISOString(), now)).toBe("in 3 hours");
+  expect(autoResetPhrase(new Date(2026, 0, 5, 12).toISOString(), now)).toBe("on Monday");
+  expect(autoPickerCopy("ready", false).subtitle).toBe("OpenWork picks the model");
+  expect(autoWallCopy({ state: "limit" }, true, now).detail).toBe("Pick another model to keep going.");
+});
+
+test("Auto copy displays Chinese intervals, weekdays, updates, and next steps", () => {
+  const now = new Date(2026, 0, 3, 12).getTime();
+  setLocale("zh");
+  try {
+    expect(autoResetPhrase(new Date(now + 20 * 60_000).toISOString(), now)).toBe("20 分钟后");
+    expect(autoResetPhrase(new Date(now + 3 * 60 * 60_000).toISOString(), now)).toBe("3 小时后");
+    expect(autoResetPhrase(new Date(2026, 0, 5, 12).toISOString(), now)).toBe("星期一");
+    expect(autoUpdateTarget("v0.18.51")).toBe("OpenWork v0.18.51 或更新版本");
+    expect(autoWallCopy({ state: "limit" }, true, now).detail).toBe("请选择其他模型继续。");
+    expect(autoResetPhrase(new Date(now - 60_000).toISOString(), now)).toBeNull();
+  } finally {
+    setLocale("en");
+  }
 });

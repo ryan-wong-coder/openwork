@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { BuiltMcpAppPanel } from "../../apps/built-mcp-app-panel";
 /** @jsxImportSource react */
 import * as React from "react";
@@ -138,7 +139,7 @@ function SidePanelTab({ tab, active, onSelect, onClose }: SidePanelTabProps) {
             showBrowserTabContextMenu();
           } : undefined}
           title={tab.label}
-          aria-label={`Select tab: ${tab.label}`}
+          aria-label={t("session_copy.select_tab", { name: tab.label })}
         >
           {tab.type === "browser" ? (
             tab.favicon ? (
@@ -197,26 +198,26 @@ function BrowserPanelContent({
 
   const navigate = React.useCallback(() => {
     void getElectronBrowser()?.navigate?.(urlInput).catch((error: unknown) => {
-      reportFailure("Could not open this page. Check the address and try again.", error);
+      reportFailure(t("session_copy.could_not_open_this_page_check_the_address_and_try_again"), error);
     });
   }, [urlInput, reportFailure]);
 
   const back = React.useCallback(() => {
     void getElectronBrowser()?.back?.().catch((error: unknown) => {
-      reportFailure("Could not go back. Try again.", error);
+      reportFailure(t("session_copy.could_not_go_back_try_again"), error);
     });
   }, [reportFailure]);
 
   const forward = React.useCallback(() => {
     void getElectronBrowser()?.forward?.().catch((error: unknown) => {
-      reportFailure("Could not go forward. Try again.", error);
+      reportFailure(t("session_copy.could_not_go_forward_try_again"), error);
     });
   }, [reportFailure]);
 
   const reload = React.useCallback(() => {
     const browser = getElectronBrowser();
     void (suspended ? browser?.selectTab?.(tab.id) : browser?.reload?.())?.catch((error: unknown) => {
-      reportFailure("Could not reload this page. Try again.", error);
+      reportFailure(t("session_copy.could_not_reload_this_page_try_again"), error);
     });
   }, [suspended, tab.id, reportFailure]);
 
@@ -241,7 +242,7 @@ function BrowserPanelContent({
     let ready = false;
     let boundsFrame: number | null = null;
     const boundsSync = createBrowserBoundsSync(browser, sessionId, (error) => {
-      reportFailure("Could not show the browser. Try reopening this tab.", error);
+      reportFailure(t("session_copy.could_not_show_the_browser_try_reopening_this_tab"), error);
     });
 
     const scheduleBounds = () => {
@@ -304,16 +305,16 @@ function BrowserPanelContent({
   return (
     <>
       {failure?.owner === failureOwner ? <div className="shrink-0 px-3 py-2"><TaskRecovery compact title={failure.title} technicalDetails={failure.details}
-        actions={<Button variant="ghost" size="xs" onClick={() => setFailure(null)}>Dismiss</Button>} /></div> : null}
+        actions={<Button variant="ghost" size="xs" onClick={() => setFailure(null)}>{t("interface.dismiss")}</Button>} /></div> : null}
       {isAvailable && tab.browserTask ? (
         <div data-browser-shortcut-tab={tab.id} className="flex min-h-9 shrink-0 items-center gap-2 border-b border-border px-3 text-xs">
-          <span className="shrink-0 font-medium">Built-in browser</span>
+          <span className="shrink-0 font-medium">{t("interface.built_in_browser")}</span>
           <span role="status" className="min-w-0 flex-1 truncate text-muted-foreground">
-            {tab.browserTask?.status === "paused" ? "You have control · resume when finished" : tab.browserTask?.status === "running" ? browserOperationLabels[tab.browserTask.operation ?? ""] ?? "Working on this page" : tab.browserTask?.status === "needs_attention" ? browserOperationLabels[tab.browserTask.operation ?? ""] ?? "Review this page" : "This conversation's tab"}
+            {tab.browserTask?.status === "paused" ? t("interface.you_have_control_resume_when_finished") : tab.browserTask?.status === "running" ? (browserOperationLabelKeys[tab.browserTask.operation ?? ""] ? t(browserOperationLabelKeys[tab.browserTask.operation ?? ""]) : undefined) ?? t("interface.working_on_this_page") : tab.browserTask?.status === "needs_attention" ? (browserOperationLabelKeys[tab.browserTask.operation ?? ""] ? t(browserOperationLabelKeys[tab.browserTask.operation ?? ""]) : undefined) ?? t("interface.review_this_page") : t("interface.this_conversation_s_tab")}
           </span>
           <Button variant="outline" size="sm" className="h-6 px-2 text-xs"
             onClick={() => { void window.__OPENWORK_ELECTRON__?.browser?.taskControl?.(tab.id, tab.browserTask?.status === "paused" ? "resume" : "pause"); }}>
-            {tab.browserTask?.status === "paused" ? "Resume browser" : "Take over"}
+            {tab.browserTask?.status === "paused" ? t("interface.resume_browser") : t("interface.take_over")}
           </Button>
         </div>
       ) : null}
@@ -328,13 +329,13 @@ function BrowserPanelContent({
                     size="icon-sm"
                     onClick={back}
                     disabled={suspended || busy || !tab.canGoBack}
-                    aria-label="Go back"
+                    aria-label={t("interface.go_back")}
                   >
                     <ArrowLeft />
                   </Button>
                 )}
               />
-              <TooltipContent>Back</TooltipContent>
+              <TooltipContent>{t("dashboard.modal_back")}</TooltipContent>
             </Tooltip>
             <Tooltip>
               <TooltipTrigger
@@ -344,13 +345,13 @@ function BrowserPanelContent({
                     size="icon-sm"
                     onClick={forward}
                     disabled={suspended || busy || !tab.canGoForward}
-                    aria-label="Go forward"
+                    aria-label={t("interface.go_forward")}
                   >
                     <ArrowRight />
                   </Button>
                 )}
               />
-              <TooltipContent>Forward</TooltipContent>
+              <TooltipContent>{t("interface.forward")}</TooltipContent>
             </Tooltip>
             <Tooltip>
               <TooltipTrigger
@@ -360,13 +361,13 @@ function BrowserPanelContent({
                     size="icon-sm"
                     onClick={reload}
                     disabled={busy}
-                    aria-label="Reload page"
+                    aria-label={t("interface.reload_page")}
                   >
                     {tab.status === "loading" || busy ? <Loader2 className="animate-spin" /> : <RotateCw />}
                   </Button>
                 )}
               />
-              <TooltipContent>Reload</TooltipContent>
+              <TooltipContent>{t("interface.reload")}</TooltipContent>
             </Tooltip>
             <InputGroup className="mx-1 h-7 flex-1 rounded-md">
               <InputGroupInput
@@ -384,7 +385,7 @@ function BrowserPanelContent({
                 onBlur={() => {
                   urlFocusedRef.current = false;
                 }}
-                placeholder="Enter URL..."
+                placeholder={t("interface.enter_url")}
                 spellCheck={false}
                 autoComplete="off"
               />
@@ -403,16 +404,14 @@ function BrowserPanelContent({
                       className="h-6 shrink-0 rounded-md bg-muted/60 px-2 text-[11px] font-medium"
                       aria-label={`${tab.siteToolCount} site ${tab.siteToolCount === 1 ? "tool" : "tools"} available; inspect site tools and activity`}
                     >
-                      {tab.siteToolCount} {tab.siteToolCount === 1 ? "tool" : "tools"}
+                      {tab.siteToolCount} {tab.siteToolCount === 1 ? t("connect.row_component_tool_one") : t("connect.row_component_tool_other")}
                     </Button>
                   )}
                 />
                 <PopoverContent align="end" side="bottom" sideOffset={8} className="w-80 max-w-[calc(100vw-2rem)] gap-0 p-0">
                   <div className="border-b border-border px-4 py-3">
-                    <p className="text-sm font-semibold">Site tools</p>
-                    <p className="mt-0.5 text-xs text-muted-foreground">
-                      Actions offered by this page. Review the website and the requested action before allowing it.
-                    </p>
+                    <p className="text-sm font-semibold">{t("interface.site_tools")}</p>
+                    <p className="mt-0.5 text-xs text-muted-foreground">{t("interface.actions_offered_by_this_page_review_the_website_and_the_requested_action_before_allowing_it")} </p>
                   </div>
                   <div className="max-h-64 overflow-y-auto px-4 py-2">
                     {(tab.siteTools ?? []).map((tool) => (
@@ -420,7 +419,7 @@ function BrowserPanelContent({
                         <div className="flex items-center justify-between gap-3">
                           <p className="min-w-0 truncate text-xs font-medium">{tool.title || tool.name}</p>
                           <span className="shrink-0 rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
-                            {tool.readOnly ? "Site says read-only" : "May change data"}
+                            {tool.readOnly ? t("interface.site_says_read_only") : t("interface.may_change_data")}
                           </span>
                         </div>
                         <p className="mt-0.5 truncate font-mono text-[10px] text-muted-foreground">{tool.name}</p>
@@ -430,16 +429,16 @@ function BrowserPanelContent({
                   </div>
                   {(tab.siteToolActivity ?? []).length > 0 ? (
                     <div className="border-t border-border px-4 py-3">
-                      <p className="mb-1.5 text-xs font-semibold">Recent activity</p>
+                      <p className="mb-1.5 text-xs font-semibold">{t("interface.recent_activity")}</p>
                       {(tab.siteToolActivity ?? []).slice(0, 5).map((activity, index) => (
                         <div key={`${activity.at}:${activity.name}:${index}`} className="flex items-center justify-between gap-3 py-1 text-[10px]">
                           <span className="min-w-0 truncate font-mono">{activity.name}</span>
                           <span className={activity.status === "completed" ? "text-emerald-600 dark:text-emerald-400" : "text-destructive"}>
-                            {activity.status === "completed" ? "Returned" : activity.code || "Failed"}
+                            {activity.status === "completed" ? t("interface.returned") : activity.code || t("connect.diagnostics_sync_status_failed")}
                           </span>
                         </div>
                       ))}
-                      <p className="mt-1 text-[10px] text-muted-foreground">Arguments and results are not retained in this activity view.</p>
+                      <p className="mt-1 text-[10px] text-muted-foreground">{t("interface.arguments_and_results_are_not_retained_in_this_activity_view")}</p>
                     </div>
                   ) : null}
                 </PopoverContent>
@@ -447,16 +446,14 @@ function BrowserPanelContent({
             ) : null}
           </div>
         ) : (
-          <p className="px-2 text-sm text-muted-foreground">
-            Browser panel is only available in the desktop app.
-          </p>
+          <p className="px-2 text-sm text-muted-foreground">{t("interface.browser_panel_is_only_available_in_the_desktop_app")} </p>
         )}
         <Button
           variant="ghost"
           size="icon-sm"
           onClick={onClose}
-          title="Close panel"
-          aria-label="Close panel"
+          title={t("interface.close_panel")}
+          aria-label={t("interface.close_panel")}
         >
           <X />
         </Button>
@@ -477,26 +474,26 @@ function BrowserPanelContent({
                   compact
                   title={pageFailure.message}
                   technicalDetails={`${pageFailure.errorDescription} (${pageFailure.errorCode})\n${pageFailure.url}`}
-                  actions={<Button variant="outline" size="sm" disabled={tab.status === "loading" || busy} onClick={reload}>Reload</Button>}
+                  actions={<Button variant="outline" size="sm" disabled={tab.status === "loading" || busy} onClick={reload}>{t("interface.reload")}</Button>}
                 />
               </div>
             ) : suspended ? (
               <div className="flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
-                <p className="text-sm font-medium">Tab suspended</p>
-                <p className="text-sm text-muted-foreground">Reload opens the saved URL, not the previous page state.</p>
-                <Button variant="outline" size="sm" onClick={reload}>Reload</Button>
+                <p className="text-sm font-medium">{t("interface.tab_suspended")}</p>
+                <p className="text-sm text-muted-foreground">{t("interface.reload_opens_the_saved_url_not_the_previous_page_state")}</p>
+                <Button variant="outline" size="sm" onClick={reload}>{t("interface.reload")}</Button>
               </div>
             ) : null}
           </div>
         ) : null}
         {tab.browserApproval ? (
-          <div className="absolute inset-0 z-10 flex flex-col justify-center gap-3 overflow-y-auto bg-background p-5 text-sm" role="region" aria-label="Browser permission request">
+          <div className="absolute inset-0 z-10 flex flex-col justify-center gap-3 overflow-y-auto bg-background p-5 text-sm" role="region" aria-label={t("interface.browser_permission_request")}>
             <h3 className="font-semibold">{tab.browserApproval.title}</h3>
             <p className="font-medium">{tab.browserApproval.message}</p>
             <p className="max-h-[60vh] overflow-y-auto whitespace-pre-wrap break-words text-muted-foreground">{tab.browserApproval.detail}</p>
             <div className="flex gap-2">
-              <Button size="sm" onClick={() => { if (tab.browserApproval) void window.__OPENWORK_ELECTRON__?.browser?.approve?.(tab.id, tab.browserApproval.id, true); }}>{tab.browserApproval.approveLabel ?? "Allow once"}</Button>
-              <Button size="sm" variant="outline" onClick={() => { if (tab.browserApproval) void window.__OPENWORK_ELECTRON__?.browser?.approve?.(tab.id, tab.browserApproval.id, false); }}>Deny</Button>
+              <Button size="sm" onClick={() => { if (tab.browserApproval) void window.__OPENWORK_ELECTRON__?.browser?.approve?.(tab.id, tab.browserApproval.id, true); }}>{tab.browserApproval.approveLabel ?? t("session.allow_once")}</Button>
+              <Button size="sm" variant="outline" onClick={() => { if (tab.browserApproval) void window.__OPENWORK_ELECTRON__?.browser?.approve?.(tab.id, tab.browserApproval.id, false); }}>{t("session.deny")}</Button>
             </div>
           </div>
         ) : null}
@@ -505,13 +502,13 @@ function BrowserPanelContent({
   );
 }
 
-const browserOperationLabels: Record<string, string> = {
-  observe: "Reading this page", site_tools: "Finding website tools", site_tool: "Using a website tool",
-  navigate: "Opening a page", click: "Clicking a control", fill: "Entering text", key: "Using the keyboard", scroll: "Scrolling",
-  "Browser control": "Allow control for this thread", website_blocked: "This website is blocked", browser_disabled: "Browser control is disabled",
-  stale_observation: "A fresh page view is needed", stale_tool: "Website tools have changed", user_denied: "The action was declined",
-  needs_attention: "Review this page", sign_in_required: "Sign in directly in this browser", timeout: "Check the page before continuing",
-  result_withheld: "Website result was kept private",
+const browserOperationLabelKeys: Record<string, string> = {
+  observe: "session_copy.reading_this_page", site_tools: "session_copy.finding_website_tools", site_tool: "session_copy.using_a_website_tool",
+  navigate: "session_copy.opening_a_page", click: "session_copy.clicking_a_control", fill: "session_copy.entering_text", key: "session_copy.using_the_keyboard", scroll: "session_copy.scrolling",
+  "Browser control": "session_copy.allow_control_for_this_thread", website_blocked: "session_copy.this_website_is_blocked", browser_disabled: "session_copy.browser_control_is_disabled",
+  stale_observation: "session_copy.a_fresh_page_view_is_needed", stale_tool: "session_copy.website_tools_have_changed", user_denied: "session_copy.the_action_was_declined",
+  needs_attention: "session_copy.review_this_page", sign_in_required: "session_copy.sign_in_directly_in_this_browser", timeout: "session_copy.check_the_page_before_continuing",
+  result_withheld: "session_copy.website_result_was_kept_private",
 };
 
 export function SidePanel({
@@ -733,7 +730,7 @@ export function SidePanel({
                 ))}
               </PanelTabList>
             </div>
-            {!activeTab ? <span className="sr-only">Panel destinations</span> : null}
+            {!activeTab ? <span className="sr-only">{t("interface.panel_destinations")}</span> : null}
             {activeTab && isBrowserAvailable ? (
               <Tooltip>
                 <TooltipTrigger
@@ -742,20 +739,20 @@ export function SidePanel({
                       variant="ghost"
                       size="icon-sm"
                       onClick={() => createTab()}
-                      aria-label="New tab"
+                      aria-label={t("interface.new_tab")}
                     >
                       <Plus />
                     </Button>
                   )}
                 />
-                <TooltipContent>New tab</TooltipContent>
+                <TooltipContent>{t("interface.new_tab")}</TooltipContent>
               </Tooltip>
             ) : !activeTab ? (
               <Button
                 variant="ghost"
                 size="icon-sm"
                 onClick={onClose}
-                aria-label="Close panel"
+                aria-label={t("interface.close_panel")}
               >
                 <X />
               </Button>
@@ -808,8 +805,7 @@ function BlockedSitePage({ url, message, errorDescription }: { url: string; mess
       <div className="flex max-w-sm flex-col items-start gap-3">
         <ShieldOff className="size-8 text-muted-foreground" aria-hidden="true" strokeWidth={1.5} />
         <h2 className="text-lg font-medium text-foreground">
-          <span className="break-all">{siteHost(url)}</span> is blocked
-        </h2>
+          <span className="break-all">{siteHost(url)}</span>{t("interface.is_blocked")} </h2>
         <p className="text-sm text-muted-foreground">{message}</p>
         <p className="font-mono text-xs text-muted-foreground">{errorDescription}</p>
       </div>

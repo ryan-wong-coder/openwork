@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { useEffect, useRef, useState } from "react";
 import { Blocks, CircleCheck, CircleDashed, CircleX } from "lucide-react";
 import { formatToolCallDuration } from "@/lib/tool-call-duration";
@@ -67,17 +68,17 @@ function appCreationStages(
     key: "build",
     state: stateOf(3, buildFailed),
     label: buildFailed
-      ? progress.unavailable ? "Built, but the preview is unavailable" : `Couldn’t build${latestProblem ? `: ${latestProblem}` : " it"}`
-      : current > 3 ? "Built and verified" : current === 3 ? "Building and verifying" : "Build and verify",
-    ...(fixedProblems.length > 0 ? { notes: fixedProblems.map((problem) => `Fixed: ${problem}`) } : {}),
+      ? progress.unavailable ? t("ui.built_but_the_preview_is_unavailable") : t("ui.app_build_failed", { problem: latestProblem ? `：${latestProblem}` : "" })
+      : current > 3 ? t("ui.built_and_verified") : current === 3 ? t("ui.building_and_verifying") : t("ui.build_and_verify"),
+    ...(fixedProblems.length > 0 ? { notes: fixedProblems.map((problem) => t("ui.problem_fixed", { problem })) } : {}),
   };
-  const readyStage: Stage = { key: "ready", state: built ? "done" : "pending", label: built ? "Ready" : "Open beside the chat" };
+  const readyStage: Stage = { key: "ready", state: built ? "done" : "pending", label: built ? t("connect.diagnostics_connection_ready") : t("ui.open_beside_the_chat") };
 
   if (editing) {
     const read = discoveries.map(appRead).find(Boolean);
     return [
-      { key: "read", state: "done", label: read?.title ? `Read “${read.title}”` : "Read the App" },
-      { key: "write", state: stateOf(2), label: current > 2 ? "Wrote the changes" : current === 2 ? "Writing the changes" : "Write the changes" },
+      { key: "read", state: "done", label: read?.title ? t("ui.read_named_app", { title: read.title }) : t("ui.read_the_app") },
+      { key: "write", state: stateOf(2), label: current > 2 ? t("ui.wrote_the_changes") : current === 2 ? t("ui.writing_the_changes") : t("ui.write_the_changes") },
       buildStage,
       readyStage,
     ];
@@ -89,21 +90,21 @@ function appCreationStages(
       state: stateOf(0),
       label: current > 0
         ? searches.length === 1 && typeof query === "string" && query
-          ? `Searched your connections for “${query}”`
-          : searches.length > 1 ? `Searched your connections ${searches.length} times`
-            : discoveries.some(isAppGuidePart) ? "Read the build guide" : "Chose its tools"
-        : current === 0 ? "Finding the right tools" : "Find the right tools",
+          ? t("ui.searched_connections_query", { query })
+          : searches.length > 1 ? t("ui.searched_connections_count", { count: searches.length })
+            : discoveries.some(isAppGuidePart) ? t("ui.read_the_build_guide") : t("ui.chose_its_tools")
+        : current === 0 ? t("ui.finding_the_right_tools") : t("ui.find_the_right_tools"),
     },
     {
       key: "check",
       state: stateOf(1, preparationFailed),
       label: preparationFailed
-        ? "Couldn’t check the tools"
+        ? t("ui.couldn_t_check_the_tools")
         : current > 1
-          ? count === undefined ? "Tools ready" : count === 0 ? "No tools needed" : `Checked ${count} ${count === 1 ? "tool" : "tools"}`
-          : current === 1 ? "Checking the tools" : "Check the tools",
+          ? count === undefined ? t("ui.tools_ready") : count === 0 ? t("ui.no_tools_needed") : t("ui.tools_checked_count", { count })
+          : current === 1 ? t("ui.checking_the_tools") : t("ui.check_the_tools"),
     },
-    { key: "write", state: stateOf(2), label: current > 2 ? "Wrote the App" : current === 2 ? "Writing the App" : "Write the App" },
+    { key: "write", state: stateOf(2), label: current > 2 ? t("ui.wrote_the_app") : current === 2 ? t("ui.writing_the_app") : t("ui.write_the_app") },
     buildStage,
     readyStage,
   ];
@@ -191,16 +192,16 @@ export function AppBuilderStep({
   const built = Boolean(progress.app || progress.builtUnrecorded);
   const title = progress.title ? ` “${progress.title}”` : "";
   const sentence = built
-    ? `${editing ? "Updated" : "Created"} MCP App${title}`
+    ? t("ui.app_built_named", { action: editing ? t("ui.updated") : t("ui.created"), title })
     : progress.failed
-      ? `Couldn’t ${editing ? "update" : "create"} MCP App${title}`
-      : `${editing ? "Updating" : "Creating"} MCP App${title}`;
+      ? t("ui.app_failed_named", { title })
+      : t("ui.app_building_named", { action: editing ? t("ui.updating") : t("ui.creating"), title });
   const state = progress.builtUnrecorded
-    ? "Open it from your Library"
+    ? t("ui.open_it_from_your_library")
     : progress.unavailable
-      ? "Preview unavailable"
+      ? t("ui.preview_unavailable")
       : !progress.running && !built && !progress.failed && !progress.unavailable
-      ? context?.syncDegraded ? "Reconnecting" : waiting ? "Waiting for your response" : "Paused"
+      ? context?.syncDegraded ? t("ui.reconnecting") : waiting ? t("ui.waiting_for_your_response") : t("mcp.friendly_status_paused")
       : null;
   const shownElapsed = elapsed !== null && (active || terminal || starts.length > 0) ? formatToolCallDuration(elapsed) : null;
 
@@ -209,18 +210,18 @@ export function AppBuilderStep({
     // app, a short state, Open when there is something to open, and the raw
     // calls behind the details icon.
     const legacySentence = built
-      ? `${editing ? "Updated" : "Created"} artifact${title}`
+      ? t("ui.artifact_built_named", { action: editing ? t("ui.updated") : t("ui.created"), title })
       : progress.failed
-        ? `Couldn’t ${editing ? "update" : "create"} artifact${title}`
+        ? t("ui.artifact_failed_named", { title })
         : progress.stage === "checking"
-          ? `Checking artifact${title}`
+          ? t("ui.artifact_checking_named", { title })
           : progress.stage === "writing"
-            ? `${editing ? "Updating" : "Writing"} artifact${title}`
-            : `Preparing artifact${title}`;
+            ? t("ui.artifact_writing_named", { action: editing ? t("ui.updating") : t("ui.writing"), title })
+            : t("ui.artifact_preparing_named", { title });
     const legacyState = progress.failed
       ? latestProblem
       : state ?? (fixedProblems.length > 0 && progress.running
-        ? `fixed ${fixedProblems.length} ${fixedProblems.length === 1 ? "problem" : "problems"}`
+        ? t("ui.fixed_problem_count", { count: fixedProblems.length })
         : null);
     return (
       <section
@@ -240,7 +241,7 @@ export function AppBuilderStep({
         {detailsOpen ? (
           <div className="mt-1 flex flex-col gap-2">
             {fixedProblems.map((problem, index) => (
-              <p key={index} className="text-xs text-muted-foreground">Fixed: {problem}</p>
+              <p key={index} className="text-xs text-muted-foreground">{t("ui.fixed")} {problem}</p>
             ))}
             {parts.map((part) => (
               <TechnicalDetailsPanel key={part.toolCallId} part={part} />
@@ -301,12 +302,12 @@ export function AppBuilderStep({
       <div
         className="sr-only"
         role="progressbar"
-        aria-label={`${sentence} progress`}
+        aria-label={t("ui.action_progress", { action: sentence })}
         aria-valuemin={0}
         aria-valuemax={stages.length}
         aria-valuenow={done}
       />
-      <ol className="mt-2 flex flex-col gap-2 text-sm" aria-label={`Stages of ${sentence}`} data-app-builder-checklist>
+      <ol className="mt-2 flex flex-col gap-2 text-sm" aria-label={t("ui.action_stages", { action: sentence })} data-app-builder-checklist>
         {stages.map((stage) => (
           <li key={stage.key} className="flex min-w-0 flex-col" data-checklist-state={stage.state}>
             <span className="flex min-w-0 items-center gap-2">

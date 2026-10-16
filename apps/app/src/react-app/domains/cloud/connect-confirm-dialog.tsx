@@ -1,8 +1,8 @@
 /** @jsxImportSource react */
+import { t, currentLocale } from "@/i18n";
 
 import type { ConnectLinkClaims, ConnectLinkTransport, ConnectLinkVerifyErrorCode } from "@openwork/types/connect-link";
 
-import { t } from "../../../i18n";
 import { Button } from "../../../components/ui/button";
 import {
   Dialog,
@@ -125,7 +125,7 @@ export function ConnectConfirmDialog({
               </div>
               <div className="mt-1 flex justify-between gap-4">
                 <span className="text-muted-foreground">{t("connect.confirm_expires_label")}</span>
-                <span>{new Date(claims.exp * 1000).toLocaleString()}</span>
+                <span>{new Date(claims.exp * 1000).toLocaleString(currentLocale())}</span>
               </div>
             </div>
             <p className="text-xs text-muted-foreground">{t("connect.confirm_signin_note")}</p>

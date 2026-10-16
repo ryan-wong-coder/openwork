@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import { useEffect, useMemo, useState } from "react";
 import { Copy, ExternalLink, Eye, FolderOpen, Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -82,7 +83,7 @@ export function LinkActionMenu({ target, anchor, onOpenTarget, onClose }: LinkAc
       await navigator.clipboard.writeText(copyPath);
       onClose();
     } catch {
-      toast.error("Could not copy the path. Try again.");
+      toast.error(t("ui.could_not_copy_the_path_try_again"));
     }
   };
 
@@ -92,7 +93,7 @@ export function LinkActionMenu({ target, anchor, onOpenTarget, onClose }: LinkAc
       await openDesktopWithApp(nativePath, app.appPath, workspaceRoot);
       onClose();
     } catch {
-      toast.error("Could not open this file. Try another app or reveal it in the file manager.");
+      toast.error(t("ui.could_not_open_this_file_try_another_app_or_reveal_it_in_the_file_manager"));
     }
   };
 
@@ -111,7 +112,7 @@ export function LinkActionMenu({ target, anchor, onOpenTarget, onClose }: LinkAc
             className="w-full justify-start gap-2.5 px-3 py-2 text-sm"
           >
             <Copy className="size-4 shrink-0" />
-            Copy path
+            {t("ui.copy_path")}
           </Button>
         ) : null}
         {canLaunch ? (
@@ -121,7 +122,7 @@ export function LinkActionMenu({ target, anchor, onOpenTarget, onClose }: LinkAc
             className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-foreground/10"
           >
             <ExternalLink className="size-4 shrink-0" />
-            Open with default app
+            {t("ui.open_with_default_app")}
           </button>
         ) : null}
         {canOpenInPanel ? (
@@ -131,7 +132,7 @@ export function LinkActionMenu({ target, anchor, onOpenTarget, onClose }: LinkAc
             className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-foreground/10"
           >
             <Eye className="size-4 shrink-0" />
-            Open in panel
+            {t("ui.open_in_panel")}
           </button>
         ) : null}
         {canOpenExternally ? (
@@ -141,7 +142,7 @@ export function LinkActionMenu({ target, anchor, onOpenTarget, onClose }: LinkAc
             className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-foreground/10"
           >
             <FolderOpen className="size-4 shrink-0" />
-            {platform.os === "macos" ? "Reveal in Finder" : "Show in folder"}
+            {platform.os === "macos" ? t("workspace_list.reveal_finder") : t("ui.show_in_folder")}
           </button>
         ) : null}
         {canLaunch && apps && apps.length > 0 ? (
@@ -170,7 +171,7 @@ export function LinkActionMenu({ target, anchor, onOpenTarget, onClose }: LinkAc
             <div className="my-1 h-px bg-foreground/5" />
             <div className="flex items-center gap-2 px-3 py-1.5 text-sm text-muted-foreground">
               <Loader2 className="size-3.5 shrink-0 animate-spin" />
-              Loading apps…
+              {t("ui.loading_apps")}
             </div>
           </>
         ) : null}

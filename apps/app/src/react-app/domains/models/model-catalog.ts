@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import type { ModelOption, ModelRef } from "@/app/types";
 import type { CloudImportedProvider } from "@/app/cloud/import-state";
 import { modelRefKey, nextFavoriteModel } from "../session/models/model-collections-store";
@@ -16,10 +17,10 @@ export type RetainedModelSelection = {
 };
 export function retainedModelCopy(reason: RetainedModelSelection["reason"]) {
   switch (reason) {
-    case "policy": return { subtitle: "blocked by your organization", detail: "Your organization decides which providers are allowed here." };
-    case "disabled": return { subtitle: "disabled in AI providers", detail: "Turn this provider back on in AI providers, or choose another model." };
-    case "signed-out": return { subtitle: "sign in to verify access", detail: "Sign in to verify access to your saved model, or choose a connected provider." };
-    case "unavailable": return { subtitle: "no longer available here", detail: "Your saved model isn’t available here anymore." };
+    case "policy": return { subtitle: t("ui.model_blocked_org"), detail: t("ui.model_provider_org_control") };
+    case "disabled": return { subtitle: t("ui.model_provider_disabled"), detail: t("ui.model_provider_enable_direction") };
+    case "signed-out": return { subtitle: t("ui.model_signin_verify"), detail: t("ui.model_signin_verify_direction") };
+    case "unavailable": return { subtitle: t("ui.model_no_longer_available"), detail: t("ui.model_saved_unavailable") };
   }
 }
 export function nonDefaultModelSummary(model: ModelRef, value: string | null, label: string) {
@@ -38,7 +39,9 @@ export function markExplicitModelChoice() {
 }
 export type ModelSource = "gateway" | "local" | "organization";
 export const MODEL_SOURCE_LABELS: Record<ModelSource, string> = {
-  gateway: "OpenWork Gateway", local: "Local", organization: "Organization",
+  get gateway() { return t("ui.source_gateway"); },
+  get local() { return t("ui.source_local"); },
+  get organization() { return t("ui.source_organization"); },
 };
 
 /** Free Auto, as opposed to the same model served by an organization's OpenWork Models. */
@@ -83,16 +86,16 @@ function isOpaqueModelId(value: string) {
 
 /** A model's display name: its title, never an opaque gateway id (then "<Provider> model"). */
 export function modelTitle(model: ModelRef & { title?: string; description?: string }) {
-  if (isAutoModel(model)) return "Auto";
+  if (isAutoModel(model)) return t("ui.auto");
   const name = model.title?.trim() || model.modelID;
   if (!isOpaqueModelId(name)) return name;
   const provider = model.description?.trim();
-  return provider ? `${provider} model` : "Model";
+  return provider ? t("ui.provider_model", { provider }) : t("ui.model");
 }
 
 /** A name safe to show as a value: the public title, never an opaque provider/model id. */
 export function publicModelTitle(model: ModelRef & { title?: string }): string | undefined {
-  if (isAutoModel(model)) return "Auto";
+  if (isAutoModel(model)) return t("ui.auto");
   const title = model.title?.trim();
   if (!title || title === model.modelID || isOpaqueModelId(title)) return undefined;
   return title;
@@ -100,14 +103,14 @@ export function publicModelTitle(model: ModelRef & { title?: string }): string |
 
 /** The OpenWork Models row's meta line, the same in Settings and the Connect a provider sheet. */
 export function autoProviderSubtitle() {
-  return "Auto";
+  return t("ui.auto");
 }
 
 export function modelSubtitle(model: ModelOption, exhausted = false) {
-  if (isAutoModel(model)) return exhausted ? "Limit used up" : "OpenWork picks the model";
+  if (isAutoModel(model)) return exhausted ? t("ui.model_limit_used") : t("ui.model_auto_picks");
   // Gateway models assigned to the member that wait on their own provider sign-in.
-  if (model.gatewayAuthorization) return [model.description?.trim(), "Sign-in required"].filter(Boolean).join(" · ");
-  return [model.description?.trim(), model.organizationPinOrder !== undefined ? "pinned by your org" : null].filter(Boolean).join(" · ");
+  if (model.gatewayAuthorization) return [model.description?.trim(), t("ui.model_signin_required")].filter(Boolean).join(" · ");
+  return [model.description?.trim(), model.organizationPinOrder !== undefined ? t("ui.model_pinned_org") : null].filter(Boolean).join(" · ");
 }
 
 export function withImportedModelMetadata(options: readonly ModelOption[], imports: Record<string, CloudImportedProvider>) {
@@ -177,9 +180,9 @@ export function modelGroups(options: readonly ModelOption[], personal: readonly 
     });
     if (items.length) groups.push({ value, items });
   };
-  add("Pinned", orderedModelPins(available, personal));
-  add("Recent", recent.flatMap((model) => available.filter((option) => modelRefKey(option) === modelRefKey(model))));
-  add("OpenWork Models", available.filter((option) => option.providerID === "openwork" || option.providerID === AUTO_PROVIDER_ID));
+  add(t("ui.model_pinned"), orderedModelPins(available, personal));
+  add(t("ui.model_recent"), recent.flatMap((model) => available.filter((option) => modelRefKey(option) === modelRefKey(model))));
+  add(t("ui.openwork_models"), available.filter((option) => option.providerID === "openwork" || option.providerID === AUTO_PROVIDER_ID));
   const providers = [...new Set(available.map((option) => option.providerID))].sort((a, b) => {
     const name = (id: string) => available.find((option) => option.providerID === id)?.description || id;
     return name(a).localeCompare(name(b));

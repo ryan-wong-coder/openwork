@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import { useEffect, useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
 import { AlertTriangle, ArrowUpRight } from "lucide-react";
 
@@ -60,7 +61,7 @@ export function OpenWorkWebAccessGateScreen(props: {
   const denied = props.state === "denied";
   const organizationName = props.organizationName || "this organization";
 
-  if (checking) return <WebStartupScreen message="Checking workspace access…" />;
+  if (checking) return <WebStartupScreen message={t("interface.checking_workspace_access")} />;
 
   return (
     <main
@@ -74,18 +75,16 @@ export function OpenWorkWebAccessGateScreen(props: {
             <AlertTriangle className="size-5 text-amber-11" aria-hidden="true" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-              OpenWork Web
-            </p>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">{t("interface.openwork_web")} </p>
             <h1 className="mt-2 text-[26px] font-semibold leading-tight tracking-[-0.03em]">
               {denied
-                  ? "OpenWork Web access is required"
-                  : "OpenWork Web remains locked"}
+                  ? t("interface.openwork_web_access_is_required")
+                  : t("interface.openwork_web_remains_locked")}
             </h1>
             <p className="mt-3 text-sm leading-6 text-muted-foreground">
               {denied
-                  ? `${organizationName} does not have an active OpenWork Web subscription or complimentary admin grant.`
-                  : `Den could not confirm OpenWork Web access for ${organizationName}. The workspace stays locked until it can.`}
+                  ? t("ui_extra.web_access_denied", { organization: organizationName })
+                  : t("ui_extra.web_access_unconfirmed", { organization: organizationName })}
             </p>
           </div>
         </div>
@@ -93,17 +92,15 @@ export function OpenWorkWebAccessGateScreen(props: {
         {!checking ? (
           <div className="mt-7 flex flex-wrap items-center gap-2">
             {denied ? (
-              <Button type="button" onClick={props.onManageAccess}>
-                Manage access in Den
-                <ArrowUpRight className="size-4" aria-hidden="true" />
+              <Button type="button" onClick={props.onManageAccess}>{t("interface.manage_access_in_den")} <ArrowUpRight className="size-4" aria-hidden="true" />
               </Button>
             ) : (
-              <Button type="button" onClick={props.onRetry}>Retry</Button>
+              <Button type="button" onClick={props.onRetry}>{t("updates.retry")}</Button>
             )}
             {denied ? (
-              <Button type="button" variant="outline" onClick={props.onRetry}>Check again</Button>
+              <Button type="button" variant="outline" onClick={props.onRetry}>{t("interface.check_again")}</Button>
             ) : null}
-            <Button type="button" variant="ghost" onClick={props.onSignOut}>Sign out</Button>
+            <Button type="button" variant="ghost" onClick={props.onSignOut}>{t("den.sign_out")}</Button>
           </div>
         ) : null}
       </section>

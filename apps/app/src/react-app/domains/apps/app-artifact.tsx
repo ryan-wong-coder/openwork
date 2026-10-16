@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { AppActionsMenu, getAppUpdatePrompt } from "./app-actions-menu";
@@ -69,50 +70,50 @@ export function AppArtifact({ appId, revisionId, receiptId, onClose, onAsk, fall
       ]);
     },
   });
-  if (!client || !orgId) return <p className="p-6 text-sm text-muted-foreground">Sign in to open this artifact.</p>;
-  if (query.isPending) return <p className="flex items-center gap-2 p-6 text-sm" role="status"><Loader2 className="size-4 animate-spin" />Preparing artifact preview…</p>;
-  if (!app) return <div className="space-y-3 p-6"><p role="alert" className="text-sm">{query.error instanceof Error ? query.error.message : "This artifact could not be opened."}</p><Button variant="outline" onClick={() => void query.refetch()}>Try again</Button></div>;
+  if (!client || !orgId) return <p className="p-6 text-sm text-muted-foreground">{t("interface.sign_in_to_open_this_artifact")}</p>;
+  if (query.isPending) return <p className="flex items-center gap-2 p-6 text-sm" role="status"><Loader2 className="size-4 animate-spin" />{t("interface.preparing_artifact_preview")}</p>;
+  if (!app) return <div className="space-y-3 p-6"><p role="alert" className="text-sm">{query.error instanceof Error ? query.error.message : t("interface.this_artifact_could_not_be_opened")}</p><Button variant="outline" onClick={() => void query.refetch()}>{t("session.remote_task_retry")}</Button></div>;
   return <section className="flex h-full min-h-0 flex-col bg-background" aria-label={`${app.view.title} app`}>
     <header className="flex items-center gap-2 border-b px-4 py-3" data-app-header>
       <div className="min-w-0 flex-1">
         <h2 className="truncate text-sm font-medium" title={app.view.title}>{app.view.title}</h2>
         <p className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground whitespace-nowrap">
-          {saved ? <><Check className="size-3 shrink-0" />Saved artifact</> : app.view.activeRevisionId ? "Unsaved changes" : "Artifact draft"}
+          {saved ? <><Check className="size-3 shrink-0" />{t("interface.saved_artifact")}</> : app.view.activeRevisionId ? t("interface.unsaved_changes") : t("interface.artifact_draft")}
         </p>
       </div>
       <div className="flex shrink-0 items-center gap-1">
         {canManage && app.canManage && !saved ? <Button size="sm" disabled={!revision || revision.buildStatus !== "ready"} onClick={() => {
           setName(app.view.title); setUseInWorkflow(app.view.activeRevisionId ? app.view.useInWorkflow !== false : true); setSaveOpen(true); save.reset();
-        }}>{app.view.activeRevisionId ? "Save changes" : "Save"}</Button> : null}
+        }}>{app.view.activeRevisionId ? t("interface.save_changes") : t("settings.environment.save")}</Button> : null}
         <AppActionsMenu appId={appId} title={app.view.title} canManage={app.canManage} canDelete={app.canManage && app.view.status !== "retired"}
           busy={asking} onUpdate={onUpdate} onDeleted={onClose ?? (() => navigate("/dashboard"))}
           onRun={onAsk && saved ? () => void ask(`Run my saved app “${app.view.title}” with fresh data and show the new results in the saved app.`) : undefined}
           onEdit={onAsk ? () => void ask(`Help me improve my saved app “${app.view.title}”. Read its existing app source, ask what I want to change, and show a draft preview for me to save.`) : undefined} />
-        {onClose ? <Button variant="ghost" size="icon-sm" className="text-muted-foreground" onClick={onClose} aria-label="Close artifact"><X className="size-4" /></Button> : null}
+        {onClose ? <Button variant="ghost" size="icon-sm" className="text-muted-foreground" onClick={onClose} aria-label={t("interface.close_artifact")}><X className="size-4" /></Button> : null}
       </div>
     </header>
     <div className="min-h-0 flex-1 space-y-4 overflow-auto p-4">
       {askError ? <p role="alert" className="text-sm text-destructive">{askError}</p> : null}
       {confirmation ? <p role="status" className="rounded-lg bg-muted p-3 text-sm">{confirmation}</p> : null}
-      <p className="text-xs text-muted-foreground">{saved && isLiveGeneratedApp(app.view) ? "Live results · Refresh to fetch the latest data." : `${saved ? "Results" : "Preview"} · Changes inside this view stay in the preview.`}</p>
+      <p className="text-xs text-muted-foreground">{saved && isLiveGeneratedApp(app.view) ? t("interface.live_results_refresh_to_fetch_the_latest_data") : `${saved ? "Results" : "Preview"} · Changes inside this view stay in the preview.`}</p>
       {connection ? <DashboardConnectionCard toolName={toolName} toolCallId={`preview-${appId}-${revisionId ?? "active"}`} output={connectionOutput}
-        onConnected={() => { void query.refetch(); }} /> : app.runError ? <div className="space-y-3"><p role="alert" className="text-sm">{app.previewNotice || "This preview could not be run. Try again."}</p><Button variant="outline" disabled={query.isFetching} onClick={() => void query.refetch()}>Try again</Button></div> : saved && isLiveGeneratedApp(app.view) && revision ? <LiveGeneratedApp view={app.view} revision={revision} fallbackEndpoints={fallbackEndpoints} /> : app.html && app.payload && revision ? <GeneratedAppPreview html={app.html} payload={app.payload} title={app.view.title} revision={revision} /> : <div className="flex flex-wrap items-center gap-3">
+        onConnected={() => { void query.refetch(); }} /> : app.runError ? <div className="space-y-3"><p role="alert" className="text-sm">{app.previewNotice || t("interface.this_preview_could_not_be_run_try_again")}</p><Button variant="outline" disabled={query.isFetching} onClick={() => void query.refetch()}>{t("session.remote_task_retry")}</Button></div> : saved && isLiveGeneratedApp(app.view) && revision ? <LiveGeneratedApp view={app.view} revision={revision} fallbackEndpoints={fallbackEndpoints} /> : app.html && app.payload && revision ? <GeneratedAppPreview html={app.html} payload={app.payload} title={app.view.title} revision={revision} /> : <div className="flex flex-wrap items-center gap-3">
         <p role="status" className="text-sm text-muted-foreground">{app.previewNotice}</p>
-        {onUpdate ? <Button variant="outline" size="sm" disabled={asking} onClick={onUpdate}>{asking ? "Opening conversation…" : "Update artifact"}</Button> : null}
+        {onUpdate ? <Button variant="outline" size="sm" disabled={asking} onClick={onUpdate}>{asking ? t("interface.opening_conversation") : t("interface.update_artifact")}</Button> : null}
       </div>}
-      {canManage && app.canManage && !saved ? <p className="text-xs text-muted-foreground">Your draft is kept. Ask for changes in the conversation, then save the artifact to use it again.</p> : null}
+      {canManage && app.canManage && !saved ? <p className="text-xs text-muted-foreground">{t("interface.your_draft_is_kept_ask_for_changes_in_the_conversation_then_save_the_artifact_to_use_it_again")}</p> : null}
     </div>
     <Dialog open={canManage && app.canManage && saveOpen} onOpenChange={(open) => { if (!save.isPending) setSaveOpen(open); }}>
       <DialogContent>
         <form onSubmit={(event) => { event.preventDefault(); if (name.trim() && !save.isPending) save.mutate(); }}>
-          <DialogHeader><DialogTitle>{app.view.activeRevisionId ? "Save changes" : "Save to your dashboard"}</DialogTitle><DialogDescription>Save this artifact for future use. Each new run supplies fresh results.</DialogDescription></DialogHeader>
+          <DialogHeader><DialogTitle>{app.view.activeRevisionId ? t("interface.save_changes") : t("interface.save_to_your_dashboard")}</DialogTitle><DialogDescription>{t("interface.save_this_artifact_for_future_use_each_new_run_supplies_fresh_results")}</DialogDescription></DialogHeader>
           <div className="space-y-5 py-5">
-            <div className="space-y-2"><Label htmlFor={`app-name-${appId}`}>Artifact name</Label><Input id={`app-name-${appId}`} value={name} onChange={(event) => setName(event.target.value)} maxLength={255} required autoFocus disabled={save.isPending} /><p className="text-xs text-muted-foreground">My dashboard · Sharing stays the same</p></div>
-            <label className="flex items-start gap-3"><Checkbox checked={useInWorkflow} onCheckedChange={(checked) => setUseInWorkflow(checked === true)} disabled={save.isPending} /><span className="text-sm">Use this view for future results<span className="mt-1 block text-xs text-muted-foreground">New results will use this layout. Saving does not start or schedule a run.</span></span></label>
-            {app.view.activeRevisionId ? <p className="text-xs text-muted-foreground">Already-open results keep their current artifact version.</p> : null}
-            {save.error ? <p role="alert" className="text-sm text-destructive">{save.error instanceof Error ? save.error.message : "The artifact could not be saved. Try again."}</p> : null}
+            <div className="space-y-2"><Label htmlFor={`app-name-${appId}`}>{t("interface.artifact_name")}</Label><Input id={`app-name-${appId}`} value={name} onChange={(event) => setName(event.target.value)} maxLength={255} required autoFocus disabled={save.isPending} /><p className="text-xs text-muted-foreground">{t("interface.my_dashboard_sharing_stays_the_same")}</p></div>
+            <label className="flex items-start gap-3"><Checkbox checked={useInWorkflow} onCheckedChange={(checked) => setUseInWorkflow(checked === true)} disabled={save.isPending} /><span className="text-sm">{t("interface.use_this_view_for_future_results")}<span className="mt-1 block text-xs text-muted-foreground">{t("interface.new_results_will_use_this_layout_saving_does_not_start_or_schedule_a_run")}</span></span></label>
+            {app.view.activeRevisionId ? <p className="text-xs text-muted-foreground">{t("interface.already_open_results_keep_their_current_artifact_version")}</p> : null}
+            {save.error ? <p role="alert" className="text-sm text-destructive">{save.error instanceof Error ? save.error.message : t("interface.the_artifact_could_not_be_saved_try_again")}</p> : null}
           </div>
-          <DialogFooter><Button type="button" variant="outline" disabled={save.isPending} onClick={() => setSaveOpen(false)}>Cancel</Button><Button type="submit" disabled={!name.trim() || save.isPending}>{save.isPending ? "Saving…" : app.view.activeRevisionId ? "Save changes" : "Save"}</Button></DialogFooter>
+          <DialogFooter><Button type="button" variant="outline" disabled={save.isPending} onClick={() => setSaveOpen(false)}>{t("settings.environment.cancel")}</Button><Button type="submit" disabled={!name.trim() || save.isPending}>{save.isPending ? t("settings.environment.saving") : app.view.activeRevisionId ? t("interface.save_changes") : t("settings.environment.save")}</Button></DialogFooter>
         </form>
       </DialogContent>
     </Dialog>

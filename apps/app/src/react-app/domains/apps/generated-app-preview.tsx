@@ -1,3 +1,4 @@
+import { currentLocale, t } from "@/i18n";
 import { useLayoutEffect, useMemo, useState } from "react";
 import type { GeneratedArtifactViewRevision, WorkflowArtifactPayload } from "@openwork/types/workflows";
 import { McpAppSandboxView, type McpAppSandboxViewProps } from "@/components/chat/mcp-app-frame";
@@ -33,8 +34,8 @@ export function GeneratedAppPreview({ html, payload, title, revision, presentati
     : null, [openworkServerClient, workspaceId]);
   if (!origin || !workspaceId) {
     return <>
-      <p role="status" className="text-sm text-muted-foreground">Connect a workspace to open the preview.</p>
-      {presentation === "dashboard" && geometry ? <p className="mt-3 text-xs text-muted-foreground">Updated {new Date(payload.artifact.generatedAt).toLocaleString()}</p> : null}
+      <p role="status" className="text-sm text-muted-foreground">{t("interface.connect_a_workspace_to_open_the_preview")}</p>
+      {presentation === "dashboard" && geometry ? <p className="mt-3 text-xs text-muted-foreground">{t("interface.updated")} {new Date(payload.artifact.generatedAt).toLocaleString(currentLocale())}</p> : null}
     </>;
   }
   const frameProps: McpAppSandboxViewProps = {
@@ -65,7 +66,7 @@ function DashboardGeneratedAppPreview({ frameProps, geometry, workspaceId, gener
     {layoutReady ? <McpAppSandboxView {...frameProps} initialHeight={initialHeight ?? 360}
       onHeightChange={(height) => { setHasHeight(true); recordHeight(height); }}
       onReady={() => setReady(true)} onError={() => setReady(true)} /> : null}
-    <p className="mt-3 text-xs text-muted-foreground" data-testid={`dashboard-artifact-status-${artifactViewId}`}>Updated {new Date(generatedAt).toLocaleString()}</p>
+    <p className="mt-3 text-xs text-muted-foreground" data-testid={`dashboard-artifact-status-${artifactViewId}`}>{t("interface.updated")} {new Date(generatedAt).toLocaleString(currentLocale())}</p>
     {!ready ? <div className="absolute inset-0 space-y-2 overflow-hidden bg-background pt-3" role="status" aria-label={`Loading ${frameProps.toolName}`}>
       <Skeleton className="h-4 w-2/3" />
       <Skeleton className="h-24 w-full" />

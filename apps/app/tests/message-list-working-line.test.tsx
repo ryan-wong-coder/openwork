@@ -1,8 +1,12 @@
-import { afterAll, afterEach, expect, setSystemTime, test } from "bun:test"
+import { beforeEach, afterAll, afterEach, expect, setSystemTime, test } from "bun:test"
+import { setLocale } from "../src/i18n"
+
 import { GlobalRegistrator } from "@happy-dom/global-registrator"
 import { act, createElement } from "react"
 import { createRoot, type Root } from "react-dom/client"
 import type { UIMessage } from "ai"
+
+beforeEach(() => setLocale("en"))
 
 GlobalRegistrator.register({ url: "https://web.example/" })
 const previousAct = Reflect.get(globalThis, "IS_REACT_ACT_ENVIRONMENT")

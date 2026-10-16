@@ -1,4 +1,5 @@
 // The browser host owns task identity, consent, observations and dispatch.
+import { nativeText, nativeTemplate } from "./native-locale.mjs";
 // No model-specific API, arbitrary script execution, cookies or raw CDP surface.
 import { createHash, randomUUID } from "node:crypto";
 
@@ -210,9 +211,9 @@ export function createBrowserTaskHost({ getTab, tabsFor, ownerOf, activeFor, isV
       if (!waitForVisible && !isVisible(tab.tabId)) fail("needs_attention", "Select this tab in its conversation's browser panel to review browser control, then retry.");
       control.pending = (async () => {
         publish(tab.tabId, "needs_attention", "Browser control");
-        const accepted = await confirm({ tabId: tab.tabId, title: "Allow browser control for this thread?",
-          message: "Allow browser control across this thread's tabs?", approveLabel: "Allow for this thread",
-          detail: "Allows navigating allowed websites, reading and scrolling using the signed-in browser. Clicking, typing, key input and website tools require separate confirmations. Applies only to this thread until Take over, cancellation of a browser operation, its last tab closes or desktop restart. Organization restrictions still apply.",
+        const accepted = await confirm({ tabId: tab.tabId, title: nativeText("Allow browser control for this thread?"),
+          message: nativeText("Allow browser control across this thread's tabs?"), approveLabel: nativeText("Allow for this thread"),
+          detail: nativeText("Allows navigating allowed websites, reading and scrolling using the signed-in browser. Clicking, typing, key input and website tools require separate confirmations. Applies only to this thread until Take over, cancellation of a browser operation, its last tab closes or desktop restart. Organization restrictions still apply."),
           signal: scope.signal, waitForVisible });
         checkNavigation(scope);
         if (!accepted) fail("user_denied", "Browser control was not allowed.");
@@ -412,9 +413,14 @@ export function createBrowserTaskHost({ getTab, tabsFor, ownerOf, activeFor, isV
           const target = action.type === "key" ? "focused control from this observation" : observed.elements.find((item) => item.ref === action.ref)?.name || `position ${action.x}, ${action.y}`;
           publish(tab.tabId, "needs_attention", `Approve ${action.type}`);
           const approvalStarted = Date.now();
-          const accepted = await confirm({ tabId: tab.tabId, title: "Allow browser action?",
-            message: `Allow ${action.type} on ${new URL(observed.url).origin}?`,
-            detail: `Target: ${target}.${action.ref ? ` Reference: ${action.ref}.` : ""}${action.type === "key" ? ` Key: ${action.key}.` : ""}${action.type === "fill" ? ` Text to enter: ${action.text}` : ""} This may submit information or change website data.`, signal: requestSignal });
+          const accepted = await confirm({ tabId: tab.tabId, title: nativeText("Allow browser action?"),
+            message: nativeTemplate("Allow {action} on {origin}?", { action: nativeText(action.type), origin: new URL(observed.url).origin }),
+            detail: nativeTemplate("Target: {target}.{reference}{key}{text} This may submit information or change website data.", {
+              target,
+              reference: action.ref ? nativeTemplate(" Reference: {reference}.", { reference: action.ref }) : "",
+              key: action.type === "key" ? nativeTemplate(" Key: {key}.", { key: action.key }) : "",
+              text: action.type === "fill" ? nativeTemplate(" Text to enter: {text}", { text: action.text }) : "",
+            }), signal: requestSignal });
           approvalMs = Math.max(0, Date.now() - approvalStarted);
           checkNavigation(navigationScope);
           if (!accepted) fail("user_denied", "The browser action was not allowed.");

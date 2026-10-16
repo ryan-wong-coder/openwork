@@ -38,15 +38,15 @@ test("a captured error renders the recovery screen with the details collapsed", 
   error.stack = "Error: render exploded\n    at sessionRoute (session-route.tsx:1797)";
   const html = renderFallback(error);
 
-  expect(html).toContain("OpenWork hit an unexpected error");
-  expect(html).toContain("Reload");
+  expect(html).toContain("OpenWork 遇到意外错误");
+  expect(html).toContain("重新加载");
   expect(html).toContain('aria-expanded="false"');
-  expect(html).toContain("Technical details");
+  expect(html).toContain("技术详情");
   // Progressive disclosure: the raw payload and its actions wait behind the toggle.
   expect(html).not.toContain("render exploded");
   expect(html).not.toContain("session-route.tsx:1797");
-  expect(html).not.toContain("Copy details");
-  expect(html).not.toContain("Open logs folder");
+  expect(html).not.toContain("复制详情");
+  expect(html).not.toContain("打开日志文件夹");
 });
 
 test("non-Error throws still produce a readable message", () => {
@@ -130,7 +130,7 @@ test("the revealed technical details show the redacted message, never the query 
     await act(async () => {
       root.render(<AppErrorBoundary><Throws /></AppErrorBoundary>);
     });
-    const toggle = Array.from(container.querySelectorAll("button")).find((button) => /technical details/i.test(button.textContent ?? ""));
+    const toggle = Array.from(container.querySelectorAll("button")).find((button) => /技术详情/.test(button.textContent ?? ""));
     await act(async () => { toggle?.click(); });
     expect(container.textContent).toContain("Deep link rejected: openwork://open");
     expect(container.textContent).not.toContain("eval-secret-token");
@@ -176,8 +176,8 @@ test("revealed DOM redacts complete quoted assignments in a caught error message
     await act(async () => {
       root.render(<AppErrorBoundary><Throws /></AppErrorBoundary>);
     });
-    const toggle = Array.from(container.querySelectorAll("button")).find((button) => /technical details/i.test(button.textContent ?? ""));
-    if (!toggle) throw new Error("Technical details toggle is missing");
+    const toggle = Array.from(container.querySelectorAll("button")).find((button) => /技术详情/.test(button.textContent ?? ""));
+    if (!toggle) throw new Error("技术详情 toggle is missing");
     expect(toggle.getAttribute("aria-expanded")).toBe("false");
     expect(container.querySelector("pre")).toBeNull();
     await act(async () => { toggle.click(); });
@@ -200,7 +200,7 @@ test("revealed DOM redacts complete quoted assignments in a caught error message
   }
 });
 
-test("Copy details writes redacted quoted assignments from a caught error to the clipboard", async () => {
+test("复制详情 writes redacted quoted assignments from a caught error to the clipboard", async () => {
   const ownedDom = typeof window === "undefined";
   if (ownedDom) GlobalRegistrator.register({ url: "http://localhost/" });
   const actEnvironment = Reflect.get(globalThis, "IS_REACT_ACT_ENVIRONMENT");
@@ -218,11 +218,11 @@ test("Copy details writes redacted quoted assignments from a caught error to the
     await act(async () => {
       root.render(<AppErrorBoundary><Throws /></AppErrorBoundary>);
     });
-    const toggle = Array.from(container.querySelectorAll("button")).find((button) => /technical details/i.test(button.textContent ?? ""));
-    if (!toggle) throw new Error("Technical details toggle is missing");
+    const toggle = Array.from(container.querySelectorAll("button")).find((button) => /技术详情/.test(button.textContent ?? ""));
+    if (!toggle) throw new Error("技术详情 toggle is missing");
     await act(async () => { toggle.click(); });
-    const copy = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "Copy details");
-    if (!copy) throw new Error("Copy details button is missing");
+    const copy = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "复制详情");
+    if (!copy) throw new Error("复制详情 button is missing");
     expect(writeText).not.toHaveBeenCalled();
     await act(async () => { copy.click(); });
     expect(writeText).toHaveBeenCalledTimes(1);
@@ -237,7 +237,7 @@ test("Copy details writes redacted quoted assignments from a caught error to the
     for (const canary of canaries) expect(payload).not.toContain(canary);
     expect(parts[1].match(/\[redacted\]/g)).toHaveLength(20);
     expect(parts[2].match(/\[redacted\]/g)).toHaveLength(20);
-    expect(copy.textContent).toBe("Copied");
+    expect(copy.textContent).toBe("已复制");
   } finally {
     await act(async () => { root.unmount(); });
     container.remove();
@@ -269,8 +269,8 @@ test("the architecture check shows progress without mounting the gated applicati
         <ArchitectureMismatchGate><p>private workspace</p></ArchitectureMismatchGate>
       </BootStateProvider>,
     );
-    expect(html).toContain("Checking this OpenWork installation");
-    expect(html).toContain("Reload");
+    expect(html).toContain("正在检查此 OpenWork 安装");
+    expect(html).toContain("重新加载");
     expect(html).not.toContain("private workspace");
   } finally {
     if (bridge === undefined) Reflect.deleteProperty(window, "__OPENWORK_ELECTRON__");
@@ -310,10 +310,10 @@ test.each(["ready", "error"])("pending startup remains actionable and settles to
         </StrictMode>,
       );
     });
-    expect(container.textContent).toContain("Starting OpenWork");
+    expect(container.textContent).toContain("正在启动 OpenWork");
     expect(mounted).toBe(0);
     const retry = container.querySelector("button");
-    expect(retry?.textContent).toBe("Reload");
+    expect(retry?.textContent?.trim()).toBe("重新加载");
     await act(async () => { retry?.click(); });
     expect(reload).toHaveBeenCalledTimes(1);
 
@@ -321,13 +321,13 @@ test.each(["ready", "error"])("pending startup remains actionable and settles to
       if (outcome === "ready") startup.resolve(<Session />);
       else startup.reject(new Error("bootstrap IPC failed"));
     });
-    expect(container.textContent).not.toContain("Starting OpenWork");
+    expect(container.textContent).not.toContain("正在启动 OpenWork");
     if (outcome === "ready") {
       expect(container.textContent).toBe("restored thread");
       expect(mounted).toBeGreaterThan(0);
     } else {
-      expect(container.textContent).toContain("OpenWork hit an unexpected error");
-      expect(container.textContent).toContain("Reload");
+      expect(container.textContent).toContain("OpenWork 遇到意外错误");
+      expect(container.textContent).toContain("重新加载");
       expect(container.textContent).not.toContain("bootstrap IPC failed");
       expect(mounted).toBe(0);
     }

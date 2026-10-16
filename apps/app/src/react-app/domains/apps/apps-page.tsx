@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { useParams, useNavigate, useSearchParams, Navigate } from "react-router";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,7 @@ export function AppsPage({ onNewApp, fallbackEndpoints }: { onNewApp: (prompt: s
   const [params] = useSearchParams();
   if (!appId) return <Navigate to="/dashboard" replace />;
   return <div className="mx-auto flex h-full w-full max-w-5xl flex-col gap-4 p-6">
-    <div><Button variant="ghost" onClick={() => navigate("/dashboard")}><ArrowLeft className="size-4" />Dashboard</Button></div>
+    <div><Button variant="ghost" onClick={() => navigate("/dashboard")}><ArrowLeft className="size-4" />{t("interface.dashboard")}</Button></div>
     <div className="min-h-0 flex-1 overflow-hidden rounded-xl border">
       <AppArtifact key={JSON.stringify([scope, appId, params.get("revisionId"), params.get("receiptId")])}
         appId={appId} fallbackEndpoints={fallbackEndpoints} revisionId={params.get("revisionId") ?? undefined} receiptId={params.get("receiptId") ?? undefined} onAsk={onNewApp} />

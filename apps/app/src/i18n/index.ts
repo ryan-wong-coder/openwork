@@ -9,6 +9,7 @@ import ca from "./locales/ca";
 import es from "./locales/es";
 import ru from "./locales/ru";
 export const LANGUAGE_PREF_KEY = "openwork.language";
+export const DEFAULT_LANGUAGE: Language = "zh";
 
 /**
  * Supported languages
@@ -27,7 +28,7 @@ export const LANGUAGES: Language[] = ["en", "ja", "zh", "vi", "pt-BR", "th", "fr
 export const LANGUAGE_OPTIONS = [
   { value: "en" as Language, label: "English", nativeName: "English" },
   { value: "ja" as Language, label: "Japanese", nativeName: "日本語" },
-  { value: "zh" as Language, label: "Chinese (Simplified)", nativeName: "简体中文" },
+  { value: "zh" as Language, label: "简体中文", nativeName: "简体中文" },
   { value: "vi" as Language, label: "Vietnamese", nativeName: "Tiếng Việt" },
   { value: "pt-BR" as Language, label: "Portuguese (BR)", nativeName: "Português (BR)" },
   { value: "th" as Language, label: "Thai", nativeName: "ไทย" },
@@ -73,10 +74,25 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
  * Replaces long chains like: value === "en" || value === "zh"
  */
 export const isLanguage = (value: unknown): value is Language => {
-  return typeof value === "string" && LANGUAGES.includes(value as Language);
+  return typeof value === "string" && LANGUAGES.some((language) => language === value);
 };
 
-let localeValue: Language = "en";
+let localeValue: Language = DEFAULT_LANGUAGE;
+const localeListeners = new Set<() => void>();
+
+export const subscribeLocale = (listener: () => void) => {
+  localeListeners.add(listener);
+  return () => { localeListeners.delete(listener); };
+};
+
+const applyLocale = (language: Language) => {
+  const changed = localeValue !== language;
+  localeValue = language;
+  if (typeof document !== "undefined") {
+    document.documentElement.setAttribute("lang", language === "zh" ? "zh-CN" : language);
+  }
+  if (changed) localeListeners.forEach((listener) => listener());
+};
 
 /**
  * Get current locale
@@ -91,15 +107,11 @@ function locale(): Language {
  */
 export const setLocale = (newLocale: Language) => {
   if (!isLanguage(newLocale)) {
-    console.warn(`Invalid locale: ${newLocale}, falling back to "en"`);
-    newLocale = "en";
+    console.warn(`Invalid locale: ${newLocale}, falling back to "${DEFAULT_LANGUAGE}"`);
+    newLocale = DEFAULT_LANGUAGE;
   }
 
-  localeValue = newLocale;
-
-  if (typeof document !== "undefined") {
-    document.documentElement.setAttribute("lang", newLocale);
-  }
+  applyLocale(newLocale);
 
   // Persist to localStorage
   if (typeof window !== "undefined") {
@@ -140,16 +152,21 @@ const pluralRule = (loc: Language, count: number): Intl.LDMLPluralRule => {
  * Pick the right key variant for a count. Tries `${key}_zero` (only when count === 0),
  * then `${key}_${rule}` (e.g. `_one` / `_other`), then `${key}_other`, then the bare
  * key. Asian locales (no grammatical plural) define only the bare key and hit the
- * final step. Each candidate runs through the locale → English fallback so an
- * untranslated key still resolves to the English `_one` / `_other` variant.
+ * final step. The locale's candidates are checked before English fallback so
+ * a translated bare form wins over English `_one` / `_other` variants.
  */
 const resolvePluralKey = (loc: Language, key: string, count: number): string => {
   const candidates: string[] = [];
   if (count === 0) candidates.push(`${key}_zero`);
   candidates.push(`${key}_${pluralRule(loc, count)}`, `${key}_other`, key);
 
+  // A locale's bare form must win over English plural variants. Chinese has
+  // no grammatical plural; falling back per candidate would hide its entry.
   for (const candidate of candidates) {
-    if (lookupEntry(loc, candidate) !== null) return candidate;
+    if (TRANSLATIONS[loc]?.[candidate]) return candidate;
+  }
+  for (const candidate of candidates) {
+    if (TRANSLATIONS.en[candidate]) return candidate;
   }
   return key;
 };
@@ -186,7 +203,7 @@ export const t = (
   let out = result;
   for (const [k, v] of Object.entries(params)) {
     if (k === "lng") continue;
-    out = out.replace(`{${k}}`, String(v));
+    out = out.replaceAll(`{${k}}`, () => String(v));
   }
   return out;
 };
@@ -197,25 +214,20 @@ export const t = (
  */
 export const initLocale = (): Language => {
   if (typeof window === "undefined") {
-    return "en";
+    applyLocale(DEFAULT_LANGUAGE);
+    return DEFAULT_LANGUAGE;
   }
 
   try {
     const stored = window.localStorage.getItem(LANGUAGE_PREF_KEY);
     if (isLanguage(stored)) {
-      localeValue = stored;
-      if (typeof document !== "undefined") {
-        document.documentElement.setAttribute("lang", stored);
-      }
+      applyLocale(stored);
       return stored;
     }
   } catch (e) {
     console.warn("Failed to read language preference:", e);
   }
 
-  if (typeof document !== "undefined") {
-    document.documentElement.setAttribute("lang", "en");
-  }
-
-  return "en";
+  applyLocale(DEFAULT_LANGUAGE);
+  return DEFAULT_LANGUAGE;
 };

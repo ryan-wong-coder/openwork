@@ -1,5 +1,7 @@
 "use client"
 
+import { t } from "@/i18n";
+
 import { useId, useRef, useState, useSyncExternalStore } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import type { DynamicToolUIPart } from "ai"
@@ -46,15 +48,15 @@ function denDashboardUrl(baseUrl: string, prompt: CredentialPrompt): string | nu
 /** Plain, value-free direction for each failure; the key is never repeated back. */
 function failureState(error: unknown, name: string): { phase: Phase; message: string | null } {
   if (error instanceof DenApiError) {
-    if (error.status === 403 && error.code === "reauth") return { phase: "reauth", message: "Confirm it's you, then enter the key again." }
+    if (error.status === 403 && error.code === "reauth") return { phase: "reauth", message: t("ui.confirm_it_s_you_then_enter_the_key_again") }
     if (error.status === 403) return { phase: "denied", message: null }
     if (error.status === 404) return { phase: "gone", message: null }
-    if (error.code === "credential_rejected") return { phase: "entry", message: `${name} didn't accept this key. Check it and try again.` }
-    if (error.status === 400) return { phase: "entry", message: "Enter only the key, without spaces or a prefix." }
-    if (error.status === 409) return { phase: "entry", message: `${name} changed. Ask the agent to check it, then try again.` }
-    if (error.status === 502) return { phase: "entry", message: `Couldn't reach ${name} to check the key. Try again.` }
+    if (error.code === "credential_rejected") return { phase: "entry", message: t("ui.key_rejected", { name }) }
+    if (error.status === 400) return { phase: "entry", message: t("ui.enter_only_the_key_without_spaces_or_a_prefix") }
+    if (error.status === 409) return { phase: "entry", message: t("ui.key_target_changed", { name }) }
+    if (error.status === 502) return { phase: "entry", message: t("ui.key_check_unreachable", { name }) }
   }
-  return { phase: "entry", message: "OpenWork couldn't confirm the key was saved. Try again." }
+  return { phase: "entry", message: t("ui.openwork_couldn_t_confirm_the_key_was_saved_try_again") }
 }
 
 /**
@@ -167,7 +169,7 @@ export function CredentialPromptCard({ part, continueToolCallId = part.toolCallI
       markSaved(key)
       void queryClient.invalidateQueries({ queryKey: ["den", "credential-prompt", organizationId, key] })
       // Picks the task up as if the person said so; the message carries no key.
-      messageList?.continueAfterConnection?.(continueToolCallId, CREDENTIAL_SAVED_CONTINUE_PROMPT)
+      messageList?.continueAfterConnection?.(continueToolCallId, t("ui.i_ve_saved_the_key_go_ahead"))
     } catch (cause) {
       values = {}
       const next = failureState(cause, name)
@@ -183,36 +185,36 @@ export function CredentialPromptCard({ part, continueToolCallId = part.toolCallI
   }
   const plural = specs.length > 1 || prompt.target.type === "gateway_provider_credential"
   const settled = saved && !replacing
-  const what = plural ? "credentials" : "API key"
-  const title = settled ? `${name}: ${plural ? "credentials" : "key"} saved`
-    : blocked === "denied" ? `An admin must add the ${what} for ${name}`
-    : blocked === "gone" ? `${name} is no longer available`
-    : blocked ? `${plural ? "Credentials" : "API key"} for ${name}`
-    : replacing ? `Replace the ${what} for ${name}`
-    : `Add the ${what} for ${name}`
-  const blockedLine = blocked === "read_only" ? "This conversation is read-only."
-    : blocked === "signed_out" ? "Sign in to OpenWork Cloud to add this key here."
-    : blocked === "off" ? "Adding keys in chat is off for your organization. Use OpenWork Cloud instead."
-    : blocked === "denied" ? "You can't change this key. Ask an organization admin."
-    : blocked === "gone" ? "Ask the agent to set it up again."
-    : blocked === "unverified" ? "OpenWork couldn't check whether keys can be added here. Use OpenWork Cloud instead."
+  const what = plural ? t("ui.credentials") : t("extensions.add_mcp_api_key_label")
+  const title = settled ? t("ui.credentials_saved", { name, what })
+    : blocked === "denied" ? t("ui.credentials_admin_required", { what, name })
+    : blocked === "gone" ? t("ui.named_unavailable", { name })
+    : blocked ? t("ui.credentials_for", { what, name })
+    : replacing ? t("ui.credentials_replace", { what, name })
+    : t("ui.credentials_add", { what, name })
+  const blockedLine = blocked === "read_only" ? t("ui.this_conversation_is_read_only")
+    : blocked === "signed_out" ? t("ui.sign_in_to_openwork_cloud_to_add_this_key_here")
+    : blocked === "off" ? t("ui.adding_keys_in_chat_is_off_for_your_organization_use_openwork_cloud_instead")
+    : blocked === "denied" ? t("ui.you_can_t_change_this_key_ask_an_organization_admin")
+    : blocked === "gone" ? t("ui.ask_the_agent_to_set_it_up_again")
+    : blocked === "unverified" ? t("ui.openwork_couldn_t_check_whether_keys_can_be_added_here_use_openwork_cloud_instead")
     : null
   // One state line: who uses the key and where it goes (P9).
-  const consent = `Shared with people who can use ${name}${prompt.destination ? ` · sent only to ${prompt.destination}` : ""} · never shown to the agent`
+  const consent = t("ui.credentials_consent", { name, destination: prompt.destination ? t("ui.credentials_destination", { destination: prompt.destination }) : "" })
   const Icon = settled ? Check : blocked ? Lock : KeyRound
 
   return (
-    <section data-testid="credential-prompt-card" data-credential-prompt={prompt.target.type} aria-label={`${name} API key`}
+    <section data-testid="credential-prompt-card" data-credential-prompt={prompt.target.type} aria-label={t("ui.named_api_key", { name })}
       className="w-full max-w-full self-start text-sm text-foreground">
       <div className="flex min-h-10 min-w-0 flex-wrap items-center gap-3 px-3 py-1">
         <span aria-hidden="true" className="flex size-6 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
           <Icon className="size-4" strokeWidth={1.5} />
         </span>
         <p role="status" className="min-w-0 flex-1 font-medium">{title}</p>
-        {settled ? <span aria-label="Saved key, hidden" className="shrink-0 font-mono text-muted-foreground">••••••••</span> : null}
-        {settled && !blocked ? <Button variant="ghost" size="sm" onClick={() => { setReplacing(true); setError(null) }}>{plural ? "Replace" : "Replace key"}</Button> : null}
+        {settled ? <span aria-label={t("ui.saved_key_hidden")} className="shrink-0 font-mono text-muted-foreground">••••••••</span> : null}
+        {settled && !blocked ? <Button variant="ghost" size="sm" onClick={() => { setReplacing(true); setError(null) }}>{plural ? t("ui.replace") : t("ui.replace_key")}</Button> : null}
         {blocked && blocked !== "read_only" && blocked !== "gone" && dashboardUrl ? (
-          <a className={buttonVariants({ variant: "ghost", size: "sm" })} href={dashboardUrl} target="_blank" rel="noopener noreferrer">Open in OpenWork Cloud</a>
+          <a className={buttonVariants({ variant: "ghost", size: "sm" })} href={dashboardUrl} target="_blank" rel="noopener noreferrer">{t("ui.open_in_openwork_cloud")}</a>
         ) : null}
       </div>
       {blockedLine && !settled ? <p className="px-3 pb-2 text-muted-foreground">{blockedLine}</p> : null}
@@ -254,17 +256,17 @@ export function CredentialPromptCard({ part, continueToolCallId = part.toolCallI
           <div className="flex items-start gap-2">
             {specs.length === 1 && specs[0]?.kind === "secret" ? (
               <div className="min-w-0 flex-1">
-                <SecretField id={fieldId} label="API key" labelHidden revealable={confirmed} error={error} disabled={phase === "saving"}
+                <SecretField id={fieldId} label={t("extensions.add_mcp_api_key_label")} labelHidden revealable={confirmed} error={error} disabled={phase === "saving"}
                   handleRef={(handle) => { if (handle) fields.current.set("apiKey", handle); else fields.current.delete("apiKey") }}
                   onSubmit={() => void save()} onValueChange={(has) => track("apiKey", has)} />
               </div>
             ) : <div className="flex-1" />}
             <Button type="submit" size="sm" disabled={phase === "saving" || !hasValue}>
               {phase === "saving" ? <Loader2 data-icon="inline-start" aria-hidden="true" className="animate-spin" strokeWidth={1.5} /> : null}
-              {phase === "saving" ? (plural ? "Saving…" : "Checking key…") : plural ? "Save credentials" : "Save key"}
+              {phase === "saving" ? (plural ? t("settings.environment.saving") : t("ui.checking_key")) : plural ? t("ui.save_credentials") : t("ui.save_key")}
             </Button>
             {replacing ? <Button type="button" variant="ghost" size="sm" disabled={phase === "saving"}
-              onClick={() => { clearAll(); setReplacing(false); setError(null) }}>Cancel</Button> : null}
+              onClick={() => { clearAll(); setReplacing(false); setError(null) }}>{t("common.cancel")}</Button> : null}
           </div>
         </form>
       ) : null}

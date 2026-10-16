@@ -26,6 +26,7 @@ import { createRuntimeManager, createSystemCaCertificateVerifyProc } from "./run
 import { registerUpdaterIpc, resolveAppVersion } from "./updater.mjs";
 import { createUiControlServer } from "./ui-control-server.mjs";
 import { createApplicationMenu } from "./app-menu.mjs";
+import { nativeText, nativeTemplate, setNativeLanguage } from "./native-locale.mjs";
 import { createNativeContextMenus } from "./context-menu.mjs";
 import { applyBrandAppName } from "./brand-app-name.mjs";
 import { createBrowserPanel } from "./browser-panel.mjs";
@@ -2619,6 +2620,12 @@ ipcMain.on("openwork:desktop-distribution-sync", (event) => {
 ipcMain.on("openwork:window-fullscreen-sync", (event) => {
   event.returnValue = BrowserWindow.fromWebContents(event.sender)?.isFullScreen() ?? false;
 });
+ipcMain.on("openwork:application-language", (event, language) => {
+  if (!mainWindow || event.sender !== mainWindow.webContents
+    || event.senderFrame !== mainWindow.webContents.mainFrame) return;
+  if (typeof language !== "string" || language.length > 16) return;
+  if (setNativeLanguage(language)) applicationMenu.install();
+});
 ipcMain.handle("openwork:desktop", handleDesktopInvoke);
 ipcMain.handle("openwork:shell:openExternal", async (_event, url) => {
   if (typeof url !== "string" || url.trim().length === 0) {
@@ -2820,8 +2827,8 @@ or use: pnpm dev:worktree`);
     if (firstLaunchWorkspaceFailure) {
       runDetachedTask("show default workspace warning", () => dialog.showMessageBox(win, {
         type: "warning",
-        message: "OpenWork could not prepare its default folder",
-        detail: `OpenWork is open without a workspace. Use Add workspace in the sidebar to choose another folder.\n\n${firstLaunchWorkspaceFailure.error}`,
+        message: nativeText("OpenWork could not prepare its default folder"),
+        detail: nativeTemplate("OpenWork is open without a workspace. Use Add workspace in the sidebar to choose another folder.\n\n{error}", { error: firstLaunchWorkspaceFailure.error }),
         buttons: ["Continue"],
       }));
     }

@@ -67,7 +67,7 @@ export type ElectronUpdaterEnvState = {
   updateEnv: { supported?: boolean; reason?: string | null } | null;
 };
 
-export const ELECTRON_UPDATER_UNSUPPORTED_REASON = "Electron updater bridge is unavailable.";
+export const ELECTRON_UPDATER_UNSUPPORTED_REASON = t("updates.bridge_unavailable");
 
 export function unsupportedElectronUpdaterEnvState(): ElectronUpdaterEnvState {
   return {
@@ -295,7 +295,7 @@ export function useElectronUpdaterState(options: UseElectronUpdaterStateOptions)
       releaseChannelRequestRef.current === releaseChannelRequestId;
     const bridge = electronUpdaterBridge();
     if (!bridge?.download) {
-      const message = "Electron updater downloads are available only in the Electron desktop app.";
+      const message = t("settings_extra.electron_updater_downloads_are_available_only_in_the_electron_desktop_app");
       setUpdateStatus({ state: "error", message, failedAction: "download" });
       setError(message);
       return;
@@ -356,7 +356,7 @@ export function useElectronUpdaterState(options: UseElectronUpdaterStateOptions)
       const result = await bridge.download();
       if (!isCurrentReleaseChannel()) return;
       if (!result?.ok) {
-        const message = result?.reason ?? "Update download failed.";
+        const message = result?.reason ?? t("settings_extra.update_download_failed");
         setUpdateStatus({
           state: "error",
           message,
@@ -415,7 +415,7 @@ export function useElectronUpdaterState(options: UseElectronUpdaterStateOptions)
     const requestedReleaseChannel = channelOverride ?? releaseChannel;
     const bridge = electronUpdaterBridge();
     if (!bridge?.check) {
-      const message = "Electron update checks are available only in the Electron desktop app.";
+      const message = t("settings_extra.electron_update_checks_are_available_only_in_the_electron_desktop_app");
       setUpdateStatus({ state: "error", message, failedAction: "check" });
       setError(message);
       return;
@@ -440,7 +440,7 @@ export function useElectronUpdaterState(options: UseElectronUpdaterStateOptions)
         if (!isCurrentRequest()) return;
         const currentVersion = channelState?.currentVersion ?? appVersion;
         if (!currentVersion) {
-          throw new Error("Could not determine the installed OpenWork version.");
+          throw new Error(t("updates.installed_version_unknown"));
         }
 
         const selection = await resolveFreshStableDesktopUpdate({
@@ -449,7 +449,7 @@ export function useElectronUpdaterState(options: UseElectronUpdaterStateOptions)
         });
         if (!isCurrentRequest()) return;
         if (!selection) {
-          throw new Error("Den returned an invalid desktop release inventory.");
+          throw new Error(t("updates.release_inventory_invalid"));
         }
         if (selection.kind === "blocked") {
           setUpdateStatus({
@@ -506,7 +506,7 @@ export function useElectronUpdaterState(options: UseElectronUpdaterStateOptions)
       if (result.reason === "unavailable") {
         setUpdateStatus({
           state: "idle",
-          message: "Auto-updates are available in packaged builds only.",
+          message: t("settings_extra.auto_updates_are_available_in_packaged_builds_only"),
         });
         return;
       }
@@ -799,7 +799,7 @@ export function useElectronUpdaterState(options: UseElectronUpdaterStateOptions)
       stagedUpdateRevisionRef.current === stagedUpdateRevision;
     const bridge = electronUpdaterBridge();
     if (!bridge?.installAndRestart) {
-      const message = "Electron update install is available only in the Electron desktop app.";
+      const message = t("settings_extra.electron_update_install_is_available_only_in_the_electron_desktop_app");
       setUpdateStatus({ state: "error", message, failedAction: "install" });
       setError(message);
       return;
@@ -849,7 +849,7 @@ export function useElectronUpdaterState(options: UseElectronUpdaterStateOptions)
       const result = await bridge.installAndRestart();
       if (!isCurrentReleaseChannel()) return;
       if (!result?.ok) {
-        const message = result?.reason ?? "Update install failed.";
+        const message = result?.reason ?? t("settings_extra.update_install_failed");
         setError(message);
         if (result?.reason === "update-not-downloaded") {
           // The main-side staged download was invalidated; re-check so the UI

@@ -23,7 +23,7 @@ function SidebarToggle({ surface }: { surface: "sidebar" | "main" }) {
       className="size-8! rounded-lg text-muted-foreground transition-colors hover:bg-muted titlebar-no-drag"
       aria-expanded={isMobile ? openMobile : open}
       aria-keyshortcuts={isMacPlatform() ? "Meta+B" : "Control+B"}
-      title={`Toggle sidebar (${isMacPlatform() ? "⌘B" : "Ctrl+B"})`}
+      title={t("session_copy.toggle_sidebar_shortcut", { shortcut: isMacPlatform() ? "⌘B" : "Ctrl+B" })}
       onClick={() => {
         if (isMobile) return;
         // The clicked control moves with the sidebar. Keep keyboard focus on
@@ -41,14 +41,14 @@ export function SidebarTitlebar({ history }: { history?: ConversationHistoryCont
     <div data-sidebar-titlebar className="window-titlebar mac-window-controls-inset flex shrink-0 items-center gap-1 px-2 titlebar-drag">
       <SidebarToggle surface="sidebar" />
       {history ? (
-        <div className="ml-auto flex gap-0.5 titlebar-no-drag" role="group" aria-label="Conversation history controls">
+        <div className="ml-auto flex gap-0.5 titlebar-no-drag" role="group" aria-label={t("interface.conversation_history_controls")}>
           <Button variant="ghost" size="icon-sm" className="rounded-lg text-muted-foreground transition-colors hover:bg-muted"
-            aria-label="Back in conversation history" title="Back in conversation history"
+            aria-label={t("interface.back_in_conversation_history")} title={t("interface.back_in_conversation_history")}
             data-conversation-history-control="back" disabled={!history.canGoBack} onClick={() => history.onNavigate("back")}>
             <ArrowLeft strokeWidth={1.5} />
           </Button>
           <Button variant="ghost" size="icon-sm" className="rounded-lg text-muted-foreground transition-colors hover:bg-muted"
-            aria-label="Forward in conversation history" title="Forward in conversation history"
+            aria-label={t("interface.forward_in_conversation_history")} title={t("interface.forward_in_conversation_history")}
             data-conversation-history-control="forward" disabled={!history.canGoForward} onClick={() => history.onNavigate("forward")}>
             <ArrowRight strokeWidth={1.5} />
           </Button>
@@ -72,7 +72,7 @@ export function SidebarActions({ onOpenSessionSearch }: { onOpenSessionSearch?: 
               <Search strokeWidth={1.5} />
             </Button>
           } />
-          <TooltipContent>{t("workspace_list.search_sessions")} ({isMacPlatform() ? "⌘⇧F" : "Ctrl+Shift+F"})</TooltipContent>
+          <TooltipContent>{t("workspace_list.search_sessions")} ({isMacPlatform() ? "⌘⇧F" : t("interface.ctrl_shift_f")})</TooltipContent>
         </Tooltip>
       ) : null}
       <NotificationBell align="start" />

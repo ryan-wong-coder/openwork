@@ -1,3 +1,4 @@
+import { currentLocale, t } from "@/i18n";
 import { isReasoningUIPart, isToolUIPart, type DynamicToolUIPart, type FileUIPart, type ToolUIPart, type UIMessage } from "ai"
 import type { ThreadStatus } from "@/lib/messages"
 // Relative so the pure grouping contract stays importable from alias-free
@@ -43,10 +44,10 @@ export function getFileTitle(part: Pick<FileUIPart, "filename" | "url">) {
   }
 
   if (part.url.startsWith("data:")) {
-    return "Attached file"
+    return t("ui.attached_file")
   }
 
-  return part.url || "File"
+  return part.url || t("composer.file_kind")
 }
 
 function extensionBadge(filename: string | undefined) {
@@ -121,14 +122,14 @@ export function getMessageCompleted(message: UIMessage): number | null {
 export function formatMessageTimestamp(timestampMs: number): string {
   const date = new Date(timestampMs)
   const now = new Date()
-  const time = date.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" })
+  const time = date.toLocaleTimeString(currentLocale(), { hour: "numeric", minute: "2-digit" })
 
   if (date.toDateString() === now.toDateString()) {
     return time
   }
 
   const sameYear = date.getFullYear() === now.getFullYear()
-  const day = date.toLocaleDateString(undefined, {
+  const day = date.toLocaleDateString(currentLocale(), {
     month: "short",
     day: "numeric",
     ...(sameYear ? {} : { year: "numeric" }),

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -108,15 +108,28 @@
       <!-- Visible even when the entry bundle cannot load. React replaces this on mount. -->
       <div style="min-height: 100dvh; display: flex; align-items: center; justify-content: center; font: 14px system-ui; text-align: center; padding: 24px; box-sizing: border-box">
         <div>
-          <p role="status">Starting OpenWork</p>
+          <p role="status" data-startup-label="starting">正在启动 OpenWork</p>
           <div id="startup-recovery" hidden>
-            <p>OpenWork is taking longer than usual to start.</p>
-            <button type="button" onclick="window.location.reload()" style="font: inherit; padding: 8px 16px; cursor: pointer">Reload</button>
+            <p data-startup-label="slow">OpenWork 启动时间比平时长。</p>
+            <button type="button" data-startup-label="reload" onclick="window.location.reload()" style="font: inherit; padding: 8px 16px; cursor: pointer">重新加载</button>
           </div>
         </div>
       </div>
     </div>
     <script>
+      // Keep the bundle-independent recovery screen usable before i18n loads.
+      (function () {
+        try {
+          var language = localStorage.getItem("openwork.language");
+          var supported = ["en", "ja", "zh", "vi", "pt-BR", "th", "fr", "ca", "es", "ru"];
+          if (supported.indexOf(language) === -1 || language === "zh") return;
+          document.documentElement.lang = language;
+          var labels = { starting: "Starting OpenWork", slow: "OpenWork is taking longer than usual to start.", reload: "Reload" };
+          document.querySelectorAll("[data-startup-label]").forEach(function (element) {
+            element.textContent = labels[element.getAttribute("data-startup-label")];
+          });
+        } catch (e) {}
+      })();
       setTimeout(function () {
         var recovery = document.getElementById("startup-recovery");
         if (recovery) recovery.hidden = false;

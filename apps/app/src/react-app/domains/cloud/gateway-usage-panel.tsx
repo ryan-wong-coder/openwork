@@ -1,3 +1,4 @@
+import { currentLocale, t } from "@/i18n";
 import { useId, useState, type ReactNode } from "react";
 import { CheckCircle2, ChevronRight, Clock, Gauge, LockKeyhole } from "lucide-react";
 import { useNavigate } from "react-router";
@@ -13,9 +14,9 @@ import {
   formatGatewayReset,
   gatewayIncreaseMicroUsd,
   gatewayPercentLeft,
-  gatewayPeriodLabels,
+  gatewayPeriodLabel,
   gatewayUsageLimitGroups,
-  gatewayPeriodPossessives,
+  gatewayPeriodPossessive,
 } from "./gateway-usage-state";
 import { useGatewayUsage } from "./use-gateway-usage";
 import { gatewayApprovalKey, useGatewayApprovalDismissals } from "./gateway-usage-approval-store";
@@ -24,7 +25,7 @@ export const GATEWAY_USAGE_SETTINGS_PATH = "/settings/usage";
 
 export function GatewayResetTime({ value, midSentence = false }: { value: string; midSentence?: boolean }) {
   const text = formatGatewayReset(value, Date.now());
-  return <time dateTime={value} title={new Date(value).toLocaleString()}>{midSentence ? `r${text.slice(1)}` : text}</time>;
+  return <time dateTime={value} title={new Date(value).toLocaleString(currentLocale())}>{midSentence ? text.charAt(0).toLocaleLowerCase(currentLocale()) + text.slice(1) : text}</time>;
 }
 
 function exhausted(bucket: GatewayUsageBucket) {
@@ -71,12 +72,12 @@ export function GatewayIncreaseForm({ pending, error, onSubmit, onCancel }: {
       event.preventDefault();
       if (!pending && trimmed && trimmed.length <= 2000) onSubmit(trimmed);
     }}>
-      <label htmlFor={id} className="text-xs font-medium text-foreground">What do you need it for?</label>
+      <label htmlFor={id} className="text-xs font-medium text-foreground">{t("interface.what_do_you_need_it_for")}</label>
       <Textarea id={id} required maxLength={2000} value={reason} autoFocus onChange={(event) => setReason(event.target.value)} disabled={pending} className="min-h-16" />
-      {error ? <p role="alert" className="text-xs text-muted-foreground">Your request couldn’t be confirmed. Check your usage before asking again.</p> : null}
+      {error ? <p role="alert" className="text-xs text-muted-foreground">{t("interface.your_request_couldn_t_be_confirmed_check_your_usage_before_asking_again")}</p> : null}
       <div className="flex items-center justify-end gap-1">
-        {onCancel ? <Button type="button" size="sm" variant="ghost" disabled={pending} onClick={onCancel}>Cancel</Button> : null}
-        <Button type="submit" size="sm" disabled={pending || !trimmed || trimmed.length > 2000}>{pending ? "Sending…" : "Send request"}</Button>
+        {onCancel ? <Button type="button" size="sm" variant="ghost" disabled={pending} onClick={onCancel}>{t("settings.environment.cancel")}</Button> : null}
+        <Button type="submit" size="sm" disabled={pending || !trimmed || trimmed.length > 2000}>{pending ? t("interface.sending") : t("interface.send_request")}</Button>
       </div>
     </form>
   );
@@ -95,16 +96,16 @@ export function GatewayUsageNotice({ state, status, stale, providerName = null, 
   const buckets = status.buckets.filter((bucket) => exhausted(bucket) && (state !== "blocked" || bucket.hardLimit));
   const bucket = longestBlock(buckets);
   if (!bucket) return null;
-  const seeUsage = <Button size="sm" variant="ghost" className="text-muted-foreground" onClick={() => navigate(GATEWAY_USAGE_SETTINGS_PATH)}>See usage</Button>;
-  const staleNote = stale ? "Couldn’t refresh, showing the last known limit" : null;
-  const forProvider = providerName ? ` for ${providerName}` : "";
-  const switchNote = canSwitchProvider ? <span data-testid="gateway-usage-switch-provider"> Switch to a model from another provider to keep working.</span> : null;
+  const seeUsage = <Button size="sm" variant="ghost" className="text-muted-foreground" onClick={() => navigate(GATEWAY_USAGE_SETTINGS_PATH)}>{t("interface.see_usage")}</Button>;
+  const staleNote = stale ? t("ui_extra.usage_stale_limit") : null;
+  const forProvider = providerName ? t("ui_extra.for_provider", { provider: providerName }) : "";
+  const switchNote = canSwitchProvider ? <span data-testid="gateway-usage-switch-provider">{t("interface.switch_to_a_model_from_another_provider_to_keep_working")}</span> : null;
 
   if (state === "over_limit") {
     return (
       <UsageCard testId="gateway-usage-notice" icon={<Gauge />}
-        title={`${formatGatewayMoney(bucket.usedMicroUsd - bucket.allowanceMicroUsd)} over ${gatewayPeriodPossessives[bucket.timeframe]} ${formatGatewayMoney(bucket.allowanceMicroUsd)}${forProvider}`}
-        detail={staleNote ?? <>You can keep working. <GatewayResetTime value={bucket.resetAt} /></>}
+        title={t("ui_extra.usage_over", { over: formatGatewayMoney(bucket.usedMicroUsd - bucket.allowanceMicroUsd), period: gatewayPeriodPossessive(bucket.timeframe), allowance: formatGatewayMoney(bucket.allowanceMicroUsd), provider: forProvider })}
+        detail={staleNote ?? <>{t("interface.you_can_keep_working")} <GatewayResetTime value={bucket.resetAt} /></>}
         actions={seeUsage} />
     );
   }
@@ -113,8 +114,8 @@ export function GatewayUsageNotice({ state, status, stale, providerName = null, 
   if (pendingBucket) {
     return (
       <UsageCard testId="gateway-usage-notice" icon={<Clock />}
-        title={`Asked for ${formatGatewayMoney(gatewayIncreaseMicroUsd(pendingBucket))} more ${gatewayPeriodLabels[pendingBucket.timeframe].toLowerCase()}${forProvider}`}
-        detail={staleNote ?? <>Waiting for an admin{switchNote ? "." : null}{switchNote}</>}
+        title={t("ui_extra.usage_increase_pending", { amount: formatGatewayMoney(gatewayIncreaseMicroUsd(pendingBucket)), period: gatewayPeriodLabel(pendingBucket.timeframe).toLowerCase(), provider: forProvider })}
+        detail={staleNote ?? <>{t("interface.waiting_for_an_admin")}{switchNote ? "." : null}{switchNote}</>}
         actions={seeUsage} />
     );
   }
@@ -124,8 +125,8 @@ export function GatewayUsageNotice({ state, status, stale, providerName = null, 
   if (asking && askable && amount) {
     return (
       <UsageCard testId="gateway-usage-notice" icon={<LockKeyhole />}
-        title={`Ask for ${amount} more ${gatewayPeriodLabels[askable.timeframe].toLowerCase()}${forProvider}`}
-        detail="An admin reviews it">
+        title={t("ui_extra.usage_increase_request", { amount, period: gatewayPeriodLabel(askable.timeframe).toLowerCase(), provider: forProvider })}
+        detail={t("ui_extra.admin_reviews")}>
         <div className="ps-7">
           <GatewayIncreaseForm pending={usage.reset.isPending} error={usage.reset.isError}
             onCancel={() => { usage.reset.reset(); setAsking(false); }}
@@ -137,11 +138,11 @@ export function GatewayUsageNotice({ state, status, stale, providerName = null, 
 
   return (
     <UsageCard testId="gateway-usage-notice" icon={<LockKeyhole />}
-      title={`You’ve used ${gatewayPeriodPossessives[bucket.timeframe]} ${formatGatewayMoney(bucket.allowanceMicroUsd)}${forProvider}`}
-      detail={staleNote ?? <><GatewayResetTime value={bucket.resetAt} />{askable ? (switchNote ? "." : null) : ". An admin can raise it."}{switchNote}</>}
+      title={t("ui_extra.usage_exhausted", { period: gatewayPeriodPossessive(bucket.timeframe), amount: formatGatewayMoney(bucket.allowanceMicroUsd), provider: forProvider })}
+      detail={staleNote ?? <><GatewayResetTime value={bucket.resetAt} />{askable ? (switchNote ? "." : null) : t("ui_extra.admin_can_raise")}{switchNote}</>}
       actions={<>
         {seeUsage}
-        {askable && amount ? <Button size="sm" disabled={stale} onClick={() => { usage.reset.reset(); setAsking(true); }}>Ask for {amount} more</Button> : null}
+        {askable && amount ? <Button size="sm" disabled={stale} onClick={() => { usage.reset.reset(); setAsking(true); }}>{t("interface.ask_for")} {amount}{t("interface.more")}</Button> : null}
       </>} />
   );
 }
@@ -163,9 +164,9 @@ export function GatewayUsageApprovalNotice() {
   return (
     <div role="status">
       <UsageCard testId="gateway-usage-approved-notice" icon={<CheckCircle2 className="text-green-11" />}
-        title={`You got ${formatGatewayMoney(first.extensionMicroUsd)} more ${gatewayPeriodLabels[first.timeframe].toLowerCase()}`}
-        detail={<>{formatGatewayMoney(first.allowanceMicroUsd)} for {gatewayPeriodLabels[first.timeframe].toLowerCase()}, <GatewayResetTime value={first.resetAt} midSentence /></>}
-        actions={<Button size="sm" variant="ghost" className="text-muted-foreground" aria-label="Dismiss usage increase approval" onClick={() => dismiss(approved.map((bucket) => gatewayApprovalKey(JSON.stringify([scopeKey, bucket.extensionMicroUsd]), bucket)))}>Dismiss</Button>} />
+        title={t("ui_extra.usage_increase_approved", { amount: formatGatewayMoney(first.extensionMicroUsd), period: gatewayPeriodLabel(first.timeframe).toLowerCase() })}
+        detail={<>{t("ui_extra.period_allowance", { amount: formatGatewayMoney(first.allowanceMicroUsd), period: gatewayPeriodLabel(first.timeframe).toLowerCase() })} <GatewayResetTime value={first.resetAt} midSentence /></>}
+        actions={<Button size="sm" variant="ghost" className="text-muted-foreground" aria-label={t("interface.dismiss_usage_increase_approval")} onClick={() => dismiss(approved.map((bucket) => gatewayApprovalKey(JSON.stringify([scopeKey, bucket.extensionMicroUsd]), bucket)))}>{t("interface.dismiss")}</Button>} />
     </div>
   );
 }
@@ -182,17 +183,17 @@ export function GatewayUsageMenuItem() {
     <DropdownMenuItem data-testid="gateway-usage-menu-item" className="flex-col items-stretch gap-0.5" onClick={() => navigate(GATEWAY_USAGE_SETTINGS_PATH)}>
       <span className="flex items-center gap-2">
         <Gauge className="size-3.5" />
-        <span className="flex-1">Usage</span>
+        <span className="flex-1">{t("interface.usage")}</span>
         <ChevronRight className="size-3.5 text-muted-foreground" />
       </span>
-      {usage.data && !groups.length ? <span className="ps-5.5 text-xs text-muted-foreground">No limit</span> : null}
+      {usage.data && !groups.length ? <span className="ps-5.5 text-xs text-muted-foreground">{t("interface.no_limit")}</span> : null}
       {groups.map((group) => (
         <span key={group.key} className={`flex flex-col gap-0.5 ${labelled ? "pt-1" : ""}`} data-testid={group.providerName === null ? "gateway-usage-menu-default" : "gateway-usage-menu-provider"}>
-          {labelled ? <span className="truncate ps-5.5 text-xs font-medium text-foreground">{group.providerName ?? "Default"}</span> : null}
+          {labelled ? <span className="truncate ps-5.5 text-xs font-medium text-foreground">{group.providerName ?? t("settings.server_endpoints_source_default")}</span> : null}
           {group.buckets.map((bucket) => (
             <span key={bucket.id} className="flex justify-between ps-5.5 text-xs">
-              <span className="text-muted-foreground">{gatewayPeriodLabels[bucket.timeframe]}</span>
-              <span className="tabular-nums text-foreground">{gatewayPercentLeft(bucket)}% left</span>
+              <span className="text-muted-foreground">{gatewayPeriodLabel(bucket.timeframe)}</span>
+              <span className="tabular-nums text-foreground">{gatewayPercentLeft(bucket)}{t("interface.left")}</span>
             </span>
           ))}
         </span>
@@ -216,16 +217,16 @@ function SettingsSection({ title, detail, children, testId }: { title: string; d
 function LimitRow({ bucket }: { bucket: GatewayUsageBucket }) {
   const left = gatewayPercentLeft(bucket);
   return (
-    <div aria-label={`${gatewayPeriodLabels[bucket.timeframe]} usage`} className="flex flex-col gap-2 px-3.5 py-3">
+    <div aria-label={t("ui_extra.period_usage", { period: gatewayPeriodLabel(bucket.timeframe) })} className="flex flex-col gap-2 px-3.5 py-3">
       <div className="flex items-baseline justify-between text-[13px]">
-        <span className="text-foreground">{gatewayPeriodLabels[bucket.timeframe]}</span>
-        <span className="tabular-nums text-foreground">{left}% left</span>
+        <span className="text-foreground">{gatewayPeriodLabel(bucket.timeframe)}</span>
+        <span className="tabular-nums text-foreground">{left}{t("interface.left")}</span>
       </div>
       <div className="flex justify-between text-xs text-muted-foreground">
-        <span>{exhausted(bucket) ? <>Used up. <GatewayResetTime value={bucket.resetAt} /></> : <GatewayResetTime value={bucket.resetAt} />}</span>
-        <span className="tabular-nums">{formatGatewayMoney(Math.max(0, bucket.allowanceMicroUsd - bucket.usedMicroUsd))} of {formatGatewayMoney(bucket.allowanceMicroUsd)} left</span>
+        <span>{exhausted(bucket) ? <>{t("interface.used_up")} <GatewayResetTime value={bucket.resetAt} /></> : <GatewayResetTime value={bucket.resetAt} />}</span>
+        <span className="tabular-nums">{formatGatewayMoney(Math.max(0, bucket.allowanceMicroUsd - bucket.usedMicroUsd))}{t("interface.of")} {formatGatewayMoney(bucket.allowanceMicroUsd)}{t("interface.left_360f8403")}</span>
       </div>
-      <Progress value={left} aria-label={`${left}% of ${gatewayPeriodLabels[bucket.timeframe].toLowerCase()} left`}
+      <Progress value={left} aria-label={t("ui_extra.period_left", { left, period: gatewayPeriodLabel(bucket.timeframe).toLowerCase() })}
         className="gap-0 [&_[data-slot=progress-indicator]]:bg-foreground [&_[data-slot=progress-track]]:h-1" />
     </div>
   );
@@ -236,19 +237,19 @@ function RequestRow({ bucket, providerName, asking, onAsk, onCancel, onSubmit, p
   onAsk: () => void; onCancel: () => void; onSubmit: (reason: string) => void;
 }) {
   const amount = formatGatewayMoney(gatewayIncreaseMicroUsd(bucket));
-  const state = bucket.resetRequestStatus === "pending" ? <span className="flex items-center gap-1.5 text-foreground"><Clock className="size-3.5" />Asked for {amount} more, waiting for an admin</span>
+  const state = bucket.resetRequestStatus === "pending" ? <span className="flex items-center gap-1.5 text-foreground"><Clock className="size-3.5" />{t("interface.asked_for")} {amount}{t("interface.more_waiting_for_an_admin")}</span>
     : canAsk(bucket) ? null
-      : bucket.resetRequestStatus === "approved" && bucket.extensionMicroUsd > 0 ? <span className="text-foreground">Added {formatGatewayMoney(bucket.extensionMicroUsd)}</span>
-        : bucket.resetRequestStatus === "denied" ? <span className="text-muted-foreground">Request declined</span>
-          : <span className="text-muted-foreground">You can ask once it runs out</span>;
+      : bucket.resetRequestStatus === "approved" && bucket.extensionMicroUsd > 0 ? <span className="text-foreground">{t("plugins.added")} {formatGatewayMoney(bucket.extensionMicroUsd)}</span>
+        : bucket.resetRequestStatus === "denied" ? <span className="text-muted-foreground">{t("interface.request_declined")}</span>
+          : <span className="text-muted-foreground">{t("interface.you_can_ask_once_it_runs_out")}</span>;
   return (
-    <div aria-label={`${gatewayPeriodLabels[bucket.timeframe]}${providerName ? ` ${providerName}` : ""} increase`} className="flex flex-col gap-3 px-3.5 py-2.5">
+    <div aria-label={t("ui_extra.period_increase", { period: gatewayPeriodLabel(bucket.timeframe), provider: providerName ? ` ${providerName}` : "" })} className="flex flex-col gap-3 px-3.5 py-2.5">
       <div className="flex min-h-7 items-center gap-3 text-[13px]">
         <span className="flex min-w-0 flex-1 items-baseline gap-2">
-          <span className="text-foreground">{gatewayPeriodLabels[bucket.timeframe]}</span>
+          <span className="text-foreground">{gatewayPeriodLabel(bucket.timeframe)}</span>
           {providerName ? <span className="truncate text-xs text-muted-foreground">{providerName}</span> : null}
         </span>
-        <span className="text-xs">{state ?? (asking ? null : <Button size="sm" disabled={disabled} onClick={onAsk}>Ask for {amount} more</Button>)}</span>
+        <span className="text-xs">{state ?? (asking ? null : <Button size="sm" disabled={disabled} onClick={onAsk}>{t("interface.ask_for")} {amount}{t("interface.more")}</Button>)}</span>
       </div>
       {asking && !state ? <GatewayIncreaseForm pending={pending} error={error} onCancel={onCancel} onSubmit={onSubmit} /> : null}
     </div>
@@ -258,18 +259,17 @@ function RequestRow({ bucket, providerName, asking, onAsk, onCancel, onSubmit, p
 function TechnicalDetails({ status }: { status: GatewayUsageStatus }) {
   const { coverage } = status;
   const rows: [string, ReactNode][] = [];
-  if (coverage.trackingStartedAt) rows.push(["Counting since", new Date(coverage.trackingStartedAt).toLocaleString()]);
-  if (coverage.historicalCoverage === "unknown" || coverage.historicalUnknownReason != null) rows.push(["Spend before that", "Not counted"]);
-  if (coverage.unpricedRequests > 0) rows.push(["Requests without a price yet", String(coverage.unpricedRequests)]);
-  if ((coverage.incompleteRequests ?? 0) > 0) rows.push(["Requests still being counted", String(coverage.incompleteRequests)]);
-  if (typeof coverage.pendingRequests === "number" && coverage.pendingRequests > 0) rows.push(["Waiting to be counted", String(coverage.pendingRequests)]);
-  rows.push(["Chats still running", "Added when they finish"]);
-  if (coverage.lastSettlementAt) rows.push(["Last updated", new Date(coverage.lastSettlementAt).toLocaleString()]);
+  if (coverage.trackingStartedAt) rows.push([t("ui_extra.counting_since"), new Date(coverage.trackingStartedAt).toLocaleString(currentLocale())]);
+  if (coverage.historicalCoverage === "unknown" || coverage.historicalUnknownReason != null) rows.push([t("ui_extra.spend_before"), t("ui_extra.not_counted")]);
+  if (coverage.unpricedRequests > 0) rows.push([t("ui_extra.unpriced_requests"), String(coverage.unpricedRequests)]);
+  if ((coverage.incompleteRequests ?? 0) > 0) rows.push([t("ui_extra.incomplete_requests"), String(coverage.incompleteRequests)]);
+  if (typeof coverage.pendingRequests === "number" && coverage.pendingRequests > 0) rows.push([t("ui_extra.pending_requests"), String(coverage.pendingRequests)]);
+  rows.push([t("ui_extra.running_chats"), t("ui_extra.added_when_finished")]);
+  if (coverage.lastSettlementAt) rows.push([t("ui_extra.last_updated"), new Date(coverage.lastSettlementAt).toLocaleString(currentLocale())]);
   return (
     <details className="group text-xs" data-testid="gateway-usage-technical-details">
       <summary className="flex w-fit cursor-pointer list-none items-center gap-1.5 text-muted-foreground [&::-webkit-details-marker]:hidden">
-        <ChevronRight className="size-3.5 transition-transform duration-150 group-open:rotate-90 motion-reduce:transition-none" />Technical details
-      </summary>
+        <ChevronRight className="size-3.5 transition-transform duration-150 group-open:rotate-90 motion-reduce:transition-none" />{t("mcp.technical_details")} </summary>
       <dl className="flex max-w-sm flex-col gap-2 ps-5 pt-3">
         {rows.map(([label, value]) => (
           <div key={label} className="flex justify-between gap-4">
@@ -288,45 +288,43 @@ export function GatewayUsageSettingsView({ onOpenAccount }: { onOpenAccount: () 
   const status = usage.data;
   const groups = status ? gatewayUsageLimitGroups(status) : [];
   const labelled = groups.some((group) => group.providerName !== null);
-  const requestable = groups.flatMap((group) => group.buckets.map((bucket) => ({ bucket, providerName: labelled ? group.providerName ?? "Default" : undefined })))
+  const requestable = groups.flatMap((group) => group.buckets.map((bucket) => ({ bucket, providerName: labelled ? group.providerName ?? t("ui_extra.default") : undefined })))
     .filter(({ bucket }) => bucket.allowRequestReset);
   const content = !usage.authorized ? (
     <div className="flex flex-col items-start gap-3">
-      <p className="text-[13px] text-muted-foreground">Sign in to OpenWork Cloud to see your usage limits.</p>
-      <Button size="sm" variant="outline" onClick={onOpenAccount}>Open Account</Button>
+      <p className="text-[13px] text-muted-foreground">{t("interface.sign_in_to_openwork_cloud_to_see_your_usage_limits")}</p>
+      <Button size="sm" variant="outline" onClick={onOpenAccount}>{t("interface.open_account")}</Button>
     </div>
   ) : usage.query.isPending ? (
-    <div role="status" aria-label="Loading usage limits" className="flex flex-col gap-3">
+    <div role="status" aria-label={t("interface.loading_usage_limits")} className="flex flex-col gap-3">
       <Skeleton className="h-4 w-32" />
       <Skeleton className="h-28 w-full rounded-xl" />
     </div>
   ) : !status ? (
     <div className="flex flex-col items-start gap-3" role="alert">
-      <p className="text-[13px] text-muted-foreground">Couldn’t load your usage. This doesn’t mean you have no limit.</p>
-      <Button size="sm" variant="outline" disabled={usage.query.isFetching} onClick={() => void usage.query.refetch()}>Try again</Button>
+      <p className="text-[13px] text-muted-foreground">{t("interface.couldn_t_load_your_usage_this_doesn_t_mean_you_have_no_limit")}</p>
+      <Button size="sm" variant="outline" disabled={usage.query.isFetching} onClick={() => void usage.query.refetch()}>{t("session.remote_task_retry")}</Button>
     </div>
   ) : (
     <>
       {usage.query.isError ? (
-        <p role="status" className="flex items-center gap-2 text-xs text-muted-foreground">
-          Couldn’t refresh, showing the last known limits.
-          <Button size="xs" variant="ghost" disabled={usage.query.isFetching} onClick={() => void usage.query.refetch()}>Try again</Button>
+        <p role="status" className="flex items-center gap-2 text-xs text-muted-foreground">{t("interface.couldn_t_refresh_showing_the_last_known_limits")} <Button size="xs" variant="ghost" disabled={usage.query.isFetching} onClick={() => void usage.query.refetch()}>{t("session.remote_task_retry")}</Button>
         </p>
       ) : null}
       {!groups.length ? (
-        <SettingsSection title="Your limits">
-          <div className="flex items-center justify-between px-3.5 py-3 text-[13px]"><span className="text-foreground">No limit</span></div>
+        <SettingsSection title={t("interface.your_limits")}>
+          <div className="flex items-center justify-between px-3.5 py-3 text-[13px]"><span className="text-foreground">{t("interface.no_limit")}</span></div>
         </SettingsSection>
       ) : groups.map((group) => (
         <SettingsSection key={group.key}
           testId={group.providerName === null ? "gateway-usage-default-limit" : "gateway-usage-provider-limit"}
-          title={!labelled ? "Your limits" : group.providerName ?? "Default"}
-          detail={!labelled ? "Set by your organization" : group.providerName === null ? "For providers without their own limit" : `Only ${group.providerName} models count here`}>
+          title={!labelled ? t("interface.your_limits") : group.providerName ?? t("settings.server_endpoints_source_default")}
+          detail={!labelled ? t("ui_extra.org_set_limits") : group.providerName === null ? t("ui_extra.provider_default_limits") : t("ui_extra.provider_models_only", { provider: group.providerName ?? "" })}>
           {group.buckets.map((bucket) => <LimitRow key={bucket.id} bucket={bucket} />)}
         </SettingsSection>
       ))}
       {requestable.length ? (
-        <SettingsSection title="More usage" detail="Each approval adds 25% of your base allowance">
+        <SettingsSection title={t("interface.more_usage")} detail={t("ui_extra.approval_quarter")}>
           {requestable.map(({ bucket, providerName }) => (
             <RequestRow key={bucket.id} bucket={bucket} providerName={providerName} asking={askingId === bucket.id}
               pending={usage.reset.isPending} error={usage.reset.isError} disabled={usage.query.isError || usage.reset.isPending}

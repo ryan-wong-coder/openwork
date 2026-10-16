@@ -8,6 +8,12 @@ import { getOpenWorkDeployment } from "@/app/lib/openwork-deployment";
 
 const APP_VERSION = String(import.meta.env.VITE_OPENWORK_APP_VERSION ?? "").trim();
 
+// This last-resort screen must work even when locale initialization failed.
+const recoveryText = (english: string, chinese: string) =>
+  typeof document === "undefined" || !document.documentElement.lang || /^zh(?:-|$)/i.test(document.documentElement.lang)
+    ? chinese
+    : english;
+
 export type CrashDetails = {
   message: string;
   stack: string;
@@ -90,7 +96,7 @@ function RecoveryScreen({ crash }: { crash: CrashDetails }) {
     try {
       await revealDesktopItemInDir(path);
     } catch {
-      setLogsError("Could not open the logs folder.");
+      setLogsError(recoveryText("Could not open the logs folder.", "无法打开日志文件夹。"));
     }
   };
 
@@ -98,9 +104,9 @@ function RecoveryScreen({ crash }: { crash: CrashDetails }) {
     <div className="flex h-screen w-screen items-center justify-center bg-background p-6" role="alert">
       <div className="flex w-full max-w-lg flex-col gap-4 text-sm">
         <div className="flex flex-col gap-1">
-          <h1 className="text-lg font-semibold text-foreground">OpenWork hit an unexpected error</h1>
+          <h1 className="text-lg font-semibold text-foreground">{recoveryText("OpenWork hit an unexpected error", "OpenWork 遇到意外错误")}</h1>
           <p className="text-muted-foreground">
-            The window recovered instead of going blank. Reloading usually clears it.
+            {recoveryText("The window recovered instead of going blank. Reloading usually clears it.", "窗口已恢复，重新加载通常可以解决此问题。")}
           </p>
         </div>
 
@@ -110,7 +116,7 @@ function RecoveryScreen({ crash }: { crash: CrashDetails }) {
             className="rounded-md bg-primary px-3 py-2 font-medium text-primary-foreground"
             onClick={() => window.location.reload()}
           >
-            Reload
+            {recoveryText("Reload", "重新加载")}
           </button>
         </div>
 
@@ -124,7 +130,7 @@ function RecoveryScreen({ crash }: { crash: CrashDetails }) {
             className="flex w-fit items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
           >
             <span aria-hidden="true" className={open ? "inline-block rotate-90" : "inline-block"}>›</span>
-            Technical details
+            {recoveryText("Technical details", "技术详情")}
           </button>
           {open ? (
             <div className="flex flex-col gap-2 rounded-lg bg-muted p-3 text-xs">
@@ -138,7 +144,7 @@ function RecoveryScreen({ crash }: { crash: CrashDetails }) {
                   className="rounded-md border border-border px-3 py-1.5 font-medium text-foreground"
                   onClick={copy}
                 >
-                  {copied ? "Copied" : "Copy details"}
+                  {copied ? recoveryText("Copied", "已复制") : recoveryText("Copy details", "复制详情")}
                 </button>
                 {logFilePath ? (
                   <button
@@ -146,11 +152,11 @@ function RecoveryScreen({ crash }: { crash: CrashDetails }) {
                     className="rounded-md border border-border px-3 py-1.5 font-medium text-foreground"
                     onClick={() => openLogs(logFilePath)}
                   >
-                    Open logs folder
+                    {recoveryText("Open logs folder", "打开日志文件夹")}
                   </button>
                 ) : null}
               </div>
-              {copyError ? <p role="status" className="text-muted-foreground">Could not copy details. You can select and copy the text above.</p> : null}
+              {copyError ? <p role="status" className="text-muted-foreground">{recoveryText("Could not copy details. You can select and copy the text above.", "无法复制详情。你可以选择并复制上方文本。")}</p> : null}
               {logsError ? <p className="text-muted-foreground">{logsError}</p> : null}
             </div>
           ) : null}

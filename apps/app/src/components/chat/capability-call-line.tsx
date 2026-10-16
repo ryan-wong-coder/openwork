@@ -1,5 +1,7 @@
 "use client"
 
+import { t } from "@/i18n";
+
 import { useState } from "react"
 import type { DynamicToolUIPart } from "ai"
 import { CodeXml, ExternalLink, LoaderCircle, RefreshCcw } from "lucide-react"
@@ -83,7 +85,7 @@ function shortError(text: string | undefined): string | null {
 
 function failureInstruction(part: DynamicToolUIPart, reconnectName: string | null): string {
   if (reconnectName) {
-    return `${reconnectName} needs a fresh sign-in. Reconnect it, then retry.`
+    return t("ui.connection_fresh_sign_in", { name: reconnectName })
   }
   const errorText = part.state === "output-error" ? part.errorText : null
   return describeChatToolFailure(errorText ?? "")
@@ -136,7 +138,7 @@ export function DetailsToggle({ open, onToggle, label, alwaysVisible = false }: 
     <Button type="button" variant={open ? "secondary" : "ghost"} size="icon-xs"
       className={cn("shrink-0 text-muted-foreground transition-opacity duration-150 motion-reduce:transition-none",
         open || alwaysVisible ? "opacity-100" : "opacity-0 group-hover/step:opacity-100 focus-visible:opacity-100 pointer-coarse:opacity-100")}
-      aria-label={`${open ? "Hide" : "Show"} technical details for ${label}`} title="Technical details"
+      aria-label={t("ui.toggle_technical_details", { action: t(open ? "common.hide" : "common.show"), label })} title={t("mcp.technical_details")}
       aria-expanded={open} onClick={onToggle} data-testid="tool-details-toggle">
       <CodeXml aria-hidden="true" />
     </Button>
@@ -183,7 +185,7 @@ export function CapabilityCallLine({
   // in the rail without turning a failed call into a prominent card.
   if (isFailed && quietFailure && !reconnectAction) {
     const sentence = getCapabilityCallSentence(part, { includeQuery: false, connectionName: connector?.name })
-    const label = sentence.failure ?? `${sentence.past} failed`
+    const label = sentence.failure ?? t("ui.action_failed", { action: sentence.past })
     return (
       <div data-capability-call={part.toolName} className={cn("group/step min-w-0", className)}>
         <div className="flex min-h-6 min-w-0 items-center gap-2 text-sm text-muted-foreground">
@@ -202,9 +204,9 @@ export function CapabilityCallLine({
   // the raw call behind the details icon (always visible on a failure).
   if (isFailed) {
     const sentence = getCapabilityCallSentence(part, { includeQuery: false, connectionName: connector?.name })
-    const failureLabel = sentence.failure ?? `${sentence.past} failed`
+    const failureLabel = sentence.failure ?? t("ui.action_failed", { action: sentence.past })
     const reason = reconnectState === "connected"
-      ? "Connection restored. Check whether the action finished before retrying."
+      ? t("ui.connection_restored_check_whether_the_action_finished_before_retrying")
       : reconnectAction ? failureInstruction(part, reconnectAction.connectionName) : shortError(part.errorText)
     return (
       <div data-capability-call={part.toolName} className={cn("group/step min-w-0", className)}>
@@ -247,7 +249,7 @@ export function CapabilityCallLine({
   const withoutService = (text: string) => groupService
     ? text.replace(` · ${groupService}`, "").replace(new RegExp(`^(Search(?:ed|ing)) ${groupService.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")} for`), "$1 for")
     : text
-  const line = withoutService(statusUnknown ? `${sentence.present}, status unavailable` : inFlight ? sentence.present : sentence.past)
+  const line = withoutService(statusUnknown ? t("ui.action_status_unavailable", { action: sentence.present }) : inFlight ? sentence.present : sentence.past)
   return (
     <div data-capability-call={part.toolName} className={cn("group/step min-w-0", className)}>
       <div className="flex min-h-6 min-w-0 items-center gap-2 text-sm text-muted-foreground">
@@ -260,7 +262,7 @@ export function CapabilityCallLine({
           </span>
         ) : null}
         <span className={cn("min-w-0 truncate", shimmer && inFlight && "ow-text-shimmer motion-reduce:animate-none")}>{line}</span>
-        {repeat > 1 ? <span className="shrink-0 text-xs text-muted-foreground">{repeat} times</span> : null}
+        {repeat > 1 ? <span className="shrink-0 text-xs text-muted-foreground">{t("ui.repeat_count", { count: repeat })}</span> : null}
         {duration ? (
           <span className="shrink-0 text-xs tabular-nums text-muted-foreground/70">{duration}</span>
         ) : null}

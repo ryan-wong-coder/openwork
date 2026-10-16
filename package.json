@@ -44,6 +44,8 @@
     "check:diagnostics": "pnpm --filter @openwork-ee/diagnostics build",
     "test:health": "pnpm --filter @openwork/app test:health",
     "test:boot": "pnpm --filter @openwork/app test:boot",
+    "test:i18n": "pnpm --filter @openwork/app test:i18n",
+    "i18n:check:zh": "node scripts/i18n-audit.mjs --all --locale=zh",
     "test:sessions": "pnpm --filter @openwork/app test:sessions",
     "test:refactor": "pnpm --filter @openwork/app test:refactor",
     "test:events": "pnpm --filter @openwork/app test:events",

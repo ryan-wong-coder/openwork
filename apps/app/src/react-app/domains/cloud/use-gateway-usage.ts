@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createDenClient, denOriginComparisonKey } from "@/app/lib/den";
@@ -55,7 +56,7 @@ export function useGatewayUsage(requested: boolean, panelOpen = false, refreshKe
   const authorized = Boolean(auth.isSignedIn && scope.token && scope.organizationId && auth.verifiedIdentity?.organizationId === scope.organizationId);
   const queryKey = [...gatewayUsageQueryPrefix, scope.generation, scope.organizationId, auth.verifiedIdentity?.principalId ?? null];
   const assertCurrent = () => {
-    if (!authorized || readScope() !== scope || !scope.organizationId) throw new Error("The signed-in organization changed. Reopen usage limits.");
+    if (!authorized || readScope() !== scope || !scope.organizationId) throw new Error(t("ui_extra.usage_org_changed"));
     return scope.organizationId;
   };
   const client = createDenClient({ baseUrl: scope.baseUrl, apiBaseUrl: scope.apiBaseUrl, token: scope.token });
@@ -104,7 +105,7 @@ export function useGatewayUsage(requested: boolean, panelOpen = false, refreshKe
     mutationFn: async (input: { bucketId: string; reason: string }) => {
       const organizationId = assertCurrent();
       const bucket = query.data ? allGatewayUsageBuckets(query.data).find((item) => item.id === input.bucketId) : undefined;
-      if (query.isError || !bucket?.canRequestReset || bucket.resetRequestStatus === "pending") throw new Error("Refresh usage limits to check increase eligibility.");
+      if (query.isError || !bucket?.canRequestReset || bucket.resetRequestStatus === "pending") throw new Error(t("ui_extra.usage_refresh_eligibility"));
       const result = await client.requestGatewayUsageReset(organizationId, input);
       assertCurrent();
       return result;

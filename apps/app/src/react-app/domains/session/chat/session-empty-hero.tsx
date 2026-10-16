@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, X, Zap } from "lucide-react";
 
@@ -33,28 +34,28 @@ type HeroSuggestion = {
   prompt: string;
 };
 
-const DEFAULT_SUGGESTIONS: HeroSuggestion[] = [
+function defaultSuggestions(): HeroSuggestion[] { return [
   {
-    title: "Summarize my week",
-    description: "Pull highlights from email and calendar.",
-    prompt: "Summarize my week: pull the highlights from my connected email and calendar and give me a short digest of what happened and what needs my attention.",
+    title: t("session_copy.summarize_my_week"),
+    description: t("session_copy.pull_highlights_from_email_and_calendar"),
+    prompt: t("session_copy.summarize_my_week_pull_the_highlights_from_my_connected_email_and_calendar_and_give_me_a_short_digest_of_"),
   },
   {
-    title: "Clean up a spreadsheet",
-    description: "Drop in a CSV and describe the result you want.",
-    prompt: "Create a sample CSV file with 20 rows of fake customer data (name, email, company, revenue). Then show me a summary of the data.",
+    title: t("session_copy.clean_up_a_spreadsheet"),
+    description: t("session_copy.drop_in_a_csv_and_describe_the_result_you_want"),
+    prompt: t("session_copy.create_a_sample_csv_file_with_20_rows_of_fake_customer_data_name_email_company_revenue_then_show_me_a_sum"),
   },
   {
-    title: "Draft a document",
-    description: "Reports, emails, or briefs from a few bullet points.",
-    prompt: "Draft a one-page project brief. Ask me for the bullet points you need, then turn them into a clear, well-structured document.",
+    title: t("session_copy.draft_a_document"),
+    description: t("session_copy.reports_emails_or_briefs_from_a_few_bullet_points"),
+    prompt: t("session_copy.draft_a_one_page_project_brief_ask_me_for_the_bullet_points_you_need_then_turn_them_into_a_clear_well_str"),
   },
   {
-    title: "Automate a web task",
-    description: "Use the built-in browser for repetitive steps.",
-    prompt: "Open craigslist.org in the browser and search for couches for sale. Show me the top 5 results with prices.",
+    title: t("session_copy.automate_a_web_task"),
+    description: t("session_copy.use_the_built_in_browser_for_repetitive_steps"),
+    prompt: t("session_copy.open_craigslist_org_in_the_browser_and_search_for_couches_for_sale_show_me_the_top_5_results_with_prices"),
   },
-];
+]; }
 
 export type SessionEmptyHeroProps = {
   providerCount: number;
@@ -170,7 +171,7 @@ export function SessionEmptyHero(props: SessionEmptyHeroProps) {
       });
       return { title: card.title, description: card.description, prompt: card.selectionPrompt };
     })
-    : DEFAULT_SUGGESTIONS;
+    : defaultSuggestions();
 
   const submit = async (
     resolvedPrompt: string,
@@ -205,9 +206,7 @@ export function SessionEmptyHero(props: SessionEmptyHeroProps) {
   return (
     <div data-chat-empty-hero className="mx-auto flex w-full max-w-[640px] flex-col gap-6 px-4 max-lg:h-full max-lg:min-h-0 max-lg:gap-4 max-lg:overflow-y-auto max-lg:px-3 max-lg:pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:px-6">
       <div data-empty-greeting hidden={hideIntroduction} className="text-center max-lg:pt-6">
-        <h2 className="text-lg font-medium tracking-tight text-foreground">
-          What do you need done?
-        </h2>
+        <h2 className="text-lg font-medium tracking-tight text-foreground">{t("interface.what_do_you_need_done")} </h2>
       </div>
 
       <div ref={composerDockRef} onFocusCapture={() => setComposing(true)} data-empty-composer-dock className="max-lg:sticky max-lg:bottom-0 max-lg:order-last max-lg:mt-auto max-lg:shrink-0 max-lg:bg-dls-surface">
@@ -225,20 +224,18 @@ export function SessionEmptyHero(props: SessionEmptyHeroProps) {
           className="flex items-center justify-center gap-2 text-[12px] text-muted-foreground"
           data-testid="openwork-models-hint"
         >
-          <span>Using the free starter model.</span>
+          <span>{t("interface.using_the_free_starter_model")}</span>
           <button
             type="button"
             className="flex items-center gap-1 font-medium text-blue-10 transition-colors hover:text-blue-11"
             onClick={() => platform.openLink(getOpenWorkModelsActionUrl(denAuth.isSignedIn, "sign-up"))}
-          >
-            Get frontier models with no API keys
-            <ArrowRight className="size-3" />
+          >{t("interface.get_frontier_models_with_no_api_keys")} <ArrowRight className="size-3" />
           </button>
           <button
             type="button"
             className="flex size-5 items-center justify-center rounded text-muted-foreground/70 transition-colors hover:text-foreground"
             onClick={hideOpenWorkModelsPromo}
-            aria-label="Hide OpenWork Models hint"
+            aria-label={t("interface.hide_openwork_models_hint")}
           >
             <X className="size-3" />
           </button>
@@ -253,10 +250,8 @@ export function SessionEmptyHero(props: SessionEmptyHeroProps) {
         >
           <Zap className="mt-0.5 size-4 shrink-0 text-blue-10" />
           <div>
-            <div className="text-[13px] font-medium text-foreground">Connect a model provider</div>
-            <div className="mt-0.5 text-[12px] text-muted-foreground">
-              Add an API key for Anthropic, OpenAI, Google, or other providers so tasks can run.
-            </div>
+            <div className="text-[13px] font-medium text-foreground">{t("interface.connect_a_model_provider")}</div>
+            <div className="mt-0.5 text-[12px] text-muted-foreground">{t("interface.add_an_api_key_for_anthropic_openai_google_or_other_providers_so_tasks_can_run")} </div>
           </div>
         </button>
       ) : null}

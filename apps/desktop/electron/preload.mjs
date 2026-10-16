@@ -389,3 +389,14 @@ if (!applyShellDocumentMarkers() && typeof document !== "undefined") {
 if (!installMenuOverlayDismissListeners() && typeof document !== "undefined") {
   document.addEventListener("DOMContentLoaded", installMenuOverlayDismissListeners, { once: true });
 }
+
+function syncApplicationLanguage() {
+  const root = document.documentElement;
+  if (!root) return;
+  const sync = () => ipcRenderer.send("openwork:application-language", root.lang || "zh-CN");
+  sync();
+  new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ["lang"] });
+}
+
+if (document.documentElement) syncApplicationLanguage();
+else document.addEventListener("DOMContentLoaded", syncApplicationLanguage, { once: true });

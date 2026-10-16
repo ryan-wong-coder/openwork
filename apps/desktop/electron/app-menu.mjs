@@ -5,6 +5,7 @@
 // consumed by the preload bridge.
 import { BrowserWindow, Menu, shell } from "electron";
 import { runDetachedTask } from "./process-resilience.mjs";
+import { localizeMenuTemplate } from "./native-locale.mjs";
 
 const NATIVE_MENU_OPEN_SETTINGS_EVENT = "openwork:native-menu:open-settings";
 const NATIVE_MENU_TOGGLE_SIDEBAR_EVENT = "openwork:native-menu:toggle-sidebar";
@@ -224,7 +225,7 @@ export function createApplicationMenu({ appName, docsUrl, getWindow, closeBrowse
       },
     ]);
 
-    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+    Menu.setApplicationMenu(Menu.buildFromTemplate(localizeMenuTemplate(template)));
   }
 
   function applyVisibility(window) {

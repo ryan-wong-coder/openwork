@@ -1,5 +1,7 @@
 "use client"
 
+import { t } from "@/i18n";
+
 import {
   Collapsible,
   CollapsibleContent,
@@ -130,13 +132,13 @@ function DiffLines({ diff }: { diff: string }) {
   )
 }
 
-function reconnectAttribution(action: ChatToolReconnectAction, label: string): ToolErrorAttribution {
+function reconnectAttribution(action: ChatToolReconnectAction, label: string, connected: boolean): ToolErrorAttribution {
   return {
     label,
     confidence: "Confirmed",
-    description: label === "Reconnected"
-      ? `${action.connectionName} has a fresh authorization. Retry the request when ready.`
-      : `${action.connectionName} rejected its saved authorization and needs to be reconnected.`,
+    description: connected
+      ? t("ui.authorization_restored", { name: action.connectionName })
+      : t("ui.authorization_rejected", { name: action.connectionName }),
   }
 }
 
@@ -154,7 +156,7 @@ const Tool = ({
   const { reconnectAction, reconnectState, reconnectError, reconnectPresentation, handleReconnect } =
     useChatToolReconnect(toolPart, { onReconnect, onReopenAuthorization })
   const errorAttribution = reconnectAction
-    ? reconnectAttribution(reconnectAction, reconnectPresentation?.badgeLabel ?? "Reconnect required")
+    ? reconnectAttribution(reconnectAction, reconnectPresentation?.badgeLabel ?? t("ui.reconnect_required"), reconnectState === "connected")
     : null
   const label = title ?? getToolActivityLabel(toolPart)
   const hasInput = input !== null && input !== undefined
@@ -186,9 +188,9 @@ const Tool = ({
   }, [resultText])
 
   if (isError) return <div className={className}>
-    <TaskRecovery compact title={title ? `${title} failed` : "This action couldn’t finish"}
+    <TaskRecovery compact title={title ? t("ui.action_failed", { action: title }) : t("ui.this_action_couldn_t_finish")}
       description={reconnectError ? describeChatToolFailure(reconnectError)
-        : reconnectAction ? reconnectState === "connected" ? `${reconnectAction.connectionName} is connected again. Check whether the action finished before retrying.` : `${reconnectAction.connectionName} needs attention. Check its sign-in.`
+        : reconnectAction ? reconnectState === "connected" ? t("ui.connection_restored_named", { name: reconnectAction.connectionName }) : t("ui.connection_attention_named", { name: reconnectAction.connectionName })
         : describeChatToolFailure(toolPart.errorText ?? "")}
       technicalDetails={[toolPart.type === "dynamic-tool" ? toolPart.toolName : toolPart.type, hasInput ? formatValue(input) : null, toolPart.errorText].filter(Boolean).join("\n")}
       actions={reconnectAction && onReconnect ? <Button variant="ghost" size="xs"
@@ -214,8 +216,8 @@ const Tool = ({
           {errorAttribution ? (
             <span
               className="shrink-0 text-xs text-dls-secondary"
-              title={`${errorAttribution.confidence}: ${errorAttribution.description}`}
-              aria-label={`Error attribution: ${errorAttribution.label}. ${errorAttribution.confidence}.`}
+              title={`${t(errorAttribution.confidence === "Confirmed" ? "ui.attribution_confirmed" : "ui.attribution_inferred")}: ${errorAttribution.description}`}
+              aria-label={t("ui.error_attribution", { label: errorAttribution.label, confidence: t(errorAttribution.confidence === "Confirmed" ? "ui.attribution_confirmed" : "ui.attribution_inferred") })}
             >
               {errorAttribution.label}
             </span>
@@ -253,8 +255,8 @@ const Tool = ({
               size="icon-xs"
               className="absolute right-2 top-2"
               data-testid="tool-result-copy-action"
-              title={copied ? "Copied" : "Copy tool result"}
-              aria-label={copied ? "Tool result copied" : "Copy tool result"}
+              title={copied ? t("connect.diagnostics_copied") : t("ui.copy_tool_result")}
+              aria-label={copied ? t("ui.tool_result_copied") : t("ui.copy_tool_result")}
               onClick={() => void handleCopyResult()}
             >
               {copied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
@@ -279,7 +281,7 @@ const Tool = ({
             )
           ) : null}
           {inFlight && !hasInput ? (
-            <span className="text-muted-foreground">Waiting for input…</span>
+            <span className="text-muted-foreground">{t("ui.waiting_for_input")}</span>
           ) : null}
         </div>
       </CollapsibleContent>

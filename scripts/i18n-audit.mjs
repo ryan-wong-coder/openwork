@@ -16,6 +16,7 @@
  *   node scripts/i18n-audit.mjs --hardcoded  # hardcoded English strings in source files
  *   node scripts/i18n-audit.mjs --prune      # (destructive) remove unused keys from all locales
  *   node scripts/i18n-audit.mjs --sort       # (destructive) alphabetically sort keys in all locales
+ *   node scripts/i18n-audit.mjs --ci --locale=zh # audit a single target language
  */
 
 import { readFileSync, readdirSync, existsSync, writeFileSync } from "node:fs";
@@ -27,7 +28,12 @@ const REPO_ROOT = resolve(__dirname, "..");
 const LOCALES_DIR = join(REPO_ROOT, "apps/app/src/i18n/locales");
 const APP_SRC = join(REPO_ROOT, "apps/app/src");
 
-const LOCALES = ["ja", "zh", "vi", "pt-BR", "th", "fr", "ca", "es", "ru"];
+const SUPPORTED_LOCALES = ["ja", "zh", "vi", "pt-BR", "th", "fr", "ca", "es", "ru"];
+const requestedLocale = process.argv.find((arg) => arg.startsWith("--locale="))?.slice("--locale=".length);
+if (requestedLocale && !SUPPORTED_LOCALES.includes(requestedLocale)) {
+  throw new Error(`Unsupported locale: ${requestedLocale}`);
+}
+const LOCALES = requestedLocale ? [requestedLocale] : SUPPORTED_LOCALES;
 const EN_FILE = join(LOCALES_DIR, "en.ts");
 
 const PLURAL_SUFFIXES = ["zero", "one", "two", "few", "many", "other"];
@@ -38,7 +44,7 @@ const stripPluralSuffix = (key) => key.replace(PLURAL_SUFFIX_RE, "");
 // skipped; otherwise translation keys will trivially match themselves.
 const SKIP_DIRS = ["locales", "node_modules", "target", "dist", "build", "out", "coverage"];
 
-const mode = process.argv[2] ?? "--all";
+const mode = process.argv.slice(2).find((arg) => !arg.startsWith("--locale=")) ?? "--all";
 const isCi = mode === "--ci";
 const isAll = mode === "--all" || isCi;
 const EXCLUDED_FROM_ALL = new Set(["--hardcoded"]);

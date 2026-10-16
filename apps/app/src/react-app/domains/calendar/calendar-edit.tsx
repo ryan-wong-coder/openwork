@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import { useState } from "react"
 import type { AutomationList } from "@openwork/types/automations"
 
@@ -35,8 +36,8 @@ export function CalendarEditDialog(props: {
     <Dialog open onOpenChange={(open) => { if (!open) props.onClose() }}>
       <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-2xl" data-calendar-edit={automation.id}>
         <DialogHeader>
-          <DialogTitle>Edit automation</DialogTitle>
-          <DialogDescription>Saving applies to future runs.</DialogDescription>
+          <DialogTitle>{t("interface.edit_automation_b16f31c1")}</DialogTitle>
+          <DialogDescription>{t("interface.saving_applies_to_future_runs")}</DialogDescription>
         </DialogHeader>
         {error ? <p role="alert" className="text-sm text-destructive">{error}</p> : null}
         <AutomationEditor
@@ -52,7 +53,7 @@ export function CalendarEditDialog(props: {
           modelOptions={setup.modelsFor(current, revision.workspaceId)}
           modelOptionsByPlacement={setup.modelsByPlacementFor(revision.workspaceId)}
           providerCatalog={props.providerCatalog}
-          submitLabel="Save changes"
+          submitLabel={t("ui_extra.save_changes")}
           onCancel={props.onClose}
           onSave={async (input, chosen) => {
             const { client, organizationId } = props.context
@@ -68,7 +69,7 @@ export function CalendarEditDialog(props: {
                 ...(chosen === "desktop" && workspaceId ? { workspaceId } : {}),
               })
               await refresh()
-              toast.success(chosen === current ? "Automation updated" : chosen === "cloud" ? "Automation moved to the cloud" : "Automation moved to your desktop")
+              toast.success(chosen === current ? t("ui_extra.automation_updated") : chosen === "cloud" ? t("ui_extra.automation_moved_cloud") : t("ui_extra.automation_moved_desktop"))
               props.onClose()
             } catch (caught) {
               setError(describeAutomationError(caught))

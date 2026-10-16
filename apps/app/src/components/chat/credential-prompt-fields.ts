@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { isJsonSecret, isPlainSecret } from "@openwork/ui/secret-input"
 import type { CredentialPromptTarget } from "@openwork/types/den/credential-prompt"
 
@@ -11,15 +12,15 @@ export type PromptField = {
 
 /** The fields the host draws for a target. Fixed per kind, never taken from a tool result. */
 export function promptFields(target: CredentialPromptTarget): PromptField[] {
-  if (target.type !== "gateway_provider_credential") return [{ id: "apiKey", label: "API key", kind: "secret" }]
+  if (target.type !== "gateway_provider_credential") return [{ id: "apiKey", label: t("extensions.add_mcp_api_key_label"), kind: "secret" }]
   if (target.credentialKind === "aws_keys") {
     return [
-      { id: "accessKeyId", label: "Access key ID", kind: "identifier" },
-      { id: "secretAccessKey", label: "Secret access key", kind: "secret" },
-      { id: "sessionToken", label: "Session token (optional)", kind: "secret", optional: true },
+      { id: "accessKeyId", label: t("ui.access_key_id"), kind: "identifier" },
+      { id: "secretAccessKey", label: t("ui.secret_access_key"), kind: "secret" },
+      { id: "sessionToken", label: t("ui.session_token_optional"), kind: "secret", optional: true },
     ]
   }
-  if (target.credentialKind === "gcp_service_account") return [{ id: "serviceAccount", label: "Service account key (JSON)", kind: "json" }]
+  if (target.credentialKind === "gcp_service_account") return [{ id: "serviceAccount", label: t("ui.service_account_key_json"), kind: "json" }]
   // One key per variable the provider reads; at least one is needed.
   return (target.envNames ?? []).map((name) => ({ id: name, label: name, kind: "secret", optional: true }))
 }
@@ -29,17 +30,17 @@ export function promptFieldsProblem(target: CredentialPromptTarget, values: Reco
   const fields = promptFields(target)
   if (target.type === "gateway_provider_credential" && target.credentialKind === "api_key_map") {
     const entered = fields.filter((field) => values[field.id])
-    if (!entered.length) return "Enter at least one key."
-    return entered.every((field) => isPlainSecret(values[field.id] ?? "")) ? null : "Enter only the keys, without spaces or a prefix."
+    if (!entered.length) return t("ui.enter_at_least_one_key")
+    return entered.every((field) => isPlainSecret(values[field.id] ?? "")) ? null : t("ui.enter_only_the_keys_without_spaces_or_a_prefix")
   }
   for (const field of fields) {
     const value = values[field.id] ?? ""
     if (!value) {
       if (field.optional) continue
-      return `Enter the ${field.label.toLowerCase()}.`
+      return t("ui.enter_credential_field", { field: field.label.toLowerCase() })
     }
-    if (field.kind === "json" && !isJsonSecret(value)) return "Paste the whole key file. It starts with { and ends with }."
-    if (field.kind !== "json" && !isPlainSecret(value)) return field.kind === "identifier" ? `Check the ${field.label.toLowerCase()}.` : "Enter only the key, without spaces or a prefix."
+    if (field.kind === "json" && !isJsonSecret(value)) return t("ui.paste_the_whole_key_file_it_starts_with_and_ends_with")
+    if (field.kind !== "json" && !isPlainSecret(value)) return field.kind === "identifier" ? t("ui.check_credential_field", { field: field.label.toLowerCase() }) : t("ui.enter_only_the_key_without_spaces_or_a_prefix")
   }
   return null
 }

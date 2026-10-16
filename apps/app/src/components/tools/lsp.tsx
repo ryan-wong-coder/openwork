@@ -1,5 +1,7 @@
 "use client"
 
+import { t } from "@/i18n";
+
 import { Tool } from "@/components/ui/tool"
 import type { LspInput, LspToolPart } from "@/lib/build-in-tools"
 import { parseFilename, toolDisplayTitle } from "@/components/tools/path"
@@ -8,31 +10,31 @@ interface LspToolProps {
   part: LspToolPart
 }
 
-const LSP_OPERATION_LABELS: Record<LspInput["operation"], string> = {
-  goToDefinition: "Go to definition",
-  findReferences: "Find references",
-  hover: "Hover",
-  documentSymbol: "Document symbols",
-  workspaceSymbol: "Workspace symbols",
-  goToImplementation: "Go to implementation",
-  prepareCallHierarchy: "Prepare call hierarchy",
-  incomingCalls: "Incoming calls",
-  outgoingCalls: "Outgoing calls",
-}
+const lspOperationLabels = (): Record<LspInput["operation"], string> => ({
+  goToDefinition: t("ui.go_to_definition"),
+  findReferences: t("ui.find_references"),
+  hover: t("ui.hover"),
+  documentSymbol: t("ui.document_symbols"),
+  workspaceSymbol: t("ui.workspace_symbols"),
+  goToImplementation: t("ui.go_to_implementation"),
+  prepareCallHierarchy: t("ui.prepare_call_hierarchy"),
+  incomingCalls: t("ui.incoming_calls"),
+  outgoingCalls: t("ui.outgoing_calls"),
+})
 
 function getLspToolTitle(part: LspToolPart): string | null {
   const filename = parseFilename(part.input.filePath)
-  const operation = LSP_OPERATION_LABELS[part.input.operation]
+  const operation = lspOperationLabels()[part.input.operation]
 
   if (part.state === "output-error") {
-    return `${operation} attempted in ${filename}`
+    return t("ui.file_operation_attempted", { operation, filename })
   }
 
   if (part.state !== "output-available") {
     return null
   }
 
-  return `${operation} in ${filename}`
+  return t("ui.file_operation", { operation, filename })
 }
 
 function getLspToolDetail(part: LspToolPart): string | undefined {

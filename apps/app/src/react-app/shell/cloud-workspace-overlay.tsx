@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { AlertTriangle, ArrowUpRight } from "lucide-react";
 import { LazyMotion, domMax, m } from "motion/react";
@@ -434,13 +435,9 @@ export function CloudWorkspaceBootTakeover(props: { decision: CloudWorkspaceMain
                     type="button"
                     size="sm"
                     onClick={() => platform.openLink(denWebBillingUrl(readDenSettings().baseUrl))}
-                  >
-                    Get OpenWork Web
-                    <ArrowUpRight className="size-4" aria-hidden="true" />
+                  >{t("interface.get_openwork_web")} <ArrowUpRight className="size-4" aria-hidden="true" />
                   </Button>
-                  <Button type="button" size="sm" variant="outline" onClick={() => void cloudWorkspace.refresh()}>
-                    Check again
-                  </Button>
+                  <Button type="button" size="sm" variant="outline" onClick={() => void cloudWorkspace.refresh()}>{t("interface.check_again")} </Button>
                 </>
               ) : (
                 <Button
@@ -453,12 +450,10 @@ export function CloudWorkspaceBootTakeover(props: { decision: CloudWorkspaceMain
                   }}
                   disabled={failed && cloudWorkspace.retrying}
                 >
-                  {failed ? cloudWorkspace.retrying ? "Retrying…" : "Retry" : slow ? "Check again" : "Try again"}
+                  {failed ? cloudWorkspace.retrying ? t("interface.retrying") : t("updates.retry") : slow ? t("interface.check_again") : t("session.remote_task_retry")}
                 </Button>
               )}
-              {attention ? <Button type="button" size="sm" variant="ghost" onClick={cloudWorkspace.signOut}>
-                Sign out
-              </Button> : null}
+              {attention ? <Button type="button" size="sm" variant="ghost" onClick={cloudWorkspace.signOut}>{t("den.sign_out")} </Button> : null}
             </div>
           ) : null}
         </WorkspaceStartupStatus>
@@ -486,7 +481,7 @@ export function CloudWorkspaceStatusPanel(props: {
           <p
             className="select-all break-all text-xs text-muted-foreground"
             data-testid="cloud-workspace-computer-line"
-            title="Select and copy for support"
+            title={t("interface.select_and_copy_for_support")}
           >
             {viewModel.computerLine}
           </p>
@@ -497,12 +492,8 @@ export function CloudWorkspaceStatusPanel(props: {
       </div>
       {viewModel.showUpdate ? (
         <div className="rounded-2xl border border-border bg-muted/30 p-3">
-          <Button type="button" size="sm" className="w-full" onClick={props.onUpdateNow} disabled={props.updating}>
-            Update now
-          </Button>
-          <p className="mt-2 text-xs text-muted-foreground">
-            Takes about 30 seconds. Your files and sessions come along.
-          </p>
+          <Button type="button" size="sm" className="w-full" onClick={props.onUpdateNow} disabled={props.updating}>{t("interface.update_now")} </Button>
+          <p className="mt-2 text-xs text-muted-foreground">{t("interface.takes_about_30_seconds_your_files_and_sessions_come_along")} </p>
         </div>
       ) : null}
       <div className="flex items-center justify-end gap-2">
@@ -514,12 +505,10 @@ export function CloudWorkspaceStatusPanel(props: {
             onClick={viewModel.variant === "failed" ? props.onRetry : props.onRefresh}
             disabled={viewModel.variant === "failed" && props.retrying}
           >
-            {viewModel.variant === "failed" && props.retrying ? "Retrying…" : "Retry"}
+            {viewModel.variant === "failed" && props.retrying ? t("interface.retrying") : t("updates.retry")}
           </Button>
         ) : null}
-        <Button type="button" size="sm" variant="ghost" onClick={props.onSignOut}>
-          Sign out
-        </Button>
+        <Button type="button" size="sm" variant="ghost" onClick={props.onSignOut}>{t("den.sign_out")} </Button>
       </div>
     </>
   );

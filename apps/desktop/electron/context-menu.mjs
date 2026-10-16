@@ -1,3 +1,5 @@
+import { nativeRoleLabel, nativeText } from "./native-locale.mjs";
+
 // Keep native menu construction in main. The renderer supplies plain action
 // descriptions, never Electron templates, roles, callbacks or executable code.
 export function contextMenuTemplate(input, select) {
@@ -29,13 +31,13 @@ export function editingMenuTemplate(contents, params) {
   const items = [];
   // Chromium flags are authoritative for native context-menu events; composed
   // editor menus use OS editing roles, never commands supplied by the renderer.
-  const role = (name, flag) => ({ role: name, ...(params.editFlags ? { enabled: params.editFlags[flag] === true } : {}) });
+  const role = (name, flag) => ({ role: name, ...nativeRoleLabel(name), ...(params.editFlags ? { enabled: params.editFlags[flag] === true } : {}) });
   if (params.isEditable) {
     if (params.misspelledWord) {
       for (const word of params.dictionarySuggestions.slice(0, 8)) {
         items.push({ label: word, click: () => contents.replaceMisspelling(word) });
       }
-      items.push({ label: "Add to Dictionary", click: () => contents.session.addWordToSpellCheckerDictionary(params.misspelledWord) });
+      items.push({ label: nativeText("Add to Dictionary"), click: () => contents.session.addWordToSpellCheckerDictionary(params.misspelledWord) });
       items.push({ type: "separator" });
     }
     items.push(role("undo", "canUndo"), role("redo", "canRedo"), { type: "separator" }, role("cut", "canCut"));
@@ -80,13 +82,13 @@ export function contentMenuTemplate(contents, params, clipboard) {
   const items = editingMenuTemplate(contents, params);
   if (params.mediaType === "image" && params.hasImageContents) {
     // Copy Chromium's decoded pixels. Never fetch a renderer-supplied URL.
-    items.push({ label: "Copy Image", click: () => contents.copyImageAt(params.x, params.y) });
+    items.push({ label: nativeText("Copy Image"), click: () => contents.copyImageAt(params.x, params.y) });
   }
   if (params.mediaType === "image" && params.srcURL) {
-    items.push({ label: "Copy Image Address", click: () => clipboard.writeText(params.srcURL) });
+    items.push({ label: nativeText("Copy Image Address"), click: () => clipboard.writeText(params.srcURL) });
   }
   if (params.linkURL) {
-    items.push({ label: "Copy Link Address", click: () => clipboard.writeText(params.linkURL) });
+    items.push({ label: nativeText("Copy Link Address"), click: () => clipboard.writeText(params.linkURL) });
   }
   return items;
 }

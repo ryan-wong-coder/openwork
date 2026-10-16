@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { Loader2 } from "lucide-react";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { DenApiError, createDenClient, readDenSettings } from "@/app/lib/den";
@@ -84,19 +85,17 @@ function Prompt({ target, close }: { target: Request; close: (connected: boolean
     <DialogContent data-testid="member-api-key-dialog" data-ph-no-capture="true">
       <DialogHeader>
         <DialogTitle>{`${target.replacing ? "Replace" : "Add"} key for ${target.connectionName}`}</DialogTitle>
-        <DialogDescription className="sr-only">Saved for your requests only.</DialogDescription>
+        <DialogDescription className="sr-only">{t("interface.saved_for_your_requests_only")}</DialogDescription>
       </DialogHeader>
       <FieldGroup>
-        <SecretField id="member-api-key-input" testId="member-api-key-input" label="Personal access token or API key"
+        <SecretField id="member-api-key-input" testId="member-api-key-input" label={t("interface.personal_access_token_or_api_key")}
           handleRef={field} disabled={pending} error={error} autoFocus
           onValueChange={setHasValue} onSubmit={() => void submit()} />
       </FieldGroup>
       <DialogFooter>
-        <Button variant="outline" disabled={pending} onClick={() => close(false)}>Cancel</Button>
+        <Button variant="outline" disabled={pending} onClick={() => close(false)}>{t("settings.environment.cancel")}</Button>
         <Button disabled={pending || !hasValue} onClick={() => void submit()}>
-          {pending ? <Loader2 className="size-4 animate-spin" aria-hidden /> : null}
-          Save key
-        </Button>
+          {pending ? <Loader2 className="size-4 animate-spin" aria-hidden /> : null}{t("interface.save_key")} </Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>;

@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import * as React from "react"
 import { Check, Copy } from "lucide-react"
 
@@ -101,7 +102,7 @@ export function PastedTextChip(props: { text: string }) {
         type="button"
         className="inline rounded-lg align-middle focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring"
         aria-expanded={open}
-        aria-label={open ? "Hide pasted text" : "Show pasted text"}
+        aria-label={open ? t("ui.hide_pasted_text") : t("ui.show_pasted_text")}
         onClick={() => setOpen((current) => !current)}
       >
         <ComposerBadgeChip badge={pastedTextBadge(total)} open={open} className="mx-0" />
@@ -110,7 +111,7 @@ export function PastedTextChip(props: { text: string }) {
         <span className="my-1.5 block w-full rounded-lg border border-border bg-background px-3 py-2 text-left" data-pasted-text-preview>
           <span className="flex items-center justify-between gap-3">
             <span className="text-[11px] text-muted-foreground">
-              {total} line{total === 1 ? "" : "s"} · {props.text.length.toLocaleString()} characters
+              {t("ui.pasted_text_stats", { lines: total, characters: props.text.length.toLocaleString() })}
             </span>
             <Button
               type="button"
@@ -121,14 +122,14 @@ export function PastedTextChip(props: { text: string }) {
               }}
             >
               {copied ? <Check /> : <Copy />}
-              {copied ? "Copied" : "Copy"}
+              {copied ? t("connect.diagnostics_copied") : t("config.copy")}
             </Button>
           </span>
           <span className="mt-1 block overflow-hidden whitespace-pre-wrap break-words font-mono text-xs leading-5 text-foreground">
             {lines.slice(0, PREVIEW_LINES).join("\n")}
           </span>
           {more > 0 ? (
-            <span className="mt-1 block text-[11px] text-muted-foreground">{more} more line{more === 1 ? "" : "s"}</span>
+            <span className="mt-1 block text-[11px] text-muted-foreground">{t("ui.pasted_more_lines", { count: more })}</span>
           ) : null}
         </span>
       ) : null}
@@ -164,7 +165,7 @@ export function AttachmentFileChip(props: {
           type="button"
           className="flex min-w-0 items-center gap-2 text-left transition-opacity hover:opacity-80"
           onClick={props.onOpen}
-          title={`Open ${props.filename} in Artifacts`}
+          title={t("ui.open_in_artifacts", { name: props.filename })}
         >
           {content}
         </button>

@@ -1,4 +1,6 @@
-import { afterAll, describe, expect, jest, spyOn, test } from "bun:test"
+import { beforeEach, afterAll, describe, expect, jest, spyOn, test } from "bun:test"
+import { setLocale } from "../src/i18n"
+
 import { GlobalRegistrator } from "@happy-dom/global-registrator"
 import { act, createElement } from "react"
 import { createRoot } from "react-dom/client"
@@ -19,8 +21,18 @@ import type { McpAppSandboxViewProps } from "../src/components/chat/mcp-app-fram
 import * as mcpAppOrigin from "../src/components/chat/mcp-app-origin"
 import { markCloudCredentialRefreshed } from "../src/react-app/domains/connections/cloud-credential-revision"
 
+beforeEach(() => setLocale("en"))
+
 GlobalRegistrator.register({ url: "https://web.example/" })
-afterAll(() => GlobalRegistrator.unregister())
+// Happy DOM exposes this API without layout observations; these lifecycle
+// fixtures represent visible frames and use the supported eager fallback.
+const intersectionObserverDescriptor = Object.getOwnPropertyDescriptor(globalThis, "IntersectionObserver")
+Object.defineProperty(globalThis, "IntersectionObserver", { configurable: true, value: undefined })
+afterAll(() => {
+  if (intersectionObserverDescriptor) Object.defineProperty(globalThis, "IntersectionObserver", intersectionObserverDescriptor)
+  else Reflect.deleteProperty(globalThis, "IntersectionObserver")
+  return GlobalRegistrator.unregister()
+})
 const { MessageListProvider } = await import("../src/components/chat/message-list-provider")
 const { WorkspaceProvider } = await import("../src/react-app/shell/workspace-provider")
 const { useUiStateStore } = await import("../src/react-app/shell/ui-state-store")

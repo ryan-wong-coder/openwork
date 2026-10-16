@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import type { DynamicToolUIPart } from "ai"
 import { openworkCloudMcpConnectionActionSchema } from "@openwork/types/den/mcp-connection-action"
 import { connectionActionPayloadSchema, type ConnectionActionPayload } from "@openwork/types/connection-action-app"
@@ -101,15 +102,15 @@ function confirmed(label: string, description: string): ToolErrorAttribution {
   return { label, confidence: "Confirmed", description }
 }
 
-const CONNECTION_ACTION_LABELS = {
-  connect: "Connect your account",
-  reconnect: "Reconnect your account",
-  update_credentials: "Update credentials",
-  inspect_connection: "Inspect the connection",
-  fix_provider: "Fix provider access",
-  fix_network: "Fix network access",
-  contact_openwork: "Contact OpenWork support",
-}
+const connectionActionLabels = () => ({
+  connect: t("mcp.org_connection_connect_action"),
+  reconnect: t("ui.reconnect_your_account"),
+  update_credentials: t("ui.update_credentials"),
+  inspect_connection: t("ui.inspect_the_connection"),
+  fix_provider: t("ui.fix_provider_access"),
+  fix_network: t("ui.fix_network_access"),
+  contact_openwork: t("ui.contact_openwork_support"),
+})
 
 /** OpenWork Cloud's own capability tools, whose results the host may present natively. */
 export function isOpenworkCloudCapabilityTool(toolName: string): boolean {
@@ -152,10 +153,10 @@ function chatConnectionTarget(toolName: string, result: unknown, input?: unknown
       ? {
         ...legacy.data,
         schemaVersion: "1",
-        message: stringValue(candidate, "message") ?? CONNECTION_ACTION_LABELS[legacy.data.action.type],
+        message: stringValue(candidate, "message") ?? connectionActionLabels()[legacy.data.action.type],
         action: {
           ...legacy.data.action,
-          label: isRecord(candidate.action) ? stringValue(candidate.action, "label") ?? CONNECTION_ACTION_LABELS[legacy.data.action.type] : CONNECTION_ACTION_LABELS[legacy.data.action.type],
+          label: isRecord(candidate.action) ? stringValue(candidate.action, "label") ?? connectionActionLabels()[legacy.data.action.type] : connectionActionLabels()[legacy.data.action.type],
         },
       }
       : candidate)
@@ -231,7 +232,7 @@ export function reconnectActionFromChatToolResult(
   return {
     connectionId: connection.connectionId,
     connectionName: connection.connectionName,
-    label: target.memberPersonalKey ? connection.state === "reauth_required" ? "Replace key" : "Add key" : connection.state === "needs_connection" ? "Connect" : "Reconnect",
+    label: target.memberPersonalKey ? connection.state === "reauth_required" ? t("ui.replace_key") : t("ui.add_key") : connection.state === "needs_connection" ? t("composer.plus_connect") : t("mcp.action_reconnect"),
     ...(target.memberPersonalKey ? { credentialKind: "personal_key" } : {}),
   }
 }
@@ -286,8 +287,8 @@ export function attributeChatToolError(errorText: string): ToolErrorAttribution 
     || category === "lifecycle_deadline"
   ) {
     return confirmed(
-      "OpenWork timeout",
-      "OpenWork created this deadline. The external operation may still have completed, so verify its state before retrying.",
+      t("ui.openwork_timeout"),
+      t("ui.openwork_created_this_deadline_the_external_operation_may_still_have_completed_so_verify_i"),
     )
   }
 
@@ -296,13 +297,13 @@ export function attributeChatToolError(errorText: string): ToolErrorAttribution 
     || code === "MCP_URL_BLOCKED"
     || code === "MCP_FETCH_FORBIDDEN_PORT"
   ) {
-    return confirmed("Blocked by OpenWork", "OpenWork blocked the request before it was sent.")
+    return confirmed(t("ui.blocked_by_openwork"), t("ui.openwork_blocked_the_request_before_it_was_sent"))
   }
 
   if (httpStatus !== undefined && (httpStatus < 200 || httpStatus >= 300)) {
     return confirmed(
-      `Remote MCP · HTTP ${httpStatus}`,
-      `The remote MCP returned HTTP ${httpStatus}.`,
+      t("ui.remote_mcp_http", { status: httpStatus }),
+      t("ui.remote_mcp_http_description", { status: httpStatus }),
     )
   }
 
@@ -313,18 +314,18 @@ export function attributeChatToolError(errorText: string): ToolErrorAttribution 
     || providerCode !== undefined
   ) {
     return confirmed(
-      "Provider error",
+      t("ui.provider_error"),
       providerStatus === undefined
-        ? "The remote MCP responded, but the downstream provider or tool rejected the operation."
-        : `The remote MCP responded, but the downstream provider returned status ${providerStatus}.`,
+        ? t("ui.the_remote_mcp_responded_but_the_downstream_provider_or_tool_rejected_the_operation")
+        : t("ui.provider_status", { status: providerStatus }),
     )
   }
 
   if (/\b(?:timed out|timeout|deadline exceeded)\b/i.test(errorText)) {
     return {
-      label: "Timeout · source unclear",
+      label: t("ui.timeout_source_unclear"),
       confidence: "Inferred",
-      description: "A timeout was reported, but the client did not receive structured evidence identifying which boundary created it.",
+      description: t("ui.a_timeout_was_reported_but_the_client_did_not_receive_structured_evidence_identifying_whic"),
     }
   }
 
@@ -334,10 +335,10 @@ export function attributeChatToolError(errorText: string): ToolErrorAttribution 
 /** End-user copy; attribution and raw provider payloads belong in details. */
 export function describeChatToolFailure(errorText: string): string {
   const attribution = attributeChatToolError(errorText)
-  if (attribution?.label === "Blocked by OpenWork") return "This action is blocked by your workspace settings."
-  if (/timeout|timed out|deadline|\b504\b/i.test(errorText)) return "The service didn’t respond in time. Check whether the action finished before trying again."
-  if (/\b401\b|unauthorized|invalid[_ ]token|authentication required/i.test(errorText)) return "This connection needs attention. Check its sign-in settings."
-  if (/\b403\b|forbidden|access[_ ]denied|insufficient[_ ]scope/i.test(errorText)) return "This connection doesn’t have access to the requested action."
-  if (/\b50[0234]\b|internal[_ ]server[_ ]error|bad gateway|service unavailable|fetch failed|ECONNRESET|ENOTFOUND/i.test(errorText)) return "The service couldn’t complete this action. Check its status before trying again."
-  return "This action couldn’t finish. Check the details before trying again."
+  if (attribution?.label === t("ui.blocked_by_openwork")) return t("ui.this_action_is_blocked_by_your_workspace_settings")
+  if (/timeout|timed out|deadline|\b504\b/i.test(errorText)) return t("ui.the_service_didn_t_respond_in_time_check_whether_the_action_finished_before_trying_again")
+  if (/\b401\b|unauthorized|invalid[_ ]token|authentication required/i.test(errorText)) return t("ui.this_connection_needs_attention_check_its_sign_in_settings")
+  if (/\b403\b|forbidden|access[_ ]denied|insufficient[_ ]scope/i.test(errorText)) return t("ui.this_connection_doesn_t_have_access_to_the_requested_action")
+  if (/\b50[0234]\b|internal[_ ]server[_ ]error|bad gateway|service unavailable|fetch failed|ECONNRESET|ENOTFOUND/i.test(errorText)) return t("ui.the_service_couldn_t_complete_this_action_check_its_status_before_trying_again")
+  return t("ui.this_action_couldn_t_finish_check_the_details_before_trying_again")
 }

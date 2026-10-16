@@ -1,4 +1,6 @@
 import { afterAll, afterEach, beforeAll, beforeEach, expect, test } from "bun:test"
+import { setLocale } from "../src/i18n"
+
 import { GlobalRegistrator } from "@happy-dom/global-registrator"
 import { act, createRef } from "react"
 import type { Root } from "react-dom/client"
@@ -7,6 +9,8 @@ import type { DynamicToolUIPart } from "ai"
 import { SecretField, SecretRevealProvider, type SecretFieldHandle } from "../src/components/secret-field"
 import { credentialPromptFromToolPart } from "../src/components/chat/credential-prompt"
 import { gatewayCredentialBody, promptFields, promptFieldsProblem } from "../src/components/chat/credential-prompt-fields"
+
+beforeEach(() => setLocale("en"))
 
 let createRoot: typeof import("react-dom/client")["createRoot"]
 const ownedDom = !GlobalRegistrator.isRegistered && typeof document === "undefined"

@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 
 /**
  * Dev-only React profiler + overlay.
@@ -352,12 +353,9 @@ function DevProfilerOverlayVisible({ onHide }: { onHide: () => void }) {
     >
       <div className="flex items-center justify-between border-b border-dls-border px-2.5 py-1.5">
         <div className="flex items-center gap-2">
-          <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-dls-secondary">
-            react profiler
-          </span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-dls-secondary">{t("interface.react_profiler")} </span>
           <span className="text-[10px] text-dls-secondary">
-            {snapshot.totalCommits} commits · {snapshot.totalActualMs}ms
-          </span>
+            {snapshot.totalCommits}{t("interface.commits")} {snapshot.totalActualMs}{t("interface.ms")} </span>
         </div>
         <div className="flex items-center gap-1">
           <button
@@ -368,15 +366,13 @@ function DevProfilerOverlayVisible({ onHide }: { onHide: () => void }) {
               state.recent.length = 0;
               emit();
             }}
-            title="Reset counters"
-          >
-            reset
-          </button>
+            title={t("interface.reset_counters")}
+          >{t("interface.reset")} </button>
           <button
             type="button"
             className="rounded px-1.5 py-0.5 text-[10px] text-dls-secondary hover:bg-dls-hover"
             onClick={() => setCollapsed((value) => !value)}
-            title="Collapse"
+            title={t("sidebar.collapse")}
           >
             {collapsed ? "+" : "–"}
           </button>
@@ -384,7 +380,7 @@ function DevProfilerOverlayVisible({ onHide }: { onHide: () => void }) {
             type="button"
             className="rounded px-1.5 py-0.5 text-[10px] text-dls-secondary hover:bg-dls-hover"
             onClick={onHide}
-            title="Hide (Cmd+Shift+P to toggle)"
+            title={t("interface.hide_cmd_shift_p_to_toggle")}
           >
             ×
           </button>
@@ -393,17 +389,15 @@ function DevProfilerOverlayVisible({ onHide }: { onHide: () => void }) {
       {collapsed ? null : (
         <div className="max-h-[50vh] overflow-y-auto">
           {topZones.length === 0 ? (
-            <div className="p-3 text-dls-secondary">
-              No profiler data yet. Interact with the app.
-            </div>
+            <div className="p-3 text-dls-secondary">{t("interface.no_profiler_data_yet_interact_with_the_app")} </div>
           ) : (
             <table className="w-full border-collapse">
               <thead>
                 <tr className="text-[10px] uppercase tracking-[0.1em] text-dls-secondary">
-                  <th className="px-2 py-1 text-left font-medium">zone</th>
+                  <th className="px-2 py-1 text-left font-medium">{t("interface.zone")}</th>
                   <th className="px-2 py-1 text-right font-medium">#</th>
-                  <th className="px-2 py-1 text-right font-medium">last</th>
-                  <th className="px-2 py-1 text-right font-medium">total</th>
+                  <th className="px-2 py-1 text-right font-medium">{t("interface.last")}</th>
+                  <th className="px-2 py-1 text-right font-medium">{t("interface.total")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -428,11 +422,9 @@ function DevProfilerOverlayVisible({ onHide }: { onHide: () => void }) {
                         {zone.commitCount}
                       </td>
                       <td className="px-2 py-1 text-right tabular-nums text-dls-secondary">
-                        {zone.lastActualMs}ms
-                      </td>
+                        {zone.lastActualMs}{t("interface.ms")} </td>
                       <td className="px-2 py-1 text-right tabular-nums text-dls-secondary">
-                        {Math.round(zone.totalActualMs)}ms
-                      </td>
+                        {Math.round(zone.totalActualMs)}{t("interface.ms")} </td>
                     </tr>
                   );
                 })}
@@ -441,9 +433,7 @@ function DevProfilerOverlayVisible({ onHide }: { onHide: () => void }) {
           )}
         </div>
       )}
-      <div className="border-t border-dls-border px-2.5 py-1 text-[10px] text-dls-secondary">
-        Cmd+Shift+P to toggle. Prod builds: off.
-      </div>
+      <div className="border-t border-dls-border px-2.5 py-1 text-[10px] text-dls-secondary">{t("interface.cmd_shift_p_to_toggle_prod_builds_off")} </div>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import * as React from "react"
 import { resolveExtensionIconSrc } from "@/react-app/design-system/extension-icon-src"
 import { cn } from "@/lib/utils"
@@ -22,7 +23,7 @@ export function SessionReferenceLink({ reference, openReference, children, class
   return (
     <a
       href={sessionReferenceHref(reference)}
-      aria-label={`Open ${reference.archived ? "archived task" : "task"}: ${reference.title}`}
+      aria-label={t("ui.open_task", { title: reference.title })}
       title={reference.title}
       className={cn(SESSION_REFERENCE_LINK_CLASS_NAME, className)}
       onClick={open}

@@ -6,7 +6,7 @@ import type { DesktopAppRestrictionChecker } from "@/app/cloud/desktop-app-restr
 import type { DenOrgLlmProvider, DenOrgLlmProviderAccess } from "@/app/lib/den";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { t } from "@/i18n";
+import { currentLocale, t } from "@/i18n";
 import { GatewayConnectRow } from "./ai-view";
 import { ProviderIcon } from "../../../design-system/provider-icon";
 import { gatewayConnectProviderKey, type GatewayConnectProvider } from "../../connections/provider-auth/cloud-provider-config";
@@ -31,9 +31,9 @@ import { SettingsStack } from "@/react-app/domains/settings/settings-section";
 /** "Everyone", the team names, or a member count; null when Den did not say. */
 export function providerAccessLabel(access: DenOrgLlmProviderAccess | undefined): string | null {
   if (!access) return null;
-  if (access.allMembers) return "Everyone";
+  if (access.allMembers) return t("settings_extra.everyone");
   if (access.teamNames.length) return access.teamNames.join(", ");
-  if (access.memberCount) return access.memberCount === 1 ? "1 member" : `${access.memberCount} members`;
+  if (access.memberCount) return t("settings_extra.count_members", { count: access.memberCount });
   return null;
 }
 
@@ -115,6 +115,7 @@ export function CloudProvidersView({
   onOpenDen,
   onOpenModelConnections,
 }: CloudProvidersViewProps) {
+  const locale = currentLocale();
   const { activeOrganization, isSignedIn } = useCloudSession();
   const [busy, setBusy] = React.useState(false);
   const [actionId, setActionId] = React.useState<string | null>(null);
@@ -147,8 +148,8 @@ export function CloudProvidersView({
         reloadPending: serverSync?.reloadPending === true,
       });
       const providerDetail = provider.source === "openwork"
-        ? `Organization credential · ${provider.models.length ? `${provider.models.length} models` : "All models"}`
-        : `${imported?.source === "openwork_gateway" ? "OpenWork Gateway" : "Organization credential"} · ${provider.credentialMode === "per_member" ? "Each member signs in" : "Shared org key"}`;
+        ? [t("settings_extra.organization_credential"), provider.models.length ? t("model_picker.model_count_other", { count: provider.models.length }) : t("interface.all_models")].join(" · ")
+        : [imported?.source === "openwork_gateway" ? "OpenWork Gateway" : t("settings_extra.organization_credential"), provider.credentialMode === "per_member" ? t("settings_extra.each_member_signs_in") : t("settings_extra.shared_org_key")].join(" · ");
       const detail = status === "blocked"
         ? t("den.cloud_provider_blocked")
         : status === "unavailable"
@@ -175,12 +176,12 @@ export function CloudProvidersView({
     const importedRows: CloudProviderRow[] = Object.values(importedCloudProviders).filter((provider) => !cloudOrgProviders.some((live) => live.id === provider.cloudProviderId)).map((provider) => ({
       key: `imported:${provider.cloudProviderId}`, cloudProviderId: provider.cloudProviderId, provider: null, imported: provider, name: provider.name,
       status: resolveCloudProviderRowStatus({ imported: true, outOfSync: false, allowed: isProviderAllowedByDesktopPolicy({ providerId: provider.providerId, restrictToCloud, checkRestriction: checkDesktopAppRestriction }), importsUnavailable, needsCredential: false, needsServer: false, syncError: null, reloadPending: serverSync?.reloadPending, skippedByServer: Boolean(serverSync?.skippedProviders[provider.cloudProviderId]) }),
-      detail: provider.source === "openwork_gateway" ? "OpenWork Gateway · Organization credential" : "Managed in Den",
+      detail: provider.source === "openwork_gateway" ? t("settings_extra.openwork_gateway_organization_credential") : t("interface.managed_in_den"),
       metaId: provider.cloudProviderId,
       credentialReady: true,
     }));
     const combined = [...liveRows, ...importedRows];
-    return combined.filter((row) => !gatewayConnectProviders.some((provider) => provider.cloudProviderId === row.cloudProviderId)).map<CloudProviderRow>((row) => serverSync?.lastRun?.status === "failed" ? { ...row, status: "unavailable", detail: "Could not verify with Den. Sync again to check access." } : row);
+    return combined.filter((row) => !gatewayConnectProviders.some((provider) => provider.cloudProviderId === row.cloudProviderId)).map<CloudProviderRow>((row) => serverSync?.lastRun?.status === "failed" ? { ...row, status: "unavailable", detail: t("settings_extra.could_not_verify_with_den_sync_again_to_check_access") } : row);
   }, [
     checkDesktopAppRestriction,
     cloudOrgProviders,
@@ -189,15 +190,14 @@ export function CloudProvidersView({
     importsUnavailable,
     lastSyncError,
     openworkServerAvailable,
-    serverSync,
-  ]);
+    serverSync, locale]);
 
   React.useEffect(() => {
     if (!isSignedIn || !activeOrganization?.id) return;
     let current = true;
     setBusy(true);
     void refreshCloudOrgProviders().catch(() => {
-      if (current) setActionError("Could not verify organization providers. Sync again to retry.");
+      if (current) setActionError(t("settings_extra.could_not_verify_organization_providers_sync_again_to_retry"));
     }).finally(() => { if (current) setBusy(false); });
     return () => { current = false; };
   }, [activeOrganization?.id, isSignedIn, refreshCloudOrgProviders]);
@@ -209,7 +209,7 @@ export function CloudProvidersView({
     try {
       await runCloudProviderSync("manual");
     } catch (error) {
-      setActionError(error instanceof Error ? error.message : t("den.sync_provider_failed", { name: "Cloud providers" }));
+      setActionError(error instanceof Error ? error.message : t("den.sync_provider_failed", { name: t("den.cloud_providers_title") }));
     } finally {
       setBusy(false);
     }
@@ -222,7 +222,7 @@ export function CloudProvidersView({
     try {
       await connectCloudProvider(cloudProviderId);
     } catch (error) {
-      setActionError(error instanceof Error ? error.message : t("den.sync_provider_failed", { name: "Cloud provider" }));
+      setActionError(error instanceof Error ? error.message : t("den.sync_provider_failed", { name: t("settings_extra.cloud_provider") }));
     } finally {
       setActionId(null);
     }
@@ -232,8 +232,8 @@ export function CloudProvidersView({
     const notice = (
       <section className="flex flex-col gap-3" aria-labelledby="ai-providers-organization">
         <div className="space-y-1">
-          <h2 id="ai-providers-organization" className="text-base font-medium text-dls-text">From your organization</h2>
-          <p className="text-sm text-muted-foreground">Providers your team pays for, delivered through the OpenWork Gateway. Nothing to set up on this device.</p>
+          <h2 id="ai-providers-organization" className="text-base font-medium text-dls-text">{t("mcp.org_connections_title")}</h2>
+          <p className="text-sm text-muted-foreground">{t("interface.providers_your_team_pays_for_delivered_through_the_openwork_gateway_nothing_to_set_up_on_this_device")}</p>
         </div>
         <div className="flex flex-col gap-4 rounded-2xl border border-dashed border-dls-border px-5 py-5 sm:flex-row sm:items-center">
           <div className="flex shrink-0 items-center -space-x-2" aria-hidden>
@@ -241,10 +241,10 @@ export function CloudProvidersView({
             <span className="flex size-8 items-center justify-center rounded-full border border-dls-border bg-dls-hover text-[11px] font-medium text-muted-foreground">+2</span>
           </div>
           <div className="min-w-0 flex-1 space-y-0.5">
-            <h3 className="text-sm font-medium text-dls-text">No organization yet</h3>
-            <p className="text-sm text-muted-foreground">Sign in to see what your organization already provides. Your keys on this device keep working either way.</p>
+            <h3 className="text-sm font-medium text-dls-text">{t("interface.no_organization_yet")}</h3>
+            <p className="text-sm text-muted-foreground">{t("interface.sign_in_to_see_what_your_organization_already_provides_your_keys_on_this_device_keep_working_either_")}</p>
           </div>
-          <Button variant="outline" className="shrink-0 self-start sm:self-center" onClick={onOpenAccount}>Sign in to OpenWork</Button>
+          <Button variant="outline" className="shrink-0 self-start sm:self-center" onClick={onOpenAccount}>{t("interface.sign_in_to_openwork")}</Button>
         </div>
       </section>
     );
@@ -258,7 +258,7 @@ export function CloudProvidersView({
 
   const section = (
     <CloudProvidersSection
-      actionError={actionError ?? (serverSync?.lastRun?.status === "failed" ? "Could not verify providers with Den. Sync again to retry." : null)}
+      actionError={actionError ?? (serverSync?.lastRun?.status === "failed" ? t("settings_extra.could_not_verify_providers_with_den_sync_again_to_retry") : null)}
       actionId={actionId}
       busy={busy}
       rows={rows}

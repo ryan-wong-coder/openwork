@@ -146,9 +146,7 @@ export function CreateWorkspaceLocalPanel(
                   {props.selectedFolder}
                 </span>
               ) : (
-                <span className="text-[14px] text-dls-secondary">
-                  No folder selected yet.
-                </span>
+                <span className="text-[14px] text-dls-secondary">{t("interface.no_folder_selected_yet")} </span>
               )}
             </div>
 
@@ -165,25 +163,20 @@ export function CreateWorkspaceLocalPanel(
                         <ChartNoAxesColumnIncreasing size={17} className="shrink-0 text-current" />
                       </span>
                       <span className="min-w-0">
-                        <span className="block text-[14px] font-semibold text-dls-text">
-                          Want more analytics?
-                        </span>
-                        <span className="mt-1 block text-[12px] leading-5 text-dls-secondary">
-                          Add a project name to group this workspace's sessions in Analytics.
-                        </span>
+                        <span className="block text-[14px] font-semibold text-dls-text">{t("interface.want_more_analytics")} </span>
+                        <span className="mt-1 block text-[12px] leading-5 text-dls-secondary">{t("interface.add_a_project_name_to_group_this_workspace_s_sessions_in_analytics")} </span>
                       </span>
                     </span>
                   </AccordionTrigger>
                   <AccordionContent className="space-y-3 px-4 pb-4">
                     <div>
-                      <label className="text-[13px] font-medium text-dls-text">
-                        Project name <span className="text-dls-secondary">(optional)</span>
+                      <label className="text-[13px] font-medium text-dls-text">{t("interface.project_name")} <span className="text-dls-secondary">{t("interface.optional")}</span>
                       </label>
                       <input
                         type="text"
                         value={props.projectLabel}
                         onChange={(event) => props.onProjectLabelInput(event.currentTarget.value)}
-                        placeholder="Billing API"
+                        placeholder={t("interface.billing_api")}
                         disabled={props.submitting}
                         className="mt-2 w-full rounded-[20px] border border-dls-border bg-dls-surface px-4 py-3 text-[14px] text-dls-text outline-none placeholder:text-dls-secondary transition-colors focus:border-dls-accent disabled:cursor-not-allowed disabled:opacity-60"
                       />
@@ -206,7 +199,7 @@ export function CreateWorkspaceLocalPanel(
                 )}
                 {props.hasSelectedFolder
                   ? t("dashboard.change")
-                  : "Select folder"}
+                  : t("interface.select_folder")}
               </button>
             </div>
           </div>
@@ -224,9 +217,7 @@ export function CreateWorkspaceLocalPanel(
                     <XCircle size={14} className="text-red-11" />
                   ) : (
                     <Loader2 size={14} className="animate-spin text-dls-accent" />
-                  )}
-                  Sandbox setup
-                </div>
+                  )}{t("interface.sandbox_setup")} </div>
                 <div className="mt-1 truncate text-[14px] leading-snug text-dls-text">
                   {progress.stage}
                 </div>
@@ -239,7 +230,7 @@ export function CreateWorkspaceLocalPanel(
                 className={pillGhostClass}
                 onClick={props.onToggleProgressDetails}
               >
-                {props.showProgressDetails ? "Hide logs" : "Show logs"}
+                {props.showProgressDetails ? t("interface.hide_logs") : t("interface.show_logs")}
               </button>
             </div>
 
@@ -273,9 +264,7 @@ export function CreateWorkspaceLocalPanel(
 
             {props.showProgressDetails && progress.logs.length > 0 ? (
               <div className={`mt-3 ${softCardClass}`}>
-                <div className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-dls-secondary">
-                  Live logs
-                </div>
+                <div className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-dls-secondary">{t("interface.live_logs")} </div>
                 <div className="max-h-[120px] space-y-0.5 overflow-y-auto">
                   {toKeyedLines(progress.logs.slice(-10)).map(({ key, line }) => (
                     <div
@@ -327,9 +316,7 @@ export function CreateWorkspaceLocalPanel(
               <details
                 className={`mt-3 ${softCardClass} text-[11px] text-dls-text`}
               >
-                <summary className="cursor-pointer text-[12px] font-semibold text-dls-text">
-                  Docker debug details
-                </summary>
+                <summary className="cursor-pointer text-[12px] font-semibold text-dls-text">{t("interface.docker_debug_details")} </summary>
                 <div className="mt-2 space-y-1 break-words font-mono">
                   {toKeyedLines(props.workerDebugLines).map(({ key, line }) => (
                     <div key={`docker-line-${key}`}>{line}</div>
@@ -397,9 +384,7 @@ export function CreateWorkspaceLocalPanel(
           >
             {props.submitting ? (
               <span className="inline-flex items-center gap-2">
-                <Loader2 size={16} className="animate-spin" />
-                Creating…
-              </span>
+                <Loader2 size={16} className="animate-spin" />{t("interface.creating")} </span>
             ) : (
               (props.confirmLabel ??
                 t("dashboard.create_workspace_confirm"))

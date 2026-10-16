@@ -12,9 +12,10 @@ import {
   foregroundTabEmulationCommands,
 } from "@openwork/browser-tabs";
 import { runDetachedTask } from "./process-resilience.mjs";
+import { nativeText, nativeTemplate } from "./native-locale.mjs";
 import { openExternalUrl } from "./open-external.mjs";
 import { BrowserTaskError, createBrowserTaskHost } from "./browser-task.mjs";
-import { agentPermissionDenialMessage, decideAgentPermission, stricterAgentPermissionDecision } from "@openwork/types/den/agent-permissions-runtime";
+import { decideAgentPermission, stricterAgentPermissionDecision } from "@openwork/types/den/agent-permissions-runtime";
 import { createWebMcpBroker } from "./webmcp-host.mjs";
 import { createWebMcpFramePolicy } from "./webmcp-policy.mjs";
 
@@ -83,12 +84,18 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
   /** What the rules decide for an address; while new rules load, nothing opens. */
   function websiteDecision(url) {
     if (websiteRules === null) {
-      return { effect: "deny", waiting: true, message: "Your organization's agent permissions are still loading. This page opens once they have." };
+      return { effect: "deny", waiting: true, message: nativeText("Your organization's agent permissions are still loading. This page opens once they have.") };
     }
     const decision = decideAgentPermission(websiteRules, "webfetch", [websiteAddress(url)]);
     return decision.rule && decision.effect !== "allow"
-      ? { effect: decision.effect, rule: decision.rule, message: agentPermissionDenialMessage(decision.rule, decision.resource) }
+      ? { effect: decision.effect, rule: decision.rule, message: websiteDenialMessage(decision.rule, decision.resource) }
       : { effect: "allow" };
+  }
+  function websiteDenialMessage(rule, resource) {
+    const subject = resource === "*" ? nativeText("opening websites") : nativeTemplate("opening {resource}", { resource });
+    const by = rule.resource === "*" ? nativeTemplate("set for {source}", { source: rule.source })
+      : nativeTemplate('"{resource}" is blocked for {source}', { resource: rule.resource, source: rule.source });
+    return nativeTemplate("Your organization's agent permissions block {subject} ({rule}).", { subject, rule: by });
   }
   /** Whether the member approved the site of an address under an "Ask first" rule. */
   function websiteApproved(url) {
@@ -106,11 +113,11 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
     const approval = (parent && !parent.isDestroyed()
       ? dialog.showMessageBox(parent, {
         type: "question",
-        buttons: ["Open", "Cancel"],
+        buttons: [nativeText("Open"), nativeText("Cancel")],
         defaultId: 1,
         cancelId: 1,
-        message: `Open ${site.host}?`,
-        detail: `Your organization's agent permissions ask before this site opens (set for ${rule.source}).`,
+        message: nativeTemplate("Open {host}?", { host: site.host }),
+        detail: nativeTemplate("Your organization's agent permissions ask before this site opens (set for {source}).", { source: rule.source }),
       }).then(({ response }) => response === 0)
       : Promise.resolve(false))
       .catch(() => false)
@@ -152,7 +159,7 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
   function blockedSitePage(url) {
     return {
       code: "blocked_by_organization",
-      message: "Your organization doesn't allow you to view this site.",
+      message: nativeText("Your organization doesn't allow you to view this site."),
       url,
       errorCode: -22,
       errorDescription: "ERR_BLOCKED_BY_ADMINISTRATOR",
@@ -317,8 +324,8 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
             tab.loadError = {
               code: error.code,
               message: error.code === "organization_policy_denied"
-                ? "This page may be incomplete. Your organization's policy blocked a browser request."
-                : "This page may be incomplete. Your organization's policy could not be verified.",
+                ? nativeText("This page may be incomplete. Your organization's policy blocked a browser request.")
+                : nativeText("This page may be incomplete. Your organization's policy could not be verified."),
             };
             sendBrowserState();
           }
@@ -461,7 +468,7 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
     try {
       await beforeLoad?.(tab);
       signal?.throwIfAborted();
-      if (getBrowserTab(tab.tabId) !== tab || tab.view.webContents.isDestroyed() || registry.ownerOf(tab.tabId) !== ownerSessionId) throw new BrowserTaskError("tab_closed", "The browser tab closed or changed owner before navigation.");
+      if (getBrowserTab(tab.tabId) !== tab || tab.view.webContents.isDestroyed() || registry.ownerOf(tab.tabId) !== ownerSessionId) throw new BrowserTaskError("tab_closed", nativeText("The browser tab closed or changed owner before navigation."));
       await tab.view.webContents.loadURL(url); signal?.throwIfAborted();
       tab.deferBackground = false;
       applySurfacing();
@@ -493,7 +500,7 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
   }
 
   function getActiveWebContents() {
-    if (getBrowserTab()?.suspending) throw new Error("Browser tab is suspending.");
+    if (getBrowserTab()?.suspending) throw new Error(nativeText("Browser tab is suspending."));
     return getActiveBrowserView()?.webContents ?? null;
   }
 
@@ -506,7 +513,7 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
       return url;
     }
 
-    return "New tab";
+    return nativeText("New tab");
   }
 
   function browserTabToPanelTab(tabId, tab) {
@@ -616,11 +623,11 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
       url,
       point: normalizeMenuPoint(point),
       items: [
-        { type: "item", id: "copy-url", label: "Copy URL", enabled: !!url },
-        { type: "item", id: "open-external", label: "Open in Browser", enabled: !!url && isHttpUrl(url) },
+        { type: "item", id: "copy-url", label: nativeText("Copy URL"), enabled: !!url },
+        { type: "item", id: "open-external", label: nativeText("Open in Browser"), enabled: !!url && isHttpUrl(url) },
         { type: "separator" },
-        { type: "item", id: "close-tab", label: "Close Tab" },
-        { type: "item", id: "close-all-tabs", label: "Close All Tabs" },
+        { type: "item", id: "close-tab", label: nativeText("Close Tab") },
+        { type: "item", id: "close-all-tabs", label: nativeText("Close All Tabs") },
       ],
     };
   }
@@ -653,12 +660,12 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
     const items = [];
     const actions = new Map();
     const add = (id, label, action, enabled = true) => {
-      items.push({ type: "item", id, label, enabled });
+      items.push({ type: "item", id, label: nativeText(label), enabled });
       actions.set(id, action);
     };
     const separator = () => { if (items.length) items.push({ type: "separator" }); };
     if (params.linkURL) {
-      add("open-new-tab", "Open Link in New Tab", null, isHttpUrl(params.linkURL));
+      add("open-new-tab", nativeText("Open Link in New Tab"), null, isHttpUrl(params.linkURL));
       add("copy-link", "Copy Link Address", () => clipboard.writeText(params.linkURL));
     }
     if (params.mediaType === "image") {
@@ -682,8 +689,8 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
       }
     }
     if (!params.isEditable && !params.selectionText && !params.linkURL && params.mediaType !== "image") {
-      add("back", "Back", () => contents.goBack(), contents.canGoBack());
-      add("forward", "Forward", () => contents.goForward(), contents.canGoForward());
+      add("back", nativeText("Back"), () => contents.goBack(), contents.canGoBack());
+      add("forward", nativeText("Forward"), () => contents.goForward(), contents.canGoForward());
       add("reload", "Reload", () => contents.reload());
     }
     // Chromium supplies view-relative coordinates, already in window DIPs.
@@ -722,10 +729,10 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
     try {
       if (request.source === "link") {
         request.items = [
-          { type: "item", id: "open-builtin", label: "Open in OpenWork" },
-          { type: "item", id: "open-external", label: "Open in external browser" },
+          { type: "item", id: "open-builtin", label: nativeText("Open in OpenWork") },
+          { type: "item", id: "open-external", label: nativeText("Open in external browser") },
           { type: "separator" },
-          { type: "item", id: "copy-url", label: "Copy Link Address" },
+          { type: "item", id: "copy-url", label: nativeText("Copy Link Address") },
         ];
       }
       // The native helper owns zoom conversion and resolves only an ID or null.
@@ -762,8 +769,8 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
       } catch (error) {
         if (isCurrent()) {
           await dialog.showMessageBox(window(), {
-            type: "error", message: "Could not open this link",
-            detail: error instanceof Error ? error.message : "Your browser may be unavailable, or your organization may restrict this destination. You can copy the link address instead.",
+            type: "error", message: nativeText("Could not open this link"),
+            detail: error instanceof Error ? error.message : nativeText("Your browser may be unavailable, or your organization may restrict this destination. You can copy the link address instead."),
           });
         }
       }
@@ -800,7 +807,7 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
     if (!envMatch) return raw;
     const key = `OPENWORK_BROWSER_PROXY_${envMatch[1].toUpperCase()}`;
     const value = String(process.env[key] ?? "").trim();
-    if (!value) throw new Error(`No proxy configured: set the ${key} environment variable to a proxy URL.`);
+    if (!value) throw new Error(nativeTemplate("No proxy configured: set the {variable} environment variable to a proxy URL.", { variable: key }));
     return value;
   }
 
@@ -812,10 +819,10 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
     try {
       url = new URL(withScheme);
     } catch {
-      throw new Error(`Invalid proxy URL: ${raw}`);
+      throw new Error(nativeTemplate("Invalid proxy URL: {url}", { url: raw }));
     }
     if (!url.hostname || !url.port) {
-      throw new Error("Proxy must include host and port, e.g. http://user:pass@host:8080 or socks5://host:1080.");
+      throw new Error(nativeText("Proxy must include host and port, e.g. http://user:pass@host:8080 or socks5://host:1080."));
     }
     const scheme = url.protocol.replace(/:$/, "").toLowerCase();
     return {
@@ -839,7 +846,7 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
     return !!tab && browserViewVisible && registry.onScreenTabId() === tabId
       && window()?.contentView.children.includes(tab.view) === true && tab.view.getVisible();
   }
-  function confirmBrowserAction({ tabId, title, message, detail, signal, approveLabel = "Allow once", waitForVisible = false }) {
+  function confirmBrowserAction({ tabId, title, message, detail, signal, approveLabel = nativeText("Allow once"), waitForVisible = false }) {
     const tab = getBrowserTab(tabId);
     const owner = registry.ownerOf(tabId);
     if (!tab || (!waitForVisible && !browserTabVisible(tabId)) || signal?.aborted) return Promise.resolve(false);
@@ -864,9 +871,9 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
     });
   }
   async function confirmWebMcpExecution({ tool, inputSummary, tabId, signal }) {
-    return confirmBrowserAction({ tabId, signal, title: "Allow website action?",
-      message: `Allow ${tool.origin} to run “${tool.name}”?`,
-      detail: `This website tool may change data. Arguments: ${inputSummary}` });
+    return confirmBrowserAction({ tabId, signal, title: nativeText("Allow website action?"),
+      message: nativeTemplate("Allow {origin} to run “{tool}”?", { origin: tool.origin, tool: tool.name }),
+      detail: nativeTemplate("This website tool may change data. Arguments: {arguments}", { arguments: inputSummary }) });
   }
 
   const webMcpBroker = createWebMcpBroker({
@@ -879,9 +886,9 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
     },
     confirmExecution: confirmWebMcpExecution,
     confirmResultDisclosure: ({ tabId, signal, tool, resultText }) => confirmBrowserAction({
-      tabId, signal, title: "Share website result?", approveLabel: "Share result",
-      message: `Share the result from ${tool.origin} with this conversation and its model provider?`,
-      detail: `The website action has already run. Review this complete result for passwords, session cookies, tokens or other private data before sharing. Denying keeps the result out of the conversation and does not undo the action.\n\n${resultText}`,
+      tabId, signal, title: nativeText("Share website result?"), approveLabel: nativeText("Share result"),
+      message: nativeTemplate("Share the result from {origin} with this conversation and its model provider?", { origin: tool.origin }),
+      detail: nativeTemplate("The website action has already run. Review this complete result for passwords, session cookies, tokens or other private data before sharing. Denying keeps the result out of the conversation and does not undo the action.\n\n{result}", { result: resultText }),
     }),
     isFrameAllowed: async (frame) => await browserTaskAllowed(frame.url) && ensureWebMcpFramePolicy().checkFrame(frame),
     onActivity: (activity) => {
@@ -964,9 +971,9 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
     // Check synchronously before creating a WebContentsView, including pending
     // opens, popups, transcript links and the tab-strip button.
     if (browserTabs.size >= MAX_BROWSER_TABS) {
-      throw new BrowserTaskError("tab_limit", `OpenWork has ${MAX_BROWSER_TABS} browser tabs open. Close an unused browser tab in any conversation, then try again.`);
+      throw new BrowserTaskError("tab_limit", nativeTemplate("OpenWork has {count} browser tabs open. Close an unused browser tab in any conversation, then try again.", { count: MAX_BROWSER_TABS }));
     }
-    if (!restoreTabId && registry.size() >= 100) throw new Error("OpenWork has 100 saved browser tabs. Close an unused tab, then try again.");
+    if (!restoreTabId && registry.size() >= 100) throw new Error(nativeText("OpenWork has 100 saved browser tabs. Close an unused tab, then try again."));
     installBrowserSessionHooks();
     ensureWebMcpFramePolicy();
     const tabId = restoreTabId ?? createBrowserTabId();
@@ -1022,7 +1029,7 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
       if (!tab.suspending || browserTabs.get(tabId) !== tab) return;
       tab.suspending = false;
       suspendedTabs.delete(tabId);
-      tab.finishSuspension?.(new Error("The page prevented suspension."));
+      tab.finishSuspension?.(new Error(nativeText("The page prevented suspension.")));
       sendBrowserState();
     });
     // Load about:blank immediately to preempt persistent-session restore.
@@ -1130,10 +1137,10 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
       tab.loadError = {
         code: "page_load_failed",
         message: errorCode === -102
-          ? "This site refused the connection. Check that it is running, then reload."
+          ? nativeText("This site refused the connection. Check that it is running, then reload.")
           : errorCode === -106
-            ? "You are offline. Check your connection, then reload."
-            : "This page could not be loaded. Check the address and your connection, then reload.",
+            ? nativeText("You are offline. Check your connection, then reload.")
+            : nativeText("This page could not be loaded. Check the address and your connection, then reload."),
         url: validatedURL,
         errorCode,
         errorDescription,
@@ -1435,8 +1442,8 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
 
   function selectBrowserTab(tabId) {
     const tab = browserTabs.get(tabId);
-    if (!tab) throw new Error(`Unknown browser tab: ${tabId}`);
-    if (tab.suspending) throw new Error("Browser tab is suspending.");
+    if (!tab) throw new Error(nativeTemplate("Unknown browser tab: {tabId}", { tabId }));
+    if (tab.suspending) throw new Error(nativeText("Browser tab is suspending."));
     hideContextMenu();
     const previousView = getActiveBrowserView();
     registry.select(tabId);
@@ -1460,7 +1467,7 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
     const wasOnScreen = registry.onScreenTabId() === tabId;
     if (tab) {
       tab.background = false;
-      tab.finishSuspension?.(preserve ? null : new Error("Browser tab was closed."));
+      tab.finishSuspension?.(preserve ? null : new Error(nativeText("Browser tab was closed.")));
       detachBrowserView(tab.view);
     }
     webMcpBroker.invalidateTab(tabId);
@@ -1550,8 +1557,8 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
     } catch (error) {
       if (shortcutFocus === focus && window() && !window().isDestroyed()) {
         await dialog.showMessageBox(window(), {
-          type: "error", message: "Could not reopen browser tab",
-          detail: error instanceof Error ? error.message : "Try again after checking browser availability and your organization's policy.",
+          type: "error", message: nativeText("Could not reopen browser tab"),
+          detail: error instanceof Error ? error.message : nativeText("Try again after checking browser availability and your organization's policy."),
         });
       }
     } finally {
@@ -1605,7 +1612,7 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
 
   function requireTabOwner(tabId, sessionId) {
     if (!registry.has(tabId) || (sessionId !== null && !normalizeSessionId(sessionId)) || registry.ownerOf(tabId) !== sessionId) {
-      throw new Error("Browser tab owner mismatch or unknown tab.");
+      throw new Error(nativeText("Browser tab owner mismatch or unknown tab."));
     }
   }
 
@@ -1613,18 +1620,18 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
     const tab = browserTabs.get(tabId);
     const mainWindow = window();
     const check = () => {
-      if (!tab || browserTabs.get(tabId) !== tab || tab.view.webContents.isDestroyed()) throw new Error("Unknown browser tab.");
-      if (tab.automationProtected || tab.operation || tab.suspending) throw new Error("Browser tab is protected or busy. Release task protection before suspending.");
+      if (!tab || browserTabs.get(tabId) !== tab || tab.view.webContents.isDestroyed()) throw new Error(nativeText("Unknown browser tab."));
+      if (tab.automationProtected || tab.operation || tab.suspending) throw new Error(nativeText("Browser tab is protected or busy. Release task protection before suspending."));
       if (tab.view.webContents.isLoading() || tab.downloads.size || tab.mediaPlaying || tab.view.webContents.isCurrentlyAudible()) {
-        throw new Error("Browser tab is loading, downloading, or playing media.");
+        throw new Error(nativeText("Browser tab is loading, downloading, or playing media."));
       }
     };
     check();
-    if (!mainWindow || mainWindow.isDestroyed()) throw new Error("Browser window is unavailable.");
+    if (!mainWindow || mainWindow.isDestroyed()) throw new Error(nativeText("Browser window is unavailable."));
     const { response } = await dialog.showMessageBox(mainWindow, {
-      type: "warning", title: "Suspend browser tab?", message: "Suspend browser tab?",
-      detail: "Form input, scroll position, and page history will be lost. Reload opens the saved URL, not the current document. Only suspend if you are willing to lose this page state.",
-      buttons: ["Cancel", "Suspend"], defaultId: 0, cancelId: 0, noLink: true,
+      type: "warning", title: nativeText("Suspend browser tab?"), message: nativeText("Suspend browser tab?"),
+      detail: nativeText("Form input, scroll position, and page history will be lost. Reload opens the saved URL, not the current document. Only suspend if you are willing to lose this page state."),
+      buttons: [nativeText("Cancel"), nativeText("Suspend")], defaultId: 0, cancelId: 0, noLink: true,
     });
     if (response !== 1) return null;
     check();
@@ -1632,7 +1639,7 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
     tab.suspending = true;
     sendBrowserState();
     return new Promise((resolve, reject) => {
-      const timer = setTimeout(() => reject(new Error("Browser tab is still waiting to close.")), BROWSER_TARGET_RESOLVE_TIMEOUT_MS);
+      const timer = setTimeout(() => reject(new Error(nativeText("Browser tab is still waiting to close."))), BROWSER_TARGET_RESOLVE_TIMEOUT_MS);
       tab.finishSuspension = (error) => {
         clearTimeout(timer);
         tab.finishSuspension = null;
@@ -1653,8 +1660,8 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
   async function restoreBrowserTab(tabId, protect = false) {
     const saved = suspendedTabs.get(tabId);
     const live = browserTabs.get(tabId);
-    if (live?.suspending || live?.operation) throw new Error("Browser tab is busy.");
-    if (!live && !saved) throw new Error("Unknown browser tab.");
+    if (live?.suspending || live?.operation) throw new Error(nativeText("Browser tab is busy."));
+    if (!live && !saved) throw new Error(nativeText("Unknown browser tab."));
     const tab = live ?? createBrowserTab("about:blank", {
       initializeBlank: false, ownerSessionId: registry.ownerOf(tabId), restoreTabId: tabId, automationProtected: protect,
     });
@@ -1671,14 +1678,14 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
           contents.removeListener("dom-ready", finish);
           contents.removeListener("destroyed", finish);
           if (tab.domReady && !contents.isDestroyed()) resolve(undefined);
-          else reject(new Error("Browser tab did not become ready."));
+          else reject(new Error(nativeText("Browser tab did not become ready.")));
         };
         const timer = setTimeout(finish, BROWSER_TARGET_RESOLVE_TIMEOUT_MS);
         contents.once("dom-ready", finish);
         contents.once("destroyed", finish);
       });
       await tab.emulation;
-      if (browserTabs.get(tabId) !== tab) throw new Error("Browser tab was closed.");
+      if (browserTabs.get(tabId) !== tab) throw new Error(nativeText("Browser tab was closed."));
       let handle = null;
       if (protect) {
         const cdp = tab.view.webContents.debugger;
@@ -1686,7 +1693,7 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
         try {
           if (!attached) cdp.attach("1.3");
           const { targetInfo } = await cdp.sendCommand("Target.getTargetInfo");
-          if (!targetInfo?.targetId) throw new Error("Could not resolve built-in browser CDP target.");
+          if (!targetInfo?.targetId) throw new Error(nativeText("Could not resolve built-in browser CDP target."));
           handle = {
             provider: "builtin", browser_url: cdpBrowserUrl(), target_id: targetInfo.targetId,
             tab_id: tabId, url: tab.view.webContents.getURL(), owner_session_id: registry.ownerOf(tabId),
@@ -1696,7 +1703,7 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
           if (!attached && !tab.view.webContents.isDestroyed() && cdp.isAttached()) cdp.detach();
         }
       }
-      if (browserTabs.get(tabId) !== tab) throw new Error("Browser tab was closed.");
+      if (browserTabs.get(tabId) !== tab) throw new Error(nativeText("Browser tab was closed."));
       suspendedTabs.delete(tabId);
       return { tab, handle };
     } catch (error) {
@@ -1801,9 +1808,9 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
     });
     function authorizeManualNavigation(event) {
       const contents = window()?.webContents;
-      if (!contents || event.sender !== contents || event.senderFrame !== contents.mainFrame) throw new Error("Use the browser toolbar to navigate.");
+      if (!contents || event.sender !== contents || event.senderFrame !== contents.mainFrame) throw new Error(nativeText("Use the browser toolbar to navigate."));
       const tabId = registry.onScreenTabId();
-      if (tabId && registry.ownerOf(tabId) !== registry.visibleSessionId()) throw new Error("Select this conversation first.");
+      if (tabId && registry.ownerOf(tabId) !== registry.visibleSessionId()) throw new Error(nativeText("Select this conversation first."));
       taskHost.manualNavigation(tabId);
     }
     function isMainRenderer(event) {
@@ -1882,7 +1889,7 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
     ipcMain.handle("openwork:browser:releaseTab", (_event, tabId, sessionId) => {
       requireTabOwner(tabId, sessionId);
       const tab = browserTabs.get(tabId);
-      if (tab?.operation || tab?.suspending) throw new Error("Browser tab is busy.");
+      if (tab?.operation || tab?.suspending) throw new Error(nativeText("Browser tab is busy."));
       if (tab) tab.automationProtected = false;
       sendBrowserState();
       return { tabId, released: true };
@@ -1903,10 +1910,10 @@ export function createBrowserPanel({ getWindow, remoteDebugPort, onDeepLink, che
       pending.finish(allowed === true); return true;
     });
     ipcMain.handle("openwork:browser:taskControl", (event, tabId, action) => {
-      if (event.sender !== window()?.webContents || event.senderFrame !== window()?.webContents.mainFrame || !getBrowserTab(tabId) || registry.ownerOf(tabId) !== registry.visibleSessionId()) throw new Error("Select this conversation first.");
+      if (event.sender !== window()?.webContents || event.senderFrame !== window()?.webContents.mainFrame || !getBrowserTab(tabId) || registry.ownerOf(tabId) !== registry.visibleSessionId()) throw new Error(nativeText("Select this conversation first."));
       if (action === "resume") taskHost.resume(tabId);
       else if (action === "pause") taskHost.pause(tabId);
-      else throw new Error("Unsupported browser control.");
+      else throw new Error(nativeText("Unsupported browser control."));
     });
     ipcMain.handle("openwork:webmcp:frame-policy", (event) => {
       const tab = [...browserTabs.values()].find((candidate) => candidate.view.webContents === event.sender);

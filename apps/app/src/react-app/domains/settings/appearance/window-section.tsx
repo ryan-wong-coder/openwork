@@ -45,11 +45,11 @@ export function WindowSection(props: WindowSectionProps) {
 
       <LayoutSectionItem className="hidden windows:flex linux:flex">
         <LayoutSectionItemHeader>
-          <LayoutSectionItemTitle>Display menu bar</LayoutSectionItemTitle>
-          <LayoutSectionItemDescription>Show the native desktop menu bar.</LayoutSectionItemDescription>
+          <LayoutSectionItemTitle>{t("interface.display_menu_bar")}</LayoutSectionItemTitle>
+          <LayoutSectionItemDescription>{t("interface.show_the_native_desktop_menu_bar")}</LayoutSectionItemDescription>
           <LayoutSectionItemHeaderActions>
             <Switch
-              aria-label="Display menu bar"
+              aria-label={t("interface.display_menu_bar")}
               checked={applicationMenuVisible}
               disabled={props.busy}
               onCheckedChange={setApplicationMenuVisible}

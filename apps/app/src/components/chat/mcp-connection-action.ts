@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { connectionActionPayloadSchema } from "@openwork/types/connection-action-app"
 import { CallToolResultSchema } from "@modelcontextprotocol/sdk/types.js"
 import type { OpenworkMcpAppResource, OpenworkMcpAppToolResult } from "@/app/lib/openwork-server"
@@ -50,18 +51,18 @@ export function createConnectionActionController(source: ConnectionActionHost) {
   let boundRequest: string | undefined
   const binding = () => {
     const current = source.current()
-    if (current.blocked || current.scope !== source.scope) throw new Error("This connection action is no longer active.")
+    if (current.blocked || current.scope !== source.scope) throw new Error(t("ui.this_connection_action_is_no_longer_active"))
     const decision = current.decision
     if (!decision) {
-      if (boundRequest) throw new Error("The original connection question is no longer pending.")
+      if (boundRequest) throw new Error(t("ui.the_original_connection_question_is_no_longer_pending"))
       return null
     }
     const request = decision.request
     if (request.owner !== source.scope || request.sessionId !== source.sessionId
       || request.toolCallId !== source.toolCallId || request.connectionId !== source.connectionId
-      || !decision.isPending()) throw new Error("This connection action does not belong to the pending question.")
+      || !decision.isPending()) throw new Error(t("ui.this_connection_action_does_not_belong_to_the_pending_question"))
     const identity = requestIdentity(decision)
-    if (boundRequest && boundRequest !== identity) throw new Error("The original connection question has changed.")
+    if (boundRequest && boundRequest !== identity) throw new Error(t("ui.the_original_connection_question_has_changed"))
     boundRequest = identity
     return decision
   }
@@ -89,16 +90,16 @@ export function createConnectionActionController(source: ConnectionActionHost) {
       || !("kind" in intent) || intent.kind !== "connection_action_intent"
       || !("action" in intent) || (intent.action !== "authenticate" && intent.action !== "skip")
       || intent.action !== args.action || !("connection" in intent)) {
-      throw new Error("The server did not authorize this connection action.")
+      throw new Error(t("ui.the_server_did_not_authorize_this_connection_action"))
     }
     const parsed = connectionActionPayloadSchema.safeParse(intent.connection)
-    if (!parsed.success || parsed.data.connectionId !== source.connectionId) throw new Error("The connection identity changed.")
+    if (!parsed.success || parsed.data.connectionId !== source.connectionId) throw new Error(t("ui.the_connection_identity_changed"))
     const decision = binding()
     if ((decision ? requestIdentity(decision) : null) !== (initialDecision.decision ? requestIdentity(initialDecision.decision) : null)) {
-      throw new Error("The pending connection question changed during the action.")
+      throw new Error(t("ui.the_pending_connection_question_changed_during_the_action"))
     }
     const key = chatMcpReconnectKey(source.toolCallId, source.connectionId, source.scope)
-    if (claimedDecisions.has(key)) throw new Error("A decision has already been made for this connection action.")
+    if (claimedDecisions.has(key)) throw new Error(t("ui.a_decision_has_already_been_made_for_this_connection_action"))
     claimedDecisions.add(key)
     const onReconnect = source.current().onReconnect
     const isCurrent = () => {
@@ -113,7 +114,7 @@ export function createConnectionActionController(source: ConnectionActionHost) {
       const authenticated = authenticatedDecisions.get(key)
       const request = decision ? requestIdentity(decision) : null
       if (authenticated && (authenticated.request !== request || authenticated.onReconnect !== onReconnect)) {
-        throw new Error("The connection action is no longer current.")
+        throw new Error(t("ui.the_connection_action_is_no_longer_current"))
       }
       let questionAnswered = false
       if (intent.action === "authenticate") {
@@ -122,24 +123,24 @@ export function createConnectionActionController(source: ConnectionActionHost) {
           if (!onReconnect || connection.actor !== "member" || connection.action?.surface !== "openwork_your_connections"
             || !((connection.state === "needs_connection" && connection.action.type === "connect")
               || (connection.state === "reauth_required" && connection.action.type === "reconnect"))) {
-            throw new Error("This connection requires setup in Settings > Library.")
+            throw new Error(t("ui.this_connection_requires_setup_in_settings_library"))
           }
           const outcome = await onReconnect({ connectionId: connection.connectionId, connectionName: connection.connectionName,
             label: connection.action.label }, () => {}, isCurrent).catch(() => {
-            throw new Error("Sign-in could not be completed. Check the connection in Settings > Library.")
+            throw new Error(t("ui.sign_in_could_not_be_completed_check_the_connection_in_settings_library"))
           })
-          if (!isCurrent() || outcome !== "connected") throw new Error("The connection action is no longer current.")
+          if (!isCurrent() || outcome !== "connected") throw new Error(t("ui.the_connection_action_is_no_longer_current"))
           authenticatedDecisions.set(key, { request, onReconnect })
         }
-        if (!isCurrent()) throw new Error("The connection action is no longer current.")
+        if (!isCurrent()) throw new Error(t("ui.the_connection_action_is_no_longer_current"))
         if (decision) questionAnswered = await respondChatConnectionDecision(key, decision, {
           outcome: "connected", continuation: "review_remaining_work", repeatCompletedWrites: false,
-        }).catch(() => { throw new Error("Connected, but the original question could not be answered.") })
+        }).catch(() => { throw new Error(t("ui.connected_but_the_original_question_could_not_be_answered")) })
       } else if (decision) {
-        if (!isCurrent()) throw new Error("The connection action is no longer current.")
+        if (!isCurrent()) throw new Error(t("ui.the_connection_action_is_no_longer_current"))
         questionAnswered = await respondChatConnectionDecision(key, decision, {
           outcome: "skipped", continuation: "without_connection", alternativeAuthorization: false,
-        }).catch(() => { throw new Error("The original question could not be answered.") })
+        }).catch(() => { throw new Error(t("ui.the_original_question_could_not_be_answered")) })
       }
       authenticatedDecisions.delete(key)
       return standardMcpToolResult({ content: [], structuredContent: {

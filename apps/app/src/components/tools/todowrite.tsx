@@ -1,5 +1,7 @@
 "use client"
 
+import { t } from "@/i18n";
+
 import { Tool } from "@/components/ui/tool"
 import type { TodoWriteToolPart } from "@/lib/build-in-tools"
 
@@ -13,14 +15,14 @@ function getTodoWriteToolTitle(part: TodoWriteToolPart): string | null {
   const count = part.input?.todos?.length ?? 0
 
   if (part.state === "output-error") {
-    return "Update todo list attempted"
+    return t("ui.update_todo_list_attempted")
   }
 
   if (part.state !== "output-available") {
     return null
   }
 
-  return count > 0 ? `Update todo list (${count})` : "Update todo list"
+  return count > 0 ? t("ui.update_todo_count", { count }) : t("ui.update_todo_list")
 }
 
 export function TodoWriteTool({ part }: TodoWriteToolProps) {

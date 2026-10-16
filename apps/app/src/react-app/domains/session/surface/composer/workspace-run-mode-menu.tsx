@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Hand, LoaderCircle, ShieldAlert, ShieldCheck } from "lucide-react";
@@ -11,11 +12,11 @@ import { useFeatureFlagsPreferences } from "@/react-app/domains/settings/state/f
 
 type Props = { client: OpenworkServerClient | null; workspaceId: string | null; busy: boolean };
 
-const modes = [
-  { value: "approve", label: "Ask before actions", description: "Pause for tool approval unless a workspace rule allows it.", icon: Hand },
-  { value: "default", label: "Workspace defaults", description: "Use your existing setup to decide when to ask.", icon: ShieldCheck },
-  { value: "run-everything", label: "Keep going", description: "Allow tools by default, including files outside this workspace.", icon: ShieldAlert },
-] satisfies { value: WorkspaceRunMode; label: string; description: string; icon: typeof Hand }[];
+function getModes() { return [
+  { value: "approve", label: t("session_copy.ask_before_actions"), description: t("session_copy.pause_for_tool_approval_unless_a_workspace_rule_allows_it"), icon: Hand },
+  { value: "default", label: t("session_copy.workspace_defaults"), description: t("session_copy.use_your_existing_setup_to_decide_when_to_ask"), icon: ShieldCheck },
+  { value: "run-everything", label: t("session_copy.keep_going"), description: t("session_copy.allow_tools_by_default_including_files_outside_this_workspace"), icon: ShieldAlert },
+] satisfies { value: WorkspaceRunMode; label: string; description: string; icon: typeof Hand }[]; }
 
 export function WorkspaceRunModeMenu(props: Props) {
   const { workspaceRunModeEnabled } = useFeatureFlagsPreferences();
@@ -39,16 +40,17 @@ function WorkspaceRunModePicker({ client, workspaceId, busy }: { client: Openwor
       queryClient.setQueryData(queryKey, result);
       setConfirm(false);
       setOpen(false);
-      if (result.refreshPending) toast.warning(result.reason ?? "Saved. Reload this workspace before relying on the new mode.");
-      else toast.success("Workspace run mode updated.");
+      if (result.refreshPending) toast.warning(result.reason ?? t("session_copy.saved_reload_this_workspace_before_relying_on_the_new_mode"));
+      else toast.success(t("session_copy.workspace_run_mode_updated"));
     },
     onError: (error: Error) => {
       toast.error(error.message);
       void mode.refetch();
     },
   });
+  const modes = getModes();
   const selected = modes.find((item) => item.value === mode.data?.mode);
-  const label = mode.isError ? "Unavailable" : selected?.label ?? (mode.isPending ? "Loading" : "Custom rules");
+  const label = mode.isError ? t("session_copy.unavailable") : selected?.label ?? (mode.isPending ? t("session_copy.loading") : t("session_copy.custom_rules"));
   const Icon = mode.data?.supported === false || mode.isError || mode.data?.refreshPending ? ShieldAlert : selected?.icon ?? ShieldCheck;
   const locked = busy || mutation.isPending || mode.isFetching || !mode.data?.supported;
   const select = (value: unknown) => {
@@ -63,15 +65,15 @@ function WorkspaceRunModePicker({ client, workspaceId, busy }: { client: Openwor
       <DropdownMenu open={open} onOpenChange={(next) => { setOpen(next); if (next) void mode.refetch(); }}>
         <DropdownMenuTrigger
           data-testid="workspace-run-mode-trigger"
-          aria-label={`Workspace run mode: ${label}${mode.data?.refreshPending ? " (refresh pending)" : ""}`}
-          title={`Workspace run mode: ${label}${mode.data?.refreshPending ? " — refresh pending" : ""}`}
+          aria-label={t("session_copy.run_mode_label", { name: label, status: mode.data?.refreshPending ? t("session_copy.refresh_pending") : "" })}
+          title={t("session_copy.run_mode_label", { name: label, status: mode.data?.refreshPending ? t("session_copy.refresh_pending") : "" })}
           className={`inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md transition-colors hover:bg-gray-3 ${mode.data?.mode === "run-everything" || mode.data?.refreshPending ? "text-orange-600 dark:text-orange-400" : "text-gray-10"}`}
         >
           {mutation.isPending ? <LoaderCircle className="size-4 animate-spin" /> : <Icon className="size-4" />}
         </DropdownMenuTrigger>
         <DropdownMenuContent side="top" sideOffset={10} className="w-[min(390px,calc(100vw-32px))] p-2">
           <DropdownMenuGroup>
-            <DropdownMenuLabel className="px-3 text-sm">How should OpenWork handle approvals?</DropdownMenuLabel>
+            <DropdownMenuLabel className="px-3 text-sm">{t("interface.how_should_openwork_handle_approvals")}</DropdownMenuLabel>
             <DropdownMenuRadioGroup value={mode.data?.mode ?? ""}>
               {modes.map((item) => (
                 <DropdownMenuRadioItem key={item.value} value={item.value} onClick={() => select(item.value)} aria-label={item.label} data-testid={`run-mode-${item.value}`} disabled={locked} className={`gap-3 py-3 ${item.value === "run-everything" ? "text-orange-600 dark:text-orange-400" : ""}`}>
@@ -85,24 +87,22 @@ function WorkspaceRunModePicker({ client, workspaceId, busy }: { client: Openwor
             </DropdownMenuRadioGroup>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <p className="px-3 py-2 text-xs text-muted-foreground">Applies to every chat in this workspace. Specific workspace rules still apply.</p>
-          {busy ? <p role="status" className="px-3 pb-2 text-xs text-muted-foreground">Wait for this workspace to finish before changing its mode.</p> : null}
-          {mode.isError ? <p role="alert" className="px-3 pb-2 text-xs text-destructive">Run modes are unavailable. {mode.error.message}</p> : null}
+          <p className="px-3 py-2 text-xs text-muted-foreground">{t("interface.applies_to_every_chat_in_this_workspace_specific_workspace_rules_still_apply")}</p>
+          {busy ? <p role="status" className="px-3 pb-2 text-xs text-muted-foreground">{t("interface.wait_for_this_workspace_to_finish_before_changing_its_mode")}</p> : null}
+          {mode.isError ? <p role="alert" className="px-3 pb-2 text-xs text-destructive">{t("interface.run_modes_are_unavailable")} {mode.error.message}</p> : null}
           {mode.data?.reason ? <p role="status" className="px-3 pb-2 text-xs text-muted-foreground">{mode.data.reason}</p> : null}
-          {mode.data?.refreshPending ? <p role="status" className="px-3 pb-2 text-xs text-orange-600">Saved, but engine refresh is pending. Select the mode again to retry.</p> : null}
+          {mode.data?.refreshPending ? <p role="status" className="px-3 pb-2 text-xs text-orange-600">{t("interface.saved_but_engine_refresh_is_pending_select_the_mode_again_to_retry")}</p> : null}
         </DropdownMenuContent>
       </DropdownMenu>
       <AlertDialog open={confirm} onOpenChange={setConfirm}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Let OpenWork keep going?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This changes every chat in this workspace. Tools can edit or delete files, run commands, and use the network without approval, including outside authorized folders. It can override global permission rules and repeated-action prompts. Specific workspace rules still apply; it does not grant operating-system or service access.
-            </AlertDialogDescription>
+            <AlertDialogTitle>{t("interface.let_openwork_keep_going")}</AlertDialogTitle>
+            <AlertDialogDescription>{t("interface.this_changes_every_chat_in_this_workspace_tools_can_edit_or_delete_files_run_commands_and_use_the_ne")} </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={mutation.isPending}>Cancel</AlertDialogCancel>
-            <AlertDialogAction disabled={locked} onClick={() => mutation.mutate("run-everything")}>Enable Keep going</AlertDialogAction>
+            <AlertDialogCancel disabled={mutation.isPending}>{t("settings.environment.cancel")}</AlertDialogCancel>
+            <AlertDialogAction disabled={locked} onClick={() => mutation.mutate("run-everything")}>{t("interface.enable_keep_going")}</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

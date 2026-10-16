@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import fuzzysort from "fuzzysort";
@@ -141,12 +142,12 @@ export function BuiltAppPicker({
       onValueChange={setSearch}
     >
       <CommandInput
-        aria-label="Search artifacts"
-        placeholder="Search artifacts by name or tool"
+        aria-label={t("interface.search_artifacts")}
+        placeholder={t("interface.search_artifacts_by_name_or_tool")}
         className="h-14 border-b! pr-10"
       />
-      <p className="px-4 pt-3 text-xs text-muted-foreground">{search.trim() ? "Matches" : "Artifacts available to you"} <span className="ml-1 tabular-nums">{matching.length}</span></p>
-      <CommandEmpty>No artifacts match your search.</CommandEmpty>
+      <p className="px-4 pt-3 text-xs text-muted-foreground">{search.trim() ? t("interface.matches") : t("interface.artifacts_available_to_you")} <span className="ml-1 tabular-nums">{matching.length}</span></p>
+      <CommandEmpty>{t("interface.no_artifacts_match_your_search")}</CommandEmpty>
       <CommandList>
         {(app: BuiltMcpAppCatalogEntry) => (
           <CommandItem
@@ -164,15 +165,15 @@ export function BuiltAppPicker({
             <span className="min-w-0 flex-1"><span className="block truncate text-sm font-medium">{app.title}</span><span className="block truncate text-xs text-muted-foreground">{app.pluginName}</span></span>
             <span className="text-xs text-muted-foreground">
               {built.ids.includes(app.connectionId) ? (
-                <Check className="size-4" aria-label="Added" />
+                <Check className="size-4" aria-label={t("plugins.added")} />
               ) : (
-                "Add"
+                t("plugins.add")
               )}
             </span>
           </CommandItem>
         )}
       </CommandList>
-      <div className="flex justify-between gap-3 border-t px-4 py-3 text-xs text-muted-foreground"><span>Only artifacts you can open show here.</span><span aria-hidden="true">↑↓ to move · ↵ to add</span></div>
+      <div className="flex justify-between gap-3 border-t px-4 py-3 text-xs text-muted-foreground"><span>{t("interface.only_artifacts_you_can_open_show_here")}</span><span aria-hidden="true">{t("interface.to_move_to_add")}</span></div>
     </Command>
   );
 }
@@ -194,21 +195,17 @@ export function BuiltDashboardTiles({
   if (built.query.isError)
     return (
       <div className="mb-4 flex items-center gap-2">
-        <p role="alert" className="text-sm">
-          Shared artifacts could not be loaded.
-        </p>
+        <p role="alert" className="text-sm">{t("interface.shared_artifacts_could_not_be_loaded")} </p>
         <Button
           variant="outline"
           size="sm"
           onClick={() => void built.query.refetch()}
-        >
-          Try again
-        </Button>
+        >{t("session.remote_task_retry")} </Button>
       </div>
     );
   if (!personal.length) return null;
   return (
-    <section className="mb-8" aria-label="Artifacts added by you">
+    <section className="mb-8" aria-label={t("interface.artifacts_added_by_you")}>
       <DashboardMasonry>
         {personal.map((app) => (
           <McpAppTile
@@ -236,7 +233,7 @@ export function BuiltDashboardTiles({
             )}
           />
         ))}
-        {onAdd ? <button type="button" onClick={onAdd} className="flex min-h-64 w-full flex-col items-center justify-center gap-3 rounded-xl border border-dashed text-sm text-muted-foreground hover:bg-muted/30 focus-visible:outline-2 focus-visible:outline-ring"><Plus className="size-5" />Add an artifact{built.apps.length > personal.length ? <span className="text-xs">{built.apps.length - personal.length} more available to you</span> : null}</button> : null}
+        {onAdd ? <button type="button" onClick={onAdd} className="flex min-h-64 w-full flex-col items-center justify-center gap-3 rounded-xl border border-dashed text-sm text-muted-foreground hover:bg-muted/30 focus-visible:outline-2 focus-visible:outline-ring"><Plus className="size-5" />{t("interface.add_an_artifact")}{built.apps.length > personal.length ? <span className="text-xs">{built.apps.length - personal.length}{t("interface.more_available_to_you")}</span> : null}</button> : null}
       </DashboardMasonry>
     </section>
   );
@@ -269,9 +266,9 @@ function BuiltDashboardTileMenu({
               <span className="block">{app.title}</span>
               {badge}
             </DropdownMenuLabel>
-            {onRefresh ? <DropdownMenuItem disabled={refreshing} aria-label={`Refresh ${app.title}`} onClick={onRefresh}><RefreshCw className={`size-4 ${refreshing ? "animate-spin" : ""}`} />Refresh</DropdownMenuItem> : null}
-            <DropdownMenuItem aria-label={`Share ${app.title}`} onClick={() => setSharing(true)}><Share2 className="size-4" />Share</DropdownMenuItem>
-            <DropdownMenuItem aria-label={`Remove ${app.title} from dashboard`} onClick={onRemove}><Minus className="size-4" />Remove from dashboard</DropdownMenuItem>
+            {onRefresh ? <DropdownMenuItem disabled={refreshing} aria-label={`Refresh ${app.title}`} onClick={onRefresh}><RefreshCw className={`size-4 ${refreshing ? "animate-spin" : ""}`} />{t("skills.refresh")}</DropdownMenuItem> : null}
+            <DropdownMenuItem aria-label={`Share ${app.title}`} onClick={() => setSharing(true)}><Share2 className="size-4" />{t("extensions.detail_share")}</DropdownMenuItem>
+            <DropdownMenuItem aria-label={`Remove ${app.title} from dashboard`} onClick={onRemove}><Minus className="size-4" />{t("interface.remove_from_dashboard")}</DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>

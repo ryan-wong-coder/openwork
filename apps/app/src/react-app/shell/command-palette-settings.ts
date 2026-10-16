@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import type { PlatformCapabilities } from "@/app/lib/platform-capabilities";
 import { isSettingsTabAllowed, type DesktopAppRestrictionChecker } from "@/app/cloud/desktop-app-restrictions";
 import type { SettingsTab } from "@/app/types";
@@ -30,13 +31,13 @@ const SETTINGS_KEYWORDS: Partial<Record<SettingsTab, string[]>> = {
 };
 
 const LIBRARY_SECTIONS = [
-  { slug: "skills", title: "Skills", detail: "Instructions that teach agents specialized workflows", keywords: ["skill", "instructions", "workflows"] },
-  { slug: "mcps", title: "MCP servers", detail: "Tools and services connected through MCP", keywords: ["mcp", "servers", "tools"] },
-  { slug: "connections", title: "Connections", detail: "Connected organization apps and services", keywords: ["apps", "services", "sign in"] },
-  { slug: "plugins", title: "Plugins", detail: "Extensions that add tools and behavior", keywords: ["extensions", "tools", "hooks"] },
-  { slug: "agents", title: "Agents", detail: "Specialized agents available in conversations", keywords: ["agent", "assistants", "modes"] },
-  { slug: "commands", title: "Commands", detail: "Slash commands available in the composer", keywords: ["command", "slash", "prompts"] },
-] satisfies Array<{ slug: string; title: string; detail: string; keywords: string[] }>;
+  { slug: "skills", titleKey: "composer.plus_skills", detailKey: "settings_extra.instructions_that_teach_agents_specialized_workflows", keywords: ["skill", "instructions", "workflows"] },
+  { slug: "mcps", titleKey: "settings_extra.mcp_servers", detailKey: "settings_extra.tools_and_services_connected_through_mcp", keywords: ["mcp", "servers", "tools"] },
+  { slug: "connections", titleKey: "activity.filter_connections", detailKey: "settings_extra.connected_organization_apps_and_services", keywords: ["apps", "services", "sign in"] },
+  { slug: "plugins", titleKey: "composer.plus_plugins", detailKey: "settings_extra.extensions_that_add_tools_and_behavior", keywords: ["extensions", "tools", "hooks"] },
+  { slug: "agents", titleKey: "composer.agents_label", detailKey: "settings_extra.specialized_agents_available_in_conversations", keywords: ["agent", "assistants", "modes"] },
+  { slug: "commands", titleKey: "composer.plus_commands", detailKey: "settings_extra.slash_commands_available_in_the_composer", keywords: ["command", "slash", "prompts"] },
+] satisfies Array<{ slug: string; titleKey: string; detailKey: string; keywords: string[] }>;
 
 export function buildCommandPaletteSettingsItems(input: {
   developerMode: boolean;
@@ -56,10 +57,10 @@ export function buildCommandPaletteSettingsItems(input: {
 
   const tabItems = tabs.map((tab): PaletteItem => ({
     id: `settings:${tab}`,
-    title: tab === "advanced" ? "Advanced settings" : getSettingsTabLabel(tab),
+    title: tab === "advanced" ? t("mcp.advanced_settings") : getSettingsTabLabel(tab),
     detail: getSettingsTabDescription(tab),
     keywords: SETTINGS_KEYWORDS[tab],
-    breadcrumb: "Settings",
+    breadcrumb: t("settings.tab_general"),
     group: "settings",
     action: () => {
       if (tab === "extensions") {
@@ -72,10 +73,10 @@ export function buildCommandPaletteSettingsItems(input: {
 
   const libraryItems = LIBRARY_SECTIONS.map((section): PaletteItem => ({
     id: `settings:extensions/${section.slug}`,
-    title: section.title,
-    detail: section.detail,
+    title: t(section.titleKey),
+    detail: t(section.detailKey),
     keywords: section.keywords,
-    breadcrumb: "Settings › Library",
+    breadcrumb: t("settings_extra.settings_library"),
     group: "settings",
     action: () => input.onOpenExtensions(section.slug),
   }));
@@ -83,9 +84,9 @@ export function buildCommandPaletteSettingsItems(input: {
   const advancedItems: PaletteItem[] = tabs.includes("advanced")
     ? ADVANCED_SETTINGS_SECTIONS.map((section) => ({
         id: `settings:advanced/${section.id}`,
-        title: section.title,
+        title: t(section.titleKey),
         keywords: section.keywords,
-        breadcrumb: "Settings › Advanced",
+        breadcrumb: t("settings_extra.settings_advanced"),
         group: "settings",
         action: () => input.onOpenSettings(`/settings/advanced/${section.id}`),
       }))

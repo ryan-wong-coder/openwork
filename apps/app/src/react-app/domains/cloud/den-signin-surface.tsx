@@ -245,8 +245,7 @@ export function DenSignInSurface(props: DenSignInSurfaceProps) {
             </div>
 
             <div className="mt-10 flex flex-col gap-2.5 sm:mt-14">
-              <h1 className="text-[30px] font-semibold leading-[38px] tracking-[-0.03em] text-foreground sm:text-[38px] sm:leading-[46px]">
-                Welcome to {appName}
+              <h1 className="text-[30px] font-semibold leading-[38px] tracking-[-0.03em] text-foreground sm:text-[38px] sm:leading-[46px]">{t("interface.welcome_to")} {appName}
               </h1>
               <p className="text-[15px] leading-[23px] text-muted-foreground">
                 {t("welcome.subtitle")}
@@ -263,8 +262,7 @@ export function DenSignInSurface(props: DenSignInSurfaceProps) {
                 // returning users switch to sign-in in one tap.
                 onClick={() => props.onOpenBrowserAuth("sign-up")}
                 disabled={props.authBusy || props.sessionBusy}
-              >
-                Sign in to {appName}
+              >{t("interface.sign_in_to")} {appName}
                 <ArrowUpRight size={15} />
               </Button>
 

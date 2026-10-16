@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
@@ -217,7 +218,7 @@ function usePreparedBootstrap() {
   return useMemo<PreparedBootstrapSummary | null>(() => {
     if (!bootstrap.prepared?.skillTitle) return null;
     return {
-      orgName: bootstrap.prepared.orgName || "Your workspace",
+      orgName: bootstrap.prepared.orgName || t("ui_extra.your_workspace"),
       skillTitle: bootstrap.prepared.skillTitle,
       claimLinks: bootstrap.claimLinks ?? [],
     };
@@ -238,7 +239,7 @@ function PreparedWorkspacePage({ prepared }: { prepared: PreparedBootstrapSummar
     // accept that as well as a bare code, like the main sign-in page does.
     const parsed = parseManualAuthInput(signInCode);
     if (!parsed || signInBusy) {
-      if (!parsed) setSignInError("Paste a valid one-time sign-in code.");
+      if (!parsed) setSignInError(t("ui_extra.valid_signin_code"));
       return;
     }
 
@@ -269,9 +270,7 @@ function PreparedWorkspacePage({ prepared }: { prepared: PreparedBootstrapSummar
             data-openwork-provisional="true"
             className="mx-auto flex w-fit items-center gap-2 rounded-full border border-green-6/30 bg-green-2/30 px-3 py-1 text-xs font-semibold text-green-11"
           >
-            <CheckCircle2 className="size-3.5" />
-            Setup complete — OpenWork is ready
-          </div>
+            <CheckCircle2 className="size-3.5" />{t("interface.setup_complete_openwork_is_ready")} </div>
           <PageTitle>{prepared.orgName}</PageTitle>
         </PageHeader>
 
@@ -281,7 +280,7 @@ function PreparedWorkspacePage({ prepared }: { prepared: PreparedBootstrapSummar
               data-openwork-prepared-skill="true"
               className="flex min-h-10 items-center justify-between gap-3 border-y border-dls-border py-2 text-sm"
             >
-              <span className="text-muted-foreground">First skill ready</span>
+              <span className="text-muted-foreground">{t("interface.first_skill_ready")}</span>
               <span className="flex min-w-0 items-center gap-1.5 font-medium text-foreground">
                 <Check className="size-4 shrink-0 text-green-11" />
                 <span className="truncate">{prepared.skillTitle}</span>
@@ -297,9 +296,7 @@ function PreparedWorkspacePage({ prepared }: { prepared: PreparedBootstrapSummar
                 type="button"
                 onClick={() => platform.openLink(ownerClaim.url)}
                 className="w-full sm:w-auto"
-              >
-                Claim workspace and continue
-                <ArrowUpRightIcon data-icon="inline-end" />
+              >{t("interface.claim_workspace_and_continue")} <ArrowUpRightIcon data-icon="inline-end" />
               </Button>
 
               <Button
@@ -310,16 +307,16 @@ function PreparedWorkspacePage({ prepared }: { prepared: PreparedBootstrapSummar
                   setSignInError(null);
                 }}
               >
-                {showSignInCode ? "Hide sign-in code" : "Paste sign-in code"}
+                {showSignInCode ? t("den.hide_signin_code") : t("den.paste_signin_code")}
               </Button>
 
               {showSignInCode ? (
                 <div className="grid gap-3 rounded-2xl border border-dls-border bg-dls-surface p-4">
                   <Input
-                    aria-label="One-time sign-in code"
+                    aria-label={t("interface.one_time_sign_in_code")}
                     value={signInCode}
                     onChange={(event) => setSignInCode(event.currentTarget.value)}
-                    placeholder="Paste the code from your browser"
+                    placeholder={t("interface.paste_the_code_from_your_browser")}
                     disabled={signInBusy}
                   />
                   <Button
@@ -327,7 +324,7 @@ function PreparedWorkspacePage({ prepared }: { prepared: PreparedBootstrapSummar
                     onClick={() => void submitSignInCode()}
                     disabled={signInBusy || !signInCode.trim()}
                   >
-                    {signInBusy ? "Signing in..." : "Sign in to this workspace"}
+                    {signInBusy ? t("interface.signing_in") : t("interface.sign_in_to_this_workspace")}
                   </Button>
                 </div>
               ) : null}
@@ -348,9 +345,7 @@ function PreparedWorkspacePage({ prepared }: { prepared: PreparedBootstrapSummar
             variant="link"
             className="mx-auto"
             onClick={() => navigate("/signin")}
-          >
-            Sign in with an existing account
-          </Button>
+          >{t("interface.sign_in_with_an_existing_account")} </Button>
         </PageFooter>
       </PageContainer>
     </Page>
@@ -536,12 +531,12 @@ export function OrgOnboardingPage() {
         <PageTitlebarRegion />
         <PageContainer>
           <PageHeader>
-            <PageTitle>Your organization</PageTitle>
+            <PageTitle>{t("interface.your_organization")}</PageTitle>
           </PageHeader>
           <PageContent>
             <PageLoading>
               <PageLoadingSpinner />
-              <PageLoadingDescription>Loading organizations...</PageLoadingDescription>
+              <PageLoadingDescription>{t("interface.loading_organizations")}</PageLoadingDescription>
             </PageLoading>
           </PageContent>
         </PageContainer>
@@ -556,11 +551,11 @@ export function OrgOnboardingPage() {
         <PageTitlebarRegion />
         <PageContainer>
           <PageHeader>
-            <PageTitle>Choose your organization</PageTitle>
+            <PageTitle>{t("interface.choose_your_organization")}</PageTitle>
             <Alert variant="destructive">
               <CircleAlert />
               <AlertDescription>
-                {error instanceof Error ? error.message : "Unable to load organizations."}
+                {error instanceof Error ? error.message : t("interface.unable_to_load_organizations")}
               </AlertDescription>
             </Alert>
           </PageHeader>
@@ -576,12 +571,12 @@ export function OrgOnboardingPage() {
         <PageTitlebarRegion />
         <PageContainer>
           <PageHeader>
-            <PageTitle>Your organization</PageTitle>
+            <PageTitle>{t("interface.your_organization")}</PageTitle>
           </PageHeader>
           <PageContent>
             <PageLoading>
               <PageLoadingSpinner />
-              <PageLoadingDescription>Loading organizations...</PageLoadingDescription>
+              <PageLoadingDescription>{t("interface.loading_organizations")}</PageLoadingDescription>
             </PageLoading>
           </PageContent>
         </PageContainer>
@@ -721,19 +716,19 @@ export function ResourceSelectionPage({ autoContinue = false }: { autoContinue?:
 
       let updateReady = false;
       let warning = desktopConfig.brandIconUrl && !iconResult.ok
-        ? "The workspace app icon could not be prepared."
+        ? t("ui_extra.workspace_icon_prepare_failed")
         : null;
       try {
         updateReady = await stageOnboardingUpdate(desktopConfig);
       } catch (error) {
-        warning ??= error instanceof Error ? error.message : "The application update could not be prepared.";
+        warning ??= error instanceof Error ? error.message : t("ui_extra.app_update_prepare_failed");
       }
       setBrandingRestart({ fingerprint, updateReady, warning });
     } catch (error) {
       setBrandingRestart({
         fingerprint: workspaceBrandingFingerprint(orgId, {}),
         updateReady: false,
-        warning: error instanceof Error ? error.message : "Workspace branding could not be prepared.",
+        warning: error instanceof Error ? error.message : t("ui_extra.workspace_brand_prepare_failed"),
       });
     } finally {
       setPreparingBranding(false);
@@ -780,15 +775,13 @@ export function ResourceSelectionPage({ autoContinue = false }: { autoContinue?:
         <PageTitlebarRegion />
         <PageContainer>
           <PageHeader>
-            <PageTitle>Preparing workspace identity</PageTitle>
-            <PageDescription>
-              Applying {orgName || "your workspace"}&apos;s branding and checking for an application update.
-            </PageDescription>
+            <PageTitle>{t("interface.preparing_workspace_identity")}</PageTitle>
+            <PageDescription>{t("interface.applying")} {orgName || t("interface.your_workspace")}{t("interface.apos_s_branding_and_checking_for_an_application_update")} </PageDescription>
           </PageHeader>
           <PageContent>
             <PageLoading>
               <PageLoadingSpinner />
-              <PageLoadingDescription>Preparing workspace...</PageLoadingDescription>
+              <PageLoadingDescription>{t("interface.preparing_workspace")}</PageLoadingDescription>
             </PageLoading>
           </PageContent>
         </PageContainer>
@@ -803,40 +796,29 @@ export function ResourceSelectionPage({ autoContinue = false }: { autoContinue?:
         <PageTitlebarRegion />
         <PageContainer>
           <PageHeader>
-            <PageTitle>Workspace identity is ready</PageTitle>
-            <PageDescription>
-              Restart OpenWork once to finish applying {orgName || "your workspace"}&apos;s name and app icon everywhere.
-            </PageDescription>
+            <PageTitle>{t("interface.workspace_identity_is_ready")}</PageTitle>
+            <PageDescription>{t("interface.restart_openwork_once_to_finish_applying")} {orgName || t("interface.your_workspace")}{t("interface.apos_s_name_and_app_icon_everywhere")} </PageDescription>
             {brandingRestart.updateReady ? (
               <div className="mx-auto flex w-fit items-center gap-2 rounded-full border border-green-6/30 bg-green-2/30 px-3 py-1 text-xs font-semibold text-green-11">
-                <CheckCircle2 className="size-3.5" />
-                Application update downloaded
-              </div>
+                <CheckCircle2 className="size-3.5" />{t("interface.application_update_downloaded")} </div>
             ) : null}
             {brandingRestart.warning ? (
               <Alert>
                 <CircleAlert />
                 <AlertDescription>
-                  {brandingRestart.warning} You can still continue to the workspace.
-                </AlertDescription>
+                  {brandingRestart.warning}{t("interface.you_can_still_continue_to_the_workspace")} </AlertDescription>
               </Alert>
             ) : null}
           </PageHeader>
           <PageContent>
             <details className="mx-auto w-full max-w-md rounded-xl border border-dls-border bg-dls-surface px-4 py-3 text-sm">
-              <summary className="cursor-pointer font-medium">Why restart?</summary>
-              <p className="mt-2 text-muted-foreground">
-                Restarting refreshes the workspace name and icon across your operating system and installs the prepared application update.
-              </p>
+              <summary className="cursor-pointer font-medium">{t("interface.why_restart")}</summary>
+              <p className="mt-2 text-muted-foreground">{t("interface.restarting_refreshes_the_workspace_name_and_icon_across_your_operating_system_and_installs_the_prepa")} </p>
             </details>
           </PageContent>
           <PageFooter>
-            <Button type="button" variant="outline" onClick={continueWithoutRestart}>
-              Continue without restarting
-            </Button>
-            <Button type="button" size="lg" onClick={() => void restartWithBranding()}>
-              Restart OpenWork
-              <ArrowRight data-icon="inline-end" />
+            <Button type="button" variant="outline" onClick={continueWithoutRestart}>{t("interface.continue_without_restarting")} </Button>
+            <Button type="button" size="lg" onClick={() => void restartWithBranding()}>{t("interface.restart_openwork")} <ArrowRight data-icon="inline-end" />
             </Button>
           </PageFooter>
         </PageContainer>
@@ -851,12 +833,12 @@ export function ResourceSelectionPage({ autoContinue = false }: { autoContinue?:
         <PageTitlebarRegion />
         <PageContainer>
           <PageHeader>
-            <PageTitle>{orgName || "Your organization"}</PageTitle>
+            <PageTitle>{orgName || t("interface.your_organization")}</PageTitle>
           </PageHeader>
           <PageContent>
             <PageLoading>
               <PageLoadingSpinner />
-              <PageLoadingDescription>Loading available resources...</PageLoadingDescription>
+              <PageLoadingDescription>{t("interface.loading_available_resources")}</PageLoadingDescription>
             </PageLoading>
           </PageContent>
         </PageContainer>
@@ -877,12 +859,10 @@ export function ResourceSelectionPage({ autoContinue = false }: { autoContinue?:
               data-openwork-prepared="true"
               className="mx-auto flex w-fit items-center gap-2 rounded-full border border-green-6/30 bg-green-2/30 px-3 py-1 text-xs font-semibold text-green-11"
             >
-              <CheckCircle2 className="size-3.5" />
-              Setup complete — OpenWork prepared this workspace
-            </div>
+              <CheckCircle2 className="size-3.5" />{t("interface.setup_complete_openwork_prepared_this_workspace")} </div>
           ) : null}
           <PageTitle>
-            {orgName || "Your organization"}
+            {orgName || t("interface.your_organization")}
           </PageTitle>
           {loading ? (
             null
@@ -892,9 +872,7 @@ export function ResourceSelectionPage({ autoContinue = false }: { autoContinue?:
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           ) : hasResources ? (
-            <PageDescription>
-              You have access to the following resources.
-            </PageDescription>
+            <PageDescription>{t("interface.you_have_access_to_the_following_resources")} </PageDescription>
           ) : null}
         </PageHeader>
 
@@ -902,25 +880,21 @@ export function ResourceSelectionPage({ autoContinue = false }: { autoContinue?:
           <PageContent>
             <PageLoading>
               <PageLoadingSpinner />
-              <PageLoadingDescription>Loading available resources...</PageLoadingDescription>
+              <PageLoadingDescription>{t("interface.loading_available_resources")}</PageLoadingDescription>
             </PageLoading>
           </PageContent>
         ) : error && !hasResources ? null : !hasResources ? (
           <PageContent>
             <Empty className="h-fit flex-none">
               <EmptyHeader>
-                <EmptyTitle>No resources have been configured for this organization yet.</EmptyTitle>
-                <EmptyDescription>
-                  Add AI providers or marketplaces from the OpenWork Cloud dashboard.
-                </EmptyDescription>
+                <EmptyTitle>{t("interface.no_resources_have_been_configured_for_this_organization_yet")}</EmptyTitle>
+                <EmptyDescription>{t("interface.add_ai_providers_or_marketplaces_from_the_openwork_cloud_dashboard")} </EmptyDescription>
               </EmptyHeader>
               <EmptyContent>
                 <Button
                   variant="outline"
                   onClick={() => platform.openLink(resolveDenBaseUrls(settings.baseUrl).baseUrl)}
-                >
-                  Open OpenWork Cloud
-                  <ArrowUpRightIcon data-icon="inline-end" />
+                >{t("interface.open_openwork_cloud")} <ArrowUpRightIcon data-icon="inline-end" />
                 </Button>
               </EmptyContent>
             </Empty>
@@ -936,8 +910,8 @@ export function ResourceSelectionPage({ autoContinue = false }: { autoContinue?:
                   {openworkProviders.length > 0 ? (
                     <Section
                       icon={<CloudIcon className="size-5 text-foreground/60" />}
-                      title="OpenWork Models"
-                      description="Managed models available through your organization."
+                      title={t("interface.openwork_models")}
+                      description={t("interface.managed_models_available_through_your_organization")}
                     >
                       {openworkProviders.map((provider) => (
                         <ProviderAccessCard key={provider.id} provider={provider} />
@@ -948,8 +922,8 @@ export function ResourceSelectionPage({ autoContinue = false }: { autoContinue?:
                   {gatewayProviders.length > 0 ? (
                     <Section
                       icon={<CloudIcon className="size-5 text-foreground/60" />}
-                      title="AI Gateway"
-                      description="AI providers you have access to through your organization."
+                      title={t("interface.ai_gateway")}
+                      description={t("interface.ai_providers_you_have_access_to_through_your_organization")}
                       count={`${gatewayProviders.length} AI provider${gatewayProviders.length === 1 ? "" : "s"}`}
                     >
                       {gatewayProviders.map((provider) => (
@@ -961,8 +935,8 @@ export function ResourceSelectionPage({ autoContinue = false }: { autoContinue?:
                   {legacyProviders.length > 0 ? (
                     <Section
                       icon={<CloudIcon className="size-5 text-foreground/60" />}
-                      title="AI Providers"
-                      description="Models you can use in your workspace."
+                      title={t("interface.ai_providers")}
+                      description={t("interface.models_you_can_use_in_your_workspace")}
                       count={`${totalModels} model${totalModels === 1 ? "" : "s"}`}
                     >
                       {legacyProviders.map((provider) => (
@@ -980,8 +954,8 @@ export function ResourceSelectionPage({ autoContinue = false }: { autoContinue?:
                   {marketplaces.length > 0 ? (
                     <Section
                       icon={<Square3Stack3DIcon className="size-5 text-foreground/60" />}
-                      title="Collections"
-                      description="App stores with extensions and plugins for your workspace."
+                      title={t("settings.tab_cloud_marketplaces")}
+                      description={t("interface.app_stores_with_extensions_and_plugins_for_your_workspace")}
                       count={`${marketplaces.length} marketplace${marketplaces.length === 1 ? "" : "s"}`}
                     >
                       {marketplaces.map((mp) => (
@@ -997,8 +971,7 @@ export function ResourceSelectionPage({ autoContinue = false }: { autoContinue?:
             {selectedDefault ? (
               <div className="rounded-xl border border-green-6/30 bg-green-2/30 px-4 py-3 text-center text-sm text-green-11">
                 <Check size={14} className="mr-1 inline" />
-                {selectedDefault.label} will be set as your default model.
-              </div>
+                {selectedDefault.label}{t("interface.will_be_set_as_your_default_model")} </div>
             ) : null}
           </PageContent>
         )}
@@ -1006,9 +979,7 @@ export function ResourceSelectionPage({ autoContinue = false }: { autoContinue?:
         <PageFooter>
           {/* Footer hint */}
           {!loading && !error && hasResources ? (
-            <p className="text-center text-xs text-muted-foreground text-balance leading-relaxed tracking-wide">
-              Available providers appear in AI Providers; some may require sign-in. Collections are available from Cloud settings.
-            </p>
+            <p className="text-center text-xs text-muted-foreground text-balance leading-relaxed tracking-wide">{t("interface.available_providers_appear_in_ai_providers_some_may_require_sign_in_collections_are_available_from_c")} </p>
           ) : null}
           <Button
             className="w-fit"
@@ -1018,10 +989,10 @@ export function ResourceSelectionPage({ autoContinue = false }: { autoContinue?:
             disabled={loading || preparingBranding}
           >
             {preparingBranding
-              ? "Preparing workspace..."
+              ? t("interface.preparing_workspace")
               : hasResources
-                ? "Continue to workspace"
-                : "Continue"}
+                ? t("interface.continue_to_workspace")
+                : t("extensions.mcp_check_continue")}
             <ArrowRight data-icon="inline-end" />
           </Button>
         </PageFooter>
@@ -1062,7 +1033,7 @@ function MarketplaceCard({ marketplace }: MarketplaceCardProps) {
         ) : null}
       </div>
         <span className="shrink-0 text-xs text-muted-foreground">
-        {marketplace.pluginCount} plugin{marketplace.pluginCount === 1 ? "" : "s"}
+        {marketplace.pluginCount}{t("interface.plugin")}{marketplace.pluginCount === 1 ? "" : "s"}
       </span>
     </div>
   );
@@ -1156,7 +1127,7 @@ function ProviderCard({ provider, selectedDefault, onSelectDefault }: ProviderCa
           </div>
           <div className="mt-0.5 text-xs text-muted-foreground">
             {provider.models.length === 1
-              ? "1 model"
+              ? t("interface.1_model")
               : `${provider.models.length} models`}
           </div>
         </div>
@@ -1171,7 +1142,7 @@ function ProviderCard({ provider, selectedDefault, onSelectDefault }: ProviderCa
             )}
             onClick={handleUseAsDefault}
           >
-            {isSelected ? "Default" : "Use as default"}
+            {isSelected ? t("settings.server_endpoints_source_default") : t("interface.use_as_default")}
           </button>
         ) : (
           <Check size={16} className="shrink-0 text-green-11" />
@@ -1189,8 +1160,7 @@ function ProviderCard({ provider, selectedDefault, onSelectDefault }: ProviderCa
           ))}
           {provider.models.length > 5 ? (
             <span className="inline-flex items-center rounded-md px-2 py-0.5 text-xs text-muted-foreground">
-              +{provider.models.length - 5} more
-            </span>
+              +{provider.models.length - 5}{t("interface.more")} </span>
           ) : null}
         </div>
       ) : null}
@@ -1236,18 +1206,16 @@ function OrganizationSelectionPage({
       <PageTitlebarRegion />
       <PageContainer>
         <PageHeader>
-          <PageTitle>Choose your organization</PageTitle>
+          <PageTitle>{t("interface.choose_your_organization")}</PageTitle>
           {error ? (
             <Alert variant="destructive">
               <CircleAlert />
               <AlertDescription>
-                {error instanceof Error ? error.message : "Unable to select organization."}
+                {error instanceof Error ? error.message : t("interface.unable_to_select_organization")}
               </AlertDescription>
             </Alert>
           ) : (
-            <PageDescription>
-              Select the organization whose cloud resources should be connected to this workspace.
-            </PageDescription>
+            <PageDescription>{t("interface.select_the_organization_whose_cloud_resources_should_be_connected_to_this_workspace")} </PageDescription>
           )}
         </PageHeader>
 
@@ -1267,7 +1235,7 @@ function OrganizationSelectionPage({
             onClick={() => mutate(selected)}
             disabled={isPending}
           >
-            {isPending ? "Connecting..." : "Continue with organization"}
+            {isPending ? t("workspace_list.connecting") : t("interface.continue_with_organization")}
             <ArrowRight data-icon="inline-end" />
           </Button>
         </PageFooter>
@@ -1290,8 +1258,8 @@ export function OrganizationList({ orgs, value, onValueChange }: OrganizationLis
     <div className="flex flex-col gap-3">
       {orgs.length > 10 ? (
         <Input
-          aria-label="Search organizations"
-          placeholder="Search organizations..."
+          aria-label={t("interface.search_organizations")}
+          placeholder={t("interface.search_organizations_873aee3f")}
           value={query}
           onChange={(event) => updateQuery(event.target.value)}
         />
@@ -1303,7 +1271,7 @@ export function OrganizationList({ orgs, value, onValueChange }: OrganizationLis
           const nextOrg = orgs.find((org) => org.id === nextOrgId);
           if (nextOrg) onValueChange(nextOrg);
         }}
-        aria-label="Organizations"
+        aria-label={t("interface.organizations")}
       >
         {visible.map((org) => {
           const fieldId = `organization-${org.id}`;
@@ -1338,19 +1306,13 @@ export function OrganizationList({ orgs, value, onValueChange }: OrganizationLis
       </RadioGroup>
 
       {filtered.length === 0 && query.trim() ? (
-        <div className="text-sm text-muted-foreground">
-          No organizations match your search.
-        </div>
+        <div className="text-sm text-muted-foreground">{t("interface.no_organizations_match_your_search")} </div>
       ) : null}
 
       {hasMore ? (
         <div className="flex flex-col items-start gap-2">
-          <Button type="button" variant="outline" size="sm" onClick={showMore}>
-            Show more
-          </Button>
-          <div className="text-xs text-muted-foreground">
-            Showing {visible.length} of {filtered.length} organizations
-          </div>
+          <Button type="button" variant="outline" size="sm" onClick={showMore}>{t("workspace_list.show_more_fallback")} </Button>
+          <div className="text-xs text-muted-foreground">{t("interface.showing")} {visible.length}{t("interface.of")} {filtered.length}{t("interface.organizations_f8a665a9")} </div>
         </div>
       ) : null}
     </div>

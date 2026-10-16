@@ -211,16 +211,14 @@ export function PluginsView(props: PluginsViewProps) {
                             </div>
                           ) : null}
                           {step.url ? (
-                            <div className="text-xs text-gray-10">
-                              Open:{" "}
+                            <div className="text-xs text-gray-10">{t("interface.open")}{" "}
                               <span className="font-mono text-gray-11">
                                 {step.url}
                               </span>
                             </div>
                           ) : null}
                           {step.path ? (
-                            <div className="text-xs text-gray-10">
-                              Path:{" "}
+                            <div className="text-xs text-gray-10">{t("interface.path")}{" "}
                               <span className="font-mono text-gray-11">
                                 {step.path}
                               </span>
@@ -255,8 +253,8 @@ export function PluginsView(props: PluginsViewProps) {
                   {!plugin.removable ? (
                     <div className="mt-1 text-xs text-gray-10">
                       {plugin.source === "dir.global"
-                        ? "Discovered from a global plugin folder."
-                        : "Discovered from the workspace plugin folder."}
+                        ? t("interface.discovered_from_a_global_plugin_folder")
+                        : t("interface.discovered_from_the_workspace_plugin_folder")}
                     </div>
                   ) : null}
                 </div>
@@ -285,7 +283,7 @@ export function PluginsView(props: PluginsViewProps) {
             <div className="flex-1">
               <TextInput
                 label={t("plugins.add_label")}
-                placeholder="opencode-wakatime"
+                placeholder={t("interface.opencode_wakatime")}
                 value={extensions.pluginInput()}
                 onChange={(event) =>
                   extensions.setPluginInput(event.currentTarget.value)

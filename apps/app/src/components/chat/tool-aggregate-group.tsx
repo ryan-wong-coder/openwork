@@ -1,5 +1,7 @@
 "use client"
 
+import { t } from "@/i18n";
+
 import { Fragment, useState } from "react"
 import { Check, ChevronUp, CircleHelp, CirclePause, Copy, MoreHorizontal } from "lucide-react"
 
@@ -73,8 +75,8 @@ function CopyCommandButton({ command }: { command: string }) {
       size="icon-xs"
       className="mr-1.5 mt-1.5 shrink-0 text-muted-foreground/70"
       data-tool-aggregate-copy=""
-      title={copied ? "Copied" : "Copy command"}
-      aria-label={copied ? "Command copied" : "Copy command"}
+      title={copied ? t("connect.diagnostics_copied") : t("ui.copy_command")}
+      aria-label={copied ? t("ui.command_copied") : t("ui.copy_command")}
       onClick={() => void copy()}
     >
       {copied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
@@ -89,7 +91,7 @@ function CopyCommandButton({ command }: { command: string }) {
  * a long script never swallows the thread. A full command can be copied.
  */
 export function DetailBox({ kind, text, expanded, onToggle }: DetailBoxProps) {
-  const noun = kind === "command" ? "command" : kind === "pattern" ? "search pattern" : "error"
+  const noun = kind === "command" ? t("ui.command") : kind === "pattern" ? t("ui.search_pattern") : t("ui.error")
   const textClassName = cn(
     "min-w-0 flex-1 break-all",
     expanded ? "max-h-60 overflow-y-auto whitespace-pre-wrap" : "line-clamp-1",
@@ -110,7 +112,7 @@ export function DetailBox({ kind, text, expanded, onToggle }: DetailBoxProps) {
         data-tool-aggregate-command={kind === "command" ? "" : undefined}
         data-command-expanded={expanded ? "true" : "false"}
         aria-expanded={expanded}
-        aria-label={expanded ? `Collapse ${noun}` : `Show full ${noun}`}
+        aria-label={expanded ? t("ui.collapse_named", { name: noun }) : t("ui.show_full_named", { name: noun })}
         onClick={onToggle}
         className={cn(
           "flex min-w-0 flex-1 cursor-pointer gap-2 rounded-xl px-3 py-2 text-start",
@@ -220,9 +222,9 @@ export function ToolAggregateGroup({ parts, messageId, thoughts = [], className 
   const failedCount = parts.filter((part) => part.state === "output-error").length
   const countSummary = getAggregateCountSummary(parts)
   const summary = aggregateLifecycle === "waiting"
-    ? `Waiting for your action · ${countSummary}`
+    ? t("ui.waiting_action_summary", { summary: countSummary })
     : aggregateLifecycle === "unknown"
-      ? `Status unknown · ${countSummary}`
+      ? t("ui.status_unknown_summary", { summary: countSummary })
       : getAggregateSummary(parts, visiblyRunning ? "present" : "past")
   const nowPart = visiblyRunning ? getAggregateNowPart(parts) : null
   const nowLabel = nowPart ? getAggregateRowLabel(nowPart) : null
@@ -236,7 +238,7 @@ export function ToolAggregateGroup({ parts, messageId, thoughts = [], className 
   // latest thought is still streaming. Show that instead of dead air.
   const lastThought = thoughts.at(-1)
   const thinkingNow = !nowLabel && Boolean(lastThought?.isStreaming)
-  const liveText = nowCommandShown ? null : nowLabel ?? (thinkingNow ? "Thinking…" : null)
+  const liveText = nowCommandShown ? null : nowLabel ?? (thinkingNow ? t("ui.thinking") : null)
 
   // Track durations for every part so each is frozen the moment it completes.
   const durations = parts.map((part) => trackToolCallDuration(part))
@@ -268,7 +270,7 @@ export function ToolAggregateGroup({ parts, messageId, thoughts = [], className 
       >
         <div className="flex min-w-0 items-center gap-2 text-sm text-muted-foreground">
           <span className={cn("shrink-0", status === "running" && "text-foreground ow-text-shimmer")}>
-            {status === "unknown" ? "Status unknown for" : soloFile.verb}
+            {status === "unknown" ? t("ui.status_unknown_for") : soloFile.verb}
           </span>
           <FileChip path={soloFile.path} className="min-w-0" />
           {soloRow.repeat > 1 ? (
@@ -285,7 +287,7 @@ export function ToolAggregateGroup({ parts, messageId, thoughts = [], className 
         {status === "waiting" ? (
           <div className="mt-1 flex items-center gap-1.5 text-xs text-amber-11" role="status">
             <CirclePause aria-hidden="true" className="size-3.5 shrink-0" />
-            <span>Choose an option or approve the request to continue.</span>
+            <span>{t("ui.choose_an_option_or_approve_the_request_to_continue")}</span>
           </div>
         ) : null}
         {failure ? (
@@ -312,14 +314,14 @@ export function ToolAggregateGroup({ parts, messageId, thoughts = [], className 
             finishing a step never adds or removes a line below it. */}
         {liveText ? (
           <span data-tool-aggregate-now className="ow-text-shimmer min-w-0 truncate motion-reduce:animate-none"
-            title={nowCommand ? "Double-click to show the full command" : undefined}
+            title={nowCommand ? t("ui.double_click_to_show_the_full_command") : undefined}
             onDoubleClick={nowPart && nowCommand ? (event) => { event.stopPropagation(); setFullNowCommand(true) } : undefined}>
             {liveText}
           </span>
         ) : null}
         {thoughts.length > 0 ? (
           <span data-tool-aggregate-thought-count className="shrink-0 text-xs text-muted-foreground/70">
-            · {thoughts.length === 1 ? "1 thought" : `${thoughts.length} thoughts`}
+            · {t("ui.thought_count", { count: thoughts.length })}
           </span>
         ) : null}
         {singleCommandDuration ? (
@@ -329,7 +331,7 @@ export function ToolAggregateGroup({ parts, messageId, thoughts = [], className 
         ) : null}
         {failedCount > 0 ? (
           <span className="shrink-0 text-xs text-muted-foreground">
-            {failedCount} failed
+            {t("ui.failed_count", { count: failedCount })}
           </span>
         ) : null}
       </button>
@@ -337,14 +339,14 @@ export function ToolAggregateGroup({ parts, messageId, thoughts = [], className 
       {aggregateLifecycle === "waiting" ? (
         <div className="mt-1 flex items-center gap-1.5 text-xs text-amber-11" role="status">
           <CirclePause aria-hidden="true" className="size-3.5 shrink-0" />
-          <span>Choose an option or approve the request to continue.</span>
+          <span>{t("ui.choose_an_option_or_approve_the_request_to_continue")}</span>
         </div>
       ) : null}
 
       {aggregateLifecycle === "unknown" ? (
         <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground" role="status">
           <CircleHelp aria-hidden="true" className="size-3.5 shrink-0" />
-          <span>No terminal result was observed. This step may still be running; check the session before retrying.</span>
+          <span>{t("ui.no_terminal_result_was_observed_this_step_may_still_be_running_check_the_session_before_re")}</span>
         </div>
       ) : null}
 
@@ -382,21 +384,21 @@ export function ToolAggregateGroup({ parts, messageId, thoughts = [], className 
                 {!singleCommand ? (
                   <div className="flex min-w-0 items-center gap-2 text-sm text-muted-foreground">
                   {status === "waiting" ? (
-                    <CirclePause aria-label="Waiting" className="size-3.5 shrink-0 text-amber-11" />
+                    <CirclePause aria-label={t("session.assistant_waiting")} className="size-3.5 shrink-0 text-amber-11" />
                   ) : null}
                   {status === "unknown" ? (
-                    <CircleHelp aria-label="Status unknown" className="size-3.5 shrink-0" />
+                    <CircleHelp aria-label={t("ui.status_unknown")} className="size-3.5 shrink-0" />
                   ) : null}
                   {bash ? (
                     <span className="min-w-0 break-words">
                       <span className={cn("text-foreground", status === "running" && "ow-text-shimmer")}>
                         {status === "running"
-                          ? "Running"
+                          ? t("status.running")
                           : status === "waiting"
-                            ? "Waiting to run"
+                            ? t("ui.waiting_to_run")
                             : status === "unknown"
-                              ? "Status unknown for"
-                              : "Ran"}
+                              ? t("ui.status_unknown_for")
+                              : t("ui.ran")}
                       </span>{" "}
                       <span>{commandDescription}</span>
                     </span>
@@ -405,7 +407,7 @@ export function ToolAggregateGroup({ parts, messageId, thoughts = [], className 
                       <span className={cn(status === "running" && "text-foreground ow-text-shimmer")}>
                         {search.verb}
                       </span>
-                      {search.scope ? <span> in {search.scope}</span> : null}
+                      {search.scope ? <span>{t("ui.search_in_scope", { scope: search.scope })}</span> : null}
                     </span>
                   ) : (() => {
                     const file = getAggregateRowFile(part)
@@ -458,7 +460,7 @@ export function ToolAggregateGroup({ parts, messageId, thoughts = [], className 
               onClick={() => setShowAll(true)}
               className="w-fit text-xs text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
             >
-              Show {hiddenCount} more
+              {t("ui.show_more_items", { count: hiddenCount })}
             </button>
           ) : null}
         </div>

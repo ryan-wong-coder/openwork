@@ -54,7 +54,7 @@ export function subagentRunActivity(input: {
 
 function agentName(slug: string): string {
   const words = slug.split(/[-_.\s]+/).filter(Boolean)
-  if (words.length === 0) return "Agent"
+  if (words.length === 0) return t("composer.agent_label")
   return words
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ")
@@ -113,7 +113,7 @@ export function SubagentRunLine({ part, className, parentActive = true }: Subage
     const interval = window.setInterval(update, 1000)
     return () => window.clearInterval(interval)
   }, [inFlight, startedAt, part.toolCallId, syncDegraded])
-  const title = part.input?.description?.trim().slice(0, 160) || "Sub-agent task"
+  const title = part.input?.description?.trim().slice(0, 160) || t("session.subagent_task")
   // A helper the person stopped is not a failure (DESIGN.md C5): say "Stopped".
   const errorText = part.state === "output-error" ? part.errorText : undefined
   const stopped = isFailed && (stoppedByPerson.current || /abort|interrupt|cancel/i.test(errorText ?? ""))
@@ -121,25 +121,25 @@ export function SubagentRunLine({ part, className, parentActive = true }: Subage
   const status = permissionPending
     ? t("session.subagent_permission_needed")
     : questionPending ? t("session.subagent_question_pending")
-    : activity === "retrying" ? "Retrying"
-    : activity === "failed" ? (stopped ? "Stopped" : "Task reported an error")
-    : activity === "waiting-result" ? "Waiting for task result"
-    : activity === "waiting-start" ? "Waiting for task update"
-    : activity === "no-new-activity" ? "Still working — waiting for updates"
+    : activity === "retrying" ? t("ui.retrying")
+    : activity === "failed" ? (stopped ? t("session.remote_task_stopped") : t("ui.task_reported_an_error"))
+    : activity === "waiting-result" ? t("ui.waiting_for_task_result")
+    : activity === "waiting-start" ? t("ui.waiting_for_task_update")
+    : activity === "no-new-activity" ? t("ui.still_working_waiting_for_updates")
     : inFlight
     ? syncDegraded
-      ? "Connection lost — reconnecting…"
-      : `Working ${formatElapsedSeconds(elapsedSeconds)}`
+      ? t("ui.connection_lost_reconnecting")
+      : t("ui.working_elapsed", { duration: formatElapsedSeconds(elapsedSeconds) })
     : isFailed
-      ? "Task failed"
-      : "Completed"
+      ? t("ui.task_failed")
+      : t("session.remote_task_completed")
 
   const lines = (
     <>
       <span className="flex min-w-0 items-center gap-2">
         <span className={cn("min-w-0 truncate", activity === "shimmer" && "ow-text-shimmer")}>
           {title}
-          <span className="text-muted-foreground/70"> · {agent} agent</span>
+          <span className="text-muted-foreground/70"> · {t("ui.named_agent", { name: agent })}</span>
         </span>
         {permissionPending ? (
           <ShieldAlert
@@ -160,7 +160,7 @@ export function SubagentRunLine({ part, className, parentActive = true }: Subage
         {!inFlight && !isFailed && duration ? ` · ${duration}` : ""}
       </span>
       {inFlight && child?.latestActivity ? (
-        <span className="text-xs text-muted-foreground/70">Last activity: {child.latestActivity}{child.lastProgressAt > 0 ? ` · ${formatElapsedSeconds(Math.max(0, Math.floor((Date.now() - child.lastProgressAt) / 1000)))} ago` : ""}</span>
+        <span className="text-xs text-muted-foreground/70">{t("ui.last_activity")} {child.latestActivity}{child.lastProgressAt > 0 ? t("ui.activity_ago", { duration: formatElapsedSeconds(Math.max(0, Math.floor((Date.now() - child.lastProgressAt) / 1000))) }) : ""}</span>
       ) : null}
     </>
   )
@@ -179,7 +179,7 @@ export function SubagentRunLine({ part, className, parentActive = true }: Subage
         <button
           type="button"
           className="group flex min-w-0 max-w-full cursor-pointer flex-col gap-0.5 text-start text-sm text-muted-foreground transition-colors hover:text-foreground"
-          aria-label={`${title}. Open sub-agent chat`}
+          aria-label={t("ui.open_subagent_chat", { title })}
           onClick={() => onOpenSubagentSession(childSessionId)}
         >
           {lines}
@@ -190,7 +190,7 @@ export function SubagentRunLine({ part, className, parentActive = true }: Subage
             type="button"
             data-subagent-stop=""
             disabled={stopping}
-            aria-label={stopping ? `${title}. Stopping sub-agent` : `${title}. Stop sub-agent`}
+            aria-label={stopping ? t("ui.stopping_subagent", { title }) : t("ui.stop_subagent", { title })}
             className="mt-0.5 flex size-5 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-foreground/70 transition-colors hover:bg-muted hover:text-foreground disabled:cursor-default disabled:opacity-50"
             onClick={() => {
               stoppedByPerson.current = true
@@ -216,14 +216,14 @@ export function SubagentRunLine({ part, className, parentActive = true }: Subage
     >
       <CollapsibleTrigger
         className="group flex min-w-0 max-w-full cursor-pointer flex-col gap-0.5 text-start text-sm text-muted-foreground transition-colors hover:text-foreground"
-        aria-label={open ? `${title}. Hide details` : `${title}. Show details`}
+        aria-label={open ? t("ui.hide_named_details", { title }) : t("ui.show_named_details", { title })}
       >
         {lines}
       </CollapsibleTrigger>
       <CollapsibleContent className="h-(--collapsible-panel-height) overflow-hidden transition-[height] duration-150 ease-out data-starting-style:h-0 data-ending-style:h-0 [&[hidden]:not([hidden='until-found'])]:hidden">
         <div className="mt-2 flex flex-col gap-2 rounded-lg bg-muted p-2 text-xs">
-          <span>{childSessionId ? "Child chat navigation is unavailable." : "The child chat is not available yet."}</span>
-          <span>{part.state === "output-available" ? "Task output received" : isFailed ? "Task reported an error" : "Waiting for task output"}</span>
+          <span>{childSessionId ? t("ui.child_chat_navigation_is_unavailable") : t("ui.the_child_chat_is_not_available_yet")}</span>
+          <span>{part.state === "output-available" ? t("ui.task_output_received") : isFailed ? t("ui.task_reported_an_error") : t("ui.waiting_for_task_output")}</span>
         </div>
       </CollapsibleContent>
     </Collapsible>

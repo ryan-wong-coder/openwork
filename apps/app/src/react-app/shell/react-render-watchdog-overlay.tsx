@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import { useEffect, useReducer } from "react";
 
 import {
@@ -89,12 +90,8 @@ export function ReactRenderWatchdogOverlay() {
     <div className="pointer-events-auto fixed bottom-3 left-3 z-[1100] w-[320px] overflow-hidden rounded-lg border border-dls-border bg-dls-canvas/95 text-[11px] text-dls-text shadow-lg backdrop-blur-sm">
       <div className="flex items-center justify-between border-b border-dls-border px-2.5 py-1.5">
         <div>
-          <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-dls-secondary">
-            render watchdog
-          </div>
-          <div className="text-[10px] text-dls-secondary">
-            hottest committed React surfaces
-          </div>
+          <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-dls-secondary">{t("interface.render_watchdog")} </div>
+          <div className="text-[10px] text-dls-secondary">{t("interface.hottest_committed_react_surfaces")} </div>
         </div>
         <div className="flex items-center gap-1">
           <button
@@ -104,9 +101,7 @@ export function ReactRenderWatchdogOverlay() {
               resetReactRenderWatchdogStats();
               dispatch({ type: "snapshot", snapshot: [] });
             }}
-          >
-            reset
-          </button>
+          >{t("interface.reset")} </button>
           <button
             type="button"
             className="rounded px-1.5 py-0.5 text-[10px] text-dls-secondary hover:bg-dls-hover"
@@ -118,7 +113,7 @@ export function ReactRenderWatchdogOverlay() {
             type="button"
             className="rounded px-1.5 py-0.5 text-[10px] text-dls-secondary hover:bg-dls-hover"
             onClick={() => dispatch({ type: "hide" })}
-            title="Hide (Cmd+Shift+L to toggle)"
+            title={t("interface.hide_cmd_shift_l_to_toggle")}
           >
             ×
           </button>
@@ -127,17 +122,15 @@ export function ReactRenderWatchdogOverlay() {
       {collapsed ? null : (
         <div className="max-h-[50vh] overflow-y-auto">
           {hot.length === 0 ? (
-            <div className="p-3 text-dls-secondary">
-              No render samples yet. Interact with the app.
-            </div>
+            <div className="p-3 text-dls-secondary">{t("interface.no_render_samples_yet_interact_with_the_app")} </div>
           ) : (
             <table className="w-full border-collapse">
               <thead>
                 <tr className="text-[10px] uppercase tracking-[0.1em] text-dls-secondary">
-                  <th className="px-2 py-1 text-left font-medium">surface</th>
+                  <th className="px-2 py-1 text-left font-medium">{t("interface.surface")}</th>
                   <th className="px-2 py-1 text-right font-medium">2s</th>
-                  <th className="px-2 py-1 text-right font-medium">total</th>
-                  <th className="px-2 py-1 text-right font-medium">last</th>
+                  <th className="px-2 py-1 text-right font-medium">{t("interface.total")}</th>
+                  <th className="px-2 py-1 text-right font-medium">{t("interface.last")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -153,8 +146,7 @@ export function ReactRenderWatchdogOverlay() {
                       {item.totalCommits}
                     </td>
                     <td className="px-2 py-1 text-right tabular-nums text-dls-secondary">
-                      {Math.round(item.lastCommitAgeMs)}ms
-                    </td>
+                      {Math.round(item.lastCommitAgeMs)}{t("interface.ms")} </td>
                   </tr>
                 ))}
               </tbody>
@@ -162,9 +154,7 @@ export function ReactRenderWatchdogOverlay() {
           )}
         </div>
       )}
-      <div className="border-t border-dls-border px-2.5 py-1 text-[10px] text-dls-secondary">
-        Cmd+Shift+L toggles. Also available in window.__openwork.slice("reactRenderWatchdog").
-      </div>
+      <div className="border-t border-dls-border px-2.5 py-1 text-[10px] text-dls-secondary">{t("interface.cmd_shift_l_toggles_also_available_in_window_openwork_slice_reactrenderwatchdog")} </div>
     </div>
   );
 }

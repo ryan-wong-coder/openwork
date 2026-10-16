@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { useCallback, useEffect, useSyncExternalStore } from "react";
 import type { OpenworkServerClient } from "@/app/lib/openwork-server";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -37,7 +38,7 @@ export function openAutoUpdate() {
 
 export function openAutoSignIn(recovery?: { owner: RejectedTurnOwner; id: string }) {
   if (recovery && !beginRejectedTurnRecovery(recovery.owner, recovery.id)) {
-    toast.error("Your unsent message could not be prepared for sign-in. Copy it before continuing.");
+    toast.error(t("ui_extra.unsent_message_signin_failed"));
     return;
   }
   if (recovery) suspendRejectedQueueForSignIn(recovery.owner);
@@ -94,11 +95,11 @@ export function AutoPickerRecovery({ state, code, resetsAt, onRetry, onReload, h
   const reload = reloadWorkspace ? async () => { await reloadWorkspace(); await retry(); } : undefined;
   if (state === "ready" || freeAutoSwitchedOff(observed)) return null;
   return <PickerNotice testId="auto-picker-recovery" action={<>
-    {copy.action === "Sign in" ? <Button size="sm" onClick={() => openAutoSignIn()}>Sign in</Button> : null}
-    {copy.action === "Update" ? <Button size="sm" onClick={openAutoUpdate}>Update</Button> : null}
-    {copy.action === "Retry" ? <Button size="sm" variant="outline" disabled={busy} onClick={() => void run(retry)}>Retry</Button> : null}
-    {copy.action === "Reload" ? <Button size="sm" variant="outline" disabled={!reload || busy || activeWork || checkRestriction({ restriction: "allowControlSettings" })} title={activeWork ? "Wait for this workspace’s active tasks to finish" : undefined} onClick={() => { if (reload) void run(reload); }}>Reload</Button> : null}
-  </>}>{failed ? "Couldn’t refresh Auto. Try again, or choose another model." : state === "unavailable" && !hasAlternatives ? "Auto is having trouble right now. Connect another provider to continue." : copy.detail}</PickerNotice>;
+    {copy.action === "Sign in" ? <Button size="sm" onClick={() => openAutoSignIn()}>{t("mcp.oauth")}</Button> : null}
+    {copy.action === "Update" ? <Button size="sm" onClick={openAutoUpdate}>{t("settings.update")}</Button> : null}
+    {copy.action === "Retry" ? <Button size="sm" variant="outline" disabled={busy} onClick={() => void run(retry)}>{t("updates.retry")}</Button> : null}
+    {copy.action === "Reload" ? <Button size="sm" variant="outline" disabled={!reload || busy || activeWork || checkRestriction({ restriction: "allowControlSettings" })} title={activeWork ? t("interface.wait_for_this_workspace_s_active_tasks_to_finish") : undefined} onClick={() => { if (reload) void run(reload); }}>{t("interface.reload")}</Button> : null}
+  </>}>{failed ? t("interface.couldn_t_refresh_auto_try_again_or_choose_another_model") : state === "unavailable" && !hasAlternatives ? t("interface.auto_is_having_trouble_right_now_connect_another_provider_to_continue") : copy.detail}</PickerNotice>;
 }
 
 export function AutoAccessFooter(props: { available: boolean; syncing?: boolean }) {
@@ -135,11 +136,11 @@ function AutoAccessFooterContent({ available, syncing = false }: { available: bo
   const { query, auth } = useAutoAccess(available);
   if ((!available && !syncing) || freeAutoSwitchedOff(query.data) || autoQuietlyUnavailable(query.data)) return null;
   // Every other Auto state has its own notice above the picker footer (Paper "Availability and recovery").
-  const status = !syncing && query.data?.state === "ready" && auth.status === "signed_out" ? "Auto is free on this device" : null;
+  const status = !syncing && query.data?.state === "ready" && auth.status === "signed_out" ? t("ui_extra.auto_free_device") : null;
   if (!status) return null;
   return <div className="flex items-center justify-between gap-2 border-t border-border px-3 py-2 text-xs text-muted-foreground">
     <span role="status">{status}</span>
-    {auth.status === "signed_out" ? <Button size="sm" variant="ghost" onClick={() => openAutoSignIn()}>Sign in to sync</Button> : null}
+    {auth.status === "signed_out" ? <Button size="sm" variant="ghost" onClick={() => openAutoSignIn()}>{t("interface.sign_in_to_sync")}</Button> : null}
   </div>;
 }
 
@@ -152,8 +153,8 @@ export function AutoAccessNotice({ wall, sessionId, workspaceId, recovery }: { w
   return <div data-testid="auto-access-wall" data-state={wall.state}>
     <TaskRecovery compact state="paused" title={copy.title} description={copy.detail} technicalDetails={copy.technicalDetails}
       actions={<>
-        {offerSignIn ? <Button size="xs" variant="outline" onClick={() => openAutoSignIn(recovery)}>Sign in</Button> : null}
-        <Button size="xs" variant="ghost" onClick={() => openAlternativeModelPicker(sessionId)}>Choose a model</Button>
+        {offerSignIn ? <Button size="xs" variant="outline" onClick={() => openAutoSignIn(recovery)}>{t("mcp.oauth")}</Button> : null}
+        <Button size="xs" variant="ghost" onClick={() => openAlternativeModelPicker(sessionId)}>{t("interface.choose_a_model")}</Button>
       </>} />
   </div>;
 }

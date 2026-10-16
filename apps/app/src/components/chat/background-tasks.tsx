@@ -1,3 +1,4 @@
+import { currentLocale, subscribeLocale, t } from "@/i18n";
 import * as React from "react"
 import type { UIMessage } from "ai"
 import { SquareTerminal } from "lucide-react"
@@ -38,6 +39,7 @@ export function backgroundShellNoticeFromMessage(message: UIMessage): Background
  * raw `<shell>` hand-off text.
  */
 export const BackgroundTaskNotice = React.memo(function BackgroundTaskNotice({ message, notice }: { message: UIMessage; notice: BackgroundShellNotice }) {
+  React.useSyncExternalStore(subscribeLocale, currentLocale, currentLocale)
   // A row cached while the feature was on stays hidden after it is turned off.
   const enabled = useBackgroundShellStore((state) => state.enabled)
   const command = commandPreview(notice.command)
@@ -77,6 +79,7 @@ type BackgroundTasksLabelProps = BackgroundTasksProps & {
  * away: each command and how long it has been running.
  */
 export const BackgroundTasksLabel = React.memo(function BackgroundTasksLabel({ shells, stale = false, shimmer = true }: BackgroundTasksLabelProps) {
+  React.useSyncExternalStore(subscribeLocale, currentLocale, currentLocale)
   const [open, setOpen] = React.useState(false)
   const [now, setNow] = React.useState(() => Date.now())
   React.useEffect(() => {
@@ -97,7 +100,7 @@ export const BackgroundTasksLabel = React.memo(function BackgroundTasksLabel({ s
         <TooltipContent side="top" align="start" className="flex-col items-stretch gap-1">
           {shells.map((shell) => (
             <span key={shell.id} className="flex min-w-0 items-center gap-3">
-              <code className="min-w-0 flex-1 truncate font-mono">{commandPreview(shell.command) || "Command"}</code>
+              <code className="min-w-0 flex-1 truncate font-mono">{commandPreview(shell.command) || t("extensions.badge_command")}</code>
               {shell.startedAt > 0 ? (
                 <span className="shrink-0 tabular-nums opacity-70">
                   {formatElapsedSeconds(Math.max(0, Math.floor((now - shell.startedAt) / 1_000)))}

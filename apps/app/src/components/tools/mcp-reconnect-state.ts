@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { create } from "zustand"
 
 import type { ChatToolReconnectAction } from "./error-attribution"
@@ -73,16 +74,16 @@ export function chatMcpReconnectPresentation(
 ): ChatMcpReconnectPresentation {
   switch (phase) {
     case "opening":
-      return { badgeLabel: "Opening sign-in…", buttonLabel: "Opening…", disabled: true }
+      return { badgeLabel: t("ui.opening_sign_in"), buttonLabel: t("ui.opening"), disabled: true }
     case "authorization_opened":
-      return { badgeLabel: "Finish sign-in in your browser", buttonLabel: "Open sign-in again", disabled: false }
+      return { badgeLabel: t("ui.finish_sign_in_in_your_browser"), buttonLabel: t("ui.open_sign_in_again"), disabled: false }
     case "connected":
-      return { badgeLabel: `${action.connectionName} connected`, buttonLabel: "Connected", disabled: true }
+      return { badgeLabel: t("ui.named_connection_connected", { name: action.connectionName }), buttonLabel: t("connect.diagnostics_sync_status_connected"), disabled: true }
     case "skipped":
-      return { badgeLabel: `Skipped ${action.connectionName}`, buttonLabel: "Skipped", disabled: true }
+      return { badgeLabel: t("ui.named_connection_skipped", { name: action.connectionName }), buttonLabel: t("connect.diagnostics_probe_status_skipped"), disabled: true }
     case "failed":
-      return { badgeLabel: `${action.connectionName} sign-in could not finish`, buttonLabel: "Authenticate", disabled: false }
+      return { badgeLabel: t("ui.named_connection_sign_in_failed", { name: action.connectionName }), buttonLabel: t("ui.authenticate"), disabled: false }
     default:
-      return { badgeLabel: `Authenticate ${action.connectionName} to continue`, buttonLabel: "Authenticate", disabled: false }
+      return { badgeLabel: t("ui.authenticate_connection_continue", { name: action.connectionName }), buttonLabel: t("ui.authenticate"), disabled: false }
   }
 }

@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { Blocks } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMessageList } from "@/components/chat/message-list-provider";
@@ -14,7 +15,7 @@ export function AppChatArtifact({ appId, revisionId, receiptId, title }: AppRefe
     useUiStateStore.getState().setSidePanelState(sessionId, "panel");
   };
   return <div className="mt-3 overflow-hidden rounded-xl border">
-    <div className="flex items-center justify-between gap-3 border-b px-3 py-2"><span className="flex items-center gap-2 text-sm"><Blocks className="size-4" />{title}</span><Button size="sm" variant="ghost" onClick={open}>Open preview</Button></div>
-    <p className="px-3 py-3 text-sm text-muted-foreground">Try this artifact in the preview, ask for changes here, then choose Save to use it again.</p>
+    <div className="flex items-center justify-between gap-3 border-b px-3 py-2"><span className="flex items-center gap-2 text-sm"><Blocks className="size-4" />{title}</span><Button size="sm" variant="ghost" onClick={open}>{t("interface.open_preview")}</Button></div>
+    <p className="px-3 py-3 text-sm text-muted-foreground">{t("interface.try_this_artifact_in_the_preview_ask_for_changes_here_then_choose_save_to_use_it_again")}</p>
   </div>;
 }

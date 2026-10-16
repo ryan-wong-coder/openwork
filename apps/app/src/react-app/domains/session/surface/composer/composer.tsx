@@ -1,12 +1,12 @@
 /** @jsxImportSource react */
-import { memo, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import type { Agent } from "@opencode-ai/sdk/v2/client";
 import { Cloud, Monitor, ArrowUp, Check, ChevronDown, FileText, LoaderCircle, RefreshCw, Square, Terminal, Zap } from "lucide-react";
 import fuzzysort from "fuzzysort";
 import { toast } from "@/components/ui/sonner";
 import type { CloudImportedPlugin, CloudImportedPluginFile } from "@/app/cloud/import-state";
 import type { ComposerAttachment, McpServerEntry, McpStatus, McpStatusMap, ModelOption, ModelRef, SkillCard, SlashCommandOption } from "@/app/types";
-import { t } from "@/i18n";
+import { currentLocale, subscribeLocale, t } from "@/i18n";
 import { useComposerStateStore } from "../composer-state-store";
 import {
   composerConfigureSectionForMenu,
@@ -205,6 +205,7 @@ function pluginSlashCommandName(file: CloudImportedPluginFile) {
 }
 
 export const ReactSessionComposer = memo(function ReactSessionComposer(props: ComposerProps) {
+  useSyncExternalStore(subscribeLocale, currentLocale, currentLocale);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const orgMcp = useOrgMcpConnections();
   const [agents, setAgents] = useState<Agent[]>([]);
@@ -1519,7 +1520,7 @@ export const ReactSessionComposer = memo(function ReactSessionComposer(props: Co
                       : showStop
                         ? t("composer.stop")
                         : props.submissionPreparing
-                          ? props.submissionPreparingLabel ?? "Preparing connected service tools…"
+                          ? props.submissionPreparingLabel ?? t("interface.preparing_connected_service_tools")
                           : t("composer.run_task")
                   }
                   aria-busy={props.stopping || props.submissionPreparing || undefined}
@@ -1538,7 +1539,7 @@ export const ReactSessionComposer = memo(function ReactSessionComposer(props: Co
                       : showStop
                         ? t("composer.stop")
                         : props.submissionPreparing
-                          ? props.submissionPreparingLabel ?? "Preparing connected service tools…"
+                          ? props.submissionPreparingLabel ?? t("interface.preparing_connected_service_tools")
                           : t("composer.run_task")
                   }
                 >
@@ -1557,7 +1558,7 @@ export const ReactSessionComposer = memo(function ReactSessionComposer(props: Co
                       : showStop
                         ? t("composer.stop")
                         : props.submissionPreparing
-                          ? props.submissionPreparingLabel ?? "Preparing connected service tools…"
+                          ? props.submissionPreparingLabel ?? t("interface.preparing_connected_service_tools")
                           : t("composer.run_task")}
                   </span>
                 </button>

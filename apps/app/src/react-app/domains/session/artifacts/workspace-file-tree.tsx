@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import { useEffect, useMemo, useRef } from "react";
 import { FileTree, useFileTree, useFileTreeSearch } from "@pierre/trees/react";
 import { useQuery } from "@tanstack/react-query";
@@ -149,8 +150,8 @@ export function WorkspaceFileTree({ client, workspaceId, workspaceName, selected
         <InputGroup className="h-7 min-w-0 flex-1 bg-background">
           <InputGroupAddon align="inline-start"><Search /></InputGroupAddon>
           <InputGroupInput
-            aria-label={`Search ${workspaceName} files`}
-            placeholder="Search files"
+            aria-label={t("session_copy.search_files", { name: workspaceName })}
+            placeholder={t("interface.search_files")}
             value={search.value}
             onChange={(event) => {
               const value = event.target.value;
@@ -162,14 +163,14 @@ export function WorkspaceFileTree({ client, workspaceId, workspaceName, selected
         <Button
           variant="ghost"
           size="icon-xs"
-          aria-label="Refresh workspace files"
+          aria-label={t("interface.refresh_workspace_files")}
           onClick={() => void query.refetch()}
         >
           <RefreshCw className={cn(query.isFetching && "animate-spin")} />
         </Button>
       </div>
       {query.isError ? (
-        <p role="alert" className="p-3 text-xs text-dls-secondary">Could not load workspace files. Use Refresh to try again.</p>
+        <p role="alert" className="p-3 text-xs text-dls-secondary">{t("interface.could_not_load_workspace_files_use_refresh_to_try_again")}</p>
       ) : (
         <FileTree
           model={model}
@@ -179,7 +180,7 @@ export function WorkspaceFileTree({ client, workspaceId, workspaceName, selected
         />
       )}
       {query.data?.incomplete ? (
-        <p role="status" className="border-t border-border px-2 py-1 text-[10px] text-muted-foreground">Some folders could not be read. Check their permissions and refresh.</p>
+        <p role="status" className="border-t border-border px-2 py-1 text-[10px] text-muted-foreground">{t("interface.some_folders_could_not_be_read_check_their_permissions_and_refresh")}</p>
       ) : null}
     </aside>
   );

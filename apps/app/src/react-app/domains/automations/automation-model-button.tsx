@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import { AlertTriangle, ChevronDown, Cloud } from "lucide-react"
 import type { AutomationModel } from "@openwork/types/automations"
 
@@ -15,7 +16,7 @@ export function AutomationModelSummary(props: { model: AutomationModel; options:
     return (
       <span className="flex min-w-0 items-center gap-2 text-muted-foreground">
         <AlertTriangle className="size-4 shrink-0 text-amber-600" aria-hidden="true" />
-        <span className="truncate">{props.model.providerId}/{props.model.modelId} · no longer available</span>
+        <span className="truncate">{props.model.providerId}/{props.model.modelId}{t("interface.no_longer_available")}</span>
       </span>
     )
   }

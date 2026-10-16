@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import { useEffect, useMemo, useRef, useState } from "react"
 import {
   AUTOMATION_CLOUD_DEFAULT_MODEL,
@@ -113,15 +114,15 @@ export function automationPlacementOf(choice: AutomationCanUse): AutomationExecu
 
 /** The words for each choice say what the Automation can reach, not where it runs. */
 export function automationCanUseLabel(choice: AutomationCanUse, onThisComputer?: boolean) {
-  if (choice === "computer") return onThisComputer ? "Desktop: Connected accounts and files on this computer" : "Desktop: Connected accounts and files on your computer"
-  if (choice === "cloud-computer") return "Cloud: Connected accounts and files on your cloud computer"
-  return "Cloud: Only connected accounts"
+  if (choice === "computer") return onThisComputer ? t("ui_extra.desktop_this_computer_resources") : t("ui_extra.desktop_your_computer_resources")
+  if (choice === "cloud-computer") return t("ui_extra.cloud_computer_resources")
+  return t("ui_extra.cloud_accounts_only")
 }
 
 export function automationCanUseNote(choice: AutomationCanUse) {
-  if (choice === "computer") return "Needs OpenWork open on one of your computers at the scheduled time."
-  if (choice === "cloud-computer") return "Runs on your cloud computer, even when your desktop is offline."
-  return "Runs in the cloud, even when your computer is off."
+  if (choice === "computer") return t("ui_extra.desktop_keep_open")
+  if (choice === "cloud-computer") return t("ui_extra.cloud_computer_offline_ok")
+  return t("ui_extra.cloud_offline_ok")
 }
 
 /** Where an Automation starts: its placement, then the cloud it uses (the cloud default model means only accounts). */
@@ -145,10 +146,10 @@ const LOGO_TILE = "grid size-5 place-items-center overflow-hidden rounded-md bor
 function ConnectedAccountLogos({ accounts, files }: { accounts: readonly AutomationConnectedAccount[]; files?: "computer" | "cloud-computer" }) {
   const shown = accounts.slice(0, 4)
   const names = accounts.map((account) => account.name)
-  const accountsLabel = names.length > 3 ? `${names.slice(0, 3).join(", ")} and ${names.length - 3} more` : names.join(", ")
-  const filesLabel = files === "computer" ? "Files on your computer" : files === "cloud-computer" ? "Files on your cloud computer" : null
-  const label = [filesLabel, accountsLabel].filter(Boolean).join(", plus ")
-  if (!filesLabel && accounts.length === 0) return <span className="text-xs text-muted-foreground">None connected yet</span>
+  const accountsLabel = names.length > 3 ? t("ui_extra.more_accounts", { names: names.slice(0, 3).join(t("ui_extra.list_separator")), count: names.length - 3 }) : names.join(t("ui_extra.list_separator"))
+  const filesLabel = files === "computer" ? t("ui_extra.your_computer_files") : files === "cloud-computer" ? t("ui_extra.your_cloud_files") : null
+  const label = [filesLabel, accountsLabel].filter(Boolean).join(t("ui_extra.plus_separator"))
+  if (!filesLabel && accounts.length === 0) return <span className="text-xs text-muted-foreground">{t("interface.none_connected_yet")}</span>
   return (
     <span className="flex shrink-0 items-center gap-1.5" aria-label={label} title={label} data-automation-connected-accounts={accounts.length}>
       {files ? (
@@ -252,13 +253,13 @@ export function AutomationEditor(props: AutomationEditorProps) {
       }}
     >
       <div className="space-y-2">
-        <Label htmlFor="automation-name">Name</Label>
+        <Label htmlFor="automation-name">{t("extensions.add_name_label")}</Label>
         <Input
           id="automation-name"
           value={input.name}
           maxLength={120}
           required
-          placeholder="Daily project summary"
+          placeholder={t("interface.daily_project_summary")}
           onChange={(event) => {
             const name = event.currentTarget.value
             setInput((current) => ({ ...current, name }))
@@ -268,27 +269,27 @@ export function AutomationEditor(props: AutomationEditorProps) {
 
       {pinnedWorkflow ? (
         <div className="rounded-xl border border-border bg-muted/30 p-3 text-sm" data-automation-pinned-workflow={pinnedWorkflow.configObjectVersionId}>
-          <p className="font-medium">Pinned Workflow</p>
+          <p className="font-medium">{t("interface.pinned_workflow")}</p>
           <p className="mt-1 text-muted-foreground">{pinnedWorkflow.title}</p>
-          <p className="mt-1 break-all font-mono text-xs text-muted-foreground">Version {pinnedWorkflow.configObjectVersionId}</p>
+          <p className="mt-1 break-all font-mono text-xs text-muted-foreground">{t("interface.version")} {pinnedWorkflow.configObjectVersionId}</p>
         </div>
       ) : (
         <div className="space-y-2">
-          <Label htmlFor="automation-instructions">Instructions</Label>
+          <Label htmlFor="automation-instructions">{t("extensions.detail_instructions")}</Label>
           <Textarea
             id="automation-instructions"
             className="min-h-36 resize-y"
             value={input.instructions}
             required
-            placeholder="Describe the outcome, sources to check, and what a useful result should include."
+            placeholder={t("interface.describe_the_outcome_sources_to_check_and_what_a_useful_result_should_include")}
             onChange={(event) => {
               const instructions = event.currentTarget.value
               setInput((current) => ({ ...current, instructions }))
             }}
           />
           <p className="text-xs text-muted-foreground">{cloud
-            ? canUse === "accounts" ? "Each run starts fresh in the cloud." : "Each run starts a new task on your cloud computer."
-            : "Each run starts a new task on your desktop computer."}</p>
+            ? canUse === "accounts" ? t("interface.each_run_starts_fresh_in_the_cloud") : t("interface.each_run_starts_a_new_task_on_your_cloud_computer")
+            : t("interface.each_run_starts_a_new_task_on_your_desktop_computer")}</p>
         </div>
       )}
 
@@ -303,14 +304,14 @@ export function AutomationEditor(props: AutomationEditorProps) {
           onChange={(timezone) => setInput((current) => ({ ...current, schedule: { ...current.schedule, timezone } }))}
         />
         {pinnedWorkflow || usesCloudDefault ? null : <div className="space-y-2">
-          <Label htmlFor="automation-model">Model</Label>
+          <Label htmlFor="automation-model">{t("settings.model_title")}</Label>
           <AutomationModelButton id="automation-model" model={input.model} options={modelOptions} onClick={() => setPickerOpen(true)} />
           <ModelPickerModal
             open={pickerOpen}
             options={pickerOptions}
             query={modelQuery}
             setQuery={setModelQuery}
-            subtitle={cloud ? "Your cloud computer uses this model and reasoning level." : "Your desktop computer uses this model and reasoning level."}
+            subtitle={cloud ? t("ui_extra.cloud_model_scope") : t("ui_extra.desktop_model_scope")}
             target="default"
             current={{ providerID: input.model.providerId, modelID: input.model.modelId }}
             onSelect={(model) => {
@@ -338,7 +339,7 @@ export function AutomationEditor(props: AutomationEditorProps) {
 
       {canChoose ? (
         <div className="space-y-2">
-          <Label id="automation-can-use">What it can use</Label>
+          <Label id="automation-can-use">{t("interface.what_it_can_use")}</Label>
           <RadioGroup
             aria-labelledby="automation-can-use"
             data-automation-runs-on={placement}
@@ -372,8 +373,8 @@ export function AutomationEditor(props: AutomationEditorProps) {
       </p>
 
       <div className="flex justify-end gap-2">
-        <Button type="button" variant="outline" disabled={props.busy} onClick={props.onCancel}>Cancel</Button>
-        <Button type="submit" disabled={!canSave || props.busy}>{props.busy ? "Saving…" : props.submitLabel}</Button>
+        <Button type="button" variant="outline" disabled={props.busy} onClick={props.onCancel}>{t("settings.environment.cancel")}</Button>
+        <Button type="submit" disabled={!canSave || props.busy}>{props.busy ? t("settings.environment.saving") : props.submitLabel}</Button>
       </div>
     </form>
   )

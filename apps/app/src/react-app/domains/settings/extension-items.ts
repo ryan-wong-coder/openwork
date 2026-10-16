@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { getMcpServerName, isBuiltInOpenWorkExtension, type McpDirectoryInfo } from "../../../app/constants";
 import type { CloudImportedPlugin, CloudImportedPluginFile } from "../../../app/cloud/import-state";
 import type { PendingCloudPluginChange } from "../../../app/cloud/desktop-cloud-sync";
@@ -12,6 +13,7 @@ import type {
 import type { McpServerEntry, SkillCard } from "../../../app/types";
 import { connectionNeedsReconnect } from "../connections/native-provider-connections";
 import {
+  formatPluginComponentMeta,
   resolveConnectRowGroup,
   resolveConnectionRowGroup,
   type ConnectOrgRole,
@@ -145,38 +147,38 @@ export function nativeProviderDisplayName(nativeProviderKey: string | null | und
 export function orgMcpConnectionDescription(connection: Pick<DenExternalMcpConnection, "credentialMode" | "connectedForMe" | "needsReconnect" | "missingFeatures" | "nativeProviderKey" | "externalAccountId"> & PersonalKeyReadiness) {
   const provider = nativeProviderDisplayName(connection.nativeProviderKey);
   const prefix = provider ? `${provider} — ` : "";
-  if (connection.credentialMode === "shared") return `${prefix}One org account managed by your organization — the AI acts as it.`;
+  if (connection.credentialMode === "shared") return prefix + t("mcp.org_connection_desc_shared");
   if (connection.authType === "apikey") {
-    if (connection.needsReconnect === true || connection.credentialHealth === "reconnect_required") return "Your key was rejected.";
+    if (connection.needsReconnect === true || connection.credentialHealth === "reconnect_required") return t("settings_extra.your_key_was_rejected");
     return connection.connectedForMe && !connectionNeedsReconnect(connection)
-      ? "Uses your own key."
-      : connection.connectedForMe ? "Your key was rejected."
-      : "Available from your organization. Add your own key to use it.";
+      ? t("settings_extra.uses_your_own_key")
+      : connection.connectedForMe ? t("settings_extra.your_key_was_rejected")
+      : t("settings_extra.available_from_your_organization_add_your_own_key_to_use_it");
   }
-  if (connection.connectedForMe && connectionNeedsReconnect(connection)) return `${prefix}Reconnect your account to grant newly requested permissions.`;
+  if (connection.connectedForMe && connectionNeedsReconnect(connection)) return prefix + t("mcp.org_connection_desc_per_member_reconnect");
   if (connection.connectedForMe) {
     // Keep the base sentence intact as a prefix: specs and people both read it.
     const account = connection.externalAccountId;
     return account
-      ? `${prefix}Connected with your own account. Signed in as ${account}.`
-      : `${prefix}Connected with your own account.`;
+      ? prefix + t("settings_extra.connected_with_your_own_account_signed_in_as_account", { account })
+      : prefix + t("mcp.org_connection_desc_per_member_connected");
   }
-  return `${prefix}Available from your organization. Connect your own account to use it.`;
+  return prefix + t("mcp.org_connection_desc_per_member");
 }
 
 export function orgMcpConnectionActionLabel(connection: Pick<DenExternalMcpConnection, "credentialMode" | "connected" | "connectedForMe" | "needsReconnect" | "missingFeatures" | "externalAccountId"> & PersonalKeyReadiness) {
-  if (connection.credentialMode === "shared") return "Managed by your organization";
+  if (connection.credentialMode === "shared") return t("mcp.org_connection_managed_label");
   if (connection.authType === "apikey") {
-    if (connection.needsReconnect === true || connection.credentialHealth === "reconnect_required") return "Replace key";
-    return isOrgMcpConnectionReady(connection) ? "Key saved" : connection.connectedForMe ? "Replace key" : "Add key";
+    if (connection.needsReconnect === true || connection.credentialHealth === "reconnect_required") return t("ui.replace_key");
+    return isOrgMcpConnectionReady(connection) ? t("extensions.detail_key_saved") : connection.connectedForMe ? t("ui.replace_key") : t("ui.add_key");
   }
-  if (connection.connectedForMe && connectionNeedsReconnect(connection)) return "Reconnect";
+  if (connection.connectedForMe && connectionNeedsReconnect(connection)) return t("mcp.action_reconnect");
   if (connection.connectedForMe) {
     // Show WHICH account: with several connectors for one service (two Google
     // domains), a bare "Connected" badge cannot tell the sign-ins apart.
-    return connection.externalAccountId ? `Connected — ${connection.externalAccountId}` : "Connected";
+    return connection.externalAccountId ? t("settings_extra.connected_account", { account: connection.externalAccountId }) : t("config.status_connected");
   }
-  return "Connect your account";
+  return t("mcp.org_connection_connect_action");
 }
 
 export function isOrgMcpConnectionItem(item: ExtensionItem): item is ExtensionItem & { orgMcpConnection: DenExternalMcpConnection } {
@@ -271,7 +273,7 @@ export function buildExtensionItems(input: ExtensionItemBuildInput) {
       resources: imported?.files.map(resourceFromImportedFile) ?? Object.entries(plugin.componentCounts).flatMap(([type, count]) => count > 0 ? [{
         id: `${plugin.id}:${type}`,
         type,
-        title: `${count} ${type}${count === 1 ? "" : "s"}`,
+        title: formatPluginComponentMeta({ [type]: count }),
       }] : []),
       marketplaceId: marketplace.marketplace.id,
       marketplaceName: marketplace.marketplace.name,

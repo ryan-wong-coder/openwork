@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ComponentProps } from "react";
 import { DashboardConnectionCard } from "./dashboard-connection-card";
 import { appToolResultConnectionToolName, connectionCardFromMcpToolResult } from "@/components/tools/error-attribution";
@@ -702,12 +703,11 @@ function McpAppTileContent({
             <Play className="size-6 text-muted-foreground" aria-hidden />
             <p className="max-w-xs text-xs text-muted-foreground">
               {entry.requiresApproval === true
-                ? "This artifact modifies data when it runs, so it only runs when you ask."
-                : "Run once to enable automatic loading and refresh for this tile."}
+                ? t("interface.this_artifact_modifies_data_when_it_runs_so_it_only_runs_when_you_ask")
+                : t("interface.run_once_to_enable_automatic_loading_and_refresh_for_this_tile")}
             </p>
             <Button variant="outline" size="sm" onClick={run} aria-label={`Run ${entry.title}`}>
-              <Play className="size-4" /> Run
-            </Button>
+              <Play className="size-4" />{t("interface.run")} </Button>
           </div>
         ) : null}
         {state.phase === "connection" ? <DashboardConnectionCard key={JSON.stringify([cacheScopeKey, state.connection.connectionId, nonce])}
@@ -717,9 +717,7 @@ function McpAppTileContent({
           <p className="pt-3 text-xs text-muted-foreground" role="status">{state.message}</p>
         ) : null}
         {state.phase === "closed" ? (
-          <p className="pt-3 text-xs text-muted-foreground" role="status">
-            This artifact closed its view. Use refresh to launch it again.
-          </p>
+          <p className="pt-3 text-xs text-muted-foreground" role="status">{t("interface.this_artifact_closed_its_view_use_refresh_to_launch_it_again")} </p>
         ) : null}
         {state.phase === "ready" && measuredGeometryIdentity === geometryIdentity ? (
           origin ?
@@ -777,15 +775,13 @@ function McpAppTileContent({
               />
             </div>
           : (
-            <p className="pt-3 text-xs text-muted-foreground" role="status">
-              This saved artifact view is unavailable until its workspace reconnects.
-            </p>
+            <p className="pt-3 text-xs text-muted-foreground" role="status">{t("interface.this_saved_artifact_view_is_unavailable_until_its_workspace_reconnects")} </p>
           )
         ) : null}
       </DashboardTileShell>
       {loadingDocument ? (
         <div className="absolute inset-0 z-10 flex flex-col gap-3 rounded-xl bg-background p-3" role="status" aria-label={`Loading ${entry.title}`} data-dashboard-loading>
-          <span className="text-xs text-muted-foreground">Loading {entry.title}</span>
+          <span className="text-xs text-muted-foreground">{t("settings.loading")} {entry.title}</span>
           <Skeleton className="h-4 w-2/3" />
           <Skeleton className="min-h-24 w-full flex-1" />
         </div>
@@ -793,7 +789,7 @@ function McpAppTileContent({
       {state.phase === "ready" && !loadingDocument && !state.lifetime.failed && refreshState !== "idle" ? (
         <div className="pointer-events-none absolute right-10 top-1 z-10 rounded bg-background/90 px-2 py-1 text-[11px] text-muted-foreground"
           role="status" aria-live="polite" data-dashboard-cache-state={refreshState}>
-          {refreshState === "refreshing" ? "Updating…" : "Refresh failed · showing last good data"}
+          {refreshState === "refreshing" ? t("interface.updating_dfe40efe") : t("interface.refresh_failed_showing_last_good_data")}
         </div>
       ) : null}
     </div>

@@ -1,3 +1,4 @@
+import { formatPluginComponentMeta } from "../connect-cloud-readiness";
 /** @jsxImportSource react */
 import { formatRelativeTime } from "@/app/utils";
 import type { CloudImportedPlugin, CloudImportedProvider } from "../../../../app/cloud/import-state";
@@ -151,7 +152,7 @@ function MarketplacePluginListItem({
 }: MarketplacePluginListItemProps) {
   const actionBusy = actionId === row.plugin.id;
   const counts = Object.entries(row.plugin.componentCounts).flatMap(([type, count]) =>
-    count > 0 ? [`${count} ${type}${count === 1 ? "" : "s"}`] : [],
+    count > 0 ? [formatPluginComponentMeta({ [type]: count })] : [],
   );
 
   return (
@@ -169,11 +170,10 @@ function MarketplacePluginListItem({
           ))}
         </SettingsListTitle>
         <SettingsListItemDescription>
-          {row.plugin.description || "No description provided."}
+          {row.plugin.description || t("connect.marketplace_no_description")}
         </SettingsListItemDescription>
         {row.imported?.files.length ? (
-          <div className="mt-1 truncate text-xs text-muted-foreground">
-            Installed files: {row.imported.files.map((file) => file.path).join(", ")}
+          <div className="mt-1 truncate text-xs text-muted-foreground">{t("interface.installed_files")} {row.imported.files.map((file) => file.path).join(", ")}
           </div>
         ) : null}
       </SettingsListItemContent>
@@ -198,7 +198,7 @@ interface CloudProviderListItemProps {
 function cloudProviderRowStatus(status: CloudProviderRowStatus) {
   switch (status) {
     case "connected":
-      return <ProviderStatus tone="ready">Ready to use</ProviderStatus>;
+      return <ProviderStatus tone="ready">{t("connect.group_ready")}</ProviderStatus>;
     case "error":
     case "conflict":
       return <ProviderStatus tone="error">{cloudProviderStatusLabel(status)}</ProviderStatus>;
@@ -263,25 +263,25 @@ export function CloudProvidersSection({ actionError, actionId, busy, rows, onRef
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1">
           {activeOrgName ? <OrganizationMark name={activeOrgName} /> : null}
-          <h2 id="ai-providers-organization" className="min-w-0 truncate text-base font-medium text-dls-text">From {organizationName}</h2>
-          <span className="shrink-0 rounded-full bg-blue-3 px-2 py-0.5 text-xs font-medium text-blue-11">Managed in Den</span>
+          <h2 id="ai-providers-organization" className="min-w-0 truncate text-base font-medium text-dls-text">{t("interface.from")} {organizationName}</h2>
+          <span className="shrink-0 rounded-full bg-blue-3 px-2 py-0.5 text-xs font-medium text-blue-11">{t("interface.managed_in_den")}</span>
         </div>
         <div className="-mr-2 flex shrink-0 items-center gap-1">
-          {onOpenModelConnections ? <Button variant="ghost" size="sm" onClick={onOpenModelConnections}>My model connections</Button> : null}
-          {onOpenDen ? <Button variant="ghost" size="sm" onClick={onOpenDen}>Open in Den<ArrowUpRight className="size-3.5" aria-hidden /></Button> : null}
+          {onOpenModelConnections ? <Button variant="ghost" size="sm" onClick={onOpenModelConnections}>{t("interface.my_model_connections_aff2137a")}</Button> : null}
+          {onOpenDen ? <Button variant="ghost" size="sm" onClick={onOpenDen}>{t("extensions.open_in_den")}<ArrowUpRight className="size-3.5" aria-hidden /></Button> : null}
         </div>
       </div>
-      <p className="text-sm text-muted-foreground">Your organization pays for and manages these. Members call them through the OpenWork Gateway; upstream credentials never reach this device.</p>
+      <p className="text-sm text-muted-foreground">{t("interface.your_organization_pays_for_and_manages_these_members_call_them_through_the_openwork_gateway_upstream")}</p>
     </div>
     {actionError ? <SettingsNotice tone="error">{actionError}</SettingsNotice> : null}
-    {busy && !providerCount ? <div role="status" aria-label="Loading organization providers" className="grid gap-2">{[0, 1].map((key) => <div key={key} className="h-16 animate-pulse rounded-2xl bg-muted" />)}</div> : null}
+    {busy && !providerCount ? <div role="status" aria-label={t("interface.loading_organization_providers")} className="grid gap-2">{[0, 1].map((key) => <div key={key} className="h-16 animate-pulse rounded-2xl bg-muted" />)}</div> : null}
     {!busy && !providerCount ? <SettingsListEmptyState>{hasActiveOrg ? t("den.no_cloud_providers") : t("den.choose_org_for_providers")}</SettingsListEmptyState> : null}
     {providerCount ? <ProviderList>
       {rows.map((row) => <CloudProviderListItem key={row.key} actionId={actionId} row={row} onRetry={onRetry} />)}
       {additionalRows}
       <div className="flex flex-wrap items-center justify-between gap-3 bg-dls-surface-muted px-4 py-2.5 text-xs text-muted-foreground">
-        <span className="inline-flex items-center gap-2"><RefreshCcw className="size-3.5" aria-hidden />{timestamp ? `Synced with Den ${timestamp}` : "Not synced with Den yet"} · {providerCount === 1 ? "1 provider" : `${providerCount} providers`}, {credentialCount === 1 ? "1 credential" : `${credentialCount} credentials`}</span>
-        <Button variant="ghost" size="sm" disabled={busy || !hasActiveOrg} onClick={() => void onRefresh()}>{busy ? "Syncing…" : "Sync now"}</Button>
+        <span className="inline-flex items-center gap-2"><RefreshCcw className="size-3.5" aria-hidden />{timestamp ? `Synced with Den ${timestamp}` : t("interface.not_synced_with_den_yet")} · {providerCount === 1 ? t("interface.1_provider") : `${providerCount} providers`}, {credentialCount === 1 ? t("interface.1_credential") : `${credentialCount} credentials`}</span>
+        <Button variant="ghost" size="sm" disabled={busy || !hasActiveOrg} onClick={() => void onRefresh()}>{busy ? t("interface.syncing") : t("den.sync_now")}</Button>
       </div>
     </ProviderList> : null}
   </section>;

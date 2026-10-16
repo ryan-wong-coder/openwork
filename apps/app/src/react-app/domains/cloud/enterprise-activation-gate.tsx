@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import { useState, useSyncExternalStore, type FormEvent, type ReactNode } from "react";
 
 import {
@@ -60,14 +61,14 @@ function EnterpriseActivationPage() {
         setPendingConfirmation({ kind: "manual", baseUrl: linkBaseUrl, grant: pastedLink.grant });
         setServerError(null);
         setAuthError(null);
-        setStatusMessage(`Confirm ${linkBaseUrl} before continuing.`);
+        setStatusMessage(t("ui_extra.confirm_server", { server: linkBaseUrl }));
         return;
       }
     }
 
     const baseUrl = normalizeOrganizationServerInput(serverInput);
     if (!baseUrl) {
-      setServerError("Enter a valid OpenWork server address.");
+      setServerError(t("ui_extra.valid_server_address"));
       return;
     }
 
@@ -75,14 +76,14 @@ function EnterpriseActivationPage() {
     setPendingConfirmation({ kind: "browser", baseUrl });
     setServerError(null);
     setAuthError(null);
-    setStatusMessage(`Confirm ${baseUrl} before continuing.`);
+    setStatusMessage(t("ui_extra.confirm_server", { server: baseUrl }));
   };
 
   const exchangeConfirmedGrant = async (grant: string, baseUrl: string) => {
     setAuthBusy(true);
     setAuthError(null);
     setServerError(null);
-    setStatusMessage("Finishing OpenWork Enterprise sign-in…");
+    setStatusMessage(t("ui_extra.enterprise_signin_finishing"));
     try {
       // The confirmed server, session, and activation stamp commit in one
       // handoff transaction, so activation can never leave the bootstrap and
@@ -90,7 +91,7 @@ function EnterpriseActivationPage() {
       const result = await exchangeHandoffAndSignIn(grant, {
         baseUrl,
         desktopInitiated: true,
-        fallbackErrorMessage: "OpenWork Enterprise did not return a session token.",
+        fallbackErrorMessage: t("ui_extra.enterprise_session_missing"),
         bootstrap: {
           requireSignin: true,
           enterpriseActivation: {
@@ -107,7 +108,7 @@ function EnterpriseActivationPage() {
     } catch (error) {
       setStatusMessage(null);
       setAuthError(
-        error instanceof Error ? error.message : "Unable to finish OpenWork Enterprise sign-in.",
+        error instanceof Error ? error.message : t("ui_extra.enterprise_signin_failed"),
       );
     } finally {
       setAuthBusy(false);
@@ -134,14 +135,14 @@ function EnterpriseActivationPage() {
       const opened = await tryOpenBrowserAuthUrl(buildDenAuthUrl(pending.baseUrl, "sign-in"));
       if (!opened) {
         setStatusMessage(null);
-        setAuthError("We couldn't open your browser automatically. Try again, or paste the sign-in link from your browser into the address field.");
+        setAuthError(t("ui_extra.enterprise_browser_failed"));
         return;
       }
-      setStatusMessage("Finish signing in in your browser, then return to OpenWork.");
+      setStatusMessage(t("ui_extra.enterprise_browser_signin"));
     } catch (error) {
       setStatusMessage(null);
       setServerError(
-        error instanceof Error ? error.message : "Unable to save this OpenWork server.",
+        error instanceof Error ? error.message : t("ui_extra.enterprise_server_save_failed"),
       );
     } finally {
       setBrowserBusy(false);
@@ -184,18 +185,12 @@ function EnterpriseActivationPage() {
               className="max-h-[26px] shrink-0 object-contain object-left dark:invert"
               aria-hidden="true"
             />
-            <span className="text-[15px] font-semibold tracking-tight text-foreground">
-              OpenWork Enterprise
-            </span>
+            <span className="text-[15px] font-semibold tracking-tight text-foreground">{t("interface.openwork_enterprise")} </span>
           </div>
 
           <div className="mt-10 flex flex-col gap-2.5 sm:mt-14">
-            <h1 className="text-[30px] font-semibold leading-[38px] tracking-[-0.03em] text-foreground sm:text-[38px] sm:leading-[46px]">
-              Link this app to your organization
-            </h1>
-            <p className="text-[15px] leading-[23px] text-muted-foreground">
-              Enter your workspace address — the page where you downloaded this app. Sign-in finishes in your browser and returns here.
-            </p>
+            <h1 className="text-[30px] font-semibold leading-[38px] tracking-[-0.03em] text-foreground sm:text-[38px] sm:leading-[46px]">{t("interface.link_this_app_to_your_organization")} </h1>
+            <p className="text-[15px] leading-[23px] text-muted-foreground">{t("interface.enter_your_workspace_address_the_page_where_you_downloaded_this_app_sign_in_finishes_in_your_browser")} </p>
           </div>
 
           <div className="mt-11 flex flex-col gap-4">
@@ -204,16 +199,14 @@ function EnterpriseActivationPage() {
                 <label
                   className="text-sm font-medium text-foreground"
                   htmlFor="organization-server-input"
-                >
-                  Workspace address
-                </label>
+                >{t("interface.workspace_address")} </label>
                 <div className="flex flex-col gap-2 sm:flex-row">
                   <Input
                     id="organization-server-input"
                     data-testid="organization-server-input"
                     value={serverInput}
                     onChange={(event) => setServerInput(event.currentTarget.value)}
-                    placeholder="openwork.acme.com"
+                    placeholder={t("interface.openwork_acme_com")}
                     autoCapitalize="none"
                     autoCorrect="off"
                     spellCheck={false}
@@ -225,18 +218,14 @@ function EnterpriseActivationPage() {
                     className="sm:min-w-40"
                     disabled={browserBusy || authBusy}
                     data-testid="organization-server-continue"
-                  >
-                    Continue
-                  </Button>
+                  >{t("extensions.mcp_check_continue")} </Button>
                 </div>
               </form>
             )}
 
             {pendingConfirmation ? (
               <section className="space-y-3 rounded-xl border border-border bg-muted/30 p-4">
-                <p className="text-sm leading-6 text-foreground">
-                  Connect this app to <strong className="break-all font-semibold">{pendingConfirmation.baseUrl}</strong>? This signs you in with that organization and binds OpenWork Enterprise to it.
-                </p>
+                <p className="text-sm leading-6 text-foreground">{t("interface.connect_this_app_to")} <strong className="break-all font-semibold">{pendingConfirmation.baseUrl}</strong>{t("interface.this_signs_you_in_with_that_organization_and_binds_openwork_enterprise_to_it")} </p>
                 <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
                   <Button
                     type="button"
@@ -246,9 +235,7 @@ function EnterpriseActivationPage() {
                       setStatusMessage(null);
                     }}
                     disabled={browserBusy || authBusy}
-                  >
-                    Back
-                  </Button>
+                  >{t("dashboard.modal_back")} </Button>
                   <Button
                     type="button"
                     onClick={() => void confirmServer()}
@@ -256,8 +243,8 @@ function EnterpriseActivationPage() {
                     data-testid="organization-server-confirm"
                   >
                     {pendingConfirmation.kind === "browser"
-                      ? "Continue in browser"
-                      : "Confirm and finish sign-in"}
+                      ? t("interface.continue_in_browser")
+                      : t("interface.confirm_and_finish_sign_in")}
                   </Button>
                 </div>
               </section>

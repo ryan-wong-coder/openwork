@@ -29,9 +29,9 @@ import {
 } from "../settings-layout";
 import { Separator } from "@/components/ui/separator";
 
-const RELEASE_CHANNEL_OPTIONS: { label: string; value: ReleaseChannel }[] = [
-  { label: "Stable", value: "stable" },
-  { label: "Alpha", value: "alpha" },
+const RELEASE_CHANNEL_OPTIONS: { labelKey: string; value: ReleaseChannel }[] = [
+  { labelKey: "interface.stable", value: "stable" },
+  { labelKey: "interface.alpha", value: "alpha" },
 ];
 
 type UpdateDownloadProgressProps = {
@@ -89,6 +89,7 @@ export type UpdatesViewProps = {
 };
 
 export function UpdatesView(props: UpdatesViewProps) {
+  const releaseChannelOptions = RELEASE_CHANNEL_OPTIONS.map((option) => ({ value: option.value, label: t(option.labelKey) }));
   const [confirmRestartOpen, setConfirmRestartOpen] = useState(false);
   const updateState = props.updateStatus?.state ?? "idle";
   const updateVersion = props.updateStatus?.version ?? null;
@@ -278,14 +279,12 @@ export function UpdatesView(props: UpdatesViewProps) {
           {props.alphaChannelSupported && props.releaseChannel ? (
             <LayoutSectionItem>
               <LayoutSectionItemHeader>
-                <LayoutSectionItemTitle>Release channel</LayoutSectionItemTitle>
-                <LayoutSectionItemDescription>
-                  Stable gets fully tested releases. Alpha includes the very latest changes but may be less polished (macOS only).
-                </LayoutSectionItemDescription>
+                <LayoutSectionItemTitle>{t("interface.release_channel")}</LayoutSectionItemTitle>
+                <LayoutSectionItemDescription>{t("interface.stable_gets_fully_tested_releases_alpha_includes_the_very_latest_changes_but_may_be_less_polished_ma")} </LayoutSectionItemDescription>
                 <LayoutSectionItemHeaderActions>
                   <Select
                     value={props.releaseChannel}
-                    items={RELEASE_CHANNEL_OPTIONS}
+                    items={releaseChannelOptions}
                     onValueChange={(value) => {
                       if (value === "stable" || value === "alpha") {
                         props.onReleaseChannelChange?.(value);
@@ -293,12 +292,12 @@ export function UpdatesView(props: UpdatesViewProps) {
                     }}
                     disabled={!props.onReleaseChannelChange}
                   >
-                    <SelectTrigger aria-label="Release channel" className="w-48">
+                    <SelectTrigger aria-label={t("interface.release_channel")} className="w-48">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        {RELEASE_CHANNEL_OPTIONS.map((option) => (
+                        {releaseChannelOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
                           </SelectItem>

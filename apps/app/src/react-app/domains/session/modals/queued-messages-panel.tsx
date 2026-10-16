@@ -260,7 +260,7 @@ function QueuedDraftRow(props: {
             <QueuedDraftContent draft={props.item.draft} />
           </button>
         )}
-        {props.active ? <span role="status" className="block px-0.5 text-xs text-gray-10">Sending...</span> : null}
+        {props.active ? <span role="status" className="block px-0.5 text-xs text-gray-10">{t("interface.sending_286a3af7")}</span> : null}
       </div>
       <div className="mt-0.5 flex shrink-0 items-center gap-0.5">
         <button
@@ -268,8 +268,8 @@ function QueuedDraftRow(props: {
           onClick={() => props.onSendNow(props.item.id)}
           disabled={props.sending}
           className="flex size-5 items-center justify-center rounded-md text-gray-10 transition-colors hover:bg-gray-3 hover:text-gray-12 disabled:pointer-events-none disabled:opacity-40"
-          title={props.active ? "Sending..." : t("composer.queued_send_now")}
-          aria-label={props.active ? "Sending..." : t("composer.queued_send_now")}
+          title={props.active ? t("interface.sending_286a3af7") : t("composer.queued_send_now")}
+          aria-label={props.active ? t("interface.sending_286a3af7") : t("composer.queued_send_now")}
         >
           {props.active ? <LoaderCircle size={13} className="motion-safe:animate-spin" /> : <ArrowUp size={13} />}
         </button>

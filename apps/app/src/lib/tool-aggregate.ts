@@ -1,3 +1,4 @@
+import { t } from "@/i18n"
 import type { DynamicToolUIPart, ToolUIPart } from "ai"
 
 import {
@@ -84,10 +85,6 @@ function filePathOf(part: AnyToolPart): string | null {
   return typeof value === "string" && value ? value : null
 }
 
-function plural(count: number, singular: string, pluralForm = `${singular}s`): string {
-  return `${count} ${count === 1 ? singular : pluralForm}`
-}
-
 export function getAggregateCountSummary(parts: AnyToolPart[]): string {
   const commands = parts.filter((part) => getToolFamily(part) === "command").length
   const editPaths = new Set<string>()
@@ -112,11 +109,11 @@ export function getAggregateCountSummary(parts: AnyToolPart[]): string {
   }
 
   const pieces: string[] = []
-  if (editCalls > 0) pieces.push(plural(editPaths.size > 0 ? editPaths.size : editCalls, "file edit"))
-  if (commands > 0) pieces.push(plural(commands, "command"))
-  if (readCalls > 0) pieces.push(plural(readPaths.size > 0 ? readPaths.size : readCalls, "file read"))
-  if (searches > 0) pieces.push(plural(searches, "search", "searches"))
-  return pieces.join(", ")
+  if (editCalls > 0) pieces.push(t("ui.aggregate_file_edits", { count: editPaths.size > 0 ? editPaths.size : editCalls }))
+  if (commands > 0) pieces.push(t("ui.aggregate_commands", { count: commands }))
+  if (readCalls > 0) pieces.push(t("ui.aggregate_file_reads", { count: readPaths.size > 0 ? readPaths.size : readCalls }))
+  if (searches > 0) pieces.push(t("ui.aggregate_searches", { count: searches }))
+  return pieces.join(t("ui.aggregate_separator"))
 }
 
 /**
@@ -149,22 +146,20 @@ export function getAggregateSummary(parts: AnyToolPart[], tense: "present" | "pa
   const pieces: string[] = []
   if (editCalls > 0) {
     const count = editPaths.size > 0 ? editPaths.size : editCalls
-    pieces.push(`${tense === "past" ? "edited" : "editing"} ${plural(count, "file")}`)
+    pieces.push(t(tense === "past" ? "ui.aggregate_editing_files" : "ui.aggregate_editing_files_present", { count }))
   }
   if (commands > 0) {
-    pieces.push(commands === 1
-      ? `${tense === "past" ? "ran" : "running"} command`
-      : `${tense === "past" ? "ran" : "running"} ${commands} commands`)
+    pieces.push(t(tense === "past" ? "ui.aggregate_running_commands" : "ui.aggregate_running_commands_present", { count: commands }))
   }
   if (readCalls > 0) {
     const count = readPaths.size > 0 ? readPaths.size : readCalls
-    pieces.push(`${tense === "past" ? "read" : "reading"} ${plural(count, "file")}`)
+    pieces.push(t(tense === "past" ? "ui.aggregate_reading_files" : "ui.aggregate_reading_files_present", { count }))
   }
   if (searches > 0) {
-    pieces.push(`${tense === "past" ? "ran" : "running"} ${plural(searches, "search", "searches")}`)
+    pieces.push(t(tense === "past" ? "ui.aggregate_running_searches" : "ui.aggregate_running_searches_present", { count: searches }))
   }
 
-  const joined = pieces.join(", ")
+  const joined = pieces.join(t("ui.aggregate_separator"))
   return joined.charAt(0).toUpperCase() + joined.slice(1)
 }
 
@@ -181,9 +176,9 @@ export function getAggregateRowFile(part: AnyToolPart): { verb: string; path: st
   const running = isToolPartInFlight(part)
   const path = filePathOf(part)
   if (!path) return null
-  if (isEditToolPart(part)) return { verb: running ? "Editing" : "Edited", path }
-  if (isWriteToolPart(part)) return { verb: running ? "Writing" : "Wrote", path }
-  if (isReadToolPart(part)) return { verb: running ? "Reading" : "Read", path }
+  if (isEditToolPart(part)) return { verb: running ? t("ui.editing") : t("ui.edited"), path }
+  if (isWriteToolPart(part)) return { verb: running ? t("ui.writing") : t("ui.wrote"), path }
+  if (isReadToolPart(part)) return { verb: running ? t("ui.reading") : t("ui.read"), path }
   return null
 }
 
@@ -205,8 +200,8 @@ export function getAggregateRowSearch(
   const scope = [path, include].filter(Boolean).join(" · ")
   return {
     verb: grep
-      ? (running ? "Searching code" : "Searched code")
-      : (running ? "Searching files" : "Searched files"),
+      ? (running ? t("ui.searching_code") : t("ui.searched_code"))
+      : (running ? t("ui.searching_files") : t("ui.searched_files")),
     pattern,
     scope: scope || null,
   }

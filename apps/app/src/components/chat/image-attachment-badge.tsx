@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import * as React from "react"
 import { X } from "lucide-react"
 
@@ -25,7 +26,7 @@ export function ImageAttachmentBadge({
         type="button"
         className="h-10 w-10 overflow-hidden rounded-xl border border-border/70 bg-background/50 transition-opacity hover:opacity-90"
         onClick={() => setOpen(true)}
-        aria-label={`Expand ${alt}`}
+        aria-label={t("ui.expand_image", { alt })}
         title={alt}
       >
         <img
@@ -44,8 +45,8 @@ export function ImageAttachmentBadge({
             event.stopPropagation()
             onRemove()
           }}
-          aria-label={`Remove ${alt}`}
-          title="Remove"
+          aria-label={t("ui.remove_image", { alt })}
+          title={t("action.remove")}
         >
           <X className="size-3" />
         </button>

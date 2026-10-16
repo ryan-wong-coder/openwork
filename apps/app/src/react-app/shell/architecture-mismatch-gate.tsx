@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import { useCallback, useEffect, useReducer, type ReactNode } from "react";
 
 import { isDesktopRuntime } from "../../app/utils";
@@ -95,7 +96,7 @@ export function ArchitectureMismatchGate({ children }: ArchitectureMismatchGateP
     void window.__OPENWORK_ELECTRON__?.shell?.openExternal?.(info.releaseUrl);
   }, [info?.releaseUrl]);
 
-  if (!checked) return <StartupScreen message="Checking this OpenWork installation" />;
+  if (!checked) return <StartupScreen message={t("interface.checking_this_openwork_installation")} />;
   if (!info?.mismatch) return <>{children}</>;
 
   return (
@@ -104,26 +105,21 @@ export function ArchitectureMismatchGate({ children }: ArchitectureMismatchGateP
         <section className="w-full overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.04] shadow-2xl shadow-black/40">
           <div className="grid gap-0 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="space-y-8 p-8 sm:p-10 lg:p-12">
-              <div className="inline-flex rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-amber-100">
-                Architecture mismatch
-              </div>
+              <div className="inline-flex rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-amber-100">{t("interface.architecture_mismatch")} </div>
               <div className="space-y-4">
-                <h1 className="max-w-2xl text-4xl font-semibold tracking-[-0.04em] text-white sm:text-5xl">
-                  Install the correct OpenWork build
-                </h1>
-                <p className="max-w-2xl text-base leading-7 text-white/72 sm:text-lg">
-                  Your application is running the {info.appArchLabel} version of OpenWork, but this {platformLabel(info.platform)} system is {info.systemArchLabel}. This may cause unpredictable issues.
+                <h1 className="max-w-2xl text-4xl font-semibold tracking-[-0.04em] text-white sm:text-5xl">{t("interface.install_the_correct_openwork_build")} </h1>
+                <p className="max-w-2xl text-base leading-7 text-white/72 sm:text-lg">{t("interface.your_application_is_running_the")} {info.appArchLabel}{t("interface.version_of_openwork_but_this")} {platformLabel(info.platform)}{t("interface.system_is")} {info.systemArchLabel}. This may cause unpredictable issues.
                 </p>
               </div>
 
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-                  <div className="text-xs uppercase tracking-[0.2em] text-white/40">Running app</div>
+                  <div className="text-xs uppercase tracking-[0.2em] text-white/40">{t("interface.running_app")}</div>
                   <div className="mt-2 text-2xl font-semibold text-white">{info.appArchLabel}</div>
                   <div className="mt-1 font-mono text-xs text-white/45">{info.appArch}</div>
                 </div>
                 <div className="rounded-2xl border border-emerald-300/20 bg-emerald-300/10 p-4">
-                  <div className="text-xs uppercase tracking-[0.2em] text-emerald-100/70">Your system</div>
+                  <div className="text-xs uppercase tracking-[0.2em] text-emerald-100/70">{t("interface.your_system")}</div>
                   <div className="mt-2 text-2xl font-semibold text-emerald-50">{info.systemArchLabel}</div>
                   <div className="mt-1 font-mono text-xs text-emerald-100/55">{info.systemArch}</div>
                 </div>
@@ -134,28 +130,20 @@ export function ArchitectureMismatchGate({ children }: ArchitectureMismatchGateP
                   type="button"
                   onClick={openDownload}
                   className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-emerald-100"
-                >
-                  Download correct version
-                </button>
+                >{t("interface.download_correct_version")} </button>
                 <button
                   type="button"
                   onClick={openRelease}
                   className="inline-flex items-center justify-center rounded-full border border-white/14 px-5 py-3 text-sm font-semibold text-white/85 transition hover:bg-white/10"
-                >
-                  Open release page
-                </button>
+                >{t("interface.open_release_page")} </button>
               </div>
             </div>
 
             <aside className="border-t border-white/10 bg-gradient-to-br from-emerald-300/12 via-sky-300/8 to-transparent p-8 sm:p-10 lg:border-l lg:border-t-0 lg:p-12">
               <div className="space-y-5 rounded-[28px] border border-white/10 bg-black/25 p-6 text-sm leading-6 text-white/68">
-                <div className="text-lg font-semibold text-white">Why OpenWork stopped here</div>
-                <p>
-                  OpenWork blocks startup when the installed app architecture does not match the machine architecture. This prevents runtime sidecars, browser tooling, and update downloads from continuing on the wrong build.
-                </p>
-                <p>
-                  After installing the correct {info.systemArchLabel} build, quit this copy and launch OpenWork again. Your workspaces and settings are kept in the same app data folder.
-                </p>
+                <div className="text-lg font-semibold text-white">{t("interface.why_openwork_stopped_here")}</div>
+                <p>{t("interface.openwork_blocks_startup_when_the_installed_app_architecture_does_not_match_the_machine_architecture_")} </p>
+                <p>{t("interface.after_installing_the_correct")} {info.systemArchLabel}{t("interface.build_quit_this_copy_and_launch_openwork_again_your_workspaces_and_settings_are_kept_in_the_same_app")} </p>
                 <div className="rounded-2xl bg-white/[0.06] p-4 font-mono text-xs text-white/55">
                   v{info.version} · {platformLabel(info.platform)} · {info.systemArch}
                 </div>

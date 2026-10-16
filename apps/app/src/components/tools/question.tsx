@@ -1,5 +1,7 @@
 "use client"
 
+import { t } from "@/i18n";
+
 import { Tool } from "@/components/ui/tool"
 import type { QuestionToolPart } from "@/lib/build-in-tools"
 import { toolDisplayTitle, truncateText } from "@/components/tools/path"
@@ -25,7 +27,7 @@ function getQuestionToolTitle(part: QuestionToolPart): string | null {
   const count = part.input?.questions?.length ?? 0
 
   if (part.state === "output-error") {
-    return label ?? "Asked a question"
+    return label ?? t("ui.asked_a_question")
   }
 
   if (part.state !== "output-available") {
@@ -36,18 +38,18 @@ function getQuestionToolTitle(part: QuestionToolPart): string | null {
     return label
   }
 
-  return count > 1 ? `Asked ${count} questions` : "Asked a question"
+  return count > 1 ? t("ui.asked_questions", { count }) : t("ui.asked_a_question")
 }
 
 function getQuestionToolDetail(part: QuestionToolPart): string | undefined {
   const count = part.input?.questions?.length ?? 0
 
   if (part.state === "output-available") {
-    return "Answered"
+    return t("ui.answered")
   }
 
   if (count > 1) {
-    return `${count} questions`
+    return t("ui.question_count", { count })
   }
 
   return undefined

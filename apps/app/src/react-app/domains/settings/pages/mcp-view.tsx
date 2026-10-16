@@ -549,7 +549,7 @@ export function McpView(props: McpViewProps) {
       await cloudSession.client.checkMcpConnection(activeOrganizationId, connectionId);
       props.onRefresh?.();
     } catch {
-      toast.error("Could not check this connection. Try again.");
+      toast.error(t("settings_extra.could_not_check_this_connection_try_again"));
     } finally {
       setCheckingConnection(null);
     }
@@ -1248,10 +1248,10 @@ export function McpView(props: McpViewProps) {
             presentation={detailPresentation}
             backLabel={t("extensions.title")}
             name={detailSkill.name}
-            description={detailSkill.description ?? "Installed skill"}
+            description={detailSkill.description ?? t("extensions.row_skill_fallback")}
             taxonomy="skill"
             connected={true}
-            connectedLabel={detailSkill.origin === "openwork-connect" ? "Available through OpenWork Connect" : undefined}
+            connectedLabel={detailSkill.origin === "openwork-connect" ? t("settings_extra.available_through_openwork_connect") : undefined}
             hidden={hidden}
             path={detailSkill.origin === "openwork-connect" ? undefined : detailSkill.path}
             sourceLabel={
@@ -1337,12 +1337,12 @@ export function McpView(props: McpViewProps) {
               ? `Provided by ${detailConnectMcp.pluginName}${detailConnectMcp.marketplaceName ? ` · ${detailConnectMcp.marketplaceName}` : ""}.`
               : detailConnectMcp.marketplaceName
                 ? `Provided by ${detailConnectMcp.marketplaceName}.`
-                : "Available through OpenWork Connect."
+                : t("interface.available_through_openwork_connect")
           }
           taxonomy="connection"
           connected={(props.availableConnectMcpStatuses?.[detailConnectMcp.id ?? detailConnectMcp.name]?.status) === "connected"}
-          connectedLabel="Available through OpenWork Connect"
-          disconnectedLabel="Setup required"
+          connectedLabel={t("settings_extra.available_through_openwork_connect")}
+          disconnectedLabel={t("settings_extra.setup_required")}
           url={detailConnectMcp.config.type === "remote" ? detailConnectMcp.config.url : undefined}
           oauth={detailConnectMcp.config.type === "remote"}
           facts={[
@@ -1520,7 +1520,7 @@ export function McpView(props: McpViewProps) {
             name={displayName}
             description={recordedState ? recordedConnectorNote(connection) : (!ready && addedByMe ? ownPlugin?.description : null) ?? detailOrgMcpItem.description ?? orgMcpConnectionActionLabel(connection)}
             taxonomy="connection"
-            connected={recordedState ? recordedState === "Ready" : ready}
+            connected={recordedState ? recordedState === t("connect.diagnostics_connection_ready") : ready}
             connectedLabel={recordedState ?? orgMcpConnectionActionLabel(connection)}
             savedKeyOnly={connection.authType === "apikey" && connection.credentialMode === "per_member"}
             disconnectedLabel={recordedState ?? (connection.authType === "apikey" && connection.credentialMode === "per_member" ? t("extensions.detail_no_key") : undefined)}
@@ -1544,7 +1544,7 @@ export function McpView(props: McpViewProps) {
                 : []),
             ]}
             connectLabel={orgMcpConnectionActionLabel(connection)}
-            reconnectLabel={connection.authType === "apikey" && connection.credentialMode === "per_member" ? "Replace key" : t("mcp.org_connection_reconnect_action")}
+            reconnectLabel={connection.authType === "apikey" && connection.credentialMode === "per_member" ? t("ui.replace_key") : t("mcp.org_connection_reconnect_action")}
             onConnect={!ready && canAuthorize && props.connectOrgMcp ? () => props.connectOrgMcp?.(connection.id) : undefined}
             onReconnect={ready && canAuthorize && props.reconnectOrgMcp ? () => props.reconnectOrgMcp?.(connection.id) : undefined}
             onUninstall={canDisconnect && props.disconnectOrgMcp ? () => props.disconnectOrgMcp?.(connection.id) : undefined}
@@ -1557,7 +1557,7 @@ export function McpView(props: McpViewProps) {
               <div className="flex flex-col gap-3">
                 <div className="flex flex-wrap gap-2">
                   <span className="rounded-full border border-dls-border bg-dls-hover px-2 py-1 text-xs text-dls-secondary">{addedByMe ? t("extensions.detail_chip_added_by_you") : t("extensions.detail_chip_shared_by_org")}</span>
-                  <span className="rounded-full border border-dls-border bg-dls-hover px-2 py-1 text-xs text-dls-secondary">{connection.credentialMode === "shared" ? "Org account" : "Your account"}</span>
+                  <span className="rounded-full border border-dls-border bg-dls-hover px-2 py-1 text-xs text-dls-secondary">{connection.credentialMode === "shared" ? t("interface.org_account") : t("interface.your_account")}</span>
                 </div>
                 {openInDenAction({ id: detailOrgMcpItem.id })}
               </div>
@@ -1806,15 +1806,15 @@ export function McpView(props: McpViewProps) {
       node: (
         <ExtensionCard
           name={item.name}
-          description={recordedState ? `${recordedConnectorNote(connection)}${!canManageCloudConnections && recordedState === "Couldn't verify" ? " An admin can check again." : ""}` : item.description?.trim() || t("extensions.row_shared_connection")}
+          description={recordedState ? `${recordedConnectorNote(connection)}${!canManageCloudConnections && recordedState === t("settings_extra.couldn_t_verify") ? t("settings_extra.an_admin_can_check_again") : ""}` : item.description?.trim() || t("extensions.row_shared_connection")}
           taxonomy="connection"
           url={connection.url}
-          connected={recordedState ? recordedState === "Ready" : group === "ready"}
+          connected={recordedState ? recordedState === t("connect.diagnostics_connection_ready") : group === "ready"}
           statusChip={attention.statusChip}
-          nextActionLabel={recordedState === "Sign in" ? "Sign in" : recordedState === "Set up" ? "Set up" : recordedState ? undefined : attention.actionLabel}
-          onNextAction={recordedState === "Sign in" ? () => props.connectOrgMcp?.(connection.id) : undefined}
-          trailing={recordedState === "Couldn't verify" || recordedState === "Ready" ? (
-            <Button size="sm" variant="outline" disabled={!canManageCloudConnections || checkingConnection !== null} title={!canManageCloudConnections ? "An admin can check this connection." : undefined} onClick={() => void checkAgain(connection.id)}>Check again</Button>
+          nextActionLabel={recordedState === t("den.signin_button") ? t("den.signin_button") : recordedState === t("extensions.row_action_set_up") ? t("extensions.row_action_set_up") : recordedState ? undefined : attention.actionLabel}
+          onNextAction={recordedState === t("den.signin_button") ? () => props.connectOrgMcp?.(connection.id) : undefined}
+          trailing={recordedState === t("settings_extra.couldn_t_verify") || recordedState === t("connect.diagnostics_connection_ready") ? (
+            <Button size="sm" variant="outline" disabled={!canManageCloudConnections || checkingConnection !== null} title={!canManageCloudConnections ? t("interface.an_admin_can_check_this_connection") : undefined} onClick={() => void checkAgain(connection.id)}>{t("interface.check_again")}</Button>
           ) : undefined}
           onClick={() => openDetail({ kind: "org-mcp", item })}
         />
@@ -1990,9 +1990,9 @@ export function McpView(props: McpViewProps) {
           data-testid="manage-extensions-policy-notice"
           className="mb-5 rounded-xl border border-dls-border bg-dls-hover px-4 py-4 text-xs leading-5 text-dls-secondary"
         >
-          <p className="text-sm font-medium text-foreground">Your team’s tool access</p>
+          <p className="text-sm font-medium text-foreground">{t("interface.your_team_s_tool_access")}</p>
           <p className="mt-1">{manageExtensionsDisabledReason()}</p>
-          <p className="mt-2">Need an MCP server or skill? Ask your admin to share it with your team or allow local tools in Team → Access. You can still sign in to available connections below.</p>
+          <p className="mt-2">{t("interface.need_an_mcp_server_or_skill_ask_your_admin_to_share_it_with_your_team_or_allow_local_tools_in_team_a")}</p>
           {props.builtInExtensionsDisabled ? <p className="mt-2">{t("extensions.builtins_disabled_notice")}</p> : null}
         </div>
       )}
@@ -2315,11 +2315,11 @@ function LibrarySectionHeader(props: { section: LibrarySection; label: string; m
 }
 
 /** Rows a signed-out member could use after signing in, shown locked. */
-const lockedLibraryPreviews: Array<{ name: string; description: string; iconSrc: string }> = [
-  { name: "Google Workspace", description: "Gmail, Calendar and Drive", iconSrc: "/ext-google-workspace.svg" },
+const lockedLibraryPreviews: Array<{ name: string; descriptionKey: string; iconSrc: string }> = [
+  { name: "Google Workspace", descriptionKey: "settings_extra.gmail_calendar_and_drive", iconSrc: "/ext-google-workspace.svg" },
   // Simple Icons no longer ships Slack's mark, so it is bundled like the others.
-  { name: "Slack", description: "Read and post in your channels", iconSrc: "/ext-slack.svg" },
-  { name: "Linear", description: "Issues and projects", iconSrc: "/ext-linear.svg" },
+  { name: "Slack", descriptionKey: "settings_extra.read_and_post_in_your_channels", iconSrc: "/ext-slack.svg" },
+  { name: "Linear", descriptionKey: "settings_extra.issues_and_projects", iconSrc: "/ext-linear.svg" },
 ];
 
 /**
@@ -2398,7 +2398,7 @@ export function LibraryInventory(props: {
                     <div key={preview.name} className="opacity-60" data-library-locked={preview.name}>
                       <ExtensionCard
                         name={preview.name}
-                        description={preview.description}
+                        description={t(preview.descriptionKey)}
                         iconSrc={preview.iconSrc}
                         taxonomy="connection"
                         disabled

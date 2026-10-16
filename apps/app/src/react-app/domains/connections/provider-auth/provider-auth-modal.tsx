@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import {
   ChevronLeft,
   Loader2,
@@ -714,9 +715,7 @@ export default function ProviderAuthModal(props: ProviderAuthModalProps) {
           <div className="line-clamp-2 text-xs text-muted-foreground">{entrySubtitle(entry)}</div>
         </div>
         {entry.connected ? null : (
-          <span className={`shrink-0 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${active ? "bg-dls-text text-dls-surface" : "text-muted-foreground"}`}>
-            Connect
-          </span>
+          <span className={`shrink-0 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${active ? "bg-dls-text text-dls-surface" : "text-muted-foreground"}`}>{t("join_org.connect_button")} </span>
         )}
       </button>
     );
@@ -733,9 +732,8 @@ export default function ProviderAuthModal(props: ProviderAuthModalProps) {
         initialFocus={() => isMobile ? titleRef.current : searchInputRef.current ?? titleRef.current}
         className="flex max-h-[min(680px,calc(100dvh-2rem))] min-h-0 w-[calc(100vw-2rem)] max-w-[34rem] flex-col overflow-hidden sm:max-w-[34rem]">
         <DialogHeader className="pr-8">
-          <DialogTitle ref={titleRef} tabIndex={-1}>Connect a provider</DialogTitle>
-          <DialogDescription className="text-pretty">
-            Adds a key to this device only.{props.organizationName ? ` Providers from ${props.organizationName} are already included and managed in Den.` : ""}
+          <DialogTitle ref={titleRef} tabIndex={-1}>{t("models.connect_provider")}</DialogTitle>
+          <DialogDescription className="text-pretty">{t("interface.adds_a_key_to_this_device_only")}{props.organizationName ? ` Providers from ${props.organizationName} are already included and managed in Den.` : ""}
           </DialogDescription>
         </DialogHeader>
 
@@ -745,9 +743,7 @@ export default function ProviderAuthModal(props: ProviderAuthModalProps) {
               {errorMessage}
             </div>
           ) : props.loading ? (
-            <div className="rounded-xl border border-gray-6 bg-gray-1/60 px-4 py-3 text-sm text-gray-10 animate-pulse">
-              Loading providers…
-            </div>
+            <div className="rounded-xl border border-gray-6 bg-gray-1/60 px-4 py-3 text-sm text-gray-10 animate-pulse">{t("interface.loading_providers")} </div>
           ) : null}
 
           {!props.loading ? (
@@ -759,8 +755,8 @@ export default function ProviderAuthModal(props: ProviderAuthModalProps) {
                     <input
                       ref={searchInputRef}
                       type="search"
-                      aria-label="Search providers"
-                      placeholder="Filter providers by name or ID"
+                      aria-label={t("interface.search_providers")}
+                      placeholder={t("interface.filter_providers_by_name_or_id")}
                       value={searchQuery}
                       onChange={(event) => {
                         setSearchQuery(event.currentTarget.value);
@@ -776,16 +772,16 @@ export default function ProviderAuthModal(props: ProviderAuthModalProps) {
 
                   {showIncludedAuto || connectedCount ? (
                     <div role="group" aria-labelledby="connect-provider-device">
-                      <ProviderSectionLabel id="connect-provider-device" count={connectedCount + Number(showIncludedAuto)}>On this device</ProviderSectionLabel>
+                      <ProviderSectionLabel id="connect-provider-device" count={connectedCount + Number(showIncludedAuto)}>{t("interface.on_this_device")}</ProviderSectionLabel>
                       {showIncludedAuto ? (
                         <div className="flex items-center gap-3 rounded-xl px-2 py-2" data-testid="included-openwork-provider">
                           <ProviderTile providerId="openwork" size="sm" />
                           <div className="min-w-0 flex-1">
-                            <div className="truncate text-sm font-medium text-dls-text">OpenWork Models</div>
+                            <div className="truncate text-sm font-medium text-dls-text">{t("interface.openwork_models")}</div>
                             <div className="line-clamp-2 text-xs text-muted-foreground">{autoProviderSubtitle()}</div>
                           </div>
                           {props.openWorkModelsState === "off" || props.openWorkModelsState === "unavailable" ? (
-                            <ProviderStatus tone="neutral">{props.openWorkModelsState === "off" ? "Turned off" : "Unavailable"}</ProviderStatus>
+                            <ProviderStatus tone="neutral">{props.openWorkModelsState === "off" ? t("interface.turned_off") : t("config.unavailable")}</ProviderStatus>
                           ) : null}
                         </div>
                       ) : null}
@@ -795,14 +791,14 @@ export default function ProviderAuthModal(props: ProviderAuthModalProps) {
 
                   {filteredEntries.length > connectedCount ? (
                     <div role="group" aria-labelledby="connect-provider-available">
-                      <ProviderSectionLabel id="connect-provider-available" count={filteredEntries.length - connectedCount}>Available to add</ProviderSectionLabel>
+                      <ProviderSectionLabel id="connect-provider-available" count={filteredEntries.length - connectedCount}>{t("interface.available_to_add")}</ProviderSectionLabel>
                       {filteredEntries.slice(connectedCount).map((entry, offset) => renderEntry(entry, connectedCount + offset))}
                     </div>
                   ) : null}
 
                   {!filteredEntries.length && !showIncludedAuto ? (
                     <div className="px-2 py-6 text-center text-sm text-muted-foreground">
-                      {entries.length ? "No providers match your search." : "No providers available."}
+                      {entries.length ? t("interface.no_providers_match_your_search") : t("interface.no_providers_available")}
                     </div>
                   ) : null}
                 </div>
@@ -813,11 +809,9 @@ export default function ProviderAuthModal(props: ProviderAuthModalProps) {
                   <div className="flex items-center justify-between gap-4">
                     <div>
                       <div className="text-sm font-medium text-gray-12">{selectedEntry.name}</div>
-                      <div className="text-xs text-gray-10 mt-1">Choose how you'd like to connect.</div>
+                      <div className="text-xs text-gray-10 mt-1">{t("interface.choose_how_you_d_like_to_connect")}</div>
                     </div>
-                    <Button variant="outline" onClick={handleBack} disabled={actionDisabled}>
-                      Back
-                    </Button>
+                    <Button variant="outline" onClick={handleBack} disabled={actionDisabled}>{t("dashboard.modal_back")} </Button>
                   </div>
                   <div className="grid gap-2">
                     {selectedEntry.methods.map((method) => (
@@ -853,27 +847,23 @@ export default function ProviderAuthModal(props: ProviderAuthModalProps) {
                   </div>
                   <div className="text-xs text-gray-10">
                     {isOpencodeZenProvider(selectedEntry.id)
-                      ? "Sign in to OpenCode Zen with an API key from opencode.ai/auth."
-                      : "Paste your API key to connect."}
+                      ? t("interface.sign_in_to_opencode_zen_with_an_api_key_from_opencode_ai_auth")
+                      : t("interface.paste_your_api_key_to_connect")}
                   </div>
                   {isOpencodeZenProvider(selectedEntry.id) ? (
                     <div className="rounded-lg border border-indigo-5/30 bg-indigo-3/15 px-3 py-2.5 text-xs text-indigo-12 space-y-1.5">
-                      <div>
-                        OpenCode Zen gives you access to the best coding models. Free models keep working without a key.
-                      </div>
+                      <div>{t("interface.opencode_zen_gives_you_access_to_the_best_coding_models_free_models_keep_working_without_a_key")} </div>
                       <button
                         type="button"
                         className="text-indigo-11 hover:text-indigo-12 underline underline-offset-2 font-medium"
                         onClick={() => void openExternalUrl(OPENCODE_ZEN_KEY_URL)}
-                      >
-                        Get an API key →
-                      </button>
+                      >{t("interface.get_an_api_key")} </button>
                     </div>
                   ) : null}
                   <SecretTextInput
                     id="provider-auth-api-key"
                     label="API key"
-                    placeholder={isOpencodeZenProvider(selectedEntry.id) ? "ock_..." : "sk-..."}
+                    placeholder={isOpencodeZenProvider(selectedEntry.id) ? t("interface.ock") : "sk-..."}
                     handleRef={apiKeyField}
                     onValueChange={(next) => {
                       setHasApiKey(next);
@@ -883,9 +873,7 @@ export default function ProviderAuthModal(props: ProviderAuthModalProps) {
                     disabled={actionDisabled}
                   />
                   {selectedEntry.env.length > 0 ? (
-                    <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-gray-9">
-                      Env vars:
-                      {selectedEntry.env.map((envVar) => (
+                    <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-gray-9">{t("interface.env_vars")} {selectedEntry.env.map((envVar) => (
                         <span
                           key={envVar}
                           className="rounded-md bg-gray-3/40 px-1.5 py-0.5 font-mono text-[10px] text-gray-11"
@@ -904,15 +892,11 @@ export default function ProviderAuthModal(props: ProviderAuthModalProps) {
                   <div className="flex items-center justify-between gap-4">
                     <div>
                       <div className="text-sm font-medium text-gray-12">{selectedEntry.name}</div>
-                      <div className="text-xs text-gray-10 mt-1">Finish OAuth by pasting the authorization code.</div>
+                      <div className="text-xs text-gray-10 mt-1">{t("interface.finish_oauth_by_pasting_the_authorization_code")}</div>
                     </div>
-                    <Button variant="outline" onClick={handleBack} disabled={actionDisabled}>
-                      Back
-                    </Button>
+                    <Button variant="outline" onClick={handleBack} disabled={actionDisabled}>{t("dashboard.modal_back")} </Button>
                   </div>
-                  <div className="text-xs text-gray-9">
-                    Complete sign-in in your browser, then paste the code here.
-                  </div>
+                  <div className="text-xs text-gray-9">{t("interface.complete_sign_in_in_your_browser_then_paste_the_code_here")} </div>
                   {oauthInstructions ? (
                     <div className="rounded-lg border border-gray-6/60 bg-gray-1/60 px-3 py-2 text-[11px] text-gray-9 font-mono break-all">
                       {oauthInstructions}
@@ -920,9 +904,9 @@ export default function ProviderAuthModal(props: ProviderAuthModalProps) {
                   ) : null}
                   <TextInput
                     className="text-base lg:text-sm"
-                    label="Authorization code"
+                    label={t("interface.authorization_code")}
                     type="text"
-                    placeholder="Paste code"
+                    placeholder={t("interface.paste_code")}
                     value={oauthCodeInput}
                     onChange={(event) => {
                       setOauthCodeInput(event.currentTarget.value);
@@ -944,14 +928,12 @@ export default function ProviderAuthModal(props: ProviderAuthModalProps) {
                       onClick={() => {
                         void openOauthUrl(oauthSession.authorization.url ?? "");
                       }}
-                    >
-                      Open browser again
-                    </Button>
+                    >{t("interface.open_browser_again")} </Button>
                     <Button
                       onClick={() => void handleOauthCodeSubmit()}
                       disabled={actionDisabled || !oauthCodeInput.trim()}
                     >
-                      {props.submitting ? "Verifying..." : "Complete connection"}
+                      {props.submitting ? t("interface.verifying") : t("interface.complete_connection")}
                     </Button>
                   </div>
                 </div>
@@ -962,43 +944,39 @@ export default function ProviderAuthModal(props: ProviderAuthModalProps) {
                   <div className="flex items-center justify-between gap-4">
                     <div>
                       <div className="text-sm font-medium text-gray-12">{selectedEntry.name}</div>
-                      <div className="text-xs text-gray-10 mt-1">Waiting for browser confirmation.</div>
+                      <div className="text-xs text-gray-10 mt-1">{t("interface.waiting_for_browser_confirmation")}</div>
                     </div>
-                    <Button variant="outline" onClick={handleBack} disabled={actionDisabled}>
-                      Back
-                    </Button>
+                    <Button variant="outline" onClick={handleBack} disabled={actionDisabled}>{t("dashboard.modal_back")} </Button>
                   </div>
                   {isOpenAiHeadlessSession ? (
                     <div className="space-y-2 text-xs text-gray-9">
-                      <div>You'll need to sign in to your OpenAI account and provide the code below.</div>
-                      <div>The first time you do this you'll need to enable Device auth in your account settings.</div>
-                      <div>ChatGPT &gt; Account Settings &gt; Security &gt; Enable device code authorization</div>
-                      <div>When you're ready, copy the code below, and click &quot;Open Browser&quot;.</div>
+                      <div>{t("interface.you_ll_need_to_sign_in_to_your_openai_account_and_provide_the_code_below")}</div>
+                      <div>{t("interface.the_first_time_you_do_this_you_ll_need_to_enable_device_auth_in_your_account_settings")}</div>
+                      <div>{t("interface.chatgpt_gt_account_settings_gt_security_gt_enable_device_code_authorization")}</div>
+                      <div>{t("interface.when_you_re_ready_copy_the_code_below_and_click_quot_open_browser_quot")}</div>
                     </div>
                   ) : (
-                    <div className="text-xs text-gray-9">
-                      Sign in in the browser tab we just opened. We will complete the connection automatically.
-                    </div>
+                    <div className="text-xs text-gray-9">{t("interface.sign_in_in_the_browser_tab_we_just_opened_we_will_complete_the_connection_automatically")} </div>
                   )}
                   {oauthDisplayCode ? (
                     <div className="rounded-xl border border-gray-6/70 bg-gray-2/40 p-3 flex items-center gap-3">
                       <div className="flex-1 min-w-0">
-                        <div className="text-[10px] uppercase tracking-wide text-gray-8">Confirmation code</div>
+                        <div className="text-[10px] uppercase tracking-wide text-gray-8">{t("interface.confirmation_code")}</div>
                         <div className="text-sm text-gray-12 font-mono break-all">{oauthDisplayCode}</div>
                       </div>
                       <Button variant="outline" size="sm" className="shrink-0" onClick={() => void copyOauthDisplayCode()}>
-                        {oauthCodeCopied ? "Copied" : "Copy"}
+                        {oauthCodeCopied ? t("den.signin_link_copied") : t("config.copy")}
                       </Button>
                     </div>
                   ) : null}
                   {isOpenAiHeadlessSession && !oauthBrowserOpened ? (
                     <div className="flex items-center gap-2 text-xs text-gray-9">
-                      <span>Authorization checks will start after you click Open Browser.</span>
+                      <span>{t("interface.authorization_checks_will_start_after_you_click_open_browser")}</span>
                     </div>
                   ) : (
                     <div className="flex items-center gap-2 text-xs text-gray-9">
                       <Loader2 size={14} className={props.submitting || pollingBusy || oauthAutoBusy ? "animate-spin" : ""} />
-                      <span>Checking connection status automatically…</span>
+                      <span>{t("interface.checking_connection_status_automatically")}</span>
                     </div>
                   )}
                   <div className="flex items-center justify-between gap-3">
@@ -1010,13 +988,11 @@ export default function ProviderAuthModal(props: ProviderAuthModalProps) {
                     >
                       {isOpenAiHeadlessSession
                         ? oauthBrowserOpened
-                          ? "Reopen Browser"
-                          : "Open Browser"
-                        : "Open browser again"}
+                          ? t("interface.reopen_browser")
+                          : t("interface.open_browser")
+                        : t("interface.open_browser_again")}
                     </Button>
-                    <div className="text-[11px] text-gray-9 text-right">
-                      This window will close once the provider is connected.
-                    </div>
+                    <div className="text-[11px] text-gray-9 text-right">{t("interface.this_window_will_close_once_the_provider_is_connected")} </div>
                   </div>
                 </div>
               ) : null}
@@ -1029,10 +1005,10 @@ export default function ProviderAuthModal(props: ProviderAuthModalProps) {
             {props.organizationProviderCount !== undefined ? (
               <div className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
                 {props.organizationName ? <OrganizationMark name={props.organizationName} size="sm" /> : null}
-                <span className="truncate" title={`${props.organizationProviderCount === 1 ? "1 provider" : `${props.organizationProviderCount} providers`} already included by ${props.organizationName || "your organization"}`}>{props.organizationProviderCount} included by {props.organizationName || "your organization"}</span>
-                {props.onOpenDen ? <><span aria-hidden>·</span><button type="button" className="shrink-0 font-medium text-dls-text underline-offset-2 hover:underline" onClick={props.onOpenDen}>Manage in Den</button></> : null}
+                <span className="truncate" title={`${props.organizationProviderCount === 1 ? "1 provider" : `${props.organizationProviderCount} providers`} already included by ${props.organizationName || "your organization"}`}>{props.organizationProviderCount}{t("interface.included_by")} {props.organizationName || t("interface.your_organization_bb0bdf0a")}</span>
+                {props.onOpenDen ? <><span aria-hidden>·</span><button type="button" className="shrink-0 font-medium text-dls-text underline-offset-2 hover:underline" onClick={props.onOpenDen}>{t("interface.manage_in_den")}</button></> : null}
               </div>
-            ) : <span className="text-xs text-muted-foreground">{props.submitting ? submittingLabel() : "Keys stay on this device."}</span>}
+            ) : <span className="text-xs text-muted-foreground">{props.submitting ? submittingLabel() : t("interface.keys_stay_on_this_device")}</span>}
             <div className="hidden shrink-0 items-center gap-1 sm:flex" aria-hidden>
               {["↑↓", "↵", "esc"].map((key) => <kbd key={key} className="rounded-md border border-dls-border bg-dls-surface px-1.5 py-0.5 font-sans text-[11px] text-muted-foreground">{key}</kbd>)}
             </div>
@@ -1047,26 +1023,20 @@ export default function ProviderAuthModal(props: ProviderAuthModalProps) {
           <div className="flex w-full items-center gap-2">
             {resolvedView === "api" && selectedEntry ? (
               <Button variant="outline" onClick={handleBack} disabled={actionDisabled}>
-                <ChevronLeft className="size-4" />
-                Back
-              </Button>
+                <ChevronLeft className="size-4" />{t("dashboard.modal_back")} </Button>
             ) : null}
             <div className="flex-1" />
             <DialogClose
               disabled={actionDisabled}
               render={<Button variant="outline" disabled={actionDisabled} />}
-            >
-              Close
-            </DialogClose>
+            >{t("common.close")} </DialogClose>
             {resolvedView === "api" && selectedEntry ? (
               <Button onClick={handleApiSubmit} disabled={actionDisabled || !hasApiKey}>
                 {props.submitting ? (
                   <>
-                    <Loader2 className="size-4 animate-spin" />
-                    Saving…
-                  </>
+                    <Loader2 className="size-4 animate-spin" />{t("settings.environment.saving")} </>
                 ) : (
-                  "Save key"
+                  t("interface.save_key")
                 )}
               </Button>
             ) : null}

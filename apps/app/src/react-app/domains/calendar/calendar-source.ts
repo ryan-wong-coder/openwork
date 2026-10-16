@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { DenApiError, type DenClient } from "@/app/lib/den"
 import {
   calendarRangeSearch,
@@ -60,7 +61,7 @@ async function mockRequest(baseUrl: string, path: string, query: DenCalendarRang
   if (!response.ok) {
     const body = typeof payload === "object" && payload !== null ? payload : {}
     const code = "error" in body && typeof body.error === "string" ? body.error : "request_failed"
-    const message = "message" in body && typeof body.message === "string" ? body.message : `Request failed with ${response.status}.`
+    const message = "message" in body && typeof body.message === "string" ? body.message : t("ui_extra.calendar_request_failed", { status: response.status })
     throw new DenApiError(response.status, code, message)
   }
   return payload
@@ -71,12 +72,12 @@ export function createMockCalendarTransport(baseUrl: string): CalendarTransport 
     kind: "mock",
     async google(query, signal) {
       const parsed = denGoogleCalendarEventsResponseSchema.safeParse(await mockRequest(baseUrl, DEN_GOOGLE_CALENDAR_EVENTS_PATH, query, signal))
-      if (!parsed.success) throw new DenApiError(502, "invalid_calendar_payload", "The calendar mock returned an unexpected Google response.")
+      if (!parsed.success) throw new DenApiError(502, "invalid_calendar_payload", t("ui_extra.calendar_mock_google_invalid"))
       return parsed.data.events
     },
     async microsoft(query, signal) {
       const parsed = denMicrosoftCalendarEventsResponseSchema.safeParse(await mockRequest(baseUrl, DEN_MICROSOFT_CALENDAR_EVENTS_PATH, query, signal))
-      if (!parsed.success) throw new DenApiError(502, "invalid_calendar_payload", "The calendar mock returned an unexpected Outlook response.")
+      if (!parsed.success) throw new DenApiError(502, "invalid_calendar_payload", t("ui_extra.calendar_mock_outlook_invalid"))
       return parsed.data.events
     },
   }

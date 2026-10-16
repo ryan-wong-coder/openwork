@@ -98,9 +98,7 @@ export function CloudAccountSection({
         <ConnectedOrg org={activeOrg} />
       ) : orgsBusy ? (
         <div className="flex items-center gap-2 text-sm text-dls-secondary">
-          <Loader2 size={14} className="animate-spin" />
-          Loading organizations...
-        </div>
+          <Loader2 size={14} className="animate-spin" />{t("interface.loading_organizations")} </div>
       ) : null}
 
       {orgsError ? <SettingsNotice tone="error">{orgsError}</SettingsNotice> : null}
@@ -121,8 +119,7 @@ function ConnectedOrg({ org }: { org: DenOrgSummary }) {
       <div className="min-w-0 flex-1">
         <div className="text-sm font-medium text-dls-text">{org.name}</div>
         <div className="text-xs text-dls-secondary">
-          {formatDenOrgRoleLabel(org.role)} &middot; Connected
-        </div>
+          {formatDenOrgRoleLabel(org.role)}{t("interface.middot_connected")} </div>
       </div>
       <Check size={16} className="shrink-0 text-green-11" />
     </div>
@@ -152,39 +149,30 @@ function OrgPicker({
   if (orgsBusy) {
     return (
       <div className="flex flex-col items-center gap-3 py-6 text-sm text-dls-secondary">
-        <Loader2 size={20} className="animate-spin" />
-        Loading your organizations...
-      </div>
+        <Loader2 size={20} className="animate-spin" />{t("interface.loading_your_organizations")} </div>
     );
   }
 
   if (orgs.length === 0) {
     return (
-      <div className="rounded-xl border border-dls-border bg-dls-surface px-4 py-6 text-center text-sm text-dls-secondary">
-        No organizations found.{" "}
+      <div className="rounded-xl border border-dls-border bg-dls-surface px-4 py-6 text-center text-sm text-dls-secondary">{t("interface.no_organizations_found")}{" "}
         <button
           type="button"
           className="font-medium text-dls-text underline underline-offset-2"
           onClick={() => void onRefresh()}
-        >
-          Refresh
-        </button>
+        >{t("skills.refresh")} </button>
       </div>
     );
   }
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="text-sm font-medium text-dls-text">
-        Select an organization
-      </div>
-      <div className="text-xs text-dls-secondary">
-        Choose the organization to use with this workspace. Sign out to switch later.
-      </div>
+      <div className="text-sm font-medium text-dls-text">{t("interface.select_an_organization")} </div>
+      <div className="text-xs text-dls-secondary">{t("interface.choose_the_organization_to_use_with_this_workspace_sign_out_to_switch_later")} </div>
       {orgs.length > 10 ? (
         <Input
-          aria-label="Search organizations"
-          placeholder="Search organizations..."
+          aria-label={t("interface.search_organizations")}
+          placeholder={t("interface.search_organizations_873aee3f")}
           value={query}
           className="h-auto rounded-xl border-dls-border bg-dls-surface px-4 py-2.5 text-sm text-dls-text shadow-none placeholder:text-dls-secondary focus-visible:border-dls-text/30 focus-visible:ring-0 dark:bg-dls-surface"
           onChange={(event) => updateQuery(event.target.value)}
@@ -212,9 +200,7 @@ function OrgPicker({
         ))}
       </div>
       {filtered.length === 0 && query.trim() ? (
-        <div className="text-sm text-dls-secondary">
-          No organizations match your search.
-        </div>
+        <div className="text-sm text-dls-secondary">{t("interface.no_organizations_match_your_search")} </div>
       ) : null}
       {hasMore ? (
         <div className="flex flex-col items-start gap-2">
@@ -224,12 +210,8 @@ function OrgPicker({
             size="sm"
             className="rounded-xl border-dls-border text-dls-text hover:bg-dls-hover"
             onClick={showMore}
-          >
-            Show more
-          </Button>
-          <div className="text-xs text-dls-secondary">
-            Showing {visible.length} of {filtered.length} organizations
-          </div>
+          >{t("workspace_list.show_more_fallback")} </Button>
+          <div className="text-xs text-dls-secondary">{t("interface.showing")} {visible.length}{t("interface.of")} {filtered.length}{t("interface.organizations_f8a665a9")} </div>
         </div>
       ) : null}
     </div>

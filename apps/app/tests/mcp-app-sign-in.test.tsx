@@ -1,4 +1,6 @@
-import { expect, test } from "bun:test"
+import { beforeEach, expect, test } from "bun:test"
+import { setLocale } from "../src/i18n"
+
 import { renderToStaticMarkup } from "react-dom/server"
 import type { DenExternalMcpConnection } from "../src/app/lib/den"
 import { MessageListProvider } from "../src/components/chat/message-list-provider"
@@ -8,6 +10,8 @@ import {
   signInPromptFromToolResult,
   signInPromptsForConnections,
 } from "../src/components/chat/mcp-app-sign-in"
+
+beforeEach(() => setLocale("en"))
 
 const launch = {
   content: [{ type: "text", text: "Inventory board" }],

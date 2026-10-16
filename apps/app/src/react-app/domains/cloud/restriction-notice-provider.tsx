@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import {
   createContext,
   useCallback,
@@ -70,7 +71,7 @@ export function RestrictionNoticeProvider({ children }: RestrictionNoticeProvide
       {children}
       <RestrictionNoticeModal
         open={notice !== null}
-        title={notice?.title ?? "Restriction"}
+        title={notice?.title ?? t("interface.restriction")}
         message={notice?.message ?? ""}
         onClose={dismiss}
       />

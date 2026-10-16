@@ -1,5 +1,7 @@
 "use client"
 
+import { t } from "@/i18n";
+
 import { useState } from "react"
 import type { DynamicToolUIPart } from "ai"
 import { Braces, Check, Loader2, Lock } from "lucide-react"
@@ -15,24 +17,24 @@ import { useOptionalMessageList } from "./message-list-provider"
 
 type ConnectionActionType = NonNullable<ConnectionActionPayload["action"]>["type"]
 
-const ACTION_OWNER = {
-  member: "You",
-  organization_admin: "Your organization admin",
-  provider_admin: "The provider admin",
-  network_admin: "Your network admin",
-  openwork: "OpenWork support",
-}
+const actionOwners = () => ({
+  member: t("extensions.share_you"),
+  organization_admin: t("ui.your_organization_admin"),
+  provider_admin: t("ui.the_provider_admin"),
+  network_admin: t("ui.your_network_admin"),
+  openwork: t("connect.diagnostics_owner_openwork_support"),
+})
 
-const BLOCKED_VERB: Partial<Record<ConnectionActionType, string>> = {
-  update_credentials: "update credentials for",
-  fix_network: "restore network access for",
-  fix_provider: "restore provider access for",
-}
+const blockedVerbs = (): Partial<Record<ConnectionActionType, string>> => ({
+  update_credentials: t("ui.connection_update_credentials"),
+  fix_network: t("ui.connection_restore_network"),
+  fix_provider: t("ui.connection_restore_provider"),
+})
 
 function blockedTitle(connection: ConnectionActionPayload): string {
-  const owner = connection.actor ? ACTION_OWNER[connection.actor] : "The connection owner"
-  const verb = (connection.action ? BLOCKED_VERB[connection.action.type] : undefined) ?? "configure"
-  return `${owner} must ${verb} ${connection.connectionName}`
+  const owner = connection.actor ? actionOwners()[connection.actor] : t("ui.the_connection_owner")
+  const verb = (connection.action ? blockedVerbs()[connection.action.type] : undefined) ?? t("ui.connection_configure")
+  return t("ui.blocked_connection_action", { owner, action: verb, name: connection.connectionName })
 }
 
 function ServiceMark({ name, iconUrl }: { name: string; iconUrl: string | null | undefined }) {
@@ -96,26 +98,26 @@ export function ConnectionCard({ part, callbacks, reconnectCallbacks, reconnectS
   const waiting = !settled && reconnectState === "authorization_opened"
   const failed = !settled && reconnectState === "failed"
   const blocked = !settled && !action
-  const verb = action?.label ?? "Connect"
+  const verb = action?.label ?? t("composer.plus_connect")
   const again = connection.state === "reauth_required"
-  const idleTitle = subject && action ? `Sign in to ${name}${again ? " again" : ""} to use ${subject}`
-    : decisionAvailable ? `${verb} ${name} to continue` : `${verb} ${name}`
-  const title = skipped ? `Skipped ${name}`
-    : connected ? action?.credentialKind === "personal_key" ? `${name}: key saved` : `${name} connected`
+  const idleTitle = subject && action ? t(again ? "ui.sign_in_again_for_subject" : "ui.sign_in_for_subject", { name, subject })
+    : decisionAvailable ? t("ui.connection_action_continue", { action: verb, name }) : `${verb} ${name}`
+  const title = skipped ? t("ui.named_connection_skipped", { name })
+    : connected ? action?.credentialKind === "personal_key" ? t("ui.named_key_saved", { name }) : t("ui.named_connection_connected", { name })
     : blocked ? blockedTitle(connection)
-    : opening ? action?.credentialKind === "personal_key" ? `${verb === "Replace key" ? "Replacing" : "Adding"} your key for ${name}…` : `Signing in to ${name}…`
-    : waiting ? `Finish signing in to ${name} in your browser`
-    : failed ? `${name} sign-in didn't finish`
-    : action?.credentialKind === "personal_key" ? `${verb} for ${name}${decisionAvailable ? " to continue" : ""}`
+    : opening ? action?.credentialKind === "personal_key" ? t("ui.saving_named_key", { name }) : t("ui.signing_in_named", { name })
+    : waiting ? t("ui.finish_named_signin", { name })
+    : failed ? t("ui.named_connection_sign_in_failed", { name })
+    : action?.credentialKind === "personal_key" ? t("ui.key_action_named", { action: verb, name })
     : idleTitle
   const signIn = subject && action?.credentialKind !== "personal_key"
-  const primaryLabel = waiting ? "Open sign-in again" : failed ? "Try again" : decisionAvailable ? "Authenticate"
-    : signIn ? again ? "Sign in again" : "Sign in" : verb
+  const primaryLabel = waiting ? t("ui.open_sign_in_again") : failed ? t("engine_migration.try_again") : decisionAvailable ? t("ui.authenticate")
+    : signIn ? again ? t("ui.sign_in_again") : t("den.signin_button") : verb
   const actionable = !readOnly && (!settled || decisionAvailable)
   const showDetails = actionable && Boolean(reconnectError)
 
   return (
-    <section data-testid="desktop-connection-card" aria-label={`${name} connection`} aria-live="polite" className="w-full max-w-full self-start text-sm text-foreground">
+    <section data-testid="desktop-connection-card" aria-label={t("ui.named_connection", { name })} aria-live="polite" className="w-full max-w-full self-start text-sm text-foreground">
       <div className="flex min-h-10 min-w-0 flex-wrap items-center gap-3 px-3 py-1">
         <ServiceMark name={name} iconUrl={iconUrl} />
         <p role={failed ? "alert" : "status"} className="flex min-w-0 flex-1 items-center gap-2 font-medium">
@@ -133,28 +135,28 @@ export function ConnectionCard({ part, callbacks, reconnectCallbacks, reconnectS
                     variant="ghost"
                     size="icon-xs"
                     className="text-muted-foreground"
-                    aria-label={`Technical details for ${name}`}
+                    aria-label={t("ui.named_technical_details", { name })}
                     aria-expanded={detailsOpen}
                     onClick={() => setDetailsOpen(open => !open)}
                   >
                     <Braces aria-hidden="true" className="size-4" strokeWidth={1.5} />
                   </Button>
                 )} />
-                <TooltipContent>Technical details</TooltipContent>
+                <TooltipContent>{t("mcp.technical_details")}</TooltipContent>
               </Tooltip>
             ) : null}
             {settled ? (
-              <Button size="sm" disabled={responseSubmitted} onClick={() => void handleContinue()}>Continue</Button>
+              <Button size="sm" disabled={responseSubmitted} onClick={() => void handleContinue()}>{t("extensions.add_picker_continue")}</Button>
             ) : action ? (
               <>
-                {decisionAvailable ? <Button variant="ghost" size="sm" disabled={responseSubmitted} onClick={() => void handleSkip()}>Skip</Button> : null}
+                {decisionAvailable ? <Button variant="ghost" size="sm" disabled={responseSubmitted} onClick={() => void handleSkip()}>{t("ui.skip")}</Button> : null}
                 <Button variant={waiting ? "ghost" : "default"} size="sm" disabled={reconnectBlocked || opening} onClick={() => void handleReconnect()}>
                   {opening ? <Loader2 data-icon="inline-start" aria-hidden="true" className="animate-spin" strokeWidth={1.5} /> : null}
                   {primaryLabel}
                 </Button>
               </>
             ) : (
-              <Button variant="ghost" size="sm" disabled={reconnectBlocked} onClick={() => decisionAvailable ? void handleSkip() : handleDismiss()}>Dismiss</Button>
+              <Button variant="ghost" size="sm" disabled={reconnectBlocked} onClick={() => decisionAvailable ? void handleSkip() : handleDismiss()}>{t("ui.dismiss")}</Button>
             )}
           </div>
         ) : null}

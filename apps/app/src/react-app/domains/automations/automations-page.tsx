@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { currentLocale, t } from "@/i18n";
 import { useMemo, useState } from "react"
 import { createPortal } from "react-dom"
 import { useQuery } from "@tanstack/react-query"
@@ -48,7 +49,6 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "@/components/ui/sonner"
 import { CloudSignInBanner, CloudSignInBannerIcon } from "@/react-app/domains/cloud/cloud-sign-in-banner"
 import { useDenAuth } from "@/react-app/domains/cloud/den-auth-provider"
-import { t } from "../../../i18n"
 import { ConfirmModal } from "@/react-app/design-system/modals/confirm-modal"
 import { automationCreationPlacement } from "./automation-availability"
 import { resolveAutomationPlacement } from "./automation-placement"
@@ -72,8 +72,12 @@ import { describeAutomationModel } from "./automation-model-options"
 const AUTOMATIONS_PAGE_FAST_POLL_MS = AUTOMATIONS_FAST_POLL_MS
 
 function stateLabel(state: AutomationState) {
-  if (state === "needs_attention") return "Needs attention"
-  return state.slice(0, 1).toUpperCase() + state.slice(1)
+  if (state === "needs_attention") return t("ui_extra.needs_attention")
+  switch (state) {
+    case "active": return t("ui_extra.automation_state_active")
+    case "inactive": return t("ui_extra.automation_state_inactive")
+    case "archived": return t("ui_extra.automation_state_archived")
+  }
 }
 
 function stateVariant(state: AutomationState): "default" | "secondary" | "destructive" | "outline" {
@@ -146,19 +150,19 @@ function eventSummary(event: AutomationRunEvent) {
     .at(0)
   if (preferred) return preferred
   const serialized = JSON.stringify(payload)
-  return serialized === "{}" ? "No additional details." : serialized
+  return serialized === "{}" ? t("ui_extra.no_additional_details") : serialized
 }
 
 function usageLabel(run: AutomationRun) {
-  const input = run.usage.inputTokens === null ? "—" : run.usage.inputTokens.toLocaleString()
-  const output = run.usage.outputTokens === null ? "—" : run.usage.outputTokens.toLocaleString()
+  const input = run.usage.inputTokens === null ? "—" : run.usage.inputTokens.toLocaleString(currentLocale())
+  const output = run.usage.outputTokens === null ? "—" : run.usage.outputTokens.toLocaleString(currentLocale())
   const cost = run.usage.costMicros === null ? "—" : `$${(run.usage.costMicros / 1_000_000).toFixed(4)}`
-  return `${input} input · ${output} output · ${cost}`
+  return t("ui_extra.token_usage", { input, output, cost })
 }
 
 function LoadingState() {
   return (
-    <div className="space-y-4 p-6" role="status" aria-label="Loading Automations">
+    <div className="space-y-4 p-6" role="status" aria-label={t("interface.loading_automations")}>
       <Skeleton className="h-14 rounded-2xl" />
       <Skeleton className="h-40 rounded-2xl" />
       <Skeleton className="h-40 rounded-2xl" />
@@ -262,7 +266,7 @@ export function AutomationsPage(props: {
         <Empty>
           <EmptyHeader>
             <EmptyMedia variant="icon"><CalendarClock /></EmptyMedia>
-            <EmptyTitle>No Automations yet</EmptyTitle>
+            <EmptyTitle>{t("interface.no_automations_yet")}</EmptyTitle>
           </EmptyHeader>
         </Empty>
       </div>
@@ -273,8 +277,8 @@ export function AutomationsPage(props: {
       <div className="mx-auto max-w-xl p-6 pt-16">
         <Alert variant="warning">
           <AlertCircle aria-hidden="true" />
-          <AlertTitle>Select a Den organization</AlertTitle>
-          <AlertDescription>Automations belong to your active Den organization.</AlertDescription>
+          <AlertTitle>{t("interface.select_a_den_organization")}</AlertTitle>
+          <AlertDescription>{t("interface.automations_belong_to_your_active_den_organization")}</AlertDescription>
         </Alert>
       </div>
     )
@@ -285,10 +289,10 @@ export function AutomationsPage(props: {
       <div className="mx-auto flex max-w-xl flex-col items-center gap-4 p-6 pt-16 text-center" role="alert">
         <AlertCircle className="size-8 text-destructive" aria-hidden="true" />
         <div>
-          <h2 className="font-medium">Automations unavailable</h2>
+          <h2 className="font-medium">{t("interface.automations_unavailable")}</h2>
           <p className="mt-2 text-sm text-muted-foreground">{describeError(listQuery.error)}</p>
         </div>
-        <Button variant="outline" onClick={() => void listQuery.refetch()}><RefreshCw />Retry</Button>
+        <Button variant="outline" onClick={() => void listQuery.refetch()}><RefreshCw />{t("updates.retry")}</Button>
       </div>
     )
   }
@@ -307,22 +311,22 @@ export function AutomationsPage(props: {
     return (
       <div className="mx-auto max-w-3xl space-y-5 p-6">
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" aria-label="Back to Automations" onClick={() => openAutomation(null)}>
+          <Button variant="ghost" size="icon" aria-label={t("interface.back_to_automations")} onClick={() => openAutomation(null)}>
             <ArrowLeft />
           </Button>
           <div>
-            <h2 className="text-xl font-semibold">Create Automation</h2>
+            <h2 className="text-xl font-semibold">{t("interface.create_automation")}</h2>
             <p className="text-sm text-muted-foreground">
               {createChoices.length > 1
-                ? "The schedule starts as soon as you create it."
-                : createPlacement === "cloud" ? "Runs on your cloud computer. The schedule starts as soon as you create it." : "Runs on your desktop computer. Keep OpenWork open and connected at the scheduled time."}
+                ? t("interface.the_schedule_starts_as_soon_as_you_create_it")
+                : createPlacement === "cloud" ? t("interface.runs_on_your_cloud_computer_the_schedule_starts_as_soon_as_you_create_it") : t("interface.runs_on_your_desktop_computer_keep_openwork_open_and_connected_at_the_scheduled_time")}
             </p>
           </div>
         </div>
         {placement === "cloud" && workflowId && workflowQuery.error ? (
-          <Alert variant="warning"><AlertCircle /><AlertTitle>Workflow unavailable</AlertTitle><AlertDescription>{describeError(workflowQuery.error)}</AlertDescription></Alert>
+          <Alert variant="warning"><AlertCircle /><AlertTitle>{t("interface.workflow_unavailable")}</AlertTitle><AlertDescription>{describeError(workflowQuery.error)}</AlertDescription></Alert>
         ) : placement === "cloud" && workflowId && workflowQuery.data && !workflowQuery.data.canRun ? (
-          <Alert variant="warning"><AlertCircle /><AlertTitle>You can read this Workflow but not run it</AlertTitle><AlertDescription>Ask a Workflow manager for run access to schedule it. You can still create an ordinary Automation below.</AlertDescription></Alert>
+          <Alert variant="warning"><AlertCircle /><AlertTitle>{t("interface.you_can_read_this_workflow_but_not_run_it")}</AlertTitle><AlertDescription>{t("interface.ask_a_workflow_manager_for_run_access_to_schedule_it_you_can_still_create_an_ordinary_automation_bel")}</AlertDescription></Alert>
         ) : null}
         <AutomationEditor
           key={workflowVersion?.id ?? "agent"}
@@ -341,7 +345,7 @@ export function AutomationsPage(props: {
           modelOptions={modelsFor(createPlacement)}
           modelOptionsByPlacement={modelsByPlacement}
           providerCatalog={props.providerCatalog}
-          submitLabel="Create and activate"
+          submitLabel={t("ui_extra.create_activate")}
           onCancel={() => openAutomation(null)}
           onSave={async (input, chosenPlacement) => {
             setBusyAction("create")
@@ -368,7 +372,7 @@ export function AutomationsPage(props: {
                   })
               await refresh()
               openAutomation(detail.automation.id)
-              toast.success("Automation created and active")
+              toast.success(t("ui_extra.automation_created_active"))
             } catch (error) {
               toast.error(describeError(error))
             } finally {
@@ -387,7 +391,7 @@ export function AutomationsPage(props: {
         <div className="mx-auto max-w-xl space-y-4 p-6 pt-16 text-center">
           <AlertCircle className="mx-auto size-8 text-destructive" />
           <p>{describeError(detailQuery.error)}</p>
-          <Button variant="outline" onClick={() => openAutomation(null)}>Back to Automations</Button>
+          <Button variant="outline" onClick={() => openAutomation(null)}>{t("interface.back_to_automations")}</Button>
         </div>
       )
     }
@@ -414,8 +418,8 @@ export function AutomationsPage(props: {
       return (
         <div className="mx-auto max-w-3xl space-y-5 p-6">
           <div>
-            <h2 className="text-xl font-semibold">Edit Automation</h2>
-            <p className="text-sm text-muted-foreground">Saving creates an immutable revision for future runs.</p>
+            <h2 className="text-xl font-semibold">{t("interface.edit_automation")}</h2>
+            <p className="text-sm text-muted-foreground">{t("interface.saving_creates_an_immutable_revision_for_future_runs")}</p>
           </div>
           <AutomationEditor
             onOpenProviderSettings={openProviderSettings}
@@ -431,7 +435,7 @@ export function AutomationsPage(props: {
             modelOptions={modelsFor(detailPlacement, detail.revision.workspaceId)}
             modelOptionsByPlacement={modelsByPlacementFor(detail.revision.workspaceId)}
             providerCatalog={props.providerCatalog}
-            submitLabel="Save changes"
+            submitLabel={t("ui_extra.save_changes")}
             onCancel={() => {
               setEditing(false)
               setRepairingModel(false)
@@ -449,7 +453,7 @@ export function AutomationsPage(props: {
                 await refresh()
                 setEditing(false)
                 setRepairingModel(false)
-                toast.success("Automation updated")
+                toast.success(t("ui_extra.automation_updated"))
               } catch (error) {
                 toast.error(describeError(error))
               } finally {
@@ -465,7 +469,7 @@ export function AutomationsPage(props: {
       <div className="mx-auto max-w-5xl space-y-5 p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="flex min-w-0 items-start gap-3">
-            <Button variant="ghost" size="icon" aria-label="Back to Automations" onClick={() => openAutomation(null)}>
+            <Button variant="ghost" size="icon" aria-label={t("interface.back_to_automations")} onClick={() => openAutomation(null)}>
               <ArrowLeft />
             </Button>
             <div className="min-w-0">
@@ -480,27 +484,25 @@ export function AutomationsPage(props: {
             {editable ? <Button variant="outline" onClick={() => {
               setRepairingModel(false)
               setEditing(true)
-            }}><Pencil />Edit</Button> : null}
+            }}><Pencil />{t("extensions.row_menu_edit")}</Button> : null}
             {task.state === "active" ? (
               <Button
                 variant="outline"
                 disabled={busyAction !== null}
                 onClick={() => void act("deactivate", async () => {
                   await client.deactivateAutomation(organizationId, task.id)
-                }, "Automation deactivated. A run already in progress will continue.")}
+                }, t("ui_extra.automation_deactivated"))}
               >
-                <Square />Deactivate
-              </Button>
+                <Square />{t("interface.deactivate")} </Button>
             ) : task.state === "inactive" ? (
               <Button
                 variant="outline"
                 disabled={busyAction !== null}
                 onClick={() => void act("activate", async () => {
                   await client.activateAutomation(organizationId, task.id)
-                }, "Automation activated")}
+                }, t("ui_extra.automation_activated"))}
               >
-                <Play />Activate
-              </Button>
+                <Play />{t("interface.activate")} </Button>
             ) : null}
             {detailPlacement === "desktop" && cloudRunAvailable ? (
               <Button
@@ -510,10 +512,9 @@ export function AutomationsPage(props: {
                 onClick={() => void act("run-cloud", async () => {
                   const run = await client.runAutomationNow(organizationId, task.id, { executionTarget: "cloud" })
                   setSearchParams(new URLSearchParams({ automation: task.id, run: run.id }))
-                }, "Automation queued in the cloud")}
+                }, t("ui_extra.automation_cloud_queued"))}
               >
-                <Cloud />Run in cloud
-              </Button>
+                <Cloud />{t("interface.run_in_cloud")} </Button>
             ) : null}
             <Button
               disabled={busyAction !== null || task.state === "archived" || task.state === "needs_attention"}
@@ -521,11 +522,10 @@ export function AutomationsPage(props: {
                 const run = await client.runAutomationNow(organizationId, task.id)
                 const next = new URLSearchParams({ automation: task.id, run: run.id })
                 setSearchParams(next)
-              }, "Automation queued")}
+              }, t("ui_extra.automation_queued"))}
             >
-              <Play />Run now
-            </Button>
-            <Button variant="ghost" size="icon" aria-label="Archive Automation" onClick={() => setArchiveOpen(true)}>
+              <Play />{t("interface.run_now")} </Button>
+            <Button variant="ghost" size="icon" aria-label={t("interface.archive_automation")} onClick={() => setArchiveOpen(true)}>
               <Archive />
             </Button>
           </div>
@@ -536,12 +536,9 @@ export function AutomationsPage(props: {
           && noDesktopConnected ? (
           <Alert variant="warning" data-automation-runner-offline>
             <AlertCircle />
-            <AlertTitle>No desktop connected</AlertTitle>
+            <AlertTitle>{t("interface.no_desktop_connected")}</AlertTitle>
             <AlertDescription>
-              <p>
-                This Automation runs on your desktop, and Den cannot see one right now. Occurrences that
-                come due are recorded as missed unless a signed-in desktop is running by then.
-              </p>
+              <p>{t("interface.this_automation_runs_on_your_desktop_and_den_cannot_see_one_right_now_occurrences_that_come_due_are_")} </p>
             </AlertDescription>
           </Alert>
         ) : null}
@@ -549,12 +546,12 @@ export function AutomationsPage(props: {
         {task.needsAttentionReason ? (
           <Alert variant="warning" data-automation-model-attention={modelNeedsAttention || undefined}>
             {modelNeedsAttention ? <AlertTriangle /> : <AlertCircle />}
-            <AlertTitle>{modelNeedsAttention ? "Model needs attention" : "Action required"}</AlertTitle>
+            <AlertTitle>{modelNeedsAttention ? t("interface.model_needs_attention") : t("interface.action_required")}</AlertTitle>
             <AlertDescription className="space-y-3">
               <p>{task.needsAttentionReason.message}</p>
               {modelNeedsAttention && editable ? (
                 <>
-                  <p>This Automation is paused. Its instructions, schedule, and run history are unchanged.</p>
+                  <p>{t("interface.this_automation_is_paused_its_instructions_schedule_and_run_history_are_unchanged")}</p>
                   <Button
                     type="button"
                     size="sm"
@@ -563,9 +560,7 @@ export function AutomationsPage(props: {
                       setRepairingModel(true)
                       setEditing(true)
                     }}
-                  >
-                    Select a supported model
-                  </Button>
+                  >{t("interface.select_a_supported_model")} </Button>
                 </>
               ) : null}
             </AlertDescription>
@@ -576,8 +571,8 @@ export function AutomationsPage(props: {
           <div className="space-y-5">
             <Card variant="outline">
               <CardHeader>
-                <CardTitle>Instructions</CardTitle>
-                <CardDescription>Revision {detail.revision.version}</CardDescription>
+                <CardTitle>{t("extensions.detail_instructions")}</CardTitle>
+                <CardDescription>{t("interface.revision")} {detail.revision.version}</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="whitespace-pre-wrap text-sm leading-6">{detail.revision.instructions}</p>
@@ -586,25 +581,25 @@ export function AutomationsPage(props: {
 
             <Card variant="outline">
               <CardHeader>
-                <CardTitle>{detail.revision.executionTarget === "cloud" ? "Cloud computer" : "Desktop computer"}</CardTitle>
-                <CardDescription>{detail.revision.executionTarget === "cloud" ? "Runs on your cloud computer, even when your desktop is offline." : "Runs on your desktop computer. Keep OpenWork open and connected at the scheduled time."}</CardDescription>
+                <CardTitle>{detail.revision.executionTarget === "cloud" ? t("session.remote_task_cloud") : t("interface.desktop_computer")}</CardTitle>
+                <CardDescription>{detail.revision.executionTarget === "cloud" ? t("interface.runs_on_your_cloud_computer_even_when_your_desktop_is_offline") : t("interface.runs_on_your_desktop_computer_keep_openwork_open_and_connected_at_the_scheduled_time")}</CardDescription>
               </CardHeader>
               <CardContent className="grid gap-3 text-sm sm:grid-cols-2">
-                <div className="min-w-0"><span className="text-muted-foreground">Model</span><p className="break-words">{describeAutomationModel(detail.revision.model, modelsFor(detailPlacement, detail.revision.workspaceId))}</p></div>
-                <div className="min-w-0"><span className="text-muted-foreground">Next run</span><p className="break-words">{task.state === "needs_attention" ? "No future run scheduled" : formatAutomationTime(task.nextDueAt)}</p></div>
-                <div className="min-w-0"><span className="text-muted-foreground">Runtime limit</span><p className="break-words">{Math.round(detail.revision.maximumRuntimeMs / 60_000)} minutes</p></div>
-                <div className="min-w-0"><span className="text-muted-foreground">Integrations</span><p className="break-words">Your available OpenWork Connect tools</p></div>
+                <div className="min-w-0"><span className="text-muted-foreground">{t("settings.model_title")}</span><p className="break-words">{describeAutomationModel(detail.revision.model, modelsFor(detailPlacement, detail.revision.workspaceId))}</p></div>
+                <div className="min-w-0"><span className="text-muted-foreground">{t("interface.next_run")}</span><p className="break-words">{task.state === "needs_attention" ? t("interface.no_future_run_scheduled") : formatAutomationTime(task.nextDueAt)}</p></div>
+                <div className="min-w-0"><span className="text-muted-foreground">{t("interface.runtime_limit")}</span><p className="break-words">{Math.round(detail.revision.maximumRuntimeMs / 60_000)}{t("interface.minutes")}</p></div>
+                <div className="min-w-0"><span className="text-muted-foreground">{t("interface.integrations")}</span><p className="break-words">{t("interface.your_available_openwork_connect_tools")}</p></div>
               </CardContent>
             </Card>
 
             <Card variant="outline">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2"><History className="size-4" />Run history</CardTitle>
-                <CardDescription>Durable receipts for manual and scheduled runs.</CardDescription>
+                <CardTitle className="flex items-center gap-2"><History className="size-4" />{t("interface.run_history")}</CardTitle>
+                <CardDescription>{t("interface.durable_receipts_for_manual_and_scheduled_runs")}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
                 {runsQuery.isLoading ? <Skeleton className="h-24 rounded-xl" /> : null}
-                {!runsQuery.isLoading && runs.length === 0 ? <p className="text-sm text-muted-foreground">No runs yet.</p> : null}
+                {!runsQuery.isLoading && runs.length === 0 ? <p className="text-sm text-muted-foreground">{t("interface.no_runs_yet")}</p> : null}
                 {runs.map((run) => (
                   <div
                     key={run.id}
@@ -632,8 +627,8 @@ export function AutomationsPage(props: {
                           disabled={busyAction !== null}
                           onClick={() => void act(`cancel:${run.id}`, async () => {
                             await client.cancelAutomationRun(organizationId, run.id)
-                          }, "Run cancellation requested")}
-                        >Cancel</Button>
+                          }, t("ui_extra.run_cancel_requested"))}
+                        >{t("settings.environment.cancel")}</Button>
                       ) : null}
                       <Button
                         type="button"
@@ -643,7 +638,7 @@ export function AutomationsPage(props: {
                           if (run.executionThread) navigate(automationExecutionThreadRoute(run.executionThread))
                           else setSearchParams(new URLSearchParams({ automation: task.id, run: run.id }))
                         }}
-                      >Open</Button>
+                      >{t("session.open")}</Button>
                     </span>
                   </div>
                 ))}
@@ -653,18 +648,18 @@ export function AutomationsPage(props: {
 
           <Card variant="outline" className="h-fit">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2"><Monitor className="size-4" />Execution thread</CardTitle>
-              <CardDescription>{selectedRunId ? "Run receipt and event timeline" : "Select a run to inspect its execution thread."}</CardDescription>
+              <CardTitle className="flex items-center gap-2"><Monitor className="size-4" />{t("interface.execution_thread")}</CardTitle>
+              <CardDescription>{selectedRunId ? t("interface.run_receipt_and_event_timeline") : t("interface.select_a_run_to_inspect_its_execution_thread")}</CardDescription>
             </CardHeader>
             <CardContent>
               {!selectedRunId ? (
-                <div className="py-10 text-center text-sm text-muted-foreground">No run selected.</div>
+                <div className="py-10 text-center text-sm text-muted-foreground">{t("interface.no_run_selected")}</div>
               ) : receiptIsLoading ? (
                 <Skeleton className="h-48 rounded-xl" />
               ) : receiptQuery.error || !selectedReceipt ? (
                 <Alert variant="warning"><AlertCircle /><AlertDescription>{describeError(receiptQuery.error)}</AlertDescription></Alert>
               ) : !threadMatches ? (
-                <Alert variant="warning"><AlertCircle /><AlertDescription>This Cloud thread no longer matches the selected run.</AlertDescription></Alert>
+                <Alert variant="warning"><AlertCircle /><AlertDescription>{t("interface.this_cloud_thread_no_longer_matches_the_selected_run")}</AlertDescription></Alert>
               ) : (
                 <div className="space-y-4">
                   <div className="flex flex-wrap items-center gap-2">
@@ -672,9 +667,9 @@ export function AutomationsPage(props: {
                     {selectedReceipt.run.executionThread ? (
                       <Badge variant="outline"><ExecutionIcon run={selectedReceipt.run} />{automationExecutionIdentity(selectedReceipt.run.executionThread).label}</Badge>
                     ) : selectedReceipt.run.status === "queued" ? (
-                      <Badge variant="outline">{selectedReceipt.run.executionTarget === "cloud" ? "Waiting for cloud computer" : "Waiting for desktop computer"}</Badge>
+                      <Badge variant="outline">{selectedReceipt.run.executionTarget === "cloud" ? t("interface.waiting_for_cloud_computer") : t("interface.waiting_for_desktop_computer")}</Badge>
                     ) : (
-                      <Badge variant="outline">{selectedReceipt.run.executionTarget === "cloud" ? <Cloud className="mr-1 h-3 w-3" /> : <Monitor className="mr-1 h-3 w-3" />}{selectedReceipt.run.executionTarget === "cloud" ? "Cloud computer" : "Desktop computer"}</Badge>
+                      <Badge variant="outline">{selectedReceipt.run.executionTarget === "cloud" ? <Cloud className="mr-1 h-3 w-3" /> : <Monitor className="mr-1 h-3 w-3" />}{selectedReceipt.run.executionTarget === "cloud" ? t("session.remote_task_cloud") : t("interface.desktop_computer")}</Badge>
                     )}
                     {localSessionRoute ? (
                       <Button
@@ -683,9 +678,7 @@ export function AutomationsPage(props: {
                         variant="outline"
                         data-automation-run-id={selectedReceipt.run.id}
                         onClick={() => navigate(localSessionRoute)}
-                      >
-                        Open local thread
-                      </Button>
+                      >{t("interface.open_local_thread")} </Button>
                     ) : null}
                   </div>
                   {runNotice ? (
@@ -696,7 +689,7 @@ export function AutomationsPage(props: {
                     </Alert>
                   ) : null}
                   {selectedReceipt.run.resultSummary ? (
-                    <div><p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Result</p><p className="mt-1 whitespace-pre-wrap text-sm">{selectedReceipt.run.resultSummary}</p></div>
+                    <div><p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{t("interface.result")}</p><p className="mt-1 whitespace-pre-wrap text-sm">{selectedReceipt.run.resultSummary}</p></div>
                   ) : null}
                   <div className="text-xs text-muted-foreground">{usageLabel(selectedReceipt.run)}</div>
                   <ol className="space-y-3 border-s border-border ps-4">
@@ -720,17 +713,17 @@ export function AutomationsPage(props: {
         <ConfirmModal
           open={archiveOpen}
           variant="danger"
-          title="Archive Automation?"
-          message="Future runs will stop. Durable run history will remain available in Den."
-          confirmLabel="Archive"
-          cancelLabel="Cancel"
+          title={t("interface.archive_automation_85f192f3")}
+          message={t("interface.future_runs_will_stop_durable_run_history_will_remain_available_in_den")}
+          confirmLabel={t("interface.archive")}
+          cancelLabel={t("settings.environment.cancel")}
           onCancel={() => setArchiveOpen(false)}
           onConfirm={() => {
             setArchiveOpen(false)
             void act("archive", async () => {
               await client.archiveAutomation(organizationId, task.id)
               openAutomation(null)
-            }, "Automation archived")
+            }, t("ui_extra.automation_archived"))
           }}
         />
       </div>
@@ -739,7 +732,7 @@ export function AutomationsPage(props: {
 
   // The page title lives in the titlebar; New Automation sits beside it there,
   // as Library and Dashboard place their add controls.
-  const newAutomation = <Button onClick={() => setSearchParams(new URLSearchParams({ create: "1" }))}><Plus />New Automation</Button>
+  const newAutomation = <Button onClick={() => setSearchParams(new URLSearchParams({ create: "1" }))}><Plus />{t("interface.new_automation")}</Button>
   return (
     <div className="mx-auto w-full max-w-5xl space-y-5 px-6 py-8 sm:px-8">
       {props.headerActionsTarget
@@ -747,24 +740,24 @@ export function AutomationsPage(props: {
         : props.headerActionsTarget === undefined ? <div className="flex justify-end">{newAutomation}</div> : null}
       <div className="relative max-w-md">
         <Search className="pointer-events-none absolute left-3 top-2.5 size-4 text-muted-foreground" />
-        <Input className="pl-9" value={query} placeholder="Search Automations" onChange={(event) => setQuery(event.currentTarget.value)} />
+        <Input className="pl-9" value={query} placeholder={t("interface.search_automations")} onChange={(event) => setQuery(event.currentTarget.value)} />
       </div>
       {filteredItems.length === 0 ? (
         <Empty>
           <EmptyHeader>
             <EmptyMedia variant="icon"><CalendarClock /></EmptyMedia>
-            <EmptyTitle>{query ? "No matching Automations" : "No Automations yet"}</EmptyTitle>
+            <EmptyTitle>{query ? t("interface.no_matching_automations") : t("interface.no_automations_yet")}</EmptyTitle>
             <EmptyDescription>
               {query
-                ? "Try a different search."
+                ? t("interface.try_a_different_search")
                 : placementChoices.length > 1
-                  ? "Create a task that runs on your desktops or in the cloud."
+                  ? t("interface.create_a_task_that_runs_on_your_desktops_or_in_the_cloud")
                   : placement === "cloud"
-                    ? "Create a task that runs on your cloud computer, even when your desktop is offline."
-                    : "Create a task for this desktop computer. For tasks that run while it’s offline, create a cloud automation in OpenWork Web."}
+                    ? t("interface.create_a_task_that_runs_on_your_cloud_computer_even_when_your_desktop_is_offline")
+                    : t("interface.create_a_task_for_this_desktop_computer_for_tasks_that_run_while_it_s_offline_create_a_cloud_automat")}
             </EmptyDescription>
           </EmptyHeader>
-          {!query ? <EmptyContent><Button onClick={() => setSearchParams(new URLSearchParams({ create: "1" }))}><Plus />New Automation</Button></EmptyContent> : null}
+          {!query ? <EmptyContent><Button onClick={() => setSearchParams(new URLSearchParams({ create: "1" }))}><Plus />{t("interface.new_automation")}</Button></EmptyContent> : null}
         </Empty>
       ) : (
         <div className="grid gap-3 md:grid-cols-2">
@@ -781,7 +774,7 @@ export function AutomationsPage(props: {
                 <div className="min-w-0">
                   <h3 className="flex items-center gap-2 truncate font-medium">
                     {item.automation.state === "needs_attention" ? (
-                      <AlertTriangle className="size-4 shrink-0 text-warning" aria-label="Automation needs attention" />
+                      <AlertTriangle className="size-4 shrink-0 text-warning" aria-label={t("interface.automation_needs_attention")} />
                     ) : null}
                     <span className="truncate">{item.automation.name}</span>
                   </h3>
@@ -791,11 +784,11 @@ export function AutomationsPage(props: {
               </div>
               <div className="mt-3 flex items-center gap-1.5 text-xs text-muted-foreground" data-automation-computer={item.revision.executionTarget ?? "desktop"}>
                 {item.revision.executionTarget === "cloud" ? <Cloud className="size-3.5" aria-hidden="true" /> : <Monitor className="size-3.5" aria-hidden="true" />}
-                <span>{item.revision.executionTarget === "cloud" ? "Cloud computer" : "Desktop computer"}</span>
+                <span>{item.revision.executionTarget === "cloud" ? t("session.remote_task_cloud") : t("interface.desktop_computer")}</span>
               </div>
               <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
                 <span>{formatAutomationSchedule(item.revision.schedule)}</span>
-                <span>{item.latestRun ? `Last run: ${runStatusLabel(item.latestRun)}` : `Next: ${formatAutomationTime(item.automation.nextDueAt)}`}</span>
+                <span>{item.latestRun ? t("ui_extra.last_run", { status: runStatusLabel(item.latestRun) }) : t("ui_extra.next_run", { time: formatAutomationTime(item.automation.nextDueAt) })}</span>
               </div>
             </button>
           ))}

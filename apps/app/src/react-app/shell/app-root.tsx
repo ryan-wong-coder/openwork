@@ -18,7 +18,7 @@ import { evalRelaunchDesktopApp, readDesktopDistributionInfo } from "../../app/l
 import { outboundEgressAllowed } from "../../app/lib/enterprise-activation";
 import { isDesktopRuntime } from "../../app/lib/runtime-env";
 import { Button } from "../../components/ui/button";
-import { t } from "../../i18n";
+import { currentLocale, subscribeLocale, t } from "../../i18n";
 import { useDenAuth } from "../domains/cloud/den-auth-provider";
 import { useMemberActivitySync } from "../domains/cloud/use-member-activity-sync";
 import { useDesktopConfig } from "../domains/cloud/desktop-config-provider";
@@ -193,8 +193,8 @@ function DenSigninGate({ children }: DenSigninGateProps) {
   }, [navigate]);
 
   if (requireSignin && denAuth.status === "checking") {
-    if (isOpenworkGatewayRuntime()) return <WebStartupScreen message="Checking sign-in…" />;
-    return <StartupScreen message="Checking your sign-in" />;
+    if (isOpenworkGatewayRuntime()) return <WebStartupScreen message={t("interface.checking_sign_in")} />;
+    return <StartupScreen message={t("interface.checking_your_sign_in")} />;
   }
 
   if (redirectingPreparedWorkspace) return <Navigate to="/onboarding" replace />;
@@ -405,6 +405,7 @@ function useOutboundEgressAllowed() {
 }
 
 export function AppRoot() {
+  useSyncExternalStore(subscribeLocale, currentLocale, currentLocale);
   useDesktopFontZoomBehavior();
   useVisualViewportInset();
   const egressAllowed = useOutboundEgressAllowed();

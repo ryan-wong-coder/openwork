@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { ChevronDown, MoreHorizontal, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -42,8 +43,8 @@ export function NewTaskDestinationMenu(props: Props) {
         <DropdownMenuTrigger
           render={<Button variant="ghost" size={hasDestinationChoices ? "xs" : "icon-xs"} />}
           disabled={props.disabled}
-          aria-label={hasGroups ? "Session destination" : canChooseWorkspace ? "Workspace destination" : "Draft actions"}
-          title={hasGroups ? `${workspaceLabel} / ${groupLabel}` : canChooseWorkspace ? workspaceLabel : "Draft actions"}
+          aria-label={hasGroups ? t("interface.session_destination") : canChooseWorkspace ? t("interface.workspace_destination") : t("interface.draft_actions")}
+          title={hasGroups ? `${workspaceLabel} / ${groupLabel}` : canChooseWorkspace ? workspaceLabel : t("interface.draft_actions")}
         >
           {hasDestinationChoices ? <>
             <span className="max-w-40 truncate">{hasGroups ? groupLabel : workspaceLabel}</span>
@@ -54,7 +55,7 @@ export function NewTaskDestinationMenu(props: Props) {
           {hasGroups ? <DropdownMenuGroup>
             <DropdownMenuLabel>{workspaceLabel}</DropdownMenuLabel>
             <DropdownMenuRadioGroup value={props.destination.groupId ?? ""}>
-              <DropdownMenuRadioItem closeOnClick value="" onClick={() => props.onChange({ ...props.destination, groupId: undefined })}>No group</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem closeOnClick value="" onClick={() => props.onChange({ ...props.destination, groupId: undefined })}>{t("session_management.no_group")}</DropdownMenuRadioItem>
               {props.groups.map((group) => <DropdownMenuRadioItem closeOnClick key={group.id} value={group.id} onClick={() => props.onChange({ ...props.destination, groupId: group.id })}>
                 {group.label}
               </DropdownMenuRadioItem>)}
@@ -63,7 +64,7 @@ export function NewTaskDestinationMenu(props: Props) {
           {canChooseWorkspace ? <>
             {hasGroups ? <DropdownMenuSeparator /> : null}
             <DropdownMenuGroup>
-              <DropdownMenuLabel>Workspace</DropdownMenuLabel>
+              <DropdownMenuLabel>{t("session_management.archive_workspace")}</DropdownMenuLabel>
               <DropdownMenuRadioGroup value={props.destination.workspaceId}>
                 {workspaces.map((workspace) => <DropdownMenuRadioItem closeOnClick key={workspace.id} value={workspace.id} onClick={() => props.onChange({ workspaceId: workspace.id, parent: props.destination.parent })}>
                   {workspace.label}
@@ -75,9 +76,7 @@ export function NewTaskDestinationMenu(props: Props) {
             {hasDestinationChoices ? <DropdownMenuSeparator /> : null}
             <DropdownMenuGroup>
               <DropdownMenuItem variant="destructive" onClick={props.onDiscard}>
-                <Trash2 />
-                Discard draft
-              </DropdownMenuItem>
+                <Trash2 />{t("interface.discard_draft")} </DropdownMenuItem>
             </DropdownMenuGroup>
           </> : null}
         </DropdownMenuContent>

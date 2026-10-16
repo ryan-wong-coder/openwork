@@ -1,4 +1,6 @@
 import { afterAll, afterEach, beforeEach, describe, expect, test } from "bun:test";
+import { setLocale } from "../src/i18n"
+
 import { GlobalRegistrator } from "@happy-dom/global-registrator";
 
 import {
@@ -30,6 +32,8 @@ import {
   __setWorkspaceSessionSyncRunningShellFetcherForTest,
   setBackgroundShellTasksEnabled,
 } from "../src/react-app/domains/session/sync/session-sync";
+
+beforeEach(() => setLocale("en"))
 
 const ownedDom = typeof window === "undefined";
 if (ownedDom) GlobalRegistrator.register({ url: "http://localhost/" });

@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { useCallback, useEffect, useState } from "react"
 import { connectionActionPayloadSchema, type ConnectionActionPayload } from "@openwork/types/connection-action-app"
 import { createDenClient, readDenSettings, type DenExternalMcpConnection } from "@/app/lib/den"
@@ -43,11 +44,11 @@ export function signInPromptsForConnections(connectionIds: readonly string[], co
     const base = { schemaVersion: "1" as const, connectionId, connectionName: connection.name }
     if (connection.issuerReviewRequired) {
       return [{ ...base, state: "reauth_required" as const, actor: "organization_admin" as const, action: null,
-        message: `${connection.name} is blocked until an organization admin reviews its sign-in.` }]
+        message: t("ui.connection_admin_review", { name: connection.name }) }]
     }
     if (connection.credentialMode === "shared") {
       return connection.connected ? [] : [{ ...base, state: "needs_connection" as const, actor: "organization_admin" as const, action: null,
-        message: `${connection.name} is not connected yet.` }]
+        message: t("ui.connection_not_connected", { name: connection.name }) }]
     }
     if (connection.authType !== "oauth") return []
     if (connection.connectedForMe && !(connection.needsReconnect && connection.reconnectActionOwner !== "organization_admin")) return []
@@ -56,8 +57,8 @@ export function signInPromptsForConnections(connectionIds: readonly string[], co
       ...base,
       state: reconnect ? "reauth_required" as const : "needs_connection" as const,
       actor: "member" as const,
-      message: reconnect ? `Your ${connection.name} sign-in expired.` : `You haven't connected your ${connection.name} account yet.`,
-      action: { type: reconnect ? "reconnect" as const : "connect" as const, label: reconnect ? "Sign in again" : "Sign in", surface: "openwork_your_connections" as const },
+      message: reconnect ? t("ui.connection_signin_expired", { name: connection.name }) : t("ui.connection_account_missing", { name: connection.name }),
+      action: { type: reconnect ? "reconnect" as const : "connect" as const, label: reconnect ? t("ui.sign_in_again") : t("den.signin_button"), surface: "openwork_your_connections" as const },
     }]
   })
 }
@@ -131,7 +132,7 @@ export function McpAppSignInPrompts({ prompts, appTitle, scope, className, onSig
     <div data-testid="mcp-app-sign-in" className={cn("flex flex-col", className)}>
       {prompts.map(prompt => (
         <DashboardConnectionCard key={prompt.connectionId} toolName={CONNECTION_TOOL_NAME}
-          toolCallId={`mcp-app-sign-in:${scope}:${prompt.connectionId}`} output={prompt} subject={appTitle ?? "this App"} connectorIdentities={connectorIdentities}
+          toolCallId={`mcp-app-sign-in:${scope}:${prompt.connectionId}`} output={prompt} subject={appTitle ?? t("ui.this_app")} connectorIdentities={connectorIdentities}
           onConnected={() => onSignedIn(prompt.connectionId)} />
       ))}
     </div>

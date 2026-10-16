@@ -10,7 +10,7 @@ import type { Agent } from "@opencode-ai/sdk/v2/client";
 
 import type { OpenworkServerClient } from "@/app/lib/openwork-server";
 import { useOpencodeEngineControls } from "./opencode-engine-controls";
-import { t } from "@/i18n";
+import { currentLocale, t } from "@/i18n";
 import {
   Command,
   CommandCollection,
@@ -57,6 +57,13 @@ import {
 import { buildCommandPaletteSettingsItems } from "./command-palette-settings";
 
 export type { PaletteItem } from "./command-palette-search";
+
+const PALETTE_GROUP_LABEL_KEYS: Record<PaletteGroup, string> = {
+  "recent": "composer.plus_recent",
+  "actions": "settings.environment.table_actions",
+  "settings": "settings.tab_general",
+  "sessions": "settings_extra.sessions"
+};
 
 const ACTIONS_GROUP: PaletteGroup = "actions";
 
@@ -150,6 +157,7 @@ export type CommandPaletteProps = {
  * Root mode searches actions and settings, not conversations.
  */
 export function CommandPalette(props: CommandPaletteProps) {
+  const locale = currentLocale();
   const platform = usePlatform();
   // Key hints read the way this OS writes them: ⌃⇧M on macOS, Ctrl+Shift+M elsewhere.
   const shortcutOs = resolveShortcutOs(platform.os, typeof navigator === "undefined" ? "" : navigator.platform);
@@ -240,8 +248,8 @@ export function CommandPalette(props: CommandPaletteProps) {
       ? [{
           id: "open-in-split-view",
           title: `${t("session_management.open_in_split_view")}…`,
-          detail: "Choose any session, including one from another workspace",
-          meta: "Workbench",
+          detail: t("settings_extra.choose_any_session_including_one_from_another_workspace"),
+          meta: t("settings_extra.workbench"),
           searchText: "side chat split view side by side session workspace",
           group: ACTIONS_GROUP,
           action: () => {
@@ -253,8 +261,8 @@ export function CommandPalette(props: CommandPaletteProps) {
       ? [{
           id: "new-split",
           title: t("session_management.new_split"),
-          detail: "Start an empty session beside this one",
-          meta: "Workbench",
+          detail: t("settings_extra.start_an_empty_session_beside_this_one"),
+          meta: t("settings_extra.workbench"),
           searchText: "new side chat new split empty session side by side pane",
           action: () => {
             props.onClose();
@@ -262,19 +270,19 @@ export function CommandPalette(props: CommandPaletteProps) {
           },
         }]
       : []),
-    ...(hasNestedModelPicker || props.onNextPinnedModel ? [{ id: "models.next-pinned", title: "Next pinned model", shortcut: formatChord(shortcutOs === "macos" ? "Ctrl+Shift+M" : "Mod+Shift+M", shortcutOs), group: ACTIONS_GROUP,
-      detail: modelControls.nextPinnedOption ? [currentModelTitle, modelTitle(modelControls.nextPinnedOption)].filter(Boolean).join(" → ") : "No alternative pinned model",
+    ...(hasNestedModelPicker || props.onNextPinnedModel ? [{ id: "models.next-pinned", title: t("settings_extra.next_pinned_model"), shortcut: formatChord(shortcutOs === "macos" ? "Ctrl+Shift+M" : "Mod+Shift+M", shortcutOs), group: ACTIONS_GROUP,
+      detail: modelControls.nextPinnedOption ? [currentModelTitle, modelTitle(modelControls.nextPinnedOption)].filter(Boolean).join(" → ") : t("settings_extra.no_alternative_pinned_model"),
       disabled: !modelControls.nextPinnedOption,
       action: () => { (props.onNextPinnedModel ?? modelControls.onNextPinnedModel)(); props.onClose(); } }] : []),
-    ...(hasNestedModelPicker || props.onCycleModelSource ? [{ id: "models.next-source", title: "Cycle model source", shortcut: formatChord(shortcutOs === "macos" ? "Ctrl+Alt+M" : "Mod+Alt+M", shortcutOs), group: ACTIONS_GROUP,
-      detail: modelControls.sourceCycleDetail || "No accessible model sources", disabled: !modelControls.nextSourceOption,
+    ...(hasNestedModelPicker || props.onCycleModelSource ? [{ id: "models.next-source", title: t("settings_extra.cycle_model_source"), shortcut: formatChord(shortcutOs === "macos" ? "Ctrl+Alt+M" : "Mod+Alt+M", shortcutOs), group: ACTIONS_GROUP,
+      detail: modelControls.sourceCycleDetail || t("settings_extra.no_accessible_model_sources"), disabled: !modelControls.nextSourceOption,
       action: () => { (props.onCycleModelSource ?? modelControls.onCycleModelSource)(); props.onClose(); } }] : []),
     ...(hasNestedModelPicker || props.onOpenModelPicker
       ? [{
           id: "models",
-          title: "Models",
+          title: t("models.title"),
           meta: currentModelTitle,
-          detail: "Choose the LLM that runs your next prompts",
+          detail: t("settings_extra.choose_the_llm_that_runs_your_next_prompts"),
           searchText: "model models llm provider openai anthropic claude gpt gemini switch pick select default",
           group: ACTIONS_GROUP,
           action: () => {
@@ -306,11 +314,11 @@ export function CommandPalette(props: CommandPaletteProps) {
     ...(canMoveCurrentSessionToGroup
       ? [{
           id: "move-to-group",
-          title: "Move to Group",
+          title: t("interface.move_to_group"),
           detail: props.currentSessionForGroupMove
-            ? `Add ${props.currentSessionForGroupMove.title} to an existing group`
-            : "Add the selected task to an existing group",
-          meta: sessionGroupCount > 0 ? `${sessionGroupCount.toLocaleString()} groups` : "No groups",
+            ? t("settings_extra.add_title_to_an_existing_group", { title: props.currentSessionForGroupMove.title })
+            : t("settings_extra.add_the_selected_task_to_an_existing_group"),
+          meta: sessionGroupCount > 0 ? t("settings_extra.count_groups", { count: sessionGroupCount }) : t("settings_extra.no_groups"),
           searchText: "move to group add task session folder organize",
           group: ACTIONS_GROUP,
           action: () => {
@@ -320,11 +328,11 @@ export function CommandPalette(props: CommandPaletteProps) {
       : []),
     {
       id: "accessible-items",
-      title: "Accessible items",
+      title: t("interface.accessible_items"),
       detail: accessibleTargetCount > 0
-        ? `Open ${accessibleTargetCount.toLocaleString()} servers and artifacts detected in this session`
-        : "No servers or artifacts detected in this session yet",
-      meta: "Session",
+        ? t("settings_extra.open_count_servers_and_artifacts_detected_in_this_session", { count: accessibleTargetCount })
+        : t("settings_extra.no_servers_or_artifacts_detected_in_this_session_yet"),
+      meta: t("settings_extra.session"),
       keywords: ["servers", "artifacts", "files", "urls", "open"],
       group: ACTIONS_GROUP,
       action: () => {
@@ -354,7 +362,7 @@ export function CommandPalette(props: CommandPaletteProps) {
         openUrl("https://openwork.dev/feedback");
       },
     },
-  ], [accessibleTargetCount, canMoveCurrentSessionToGroup, hasNestedModelPicker, props, sessionGroupCount, currentModelTitle, modelControls, shortcutOs]);
+  ], [accessibleTargetCount, canMoveCurrentSessionToGroup, hasNestedModelPicker, props, sessionGroupCount, currentModelTitle, modelControls, shortcutOs, locale]);
 
   const settingsItems = useMemo(
     () => buildCommandPaletteSettingsItems({
@@ -376,15 +384,14 @@ export function CommandPalette(props: CommandPaletteProps) {
       props.developerMode,
       props.onClose,
       props.onOpenExtensions,
-      props.onOpenSettings,
-    ],
+      props.onOpenSettings, locale],
   );
 
   const coreActionItems = useMemo<PaletteItem[]>(() => [
     ...(props.onToggleSidebar
       ? [{
           id: "sidebar.toggle",
-          title: "Toggle sidebar",
+          title: t("settings_extra.toggle_sidebar"),
           keywords: ["hide", "show", "sidebar", "collapse", "expand"],
           group: ACTIONS_GROUP,
           action: () => {
@@ -396,7 +403,7 @@ export function CommandPalette(props: CommandPaletteProps) {
     ...(props.onOpenAutomations
       ? [{
           id: "automations.open",
-          title: "Automations",
+          title: t("interface.automations"),
           keywords: ["schedule", "scheduled", "recurring", "cron", "daily", "weekly"],
           group: ACTIONS_GROUP,
           action: () => {
@@ -408,7 +415,7 @@ export function CommandPalette(props: CommandPaletteProps) {
     ...(props.onOpenCalendar
       ? [{
           id: "calendar.open",
-          title: "Calendar",
+          title: t("interface.calendar"),
           keywords: ["week", "meetings", "schedule", "automations", "google calendar", "outlook"],
           group: ACTIONS_GROUP,
           action: () => {
@@ -420,7 +427,7 @@ export function CommandPalette(props: CommandPaletteProps) {
     ...(props.onOpenDashboard
       ? [{
           id: "dashboard.open",
-          title: "Dashboard",
+          title: t("interface.dashboard"),
           keywords: ["home", "overview", "apps"],
           group: ACTIONS_GROUP,
           action: () => {
@@ -432,7 +439,7 @@ export function CommandPalette(props: CommandPaletteProps) {
     ...(props.onCreateWorkspace
       ? [{
           id: "workspace.create",
-          title: "New workspace…",
+          title: t("settings_extra.new_workspace"),
           keywords: ["open folder", "add project", "directory"],
           group: ACTIONS_GROUP,
           action: () => {
@@ -443,7 +450,7 @@ export function CommandPalette(props: CommandPaletteProps) {
       : []),
     {
       id: "cloud.sign_in",
-      title: "Sign in to OpenWork Cloud",
+      title: t("den.signin_title"),
       keywords: ["login", "account", "organization", "org", "den", "cloud"],
       group: ACTIONS_GROUP,
       action: () => {
@@ -451,7 +458,7 @@ export function CommandPalette(props: CommandPaletteProps) {
         props.onOpenSettings("/settings/cloud-account");
       },
     },
-  ], [props]);
+  ], [props, locale]);
 
   const allRootItems = useMemo(
     () => [
@@ -461,12 +468,12 @@ export function CommandPalette(props: CommandPaletteProps) {
       ...engine.items.map((item) => ({ ...item, action: () => { props.onClose(); item.action(); } })),
       ...(props.extraItems ?? []),
     ],
-    [coreActionItems, engine.items, props.extraItems, props.onClose, rootItems, settingsItems],
+    [coreActionItems, engine.items, props.extraItems, props.onClose, rootItems, settingsItems, locale],
   );
 
   const rootGroups = useMemo(
     () => rankPaletteItems(query, allRootItems, recents),
-    [allRootItems, query, recents],
+    [allRootItems, query, recents, locale],
   );
 
   const splitSessionItems = useMemo<PaletteItem[]>(
@@ -474,14 +481,14 @@ export function CommandPalette(props: CommandPaletteProps) {
       id: `split-session:${item.workspaceId}:${item.sessionId}`,
       title: item.title,
       detail: item.workspaceTitle,
-      meta: item.isActive ? t("session.cmd_current_workspace") : "Other workspace",
+      meta: item.isActive ? t("session.cmd_current_workspace") : t("settings_extra.other_workspace"),
       searchText: `${item.searchText} split side by side`,
       action: () => {
         props.onOpenSessionInSplit?.(item.workspaceId, item.sessionId);
         props.onClose();
       },
     })),
-    [props.currentSession, props.onClose, props.onOpenSessionInSplit, props.sessions],
+    [props.currentSession, props.onClose, props.onOpenSessionInSplit, props.sessions, locale],
   );
 
   const accessibleItems = useMemo<PaletteItem[]>(() => {
@@ -491,7 +498,7 @@ export function CommandPalette(props: CommandPaletteProps) {
         id: `accessible:${target.id}`,
         title: target.name || target.value,
         detail: target.value,
-        meta: target.kind === "url" ? "Server" : "Artifact",
+        meta: target.kind === "url" ? t("connect.confirm_server_label") : t("extensions.badge_app"),
         searchText: `${target.name} ${target.value} ${target.preview}`.toLowerCase(),
         action: () => {
           props.onClose();
@@ -500,9 +507,9 @@ export function CommandPalette(props: CommandPaletteProps) {
       })),
       ...targets.map((target) => ({
         id: `accessible-hide:${target.id}`,
-        title: `Stop tracking ${target.name || target.value}`,
+        title: t("settings_extra.stop_tracking_name", { name: target.name || target.value }),
         detail: target.value,
-        meta: "Hide",
+        meta: t("common.hide"),
         searchText: `stop tracking hide ${target.name} ${target.value} ${target.preview}`.toLowerCase(),
         action: () => {
           props.onClose();
@@ -510,7 +517,7 @@ export function CommandPalette(props: CommandPaletteProps) {
         },
       })),
     ];
-  }, [props]);
+  }, [props, locale]);
 
   const agentItems = useMemo<PaletteItem[]>(() => {
     const selectAgent = (name: string | null) => {
@@ -534,20 +541,20 @@ export function CommandPalette(props: CommandPaletteProps) {
         action: () => selectAgent(agent.name),
       })),
     ];
-  }, [agents, props]);
+  }, [agents, props, locale]);
 
   const groupItems = useMemo<PaletteItem[]>(() => (
     (props.sessionGroups ?? []).map((group) => ({
       id: `group:${group.id}`,
       title: group.label,
-      meta: props.currentSessionGroupId === group.id ? "Current" : undefined,
+      meta: props.currentSessionGroupId === group.id ? t("share_skill_destination.current_badge") : undefined,
       searchText: `group ${group.label}`.toLowerCase(),
       action: () => {
         props.onClose();
         props.onMoveCurrentSessionToGroup?.(group.id);
       },
     }))
-  ), [props]);
+  ), [props, locale]);
 
   const modelItems = useMemo<PaletteItem[]>(() => (
     buildCommandPaletteModelItems(props.modelOptions ?? [], props.selectedModel, favorites, recentModels).map((item) => ({
@@ -564,7 +571,7 @@ export function CommandPalette(props: CommandPaletteProps) {
         });
       },
     }))
-  ), [choice.choose, props.modelOptions, props.onClose, props.onSelectModel, props.selectedModel, favorites, recentModels]);
+  ), [choice.choose, props.modelOptions, props.onClose, props.onSelectModel, props.selectedModel, favorites, recentModels, locale]);
 
   const behaviorItems = useMemo<PaletteItem[]>(() => {
     if (!behaviorModel) return [];
@@ -587,7 +594,7 @@ export function CommandPalette(props: CommandPaletteProps) {
         });
       },
     }));
-  }, [behaviorModel, choice.choose, props.modelOptions, props.onClose, props.onSelectModel, props.selectedModel, props.selectedModelBehavior]);
+  }, [behaviorModel, choice.choose, props.modelOptions, props.onClose, props.onSelectModel, props.selectedModel, props.selectedModelBehavior, locale]);
 
   const navigateBack = () => {
     const nextMode = commandPaletteBackMode(mode);
@@ -640,7 +647,7 @@ export function CommandPalette(props: CommandPaletteProps) {
               ? behaviorItems
           : [];
 
-  const paletteModels = useMemo(() => new Map((props.modelOptions ?? []).map((option) => [`model:${option.providerID}:${option.modelID}`, option])), [props.modelOptions]);
+  const paletteModels = useMemo(() => new Map((props.modelOptions ?? []).map((option) => [`model:${option.providerID}:${option.modelID}`, option])), [props.modelOptions, locale]);
   const renderPaletteItem = (item: PaletteItem) => {
     const model = paletteModels.get(item.id);
     return <CommandItem
@@ -689,15 +696,15 @@ export function CommandPalette(props: CommandPaletteProps) {
           {mode === "split-sessions"
               ? t("session_management.open_in_split_view")
             : mode === "accessible-items"
-              ? "Accessible items"
+              ? t("interface.accessible_items")
               : mode === "agents"
                 ? t("session.cmd_agents_title")
                 : mode === "groups"
-                  ? "Move to Group"
+                  ? t("interface.move_to_group")
                   : mode === "models"
-                    ? "Models"
+                    ? t("models.title")
                     : mode === "model-behavior"
-                      ? behaviorModel?.behaviorTitle ?? "Thinking / Effort"
+                      ? behaviorModel?.behaviorTitle ?? t("interface.thinking_effort")
                   : t("session.palette_title_actions")
           }
         </CommandDialogTitle>
@@ -721,26 +728,26 @@ export function CommandPalette(props: CommandPaletteProps) {
               className="w-full"
               placeholder={
                 mode === "root"
-                  ? "Search actions and settings…"
+                  ? t("interface.search_actions_and_settings")
                   : mode === "split-sessions"
-                    ? "Search sessions and workspaces..."
+                    ? t("interface.search_sessions_and_workspaces")
                   : mode === "accessible-items"
-                    ? "Search servers and artifacts..."
+                    ? t("interface.search_servers_and_artifacts")
                     : mode === "agents"
                       ? t("session.palette_placeholder_agents")
                       : mode === "groups"
-                        ? "Search groups..."
+                        ? t("interface.search_groups")
                         : mode === "models"
-                          ? "Search models…"
+                          ? t("settings.search_models")
                           : mode === "model-behavior"
-                            ? "Search thinking or effort..."
+                            ? t("interface.search_thinking_or_effort")
                         : t("session.palette_placeholder_actions")
               }
               onKeyDown={handleBackspace}
             />
           </CommandHeader>
           <CommandPanel>
-            <CommandEmpty>{mode === "root" ? "No matches. Try a different word, or type > for actions only." : mode === "accessible-items" ? "No accessible items found for this session." : mode === "groups" ? "No groups found for this workspace." : mode === "models" ? "No models match your search." : mode === "model-behavior" ? "No thinking or effort options match your search." : t("session.palette_no_matches")}</CommandEmpty>
+            <CommandEmpty>{mode === "root" ? t("interface.no_matches_try_a_different_word_or_type_for_actions_only") : mode === "accessible-items" ? t("interface.no_accessible_items_found_for_this_session") : mode === "groups" ? t("interface.no_groups_found_for_this_workspace") : mode === "models" ? t("models.no_models_match_search") : mode === "model-behavior" ? t("interface.no_thinking_or_effort_options_match_your_search") : t("session.palette_no_matches")}</CommandEmpty>
             <CommandList>
               {mode === "root"
                 ? (group: PaletteResultGroup) => (
@@ -749,7 +756,7 @@ export function CommandPalette(props: CommandPaletteProps) {
                       items={group.items}
                       data-command-palette-group={group.value}
                     >
-                      <CommandGroupLabel>{group.label}</CommandGroupLabel>
+                      <CommandGroupLabel>{t(PALETTE_GROUP_LABEL_KEYS[group.value])}</CommandGroupLabel>
                       <CommandCollection>
                         {renderPaletteItem}
                       </CommandCollection>

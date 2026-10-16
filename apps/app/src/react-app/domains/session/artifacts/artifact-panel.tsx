@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Download, Ellipsis, ExternalLink, FolderOpen, PanelLeftClose, PanelLeftOpen, X } from "lucide-react";
@@ -304,25 +305,25 @@ function ArtifactPanelView({ sessionId, client, workspaceId, workspaceRoot, targ
   return (
     <div className="flex h-full min-h-0 flex-col bg-background">
       {failure?.owner === owner ? <div className="shrink-0 px-3 py-2"><TaskRecovery compact title={failure.title} technicalDetails={failure.details}
-        actions={<Button variant="ghost" size="xs" onClick={() => setFailure(null)}>Dismiss</Button>} /></div> : null}
+        actions={<Button variant="ghost" size="xs" onClick={() => setFailure(null)}>{t("interface.dismiss")}</Button>} /></div> : null}
       <div className="shrink-0 border-b border-border bg-background mac:bg-background/80 mac:backdrop-blur-2xl mac:backdrop-saturate-150">
         <div className="flex h-10 items-center gap-2 pe-2 ps-2">
           <Tooltip>
             <TooltipTrigger
               render={(
-                <Button variant="ghost" size="icon-sm" onClick={() => setTreeOpen((value) => !value)} aria-label={treeOpen ? "Hide workspace files" : "Show workspace files"}>
+                <Button variant="ghost" size="icon-sm" onClick={() => setTreeOpen((value) => !value)} aria-label={treeOpen ? t("interface.hide_workspace_files") : t("interface.show_workspace_files")}>
                   {treeOpen ? <PanelLeftClose /> : <PanelLeftOpen />}
                 </Button>
               )}
             />
-            <TooltipContent>{treeOpen ? "Hide workspace files" : "Show workspace files"}</TooltipContent>
+            <TooltipContent>{treeOpen ? t("interface.hide_workspace_files") : t("interface.show_workspace_files")}</TooltipContent>
           </Tooltip>
           <div className="min-w-0 flex-1 flex items-center gap-1.5">
             <h3 className="min-w-0 truncate text-sm font-medium text-foreground">
               {target.name}
             </h3>
             <span className="shrink-0 text-xs text-muted-foreground">
-              {target.exists === false ? "missing" : isEditingSurface ? (isSaving || isDirty ? "Saving\u2026" : "Saved") : ""}
+              {target.exists === false ? t("settings.runtime_config_missing") : isEditingSurface ? (isSaving || isDirty ? t("settings.environment.saving") : t("interface.saved")) : ""}
             </span>
           </div>
           <div className="flex shrink-0 items-center gap-1">
@@ -330,17 +331,17 @@ function ArtifactPanelView({ sessionId, client, workspaceId, workspaceRoot, targ
               <Tooltip>
                 <TooltipTrigger
                   render={(
-                    <Button variant="ghost" size="sm" onClick={() => setEditing((value) => !value)}>{editing ? "Done" : "Edit"}</Button>
+                    <Button variant="ghost" size="sm" onClick={() => setEditing((value) => !value)}>{editing ? t("skills.share_done") : t("extensions.row_menu_edit")}</Button>
                   )}
                 />
-                <TooltipContent>{editing ? "Stop editing" : "Edit artifact"}</TooltipContent>
+                <TooltipContent>{editing ? t("interface.stop_editing") : t("interface.edit_artifact")}</TooltipContent>
               </Tooltip>
             ) : null}
             {target.kind === "file" || target.kind === "url" ? (
               <DropdownMenu>
                 <DropdownMenuTrigger
                   render={(
-                    <Button variant="ghost" size="icon-sm" aria-label="Artifact actions">
+                    <Button variant="ghost" size="icon-sm" aria-label={t("interface.artifact_actions")}>
                       <Ellipsis />
                     </Button>
                   )}
@@ -348,18 +349,15 @@ function ArtifactPanelView({ sessionId, client, workspaceId, workspaceRoot, targ
                 <DropdownMenuContent align="end">
                   {target.kind === "file" ? (
                     <DropdownMenuItem onClick={() => void download()}>
-                      <Download /> Download
-                    </DropdownMenuItem>
+                      <Download />{t("settings.update_download_button")} </DropdownMenuItem>
                   ) : null}
                   {canUseDesktopFileActions ? (
                     <DropdownMenuItem onClick={() => void revealExternal()}>
-                      <FolderOpen /> Show in folder
-                    </DropdownMenuItem>
+                      <FolderOpen />{t("interface.show_in_folder")} </DropdownMenuItem>
                   ) : null}
                   {target.kind === "url" || canUseDesktopFileActions ? (
                     <DropdownMenuItem onClick={() => void openExternal()}>
-                      <ExternalLink /> Open externally
-                    </DropdownMenuItem>
+                      <ExternalLink />{t("interface.open_externally")} </DropdownMenuItem>
                   ) : null}
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -367,12 +365,12 @@ function ArtifactPanelView({ sessionId, client, workspaceId, workspaceRoot, targ
             <Tooltip>
               <TooltipTrigger
                 render={(
-                  <Button variant="ghost" size="icon-sm" onClick={onClose} aria-label="Close artifact">
+                  <Button variant="ghost" size="icon-sm" onClick={onClose} aria-label={t("interface.close_artifact")}>
                     <X />
                   </Button>
                 )}
               />
-              <TooltipContent>Close artifact</TooltipContent>
+              <TooltipContent>{t("interface.close_artifact")}</TooltipContent>
             </Tooltip>
           </div>
         </div>
@@ -402,7 +400,7 @@ function ArtifactPanelView({ sessionId, client, workspaceId, workspaceRoot, targ
           {isLoading || (data?.kind === "binary" && !binaryObjectUrl) ? (
           <PreviewLoading />
         ) : isError ? (
-          <PreviewError message={error instanceof Error ? error.message : "Failed to load artifact" } />
+          <PreviewError message={error instanceof Error ? error.message : t("interface.failed_to_load_artifact") } />
         ) : data?.kind === "text" && (editing || isDirectTextEdit) ? (
           <TextEditor value={draft} language={target.preview === "markdown" ? "markdown" : "text"} onChange={setDraft} />
         ) : target.preview === "markdown" && data?.kind === "text" ? (

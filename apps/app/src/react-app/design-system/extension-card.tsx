@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import { useState, type ReactNode } from "react";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -102,7 +103,7 @@ export function ExtensionCard(props: ExtensionCardProps) {
           <span data-library-description className="truncate text-xs text-muted-foreground">{summary || extensionTaxonomyLabel(taxonomy)}</span>
         </span>
       </button>
-      <span data-library-status className="w-14 shrink-0 whitespace-nowrap text-right text-xs text-muted-foreground">{hidden ? "Hidden" : disabledReason ? "Blocked" : props.statusChip?.label ?? (readiness === "ready" ? "Ready" : "Set up")}</span>
+      <span data-library-status className="w-14 shrink-0 whitespace-nowrap text-right text-xs text-muted-foreground">{hidden ? t("interface.hidden") : disabledReason ? t("context_panel.permission_action_deny") : props.statusChip?.label ?? (readiness === "ready" ? t("settings.sandbox_ready") : t("extensions.row_action_set_up"))}</span>
       <span data-library-action className="flex min-w-[72px] shrink-0 items-center justify-end gap-1">
         {!disabledReason && !connecting && nextActionLabel ? <Button variant="outline" size="icon-sm" aria-label={nextActionLabel} onClick={() => (onNextAction ? onNextAction() : onClick?.())}><ArrowRight data-icon="inline-start" /></Button> : null}
         {props.trailing}

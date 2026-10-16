@@ -380,12 +380,12 @@ function UnavailableWorkbenchPane(props: {
     >
       <div className="flex max-w-sm flex-col gap-3 text-center">
         <div>
-          <h2 className="text-sm font-medium text-foreground">{props.workspaceTitle} is unavailable</h2>
+          <h2 className="text-sm font-medium text-foreground">{props.workspaceTitle}{t("interface.is_unavailable")}</h2>
           <p className="mt-1 text-xs leading-5 text-muted-foreground">{props.message}</p>
         </div>
         <div className="flex justify-center gap-2">
-          <Button variant="outline" size="sm" onClick={props.onRetry}>Retry connection</Button>
-          <Button variant="ghost" size="sm" onClick={props.onClose}>Close pane</Button>
+          <Button variant="outline" size="sm" onClick={props.onRetry}>{t("interface.retry_connection")}</Button>
+          <Button variant="ghost" size="sm" onClick={props.onClose}>{t("interface.close_pane")}</Button>
         </div>
       </div>
     </div>
@@ -688,7 +688,7 @@ export function SessionPage(props: SessionPageProps) {
       if (isElectronRuntime()) {
         if (options?.external) {
           void openDesktopUrl(url).catch((error: unknown) => {
-            toast.error(error instanceof Error ? error.message : "Could not open this link.");
+            toast.error(error instanceof Error ? error.message : t("session_copy.could_not_open_this_link"));
           });
           return;
         }
@@ -707,7 +707,7 @@ export function SessionPage(props: SessionPageProps) {
     }
 
     const reportOpenError = (error: unknown) => {
-      toast.error(error instanceof Error ? error.message : "Could not open this file.");
+      toast.error(error instanceof Error ? error.message : t("session_copy.could_not_open_this_file"));
     };
     const canOpenLocally = isElectronRuntime();
     const openLocalFile = (fileTarget: OpenTarget) => {
@@ -715,7 +715,7 @@ export function SessionPage(props: SessionPageProps) {
       // The desktop re-checks the resolved file on disk before launching anything.
       const native = nativeFileAction(runtime.workspaceRoot, fileTarget.value, options);
       if (!native) {
-        reportOpenError(new Error("This is not a local file path."));
+        reportOpenError(new Error(t("session_copy.this_is_not_a_local_file_path")));
         return;
       }
       if (native.action === "reveal") {
@@ -724,7 +724,7 @@ export function SessionPage(props: SessionPageProps) {
       }
       void openDesktopWorkspaceFile(runtime.workspaceRoot, native.path)
         .then((action) => {
-          if (action === "revealed") toast.info("This file points outside the workspace, so it was shown in its folder instead.");
+          if (action === "revealed") toast.info(t("session_copy.this_file_points_outside_the_workspace_so_it_was_shown_in_its_folder_instead"));
         })
         .catch(reportOpenError);
     };
@@ -758,14 +758,14 @@ export function SessionPage(props: SessionPageProps) {
     if (target.exists !== true) {
       if (!runtime.client || !runtime.runtimeWorkspaceId) {
         if (canOpenLocally) openLocalFile(target);
-        else reportOpenError(new Error("Connect to the workspace to open this file."));
+        else reportOpenError(new Error(t("session_copy.connect_to_the_workspace_to_open_this_file")));
         return;
       }
       void resolveCollectibleOpenTarget(runtime.client, runtime.runtimeWorkspaceId, target)
         .then((resolvedTarget) => {
           if (resolvedTarget) openFileTarget(resolvedTarget);
           else if (canOpenLocally) openLocalFile(target);
-          else reportOpenError(new Error("This file is missing or outside the workspace."));
+          else reportOpenError(new Error(t("session_copy.this_file_is_missing_or_outside_the_workspace")));
         })
         .catch(reportOpenError);
       return;
@@ -1036,7 +1036,7 @@ export function SessionPage(props: SessionPageProps) {
     selectedWorkspaceGroupError ||
     "";
   const showSelectedWorkspaceError = Boolean(selectedWorkspaceErrorMessage);
-  const selectedWorkspaceErrorTitle = "OpenCode unavailable";
+  const selectedWorkspaceErrorTitle = t("session_copy.opencode_unavailable");
 
   const reactSessionBaseUrl = props.opencodeBaseUrl?.trim() ?? "";
   const reactSessionToken =
@@ -1062,7 +1062,7 @@ export function SessionPage(props: SessionPageProps) {
         status: "unavailable",
         workspaceId: splitSession.workspaceId,
         workspaceTitle: splitWorkspaceTitle,
-        message: "This workspace does not have a connected runtime.",
+        message: t("session_copy.this_workspace_does_not_have_a_connected_runtime"),
       };
     }
     if (
@@ -1090,7 +1090,7 @@ export function SessionPage(props: SessionPageProps) {
       status: "unavailable",
       workspaceId: splitSession.workspaceId,
       workspaceTitle: splitWorkspaceTitle,
-      message: selectedWorkspaceErrorMessage || "This workspace is disconnected.",
+      message: selectedWorkspaceErrorMessage || t("session_copy.this_workspace_is_disconnected"),
     };
   })();
   const narrowPaneOptions = useMemo<NarrowPaneOption[]>(() => {
@@ -1464,7 +1464,7 @@ export function SessionPage(props: SessionPageProps) {
                         size="sm"
                         className="h-6 shrink-0 cursor-pointer gap-1 rounded-lg px-1.5 text-[12px] text-gray-10 transition-colors hover:bg-muted hover:text-foreground titlebar-no-drag"
                         data-parent-session-back={parentSessionLink.sessionId}
-                        aria-label={`Back to ${parentSessionLink.title || "parent chat"}`}
+                        aria-label={t("session_copy.back_to", { name: parentSessionLink.title || t("session_copy.parent_chat") })}
                         onClick={() => openSessionTab(parentSessionLink.workspaceId, parentSessionLink.sessionId)}
                       >
                         <ArrowLeft size={14} />
@@ -1474,7 +1474,7 @@ export function SessionPage(props: SessionPageProps) {
                       </Button>
                     }
                   />
-                  <TooltipContent>Back to parent chat</TooltipContent>
+                  <TooltipContent>{t("interface.back_to_parent_chat")}</TooltipContent>
                 </Tooltip>
               ) : null}
               <h1 data-session-header-title className={cn("truncate font-medium text-dls-text", !isElectronRuntime() && !props.primaryTitle && !props.mainContentTitle && "max-lg:hidden", props.mainContentHeaderActionsRef ? "text-base leading-6" : "text-[13px]")}>
@@ -1521,14 +1521,14 @@ export function SessionPage(props: SessionPageProps) {
                         variant="ghost"
                         size="icon-sm"
                         className="hidden rounded-xl text-gray-10 transition-colors hover:bg-muted hover:text-foreground lg:inline-flex"
-                        aria-label="Find in conversation"
+                        aria-label={t("interface.find_in_conversation")}
                         onClick={() => useSessionFindStore.getState().openFind({ sessionId: findButtonSessionId })}
                       >
                         <TextSearch size={16} />
                       </Button>
                     }
                   />
-                  <TooltipContent>Find in conversation ({isMacPlatform() ? "⌘F" : "Ctrl+F"})</TooltipContent>
+                  <TooltipContent>{t("interface.find_in_conversation_7c26fd34")}{isMacPlatform() ? "⌘F" : t("interface.ctrl_f")})</TooltipContent>
                 </Tooltip>
               ) : null}
               {showCloudSignIn ? (
@@ -1551,7 +1551,7 @@ export function SessionPage(props: SessionPageProps) {
                       variant="ghost"
                       size="icon-sm"
                       className="rounded-xl text-gray-10 transition-colors hover:bg-muted hover:text-foreground lg:hidden"
-                      aria-label="More actions"
+                      aria-label={t("interface.more_actions")}
                     >
                       <MoreHorizontal size={18} />
                     </Button>
@@ -1562,13 +1562,10 @@ export function SessionPage(props: SessionPageProps) {
                     <DropdownMenuItem
                       onClick={() => useSessionFindStore.getState().openFind({ sessionId: findButtonSessionId })}
                     >
-                      <TextSearch className="size-4" />
-                      Find in conversation
-                    </DropdownMenuItem>
+                      <TextSearch className="size-4" />{t("interface.find_in_conversation")} </DropdownMenuItem>
                   ) : null}
                   <DropdownMenuItem onClick={openArtifactRailPane}>
-                    <FileText className="size-4" />
-                    Files{artifactTargetCount > 0 ? ` (${artifactTargetCount})` : ""}
+                    <FileText className="size-4" />{t("session.permission_detail_files")}{artifactTargetCount > 0 ? ` (${artifactTargetCount})` : ""}
                   </DropdownMenuItem>
                   {showCloudSignIn ? (
                     <DropdownMenuItem onClick={openCloudSignIn}>
@@ -1589,10 +1586,8 @@ export function SessionPage(props: SessionPageProps) {
                       window.localStorage.removeItem("openwork.orgOnboardingSeen");
                     } catch {}
                   }}
-                  title="Clears acknowledged providers + org onboarding so they trigger again"
-                >
-                  Reset notifications
-                </Button>
+                  title={t("interface.clears_acknowledged_providers_org_onboarding_so_they_trigger_again")}
+                >{t("interface.reset_notifications")} </Button>
               ) : null}
               <Tooltip>
                 <TooltipTrigger
@@ -1604,7 +1599,7 @@ export function SessionPage(props: SessionPageProps) {
                         "hidden rounded-xl text-gray-10 transition-colors hover:bg-muted hover:text-foreground lg:inline-flex",
                         sidePanelOpen && "bg-primary/10 text-primary hover:bg-primary/15 hover:text-primary",
                       )}
-                      aria-label={sidePanelOpen ? "Close side panel" : "Open side panel"}
+                      aria-label={sidePanelOpen ? t("interface.close_side_panel") : t("interface.open_side_panel")}
                       aria-pressed={sidePanelOpen}
                       onClick={() => {
                         if (sidePanelOpen) {
@@ -1618,7 +1613,7 @@ export function SessionPage(props: SessionPageProps) {
                     </Button>
                   }
                 />
-                <TooltipContent>{sidePanelOpen ? "Close side panel" : "Open side panel"}</TooltipContent>
+                <TooltipContent>{sidePanelOpen ? t("interface.close_side_panel") : t("interface.open_side_panel")}</TooltipContent>
               </Tooltip>
             </div>}
           </header>}
@@ -1881,7 +1876,7 @@ export function SessionPage(props: SessionPageProps) {
                   {props.notFoundMessage ? (
                     <div className="px-6 py-16 text-center">
                       <div className="mx-auto max-w-md rounded-2xl border border-dls-border bg-dls-card px-5 py-6 shadow-[var(--dls-card-shadow)]">
-                        <h3 className="text-base font-medium text-dls-text">Workspace or session not found</h3>
+                        <h3 className="text-base font-medium text-dls-text">{t("interface.workspace_or_session_not_found")}</h3>
                         <p className="mt-2 text-sm leading-6 text-dls-secondary">{props.notFoundMessage}</p>
                       </div>
                     </div>
@@ -1968,8 +1963,8 @@ export function SessionPage(props: SessionPageProps) {
                   browserRailActive && "bg-primary/10 text-primary hover:bg-primary/15 hover:text-primary",
                 )}
                 onClick={openBrowserRailPane}
-                title="Browser"
-                aria-label="Browser"
+                title={t("settings.browser_title")}
+                aria-label={t("settings.browser_title")}
                 aria-pressed={browserRailActive}
               >
                 <Globe size={15} />
@@ -1983,8 +1978,8 @@ export function SessionPage(props: SessionPageProps) {
                 filesRailActive && "bg-primary/10 text-primary hover:bg-primary/15 hover:text-primary",
               )}
               onClick={filesRailActive ? closeRightPane : openArtifactRailPane}
-              title={`Files (${artifactTargetCount})`}
-              aria-label={`Files (${artifactTargetCount})`}
+              title={t("session_copy.files_count", { count: artifactTargetCount })}
+              aria-label={t("session_copy.files_count", { count: artifactTargetCount })}
               aria-pressed={filesRailActive}
             >
               <FileText size={15} />

@@ -106,17 +106,17 @@ export function getSettingsTabIcon(tab: SettingsTab) {
 export function getSettingsTabLabel(tab: SettingsTab) {
   switch (tab) {
     case "ai":
-      return "AI Providers";
+      return t("interface.ai_providers");
     case "ollama":
       return "Ollama";
     case "preferences":
-      return "Preferences";
+      return t("settings_extra.preferences");
     case "permissions":
-      return "Permissions";
+      return t("settings_extra.permissions");
     case "cloud-account":
       return t("settings.tab_cloud_account");
     case "usage":
-      return "Usage";
+      return t("interface.usage");
     case "connect":
       return t("settings.tab_connect");
     case "cloud-marketplaces":
@@ -134,7 +134,7 @@ export function getSettingsTabLabel(tab: SettingsTab) {
     case "appearance":
       return t("settings.tab_appearance");
     case "shortcuts":
-      return "Keyboard shortcuts";
+      return t("settings_extra.keyboard_shortcuts");
     case "updates":
       return t("settings.tab_updates");
     case "recovery":
@@ -142,7 +142,7 @@ export function getSettingsTabLabel(tab: SettingsTab) {
     case "debug":
       return t("settings.tab_debug");
     case "general":
-      return "Settings";
+      return t("settings.tab_general");
     default:
       return t("settings.tab_general");
   }
@@ -151,17 +151,17 @@ export function getSettingsTabLabel(tab: SettingsTab) {
 export function getSettingsTabDescription(tab: SettingsTab) {
   switch (tab) {
     case "ai":
-      return "Connect OpenAI, Anthropic, local models and more";
+      return t("settings_extra.connect_openai_anthropic_local_models_and_more");
     case "ollama":
-      return "Connect to Ollama and manage local models";
+      return t("settings_extra.connect_to_ollama_and_manage_local_models");
     case "preferences":
-      return "Default model, reasoning, and compaction";
+      return t("settings_extra.default_model_reasoning_and_compaction_2d6cd4e");
     case "permissions":
-      return "Authorized folders and file access";
+      return t("settings_extra.authorized_folders_and_file_access_0ee726f");
     case "cloud-account":
       return t("settings.tab_description_cloud_account");
     case "usage":
-      return "How much of your limits is left";
+      return t("settings_extra.how_much_of_your_limits_is_left");
     case "connect":
       return t("settings.tab_description_connect");
     case "cloud-marketplaces":
@@ -179,7 +179,7 @@ export function getSettingsTabDescription(tab: SettingsTab) {
     case "appearance":
       return t("settings.tab_description_appearance");
     case "shortcuts":
-      return "Keys that switch to the models you use most";
+      return t("settings_extra.keys_that_switch_to_the_models_you_use_most");
     case "updates":
       return t("settings.tab_description_updates");
     case "recovery":
@@ -187,7 +187,7 @@ export function getSettingsTabDescription(tab: SettingsTab) {
     case "debug":
       return t("settings.tab_description_debug");
     case "general":
-      return "Overview of all settings";
+      return t("settings_extra.overview_of_all_settings");
     default:
       return t("settings.tab_description_general");
   }

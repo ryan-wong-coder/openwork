@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import { type ReactNode } from "react";
 import { Cpu } from "lucide-react";
 
@@ -129,7 +130,7 @@ export function ExtensionsView(props: ExtensionsViewProps) {
       <details className="group" open>
         <summary className="flex cursor-pointer items-center gap-2 rounded-lg px-1 py-2 text-sm font-medium text-dls-secondary transition-colors hover:text-dls-text">
           <Cpu size={14} />
-          <span>OpenCode Plugins</span>
+          <span>{t("interface.opencode_plugins")}</span>
           <span className="text-[11px] text-dls-secondary">({pluginCount})</span>
         </summary>
         <div className="mt-3">

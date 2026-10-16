@@ -1,5 +1,6 @@
 /** @jsxImportSource react */
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { currentLocale, subscribeLocale, t } from "@/i18n";
+import { memo, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
 import {
   Dialog,
@@ -89,6 +90,7 @@ function MarkdownBlockInner({
   highlightQuery,
   ...props
 }: MarkdownBlockInnerProps) {
+  const locale = useSyncExternalStore(subscribeLocale, currentLocale, currentLocale);
   const rootRef = useRef<HTMLDivElement>(null);
   const videoCleanups = useRef(new Map<HTMLVideoElement, () => void>());
   const codeCopyResetTimers = useRef(new Map<HTMLButtonElement, number>());
@@ -104,7 +106,7 @@ function MarkdownBlockInner({
   const [imagePreview, setImagePreview] = useState<{ src: string; alt: string } | null>(null);
   const references = useSessionReferencesMaybe();
   const resolveReference = sessionReferences ? references?.resolve : undefined;
-  const streamingRenderer = useMemo(() => createStreamingMarkdownRenderer("chat", resolveReference), [resolveReference]);
+  const streamingRenderer = useMemo(() => createStreamingMarkdownRenderer("chat", resolveReference), [resolveReference, locale]);
   const streamedBlocks = useMemo(
     () => (streaming ? streamingRenderer.render(text) : null),
     [streaming, streamingRenderer, text],
@@ -114,9 +116,9 @@ function MarkdownBlockInner({
   }, [streaming, streamingRenderer]);
   const syncHtml = useMemo(
     () => (streamedBlocks ? "" : renderMarkdownHtml(text, "chat", resolveReference)),
-    [streamedBlocks, text, resolveReference],
+    [streamedBlocks, text, resolveReference, locale],
   );
-  const [highlightedHtml, setHighlightedHtml] = useState<{ text: string; html: string; resolveReference: typeof resolveReference } | null>(null);
+  const [highlightedHtml, setHighlightedHtml] = useState<{ text: string; html: string; locale: string; resolveReference: typeof resolveReference } | null>(null);
 
   const handleCopy = useCallback(async (button: HTMLButtonElement, text: string) => {
     try {
@@ -167,10 +169,10 @@ function MarkdownBlockInner({
   }, []);
 
   const candidate = useMemo<RenderedMarkdown>(() => {
-    if (!streaming && highlightedHtml?.text === text && highlightedHtml.resolveReference === resolveReference) return { kind: "document", html: highlightedHtml.html };
+    if (!streaming && highlightedHtml?.text === text && highlightedHtml.resolveReference === resolveReference && highlightedHtml.locale === locale) return { kind: "document", html: highlightedHtml.html };
     if (streamedBlocks) return { kind: "blocks", blocks: streamedBlocks };
     return { kind: "document", html: syncHtml };
-  }, [highlightedHtml, streamedBlocks, streaming, syncHtml, text, resolveReference]);
+  }, [highlightedHtml, streamedBlocks, streaming, syncHtml, text, resolveReference, locale]);
   const rendered = useSelectionStableValue(rootRef, candidate);
   // Keep the innerHTML prop referentially stable too: a fresh wrapper object
   // can make an unrelated React render replace selected text nodes even when
@@ -195,7 +197,7 @@ function MarkdownBlockInner({
     let cancelled = false;
     const stopObserving = enhanceNearViewport([root], () => {
       void renderHighlightedMarkdownHtml(text, "chat", resolveReference).then((html) => {
-        if (!cancelled && html.trim()) setHighlightedHtml({ text, html, resolveReference });
+        if (!cancelled && html.trim()) setHighlightedHtml({ text, html, resolveReference, locale });
       }).catch(() => {
         if (!cancelled) setHighlightedHtml(null);
       });
@@ -204,7 +206,7 @@ function MarkdownBlockInner({
       cancelled = true;
       stopObserving();
     };
-  }, [isEmpty, rendered.kind, streaming, text, resolveReference]);
+  }, [isEmpty, rendered.kind, streaming, text, resolveReference, locale]);
 
   useMermaidEnhancer(rootRef, rendered, !streaming);
 
@@ -383,7 +385,7 @@ function MarkdownBlockInner({
       event.stopPropagation();
       const image = preview.querySelector("img");
       if (!(image instanceof HTMLImageElement) || !image.src) return;
-      setImagePreview({ src: image.src, alt: image.alt || "Image" });
+      setImagePreview({ src: image.src, alt: image.alt || t("composer.image_kind") });
     };
 
     const handleContextMenu = (event: MouseEvent) => {
@@ -480,7 +482,7 @@ function MarkdownBlockInner({
         }}
       >
         <DialogContent className="max-h-[95vh] w-auto max-w-[95vw] overflow-hidden border-none bg-transparent p-0 shadow-none ring-0 lg:w-max lg:max-w-[95vw]">
-          <DialogTitle className="sr-only">{imagePreview?.alt ?? "Image"}</DialogTitle>
+          <DialogTitle className="sr-only">{imagePreview?.alt ?? t("composer.image_kind")}</DialogTitle>
           {imagePreview ? (
             <img
               src={imagePreview.src}

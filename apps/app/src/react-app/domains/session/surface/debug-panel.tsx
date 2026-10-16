@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import type { OpenworkSessionHistory } from "../../../../app/lib/openwork-server";
 import type { SessionRenderModel } from "../sync/transition-controller";
 
@@ -8,12 +9,12 @@ export function SessionDebugPanel(props: {
 }) {
   return (
     <div className="fixed bottom-20 right-4 z-30 w-[280px] rounded-2xl border border-dls-border bg-dls-surface/95 p-3 text-xs text-dls-secondary shadow-[var(--dls-card-shadow)] backdrop-blur-md">
-      <div className="mb-2 text-[11px] uppercase tracking-[0.18em] text-dls-text">React Session Debug</div>
+      <div className="mb-2 text-[11px] uppercase tracking-[0.18em] text-dls-text">{t("interface.react_session_debug")}</div>
       <div className="space-y-1.5">
-        <div>intendedSessionId: <span className="text-dls-text">{props.model.intendedSessionId || "-"}</span></div>
-        <div>renderedSessionId: <span className="text-dls-text">{props.model.renderedSessionId || "-"}</span></div>
-        <div>transitionState: <span className="text-dls-text">{props.model.transitionState}</span></div>
-        <div>renderSource: <span className="text-dls-text">{props.model.renderSource}</span></div>
+        <div>{t("interface.intendedsessionid")} <span className="text-dls-text">{props.model.intendedSessionId || "-"}</span></div>
+        <div>{t("interface.renderedsessionid")} <span className="text-dls-text">{props.model.renderedSessionId || "-"}</span></div>
+        <div>{t("interface.transitionstate")} <span className="text-dls-text">{props.model.transitionState}</span></div>
+        <div>{t("interface.rendersource")} <span className="text-dls-text">{props.model.renderSource}</span></div>
         <div>status: <span className="text-dls-text">{props.snapshot?.status?.type ?? "-"}</span></div>
         <div>messages: <span className="text-dls-text">{props.snapshot?.messages.length ?? 0}</span></div>
         <div>todos: <span className="text-dls-text">{props.snapshot?.todos?.length ?? 0}</span></div>

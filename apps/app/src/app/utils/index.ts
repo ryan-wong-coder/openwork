@@ -1,5 +1,5 @@
 import type { Part } from "@opencode-ai/sdk/v2/client";
-import { t } from "../../i18n";
+import { currentLocale, t } from "../../i18n";
 import type {
   MessageInfo,
   ModelRef,
@@ -315,7 +315,7 @@ export function formatRelativeTime(timestampMs: number) {
     return t("time.hours_ago", { count: Math.max(1, Math.round(delta / (60 * 60_000))) });
   }
 
-  return new Date(timestampMs).toLocaleDateString();
+  return new Date(timestampMs).toLocaleDateString(currentLocale());
 }
 
 export function addOpencodeCacheHint(message: string) {

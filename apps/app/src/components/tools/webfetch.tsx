@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import * as React from "react"
 import { Globe } from "lucide-react"
 import {
@@ -25,7 +26,7 @@ export function WebfetchTool({ part }: WebfetchToolProps) {
   return (
     <div className="flex gap-2">
       <WebfetchTrigger leftIcon={<Globe className="size-4" />}>
-        Fetching
+        {t("ui.fetching")}
       </WebfetchTrigger>
       <Source href={part.input.url}>
         <SourceTrigger showFavicon />

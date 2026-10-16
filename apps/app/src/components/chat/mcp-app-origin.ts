@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import type { OpenworkMcpAppResource, OpenworkServerClient } from "@/app/lib/openwork-server";
 import { startMcpAppTiming } from "@openwork/types/mcp-app-timing";
 
@@ -29,9 +30,9 @@ export function createMcpAppActions(
 ) {
   let active = true;
   const assertActive = () => {
-    if (!active) throw new Error("This App view has closed or changed. Reopen it before using its actions.");
-    if (origin.readOnly) throw new Error("This view is read-only and cannot perform App actions.");
-    if (!app.launchId) throw new Error("This App has no live launch context. Update OpenWork and reopen the App.");
+    if (!active) throw new Error(t("ui.this_app_view_has_closed_or_changed_reopen_it_before_using_its_actions"));
+    if (origin.readOnly) throw new Error(t("ui.this_view_is_read_only_and_cannot_perform_app_actions"));
+    if (!app.launchId) throw new Error(t("ui.this_app_has_no_live_launch_context_update_openwork_and_reopen_the_app"));
   };
   return {
     dispose: () => { active = false; },

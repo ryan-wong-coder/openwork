@@ -282,9 +282,7 @@ export function AuthorizedFoldersPanel(props: AuthorizedFoldersPanelProps) {
               onClick={() => void pickAuthorizedFolder()}
               disabled={authorizedFoldersLoading || authorizedFoldersSaving || !canPickAuthorizedFolder}
             >
-              <Plus className="size-4" />
-              Add folder
-            </Button>
+              <Plus className="size-4" />{t("interface.add_folder")} </Button>
           </LayoutSectionItemHeaderActions>
         ) : null}
       </LayoutSectionItemHeader>
@@ -331,9 +329,7 @@ export function AuthorizedFoldersPanel(props: AuthorizedFoldersPanelProps) {
                   onClick={() => void pickAuthorizedFolder()}
                   disabled={authorizedFoldersLoading || authorizedFoldersSaving || !canPickAuthorizedFolder}
                 >
-                  <Plus className="size-4" />
-                  Add folder
-                </Button>
+                  <Plus className="size-4" />{t("interface.add_folder")} </Button>
               </EmptyContent>
             ) : null}
             </Empty>

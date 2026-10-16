@@ -501,13 +501,13 @@ export function useDebugViewModel(options: UseDebugViewModelOptions) {
 
   const onClearDeveloperLog = useCallback(() => {
     setDeveloperLog([]);
-    setDeveloperLogStatus("Cleared developer log.");
+    setDeveloperLogStatus(t("settings_extra.cleared_developer_log"));
   }, []);
 
   const onCopyDeveloperLog = useCallback(async () => {
     try {
       await navigator.clipboard.writeText(developerLog.join("\n"));
-      setDeveloperLogStatus("Copied developer log to clipboard.");
+      setDeveloperLogStatus(t("settings_extra.copied_developer_log_to_clipboard"));
     } catch (error) {
       setDeveloperLogStatus(error instanceof Error ? error.message : safeStringify(error));
     }
@@ -520,7 +520,7 @@ export function useDebugViewModel(options: UseDebugViewModelOptions) {
         developerLog.join("\n"),
         "text/plain",
       );
-      setDeveloperLogStatus("Exported developer log.");
+      setDeveloperLogStatus(t("settings.exported_developer_log"));
     } catch (error) {
       setDeveloperLogStatus(error instanceof Error ? error.message : safeStringify(error));
     }
@@ -529,7 +529,7 @@ export function useDebugViewModel(options: UseDebugViewModelOptions) {
   const onOpenElectronPreviewRelease = useCallback(async () => {
     try {
       await openDesktopUrl(ELECTRON_ALPHA_RELEASE_PAGE_URL);
-      setElectronMigrationStatus("Opened the rolling Electron alpha release. Download links live there after dev builds finish.");
+      setElectronMigrationStatus(t("settings_extra.opened_the_rolling_electron_alpha_release_download_links_live_there_after_dev_builds_"));
     } catch (error) {
       setElectronMigrationStatus(error instanceof Error ? error.message : safeStringify(error));
     }
@@ -551,34 +551,34 @@ export function useDebugViewModel(options: UseDebugViewModelOptions) {
   }, [electronMigrationArtifact]);
 
   const onResolveElectronAlphaArtifact = useCallback(async () => {
-    setElectronMigrationStatus("Tauri → Electron migration controls were removed after Electron became the desktop runtime.");
+    setElectronMigrationStatus(t("settings_extra.tauri_electron_migration_controls_were_removed_after_electron_became_the_desktop_runt"));
   }, []);
 
   const onRevealElectronMigrationBackup = useCallback(async () => {
     if (!isElectronRuntime()) {
-      setElectronMigrationStatus("Migration backup reveal is available only in the desktop app.");
+      setElectronMigrationStatus(t("settings_extra.migration_backup_reveal_is_available_only_in_the_desktop_app"));
       return;
     }
     try {
       const env = await updaterEnvironmentCmd() as { appBundlePath?: string };
       const appBundlePath = env.appBundlePath?.trim();
       if (!appBundlePath) {
-        setElectronMigrationStatus("Could not resolve the current OpenWork.app bundle path.");
+        setElectronMigrationStatus(t("settings_extra.could_not_resolve_the_current_openwork_app_bundle_path"));
         return;
       }
       await revealDesktopItemInDir(`${appBundlePath}.migrate-bak`);
-      setElectronMigrationStatus("Requested Finder reveal for OpenWork.app.migrate-bak. The backup exists after an install handoff completes.");
+      setElectronMigrationStatus(t("settings_extra.requested_finder_reveal_for_openwork_app_migrate_bak_the_backup_exists_after_an_insta"));
     } catch (error) {
       setElectronMigrationStatus(error instanceof Error ? error.message : safeStringify(error));
     }
   }, []);
 
   const onPrepareElectronMigrationSnapshot = useCallback(async () => {
-    setElectronMigrationStatus("Tauri migration snapshots are no longer available because Tauri has been removed.");
+    setElectronMigrationStatus(t("settings_extra.tauri_migration_snapshots_are_no_longer_available_because_tauri_has_been_removed"));
   }, []);
 
   const onInstallElectronPreviewFromTauri = useCallback(async () => {
-    setElectronMigrationStatus("Tauri → Electron install handoff is no longer available because Electron is now the desktop runtime.");
+    setElectronMigrationStatus(t("settings_extra.tauri_electron_install_handoff_is_no_longer_available_because_electron_is_now_the_des"));
   }, []);
 
   useEffect(() => {
@@ -599,16 +599,16 @@ export function useDebugViewModel(options: UseDebugViewModelOptions) {
 
   const onSetElectronAlphaUpdaterChannel = useCallback(async (channel: ReleaseChannel) => {
     if (!isElectronRuntime()) {
-      setElectronAlphaUpdaterStatus("Electron updater channels are available only in the Electron desktop app.");
+      setElectronAlphaUpdaterStatus(t("settings_extra.electron_updater_channels_are_available_only_in_the_electron_desktop_app"));
       return;
     }
     if (channel === "alpha" && !isMacPlatform()) {
-      setElectronAlphaUpdaterStatus("Electron alpha updates are macOS-only for now.");
+      setElectronAlphaUpdaterStatus(t("settings_extra.electron_alpha_updates_are_macos_only_for_now"));
       return;
     }
     const bridge = window.__OPENWORK_ELECTRON__?.updater;
     if (!bridge?.setChannel) {
-      setElectronAlphaUpdaterStatus("Electron updater bridge is unavailable.");
+      setElectronAlphaUpdaterStatus(t("updates.bridge_unavailable"));
       return;
     }
     setElectronAlphaUpdaterBusy(true);
@@ -617,7 +617,7 @@ export function useDebugViewModel(options: UseDebugViewModelOptions) {
       const state = await bridge.setChannel(channel);
       setElectronAlphaUpdaterChannel(state.channel ?? channel);
       setElectronAlphaUpdaterStatus(
-        `Subscribed Electron updater to ${state.channel ?? channel} (${state.feedUrl}).`,
+        t("settings_extra.subscribed_electron_updater_to_channel_url", { channel: state.channel ?? channel, url: state.feedUrl ?? "" }),
       );
       pushDeveloperLog(`set Electron updater channel=${state.channel ?? channel}`);
     } catch (error) {
@@ -629,12 +629,12 @@ export function useDebugViewModel(options: UseDebugViewModelOptions) {
 
   const onCheckElectronAlphaUpdates = useCallback(async () => {
     if (!isElectronRuntime()) {
-      setElectronAlphaUpdaterStatus("Electron update checks are available only in the Electron desktop app.");
+      setElectronAlphaUpdaterStatus(t("settings_extra.electron_update_checks_are_available_only_in_the_electron_desktop_app"));
       return;
     }
     const bridge = window.__OPENWORK_ELECTRON__?.updater;
     if (!bridge?.check) {
-      setElectronAlphaUpdaterStatus("Electron updater bridge is unavailable.");
+      setElectronAlphaUpdaterStatus(t("updates.bridge_unavailable"));
       return;
     }
     setElectronAlphaUpdaterBusy(true);
@@ -643,7 +643,7 @@ export function useDebugViewModel(options: UseDebugViewModelOptions) {
       const result = await bridge.check();
       if (result.channel) setElectronAlphaUpdaterChannel(result.channel);
       if (result.reason === "unavailable") {
-        setElectronAlphaUpdaterStatus("Electron updater is available only in packaged Electron builds.");
+        setElectronAlphaUpdaterStatus(t("settings_extra.electron_updater_is_available_only_in_packaged_electron_builds"));
         return;
       }
       if (result.reason) {
@@ -652,8 +652,8 @@ export function useDebugViewModel(options: UseDebugViewModelOptions) {
       }
       setElectronAlphaUpdaterStatus(
         result.available
-          ? `Update available: v${result.latestVersion ?? "unknown"} on ${result.channel ?? electronAlphaUpdaterChannel}. Use Settings → Updates to download and install.`
-          : `No Electron update available on ${result.channel ?? electronAlphaUpdaterChannel}.`,
+          ? t("settings_extra.update_available_v_version_on_channel_use_settings_updates_to_download_and_install", { version: result.latestVersion ?? t("common.unknown"), channel: result.channel ?? electronAlphaUpdaterChannel })
+          : t("settings_extra.no_electron_update_available_on_channel", { channel: result.channel ?? electronAlphaUpdaterChannel }),
       );
     } catch (error) {
       setElectronAlphaUpdaterStatus(error instanceof Error ? error.message : safeStringify(error));
@@ -704,7 +704,7 @@ export function useDebugViewModel(options: UseDebugViewModelOptions) {
     const workspacePath = optionsRef.current.selectedWorkspaceRoot.trim();
     if (!workspacePath) {
       throw new Error(
-        "Select a local workspace before starting the local server/engine.",
+        t("settings_extra.select_a_local_workspace_before_starting_the_local_server_engine"),
       );
     }
 
@@ -898,8 +898,8 @@ export function useDebugViewModel(options: UseDebugViewModelOptions) {
       if (!isDesktopRuntime()) return;
       const message =
         mode === "all"
-          ? "Reset ALL OpenWork app data? Open sessions and workspaces will be removed."
-          : "Reset onboarding state only?";
+          ? t("settings_extra.reset_all_openwork_app_data_open_sessions_and_workspaces_will_be_removed")
+          : t("settings_extra.reset_onboarding_state_only");
       if (typeof window !== "undefined" && !window.confirm(message)) {
         return;
       }
@@ -910,8 +910,8 @@ export function useDebugViewModel(options: UseDebugViewModelOptions) {
           clearOpenworkLocalStorageForReset(mode);
           setResetStatus(
             mode === "all"
-              ? "Reset OpenWork state. Restart the app to see changes."
-              : "Reset onboarding state. Restart the app to see changes.",
+              ? t("settings_extra.reset_openwork_state_restart_the_app_to_see_changes")
+              : t("settings_extra.reset_onboarding_state_restart_the_app_to_see_changes"),
           );
           pushDeveloperLog(`reset_openwork_state mode=${mode}`);
         })
@@ -981,7 +981,7 @@ export function useDebugViewModel(options: UseDebugViewModelOptions) {
 
   const [workspaceDebugEventsStatus, setWorkspaceDebugEventsStatus] = useState<string | null>(null);
   const onClearWorkspaceDebugEvents = useCallback(async () => {
-    setWorkspaceDebugEventsStatus("Workspace debug events are not retained in the React route yet.");
+    setWorkspaceDebugEventsStatus(t("settings_extra.workspace_debug_events_are_not_retained_in_the_react_route_yet"));
   }, []);
 
   const debugProps: DebugViewModelProps = useMemo(

@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import type { ReactNode } from "react";
 import { MoreHorizontal, RefreshCw } from "lucide-react";
 
@@ -44,7 +45,7 @@ export function DashboardTileShell({ title, entryId, subtitle, badge, onRefresh,
               variant="ghost"
               size="icon"
               aria-label={`Refresh ${title}`}
-              title="Refresh"
+              title={t("skills.refresh")}
               onClick={onRefresh}
               disabled={refreshing}
             >
@@ -68,8 +69,7 @@ export function DashboardTileShell({ title, entryId, subtitle, badge, onRefresh,
                   {badge}
                 </DropdownMenuLabel>
                 <DropdownMenuItem onClick={onRefresh} disabled={refreshing} aria-label={`Refresh ${title}`}>
-                  <RefreshCw className={`size-4 ${refreshing ? "animate-spin" : ""}`} /> Refresh
-                </DropdownMenuItem>
+                  <RefreshCw className={`size-4 ${refreshing ? "animate-spin" : ""}`} />{t("skills.refresh")} </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>}

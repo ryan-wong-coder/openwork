@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { createContext, useContext, useEffect, useMemo, useRef, type ReactNode } from "react";
 import type { DynamicToolUIPart, UIMessage } from "ai";
 import { PanelRightOpen } from "lucide-react";
@@ -29,7 +30,7 @@ export function BuiltAppChatPreview({ part, compact = false }: { part: DynamicTo
       <Button
         variant="ghost"
         size={compact ? "xs" : "sm"}
-        aria-label="Open preview"
+        aria-label={t("interface.open_preview")}
         disabled={!mcpAppOrigin}
         onClick={() => {
           if (!mcpAppOrigin) return;
@@ -49,7 +50,7 @@ export function BuiltAppChatPreview({ part, compact = false }: { part: DynamicTo
         }}
       >
         <PanelRightOpen className={compact ? "size-3.5" : "size-4"} />
-        {compact ? "Open" : "Open preview"}
+        {compact ? t("session.open") : t("interface.open_preview")}
       </Button>
     </div>
   );

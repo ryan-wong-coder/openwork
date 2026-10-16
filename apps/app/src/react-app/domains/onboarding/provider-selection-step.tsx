@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+import { t } from "@/i18n";
 import {
   Page,
   PageBackground,
@@ -30,10 +31,8 @@ export function ProviderSelectionStep({
 
       <div className="relative z-10 mx-6 w-full max-w-md rounded-3xl border border-border bg-background px-8 py-10">
         <PageHeader className="mb-8 text-center">
-          <PageTitle>Power your first task</PageTitle>
-          <PageDescription>
-            Connect a model, then try a real task in chat so you can see OpenWork work.
-          </PageDescription>
+          <PageTitle>{t("interface.power_your_first_task")}</PageTitle>
+          <PageDescription>{t("interface.connect_a_model_then_try_a_real_task_in_chat_so_you_can_see_openwork_work")} </PageDescription>
         </PageHeader>
 
         <div className="space-y-3">
@@ -45,12 +44,8 @@ export function ProviderSelectionStep({
             >
               <SparklesIcon className="mt-0.5 size-5 shrink-0 text-blue-10" />
               <div>
-                <div className="text-sm font-medium text-foreground">
-                  Use OpenWork Models
-                </div>
-                <div className="mt-0.5 text-xs text-muted-foreground">
-                  Pay through OpenWork Cloud and skip API key setup.
-                </div>
+                <div className="text-sm font-medium text-foreground">{t("interface.use_openwork_models")} </div>
+                <div className="mt-0.5 text-xs text-muted-foreground">{t("interface.pay_through_openwork_cloud_and_skip_api_key_setup")} </div>
               </div>
             </button>
           ) : null}
@@ -62,20 +57,14 @@ export function ProviderSelectionStep({
           >
             <KeyRoundIcon className="mt-0.5 size-5 shrink-0 text-muted-foreground" />
             <div>
-              <div className="text-sm font-medium text-foreground">
-                Bring your own API key
-              </div>
-              <div className="mt-0.5 text-xs text-muted-foreground">
-                Connect OpenAI, Anthropic, Google, or another provider, then run your first task.
-              </div>
+              <div className="text-sm font-medium text-foreground">{t("interface.bring_your_own_api_key")} </div>
+              <div className="mt-0.5 text-xs text-muted-foreground">{t("interface.connect_openai_anthropic_google_or_another_provider_then_run_your_first_task")} </div>
             </div>
           </button>
 
           <div className="pt-1 text-center">
             <Button variant="ghost" size="sm" onClick={onSkip}>
-              <SkipForwardIcon className="mr-1.5 size-3.5" />
-              Skip and use the free model
-            </Button>
+              <SkipForwardIcon className="mr-1.5 size-3.5" />{t("interface.skip_and_use_the_free_model")} </Button>
           </div>
         </div>
       </div>

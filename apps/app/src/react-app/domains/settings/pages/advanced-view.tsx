@@ -122,15 +122,15 @@ export function AdvancedView(props: AdvancedViewProps) {
   })();
 
   const clientDetailLines = props.clientConnected
-    ? ["Chat and task creation can use the OpenCode engine for this workspace."]
+    ? [t("settings_extra.chat_and_task_creation_can_use_the_opencode_engine_for_this_workspace")]
     : [
-        "Chat and task creation may fail until OpenCode restarts.",
-        "OpenWork server config sources below can still be inspected.",
+        t("settings_extra.chat_and_task_creation_may_fail_until_opencode_restarts"),
+        t("settings_extra.openwork_server_config_sources_below_can_still_be_inspected"),
       ];
 
   const openworkDetailLines = props.openworkServerStatus === "connected"
-    ? ["Runtime DB, workspace config, and migration diagnostics are available."]
-    : ["Runtime config diagnostics need the OpenWork server connection."];
+    ? [t("settings_extra.runtime_db_workspace_config_and_migration_diagnostics_are_available")]
+    : [t("settings_extra.runtime_config_diagnostics_need_the_openwork_server_connection")];
 
   const submitDebugDeepLink = async () => {
     const rawUrl = debugDeepLinkInput.trim();
@@ -163,7 +163,7 @@ export function AdvancedView(props: AdvancedViewProps) {
     try {
       setConfigStatus(await props.getRuntimeConfigStatus());
     } catch (error) {
-      setConfigStatusError(error instanceof Error ? error.message : "Failed to load runtime config status.");
+      setConfigStatusError(error instanceof Error ? error.message : t("settings_extra.failed_to_load_runtime_config_status"));
     } finally {
       setConfigStatusBusy(false);
     }
