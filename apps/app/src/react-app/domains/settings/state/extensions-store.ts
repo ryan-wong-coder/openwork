@@ -1,4 +1,5 @@
 import * as React from "react";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 
 import { desktopRestrictionNotice, type DesktopAppRestrictionChecker } from "../../../../app/cloud/desktop-app-restrictions";
 
@@ -374,6 +375,7 @@ export function createExtensionsStore(options: {
   };
 
   const refreshPendingCloudPluginChanges = async (installedPlugins?: Record<string, CloudImportedPlugin>) => {
+    if (isLocalGatewayClient()) { setStateField("pendingCloudPluginChanges", {}); return; }
     try {
       const target = await resolveWorkspaceServerTarget();
       if (!target.openworkClient || !target.openworkWorkspaceId) {
@@ -405,6 +407,12 @@ export function createExtensionsStore(options: {
   };
 
   const refreshImportedCloudPlugins = async () => {
+    if (isLocalGatewayClient()) {
+      setStateField("importedCloudMarketplaces", {});
+      setStateField("importedCloudPlugins", {});
+      setStateField("pendingCloudPluginChanges", {});
+      return {};
+    }
     try {
       const target = await resolveWorkspaceServerTarget();
       if (target.openworkClient && target.openworkWorkspaceId) {
@@ -533,6 +541,10 @@ export function createExtensionsStore(options: {
   };
 
   async function refreshCloudOrgMarketplaces(optionsOverride?: { force?: boolean }) {
+    if (isLocalGatewayClient()) {
+      mutateState((current) => ({ ...current, cloudOrgMarketplaces: [], cloudOrgMarketplacesStatus: null }));
+      return;
+    }
     const wk = getWorkspaceContextKey();
     const settings = readDenSettings();
     const token = settings.authToken?.trim() ?? "";
@@ -1525,6 +1537,7 @@ export function createExtensionsStore(options: {
     kind: LibraryAuthorableKind,
     input: CreateLibraryItemInput,
   ): Promise<string> {
+    if (isLocalGatewayClient()) throw new Error(t("extensions.cloud_unavailable"));
     const description = input.description.trim();
     const instructions = input.instructions.trim();
     const drafts = input.components?.filter((component) => component.name.trim() && component.content.trim()) ?? [];

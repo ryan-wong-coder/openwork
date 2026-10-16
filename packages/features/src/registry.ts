@@ -53,6 +53,13 @@ function defineFeatures<const T extends Record<string, FeatureDefinition>>(featu
 const everywhere = ["cloud", "self_hosted"] as const
 
 export const FEATURES = defineFeatures({
+  zenoInterface: {
+    label: "Zeno interface",
+    description: "Use the Zeno identity, compact workspace navigation and refined local task interface without changing files, history or permissions.",
+    since: "2026-10",
+    deployments: ["self_hosted"],
+    default: false,
+  },
   gatewayImageGeneration: {
     label: "Gateway image generation",
     description: "Generate and edit workspace image assets through the configured inference gateway, with artifacts available to chat and coding tools.",

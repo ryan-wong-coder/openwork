@@ -10,6 +10,7 @@ import { createGmailAttachmentFulfillment, type GmailAttachmentDependencies } fr
 import { z } from "zod";
 import { createGatewayImageTools, GATEWAY_IMAGE_INSTRUCTION } from "./gateway-image-tools.js";
 import { sessionActivityFrom, type SessionActivity } from "./session-activity.js";
+import { isStandaloneAgentProfile, STANDALONE_DISCOVERY_INSTRUCTION, STANDALONE_SKILL_INSTRUCTION } from "./local-client-profile.js";
 import {
   openworkSessionModelSchema,
   openworkAffordanceResultSchema,
@@ -381,13 +382,14 @@ async function readEngineMcpDescriptors(
 async function readOpenworkAgentContext(
   engineMcpStatusClient: OpenWorkEngineMcpStatusClient | undefined,
   engineMcpStatusDirectory: string | undefined,
+  standalone = false,
 ): Promise<Record<string, unknown>> {
   const [uiResult, skills, mcps] = await Promise.all([
     uiControlRequest("context"),
-    readConnectSkillDescriptors(),
+    standalone ? Promise.resolve([]) : readConnectSkillDescriptors(),
     readEngineMcpDescriptors(engineMcpStatusClient, engineMcpStatusDirectory),
   ]);
-  const contributions = buildOpenworkProviderContributions(skills, mcps);
+  const contributions = buildOpenworkProviderContributions(skills, mcps, standalone);
   const providerAffordances = contributions.flatMap((contribution) => contribution.affordances);
   const uiContext = isRecord(uiResult) && isRecord(uiResult.context) ? uiResult.context : null;
   if (!uiContext) {
@@ -1347,29 +1349,31 @@ function contextPayload(context: OpenCodeContext) {
 }
 
 export const OpenWorkExtensionsPreview = async (factoryInput?: unknown, _options?: unknown, dependencies?: GmailAttachmentDependencies) => {
+  const standalone = isStandaloneAgentProfile() || isRecord(_options) && _options.clientProfile === "local-gateway";
   const factoryContext = normalizeOpenCodeContext(factoryInput);
-  const fulfillGmailAttachments = createGmailAttachmentFulfillment(
+  const fulfillGmailAttachments = standalone ? undefined : createGmailAttachmentFulfillment(
     dependencies ?? { callExtension: (request, signal) => postJson("/experimental/extensions/call", request, AbortSignal.any([signal, AbortSignal.timeout(130_000)]), true) },
     contextPayload(factoryContext),
   );
   const engineMcpStatusClient = readEngineMcpStatusClient(factoryInput);
   const engineMcpStatusDirectory = factoryContext.directory ?? factoryContext.worktree;
   return {
-  "tool.execute.before": fulfillGmailAttachments.before,
-  event: fulfillGmailAttachments.event,
-  dispose: fulfillGmailAttachments.dispose,
+  "tool.execute.before": async (input: unknown, output: unknown) => { await fulfillGmailAttachments?.before(input, output); },
+  event: async (input: unknown) => { await fulfillGmailAttachments?.event(input); },
+  dispose: async () => { await fulfillGmailAttachments?.dispose(); },
   "chat.params": async (input: { sessionID: string }) => {
     if (!serverUrl() || !serverToken()) return;
     await assertSessionContinuation(postJson, { directory: engineMcpStatusDirectory, sessionID: input.sessionID });
   },
   "chat.headers": async (input: { sessionID: string; model: { providerID: string }; message: { id: string } }, output: { headers: Record<string, string> }) => {
+    if (standalone) return;
     // OpenWork Models and free Auto: the desktop relay checks the session against the task the user started.
     if (input.model.providerID !== "openwork" && input.model.providerID !== "openwork-free") return;
     output.headers["x-openwork-session-id"] = input.sessionID;
     output.headers["x-openwork-task-id"] = input.message.id;
   },
   "tool.execute.after": async (input: unknown, output: unknown) => {
-    await fulfillGmailAttachments(input, output);
+    await fulfillGmailAttachments?.(input, output);
     // OpenCode 1.18.18 keeps the text projection of an MCP result but drops
     // structuredContent and result _meta before persisting the completed tool
     // part. Preserve those standard fields in the existing metadata channel
@@ -1380,10 +1384,10 @@ export const OpenWorkExtensionsPreview = async (factoryInput?: unknown, _options
     // Prompt composition is static: live discovery belongs to explicit tool calls.
     appendAgentInstructions(
       output.system,
-      createInstructionSection("agent-surface", OPENWORK_AGENT_SURFACE_INSTRUCTION),
-      createInstructionSection("browser", OPENWORK_BROWSER_INSTRUCTION),
-      createInstructionSection("routing", OPENWORK_EXTENSION_DISCOVERY_INSTRUCTION),
-      createInstructionSection("discovery", OPENWORK_ON_DEMAND_DISCOVERY_INSTRUCTION),
+      createInstructionSection("agent-surface", standalone ? OPENWORK_AGENT_SURFACE_INSTRUCTION.replaceAll("OpenWork", "Zeno") : OPENWORK_AGENT_SURFACE_INSTRUCTION),
+      createInstructionSection("browser", standalone ? OPENWORK_BROWSER_INSTRUCTION.replaceAll("OpenWork", "Zeno") : OPENWORK_BROWSER_INSTRUCTION),
+      createInstructionSection("routing", standalone ? STANDALONE_DISCOVERY_INSTRUCTION : OPENWORK_EXTENSION_DISCOVERY_INSTRUCTION),
+      createInstructionSection("discovery", standalone ? STANDALONE_SKILL_INSTRUCTION : OPENWORK_ON_DEMAND_DISCOVERY_INSTRUCTION),
       createInstructionSection("gateway-images", GATEWAY_IMAGE_INSTRUCTION),
     );
   },
@@ -1392,23 +1396,25 @@ export const OpenWorkExtensionsPreview = async (factoryInput?: unknown, _options
       ...input,
       context: contextPayload({ ...factoryContext, ...normalizeOpenCodeContext(context) }),
     }, driveToolSignal(context))),
-    ...createDriveFileTools((action, args, context) => postJson("/experimental/drive-files/call", {
+    ...(standalone ? {} : createDriveFileTools((action, args, context) => postJson("/experimental/drive-files/call", {
       action,
       args,
       context: contextPayload({ ...factoryContext, ...normalizeOpenCodeContext(context) }),
-    }, driveToolSignal(context))),
+    }, driveToolSignal(context)))),
     openwork_context: {
-      description: "Read one semantic snapshot of OpenWork: current screen, retained conversation tabs, split view and focused pane, sidebar and side panel state, settings panel, provider contributions, remote skill guidance, and available affordances with explicit effects and executors.",
+      description: standalone
+        ? "Read the current Zeno screen, workspace, conversation tabs, settings, installed tool providers and available affordances with explicit effects and executors."
+        : "Read one semantic snapshot of OpenWork: current screen, retained conversation tabs, split view and focused pane, sidebar and side panel state, settings panel, provider contributions, remote skill guidance, and available affordances with explicit effects and executors.",
       args: {},
       async execute() {
         const [context, routing, skills, automations] = await Promise.all([
-          readOpenworkAgentContext(engineMcpStatusClient, engineMcpStatusDirectory),
-          resolveOpenWorkExtensionDiscoveryInstruction({ context: factoryContext }, fetch, {
+          readOpenworkAgentContext(engineMcpStatusClient, engineMcpStatusDirectory, standalone),
+          standalone ? Promise.resolve(STANDALONE_DISCOVERY_INSTRUCTION) : resolveOpenWorkExtensionDiscoveryInstruction({ context: factoryContext }, fetch, {
             client: engineMcpStatusClient,
             directory: engineMcpStatusDirectory,
           }),
-          resolveOpenWorkConnectSkillInstruction(),
-          resolveOpenWorkAutomationInstruction(),
+          standalone ? Promise.resolve("") : resolveOpenWorkConnectSkillInstruction(),
+          standalone ? Promise.resolve("") : resolveOpenWorkAutomationInstruction(),
         ]);
         return JSON.stringify(
           { ...context, instructions: { routing, skills, automations } },
@@ -1428,6 +1434,9 @@ export const OpenWorkExtensionsPreview = async (factoryInput?: unknown, _options
       description: "Execute an OpenWork command whose executor is OpenWork without activating the desktop window. Use the exact id and arguments from openwork_context, and pass expectedRevision for UI commands to prevent stale writes. If the descriptor names another executor tool, call that tool instead.",
       args: openworkAffordanceRequestSchema.shape,
       async execute(rawArgs: unknown, context: OpenCodeContext) {
+        if (standalone && isRecord(rawArgs) && rawArgs.id === "automation.propose") {
+          throw new Error("This independent installation has no built-in hosted scheduler.");
+        }
         const mergedContext = { ...factoryContext, ...normalizeOpenCodeContext(context) };
         return JSON.stringify(await executeOpenworkAffordance(rawArgs, mergedContext), null, 2);
       },

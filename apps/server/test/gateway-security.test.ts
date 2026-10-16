@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { EnvService } from "../src/env-file";
 import { callExperimentalExtensionAction } from "../src/extensions";
-import { publicGatewayConfig, saveGatewayConfig } from "../src/gateway-config";
+import { gatewayStatus, publicGatewayConfig, saveGatewayConfig } from "../src/gateway-config";
 import { generateGatewayImage } from "../src/gateway-images";
 import { serve } from "../src/serve-node";
 import type { ServerConfig } from "../src/types";
@@ -116,5 +116,20 @@ test("chat-only gateways save with image generation disabled and reject enabling
     expect(await publicGatewayConfig(local.env, config)).toMatchObject({ configured: true, ready: true, imageGenerationEnabled: false });
     await expect(saveGatewayConfig(config, local.env, { imageGenerationEnabled: true })).rejects.toMatchObject({ code: "gateway_image_model_missing" });
     expect(await publicGatewayConfig(local.env, config)).toMatchObject({ imageGenerationEnabled: false });
+  } finally { await local.stop(); }
+});
+
+test("conversation readiness exposes no host settings or key metadata", async () => {
+  const local = await fixture(() => Response.json({ data: [{ id: "anthropic/claude-sonnet-5" }] }));
+  const config = { ...local.config, workspaces: [] };
+  try {
+    expect(await gatewayStatus(local.env, config)).toEqual({ configured: true, ready: false,
+      readinessReason: "模型目录尚未在此客户端同步，请同步目录并保存网关配置。", chatModel: "anthropic/claude-sonnet-5" });
+    await saveGatewayConfig(config, local.env, { baseURL: local.baseURL, imageGenerationEnabled: false });
+    const status = await gatewayStatus(local.env, config);
+    expect(status).toEqual({ configured: true, ready: true, chatModel: "anthropic/claude-sonnet-5" });
+    expect(JSON.stringify(status)).not.toContain(fixtureKey);
+    expect(status).not.toHaveProperty("apiKeyLast4");
+    expect(status).not.toHaveProperty("baseURL");
   } finally { await local.stop(); }
 });

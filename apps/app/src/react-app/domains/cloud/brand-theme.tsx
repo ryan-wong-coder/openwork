@@ -2,6 +2,9 @@
 import { t } from "@/i18n";
 import { useEffect, useRef, type ReactNode } from "react";
 import { desktopPolicyKeys, type BrandAccentColor } from "@openwork/types/den/desktop-policies";
+import zenoFavicon from "@/assets/zeno/favicon.ico";
+import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity";
+import { applyZenoDocumentIdentity } from "@/app/lib/zeno-document-identity";
 
 import { useNotificationStore } from "../../kernel/notification-store";
 import { useOrgRestrictions } from "./desktop-config-provider";
@@ -65,15 +68,21 @@ function clearBrandAccent() {
 export function BrandThemeEffect() {
   const config = useOrgRestrictions();
   const brandAccentColor = config.brandAccentColor;
+  const zenoEnabled = isZenoInterfaceEnabled();
 
   useEffect(() => {
-    if (!brandAccentColor) {
+    if (!zenoEnabled) return;
+    return applyZenoDocumentIdentity(document, zenoFavicon);
+  }, [zenoEnabled]);
+
+  useEffect(() => {
+    if (zenoEnabled || !brandAccentColor) {
       clearBrandAccent();
       return;
     }
     applyBrandAccent(brandAccentColor);
     return () => clearBrandAccent();
-  }, [brandAccentColor]);
+  }, [brandAccentColor, zenoEnabled]);
 
   return null;
 }
@@ -82,12 +91,14 @@ export function BrandThemeEffect() {
  * Hook returning the org's brand logo URL if set via desktop policy.
  */
 export function useBrandLogoUrl(): string | undefined {
-  return useOrgRestrictions().brandLogoUrl;
+  const logo = useOrgRestrictions().brandLogoUrl;
+  return isZenoInterfaceEnabled() ? undefined : logo;
 }
 
 /** Organization-managed display name. It does not change the signed app identity. */
 export function useBrandAppName(): string {
-  return useOrgRestrictions().brandAppName ?? "OpenWork";
+  const name = useOrgRestrictions().brandAppName;
+  return isZenoInterfaceEnabled() ? "泽诺 Zeno" : name ?? "OpenWork";
 }
 
 const POLICY_NOTIFICATION_DEDUPE = "desktop-policy-active";

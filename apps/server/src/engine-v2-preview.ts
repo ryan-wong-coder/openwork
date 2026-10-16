@@ -22,7 +22,8 @@ import {
   type ManagedOpencodeV2Server,
   type OpencodeV2ProviderSpec,
 } from "./managed-opencode-v2.js";
-import { resolveOpencodeModelsUrl } from "./opencode-models-url.js";
+import { managedEngineModelsEnvironment } from "./opencode-models-url.js";
+import { independentMcpMap, independentProviderMap } from "./client-profile.js";
 import { runtimeStorageDir } from "./runtime-db.js";
 import {
   isEngineGlobalRuntimeConfigId,
@@ -579,7 +580,7 @@ export function createEngineV2Preview(options: {
     const active = sidecar;
     if (!active) throw new Error("OpenCode v2 is not running");
     const effective = await readEffectiveRuntimeOpencodeConfig(config, location.workspaceId);
-    const runtime = runtimeMcpMap(effective);
+    const runtime = independentMcpMap(config, runtimeMcpMap(effective));
     const agentPermissionRules = agentPermissionRulesOf(effective.managedPolicy);
     // Local servers the member's agent permissions block are not registered,
     // and an earlier registration is removed below like any other unwanted entry.
@@ -724,13 +725,13 @@ export function createEngineV2Preview(options: {
 
   async function pushAndConfirmProviders(active: ManagedOpencodeV2Server, pushed: () => void): Promise<void> {
     const globalRuntime = await readGlobalRuntimeOpencodeConfig(config);
-    const configured = runtimeProviderMap(globalRuntime);
+    const configured = independentProviderMap(config, runtimeProviderMap(globalRuntime));
     // Same list v1 receives as `disabled_providers` (e.g. a disconnected
     // OpenCode Zen). Re-enabling removes the entry and this mirror restores it.
     const disabledProviderIds = runtimeDisabledProviderList(globalRuntime);
     const disabled = new Set(disabledProviderIds);
     const localKeys = await readLocalProviderApiKeys();
-    const providerMap = { ...await localProviderDefinitions(config, localKeys, configured), ...configured };
+    const providerMap = independentProviderMap(config, { ...await localProviderDefinitions(config, localKeys, configured), ...configured });
     const credentials = new Map((await options.env?.list() ?? []).map((entry) => [entry.key, entry.value]));
     credentials.set(GATEWAY_PROXY_TOKEN_ENV, gatewayProxyToken(config));
     const mapped = mapRuntimeProvidersToV2Specs(providerMap, credentials, localKeys);
@@ -806,8 +807,9 @@ export function createEngineV2Preview(options: {
     // Remove copies left by the former v2-only Cloud materializer. Cloud
     // skills now use the same metadata/on-demand Connect path as v1.
     await rm(join(rootDir, "cloud-skills"), { recursive: true, force: true });
-    const opencodeModelsUrl = await resolveOpencodeModelsUrl();
+    const modelsEnvironment = await managedEngineModelsEnvironment(config);
     contextBridge = options.hostReadRequest ? await createV2ContextBridge(options.hostReadRequest, {
+      clientProfile: config.clientProfile,
       resolveImageSession: createV2ImageSessionResolver(config, async (path) => {
         const active = sidecar;
         if (!active) throw new Error("本地聊天引擎尚未连接，请稍后重试图片生成。");
@@ -822,7 +824,7 @@ export function createEngineV2Preview(options: {
       bin: resolved.bin,
       rootDir,
       instanceId: engineInstanceId(),
-      env: { OPENCODE_MODELS_URL: opencodeModelsUrl },
+      env: { ...modelsEnvironment, ...(config.clientProfile ? { OPENWORK_CLIENT_PROFILE: config.clientProfile } : {}) },
       permissions: async () => {
         const runtime = await readGlobalRuntimeOpencodeConfig(config);
         return executionRules(runtime.managedPolicy?.execution);

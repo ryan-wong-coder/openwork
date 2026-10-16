@@ -17,6 +17,9 @@ import {
 } from "./agent-context-diagnostics-transport";
 import { desktopFetch, desktopFetchViaMain, desktopFetchAgentContextDiagnostics } from "./desktop";
 import { isOpenworkGatewayRuntime } from "./gateway-runtime";
+import { isLocalGatewayClient } from "./client-profile";
+import { isWebDeployment } from "./openwork-deployment";
+import { selfHostedServerAllowed } from "./self-hosted-server-policy";
 import { isDesktopRuntime } from "./runtime-env";
 import type { ExecResult, OpencodeConfigFile, WorkspaceInfo, WorkspaceList } from "./desktop";
 import type { DenResourceSnapshot } from "./den-types";
@@ -38,6 +41,7 @@ export type GatewayConfig = {
   refresh?: "reloaded" | "deferred";
 };
 export type GatewayModel = { id: string; name: string; kind: "chat" | "image" | "other" };
+export type GatewayStatus = Pick<GatewayConfig, "configured" | "ready" | "readinessReason" | "chatModel">;
 export type GatewayConfigInput = Partial<Omit<GatewayConfig, "configured" | "apiKeyLast4" | "refresh" | "ready" | "readinessReason">> & { apiKey?: string };
 export type GatewayTestResult = { ok: boolean; model: string; latencyMs: number; message: string };
 
@@ -1314,7 +1318,7 @@ function readForceEnvSettingsFlag(): boolean {
 
 export function hydrateOpenworkServerSettingsFromEnv() {
   if (typeof window === "undefined") return;
-  if (isOpenworkGatewayRuntime()) return;
+  if (isOpenworkGatewayRuntime() && !isLocalGatewayClient()) return;
 
   const envUrl = typeof import.meta.env?.VITE_OPENWORK_URL === "string"
     ? import.meta.env.VITE_OPENWORK_URL.trim()
@@ -1342,12 +1346,19 @@ export function hydrateOpenworkServerSettingsFromEnv() {
 
     if (envUrl && (forceEnvSettings || !current.urlOverride)) {
       const normalized = normalizeOpenworkServerUrl(
-        envUrl === "/api/openwork" ? new URL(envUrl, window.location.origin).href : envUrl,
+        /^(\/|\.{1,2}\/)/.test(envUrl) ? new URL(envUrl, window.location.origin).href : envUrl,
       );
       if (normalized && normalized !== current.urlOverride) {
         next.urlOverride = normalized;
         changed = true;
       }
+    }
+
+    // A fresh self-hosted bootstrap belongs to this origin, never a retained official endpoint.
+    if (!envUrl && bootstrapToken && isLocalGatewayClient() && !isDesktopRuntime() && isWebDeployment()
+      && current.urlOverride && !selfHostedServerAllowed(current.urlOverride, { appOrigin: window.location.origin })) {
+      next.urlOverride = window.location.origin;
+      changed = true;
     }
 
     if (envPort && (forceEnvSettings || !current.portOverride)) {
@@ -1897,6 +1908,7 @@ export function createOpenworkServerClient(options: { baseUrl: string; token?: s
         timeoutMs: timeouts.workspaceExport,
       });
     },
+    getGatewayStatus: () => requestJson<GatewayStatus>(baseUrl, "/gateway/status", { token, timeoutMs: timeouts.config }),
     getGatewayConfig: () => requestJson<GatewayConfig>(baseUrl, "/gateway/config", { token, hostToken, timeoutMs: timeouts.config }),
     updateGatewayConfig: (input: GatewayConfigInput) => requestJson<GatewayConfig>(baseUrl, "/gateway/config", {
       token, hostToken, method: "PUT", body: input, timeoutMs: 610_000,

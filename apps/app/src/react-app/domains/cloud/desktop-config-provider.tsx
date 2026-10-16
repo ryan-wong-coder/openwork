@@ -38,6 +38,8 @@ import {
   denSettingsChangedEvent,
 } from "../../../app/lib/den-session-events";
 import { isDesktopRuntime } from "../../../app/lib/runtime-env";
+import { isZenoInterfaceEnabled } from "../../../app/lib/zeno-identity";
+import { isLocalGatewayClient } from "../../../app/lib/client-profile";
 import { resolveOpenworkConnection } from "../../shell/openwork-connection";
 import {
   createConnectPolicyReconciler,
@@ -348,7 +350,7 @@ export function DesktopConfigProvider({ children }: DesktopConfigProviderProps) 
     const brandAppNameAction = actions.find((action) => action.item === "brandAppName");
     if (brandAppNameAction) {
       const appName = typeof brandAppNameAction.nextValue === "string" ? brandAppNameAction.nextValue : null;
-      document.title = appName ?? "OpenWork";
+      document.title = isZenoInterfaceEnabled() ? "泽诺 Zeno" : appName ?? "OpenWork";
       void applyBrandAppName(appName).catch(() => null);
     }
 
@@ -370,6 +372,7 @@ export function DesktopConfigProvider({ children }: DesktopConfigProviderProps) 
   }, []);
 
   const desktopConfigHandler = useCallback(async (requireFresh = false): Promise<DenDesktopConfig> => {
+    if (isLocalGatewayClient()) return DEFAULT_DESKTOP_CONFIG;
     if (import.meta.env.DEV && requireFresh && devRefreshDesktopConfigRef.current) {
       const nextConfig = desktopCapabilityConfig(devRefreshDesktopConfigRef.current);
       applyDesktopConfigActions(nextConfig);
@@ -476,6 +479,12 @@ export function DesktopConfigProvider({ children }: DesktopConfigProviderProps) 
     // settingsVersion is read to tie this effect to settings-change events.
     void settingsVersion;
 
+    if (isLocalGatewayClient()) {
+      applyDesktopConfigActions(DEFAULT_DESKTOP_CONFIG);
+      setDesktopConfigState({ config: DEFAULT_DESKTOP_CONFIG, freshConfigStatus: "ready", loading: false, known: true });
+      return;
+    }
+
     if (denAuth.status === "checking") {
       setDesktopConfigState((current) => ({
         ...current,
@@ -510,7 +519,7 @@ export function DesktopConfigProvider({ children }: DesktopConfigProviderProps) 
   }, [applyDesktopConfigActions, denAuth.status, desktopConfigHandler, isSignedIn, settingsVersion, userId]);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || isLocalGatewayClient()) return;
 
     const handleSettingsChanged = () => {
       bumpSettingsVersion();
@@ -557,7 +566,7 @@ export function DesktopConfigProvider({ children }: DesktopConfigProviderProps) 
   // "openwork-server-settings-changed", which is the runtime-generation
   // observation channel.
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || isLocalGatewayClient()) return;
     const reconciler = createConnectPolicyReconciler({
       resolveTarget: resolveConnectPolicyTarget,
       wait: (delayMs) => new Promise((resolveWait) => window.setTimeout(resolveWait, delayMs)),

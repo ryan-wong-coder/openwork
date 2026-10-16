@@ -1,0 +1,23 @@
+# Personal local distribution. The identity keys intentionally match OpenWork so
+# existing workspaces/history remain available when installing this build.
+extends: ./electron-builder.yml
+appId: com.differentai.openwork
+productName: 泽诺 Zeno
+extraMetadata:
+  openworkDistribution: public
+  openworkBrand: zeno
+files:
+  - from: resources/icons/zeno
+    to: resources/icons/zeno
+mac:
+  icon: resources/icons/zeno/icon.icns
+  extendInfo:
+    NSMicrophoneUsageDescription: 泽诺在你允许页面使用音频输入时访问麦克风。
+win:
+  icon: resources/icons/zeno/icon.ico
+linux:
+  executableName: openwork
+  icon: resources/icons/zeno/linux
+artifactName: zeno-${os}-${arch}-${version}.${ext}
+# The independent distribution does not publish to the upstream release feed.
+publish: null

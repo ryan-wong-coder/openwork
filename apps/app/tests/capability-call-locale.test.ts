@@ -50,6 +50,16 @@ describe("capability activity follows the active language", () => {
     expect(getCapabilityCallSentence(part("openwork_execute_capability", {})).failure).toBe("工具执行失败");
     expect(getCapabilityCallSentence(part("openwork_list_skills")).past).toBe("已查看技能");
   });
+
+  test("plugin kind labels use known static keys and preserve the unknown-kind fallback", () => {
+    const call = (kind: string) => part("openwork_execute_capability", { name: "plugin:fixture:capability" }, { kind, plugin: "Example" });
+    expect(getCapabilityCallSentence(call("command")).past).toBe("已使用命令“Example”");
+    expect(getCapabilityCallSentence(call("mcp")).past).toBe("已使用连接“Example”");
+    expect(getCapabilityCallSentence(call("constructor")).past).toBe("已使用插件“Example”");
+    setLocale("en");
+    expect(getCapabilityCallSentence(call("command")).past).toBe("Used command “Example”");
+    expect(getCapabilityCallSentence(call("constructor")).past).toBe("Used plugin “Example”");
+  });
 });
 
 describe("script summaries do not depend on English labels", () => {
@@ -72,5 +82,16 @@ describe("script summaries do not depend on English labels", () => {
     expect(codeModeSummary([], options)).toBe("已运行脚本");
     expect(codeModeSummary([], { ...options, running: true })).toBe("正在运行脚本");
     expect(codeModeSummary([], { ...options, failed: true })).toBe("脚本运行失败");
+  });
+
+  test("running create and update summaries select their existing static translations", () => {
+    const running = (toolName: string, input: unknown = {}): DynamicToolUIPart => ({ ...part(toolName, input), state: "input-available" });
+    expect(codeModeSummary([running("Linear_save_issue")], { ...options, running: true })).toBe("正在创建问题 · Linear");
+    expect(codeModeSummary([running("Linear_save_issue", { body: { id: "fixture" } })], { ...options, running: true })).toBe("正在更新问题 · Linear");
+    expect(codeModeSummary([running("Notion_create_document")], { ...options, running: true })).toBe("正在创建文档 · Notion");
+    setLocale("en");
+    expect(codeModeSummary([running("Linear_save_issue")], { ...options, running: true })).toBe("Creating an issue in Linear");
+    expect(codeModeSummary([running("Linear_save_issue", { body: { id: "fixture" } })], { ...options, running: true })).toBe("Updating an issue in Linear");
+    expect(codeModeSummary([running("Notion_create_document")], { ...options, running: true })).toBe("Creating a document in Notion");
   });
 });

@@ -50,6 +50,9 @@ import { ApplyPatchTool } from "@/components/tools/apply-patch"
 import { GatewayImageTool } from "@/components/tools/gateway-image"
 import { gatewayImageMatchesWorkspace, gatewayImageResult } from "@/components/tools/gateway-image-result"
 import { localClientFeatureEnabled } from "@/app/lib/local-client-features"
+import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity"
+import { ZenoGreeting, ZenoQuickIntents } from "@/react-app/domains/session/chat/zeno-quick-intents"
+import { useOrgRestrictions } from "@/react-app/domains/cloud/desktop-config-provider"
 import { BashTool } from "@/components/tools/bash"
 import { EditTool } from "@/components/tools/edit"
 import { ReadFileTool, WriteFileTool } from "@/components/tools/file"
@@ -1417,7 +1420,7 @@ function CompletedStepRun({ label, modelLabel, children }: { label: string; mode
   const [open, setOpen] = React.useState(false)
 
   return (
-    <Collapsible open={open} onOpenChange={setOpen} className="flex w-full flex-col gap-2">
+    <Collapsible open={open} onOpenChange={setOpen} data-completed-step-run className="flex w-full flex-col gap-2">
       <div className="mx-auto flex w-full max-w-3xl px-2 md:px-10">
         <CollapsibleTrigger
           className="group flex cursor-pointer items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
@@ -1630,9 +1633,13 @@ function MessageGroup({
       : stepRowCount === 1
         ? t("ui.steps_one")
         : t("ui.steps_count", { count: stepRowCount })
-  // A short finished run reads fine as a list, so only long ones fold away.
+  // Zeno keeps successful work quiet after the answer arrives; failures stay
+  // inline. The connected interface retains its original long-run threshold.
+  const hasFailedStep = stepItems.some(({ message }) => message.parts.some((part) => isToolUIPart(part) && part.state === "output-error"))
   const collapseSteps =
-    !isLiveGroup && stepItems.length > 0 && stepRowCount > COLLAPSED_STEP_RUN_MIN_ROWS
+    !isLiveGroup && stepItems.length > 0 && (isZenoInterfaceEnabled()
+      ? !hasFailedStep
+      : stepRowCount > COLLAPSED_STEP_RUN_MIN_ROWS)
   // A task on another computer outlives the turn that started it and may still
   // need the person, so its row stays in view below a folded run.
   const pinnedRemoteThreads = collapseSteps ? remoteThreadStarts : []
@@ -1856,6 +1863,22 @@ export function shouldShowRunReconnecting(status: ThreadStatus, syncDegraded: bo
   return status === "submitted" || status === "streaming" || status === "retrying"
 }
 
+function EmptySessionSuggestions() {
+  const { displaySuggestions, setPrompt, readOnly } = useMessageList()
+  const { onboardingPrompts } = useOrgRestrictions()
+  if (!isZenoInterfaceEnabled() || onboardingPrompts !== undefined) {
+    return <TaskSuggestions className="mx-auto w-full max-w-3xl shrink-0 px-3 pb-3 md:px-5 md:pb-5 grow" />
+  }
+  if (!displaySuggestions) return null
+  return <div data-zeno-empty-session>
+    <ZenoGreeting />
+    <ZenoQuickIntents disabled={readOnly} onPick={(prompt) => {
+      setPrompt(prompt)
+      window.dispatchEvent(new Event("openwork:focusPrompt"))
+    }} />
+  </div>
+}
+
 export function MessageList({ messages: transcript, messageIdReplacements, status, activityStatus, retryStatus, syncHealth, viewport, sessionErrorHandled = false }: MessageListProps) {
   const { workspaceId, sessionId, onStopSubagentSession } = useMessageList()
   const backgroundTasksEnabled = useBackgroundShellStore((state) => state.enabled)
@@ -1989,7 +2012,7 @@ export function MessageList({ messages: transcript, messageIdReplacements, statu
         className="@container/message-list"
         getGroupKey={(item) => isMessageGroup(item) ? item.messages[0]?.message.id ?? "empty-assistant-group" : item.message.id}
         getMessageIds={(item) => isMessageGroup(item) ? item.messages.flatMap(({ message }) => [message.id, `${message.id}:steps`]) : [item.message.id]}
-        header={messages.length === 0 && <TaskSuggestions className="mx-auto w-full max-w-3xl shrink-0 px-3 pb-3 md:px-5 md:pb-5 grow" />}
+        header={messages.length === 0 && <EmptySessionSuggestions />}
         renderGroup={(item) => {
         if (isMessageGroup(item)) {
           return (

@@ -1,8 +1,10 @@
 /** @jsxImportSource react */
 import { t } from "@/i18n";
 import { isLocalGatewayClient } from "@/app/lib/client-profile";
+import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowRight, X, Zap } from "lucide-react";
+import { ArrowRight, Settings2, X, Zap } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 import { DEFAULT_MODEL } from "@/app/constants";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -28,6 +30,8 @@ import {
 } from "./new-task-composer";
 import { consumePendingChatSeed, pendingChatSeedEvent } from "./pending-chat-seed";
 import { hideEmptyHeroIntroduction } from "./empty-hero-introduction";
+import { insertZenoIntent, ZenoGreeting, ZenoQuickIntents } from "./zeno-quick-intents";
+import "./zeno-chat.css";
 
 type HeroSuggestion = {
   title: string;
@@ -80,6 +84,7 @@ export type SessionEmptyHeroProps = {
  * built-in defaults otherwise.
  */
 export function SessionEmptyHero(props: SessionEmptyHeroProps) {
+  const zeno = isZenoInterfaceEnabled();
   // The session is created on submit, so until then the prompt has no
   // conversation to live in. Persist it under the workspace's reserved slot so
   // opening another session (or restarting) does not lose it; the sidebar
@@ -205,10 +210,13 @@ export function SessionEmptyHero(props: SessionEmptyHeroProps) {
     window.dispatchEvent(new Event("openwork:focusPrompt"));
   };
 
+  const pickZenoIntent = (value: string) => fillPrompt(insertZenoIntent(promptRef.current, value));
+  const gatewaySetupAvailable = canAddProviders && props.providerCount === 0 && Boolean(props.onOpenProviderAuth);
+
   return (
-    <div data-chat-empty-hero className="mx-auto flex w-full max-w-[640px] flex-col gap-6 px-4 max-lg:h-full max-lg:min-h-0 max-lg:gap-4 max-lg:overflow-y-auto max-lg:px-3 max-lg:pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:px-6">
+    <div data-chat-empty-hero data-zeno-empty-hero={zeno || undefined} className="mx-auto flex w-full max-w-[640px] flex-col gap-6 px-4 max-lg:h-full max-lg:min-h-0 max-lg:gap-4 max-lg:overflow-y-auto max-lg:px-3 max-lg:pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:px-6">
       <div data-empty-greeting hidden={hideIntroduction} className="text-center max-lg:pt-6">
-        <h2 className="text-lg font-medium tracking-tight text-foreground">{t("interface.what_do_you_need_done")} </h2>
+        {zeno ? <ZenoGreeting pose={prompt.trim() ? "thinking" : "welcome"} /> : <h2 className="text-lg font-medium tracking-tight text-foreground">{t("interface.what_do_you_need_done")} </h2>}
       </div>
 
       <div ref={composerDockRef} onFocusCapture={() => setComposing(true)} data-empty-composer-dock className="max-lg:sticky max-lg:bottom-0 max-lg:order-last max-lg:mt-auto max-lg:shrink-0 max-lg:bg-dls-surface">
@@ -217,6 +225,7 @@ export function SessionEmptyHero(props: SessionEmptyHeroProps) {
         onDraftChange={setPrompt}
         onRunTask={submit}
         busy={props.busy ?? false}
+        gatewaySetupAvailable={zeno && gatewaySetupAvailable}
         context={props.composer ?? null}
       />
       </div>
@@ -244,7 +253,12 @@ export function SessionEmptyHero(props: SessionEmptyHeroProps) {
         </div>
       ) : null}
 
-      {!showModelsHint && canAddProviders && props.providerCount === 0 && props.onOpenProviderAuth ? (
+      {zeno && gatewaySetupAvailable ? <Button
+        type="button"
+        variant="outline"
+        data-zeno-gateway-setup
+        onClick={props.onOpenProviderAuth}
+      ><Settings2 className="size-4" strokeWidth={1.5} aria-hidden="true" />{t("zeno.gateway_setup")}</Button> : !showModelsHint && canAddProviders && props.providerCount === 0 && props.onOpenProviderAuth ? (
         <button
           type="button"
           className="flex w-full items-start gap-3 rounded-xl border border-blue-7/50 bg-blue-2/40 p-3.5 text-left transition-colors hover:bg-blue-3/50"
@@ -258,8 +272,8 @@ export function SessionEmptyHero(props: SessionEmptyHeroProps) {
         </button>
       ) : null}
 
-      <div data-empty-suggestions hidden={hideIntroduction} className={hideIntroduction ? "hidden" : "grid gap-2 sm:grid-cols-2"}>
-        {suggestions.map((suggestion) => (
+      <div data-empty-suggestions hidden={hideIntroduction} className={hideIntroduction ? "hidden" : zeno && organizationPrompts === undefined ? "" : "grid gap-2 sm:grid-cols-2"}>
+        {zeno && organizationPrompts === undefined ? <ZenoQuickIntents disabled={sendInFlight || Boolean(props.busy)} onPick={pickZenoIntent} /> : suggestions.map((suggestion) => (
           <DescriptiveButton
             key={suggestion.title}
             className="min-h-10 items-center rounded-xl bg-background px-3 py-2 text-foreground hover:border-foreground/20 hover:bg-muted/60 max-lg:min-h-11"

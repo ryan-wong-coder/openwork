@@ -41,6 +41,12 @@
         try {
           var dsn = "%VITE_OPENWORK_SENTRY_DSN%";
           var deployment = "%VITE_OPENWORK_DEPLOYMENT%";
+          var profile = "%VITE_OPENWORK_CLIENT_PROFILE%";
+          var requireSignin = "%VITE_DEN_REQUIRE_SIGNIN%";
+          // Standalone Web is local by default. Its pre-boot code must also
+          // stay offline when the application bundle cannot load.
+          var connected = profile.trim().toLowerCase() === "connected" || /^(1|true|yes|on)$/i.test(requireSignin.trim());
+          if (!connected) return;
           if (deployment !== "web" || !dsn || dsn.charAt(0) === "%") return;
           var match = dsn.match(/^https:\/\/([\w.-]+)@([\w.-]+(?::\d+)?)\/(\d+)$/);
           if (!match) return;
@@ -108,9 +114,9 @@
       <!-- Visible even when the entry bundle cannot load. React replaces this on mount. -->
       <div style="min-height: 100dvh; display: flex; align-items: center; justify-content: center; font: 14px system-ui; text-align: center; padding: 24px; box-sizing: border-box">
         <div>
-          <p role="status" data-startup-label="starting">正在启动 OpenWork</p>
+          <p role="status" data-startup-label="starting">正在启动</p>
           <div id="startup-recovery" hidden>
-            <p data-startup-label="slow">OpenWork 启动时间比平时长。</p>
+            <p data-startup-label="slow">启动时间比平时长。</p>
             <button type="button" data-startup-label="reload" onclick="window.location.reload()" style="font: inherit; padding: 8px 16px; cursor: pointer">重新加载</button>
           </div>
         </div>
@@ -124,7 +130,7 @@
           var supported = ["en", "ja", "zh", "vi", "pt-BR", "th", "fr", "ca", "es", "ru"];
           if (supported.indexOf(language) === -1 || language === "zh") return;
           document.documentElement.lang = language;
-          var labels = { starting: "Starting OpenWork", slow: "OpenWork is taking longer than usual to start.", reload: "Reload" };
+          var labels = { starting: "Starting", slow: "Startup is taking longer than usual.", reload: "Reload" };
           document.querySelectorAll("[data-startup-label]").forEach(function (element) {
             element.textContent = labels[element.getAttribute("data-startup-label")];
           });

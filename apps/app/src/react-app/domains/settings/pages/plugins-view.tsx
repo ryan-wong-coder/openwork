@@ -1,5 +1,6 @@
 /** @jsxImportSource react */
-import { Cpu } from "lucide-react";
+import { ChevronRight, Cpu } from "lucide-react";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 
 import { t } from "../../../../i18n";
 import { Button } from "@/components/ui/button";
@@ -59,17 +60,23 @@ export type PluginsViewProps = {
 
 export function PluginsView(props: PluginsViewProps) {
   const { extensions } = props;
+  const localOnly = isLocalGatewayClient();
   const scope = extensions.pluginScope;
+  const configInfo = <div className="flex flex-col gap-1 text-xs text-gray-10">
+    <div>{t("plugins.config_label")}</div>
+    <div className="text-gray-7 font-mono truncate">{extensions.pluginConfigPath() ?? extensions.pluginConfig()?.path ?? t("plugins.not_loaded_yet")}</div>
+    {props.accessHint ? <div className="text-gray-9">{props.accessHint}</div> : null}
+  </div>;
   return (
-    <section className="space-y-6 max-w-3xl w-full">
+    <section className={`space-y-6 max-w-3xl w-full ${localOnly ? "zeno-local-plugin-editor" : ""}`}>
       <div className="bg-gray-2/30 border border-gray-6/50 rounded-2xl p-5 space-y-4">
         <div className="flex items-start justify-between gap-4">
-          <div className="space-y-1">
+          {!localOnly ? <div className="space-y-1">
             <div className="text-sm font-medium text-gray-12">
               {t("plugins.title")}
             </div>
-            <div className="text-xs text-gray-10">{t("plugins.desc")}</div>
-          </div>
+            {!localOnly ? <div className="text-xs text-gray-10">{t("plugins.desc")}</div> : null}
+          </div> : <span />}
           <div className="flex items-center gap-2">
             <Button
               variant={scope === "project" ? "secondary" : "outline"}
@@ -102,19 +109,12 @@ export function PluginsView(props: PluginsViewProps) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-1 text-xs text-gray-10">
-          <div>{t("plugins.config_label")}</div>
-          <div className="text-gray-7 font-mono truncate">
-            {extensions.pluginConfigPath() ??
-              extensions.pluginConfig()?.path ??
-              t("plugins.not_loaded_yet")}
-          </div>
-          {props.accessHint ? (
-            <div className="text-gray-9">{props.accessHint}</div>
-          ) : null}
-        </div>
+        {localOnly ? <details className="group/plugin-config">
+          <summary className="flex cursor-pointer list-none items-center gap-1.5 text-xs text-muted-foreground"><ChevronRight className="size-3.5 transition-transform group-open/plugin-config:rotate-90" />{t("mcp.technical_details")}</summary>
+          <div className="mt-2">{configInfo}</div>
+        </details> : configInfo}
 
-        <div className="space-y-3">
+        {props.suggestedPlugins.length ? <div className="space-y-3">
           <div className="text-xs font-medium text-gray-11 uppercase tracking-wider">
             {t("plugins.suggested_heading")}
           </div>
@@ -232,14 +232,14 @@ export function PluginsView(props: PluginsViewProps) {
               );
             })}
           </div>
-        </div>
+        </div> : null}
 
-        {extensions.pluginList().length === 0 ? (
+        {extensions.pluginList().length === 0 ? localOnly ? null : (
           <div className="rounded-xl border border-gray-6/60 bg-gray-1/40 p-4 text-sm text-gray-10">
             {t("plugins.empty")}
           </div>
         ) : (
-          <div className="grid gap-2">
+          <div data-local-plugin-list className="grid gap-2">
             {extensions.pluginList().map((plugin) => (
               <div
                 key={plugin.name}
@@ -303,7 +303,7 @@ export function PluginsView(props: PluginsViewProps) {
               {t("plugins.add")}
             </Button>
           </div>
-          {extensions.pluginStatus() ? (
+          {extensions.pluginStatus() && (!localOnly || extensions.pluginStatus() !== t("plugins.empty")) ? (
             <div className="text-xs text-gray-10">
               {extensions.pluginStatus()}
             </div>

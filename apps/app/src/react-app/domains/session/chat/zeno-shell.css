@@ -1,0 +1,16 @@
+html[data-zeno-interface="true"] [data-zeno-shell="true"] {
+  --dls-surface: var(--dls-canvas);
+  background: var(--dls-canvas);
+}
+
+html[data-zeno-interface="true"] [data-zeno-shell="true"] [data-session-pane] {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+html[data-zeno-interface="true"] [data-zeno-shell="true"] [data-zeno-composer="true"] {
+  background-color: var(--dls-canvas);
+  background-image: none;
+}

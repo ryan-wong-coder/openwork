@@ -1,0 +1,125 @@
+/* Zeno is an operator-selected local identity; connected installs keep their tokens.
+   DESIGN: P5, P6, P7, V1–V7. Brand color occupies only the action and selection. */
+html[data-zeno-interface="true"] {
+  --zeno-paper: #f3f1e8;
+  --zeno-ink: #163a3a;
+  --zeno-lime: #d5ef5a;
+  --zeno-mist: #b9ceca;
+  --zeno-surface: #fffefa;
+  --zeno-muted-ink: #526b68;
+  --slate-1: var(--zeno-surface);
+  --slate-2: var(--zeno-paper);
+  --slate-3: #e9ece3;
+  --slate-4: #e0e6dd;
+  --slate-5: #d6ded5;
+  --slate-6: #c9d4ca;
+  --slate-7: #b4c5ba;
+  --slate-8: #94aca2;
+  --slate-9: #718c83;
+  --slate-10: #627c74;
+  --slate-11: var(--zeno-muted-ink);
+  --slate-12: var(--zeno-ink);
+  --dls-surface: var(--zeno-surface);
+  --dls-sidebar: var(--zeno-paper);
+  --dls-app-bg: var(--zeno-paper);
+  --dls-background: var(--zeno-surface);
+  --dls-canvas: var(--zeno-paper);
+  --dls-surface-muted: var(--slate-3);
+  --dls-border: rgb(22 58 58 / 11%);
+  --dls-accent: var(--zeno-ink);
+  --dls-accent-hover: #244e4c;
+  --dls-accent-fg: var(--zeno-paper);
+  --dls-accent-rgb: 22 58 58;
+  --dls-secondary-rgb: 82 107 104;
+  --dls-text-primary: var(--zeno-ink);
+  --dls-text-secondary: var(--zeno-muted-ink);
+  --dls-hover: rgb(22 58 58 / 5%);
+  --dls-active: rgb(22 58 58 / 9%);
+  --dls-shell-shadow: 0 8px 28px rgb(22 58 58 / 6%);
+  --dls-card-shadow: 0 4px 20px rgb(22 58 58 / 6%);
+  --background: var(--zeno-surface);
+  --foreground: var(--zeno-ink);
+  --card: var(--zeno-surface);
+  --card-foreground: var(--zeno-ink);
+  --popover: var(--zeno-surface);
+  --popover-foreground: var(--zeno-ink);
+  --popover-border: rgb(22 58 58 / 12%);
+  --primary: var(--zeno-ink);
+  --primary-foreground: var(--zeno-paper);
+  --secondary: var(--slate-3);
+  --secondary-foreground: var(--zeno-ink);
+  --muted: var(--slate-3);
+  --muted-foreground: var(--zeno-muted-ink);
+  --accent: var(--slate-3);
+  --accent-foreground: var(--zeno-ink);
+  --border: rgb(22 58 58 / 11%);
+  --input: rgb(22 58 58 / 18%);
+  --ring: var(--zeno-ink);
+  --sidebar: var(--zeno-paper);
+  --sidebar-foreground: var(--zeno-ink);
+  --sidebar-primary: var(--zeno-ink);
+  --sidebar-primary-foreground: var(--zeno-paper);
+  --sidebar-accent: var(--dls-hover);
+  --sidebar-accent-foreground: var(--zeno-ink);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+}
+
+html[data-zeno-interface="true"][data-theme="dark"] {
+  --zeno-surface: #142b2b;
+  --zeno-muted-ink: #adc2bb;
+  --slate-1: var(--zeno-surface);
+  --slate-2: #102626;
+  --slate-3: #203b39;
+  --slate-4: #294541;
+  --slate-5: #34524c;
+  --slate-6: #43635b;
+  --slate-7: #55776b;
+  --slate-8: #6a8d7f;
+  --slate-9: #83a08f;
+  --slate-10: #94ae9f;
+  --slate-11: var(--zeno-muted-ink);
+  --slate-12: var(--zeno-paper);
+  --dls-sidebar: var(--slate-2);
+  --dls-app-bg: var(--slate-2);
+  --dls-canvas: var(--slate-2);
+  --dls-border: rgb(185 206 202 / 12%);
+  --dls-accent: var(--zeno-lime);
+  --dls-accent-hover: #e0f58b;
+  --dls-accent-fg: var(--zeno-ink);
+  --dls-accent-rgb: 213 239 90;
+  --dls-secondary-rgb: 173 194 187;
+  --dls-text-primary: var(--zeno-paper);
+  --dls-hover: rgb(185 206 202 / 7%);
+  --dls-active: rgb(185 206 202 / 13%);
+  --dls-shell-shadow: 0 8px 28px rgb(4 18 18 / 20%);
+  --dls-card-shadow: 0 4px 20px rgb(4 18 18 / 18%);
+  --foreground: var(--zeno-paper);
+  --card-foreground: var(--zeno-paper);
+  --popover-foreground: var(--zeno-paper);
+  --popover-border: rgb(185 206 202 / 14%);
+  --primary: var(--zeno-lime);
+  --primary-foreground: var(--zeno-ink);
+  --secondary-foreground: var(--zeno-paper);
+  --accent-foreground: var(--zeno-paper);
+  --border: rgb(185 206 202 / 12%);
+  --input: rgb(185 206 202 / 22%);
+  --ring: var(--zeno-lime);
+  --sidebar: var(--slate-2);
+  --sidebar-foreground: var(--zeno-paper);
+  --sidebar-primary: var(--zeno-lime);
+  --sidebar-primary-foreground: var(--zeno-ink);
+  --sidebar-accent-foreground: var(--zeno-paper);
+}
+
+html[data-zeno-interface="true"] body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+}
+
+html[data-theme="dark"] .zeno-brand-primary { display: none; }
+html[data-theme="dark"] .zeno-brand-reverse { display: block; }
+
+html[data-zeno-interface="true"] ::selection {
+  background: var(--zeno-lime);
+  color: var(--zeno-ink);
+}

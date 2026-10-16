@@ -180,6 +180,7 @@ export async function writeConnectState(config: ServerConfig, state: { connectEn
 
 /** Read the host-level openwork-cloud MCP config used for Connect catalog/skills. */
 export async function readConnectCloudMcp(config: ServerConfig): Promise<Record<string, unknown> | null> {
+  if (config.clientProfile === "local-gateway") return null;
   return (await readConnectState(config)).cloudMcp;
 }
 

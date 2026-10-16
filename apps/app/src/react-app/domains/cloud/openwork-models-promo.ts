@@ -10,6 +10,7 @@ import {
 import { isDefaultControlPlaneUrl } from "../settings/cloud/control-plane-url";
 import { denSettingsChangedEvent } from "../../../app/lib/den-session-events";
 import { useSyncExternalStore } from "react";
+import { isLocalGatewayClient } from "../../../app/lib/client-profile";
 
 export const OPENWORK_MODELS_PROVIDER_ID = "openwork";
 export const OPENWORK_MODELS_PROMO_HIDDEN_KEY = "openwork.openworkModelsPromo.hidden";
@@ -19,6 +20,7 @@ export const openWorkModelsPromoChangedEvent = "openwork-openwork-models-promo-c
 export const OPENWORK_MODELS_PROMO_REPEAT_MS = 6 * 60 * 60 * 1000;
 
 export function areOpenWorkModelsPromosDisabled() {
+  if (isLocalGatewayClient()) return true;
   if (/^(1|true|yes|on)$/i.test(String(import.meta.env.VITE_DISABLE_OPENWORK_MODELS ?? "").trim())) {
     return true;
   }

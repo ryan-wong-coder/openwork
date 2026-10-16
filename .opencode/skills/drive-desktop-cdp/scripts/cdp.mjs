@@ -19,7 +19,12 @@ const CDP_URL = (process.env.CDP_URL ?? "http://127.0.0.1:9823").replace(/\/$/, 
 
 async function connect() {
   const targets = await (await fetch(`${CDP_URL}/json/list`)).json();
-  const target = targets.find((t) => t.type === "page" && t.title === "OpenWork") ?? targets.find((t) => t.type === "page");
+  const requestedTarget = process.env.CDP_TARGET_ID;
+  const pages = targets.filter((target) => target.type === "page");
+  const target = requestedTarget
+    ? pages.find((page) => page.id === requestedTarget)
+    : pages.find((page) => page.title === "OpenWork" || page.title === "泽诺 Zeno")
+      ?? pages.find((page) => !page.url.startsWith("chrome://"));
   if (!target) throw new Error(`No OpenWork page at ${CDP_URL}`);
   const ws = new WebSocket(target.webSocketDebuggerUrl);
   const pending = new Map();

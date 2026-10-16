@@ -1,0 +1,35 @@
+[
+  {
+    "path": "/gateway/status",
+    "authorized": false,
+    "status": 401,
+    "cacheControl": null,
+    "fields": [
+      "code",
+      "message"
+    ]
+  },
+  {
+    "path": "/gateway/status",
+    "authorized": true,
+    "status": 200,
+    "cacheControl": "no-store",
+    "fields": [
+      "configured",
+      "ready",
+      "chatModel"
+    ],
+    "configured": true,
+    "ready": true
+  },
+  {
+    "path": "/gateway/config",
+    "authorized": true,
+    "status": 401,
+    "cacheControl": null,
+    "fields": [
+      "code",
+      "message"
+    ]
+  }
+]

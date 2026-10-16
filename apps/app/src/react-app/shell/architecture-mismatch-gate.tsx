@@ -5,6 +5,7 @@ import { useCallback, useEffect, useReducer, type ReactNode } from "react";
 import { isDesktopRuntime } from "../../app/utils";
 import { useBootState } from "./boot-state";
 import { StartupScreen } from "./startup-screen";
+import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity";
 
 type ArchitectureInfo = {
   appArch: string;
@@ -96,7 +97,8 @@ export function ArchitectureMismatchGate({ children }: ArchitectureMismatchGateP
     void window.__OPENWORK_ELECTRON__?.shell?.openExternal?.(info.releaseUrl);
   }, [info?.releaseUrl]);
 
-  if (!checked) return <StartupScreen message={t("interface.checking_this_openwork_installation")} />;
+  const zenoEnabled = isZenoInterfaceEnabled();
+  if (!checked) return <StartupScreen message={t(zenoEnabled ? "zeno.checking_installation" : "interface.checking_this_openwork_installation")} />;
   if (!info?.mismatch) return <>{children}</>;
 
   return (
@@ -107,8 +109,10 @@ export function ArchitectureMismatchGate({ children }: ArchitectureMismatchGateP
             <div className="space-y-8 p-8 sm:p-10 lg:p-12">
               <div className="inline-flex rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-amber-100">{t("interface.architecture_mismatch")} </div>
               <div className="space-y-4">
-                <h1 className="max-w-2xl text-4xl font-semibold tracking-[-0.04em] text-white sm:text-5xl">{t("interface.install_the_correct_openwork_build")} </h1>
-                <p className="max-w-2xl text-base leading-7 text-white/72 sm:text-lg">{t("interface.your_application_is_running_the")} {info.appArchLabel}{t("interface.version_of_openwork_but_this")} {platformLabel(info.platform)}{t("interface.system_is")} {info.systemArchLabel}. This may cause unpredictable issues.
+                <h1 className="max-w-2xl text-4xl font-semibold tracking-[-0.04em] text-white sm:text-5xl">{t(zenoEnabled ? "zeno.install_correct_build" : "interface.install_the_correct_openwork_build")} </h1>
+                <p className="max-w-2xl text-base leading-7 text-white/72 sm:text-lg">{zenoEnabled
+                  ? t("zeno.architecture_mismatch_detail", { appArch: info.appArchLabel, systemArch: info.systemArchLabel, platform: platformLabel(info.platform) })
+                  : <>{t("interface.your_application_is_running_the")} {info.appArchLabel}{t("interface.version_of_openwork_but_this")} {platformLabel(info.platform)}{t("interface.system_is")} {info.systemArchLabel}. This may cause unpredictable issues.</>}
                 </p>
               </div>
 

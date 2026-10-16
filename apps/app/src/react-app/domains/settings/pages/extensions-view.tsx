@@ -2,6 +2,7 @@
 import { t } from "@/i18n";
 import { type ReactNode } from "react";
 import { Cpu } from "lucide-react";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 
 import type { ExtensionInventoryFilter, ExtensionInventoryState } from "../extension-taxonomy";
 import { PluginsView, type PluginsExtensionsStore } from "./plugins-view";
@@ -126,11 +127,11 @@ export function ExtensionsView(props: ExtensionsViewProps) {
     onFilterChange: setFilterRoute,
     initialState,
     // OpenCode plugins keep their own disclosure under the Plugins category.
-    pluginsContent: pluginCount > 0 ? (
+    pluginsContent: pluginCount > 0 || isLocalGatewayClient() ? (
       <details className="group" open>
         <summary className="flex cursor-pointer items-center gap-2 rounded-lg px-1 py-2 text-sm font-medium text-dls-secondary transition-colors hover:text-dls-text">
           <Cpu size={14} />
-          <span>{t("interface.opencode_plugins")}</span>
+          <span>{t(isLocalGatewayClient() ? "zeno.library.install_plugin" : "interface.opencode_plugins")}</span>
           <span className="text-[11px] text-dls-secondary">({pluginCount})</span>
         </summary>
         <div className="mt-3">
@@ -141,7 +142,7 @@ export function ExtensionsView(props: ExtensionsViewProps) {
             canEditPlugins={props.canEditPlugins}
             canUseGlobalScope={props.canUseGlobalScope}
             accessHint={props.accessHint}
-            suggestedPlugins={props.suggestedPlugins}
+            suggestedPlugins={isLocalGatewayClient() ? [] : props.suggestedPlugins}
           />
         </div>
       </details>

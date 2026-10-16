@@ -7,6 +7,7 @@ import { createV2ReadAdapter, readV2SessionActivity } from "./opencode-v2-read-a
 import { isRecord } from "./workspace-kv-store.js";
 import { createV2BrowserBridge } from "./opencode-v2-browser-bridge.js";
 import { createV2ImageBridge, type V2ImageSessionResolver } from "./opencode-v2-image-bridge.js";
+import { isStandaloneAgentProfile } from "./opencode-plugins/local-client-profile.js";
 
 const requestSchema = z.object({ name: z.enum(["openwork_context", "openwork_query", "openwork_skills"]), input: z.unknown() });
 // Advertise only reads this bridge executes. Native MCP discovery owns remote
@@ -27,10 +28,11 @@ function readAffordances(value: unknown): unknown {
  * same AsyncLocalStorage instance rather than separately bundled copies. */
 export async function createV2ContextBridge(
   hostRequest: (path: string, init?: RequestInit) => Promise<unknown>,
-  options?: { resolveImageSession?: V2ImageSessionResolver },
+  options?: { resolveImageSession?: V2ImageSessionResolver; clientProfile?: "local-gateway" | "connected" },
 ) {
+  const standalone = isStandaloneAgentProfile() || isStandaloneAgentProfile(options?.clientProfile);
   const token = randomBytes(32).toString("base64url");
-  const plugin = await OpenWorkExtensionsPreview();
+  const plugin = await OpenWorkExtensionsPreview(undefined, { clientProfile: options?.clientProfile });
   const server = await serve({ hostname: "127.0.0.1", port: 0, fetch: async request => {
     if (request.headers.get("authorization") !== `Bearer ${token}`) return new Response(null, { status: 401 });
     if (request.method !== "POST" || new URL(request.url).pathname !== "/read") return new Response(null, { status: 404 });
@@ -47,6 +49,7 @@ export async function createV2ContextBridge(
       // Internal plugin discovery only: not a model-visible tool. This read
       // runs in the background and never participates in prompt admission.
       if (call.name === "openwork_skills") {
+        if (standalone) return Response.json({ skills: [], instruction: "" });
         return Response.json(await read("/experimental/connect/skills"));
       }
       const transport: OpenworkReadTransport = {

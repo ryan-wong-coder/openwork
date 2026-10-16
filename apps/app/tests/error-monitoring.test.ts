@@ -140,6 +140,7 @@ describe("reportCaughtWebError", () => {
   // its redaction are exercised through it.
   test("boundary-caught errors redact quoted identity, message and stack in web envelopes, dedupe, and stay inert on desktop", async () => {
     GlobalRegistrator.register({ url: "https://app.openworklabs.com/signin?grant=secret-grant" });
+    document.documentElement.lang = "en";
     const actEnvironment = Reflect.get(globalThis, "IS_REACT_ACT_ENVIRONMENT");
     Reflect.set(globalThis, "IS_REACT_ACT_ENVIRONMENT", true);
     const container = document.createElement("div");
@@ -154,6 +155,7 @@ describe("reportCaughtWebError", () => {
     const previous = {
       deployment: process.env.VITE_OPENWORK_DEPLOYMENT,
       dsn: process.env.VITE_OPENWORK_SENTRY_DSN,
+      profile: process.env.VITE_OPENWORK_CLIENT_PROFILE,
     };
     const boundary = new AppErrorBoundary({ children: null });
     const info = { componentStack: "\n    at AppRoot" };
@@ -167,6 +169,13 @@ describe("reportCaughtWebError", () => {
       expect(window.__openworkWebErrorMonitorActive).toBeUndefined();
 
       process.env.VITE_OPENWORK_DEPLOYMENT = "web";
+      delete process.env.VITE_OPENWORK_CLIENT_PROFILE;
+      startWebErrorMonitoring();
+      boundary.componentDidCatch(thrown, info);
+      expect(fetchSpy).not.toHaveBeenCalled();
+      expect(window.__openworkWebErrorMonitorActive).toBeUndefined();
+
+      process.env.VITE_OPENWORK_CLIENT_PROFILE = "connected";
       startWebErrorMonitoring();
       boundary.componentDidCatch(thrown, info);
       boundary.componentDidCatch(thrown, info);
@@ -241,6 +250,8 @@ describe("reportCaughtWebError", () => {
       else process.env.VITE_OPENWORK_DEPLOYMENT = previous.deployment;
       if (previous.dsn === undefined) delete process.env.VITE_OPENWORK_SENTRY_DSN;
       else process.env.VITE_OPENWORK_SENTRY_DSN = previous.dsn;
+      if (previous.profile === undefined) delete process.env.VITE_OPENWORK_CLIENT_PROFILE;
+      else process.env.VITE_OPENWORK_CLIENT_PROFILE = previous.profile;
       await GlobalRegistrator.unregister();
     }
   });

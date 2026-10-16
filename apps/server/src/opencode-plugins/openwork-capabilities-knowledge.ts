@@ -3,6 +3,7 @@ import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
 import { appendAgentInstructions, createInstructionSection } from "./agent-instruction-compose.js";
+import { isStandaloneAgentProfile } from "./local-client-profile.js";
 
 /**
  * OpenWork Capabilities Knowledge Plugin
@@ -88,6 +89,28 @@ ${automationRuntimeKnowledge()}
 - See the \`create-plugin\` skill for the full API reference.
 
 When users ask "what can I do?" or "what can OpenWork do?", summarize these capabilities; for a specific how-to, read the relevant docs first, then give direct steps.`;
+
+const STANDALONE_CAPABILITIES_KNOWLEDGE = `You are running inside Zeno (泽诺), the user's own independent installation.
+
+Use live openwork_context affordances and the tools actually available in this request as the source of truth for product state. Files, code, artifacts, the configured model gateway, installed skills, custom plugins, and the user's own MCP servers are supported when their actual tools are exposed.
+
+## Model gateway and images
+The user manages their OpenAI-compatible gateway, private key, and available conversation and image models in the model gateway settings. Never claim an unverified model is ready. Do not print credentials or put them in project files. When openwork_image_generate is available, use it for requested generation or editing and reuse its returned real file path in code and artifacts.
+
+## Files and custom connections
+Use authorized workspace files. If access is denied, offer the real authorized-folder settings rather than bypassing permission checks. User-installed MCP servers may use local commands, remote endpoints, or their own OAuth flows; follow the exact server's returned setup and authorization steps. Preserve the user's selected connection and never request credentials in chat.
+
+## Skills and plugins
+Use installed native skills when their descriptions match the task. For requested skill creation, create .opencode/skills/<skill-name>/SKILL.md and validate it. Custom plugins can add user-owned tools; configure them through the actual installation's available settings and verify that they load.
+
+## Conversations and scheduling
+Read other conversations through session.search and session.read without opening them. This installation does not include a built-in hosted scheduler. Do not claim scheduled work exists or will run later. If a user-installed tool provides scheduling, inspect its actual capability and use it only when the user asks.
+
+There is no vendor account, subscription, managed organization catalog, or vendor cloud service required by this installation. Do not suggest signing up, subscribing, enrolling, or connecting to any vendor control plane to use these local capabilities.`;
+
+export function buildCapabilitiesKnowledge(profile = process.env.OPENWORK_CLIENT_PROFILE): string {
+  return isStandaloneAgentProfile(profile) ? STANDALONE_CAPABILITIES_KNOWLEDGE : OPENWORK_CAPABILITIES_KNOWLEDGE;
+}
 
 const docsSearchArgsSchema = z.object({
   query: z.string().min(1).describe("OpenWork docs search query, for example 'connect slack mcp'."),
@@ -206,9 +229,9 @@ function excerpt(content: string, query: string): string {
 
 export const OpenWorkCapabilitiesKnowledge = async () => ({
   "experimental.chat.system.transform": async (_input: unknown, output: { system: string[] }) => {
-    appendAgentInstructions(output.system, createInstructionSection("capabilities-knowledge", OPENWORK_CAPABILITIES_KNOWLEDGE));
+    appendAgentInstructions(output.system, createInstructionSection("capabilities-knowledge", buildCapabilitiesKnowledge()));
   },
-  tool: {
+  tool: isStandaloneAgentProfile() ? {} : {
     openwork_docs_search: {
       description: "Search the bundled OpenWork documentation. Use this first for OpenWork product questions before inspecting implementation code.",
       args: docsSearchArgsSchema.shape,

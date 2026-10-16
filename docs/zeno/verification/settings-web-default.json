@@ -1,0 +1,39 @@
+{
+  "about": {
+    "path": "/workspace/ws_14e1dbfb1f95/settings/general",
+    "lang": "zh-CN",
+    "zeno": "true",
+    "about": true,
+    "officialLinks": [],
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", system-ui, sans-serif",
+    "titleSize": "20px",
+    "bodySize": "13px"
+  },
+  "privacy": {
+    "analytics": [
+      {
+        "label": "显示模型推理",
+        "checked": "true",
+        "disabled": null
+      },
+      {
+        "label": "自动上下文压缩",
+        "checked": "true",
+        "disabled": null
+      },
+      {
+        "label": "分享匿名使用数据",
+        "checked": "false",
+        "disabled": "true"
+      }
+    ],
+    "localDisabled": true,
+    "scrollWidth": 1440
+  },
+  "gateway": {
+    "path": "/workspace/ws_14e1dbfb1f95/settings/ai",
+    "alerts": [],
+    "inputs": [],
+    "text": "返回应用\n网关图片验收\n设置\n工作区\n偏好设置\n权限\n资料库\n高级\n全局\n模型网关\n外观\n键盘快捷键\n环境变量\n模型网关\n网关图片验收\n模型网关\n已就绪\n对话模型\nanthropic/claude-sonnet-5\n网关由部署者管理，请在服务器上修改配置。\n重新检查"
+  }
+}

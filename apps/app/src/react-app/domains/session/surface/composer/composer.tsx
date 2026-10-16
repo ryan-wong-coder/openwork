@@ -7,6 +7,8 @@ import { toast } from "@/components/ui/sonner";
 import type { CloudImportedPlugin, CloudImportedPluginFile } from "@/app/cloud/import-state";
 import type { ComposerAttachment, McpServerEntry, McpStatus, McpStatusMap, ModelOption, ModelRef, SkillCard, SlashCommandOption } from "@/app/types";
 import { currentLocale, subscribeLocale, t } from "@/i18n";
+import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity";
+import "../../chat/zeno-chat.css";
 import { useComposerStateStore } from "../composer-state-store";
 import {
   composerConfigureSectionForMenu,
@@ -77,6 +79,7 @@ type ComposerProps = {
   disabledReasons?: readonly SendDiagnosticReason[];
   preparingReasons?: readonly SendDiagnosticReason[];
   modelUnavailable?: boolean;
+  hideModelUnavailableMessage?: boolean;
   modelUnavailableMessage?: string | null;
   organizationModelsEmpty?: boolean;
   statusLabel: string;
@@ -206,6 +209,7 @@ function pluginSlashCommandName(file: CloudImportedPluginFile) {
 
 export const ReactSessionComposer = memo(function ReactSessionComposer(props: ComposerProps) {
   useSyncExternalStore(subscribeLocale, currentLocale, currentLocale);
+  const zeno = isZenoInterfaceEnabled();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const orgMcp = useOrgMcpConnections();
   const [agents, setAgents] = useState<Agent[]>([]);
@@ -1253,6 +1257,8 @@ export const ReactSessionComposer = memo(function ReactSessionComposer(props: Co
     <DevProfiler id="SessionComposer">
     <div
       ref={rootRef}
+      data-zeno-composer={zeno || undefined}
+      data-composer-flush={props.flush || undefined}
       className={props.flush ? `relative ${toolMenuOpen ? "z-50" : "z-20"}` : `sticky bottom-0 shrink-0 ${toolMenuOpen ? "z-50" : "z-20"} bg-gradient-to-t from-dls-surface via-dls-surface/95 to-transparent px-4 pb-[max(0.5rem,env(safe-area-inset-bottom))] max-lg:px-3 lg:px-8 ${props.compactTopSpacing ? "pt-0" : "pt-1"}`}
       style={{ contain: "layout style" }}
       onKeyDownCapture={handleKeyDownCapture}
@@ -1267,7 +1273,8 @@ export const ReactSessionComposer = memo(function ReactSessionComposer(props: Co
         {/* Main composer panel */}
         <div
           ref={panelRef}
-          className="@container/composer relative overflow-visible rounded-[18px] border border-dls-border bg-dls-surface transition-all"
+          data-composer-panel
+          className="@container/composer relative overflow-visible rounded-[18px] border border-dls-border bg-dls-surface transition-[border-color,box-shadow] duration-150"
         >
           {props.topAccessory ? <div className="relative z-10">{props.topAccessory}</div> : null}
 
@@ -1291,7 +1298,7 @@ export const ReactSessionComposer = memo(function ReactSessionComposer(props: Co
             </div>
           ) : null}
 
-          <div className="px-4 pt-3 pb-2">
+          <div data-composer-editor-area className="px-4 pt-3 pb-2">
             {/* Editor */}
             <LexicalPromptEditor
               ref={editorRef}
@@ -1300,7 +1307,7 @@ export const ReactSessionComposer = memo(function ReactSessionComposer(props: Co
               pastedText={pastedTextTokens}
               attachments={attachmentTokens}
               submitDisabled={props.disabled}
-              placeholder={t("composer.placeholder")}
+              placeholder={zeno ? t("zeno.composer_placeholder") : t("composer.placeholder")}
               onChange={props.onDraftChange}
               onMentionQueryChange={setActiveMentionQuery}
               onSubmit={handleEditorSubmit}
@@ -1463,7 +1470,7 @@ export const ReactSessionComposer = memo(function ReactSessionComposer(props: Co
                     if (!props.steering) props.onModelVariantChange(value);
                   }}
                 />
-                {props.modelUnavailable ? props.onRefreshOrganizationModels ? (
+                {props.modelUnavailable && !props.hideModelUnavailableMessage ? props.onRefreshOrganizationModels ? (
                   <button
                     type="button"
                     className="inline-flex h-7 min-w-0 max-w-full items-center gap-1.5 px-2 text-xs text-dls-secondary transition-colors hover:text-foreground disabled:cursor-wait disabled:opacity-70 sm:max-w-80"
@@ -1537,10 +1544,10 @@ export const ReactSessionComposer = memo(function ReactSessionComposer(props: Co
                     props.stopping
                       ? t("composer.stopping")
                       : showStop
-                        ? t("composer.stop")
+                        ? zeno ? `${t("composer.stop")} · Esc ×2` : t("composer.stop")
                         : props.submissionPreparing
                           ? props.submissionPreparingLabel ?? t("interface.preparing_connected_service_tools")
-                          : t("composer.run_task")
+                          : zeno ? `${t("composer.run_task")} · ⏎` : t("composer.run_task")
                   }
                 >
                   {props.stopping ? (

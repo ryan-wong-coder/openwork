@@ -24,7 +24,7 @@ export function LanguageSection(props: LanguageSectionProps) {
     <LayoutSectionItem>
       <LayoutSectionItemHeader>
         <LayoutSectionItemTitle>{t("settings.language")}</LayoutSectionItemTitle>
-        <LayoutSectionItemDescription>{t("settings.language.description")}</LayoutSectionItemDescription>
+        <LayoutSectionItemDescription optional helpLabel={t("settings.language")}>{t("settings.language.description")}</LayoutSectionItemDescription>
 
         <LayoutSectionItemHeaderActions>
           <div className="w-64 max-w-full">

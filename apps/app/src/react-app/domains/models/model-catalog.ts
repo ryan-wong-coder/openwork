@@ -1,4 +1,5 @@
 import { t } from "@/i18n";
+import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity";
 import type { ModelOption, ModelRef } from "@/app/types";
 import type { CloudImportedProvider } from "@/app/cloud/import-state";
 import { modelRefKey, nextFavoriteModel } from "../session/models/model-collections-store";
@@ -88,6 +89,10 @@ function isOpaqueModelId(value: string) {
 export function modelTitle(model: ModelRef & { title?: string; description?: string }) {
   if (isAutoModel(model)) return t("ui.auto");
   const name = model.title?.trim() || model.modelID;
+  if (isZenoInterfaceEnabled() && model.providerID === "modelhelm" && name === model.modelID) {
+    if (name === "anthropic/claude-sonnet-5") return "Claude Sonnet 5";
+    if (name === "openai/gpt-image-2") return "GPT Image 2";
+  }
   if (!isOpaqueModelId(name)) return name;
   const provider = model.description?.trim();
   return provider ? t("ui.provider_model", { provider }) : t("ui.model");

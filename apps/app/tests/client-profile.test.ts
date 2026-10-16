@@ -10,19 +10,30 @@ describe("local gateway client profile", () => {
     expect(resolveClientProfile({ requestedProfile: "connected" })).toBe("connected");
   });
 
-  test("web, hosted gateway and managed installs retain authentication", () => {
+  test("self-hosted web defaults to an independent gateway client", () => {
+    expect(resolveClientProfile({ deployment: "web" })).toBe("local-gateway");
+    expect(resolveClientProfile({ deployment: "web", gatewayRuntime: true })).toBe("local-gateway");
+    expect(resolveClientProfile({ deployment: "web", gatewayRuntime: true, requestedProfile: "local-gateway" })).toBe("local-gateway");
+  });
+
+  test("managed installs and explicit requirements retain authentication on web and desktop", () => {
     const managedInputs = [
-      { deployment: "web" },
-      { gatewayRuntime: true },
       { distribution: { flavor: "cloud" } },
       { distribution: { flavor: "enterprise" } },
       { distribution: { flavor: "public", requireSignin: true } },
+      { distribution: { flavor: "public", requireActivation: true } },
       { bootstrap: { requireSignin: true } },
       { bootstrap: { requireActivation: true } },
       { buildRequiresSignin: true },
     ];
     for (const input of managedInputs) {
-      expect(resolveClientProfile({ ...input, requestedProfile: "local-gateway" })).toBe("connected");
+      for (const deployment of ["desktop", "web"]) {
+        expect(resolveClientProfile({ ...input, deployment, gatewayRuntime: true, requestedProfile: "local-gateway" })).toBe("connected");
+      }
     }
+  });
+
+  test("an explicitly connected self-hosted web build stays connected", () => {
+    expect(resolveClientProfile({ deployment: "web", gatewayRuntime: true, requestedProfile: "connected" })).toBe("connected");
   });
 });

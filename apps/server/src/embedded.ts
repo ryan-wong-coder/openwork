@@ -38,7 +38,7 @@ import { runtimeStorageDir } from "./runtime-db.js";
 import { keepOpenworkRuntimeConfigFileFresh, writeOpenworkRuntimeConfigFile } from "./openwork-runtime-config.js";
 import { migrateOpenworkCloudMcpRuntimeConfig } from "./cloud-mcp-health.js";
 import { migrateWorkspaceRuntimeConfigToEngineGlobal } from "./runtime-opencode-config-store.js";
-import { resolveOpencodeModelsUrl } from "./opencode-models-url.js";
+import { managedEngineModelsEnvironment } from "./opencode-models-url.js";
 import type { LocalManagedMcpVaultKeyProvider, ServerConfig } from "./types.js";
 
 export type EmbeddedServerOptions = CliArgs & {
@@ -219,7 +219,7 @@ export async function startEmbeddedServer(options: EmbeddedServerOptions): Promi
       fallbackDir: join(runtimeStorageDir(config), "managed-opencode-workdir"),
     });
     await duringStartup(() => mkdir(cwd, { recursive: true }));
-    const opencodeModelsUrl = await duringStartup(() => resolveOpencodeModelsUrl());
+    const modelsEnvironment = await duringStartup(() => managedEngineModelsEnvironment(config));
 
     const opencodeBin = options.opencodeBin || process.env.OPENWORK_OPENCODE_BIN;
     // Shared by the first spawn and by any later rollover standby, so a
@@ -230,7 +230,8 @@ export async function startEmbeddedServer(options: EmbeddedServerOptions): Promi
       OPENWORK_SERVER_URL: serverUrl,
       OPENWORK_SERVER_TOKEN: config.token,
       OPENCODE_CONFIG: runtimeConfigPath,
-      OPENCODE_MODELS_URL: opencodeModelsUrl,
+      OPENWORK_CLIENT_PROFILE: config.clientProfile,
+      ...modelsEnvironment,
     };
     engineSpawnTemplate = {
       bin: opencodeBin,

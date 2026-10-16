@@ -1,0 +1,8 @@
+Use case: ui-mockup. Asset type: developer visual reference for the existing Chinese Zeno desktop AI app gateway settings, landscape 1440x1024. Reference image 1 is the approved Zeno interface style, do not invent a new brand.
+Design the practical settings screen in the SAME paper #F3F1E8, deep petrol #163A3A, quiet neutral hairlines and tiny citron #D5EF5A accents as reference. Preserve narrow app sidebar with Zeno mark/wordmark, navigation 新建任务 / 资料库, 工作区 and 我的工作区, footer status and settings. Main settings region uses a compact left settings navigation (通用, 外观, 模型网关 selected, 项目配置, 快捷键) and one uncluttered flat form area. Header exact "模型网关" with a quiet green dot plus "已连接" on same line. No explanatory subtitle. Flat compact horizontal fields, labels on left, meaningful editable values on right:
+"地址" input "https://api.modelhelm.com/v1";
+"API 密钥" saved value "已配置" and one understated "更换" action, absolutely no actual key or fake key string;
+"对话模型" selector "Claude Sonnet 5";
+"图片模型" selector "GPT Image 2".
+A collapsed disclosure row exact "高级选项" underneath. Footer two actual-looking buttons "测试连接" (secondary) and "保存" (petrol primary).
+Typography system Chinese sans13px equivalent, headings20px at most; realistic spacious task surface, natural focus/hover details but no glowing outline, strong whitespace, aligned48px rows, hairline separators, no card-in-card. No mascot in form, no decorations, no feature gallery, no stats, no gradient, no glass, no robots/sparkles, no marketing slogans or instructions. Full application content, no laptop/device/browser frame. Refined and usable rather than showcase styling. This is a visual reference image, no claims the form has really saved or connected.

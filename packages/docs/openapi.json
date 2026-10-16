@@ -2426,6 +2426,7 @@
           "key": {
             "type": "string",
             "enum": [
+              "zenoInterface",
               "gatewayImageGeneration",
               "visualConfiguration",
               "secureSecretFields",
@@ -2629,6 +2630,9 @@
                 "capabilities": {
                   "type": "object",
                   "properties": {
+                    "zenoInterface": {
+                      "type": "boolean"
+                    },
                     "gatewayImageGeneration": {
                       "type": "boolean"
                     },
@@ -2724,6 +2728,7 @@
                     }
                   },
                   "required": [
+                    "zenoInterface",
                     "gatewayImageGeneration",
                     "visualConfiguration",
                     "secureSecretFields",
@@ -2759,6 +2764,62 @@
                 "featureStates": {
                   "type": "object",
                   "properties": {
+                    "zenoInterface": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
                     "gatewayImageGeneration": {
                       "type": "object",
                       "properties": {
@@ -4385,6 +4446,7 @@
                     }
                   },
                   "required": [
+                    "zenoInterface",
                     "gatewayImageGeneration",
                     "visualConfiguration",
                     "secureSecretFields",
@@ -4783,6 +4845,9 @@
                 "capabilities": {
                   "type": "object",
                   "properties": {
+                    "zenoInterface": {
+                      "type": "boolean"
+                    },
                     "gatewayImageGeneration": {
                       "type": "boolean"
                     },
@@ -4878,6 +4943,7 @@
                     }
                   },
                   "required": [
+                    "zenoInterface",
                     "gatewayImageGeneration",
                     "visualConfiguration",
                     "secureSecretFields",
@@ -4913,6 +4979,62 @@
                 "featureStates": {
                   "type": "object",
                   "properties": {
+                    "zenoInterface": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
                     "gatewayImageGeneration": {
                       "type": "object",
                       "properties": {
@@ -6539,6 +6661,7 @@
                     }
                   },
                   "required": [
+                    "zenoInterface",
                     "gatewayImageGeneration",
                     "visualConfiguration",
                     "secureSecretFields",
@@ -30161,6 +30284,9 @@
                     "capabilities": {
                       "type": "object",
                       "properties": {
+                        "zenoInterface": {
+                          "type": "boolean"
+                        },
                         "gatewayImageGeneration": {
                           "type": "boolean"
                         },
@@ -30256,6 +30382,7 @@
                         }
                       },
                       "required": [
+                        "zenoInterface",
                         "gatewayImageGeneration",
                         "visualConfiguration",
                         "secureSecretFields",
@@ -30291,6 +30418,62 @@
                     "featureStates": {
                       "type": "object",
                       "properties": {
+                        "zenoInterface": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
                         "gatewayImageGeneration": {
                           "type": "object",
                           "properties": {
@@ -31917,6 +32100,7 @@
                         }
                       },
                       "required": [
+                        "zenoInterface",
                         "gatewayImageGeneration",
                         "visualConfiguration",
                         "secureSecretFields",
@@ -32064,6 +32248,9 @@
                     "capabilities": {
                       "type": "object",
                       "properties": {
+                        "zenoInterface": {
+                          "type": "boolean"
+                        },
                         "gatewayImageGeneration": {
                           "type": "boolean"
                         },
@@ -32159,6 +32346,7 @@
                         }
                       },
                       "required": [
+                        "zenoInterface",
                         "gatewayImageGeneration",
                         "visualConfiguration",
                         "secureSecretFields",
@@ -32194,6 +32382,62 @@
                     "featureStates": {
                       "type": "object",
                       "properties": {
+                        "zenoInterface": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
                         "gatewayImageGeneration": {
                           "type": "object",
                           "properties": {
@@ -33820,6 +34064,7 @@
                         }
                       },
                       "required": [
+                        "zenoInterface",
                         "gatewayImageGeneration",
                         "visualConfiguration",
                         "secureSecretFields",

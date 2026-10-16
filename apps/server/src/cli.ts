@@ -27,7 +27,7 @@ import { runtimeStorageDir } from "./runtime-db.js";
 import { keepOpenworkRuntimeConfigFileFresh, writeOpenworkRuntimeConfigFile } from "./openwork-runtime-config.js";
 import { migrateOpenworkCloudMcpRuntimeConfig } from "./cloud-mcp-health.js";
 import { migrateWorkspaceRuntimeConfigToEngineGlobal } from "./runtime-opencode-config-store.js";
-import { resolveOpencodeModelsUrl } from "./opencode-models-url.js";
+import { managedEngineModelsEnvironment } from "./opencode-models-url.js";
 import { startWorkerActivityHeartbeat } from "./worker-activity-heartbeat.js";
 import {
   checkForUpdate,
@@ -148,14 +148,15 @@ if (manageEngine) {
     fallbackDir: join(runtimeStorageDir(config), "managed-opencode-workdir"),
   });
   await mkdir(managedOpencodeCwd, { recursive: true });
-  const opencodeModelsUrl = await resolveOpencodeModelsUrl();
+  const modelsEnvironment = await managedEngineModelsEnvironment(config);
   const engineEnv: Record<string, string | undefined> = {
     ...(process.env.OPENWORK_DEV_MODE ? { OPENWORK_DEV_MODE: process.env.OPENWORK_DEV_MODE } : {}),
     ...(process.env.OPENWORK_UI_CONTROL_DISCOVERY ? { OPENWORK_UI_CONTROL_DISCOVERY: process.env.OPENWORK_UI_CONTROL_DISCOVERY } : {}),
     OPENWORK_SERVER_URL: serverUrl,
     OPENWORK_SERVER_TOKEN: config.token,
     OPENCODE_CONFIG: runtimeConfigPath,
-    OPENCODE_MODELS_URL: opencodeModelsUrl,
+    OPENWORK_CLIENT_PROFILE: config.clientProfile,
+    ...modelsEnvironment,
   };
   const engineSpawnTemplate: EngineSpawnTemplate = {
     bin: process.env.OPENWORK_OPENCODE_BIN,
@@ -264,9 +265,11 @@ if (args.web) {
     logger.log("info", "Browsers require HTTPS for a non-localhost origin; put a TLS proxy (e.g. tailscale serve) in front.");
   }
   if (args.open) openInBrowser(browserUrl);
-  void checkForUpdate({ currentVersion: pkg.version, env: process.env }).then((latest) => {
-    if (latest) logger.log("info", updateHint(latest));
-  });
+  if (config.clientProfile !== "local-gateway") {
+    void checkForUpdate({ currentVersion: pkg.version, env: process.env }).then((latest) => {
+      if (latest) logger.log("info", updateHint(latest));
+    });
+  }
 }
 
 function installedOpencodeVersionLabel(): string {

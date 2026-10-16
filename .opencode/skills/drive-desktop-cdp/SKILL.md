@@ -22,6 +22,8 @@ Use a desktop window only when the change needs the desktop shell (titlebar, nat
 - `pnpm world up live-desktop -- --allow-shared-state` prints `cdp http://127.0.0.1:<port>` and uses the real installed profile.
 
 Set `CDP_URL` to the address the world printed for every command.
+When the browser has several app tabs, also set `CDP_TARGET_ID` to the exact
+page id from `/json/list`; an unknown id fails instead of selecting another tab.
 
 ## Commands
 

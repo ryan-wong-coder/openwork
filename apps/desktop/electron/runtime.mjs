@@ -1391,6 +1391,7 @@ export function mergeSystemCaChildEnv(baseEnv = {}, caEnv = {}, extra = {}) {
 export function createRuntimeManager({
   app,
   desktopRoot,
+  clientProfile = "connected",
   listLocalWorkspacePaths,
   localManagedMcpVaultKey,
   driveFileApproval = undefined,
@@ -1620,6 +1621,7 @@ export function createRuntimeManager({
       env.OPENCODE_CONFIG_DIR = devPaths.opencodeConfigDir;
       env.OPENCODE_TEST_HOME = devPaths.homeDir;
     }
+    env.OPENWORK_CLIENT_PROFILE = clientProfile;
     return env;
   }
 
@@ -1932,6 +1934,7 @@ export function createRuntimeManager({
     // into EADDRINUSE (see apps/server/src/serve-node.ts), so the bound port
     // below is authoritative.
     const handle = await startEmbeddedServer({
+      clientProfile,
       host,
       port: portSelection.port,
       corsOrigins: ["*"],

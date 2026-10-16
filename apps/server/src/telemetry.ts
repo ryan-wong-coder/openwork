@@ -1,3 +1,5 @@
+import type { ServerConfig } from "./types.js";
+
 export type ServerTelemetryContext = {
   method?: string;
   route?: string;
@@ -44,7 +46,8 @@ export function isExpectedRequestCancellation(error: unknown, requestSignal: Abo
   return false;
 }
 
-export function captureServerException(error: unknown, context: ServerTelemetryContext = {}): boolean {
+export function captureServerException(error: unknown, context: ServerTelemetryContext = {}, config?: Pick<ServerConfig, "clientProfile">): boolean {
+  if (config?.clientProfile === "local-gateway") return false;
   const { requestSignal, ...telemetryContext } = context;
   if (isExpectedRequestCancellation(error, requestSignal)) return false;
   return globalThis.__openworkDesktopTelemetry?.captureException(error, {

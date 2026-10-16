@@ -10,6 +10,7 @@ import {
 } from "@/app/lib/den";
 import { denSettingsChangedEvent } from "@/app/lib/den-session-events";
 import { isOpenworkGatewayRuntime } from "@/app/lib/gateway-runtime";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 import { Button } from "@/components/ui/button";
 import { usePlatform } from "@/react-app/kernel/platform";
 import { WebStartupScreen } from "@/react-app/shell/workspace-startup-status";
@@ -109,6 +110,10 @@ export function OpenWorkWebAccessGateScreen(props: {
 }
 
 export function OpenWorkWebAccessGate({ children }: { children: ReactNode }) {
+  return isLocalGatewayClient() ? children : <ConnectedOpenWorkWebAccessGate>{children}</ConnectedOpenWorkWebAccessGate>;
+}
+
+function ConnectedOpenWorkWebAccessGate({ children }: { children: ReactNode }) {
   const denAuth = useDenAuth();
   const platform = usePlatform();
   const gatewayMode = isOpenworkGatewayRuntime();

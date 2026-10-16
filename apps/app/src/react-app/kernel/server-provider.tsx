@@ -13,6 +13,7 @@ import { createOpencodeClient } from "@opencode-ai/sdk/v2/client";
 
 import { desktopFetch } from "../../app/lib/desktop";
 import { isLocalGatewayClient } from "../../app/lib/client-profile";
+import { configuredSelfHostedUrls, selfHostedServerAllowed } from "../../app/lib/self-hosted-server-policy";
 import {
   getOpenworkGatewayOrigin,
   readOpenworkGatewayDenToken,
@@ -33,14 +34,10 @@ export function serverDisplayName(url: string): string {
 
 export function localClientServerAllowed(value: string): boolean {
   if (!isLocalGatewayClient()) return true;
-  try {
-    const url = new URL(value);
-    return ["http:", "https:"].includes(url.protocol)
-      && !url.username && !url.password
-      && (url.hostname === "localhost" || url.hostname === "[::1]" || /^127(?:\.\d{1,3}){3}$/.test(url.hostname));
-  } catch {
-    return false;
-  }
+  return selfHostedServerAllowed(value, {
+    appOrigin: !isDesktopRuntime() && isWebDeployment() && typeof window !== "undefined" ? window.location.origin : undefined,
+    configuredUrls: configuredSelfHostedUrls(),
+  });
 }
 
 function serverStorageKey(suffix: "list" | "active"): string {
@@ -81,7 +78,7 @@ function readStoredActive(): string {
 }
 
 function readOpenworkToken(): string {
-  if (getOpenworkGatewayOrigin()) return readOpenworkGatewayDenToken();
+  if (!isLocalGatewayClient() && getOpenworkGatewayOrigin()) return readOpenworkGatewayDenToken();
 
   if (typeof window === "undefined") return "";
   try {
@@ -124,7 +121,7 @@ export function ServerProvider({ children, defaultUrl }: ServerProviderProps) {
     if (readyRef.current) return;
     if (typeof window === "undefined") return;
 
-    const gatewayOrigin = getOpenworkGatewayOrigin();
+    const gatewayOrigin = isLocalGatewayClient() ? null : getOpenworkGatewayOrigin();
     const configuredFallback = normalizeServerUrl(gatewayOrigin ? `${gatewayOrigin}/opencode` : defaultUrl) ?? "";
     const fallback = localClientServerAllowed(configuredFallback) ? configuredFallback : "http://127.0.0.1:4096";
 

@@ -18,6 +18,16 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
+            "zenoInterface": {
+              "enum": [
+                "",
+                "true",
+                "false",
+                true,
+                false
+              ],
+              "description": "Zeno interface: Use the Zeno identity, compact workspace navigation and refined local task interface without changing files, history or permissions. Renders DEN_FEATURE_ZENO_INTERFACE."
+            },
             "gatewayImageGeneration": {
               "enum": [
                 "",

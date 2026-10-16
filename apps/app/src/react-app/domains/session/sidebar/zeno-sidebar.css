@@ -1,0 +1,73 @@
+[data-zeno-interface="true"] [data-zeno-sidebar] {
+  --zeno-sidebar-row: 36px;
+}
+
+[data-zeno-interface="true"] [data-zeno-sidebar] [data-sidebar="sidebar"] {
+  background: var(--sidebar);
+  border-inline-end: 1px solid var(--sidebar-border);
+}
+
+[data-zeno-interface="true"] [data-zeno-brand-row] {
+  min-height: 54px;
+  padding-block-end: 6px;
+}
+
+[data-zeno-interface="true"] .zeno-sidebar-brand {
+  min-height: 42px;
+}
+
+[data-zeno-interface="true"] .zeno-sidebar-wordmark {
+  color: var(--foreground);
+  font-size: 21px;
+  font-weight: 650;
+  letter-spacing: -0.8px;
+  line-height: 1;
+}
+
+[data-zeno-interface="true"] [data-zeno-sidebar] [data-sidebar="header"] {
+  margin-block-start: 0;
+  padding-inline: 10px;
+}
+
+[data-zeno-interface="true"] [data-zeno-sidebar] [data-sidebar="menu-button"] {
+  min-height: var(--zeno-sidebar-row);
+  gap: 10px;
+  padding-inline: 11px;
+  color: var(--sidebar-foreground);
+  border-radius: var(--radius);
+  font-size: 13px;
+}
+
+[data-zeno-interface="true"] [data-zeno-sidebar] [data-sidebar="menu-button"]:hover,
+[data-zeno-interface="true"] [data-zeno-sidebar] [data-sidebar="menu-sub-button"]:hover {
+  background: var(--sidebar-accent);
+}
+
+[data-zeno-interface="true"] [data-zeno-sidebar] [data-sidebar="menu-button"][data-active="true"],
+[data-zeno-interface="true"] [data-zeno-sidebar] [data-sidebar="menu-sub-button"][data-active="true"] {
+  color: var(--foreground);
+  background: var(--sidebar-accent);
+  font-weight: 500;
+}
+
+[data-zeno-interface="true"] [data-zeno-sidebar] [data-sidebar="menu-sub-button"] {
+  color: var(--muted-foreground);
+}
+
+[data-zeno-interface="true"] [data-zeno-sidebar] [data-sidebar="footer"] {
+  margin-inline: 12px;
+  padding-block: 10px;
+  padding-inline: 0;
+  border-color: var(--sidebar-border);
+}
+
+[data-zeno-interface="true"] [data-zeno-sidebar] [data-sidebar-titlebar] {
+  opacity: 0.8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-zeno-interface="true"] [data-zeno-sidebar] * {
+    animation-duration: 0.01ms;
+    transition-duration: 0.01ms;
+  }
+}

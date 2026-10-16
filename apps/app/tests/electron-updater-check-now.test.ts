@@ -10,6 +10,8 @@ import {
   type SettingsUpdateStatus,
 } from "../src/react-app/domains/settings/state/electron-updater-state";
 import { useUpdateCheckRequestStore } from "../src/react-app/domains/settings/state/update-check-request";
+import { setClientProfileBootstrap } from "../src/app/lib/client-profile";
+import { currentLocale, setLocale } from "../src/i18n";
 
 GlobalRegistrator.register({ url: "http://localhost/" });
 afterAll(async () => { await GlobalRegistrator.unregister(); });
@@ -60,6 +62,7 @@ describe("Settings staged-update discovery", () => {
   let clock: number;
   let timers: { at: number; run: () => void }[];
   let automaticTick: () => void;
+  let previousLocale: ReturnType<typeof currentLocale>;
   const originalDev = process.env.DEV;
   const onReleaseChannelChange = () => {};
   const setError = () => {};
@@ -133,6 +136,9 @@ describe("Settings staged-update discovery", () => {
   }
 
   beforeEach(async () => {
+    setClientProfileBootstrap({ requireSignin: true });
+    previousLocale = currentLocale();
+    setLocale("en");
     Object.defineProperty(globalThis, "IS_REACT_ACT_ENVIRONMENT", { configurable: true, value: true });
     process.env.DEV = "true";
     clock = 1_800_000_000_000;
@@ -225,6 +231,8 @@ describe("Settings staged-update discovery", () => {
     host.remove();
     useUpdateCheckRequestStore.getState().clearUpdateCheckRequest();
     mock.restore();
+    setClientProfileBootstrap({ requireSignin: false, requireActivation: false });
+    setLocale(previousLocale);
     if (originalDev === undefined) delete process.env.DEV;
     else process.env.DEV = originalDev;
   });

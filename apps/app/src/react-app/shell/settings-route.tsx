@@ -215,6 +215,7 @@ import {
 import {
   libraryAgentsFromOpencode,
   libraryCommandsFromSlashOptions,
+  parseSkillMarkdown,
   type LibraryAgentItem,
   type LibraryCommandItem,
 } from "@/react-app/domains/settings/library";
@@ -303,9 +304,10 @@ export function parseSettingsPath(pathname: string): {
     case "appearance":
     case "shortcuts":
     case "environment":
-    case "updates":
     case "debug":
       return { tab: head, redirectPath: null };
+    case "updates":
+      return isLocalGatewayClient() ? { tab: "general", redirectPath: "general" } : { tab: "updates", redirectPath: null };
     case "ollama":
       return isLocalGatewayClient() ? { tab: "ai", redirectPath: "ai" } : { tab: "ollama", redirectPath: null };
     case "advanced":
@@ -930,7 +932,7 @@ function SettingsRouteContent(props: SettingsSurfaceProps = {}) {
   const refreshConnectCapabilities = useCallback(async (options?: { force?: boolean }) => {
     const requestId = connectCapabilitiesRequestRef.current + 1;
     connectCapabilitiesRequestRef.current = requestId;
-    if (!cloudSession.isSignedIn || !connectScope.organizationId) {
+    if (isLocalGatewayClient() || !cloudSession.isSignedIn || !connectScope.organizationId) {
       setConnectCapabilities(EMPTY_CONNECT_CAPABILITY_INVENTORY);
       setConnectCapabilitiesLoading(false);
       setConnectCapabilitiesError(null);
@@ -969,6 +971,7 @@ function SettingsRouteContent(props: SettingsSurfaceProps = {}) {
   // re-read them so a deleted plugin's connector does not linger as its own row.
   const refreshOrgMcpConnections = orgMcpConnections.refresh;
   useEffect(() => {
+    if (isLocalGatewayClient()) return;
     const refresh = () => {
       void refreshConnectCapabilities({ force: true });
       void refreshOrgMcpConnections();
@@ -999,7 +1002,7 @@ function SettingsRouteContent(props: SettingsSurfaceProps = {}) {
   const openProvidersInDen = useCallback(() => {
     platform.openLink(denDashboardUrl(cloudSession.baseUrl, "gatewayProviders"));
   }, [cloudSession.baseUrl, platform]);
-  const autoClient = isDesktopRuntime() && openworkServerSnapshot.openworkServerClient && isLoopbackOpenworkServerUrl(openworkServerSnapshot.openworkServerClient.baseUrl) ? openworkServerSnapshot.openworkServerClient : null;
+  const autoClient = !isLocalGatewayClient() && isDesktopRuntime() && openworkServerSnapshot.openworkServerClient && isLoopbackOpenworkServerUrl(openworkServerSnapshot.openworkServerClient.baseUrl) ? openworkServerSnapshot.openworkServerClient : null;
   const [autoPreferences, setAutoPreferences] = useState<DesktopFreePreferences | null>(null);
   // Until an operator switches free Auto on, Settings shows no OpenWork Models row for it.
   // Settings has no workspace context: read status from the same local client as preferences.
@@ -1179,6 +1182,7 @@ function SettingsRouteContent(props: SettingsSurfaceProps = {}) {
     return provider && model ? { provider, model } : null;
   }, [local.prefs.defaultModel]);
   const refreshCloudMcpHealth = useCallback(async () => {
+    if (isLocalGatewayClient()) return null;
     const client = selectedWorkspaceEndpoint?.client ?? openworkClient;
     const workspaceId = runtimeWorkspaceId?.trim() ?? "";
     if (!client || !workspaceId) {
@@ -1713,18 +1717,19 @@ function SettingsRouteContent(props: SettingsSurfaceProps = {}) {
       return { marketplaceCount: extensionsStore.cloudOrgMarketplaces().length };
     },
   }), [extensionsStore]);
-  useControlAction(refreshMarketplaceAction);
+  useControlAction(isLocalGatewayClient() ? null : refreshMarketplaceAction);
 
   // Periodically reconcile workspace-imported cloud providers from Den while
   // signed in (dev #1509 "auto-sync cloud providers"). Mounted here because
   // the settings route owns the provider-auth store.
-  useCloudProviderAutoSync(providerAuthStore.runCloudProviderSync);
+  useCloudProviderAutoSync((reason) => isLocalGatewayClient() ? Promise.resolve() : providerAuthStore.runCloudProviderSync(reason));
 
   // Keep the Den cloud MCP configured with a fresh first-party token while
   // signed in: connects on sign-in, re-mints on org switch and before expiry.
-  useCloudProviderAutoSync(() => connectionsStore.syncCloudControlMcp());
+  useCloudProviderAutoSync(() => isLocalGatewayClient() ? Promise.resolve() : connectionsStore.syncCloudControlMcp());
 
   useEffect(() => {
+    if (isLocalGatewayClient()) return;
     if (route.tab !== "cloud-providers" && route.tab !== "ai") return;
     void providerAuthStore.runCloudProviderSync("settings_cloud_opened");
   }, [providerAuthStore, route.tab]);
@@ -2148,6 +2153,7 @@ function SettingsRouteContent(props: SettingsSurfaceProps = {}) {
       case "general":
         return (
           <GeneralSettingsView
+            appVersion={electronUpdaterState.appVersion}
             onNavigateTab={(tab) => navigateSettingsPath(tab)}
             developerMode={developerMode}
             onSendFeedback={() => platform.openLink(buildFeedbackUrl({ entrypoint: "settings" }))}
@@ -2321,7 +2327,7 @@ function SettingsRouteContent(props: SettingsSurfaceProps = {}) {
             canEditPlugins={allowManageExtensions}
             canUseGlobalScope
             accessHint={allowManageExtensions ? null : desktopRestrictionNotice("allowManageExtensions")}
-            suggestedPlugins={SUGGESTED_PLUGINS}
+            suggestedPlugins={isLocalGatewayClient() ? [] : SUGGESTED_PLUGINS}
             extensions={extensionsStore}
             initialSection={route.extensionsSection}
             detailId={route.extensionDetailId ?? null}
@@ -2333,6 +2339,12 @@ function SettingsRouteContent(props: SettingsSurfaceProps = {}) {
               navigateSettingsPath(path);
             }}
             onRefresh={() => {
+              if (isLocalGatewayClient()) {
+                void connectionsStore.refreshMcpServers();
+                void extensionsStore.refreshSkills({ force: true });
+                void extensionsStore.refreshPlugins();
+                return;
+              }
               // Force-sync the cloud MCP first (re-mint token + rewrite
               // config, bypassing the freshness marker) so Refresh really
               // means "make everything current now", then refresh the rest.
@@ -2348,7 +2360,15 @@ function SettingsRouteContent(props: SettingsSurfaceProps = {}) {
               <McpView
                 headerActionsTarget={props.libraryHeaderActionsTarget}
                 pluginsContent={pluginsContent}
-                onOpenCloudAccount={() => navigate(selectedWorkspaceId ? workspaceSettingsRoute(selectedWorkspaceId, "cloud-account") : "/settings/cloud-account")}
+                onOpenCloudAccount={isLocalGatewayClient() ? undefined : () => navigate(selectedWorkspaceId ? workspaceSettingsRoute(selectedWorkspaceId, "cloud-account") : "/settings/cloud-account")}
+                onImportSkillText={async (content, filename) => {
+                  const parsed = parseSkillMarkdown(content);
+                  const name = parsed.name.trim() || filename.replace(/\.md$/i, "").trim();
+                  if (!name) throw new Error(t("zeno.library.invalid_skill_file"));
+                  if (extensionsStore.skills().some((skill) => skill.name.toLocaleLowerCase() === name.toLocaleLowerCase())) throw new Error(t("zeno.library.skill_exists"));
+                  await extensionsStore.saveSkill({ name, content, description: parsed.description });
+                }}
+                localSkillStatus={extensionsSnapshot.skillsStatus}
                 busy={busy}
                 selectedWorkspaceRoot={selectedWorkspaceRoot}
                     mcpServers={connectionsSnapshot.mcpServers}
@@ -2384,7 +2404,7 @@ function SettingsRouteContent(props: SettingsSurfaceProps = {}) {
                 installedAgents={libraryAgents}
                 availableConnectMcpServers={libraryConnectMcpServers}
                 availableConnectMcpStatuses={connectCapabilities.mcpStatuses}
-                inventoryLoading={connectCapabilitiesLoading || (orgMcpConnections.loading && !orgMcpConnections.loaded)}
+                inventoryLoading={!isLocalGatewayClient() && (connectCapabilitiesLoading || (orgMcpConnections.loading && !orgMcpConnections.loaded))}
                 inventoryError={connectCapabilitiesError}
                 installedPlugins={libraryConnectPlugins}
                 orgMcpItems={orgMcpConnectionItems}

@@ -334,6 +334,7 @@ export async function createManagedOpencodeV2Server(
   for (const key of [
     "PATH", "HOME", "USER", "LOGNAME", "SHELL", "TMPDIR", "TMP", "TEMP",
     "LANG", "LC_ALL", "LC_CTYPE", "TZ", "TERM", "CI",
+    "OPENWORK_CLIENT_PROFILE",
     "XDG_CACHE_HOME", "XDG_CONFIG_HOME", "XDG_DATA_HOME", "XDG_STATE_HOME", "XDG_RUNTIME_DIR",
     "SystemRoot", "SYSTEMROOT", "WINDIR", "COMSPEC", "PATHEXT", "USERPROFILE", "APPDATA", "LOCALAPPDATA",
     "NODE_EXTRA_CA_CERTS", "SSL_CERT_FILE", "SSL_CERT_DIR",

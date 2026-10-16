@@ -19,6 +19,7 @@
     "package:electron": "pnpm run build:electron && pnpm exec electron-builder --config electron-builder.yml",
     "package:electron:cloud": "pnpm run build:electron && pnpm exec electron-builder --config electron-builder.cloud.yml",
     "package:electron:enterprise": "pnpm run build:electron && pnpm exec electron-builder --config electron-builder.enterprise.yml",
+    "package:electron:zeno": "node ./scripts/package-zeno.mjs",
     "package:electron:dir": "pnpm run build:electron && pnpm exec electron-builder --config electron-builder.yml --dir",
     "electron": "pnpm run rebuild:electron-native && pnpm exec electron ./electron/main.mjs",
     "check:electron": "node ./scripts/check-electron-bridge.mjs",

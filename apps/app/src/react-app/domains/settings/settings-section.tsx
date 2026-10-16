@@ -61,7 +61,7 @@ export interface SettingsLayoutProps {
 }
 
 export function SettingsStack({ children, className }: SettingsLayoutProps) {
-  return <div className={cn("@container/settings flex w-full max-w-3xl flex-col gap-y-6", className)}>{children}</div>;
+  return <div data-settings-stack className={cn("@container/settings flex w-full max-w-3xl flex-col gap-y-6", className)}>{children}</div>;
 }
 
 interface SettingsSectionProps {
@@ -84,7 +84,7 @@ interface SettingsInsetProps {
 
 export function SettingsInset({ children, className }: SettingsInsetProps) {
   return (
-    <div className={cn("border border-dls-border rounded-2xl p-4", className)}>
+    <div data-settings-inset className={cn("border border-dls-border rounded-2xl p-4", className)}>
       {children}
     </div>
   );

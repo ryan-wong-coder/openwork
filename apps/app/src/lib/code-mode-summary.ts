@@ -1,6 +1,10 @@
 import type { DynamicToolUIPart } from "ai";
-import { getCapabilityCallSentence } from "./capability-call";
+import { getCapabilityCallSentence, localizedCapabilityAction } from "./capability-call";
 import { t } from "../i18n";
+
+const SUBJECT_KEYS: Record<string, string> = {
+  issue: "capability.subject.issue", note: "capability.subject.note", task: "capability.subject.task", document: "capability.subject.document",
+};
 
 function callAction(call: DynamicToolUIPart): string {
   const name = call.toolName.endsWith("_execute_capability") && typeof call.input === "object" && call.input !== null && "name" in call.input
@@ -27,7 +31,7 @@ export function codeModeSummary(
     const failure = only ? getCapabilityCallSentence(only, { connectionName: options.serviceName(only), includeQuery: false }).failure : undefined;
     return failure ?? t("capability.script.failure");
   }
-  if (calls.length === 0) return t(options.running ? "capability.script.present" : "capability.script.past");
+  if (calls.length === 0) return options.running ? t("capability.script.present") : t("capability.script.past");
 
   const changes = calls.filter((call) => /(?:^|_)(create|save|add|send|post|update|edit|write|delete|remove|publish|move|rename)(?:_|[A-Z]|$)/i.test(callAction(call)));
   if (changes.length === 1) {
@@ -45,11 +49,11 @@ export function codeModeSummary(
       const body = input && "body" in input && typeof input.body === "object" && input.body !== null ? input.body : null;
       if (/(?:^|_)save_issue$/.test(action)) {
         const updating = body && "id" in body && typeof body.id === "string" && body.id.length > 0;
-        return `${t(`capability.verb.${updating ? "update" : "create"}.${creating ? "present" : "past"}`, { target: t("capability.subject.issue") })}${serviceTail}`;
+        return `${localizedCapabilityAction(updating ? "update" : "create", t("capability.subject.issue"), creating ? "present" : "past")}${serviceTail}`;
       }
       if (/(?:^|_)create_(issue|note|task|document)$/.test(action)) {
         const subject = action.split("_").at(-1);
-        return `${t(`capability.verb.create.${creating ? "present" : "past"}`, { target: t(`capability.subject.${subject}`) })}${serviceTail}`;
+        return `${localizedCapabilityAction("create", t(SUBJECT_KEYS[subject ?? ""] ?? "capability.subject.document"), creating ? "present" : "past")}${serviceTail}`;
       }
       return service && !label.includes(service) ? `${label}${serviceTail}` : label;
     }
@@ -59,14 +63,17 @@ export function codeModeSummary(
   const names = services.length > 2 ? t("capability.services_others", { names: services.slice(0, 2).join(t("capability.list_separator")) })
     : services.join(t("capability.and_separator"));
   if (changes.length > 0) {
-    const tense = options.running ? "present" : changes.every(call => call.state === "output-error") ? "attempted" : "past";
-    return t(`capability.changes.${tense}`, { target: names || t("capability.connected_services") });
+    const target = names || t("capability.connected_services");
+    return options.running ? t("capability.changes.present", { target })
+      : changes.every(call => call.state === "output-error") ? t("capability.changes.attempted", { target })
+      : t("capability.changes.past", { target });
   }
   // A group of searches says so ("Searched Exa"), not a vague "Looked up".
   const allSearches = calls.length > 0 && calls.every((call) => {
     const action = callAction(call);
     return /(?:^|[-_])search(?:[-_]|$)/i.test(action) || /^search[A-Z]/.test(action);
   });
-  if (allSearches && names) return t(`capability.verb.search.${options.running ? "present" : "past"}`, { target: names });
-  return t(`capability.lookup.${options.running ? "present" : "past"}`, { target: names || t("capability.information") });
+  if (allSearches && names) return localizedCapabilityAction("search", names, options.running ? "present" : "past");
+  const target = names || t("capability.information");
+  return options.running ? t("capability.lookup.present", { target }) : t("capability.lookup.past", { target });
 }

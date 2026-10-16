@@ -3,8 +3,10 @@ import { openworkServerConfigPath } from "@openwork/paths";
 import type { ApprovalMode, ApprovalConfig, ServerConfig, WorkspaceConfig, LogFormat } from "./types.js";
 import { buildWorkspaceInfos } from "./workspaces.js";
 import { parseList, readJsonFile, shortId } from "./utils.js";
+import { resolveServerClientProfile, type ServerClientProfile } from "./client-profile.js";
 
 export interface CliArgs {
+  clientProfile?: ServerClientProfile;
   configPath?: string;
   host?: string;
   port?: number;
@@ -83,6 +85,13 @@ export function parseCliArgs(argv: string[]): CliArgs {
     if (!value) continue;
     if (value === "--open") {
       args.open = true;
+      continue;
+    }
+    if (value === "--client-profile") {
+      const profile = argv[index + 1];
+      if (profile !== "local-gateway" && profile !== "connected") throw new Error("--client-profile must be local-gateway or connected");
+      args.clientProfile = profile;
+      index += 1;
       continue;
     }
     if (value === "--no-bootstrap-token") {
@@ -204,6 +213,7 @@ export function printHelp(): void {
     "",
     "Options:",
     "  --config <path>          Path to server.json",
+    "  --client-profile <name>  local-gateway (default) | connected",
     "  --host <host>            Hostname (default 127.0.0.1)",
     "  --port <port>            Port (default 8787)",
     "  --token <token>          Client bearer token",
@@ -338,6 +348,8 @@ export async function resolveServerConfig(cli: CliArgs): Promise<ServerConfig> {
   const port = cli.port ?? (process.env.OPENWORK_PORT ? Number(process.env.OPENWORK_PORT) : undefined) ?? fileConfig.port ?? DEFAULT_PORT;
 
   return {
+    clientProfile: resolveServerClientProfile(cli.clientProfile ?? process.env.OPENWORK_CLIENT_PROFILE
+      ?? (/^(?:1|true|yes)$/i.test(process.env.DEN_RUNTIME_MANAGED ?? "") || process.env.DEN_RUNTIME_PROVIDER === "daytona" ? "connected" : undefined)),
     host,
     port: Number.isNaN(port) ? DEFAULT_PORT : port,
     token,

@@ -207,7 +207,23 @@ function pendingServerSwitchForDeepLink(input: {
  * desktop-config reader rely on, and syncs Better-Auth's active organization
  * on every refresh so subsequent requests resolve against the right org.
  */
+const LOCAL_DEN_AUTH: DenAuthStore = {
+  status: "signed_out",
+  user: null,
+  verifiedIdentity: null,
+  error: null,
+  isSignedIn: false,
+  refresh: async () => {},
+};
+
+/** Standalone installs never start account restore, handoff, or retry listeners. */
 export function DenAuthProvider({ children }: DenAuthProviderProps) {
+  return isLocalGatewayClient()
+    ? <DenAuthContext.Provider value={LOCAL_DEN_AUTH}>{children}</DenAuthContext.Provider>
+    : <ConnectedDenAuthProvider>{children}</ConnectedDenAuthProvider>;
+}
+
+function ConnectedDenAuthProvider({ children }: DenAuthProviderProps) {
   const [status, setStatus] = useState<DenAuthStatus>(() => isLocalGatewayClient() ? "signed_out" : "checking");
   const [user, setUser] = useState<DenUser | null>(null);
   const [verifiedIdentity, setVerifiedIdentity] = useState<{

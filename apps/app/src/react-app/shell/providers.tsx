@@ -34,7 +34,7 @@ export function resolveDefaultServerUrl(): string {
       ? import.meta.env.VITE_OPENWORK_URL.trim()
       : "";
   if (openworkUrl) {
-    const baseUrl = openworkUrl === "/api/openwork" && typeof window !== "undefined"
+    const baseUrl = /^(\/|\.{1,2}\/)/.test(openworkUrl) && typeof window !== "undefined"
       ? new URL(openworkUrl, window.location.origin).href
       : openworkUrl;
     return `${baseUrl.replace(/\/+$/, "")}/opencode`;
@@ -48,7 +48,9 @@ export function resolveDefaultServerUrl(): string {
     typeof import.meta.env?.VITE_OPENCODE_URL === "string"
       ? import.meta.env.VITE_OPENCODE_URL.trim()
       : "";
-  return envUrl || "http://127.0.0.1:4096";
+  return envUrl && /^(\/|\.{1,2}\/)/.test(envUrl) && typeof window !== "undefined"
+    ? new URL(envUrl, window.location.origin).href
+    : envUrl || "http://127.0.0.1:4096";
 }
 
 type AppProvidersProps = {

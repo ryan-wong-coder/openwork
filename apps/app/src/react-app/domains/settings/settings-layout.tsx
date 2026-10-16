@@ -1,5 +1,11 @@
 import * as React from "react";
+import { Info } from "lucide-react";
+import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity";
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { t } from "@/i18n";
 import { cn } from "@/lib/utils";
+import "./zeno-settings.css";
 
 export interface LayoutStackProps {
   children: React.ReactNode;
@@ -7,7 +13,7 @@ export interface LayoutStackProps {
 }
 
 export function LayoutStack({ children, className }: LayoutStackProps) {
-  return <div className={cn("@container/settings flex w-full max-w-3xl flex-col gap-y-6", className)}>{children}</div>;
+  return <div data-settings-stack className={cn("@container/settings flex w-full max-w-3xl flex-col gap-y-6", className)}>{children}</div>;
 }
 
 interface LayoutSectionProps {
@@ -29,7 +35,7 @@ interface LayoutSectionHeaderProps {
 
 export function LayoutSectionHeader({ children }: LayoutSectionHeaderProps) {
   return (
-    <div className="flex flex-col gap-1">
+    <div data-settings-section-heading className="flex flex-col gap-1">
       {children}
     </div>
   );
@@ -51,9 +57,11 @@ export function LayoutSectionTitle({ children, className }: LayoutSectionTitlePr
 interface LayoutSectionDescriptionProps {
   children: React.ReactNode;
   className?: string;
+  optional?: boolean;
 }
 
-export function LayoutSectionDescription({ children, className }: LayoutSectionDescriptionProps) {
+export function LayoutSectionDescription({ children, className, optional }: LayoutSectionDescriptionProps) {
+  if (optional && isZenoInterfaceEnabled()) return <SettingsHelp>{children}</SettingsHelp>;
   return (
     <p className={cn("text-sm text-muted-foreground", className)}>
       {children}
@@ -68,7 +76,7 @@ interface LayoutSectionItemProps {
 
 export function LayoutSectionItem({ children, className }: LayoutSectionItemProps) {
   return (
-    <div className={cn("flex flex-col gap-3", className)}>
+    <div data-settings-item className={cn("flex flex-col gap-3", className)}>
       {children}
     </div>
   );
@@ -81,7 +89,7 @@ interface LayoutSectionItemHeaderProps {
 
 export function LayoutSectionItemHeader({ children, className }: LayoutSectionItemHeaderProps) {
   return (
-    <div className={cn("grid auto-rows-min items-start gap-y-1 gap-x-3 has-data-[slot=item-header-actions]:grid-cols-[1fr_auto]", className)}>
+    <div data-settings-item-heading className={cn("grid auto-rows-min items-start gap-y-1 gap-x-3 has-data-[slot=item-header-actions]:grid-cols-[1fr_auto]", className)}>
       {children}
     </div>
   );
@@ -103,13 +111,30 @@ export function LayoutSectionItemTitle({ children, className }: LayoutSectionIte
 interface LayoutSectionItemDescriptionProps {
   children: React.ReactNode;
   className?: string;
+  /** Optional guidance can be opened in place; state, consent and risk stay visible. */
+  optional?: boolean;
+  helpLabel?: string;
 }
 
-export function LayoutSectionItemDescription({ children, className }: LayoutSectionItemDescriptionProps) {
+export function LayoutSectionItemDescription({ children, className, optional, helpLabel }: LayoutSectionItemDescriptionProps) {
+  if (optional && isZenoInterfaceEnabled()) {
+    return <SettingsHelp label={helpLabel ? `${helpLabel} · ${t("interface.help")}` : undefined}>{children}</SettingsHelp>;
+  }
   return (
     <p data-slot="item-description" className={cn("text-sm text-muted-foreground", className)}>
       {children}
     </p>
+  );
+}
+
+export function SettingsHelp({ children, label = t("interface.help") }: { children: React.ReactNode; label?: string }) {
+  return (
+    <Popover>
+      <PopoverTrigger render={<Button type="button" variant="ghost" size="icon-sm" className="zeno-settings-help text-muted-foreground" aria-label={label}><Info className="size-3.5" /></Button>} />
+      <PopoverContent align="start" className="max-w-xs rounded-xl p-3 text-xs leading-relaxed">
+        {children}
+      </PopoverContent>
+    </Popover>
   );
 }
 

@@ -94,6 +94,10 @@ const subscribeToDenBootstrap = (onStoreChange: () => void) => {
  * show startup progress without mounting transcript/settings behind the gate.
  */
 function DenSigninGate({ children }: DenSigninGateProps) {
+  return isLocalGatewayClient() ? children : <ConnectedDenSigninGate>{children}</ConnectedDenSigninGate>;
+}
+
+function ConnectedDenSigninGate({ children }: DenSigninGateProps) {
   const denAuth = useDenAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -159,6 +163,7 @@ function DenSigninGate({ children }: DenSigninGateProps) {
   // After a fresh sign-in, returning members go straight to chat. Give org
   // restoration a brief chance to settle before treating the user as new.
   useEffect(() => {
+    if (isLocalGatewayClient()) return;
     const handler = (event: WindowEventMap[typeof denSessionUpdatedEvent]) => {
       if (event.detail?.status !== "success") return;
       const signInLocation = locationRef.current;
@@ -567,7 +572,7 @@ export function AppRoot() {
               <Route path="*" element={<Navigate to="/session" replace />} />
                   </Routes>
                   <LoadingOverlay />
-                  <CloudWorkspaceOverlay />
+                  {isLocalGatewayClient() ? null : <CloudWorkspaceOverlay />}
                   <EngineMigrationOverlay />
                   <MemberApiKeyDialog />
                 </CloudWorkspaceStatusProvider>

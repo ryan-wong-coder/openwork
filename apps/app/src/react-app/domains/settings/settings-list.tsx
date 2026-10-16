@@ -2,6 +2,7 @@
 import { t } from "@/i18n";
 import type * as React from "react";
 import { cn } from "@/lib/utils";
+import "./zeno-settings.css";
 import { SettingsInset } from "./settings-section";
 import { SearchIcon } from "lucide-react"
 
@@ -17,7 +18,7 @@ export interface SettingsListProps {
 }
 
 export function SettingsList({ children, className }: SettingsListProps) {
-  return <div className={cn("flex flex-col gap-y-2", className)}>{children}</div>;
+  return <div data-settings-list className={cn("flex flex-col gap-y-2", className)}>{children}</div>;
 }
 
 interface SettingsListEmptyStateProps {
@@ -58,6 +59,7 @@ export interface SettingsListItemProps {
 export function SettingsListItem({ children, className }: SettingsListItemProps) {
   return (
     <div
+      data-settings-list-item
       className={cn(
         "flex items-center justify-between rounded-xl px-3 py-2 text-left text-sm transition-colors hover:bg-muted/10 hover:border-border border border-transparent",
         className,

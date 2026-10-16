@@ -29,6 +29,7 @@ import { createApplicationMenu } from "./app-menu.mjs";
 import { nativeText, nativeTemplate, setNativeLanguage } from "./native-locale.mjs";
 import { createNativeContextMenus } from "./context-menu.mjs";
 import { applyBrandAppName } from "./brand-app-name.mjs";
+import { ZENO_DESKTOP_APP_NAME, zenoDesktopIdentityEnabled } from "./zeno-identity.mjs";
 import { createBrowserPanel } from "./browser-panel.mjs";
 import { createWorkspaceStore } from "./workspace-store.mjs";
 import {
@@ -123,6 +124,10 @@ const DESKTOP_DISTRIBUTION = resolveDesktopDistribution({
 const TAURI_APP_IDENTIFIER = DESKTOP_DISTRIBUTION.appIdentifier;
 const DEV_APP_IDENTIFIER = `${DESKTOP_DISTRIBUTION.appIdentifier}.dev`;
 const DESKTOP_PROTOCOL_SCHEME = DESKTOP_DISTRIBUTION.protocolScheme;
+const DEFAULT_DEN_BASE_URL = "https://app.openworklabs.com";
+const FORCE_DESKTOP_REQUIRE_SIGNIN =
+  DESKTOP_DISTRIBUTION.requireSignin || envFlagEnabled("OPENWORK_FORCE_SIGNIN");
+const DEFAULT_DESKTOP_REQUIRE_SIGNIN = FORCE_DESKTOP_REQUIRE_SIGNIN;
 const DEFAULT_APP_NAME =
   (!app.isPackaged ? process.env.OPENWORK_ELECTRON_APP_NAME?.trim() : "") ||
   (isDevMode ? `${DESKTOP_DISTRIBUTION.appName} - Dev` : DESKTOP_DISTRIBUTION.appName);
@@ -246,10 +251,30 @@ const userDataPath = BLANK_SLATE_LAUNCH.userDataPath ?? resolveUserDataPath({
   userDataOverride: process.env.OPENWORK_ELECTRON_USERDATA,
 });
 app.setPath("userData", userDataPath);
+const workspaceStore = createWorkspaceStore({
+  app,
+  defaultDenBaseUrl: DEFAULT_DEN_BASE_URL,
+  defaultRequireSignin: DEFAULT_DESKTOP_REQUIRE_SIGNIN,
+  forceRequireSignin: FORCE_DESKTOP_REQUIRE_SIGNIN,
+});
+const NATIVE_ZENO_IDENTITY = !BLANK_SLATE_LAUNCH.enabled && zenoDesktopIdentityEnabled({
+  isPackaged: app.isPackaged,
+  packageBrand: Reflect.get(desktopPackageMetadata, "openworkBrand"),
+  distribution: DESKTOP_DISTRIBUTION,
+  requestedProfile: process.env.VITE_OPENWORK_CLIENT_PROFILE,
+  bootstrap: workspaceStore.readDesktopBootstrapConfigSync(),
+});
+// Resolve presentation only after the existing profile path has been fixed.
+// app.setName must never choose a new default userData directory.
+if (NATIVE_ZENO_IDENTITY && !BLANK_SLATE_LAUNCH.enabled) {
+  currentDisplayAppName = ZENO_DESKTOP_APP_NAME;
+  app.setName(currentDisplayAppName);
+  applicationMenu.setAppName(currentDisplayAppName);
+}
 const linuxDesktopIntegration = createLinuxDesktopIntegration({
   app,
   dialog,
-  appName: APP_NAME,
+  appName: currentDisplayAppName,
   distribution: DESKTOP_DISTRIBUTION.flavor,
 });
 
@@ -258,6 +283,9 @@ const linuxDesktopIntegration = createLinuxDesktopIntegration({
 // the Electron default icon is shown without this.
 function resolveAppIconPath() {
   const candidates = [
+    ...(NATIVE_ZENO_IDENTITY
+      ? [path.resolve(__dirname, "../resources/icons/zeno/icon.png"), path.join(process.resourcesPath ?? "", "icons", "zeno", "icon.png")]
+      : []),
     // Dev: match Tauri's separate dev icon so the dev app is visibly distinct.
     ...(isDevMode
       ? [
@@ -580,6 +608,7 @@ async function removeWindowsBrandShortcut() {
 }
 
 function resolveBrandIconImage() {
+  if (NATIVE_ZENO_IDENTITY) return null;
   try {
     const cachePath = brandIconCachePath();
     if (!existsSync(cachePath)) return null;
@@ -1043,11 +1072,7 @@ if (extraLaunchArgs) {
   }
 }
 configureFakeMediaForTests(app, envFlagEnabled("OPENWORK_ELECTRON_FAKE_MEDIA"));
-const DEFAULT_DEN_BASE_URL = "https://app.openworklabs.com";
 const DEFAULT_LOCAL_BASE_URL = "http://127.0.0.1:4096";
-const FORCE_DESKTOP_REQUIRE_SIGNIN =
-  DESKTOP_DISTRIBUTION.requireSignin || envFlagEnabled("OPENWORK_FORCE_SIGNIN");
-const DEFAULT_DESKTOP_REQUIRE_SIGNIN = FORCE_DESKTOP_REQUIRE_SIGNIN;
 
 function envFlagEnabled(name) {
   const value = process.env[name]?.trim().toLowerCase();
@@ -1152,13 +1177,6 @@ browserPanel = createBrowserPanel({
       ? "Your organization's policy blocked this browser request."
       : "Your organization's policy could not be verified."), { code });
   },
-});
-
-const workspaceStore = createWorkspaceStore({
-  app,
-  defaultDenBaseUrl: DEFAULT_DEN_BASE_URL,
-  defaultRequireSignin: DEFAULT_DESKTOP_REQUIRE_SIGNIN,
-  forceRequireSignin: FORCE_DESKTOP_REQUIRE_SIGNIN,
 });
 
 const desktopTransfers = createDesktopTransferRegistry();
@@ -1298,6 +1316,7 @@ function validateSkillName(raw) {
 await applyDesktopFreeBuildSettings({ appVersion: resolveAppVersion(app) });
 const runtimeManager = createRuntimeManager({
   app,
+  clientProfile: NATIVE_ZENO_IDENTITY ? "local-gateway" : "connected",
   desktopRoot: path.resolve(__dirname, ".."),
   listLocalWorkspacePaths: () => workspaceStore.listLocalWorkspacePaths(),
   // This callback stays in Electron's main process. Engine tools and shell
@@ -1763,7 +1782,12 @@ function activeWindowFromEvent(event) {
 }
 
 function macosVibrancyForCurrentTheme() {
+  if (NATIVE_ZENO_IDENTITY) return null;
   return nativeTheme.shouldUseDarkColors ? "under-window" : "sidebar";
+}
+
+function nativeWindowBackground() {
+  return NATIVE_ZENO_IDENTITY ? (nativeTheme.shouldUseDarkColors ? "#142b2b" : "#f3f1e8") : "#00000001";
 }
 
 function applyNativeTheme(mode) {
@@ -1774,7 +1798,7 @@ function applyNativeTheme(mode) {
   }
 
   mainWindow?.setVibrancy(macosVibrancyForCurrentTheme());
-  mainWindow?.setBackgroundColor("#00000001");
+  mainWindow?.setBackgroundColor(nativeWindowBackground());
 
   return true;
 }
@@ -2148,7 +2172,7 @@ const desktopCommandHandlers = {
   },
   "__applyBrandAppName": async (event, ...args) => {
     currentDisplayAppName = applyBrandAppName(
-      BLANK_SLATE_LAUNCH.enabled || DESKTOP_DISTRIBUTION.flavor === "enterprise" ? null : args[0],
+      BLANK_SLATE_LAUNCH.enabled || DESKTOP_DISTRIBUTION.flavor === "enterprise" ? null : NATIVE_ZENO_IDENTITY ? ZENO_DESKTOP_APP_NAME : args[0],
       {
       fallbackName: APP_NAME,
       platform: process.platform,
@@ -2166,6 +2190,7 @@ const desktopCommandHandlers = {
   },
   "__applyBrandIcon": async (event, ...args) => {
       if (BLANK_SLATE_LAUNCH.enabled) return { ok: true };
+      if (NATIVE_ZENO_IDENTITY) return { ok: true };
       const value = args[0] === null ? null : String(args[0] ?? "");
       return applyBrandIconUrl(value);
   },
@@ -2432,7 +2457,7 @@ async function createMainWindow() {
   const windowAppearanceOptions = {};
   if (process.platform === "darwin") {
     Object.assign(windowAppearanceOptions, {
-      backgroundColor: "#00000001",
+      backgroundColor: nativeWindowBackground(),
       titleBarStyle: "hiddenInset",
       trafficLightPosition: { x: 20, y: 18 },
       vibrancy: macosVibrancyForCurrentTheme(),
@@ -2709,6 +2734,7 @@ if (isDevMode && !app.isPackaged) {
 registerMigrationIpc({ app, ipcMain });
 const { ensureAutoUpdater } = registerUpdaterIpc({
   app,
+  updatesEnabled: !NATIVE_ZENO_IDENTITY,
   ipcMain,
   getMainWindow: () => mainWindow,
   // All distributions intentionally share one application identifier, so they also
@@ -2779,7 +2805,7 @@ or use: pnpm dev:worktree`);
     currentDisplayAppName = applyBrandAppName(
       BLANK_SLATE_LAUNCH.enabled || DESKTOP_DISTRIBUTION.flavor === "enterprise"
         ? null
-        : bootstrapConfig.brandAppName,
+        : NATIVE_ZENO_IDENTITY ? ZENO_DESKTOP_APP_NAME : bootstrapConfig.brandAppName,
       {
       fallbackName: APP_NAME,
       platform: process.platform,
@@ -2792,7 +2818,7 @@ or use: pnpm dev:worktree`);
     if (process.platform === "win32" && !BLANK_SLATE_LAUNCH.enabled) {
       await registerWindowsDisplayShortcut();
     }
-    if (process.platform !== "linux" && !BLANK_SLATE_LAUNCH.enabled) {
+    if (process.platform !== "linux" && !BLANK_SLATE_LAUNCH.enabled && !NATIVE_ZENO_IDENTITY) {
       await applyDesktopBootstrapBrandIcon(bootstrapConfig, applyBrandIconUrl);
     }
     applicationMenu.install();
@@ -2834,7 +2860,7 @@ or use: pnpm dev:worktree`);
         buttons: [nativeText("Continue")],
       }));
     }
-    if (process.platform === "linux" && !BLANK_SLATE_LAUNCH.enabled) {
+    if (process.platform === "linux" && !BLANK_SLATE_LAUNCH.enabled && !NATIVE_ZENO_IDENTITY) {
       await applyDesktopBootstrapBrandIcon(bootstrapConfig, applyBrandIconUrl);
     }
     win.webContents.on("did-finish-load", () => {

@@ -16,11 +16,15 @@ import {
 const base: FeatureContext = { deployment: "cloud", locks: {}, rollouts: {}, overrides: {} }
 
 test("without stored state, every feature follows its registry default", () => {
-  for (const key of FEATURE_KEYS) {
-    const resolved = resolveFeature(key, base)
-    assert.equal(resolved.enabled, FEATURES[key].default)
-    assert.equal(resolved.source, "everyone")
-    assert.equal(resolved.overrideApplies, true)
+  const contexts: FeatureContext[] = [base, { ...base, deployment: "self_hosted" }]
+  for (const context of contexts) {
+    for (const key of FEATURE_KEYS) {
+      const available = FEATURES[key].deployments.some((deployment) => deployment === context.deployment)
+      const resolved = resolveFeature(key, context)
+      assert.equal(resolved.enabled, available && FEATURES[key].default)
+      assert.equal(resolved.source, available ? "everyone" : "unavailable")
+      assert.equal(resolved.overrideApplies, available)
+    }
   }
 })
 

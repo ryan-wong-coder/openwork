@@ -46,6 +46,7 @@ import { isSettingsTabAllowed } from "../../../../app/cloud/desktop-app-restrict
 import type { PlatformCapabilities } from "../../../../app/lib/platform-capabilities";
 import type { SettingsTab } from "../../../../app/types";
 import { isLocalGatewayClient } from "@/app/lib/client-profile";
+import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity";
 import { cn } from "@/lib/utils";
 import { usePlatform } from "../../../kernel/platform";
 import { useCheckDesktopRestriction } from "../../cloud/desktop-config-provider";
@@ -205,7 +206,7 @@ export function getGlobalSettingsTabs(
   const tabs: SettingsTab[] = isLocalGatewayClient()
     ? ["ai", "appearance", "shortcuts", "environment"]
     : ["ai", "ollama", "appearance", "shortcuts", "environment"];
-  if (capabilities.autoUpdate) tabs.push("updates");
+  if (capabilities.autoUpdate && !isLocalGatewayClient()) tabs.push("updates");
   if (developerMode) tabs.push("debug");
   return tabs;
 }
@@ -417,7 +418,7 @@ export function SettingsPageHeading({ activeTab }: Pick<SettingsPageProps, "acti
   return (
     <SettingsPanelHeading>
       <SettingsPanelTitle>{getSettingsTabLabel(activeTab)}</SettingsPanelTitle>
-      <SettingsPanelDescription>{getSettingsTabDescription(activeTab)}</SettingsPanelDescription>
+      {!isZenoInterfaceEnabled() ? <SettingsPanelDescription>{getSettingsTabDescription(activeTab)}</SettingsPanelDescription> : null}
     </SettingsPanelHeading>
   );
 }

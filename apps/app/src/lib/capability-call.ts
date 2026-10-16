@@ -27,22 +27,60 @@ const ACTION_VERBS: Record<string, string> = {
   download: "download", upload: "upload", render: "render", analyze: "analyze", inspect: "inspect", connect: "connect",
 }
 const ACTION_TARGETS: Record<string, string> = {
-  image: "image", images: "images", file: "file", files: "files", folder: "folder", folders: "folders",
-  document: "document", documents: "documents", message: "message", messages: "messages", email: "email", emails: "emails",
-  meeting: "meeting", meetings: "meetings", "about meetings": "meetings", event: "event", events: "events",
-  "calendar events": "calendar_events", calendar: "calendar", contacts: "contacts", users: "users", web: "web",
-  capabilities: "capabilities", tools: "tools", spreadsheet: "spreadsheet", spreadsheets: "spreadsheets",
-  presentation: "presentation", presentations: "presentations", connection: "connection", connections: "connections",
+  image: "capability.target.image", images: "capability.target.images", file: "capability.target.file", files: "capability.target.files", folder: "capability.target.folder", folders: "capability.target.folders",
+  document: "capability.target.document", documents: "capability.target.documents", message: "capability.target.message", messages: "capability.target.messages", email: "capability.target.email", emails: "capability.target.emails",
+  meeting: "capability.target.meeting", meetings: "capability.target.meetings", "about meetings": "capability.target.meetings", event: "capability.target.event", events: "capability.target.events",
+  "calendar events": "capability.target.calendar_events", calendar: "capability.target.calendar", contacts: "capability.target.contacts", users: "capability.target.users", web: "capability.target.web",
+  capabilities: "capability.target.capabilities", tools: "capability.target.tools", spreadsheet: "capability.target.spreadsheet", spreadsheets: "capability.target.spreadsheets",
+  presentation: "capability.target.presentation", presentations: "capability.target.presentations", connection: "capability.target.connection", connections: "capability.target.connections",
 }
 type ActionTense = "present" | "past" | "failure"
+const PLUGIN_KIND_KEYS: Record<string, string> = {
+  skill: "capability.kind.skill", plugin: "capability.kind.plugin", agent: "capability.kind.agent",
+  command: "capability.kind.command", mcp: "capability.kind.mcp",
+}
+const FALLBACK_ACTION_KEYS = {
+  present: "capability.verb.use.present", past: "capability.verb.use.past", failure: "capability.verb.use.failure",
+}
+const ACTION_MESSAGE_KEYS: Record<string, Record<ActionTense, string>> = {
+  ask: { present: "capability.verb.ask.present", past: "capability.verb.ask.past", failure: "capability.verb.ask.failure" },
+  search: { present: "capability.verb.search.present", past: "capability.verb.search.past", failure: "capability.verb.search.failure" },
+  find: { present: "capability.verb.find.present", past: "capability.verb.find.past", failure: "capability.verb.find.failure" },
+  fetch: { present: "capability.verb.fetch.present", past: "capability.verb.fetch.past", failure: "capability.verb.fetch.failure" },
+  list: { present: "capability.verb.list.present", past: "capability.verb.list.past", failure: "capability.verb.list.failure" },
+  read: { present: "capability.verb.read.present", past: "capability.verb.read.past", failure: "capability.verb.read.failure" },
+  check: { present: "capability.verb.check.present", past: "capability.verb.check.past", failure: "capability.verb.check.failure" },
+  create: { present: "capability.verb.create.present", past: "capability.verb.create.past", failure: "capability.verb.create.failure" },
+  add: { present: "capability.verb.add.present", past: "capability.verb.add.past", failure: "capability.verb.add.failure" },
+  send: { present: "capability.verb.send.present", past: "capability.verb.send.past", failure: "capability.verb.send.failure" },
+  update: { present: "capability.verb.update.present", past: "capability.verb.update.past", failure: "capability.verb.update.failure" },
+  delete: { present: "capability.verb.delete.present", past: "capability.verb.delete.past", failure: "capability.verb.delete.failure" },
+  remove: { present: "capability.verb.remove.present", past: "capability.verb.remove.past", failure: "capability.verb.remove.failure" },
+  run: { present: "capability.verb.run.present", past: "capability.verb.run.past", failure: "capability.verb.run.failure" },
+  open: { present: "capability.verb.open.present", past: "capability.verb.open.past", failure: "capability.verb.open.failure" },
+  query: { present: "capability.verb.query.present", past: "capability.verb.query.past", failure: "capability.verb.query.failure" },
+  generate: { present: "capability.verb.generate.present", past: "capability.verb.generate.past", failure: "capability.verb.generate.failure" },
+  edit: { present: "capability.verb.edit.present", past: "capability.verb.edit.past", failure: "capability.verb.edit.failure" },
+  save: { present: "capability.verb.save.present", past: "capability.verb.save.past", failure: "capability.verb.save.failure" },
+  write: { present: "capability.verb.write.present", past: "capability.verb.write.past", failure: "capability.verb.write.failure" },
+  download: { present: "capability.verb.download.present", past: "capability.verb.download.past", failure: "capability.verb.download.failure" },
+  upload: { present: "capability.verb.upload.present", past: "capability.verb.upload.past", failure: "capability.verb.upload.failure" },
+  render: { present: "capability.verb.render.present", past: "capability.verb.render.past", failure: "capability.verb.render.failure" },
+  analyze: { present: "capability.verb.analyze.present", past: "capability.verb.analyze.past", failure: "capability.verb.analyze.failure" },
+  inspect: { present: "capability.verb.inspect.present", past: "capability.verb.inspect.past", failure: "capability.verb.inspect.failure" },
+  connect: { present: "capability.verb.connect.present", past: "capability.verb.connect.past", failure: "capability.verb.connect.failure" },
+  use: FALLBACK_ACTION_KEYS,
+}
 
-function localizedAction(verb: string, target: string, tense: ActionTense): string {
-  return t(`capability.verb.${ACTION_VERBS[verb] ?? "use"}.${tense}`, { target }).trim()
+export function localizedCapabilityAction(verb: string, target: string, tense: ActionTense): string {
+  const keys = ACTION_MESSAGE_KEYS[ACTION_VERBS[verb] ?? "use"] ?? FALLBACK_ACTION_KEYS
+  return t(keys[tense], { target }).trim()
 }
 
 function localizedTarget(words: string): string {
-  const target = ACTION_TARGETS[words.toLowerCase()]
-  return target ? t(`capability.target.${target}`) : words
+  const key = words.toLowerCase()
+  const target = Object.hasOwn(ACTION_TARGETS, key) ? ACTION_TARGETS[key] : undefined
+  return target ? t(target) : words
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -142,9 +180,9 @@ function verbPhrase(action: string, tense: ActionTense): string {
   const words = normalizeAction(action, "").split(/[-_.\s]+/).filter(Boolean)
   const first = words[0]?.toLowerCase()
   if (first && ACTION_VERBS[first]) {
-    return localizedAction(first, localizedTarget(words.slice(1).join(" ")), tense)
+    return localizedCapabilityAction(first, localizedTarget(words.slice(1).join(" ")), tense)
   }
-  return localizedAction("use", localizedTarget(humanize(action)), tense)
+  return localizedCapabilityAction("use", localizedTarget(humanize(action)), tense)
 }
 
 /** Skill slug from a get_skill call: the name asked for, else the one returned. */
@@ -178,9 +216,9 @@ export function getCapabilityCallSentence(
     const target = service ? t("capability.named_connection", { service }) : t("capability.target.connection")
     return {
       service,
-      present: `${localizedAction("check", target, "present")}…`,
-      past: localizedAction("check", target, "past"),
-      failure: localizedAction("check", target, "failure"),
+      present: `${localizedCapabilityAction("check", target, "present")}…`,
+      past: localizedCapabilityAction("check", target, "past"),
+      failure: localizedCapabilityAction("check", target, "failure"),
     }
   }
   if (toolName.endsWith("_get_skill")) {
@@ -188,9 +226,9 @@ export function getCapabilityCallSentence(
     const target = name ? t("capability.named_skill", { name }) : t("capability.skill")
     return {
       service: null,
-      present: `${localizedAction("use", target, "present")}…`,
-      past: localizedAction("use", target, "past"),
-      failure: localizedAction("use", target, "failure"),
+      present: `${localizedCapabilityAction("use", target, "present")}…`,
+      past: localizedCapabilityAction("use", target, "past"),
+      failure: localizedCapabilityAction("use", target, "failure"),
     }
   }
 
@@ -259,9 +297,9 @@ export function getCapabilityCallSentence(
           const verb = action.split("_")[0]!.toLowerCase()
           return {
             service,
-            present: `${localizedAction(verb, service, "present")}${queryTail}`,
-            past: `${localizedAction(verb, service, "past")}${queryTail}`,
-            failure: localizedAction(verb, service, "failure"),
+            present: `${localizedCapabilityAction(verb, service, "present")}${queryTail}`,
+            past: `${localizedCapabilityAction(verb, service, "past")}${queryTail}`,
+            failure: localizedCapabilityAction(verb, service, "failure"),
           }
         }
         const tail = service ? ` · ${service}` : ""
@@ -285,15 +323,15 @@ export function getCapabilityCallSentence(
         : typeof output?.name === "string"
           ? humanize(output.name)
           : null
-      const knownKind = ["skill", "plugin", "agent", "command", "mcp"].includes(kind) ? kind : "plugin"
+      const kindLabel = t(Object.hasOwn(PLUGIN_KIND_KEYS, kind) ? PLUGIN_KIND_KEYS[kind] ?? "capability.kind.plugin" : "capability.kind.plugin")
       const label = pluginName
-        ? t("capability.named_plugin", { kind: t(`capability.kind.${knownKind}`), name: pluginName })
-        : t("capability.unnamed_plugin", { kind: t(`capability.kind.${knownKind}`) })
+        ? t("capability.named_plugin", { kind: kindLabel, name: pluginName })
+        : t("capability.unnamed_plugin", { kind: kindLabel })
       return {
         service: pluginName,
-        present: localizedAction("use", label, "present"),
-        past: localizedAction("use", label, "past"),
-        failure: localizedAction("use", label, "failure"),
+        present: localizedCapabilityAction("use", label, "present"),
+        past: localizedCapabilityAction("use", label, "past"),
+        failure: localizedCapabilityAction("use", label, "failure"),
       }
     }
 
@@ -314,9 +352,9 @@ export function getCapabilityCallSentence(
         const suffix = nativeService ? ` · ${nativeService}` : ""
         return {
           service: nativeService,
-          present: `${localizedAction(first, phrase, "present")}${suffix}`,
-          past: `${localizedAction(first, phrase, "past")}${suffix}`,
-          failure: `${localizedAction(first, phrase, "failure")}${suffix}`,
+          present: `${localizedCapabilityAction(first, phrase, "present")}${suffix}`,
+          past: `${localizedCapabilityAction(first, phrase, "past")}${suffix}`,
+          failure: `${localizedCapabilityAction(first, phrase, "failure")}${suffix}`,
         }
       }
     }
@@ -342,9 +380,9 @@ export function getCapabilityCallSentence(
       const verb = action.split("_")[0]!.toLowerCase()
       return {
         service,
-        present: `${localizedAction(verb, service, "present")}${queryTail}`,
-        past: `${localizedAction(verb, service, "past")}${queryTail}`,
-        failure: localizedAction(verb, service, "failure"),
+        present: `${localizedCapabilityAction(verb, service, "present")}${queryTail}`,
+        past: `${localizedCapabilityAction(verb, service, "past")}${queryTail}`,
+        failure: localizedCapabilityAction(verb, service, "failure"),
       }
     }
     return {

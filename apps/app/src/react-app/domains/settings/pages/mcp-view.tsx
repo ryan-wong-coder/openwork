@@ -64,6 +64,7 @@ import {
 } from "../../../../app/lib/desktop";
 import { readDenSettings, type DenExternalMcpPreset } from "../../../../app/lib/den";
 import { isLocalGatewayClient } from "@/app/lib/client-profile";
+import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity";
 import type { DenLibraryConnectionItem, DenLibraryPluginItem } from "../../../../app/lib/den-library";
 import {
   getMcpIdentityKey,
@@ -73,6 +74,7 @@ import type { McpServerEntry, McpStatusMap } from "../../../../app/types";
 import { isDesktopRuntime, isWindowsPlatform } from "../../../../app/utils";
 import { t } from "../../../../i18n";
 import { Button } from "@/components/ui/button";
+import { SettingsNotice } from "../settings-section";
 import { CloudSignInBanner } from "@/react-app/domains/cloud/cloud-sign-in-banner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -135,6 +137,7 @@ import { libraryConnectorCues } from "../library-connector-cues";
 import { useLibraryCloud, type LibraryEditableSkill, type LibraryShareTarget } from "../use-library-cloud";
 import { AddLibraryItemPage } from "./add-library-item-page";
 import { LibraryAddControl } from "./library-add-control";
+import { LocalLibraryActions } from "./local-library-actions";
 import {
   connectorSummary,
   LibraryConnectorCatalogPage,
@@ -256,6 +259,8 @@ export type McpViewProps = {
   /** OpenCode plugin management, shown under the Plugins category. */
   pluginsContent?: ReactNode;
   onOpenCloudAccount?: () => void;
+  onImportSkillText?: (content: string, filename: string) => Promise<void>;
+  localSkillStatus?: string | null;
 };
 
 const builtInExtensionDisabledReason = () => t("extensions.disabled_by_organization");
@@ -420,6 +425,8 @@ export function McpView(props: McpViewProps) {
   const [openworkUiMcpCommand, setOpenworkUiMcpCommand] = useState<string[] | null>(null);
   const [openworkUiMcpEnvironment, setOpenworkUiMcpEnvironment] = useState<Record<string, string> | null>(null);
   const [search, setSearch] = useState("");
+  const skillFileInput = useRef<HTMLInputElement>(null);
+  const [skillImportError, setSkillImportError] = useState<string | null>(null);
   const [filter, setFilter] = useState<ExtensionInventoryFilter>(primaryLibraryFilter(props.initialFilter));
   const [onlyNeedsSignIn, setOnlyNeedsSignIn] = useState(props.initialState === "needs_signin");
   const [screen, setScreen] = useState<LibraryScreen>({ kind: "list" });
@@ -462,13 +469,13 @@ export function McpView(props: McpViewProps) {
   const setTogglingMcp = (value: SetStateAction<string | null>) => setLocal("togglingMcp", value);
   const configRequestId = useRef(0);
 
-  const quickConnectList = props.quickConnect;
+  const quickConnectList = localOnly ? props.quickConnect.filter((entry) => entry.managedBy !== "openwork-connect") : props.quickConnect;
   const installedSkills = props.installedSkills ?? [];
   const installedCommands = props.installedCommands ?? [];
   const installedAgents = props.installedAgents ?? [];
-  const availableConnectMcpServers = props.availableConnectMcpServers ?? [];
-  const installedPlugins = props.installedPlugins ?? [];
-  const orgMcpItems = props.orgMcpItems ?? [];
+  const availableConnectMcpServers = localOnly ? [] : props.availableConnectMcpServers ?? [];
+  const installedPlugins = localOnly ? [] : props.installedPlugins ?? [];
+  const orgMcpItems = localOnly ? [] : props.orgMcpItems ?? [];
   const libraryDetailLists = {
     quickConnect: quickConnectList,
     skills: installedSkills,
@@ -495,6 +502,7 @@ export function McpView(props: McpViewProps) {
   const detailOrgMcpItem = activeTarget?.kind === "org-mcp" ? activeTarget.item : null;
   const detailPresentation = useRoutedDetail ? "page" : "dialog";
   const openInDenAction = (target: DenLibraryTarget): ReactNode => {
+    if (localOnly) return null;
     if (!shouldShowOpenInDenAction(denBaseUrl, cloudSession.isSignedIn, target)) return null;
     const url = openInDenLibraryUrl(denBaseUrl, target);
     if (!url) return null;
@@ -538,7 +546,7 @@ export function McpView(props: McpViewProps) {
   const identity = denAuth.verifiedIdentity;
   const organizationRole = useQuery({
     queryKey: ["library-organization-role", cloudSession.baseUrl, identity?.principalId, identity?.organizationId],
-    enabled: denAuth.isSignedIn && Boolean(identity) && identity?.organizationId === activeOrganizationId,
+    enabled: !localOnly && denAuth.isSignedIn && Boolean(identity) && identity?.organizationId === activeOrganizationId,
     queryFn: async () => {
       const result = await cloudSession.client.listOrgs();
       return result.orgs.find((org) => org.id === identity?.organizationId)?.role ?? null;
@@ -580,11 +588,13 @@ export function McpView(props: McpViewProps) {
   const addDisabledReason = cloudIssue ?? (!props.createLibraryItem ? t("extensions.cloud_unavailable") : undefined);
   const signedOut = !libraryCloudSignedIn && denAuth.status !== "checking";
   // Signed out, every add kind needs Cloud: the sign-in banner carries the action instead.
-  const addControl = localOnly ? <LibraryAddControl
-    kinds={["workspace-mcp"]}
-    disabledReason={props.allowManageExtensions ? undefined : manageExtensionsDisabledReason()}
-    label={t("extensions.add_workspace_mcp")}
-    onSelect={(kind) => handleAddKind(kind)}
+  const addControl = localOnly ? <LocalLibraryActions
+    disabled={props.busy || !props.allowManageExtensions}
+    skillFileInput={skillFileInput}
+    onAddMcp={() => handleAddKind("workspace-mcp")}
+    onInstallPlugin={props.pluginsContent ? () => setInventoryFilter("plugin") : undefined}
+    onImportSkillText={props.onImportSkillText}
+    onImportError={setSkillImportError}
   /> : signedOut ? null : (
     <LibraryAddControl
       kinds={libraryAddKindsForFilter("all")}
@@ -1850,13 +1860,14 @@ export function McpView(props: McpViewProps) {
       onlyNeedsSignIn={onlyNeedsSignIn}
       signedOut={!localOnly && signedOut}
       onSignUp={localOnly ? undefined : props.onOpenCloudAccount}
-      emptyState={(
+      emptyState={localOnly && filter === "plugin" && props.pluginsContent ? undefined : (
         <LibraryEmptyState
           filter={filter}
           searching={Boolean(search.trim())}
           cloudIssue={cloudIssue}
           addKind={localOnly ? "workspace-mcp" : undefined}
-          onAdd={localOnly ? props.allowManageExtensions ? () => handleAddKind("workspace-mcp") : undefined : !addDisabledReason && libraryAddKinds[0] ? () => handleAddKind(libraryAddKinds[0]) : undefined}
+          actionLabel={localOnly && filter === "skill" ? t("zeno.library.import_skill") : undefined}
+          onAdd={localOnly ? props.allowManageExtensions ? filter === "plugin" ? undefined : filter === "skill" && props.onImportSkillText ? () => skillFileInput.current?.click() : () => handleAddKind("workspace-mcp") : undefined : !addDisabledReason && libraryAddKinds[0] ? () => handleAddKind(libraryAddKinds[0]) : undefined}
           onClearSearch={() => setSearch("")}
           onOpenCloudAccount={!localOnly && (!libraryCloudSignedIn || !activeOrganizationId) ? props.onOpenCloudAccount : undefined}
           onRefresh={(!localOnly && denAuth.status === "unavailable") || inventoryError ? props.onRefresh : undefined}
@@ -1980,9 +1991,9 @@ export function McpView(props: McpViewProps) {
   }
 
   return (
-    <section className="w-full animate-in fade-in duration-300">
+    <section className="zeno-library w-full animate-in fade-in duration-300">
       {props.headerActionsTarget ? createPortal(addControl, props.headerActionsTarget) : props.headerActionsTarget === undefined ? (
-        <div className="mb-5 flex h-[52px] items-center justify-between border-b border-dls-border px-6">
+        <div className="zeno-library-heading mb-5 flex h-[52px] items-center justify-between border-b border-dls-border px-6">
           <h1 className="text-base leading-6 font-medium">{t("extensions.title")}</h1>
           {addControl}
         </div>
@@ -2005,7 +2016,7 @@ export function McpView(props: McpViewProps) {
         </div>
       )}
 
-      <div className="mb-5 flex flex-wrap items-center gap-1.5" aria-label={t("extensions.filters_label")}>
+      <div className="zeno-library-filters mb-5 flex flex-wrap items-center gap-1.5" aria-label={t("extensions.filters_label")}>
         {extensionInventoryFilters.map((f) => {
           const selected = filter === f;
           return (
@@ -2044,7 +2055,7 @@ export function McpView(props: McpViewProps) {
             </button>
           </>
         ) : null}
-        <div className="ml-auto flex items-center gap-1">
+        <div className="zeno-library-search ml-auto flex items-center gap-1">
           <div className="mr-1 w-[min(220px,40vw)]">
             <SettingsListSearchInput
               containerClassName="h-[30px] rounded-lg bg-background hover:bg-background"
@@ -2073,6 +2084,8 @@ export function McpView(props: McpViewProps) {
       ) : null}
 
       {inventory}
+      {localOnly && skillImportError ? <div role="alert" className="mt-4"><SettingsNotice tone="error">{skillImportError}</SettingsNotice></div> : null}
+      {localOnly && props.localSkillStatus ? <div role="status" className="mt-4 text-xs text-muted-foreground">{props.localSkillStatus}</div> : null}
 
       {filter === "plugin" && props.pluginsContent ? <div className="mt-6">{props.pluginsContent}</div> : null}
 
@@ -2237,7 +2250,9 @@ export function LibraryStatusWarning({ message }: { message: string | null }) {
         role="tooltip"
         side="bottom"
         align="end"
-        className="max-w-[min(432px,calc(100vw-32px))] flex-col items-start gap-2 rounded-[8px] border border-[#e5e5e5] bg-white p-4 text-[#202020] shadow-[0_4px_12px_rgba(0,0,0,0.08),0_16px_32px_rgba(0,0,0,0.08)] [&>[aria-hidden=true]]:border-t [&>[aria-hidden=true]]:border-l [&>[aria-hidden=true]]:border-[#e5e5e5] [&>[aria-hidden=true]]:bg-white [&>[aria-hidden=true]]:fill-white"
+        className={isZenoInterfaceEnabled()
+          ? "max-w-[min(432px,calc(100vw-32px))] flex-col items-start gap-2 rounded-xl bg-popover p-3 text-popover-foreground shadow-lg ring-1 ring-border"
+          : "max-w-[min(432px,calc(100vw-32px))] flex-col items-start gap-2 rounded-[8px] border border-[#e5e5e5] bg-white p-4 text-[#202020] shadow-[0_4px_12px_rgba(0,0,0,0.08),0_16px_32px_rgba(0,0,0,0.08)] [&>[aria-hidden=true]]:border-t [&>[aria-hidden=true]]:border-l [&>[aria-hidden=true]]:border-[#e5e5e5] [&>[aria-hidden=true]]:bg-white [&>[aria-hidden=true]]:fill-white"}
       >
         <span className="text-sm leading-5 font-medium">{t("extensions.mcp_status")}</span>
         <span className="whitespace-pre-wrap wrap-break-word text-[13px] leading-5">{message}</span>
@@ -2256,6 +2271,7 @@ export function LibraryEmptyState(props: {
   onClearSearch: () => void;
   onOpenCloudAccount?: () => void;
   onRefresh?: () => void;
+  actionLabel?: string;
 }) {
   const category = primaryLibraryFilter(props.filter);
   const title = props.searching
@@ -2270,10 +2286,11 @@ export function LibraryEmptyState(props: {
     : props.error || (category !== "all" ? props.cloudIssue : undefined)
       || t(category === "skill" ? "extensions.empty_skill_hint" : category === "plugin" ? "extensions.empty_plugin_hint" : "extensions.empty_all_hint");
   const addKind = props.addKind ?? libraryAddKindsForFilter(category)[0];
+  const showDescription = !isZenoInterfaceEnabled() || Boolean(props.error || (category !== "all" && props.cloudIssue));
   return (
-    <div className="flex flex-col items-center gap-3 rounded-[10px] border border-dashed border-dls-border bg-dls-surface px-6 py-12 text-center">
+    <div className="zeno-library-empty flex flex-col items-center gap-3 rounded-[10px] border border-dashed border-dls-border bg-dls-surface px-6 py-12 text-center">
       <h2 className="text-[15px] font-medium text-dls-text">{title}</h2>
-      <p className="max-w-md text-[13px] text-dls-secondary">{description}</p>
+      {showDescription ? <p className="max-w-md text-[13px] text-dls-secondary">{description}</p> : null}
       {props.searching ? (
         <Button variant="outline" onClick={props.onClearSearch}>{t("extensions.clear_filters")}</Button>
       ) : props.onRefresh ? (
@@ -2281,7 +2298,7 @@ export function LibraryEmptyState(props: {
       ) : props.onOpenCloudAccount && category !== "all" ? (
         <Button variant="outline" onClick={props.onOpenCloudAccount}>{t("extensions.open_cloud_account")}</Button>
       ) : props.onAdd && addKind ? (
-        <LibraryAddControl kinds={[addKind]} onSelect={() => props.onAdd?.()} />
+        <LibraryAddControl label={props.actionLabel} kinds={[addKind]} onSelect={() => props.onAdd?.()} />
       ) : null}
     </div>
   );
@@ -2567,13 +2584,13 @@ export function McpAdvancedConfigSection(props: {
   onAddMcp?: () => void;
 }) {
   return (
-    <div className="mt-6 overflow-hidden rounded-xl border border-dls-border bg-dls-surface">
+    <div className="zeno-library-advanced mt-6 overflow-hidden rounded-xl border border-dls-border bg-dls-surface">
       <button type="button" aria-expanded={props.open} className="flex w-full items-center justify-between px-5 py-4 transition-colors hover:bg-dls-hover" onClick={props.onToggle}>
         <div className="flex items-center gap-3">
           <Settings2 size={16} className="text-dls-secondary" />
           <div className="text-left">
             <div className="text-sm font-medium text-dls-text">{t("mcp.advanced_settings")}</div>
-            <div className="text-xs text-dls-secondary">{t("mcp.advanced_settings_hint")}</div>
+            {!isZenoInterfaceEnabled() ? <div className="text-xs text-dls-secondary">{t("mcp.advanced_settings_hint")}</div> : null}
           </div>
         </div>
         <div className={`transition-transform ${props.open ? "rotate-180" : ""}`}>

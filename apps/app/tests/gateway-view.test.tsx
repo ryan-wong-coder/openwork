@@ -16,6 +16,13 @@ describe("gateway configuration save and engine application", () => {
   let catalogFails: boolean;
   let saveFails: boolean;
   let writes: number;
+  let configAccessStatus: 401 | 403 | null;
+  let statusAccessStatus: 401 | 403 | null;
+  let statusReady: boolean;
+  let configReads: number;
+  let statusReads: number;
+  let modelRequests: number;
+  let testRequests: number;
   let restoreFetch: () => void;
   const client = createOpenworkServerClient({ baseUrl: "http://localhost:8787", token: "fixture-token" });
   const config: GatewayConfig = {
@@ -28,6 +35,8 @@ describe("gateway configuration save and engine application", () => {
     Object.defineProperty(globalThis, "IS_REACT_ACT_ENVIRONMENT", { configurable: true, value: true });
     host = document.createElement("div"); document.body.append(host); root = createRoot(host);
     saveRefresh = "reloaded"; catalogRefresh = undefined; catalogFails = false; saveFails = false; writes = 0;
+    configAccessStatus = null; statusAccessStatus = null; statusReady = true;
+    configReads = 0; statusReads = 0; modelRequests = 0; testRequests = 0;
     const fetchSpy = spyOn(globalThis, "fetch").mockImplementation(async (input, init) => {
       const url = typeof input === "string" ? input : input instanceof Request ? input.url : input.toString();
       if (url.endsWith("/gateway/config")) {
@@ -36,14 +45,26 @@ describe("gateway configuration save and engine application", () => {
           if (saveFails) return Response.json({ message: "网关地址无法连接。" }, { status: 502 });
           return Response.json({ ...config, refresh: saveRefresh });
         }
+        configReads += 1;
+        if (configAccessStatus) return Response.json({ message: "Host authorization required." }, { status: configAccessStatus });
         return Response.json(config);
       }
+      if (url.endsWith("/gateway/status")) {
+        statusReads += 1;
+        if (statusAccessStatus) return Response.json({ message: "Service authorization required." }, { status: statusAccessStatus });
+        return Response.json({ configured: true, ready: statusReady, chatModel: config.chatModel });
+      }
       if (url.endsWith("/gateway/models")) {
+        modelRequests += 1;
         if (catalogFails) return Response.json({ message: "目录暂时不可用。" }, { status: 502 });
         return Response.json({ models: [
           { id: config.chatModel, name: "示例对话模型", kind: "chat" },
           { id: config.imageModel, name: "示例图片模型", kind: "image" },
         ], syncedAt: 123, ...(catalogRefresh ? { refresh: catalogRefresh } : {}) });
+      }
+      if (url.endsWith("/gateway/test")) {
+        testRequests += 1;
+        return Response.json({ ok: true, model: config.chatModel, latencyMs: 1, message: "" });
       }
       throw new Error(`Unexpected fixture request: ${url}`);
     });
@@ -52,7 +73,7 @@ describe("gateway configuration save and engine application", () => {
   afterEach(async () => { await act(async () => root.unmount()); host.remove(); restoreFetch(); });
 
   const button = (label: string) => {
-    const found = [...host.querySelectorAll("button")].find((element) => element.textContent?.trim() === label);
+    const found = [...host.querySelectorAll("button")].find((element) => (element.getAttribute("aria-label") ?? element.textContent?.trim()) === label);
     if (!found) throw new Error(`Missing button: ${label}`);
     return found;
   };
@@ -127,5 +148,49 @@ describe("gateway configuration save and engine application", () => {
     await save();
     expect(host.textContent).toContain("网关配置已保存。已同步 2 个模型。");
     expect(host.textContent).not.toContain("等待引擎应用");
+  });
+
+  test("a client without host access reads ready status and can recheck without management actions", async () => {
+    configAccessStatus = 401;
+    let readyCallbacks = 0;
+    await render(() => { readyCallbacks += 1; });
+    expect(host.querySelector('[data-testid="gateway-management-status"]')).not.toBeNull();
+    expect(host.textContent).toContain("已就绪");
+    expect(host.textContent).toContain(config.chatModel);
+    expect(host.textContent).toContain("网关由部署者管理，请在服务器上修改配置。");
+    expect(host.textContent).not.toContain("尚未配置密钥");
+    expect(host.textContent).not.toContain("重新启动客户端");
+    expect(host.querySelector("input, select")).toBeNull();
+    expect(host.querySelector('[aria-label="保存并同步模型"]')).toBeNull();
+    await act(async () => button("重新检查").click());
+    expect(configReads).toBe(2);
+    expect(statusReads).toBe(2);
+    expect(writes).toBe(0);
+    expect(modelRequests).toBe(0);
+    expect(testRequests).toBe(0);
+    expect(readyCallbacks).toBe(0);
+  });
+
+  test("forbidden management access reports the actual not-ready status", async () => {
+    configAccessStatus = 403; statusReady = false;
+    await render();
+    expect(host.textContent).toContain("尚未就绪");
+    expect(host.textContent).toContain(config.chatModel);
+    expect(host.querySelector('[data-ready="true"]')).toBeNull();
+    expect(host.querySelector("input")).toBeNull();
+    expect(writes + modelRequests + testRequests).toBe(0);
+  });
+
+  test("unavailable client authorization stays unknown and directs the deployer to service credentials", async () => {
+    configAccessStatus = 401; statusAccessStatus = 401;
+    await render();
+    expect(host.textContent).toContain("状态不可用");
+    expect(host.querySelector('[role="alert"]')?.textContent).toContain("服务访问授权不可用，请由部署者检查服务地址与访问凭据。");
+    expect(host.textContent).not.toContain("尚未配置密钥");
+    expect(host.textContent).not.toContain("尚未就绪");
+    expect(host.textContent).not.toContain("重新启动客户端");
+    expect(host.querySelector("input, select")).toBeNull();
+    expect(statusReads).toBe(1);
+    expect(writes + modelRequests + testRequests).toBe(0);
   });
 });

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isStandaloneAgentProfile, STANDALONE_DISCOVERY_INSTRUCTION } from "./local-client-profile.js";
 
 export type OpenCodeContext = {
   agent?: string;
@@ -306,6 +307,7 @@ async function fetchOpenWorkConnectState(input: unknown, fetcher: OpenWorkFetch)
 }
 
 export async function resolveOpenWorkConnectSkillInstruction(_input?: unknown, fetcher: OpenWorkFetch = fetch): Promise<string> {
+  if (isStandaloneAgentProfile()) return "";
   try {
     const { url, token } = requireOpenWorkServer();
     // Connect skills are server-scoped; workspace/directory query params are unused.
@@ -320,6 +322,7 @@ export async function resolveOpenWorkConnectSkillInstruction(_input?: unknown, f
 }
 
 export async function resolveOpenWorkAutomationInstruction(_input?: unknown, fetcher: OpenWorkFetch = fetch): Promise<string> {
+  if (isStandaloneAgentProfile()) return "";
   try {
     const { url, token } = requireOpenWorkServer();
     // Automations are account-scoped like Connect skills, not per-workspace.
@@ -373,6 +376,7 @@ export async function resolveOpenWorkExtensionDiscoveryInstruction(
   fetcher: OpenWorkFetch = fetch,
   engine: OpenWorkEngineMcpStatusSource = {},
 ): Promise<string> {
+  if (isStandaloneAgentProfile()) return STANDALONE_DISCOVERY_INSTRUCTION;
   if (engine.client) {
     try {
       // Invariant: the OpenCode engine owns MCP registration and builds the

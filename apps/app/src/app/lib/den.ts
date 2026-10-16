@@ -1215,6 +1215,18 @@ export function readDenBootstrapConfig(): DenBootstrapConfig {
 export async function initializeDenBootstrapConfig(): Promise<DenBootstrapConfig> {
   const generation = ++desktopBootstrapGeneration;
 
+  if (isLocalGatewayClient()) {
+    // Local and self-deployed Web installs have no control-plane enrollment.
+    // Do not restore a retained account, discover an API origin, or heal IPC.
+    desktopBootstrapConfig = resolveDenBootstrapConfig({
+      baseUrl: BUILD_DEN_BASE_URL,
+      requireSignin: false,
+      requireActivation: false,
+    });
+    desktopBootstrapResolution = "resolved";
+    return desktopBootstrapConfig;
+  }
+
   if (!isDesktopRuntime()) {
     const gatewayOrigin = getOpenworkGatewayOrigin();
     // Forced env settings (headless/dev runs): stale stored base URLs from
@@ -1315,6 +1327,7 @@ export async function initializeDenBootstrapConfig(): Promise<DenBootstrapConfig
  * reload.
  */
 export async function refreshDenBootstrapConfigFromShell(): Promise<DenBootstrapConfig> {
+  if (isLocalGatewayClient()) return readDenBootstrapConfig();
   if (isDesktopRuntime()) {
     const generation = ++desktopBootstrapGeneration;
     try {

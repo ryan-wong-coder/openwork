@@ -173,7 +173,7 @@ export function takeTaskRunStart(sessionId: string): number | null {
  * Mounted from AppRoot.
  */
 export function initAnalytics() {
-  if (initialized || typeof window === "undefined") return;
+  if (initialized || typeof window === "undefined" || isLocalGatewayClient()) return;
   initialized = true;
 
   setInterval(() => void flushAnalytics(), FLUSH_INTERVAL_MS);

@@ -73,6 +73,12 @@ export async function publicGatewayConfig(env: Pick<EnvService, "list">, config?
   };
 }
 
+// Conversation clients need readiness, without receiving host configuration or key metadata.
+export async function gatewayStatus(env: Pick<EnvService, "list">, config: ServerConfig) {
+  const { configured, ready, readinessReason, chatModel } = await publicGatewayConfig(env, config);
+  return { configured, ready, ...(readinessReason ? { readinessReason } : {}), chatModel };
+}
+
 export function gatewayErrorMessage(payload: unknown, key: string, fallback: string): string {
   const record = isRecord(payload) ? payload : {};
   const error = isRecord(record.error) ? record.error : record;

@@ -24,6 +24,7 @@ import type {
 import type { OpencodeExecutionSnapshot } from "../../../../app/lib/desktop-types";
 import { formatRelativeTime, isDesktopRuntime } from "../../../../app/utils";
 import { t } from "../../../../i18n";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -592,7 +593,7 @@ export function DebugView(props: DebugViewProps) {
 
       <AgentContextDiagnosticsSection {...props.agentContextDiagnostics} />
 
-      {props.agentAccess ? (
+      {props.agentAccess && !isLocalGatewayClient() ? (
         <div className={cardClass}>
           <div className={sectionHeaderClass}>
             <div className={sectionTitleClass}>{t("interface.agent_access")}</div>
@@ -991,7 +992,7 @@ export function DebugView(props: DebugViewProps) {
       </div>
 
       {/* Section: Electron alpha migration (debug only) */}
-      {props.electronMigrationAvailable ? (
+      {props.electronMigrationAvailable && !isLocalGatewayClient() ? (
         <div className={cardClass}>
           <div className="flex items-start justify-between gap-3">
             <div>
@@ -1095,7 +1096,7 @@ export function DebugView(props: DebugViewProps) {
       ) : null}
 
       {/* Section: Electron alpha updater (debug only) */}
-      {props.electronAlphaUpdaterAvailable ? (
+      {props.electronAlphaUpdaterAvailable && !isLocalGatewayClient() ? (
         <div className={cardClass}>
           <div className="flex items-start justify-between gap-3">
             <div>

@@ -1,0 +1,353 @@
+/* Zeno settings keep the existing forms and disclosure controls.
+   DESIGN: P1–P3, P5–P8, S1–S3, V1–V7. Every override is identity-scoped. */
+html[data-zeno-interface="true"] [data-settings-content] {
+  gap: calc(var(--spacing) * 6);
+  padding-block: calc(var(--spacing) * 7);
+}
+
+html[data-zeno-interface="true"] [data-settings-stack] {
+  gap: calc(var(--spacing) * 5);
+}
+
+html[data-zeno-interface="true"] [data-settings-section-heading] {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing);
+}
+
+html[data-zeno-interface="true"] [data-settings-section-heading] h3 {
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+html[data-zeno-interface="true"] [data-section] {
+  gap: calc(var(--spacing) * 3);
+}
+
+html[data-zeno-interface="true"] [data-settings-item-heading] {
+  min-height: calc(var(--spacing) * 11);
+  align-items: center;
+}
+
+html[data-zeno-interface="true"] [data-settings-item-heading] [data-slot="item-title"] {
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+html[data-zeno-interface="true"] [data-settings-item-heading]:has(> .zeno-settings-help) {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: calc(var(--spacing) * 2);
+}
+
+html[data-zeno-interface="true"] [data-settings-item-heading]:has(> .zeno-settings-help):has(> [data-slot="item-header-actions"]) {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+}
+
+html[data-zeno-interface="true"] [data-settings-item-heading] > .zeno-settings-help {
+  grid-column: 2;
+  grid-row: 1;
+  width: calc(var(--spacing) * 6);
+  height: calc(var(--spacing) * 6);
+}
+
+html[data-zeno-interface="true"] [data-settings-item-heading]:has(> .zeno-settings-help) > [data-slot="item-header-actions"] {
+  grid-column: 3;
+  grid-row: 1;
+  align-self: center;
+}
+
+html[data-zeno-interface="true"] [data-settings-item-heading] > [data-slot="item-header-actions"] {
+  align-self: center;
+}
+
+html[data-zeno-interface="true"] [data-settings-item] > [data-settings-item-heading]:has(> [data-slot="item-header-actions"]) {
+  padding-block: var(--spacing);
+}
+
+html[data-zeno-interface="true"] [data-settings-inset] {
+  border-radius: 0;
+  border-inline: 0;
+  border-bottom: 0;
+  padding-inline: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-zeno-interface="true"] [data-settings-list] {
+  gap: 0;
+}
+
+html[data-zeno-interface="true"] [data-settings-list-item] {
+  min-height: calc(var(--spacing) * 12);
+  border-radius: 0;
+  border-width: 0 0 1px;
+  border-color: var(--border);
+  padding-inline: 0;
+}
+
+html[data-zeno-interface="true"] [data-settings-shell] [data-slot="sidebar-header"] {
+  margin-bottom: calc(var(--spacing) * 4);
+}
+
+html[data-zeno-interface="true"] [data-settings-shell] [data-slot="sidebar-group-label"] {
+  color: var(--muted-foreground);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+html[data-zeno-interface="true"] [data-settings-shell] [data-sidebar="menu-button"] {
+  min-height: calc(var(--spacing) * 9);
+  font-weight: 400;
+  border-radius: var(--radius-lg);
+}
+
+html[data-zeno-interface="true"] [data-settings-shell] [data-sidebar="menu-button"][data-active="true"] {
+  background: var(--dls-active);
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+html[data-zeno-interface="true"] .zeno-settings-overview-group {
+  margin-bottom: calc(var(--spacing) * 7);
+}
+
+html[data-zeno-interface="true"] .zeno-settings-destination {
+  transition-property: color, background-color;
+  transition-duration: 160ms;
+}
+
+html[data-zeno-interface="true"] .zeno-settings-destination:hover {
+  background: var(--dls-hover);
+}
+
+html[data-zeno-interface="true"] .zeno-settings-destination:hover > svg:last-child {
+  color: var(--foreground);
+}
+
+html[data-zeno-interface="true"] .zeno-theme-switch [data-slot="toggle-group-item"] {
+  border-radius: var(--radius-md);
+}
+
+html[data-zeno-interface="true"] .zeno-theme-switch [data-pressed] {
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow: var(--dls-card-shadow);
+}
+
+html[data-zeno-interface="true"] .zeno-gateway {
+  gap: calc(var(--spacing) * 5);
+}
+
+html[data-zeno-interface="true"] .zeno-gateway-heading {
+  flex-wrap: wrap;
+  padding-bottom: calc(var(--spacing) * 3);
+}
+
+html[data-zeno-interface="true"] .zeno-gateway-heading h2 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+html[data-zeno-interface="true"] .zeno-gateway-state {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--spacing) * 2);
+}
+
+html[data-zeno-interface="true"] .zeno-gateway-state::before {
+  content: "";
+  width: calc(var(--spacing) * 1.5);
+  height: calc(var(--spacing) * 1.5);
+  border-radius: 50%;
+  background: var(--muted-foreground);
+}
+
+html[data-zeno-interface="true"] .zeno-gateway-state[data-ready="true"]::before {
+  background: var(--primary);
+}
+
+html[data-zeno-interface="true"] .zeno-gateway-tools {
+  gap: var(--spacing);
+  margin-top: calc(var(--spacing) * -2);
+}
+
+html[data-zeno-interface="true"] .zeno-gateway-model-count {
+  margin-inline-start: auto;
+}
+
+html[data-zeno-interface="true"] .zeno-settings-save {
+  border-top: 1px solid var(--border);
+  padding-top: calc(var(--spacing) * 4);
+}
+
+html[data-zeno-interface="true"] .zeno-library,
+html[data-zeno-interface="true"] .zeno-library-page {
+  animation: none;
+}
+
+html[data-zeno-interface="true"] .zeno-library-heading {
+  padding-inline: 0;
+}
+
+html[data-zeno-interface="true"] .zeno-library-filters {
+  gap: calc(var(--spacing) * 3);
+  margin-bottom: calc(var(--spacing) * 5);
+  border-bottom: 1px solid var(--border);
+}
+
+html[data-zeno-interface="true"] .zeno-library-filters > button {
+  position: relative;
+  height: calc(var(--spacing) * 10);
+  padding-inline: var(--spacing);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted-foreground);
+}
+
+html[data-zeno-interface="true"] .zeno-library-filters > button:hover,
+html[data-zeno-interface="true"] .zeno-library-filters > button[aria-pressed="true"] {
+  color: var(--foreground);
+}
+
+html[data-zeno-interface="true"] .zeno-library-filters > button[aria-pressed="true"] > span {
+  color: inherit;
+}
+
+html[data-zeno-interface="true"] .zeno-library-filters > button[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  inset-inline: var(--spacing);
+  bottom: -1px;
+  height: calc(var(--spacing) * 0.5);
+  border-radius: var(--radius);
+  background: var(--foreground);
+}
+
+html[data-zeno-interface="true"] .zeno-library-empty {
+  min-height: calc(var(--spacing) * 60);
+  justify-content: center;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+html[data-zeno-interface="true"] .zeno-library [data-library-integrated-row] {
+  height: calc(var(--spacing) * 12);
+}
+
+html[data-zeno-interface="true"] .zeno-library [data-library-row-key]:hover {
+  background: var(--dls-hover);
+}
+
+html[data-zeno-interface="true"] .zeno-library-advanced {
+  border-width: 1px 0 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+html[data-zeno-interface="true"] .zeno-library-advanced > button {
+  min-height: calc(var(--spacing) * 11);
+  padding: calc(var(--spacing) * 3) 0;
+}
+
+html[data-zeno-interface="true"] .zeno-library-advanced > div {
+  padding-inline: 0;
+}
+
+html[data-zeno-interface="true"] .zeno-library-page-heading {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing);
+}
+
+html[data-zeno-interface="true"] .zeno-library-page-heading h1 {
+  font-size: var(--text-lg);
+}
+
+html[data-zeno-interface="true"] .zeno-library-page-icon {
+  border: 0;
+  background: transparent;
+}
+
+html[data-zeno-interface="true"] .zeno-local-plugin-editor > div {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+html[data-zeno-interface="true"] .zeno-local-plugin-editor [data-local-plugin-list] {
+  gap: 0;
+}
+
+html[data-zeno-interface="true"] .zeno-local-plugin-editor [data-local-plugin-list] > div {
+  min-height: calc(var(--spacing) * 12);
+  padding-inline: 0;
+  border-width: 0 0 1px;
+  border-radius: 0;
+  background: transparent;
+}
+
+@media (min-width: 640px) {
+  html[data-zeno-interface="true"] .zeno-gateway-connection {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    gap: calc(var(--spacing) * 4);
+  }
+}
+
+@media (max-width: 639px) {
+  html[data-zeno-interface="true"] [data-settings-content] {
+    padding: calc(var(--spacing) * 4);
+  }
+
+  html[data-zeno-interface="true"] [data-settings-item-heading]:has(> .zeno-settings-help):has([data-slot="select-trigger"]),
+  html[data-zeno-interface="true"] [data-settings-item-heading]:has(> .zeno-settings-help):has(.zeno-theme-switch) {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  html[data-zeno-interface="true"] [data-settings-item-heading]:has([data-slot="select-trigger"]) > [data-slot="item-header-actions"],
+  html[data-zeno-interface="true"] [data-settings-item-heading]:has(> .zeno-settings-help):has([data-slot="select-trigger"]) > [data-slot="item-header-actions"],
+  html[data-zeno-interface="true"] [data-settings-item-heading]:has(> .zeno-settings-help):has(.zeno-theme-switch) > [data-slot="item-header-actions"] {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    justify-self: start;
+    padding-bottom: calc(var(--spacing) * 2);
+  }
+
+  html[data-zeno-interface="true"] [data-settings-item-heading] > [data-slot="item-header-actions"] > div {
+    max-width: 100%;
+  }
+
+  html[data-zeno-interface="true"] .zeno-gateway-model-count {
+    flex-basis: 100%;
+    margin: var(--spacing) 0 0;
+  }
+
+  html[data-zeno-interface="true"] .zeno-library-search {
+    flex-basis: 100%;
+    margin-inline-start: 0;
+    padding-bottom: calc(var(--spacing) * 3);
+  }
+
+  html[data-zeno-interface="true"] .zeno-library-search > div {
+    flex: 1;
+    width: auto;
+  }
+
+  html[data-zeno-interface="true"] .zeno-library [data-library-action] {
+    min-width: calc(var(--spacing) * 8);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-zeno-interface="true"] .zeno-settings-destination,
+  html[data-zeno-interface="true"] [data-settings-shell] summary svg {
+    transition: none;
+  }
+}

@@ -842,6 +842,7 @@ export class CloudProviderSync {
   }
 
   setSession(session: CloudProviderDenSession): Promise<void> {
+    if (this.config.clientProfile === "local-gateway") return Promise.resolve();
     const contextKey = this.sessionContextKey(session);
     if (this.session && this.sessionContextKey(this.session) === contextKey) return Promise.resolve();
     if (this.pendingSession?.contextKey === contextKey) return this.pendingSession.promise;
@@ -920,6 +921,7 @@ export class CloudProviderSync {
   }
 
   async clearSession(): Promise<void> {
+    if (this.config.clientProfile === "local-gateway") return;
     this.suspended = false;
     this.contextGeneration += 1;
     this.pendingSession = null;

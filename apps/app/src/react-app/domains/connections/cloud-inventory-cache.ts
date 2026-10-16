@@ -1,4 +1,5 @@
 import { createDenClient, readDenSettings, type DenExternalMcpConnection } from "@/app/lib/den";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 import {
   EMPTY_CONNECT_CAPABILITY_INVENTORY,
   listAssignedConnectCapabilities,
@@ -40,6 +41,7 @@ export function cloudInventoryScopeKey(scope: CloudInventoryScope) {
 
 /** The scope of the signed-in member, or null when there is nothing to fetch. */
 export function readCloudInventoryScope(): CloudInventoryScope | null {
+  if (isLocalGatewayClient()) return null;
   const settings = readDenSettings();
   const token = settings.authToken?.trim() ?? "";
   const organizationId = settings.activeOrgId?.trim() ?? "";
@@ -194,6 +196,7 @@ function denClientForCurrentSession() {
  * building a scope and client themselves.
  */
 export async function loadSessionConnectCapabilities(): Promise<ConnectCapabilityInventory> {
+  if (isLocalGatewayClient()) return EMPTY_CONNECT_CAPABILITY_INVENTORY;
   const scope = readCloudInventoryScope();
   if (!scope) return EMPTY_CONNECT_CAPABILITY_INVENTORY;
   try {
@@ -209,6 +212,7 @@ export async function loadSessionConnectCapabilities(): Promise<ConnectCapabilit
  * rows ready before the user ever opens Settings.
  */
 export function prefetchCloudInventory() {
+  if (isLocalGatewayClient()) return;
   const scope = readCloudInventoryScope();
   if (!scope) return;
   const client = denClientForCurrentSession();

@@ -44,7 +44,8 @@ import {
   type RuntimeOpencodeConfig,
 } from "./runtime-opencode-config-store.js";
 import { CONNECT_MCP_SERVER_NAME_PREFIX } from "./connect-mcp-server-catalog.js";
-import { OPENWORK_AGENT_PROMPT } from "./openwork-agent-prompt.js";
+import { buildOpenWorkAgentPrompt } from "./openwork-agent-prompt.js";
+import { independentRuntimeMcpMap, independentProviderMap, isIndependentClient } from "./client-profile.js";
 
 export async function buildOpenworkRuntimeConfigObject(
   config?: ServerConfig,
@@ -55,11 +56,12 @@ export async function buildOpenworkRuntimeConfigObject(
   // engine-pool fingerprint. Per-workspace MCPs reach the engine through the
   // dynamic push path instead.
   const runtimeConfig = config ? await readGlobalRuntimeOpencodeConfig(config) : {};
-  return buildOpenworkRuntimeConfigObjectFromSnapshot(runtimeConfig);
+  return buildOpenworkRuntimeConfigObjectFromSnapshot(runtimeConfig, config);
 }
 
 export function buildOpenworkRuntimeConfigObjectFromSnapshot(
   runtimeConfig: RuntimeOpencodeConfig,
+  config?: Pick<ServerConfig, "clientProfile">,
 ): Record<string, unknown> {
   if (!DESKTOP_POLICY_ENFORCEMENT_ENABLED) {
     // Only model access (the AI Gateway's "Who can use models") is enforced: keep allowCustomProviders from the verified
@@ -70,7 +72,7 @@ export function buildOpenworkRuntimeConfigObjectFromSnapshot(
   const disabledProviders = runtimeDisabledProviderList(runtimeConfig);
   const permissions = legacyExecutionPermissions(runtimeConfig.managedPolicy?.execution);
   const { managedPolicy: _managedPolicy, ...engineConfig } = runtimeConfig;
-  const provider = materializeLegacyFastProviders(runtimeProviderMap(runtimeConfig));
+  const provider = materializeLegacyFastProviders(independentProviderMap(config, runtimeProviderMap(runtimeConfig)));
   return {
     ...engineConfig,
     ...(runtimeConfig.managedPolicy?.allowCustomProviders === false ? { enabled_providers: [
@@ -84,7 +86,7 @@ export function buildOpenworkRuntimeConfigObjectFromSnapshot(
         description: "OpenWork default agent",
         mode: "primary",
         temperature: 0.2,
-        prompt: OPENWORK_AGENT_PROMPT,
+        prompt: buildOpenWorkAgentPrompt(config?.clientProfile),
         permission: {
           ...permissions,
           skill: {
@@ -117,9 +119,9 @@ export function buildOpenworkRuntimeConfigObjectFromSnapshot(
       ...runtimePluginList(runtimeConfig).filter((plugin) => !isManagedPolicyPlugin(plugin)),
     ],
     ...(disabledProviders.length ? { disabled_providers: disabledProviders } : {}),
-    mcp: Object.fromEntries(Object.entries(runtimeMcpMap(runtimeConfig))
+    mcp: Object.fromEntries(Object.entries(independentRuntimeMcpMap(config, runtimeMcpMap(runtimeConfig)))
       .filter(([name]) => !name.startsWith(CONNECT_MCP_SERVER_NAME_PREFIX))),
-    ...(Object.keys(provider).length ? { provider } : {}),
+    ...(Object.keys(provider).length || isIndependentClient(config) ? { provider } : {}),
   };
 }
 

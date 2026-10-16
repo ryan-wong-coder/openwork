@@ -166,6 +166,7 @@ export function startWorkerActivityHeartbeat(
     now?: () => number;
   },
 ): WorkerActivityHeartbeatHandle | null {
+  if (config.clientProfile === "local-gateway") return null;
   const heartbeatConfig = resolveWorkerActivityHeartbeatConfig(options?.env);
   if (!heartbeatConfig.enabled) return null;
 

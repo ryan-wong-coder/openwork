@@ -11,6 +11,7 @@ import { useEnterpriseActivationRequired } from "../../cloud/enterprise-activati
 import { useBrandAppName } from "../../cloud/brand-theme";
 import { notifyAlert } from "../../../shell/notifications";
 import { useElectronUpdaterState } from "./electron-updater-state";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 
 function useUpdatePreference(key: string) {
   const [enabled, setEnabled] = useState(() => {
@@ -21,6 +22,7 @@ function useUpdatePreference(key: string) {
     }
   });
   useEffect(() => {
+    if (isLocalGatewayClient()) return;
     try { localStorage.setItem(key, enabled ? "1" : "0"); } catch { /* Keep the session preference. */ }
   }, [enabled, key]);
   return [enabled, setEnabled] as const;
@@ -34,7 +36,7 @@ function useUpdater() {
   // and fallen back to the last known one) the organization's allowed desktop
   // versions cannot be honoured, so no update check (and therefore no
   // download) may run yet.
-  const allowedVersionsKnown = !useEnterpriseActivationRequired() && !desktopConfig.loading;
+  const allowedVersionsKnown = !useEnterpriseActivationRequired() && !desktopConfig.loading && !isLocalGatewayClient();
   const [updateAutoCheck, setUpdateAutoCheck] = useUpdatePreference("openwork.react.settings.update-auto-check");
   // Older Settings wrote "0" even when the user never touched the old opt-in.
   // Start the automatic-download default once, then retain future opt-outs.
@@ -77,6 +79,7 @@ export function DesktopUpdateButton() {
   const updater = useContext(DesktopUpdaterContext);
   const appName = useBrandAppName();
   const [confirmRestart, setConfirmRestart] = useState(false);
+  if (isLocalGatewayClient()) return null;
   if (updater?.updateStatus?.state !== "ready") return null;
   return (
     <>

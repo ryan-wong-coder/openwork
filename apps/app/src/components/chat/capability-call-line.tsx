@@ -12,7 +12,7 @@ import {
   type ChatToolReconnectCallbacks,
 } from "@/components/tools/use-chat-tool-reconnect"
 import { Button } from "@/components/ui/button"
-import { getCapabilityCallSentence } from "@/lib/capability-call"
+import { getCapabilityCallSentence, localizedCapabilityAction } from "@/lib/capability-call"
 import { trackToolCallDuration } from "@/lib/tool-call-duration"
 import { isToolPartInFlight } from "@/lib/tool-activity"
 import { cn } from "@/lib/utils"
@@ -250,9 +250,9 @@ export function CapabilityCallLine({
     if (!groupService) return text
     const line = text.replace(` · ${groupService}`, "")
     for (const verb of ["search", "find", "query"]) {
-      for (const tense of ["past", "present"]) {
-        const prefix = t(`capability.verb.${verb}.${tense}`, { target: groupService })
-        if (line.startsWith(prefix)) return `${t(`capability.verb.${verb}.${tense}`, { target: "" }).trim()}${line.slice(prefix.length)}`
+      for (const tense of ["past", "present"] satisfies Array<"past" | "present">) {
+        const prefix = localizedCapabilityAction(verb, groupService, tense)
+        if (line.startsWith(prefix)) return `${localizedCapabilityAction(verb, "", tense)}${line.slice(prefix.length)}`
       }
     }
     return line

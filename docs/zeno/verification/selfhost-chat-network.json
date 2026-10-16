@@ -1,0 +1,10 @@
+{
+  "scope": "Self-hosted Web real conversation; no host-header interception",
+  "requestCount": 141,
+  "origins": [
+    "http://127.0.0.1:8778",
+    "http://127.0.0.1:5178"
+  ],
+  "officialRequests": [],
+  "runtimeExceptions": []
+}

@@ -1,5 +1,7 @@
 /** @jsxImportSource react */
 import { newSessionDraftOwnerKey } from "./new-session-destination";
+import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity";
+import "./zeno-shell.css";
 import { usePendingConversationStore } from "./pending-conversation-store";
 import { PendingConversationView } from "./pending-conversation";
 import type { CSSProperties } from "react";
@@ -436,6 +438,8 @@ function controlStringArg(args: unknown, key: string) {
 }
 
 export function SessionPage(props: SessionPageProps) {
+  const zeno = isZenoInterfaceEnabled();
+  const flatPrimarySurface = zeno || props.primarySurface === "flat";
   const archivedInWorkspace = (workspaceId: string, sessionId: string | null) => {
     const session = props.sidebar.workspaceSessionGroups.find(group => group.workspace.id === workspaceId)
       ?.sessions.find(session => session.id === sessionId);
@@ -1350,7 +1354,7 @@ export function SessionPage(props: SessionPageProps) {
       isReferenceCurrent={props.isSessionReferenceCurrent}
       onOpenReference={handleOpenSessionReference}
     >
-    <div data-chat-viewport className="flex h-full min-h-0 flex-col bg-[radial-gradient(circle_at_top,rgba(74,111,255,0.12),transparent_42%),var(--app-bg,#0b1020)] text-dls-text max-lg:fixed max-lg:inset-x-0 max-lg:top-[var(--chat-viewport-top,0px)] max-lg:h-[var(--chat-viewport-height,100dvh)] max-lg:overflow-hidden max-lg:pt-[env(safe-area-inset-top)] mac:bg-transparent">
+    <div data-chat-viewport data-zeno-shell={zeno ? "true" : undefined} className={cn("flex h-full min-h-0 flex-col text-dls-text max-lg:fixed max-lg:inset-x-0 max-lg:top-[var(--chat-viewport-top,0px)] max-lg:h-[var(--chat-viewport-height,100dvh)] max-lg:overflow-hidden max-lg:pt-[env(safe-area-inset-top)] mac:bg-transparent", !zeno && "bg-[radial-gradient(circle_at_top,rgba(74,111,255,0.12),transparent_42%),var(--app-bg,#0b1020)]")}>
       <SidebarProvider
         open={sidebarOpen}
         onOpenChange={setSidebarOpen}
@@ -1449,7 +1453,7 @@ export function SessionPage(props: SessionPageProps) {
             className={cn(
               "window-titlebar flex shrink-0 items-center justify-between gap-3 border-b border-border bg-dls-surface px-3 electron:titlebar-drag @container/titlebar lg:px-4 mac:bg-transparent",
               props.mainContentHeaderActionsRef ? "min-h-13" : "lg:pr-1",
-              props.primarySurface !== "flat" && "lg:border-b-0",
+              !flatPrimarySurface && "lg:border-b-0",
               (!shellConfig.sidebar || !sidebarOpen || isMobile) && "mac:mac-window-controls-inset",
             )}
           >
@@ -1618,14 +1622,14 @@ export function SessionPage(props: SessionPageProps) {
             </div>}
           </header>}
 
-          <div className={cn("flex min-h-0 flex-1 max-lg:p-0", props.primarySurface !== "flat" && "lg:pb-2 lg:pl-2")}>
+          <div className={cn("flex min-h-0 flex-1 max-lg:p-0", !flatPrimarySurface && "lg:pb-2 lg:pl-2")}>
           <ResizablePanelGroup
             orientation="horizontal"
             onLayoutChanged={sidePanelOpen ? commitBrowserPanelWidth : undefined}
-            className={cn("min-h-0 flex-1 max-lg:rounded-none", props.primarySurface !== "flat" && "lg:rounded-[14px]")}
+            className={cn("min-h-0 flex-1 max-lg:rounded-none", !flatPrimarySurface && "lg:rounded-[14px]")}
           >
             <ResizablePanel minSize={isMobile ? "0px" : "360px"} className="min-w-0">
-              <main data-session-pane className={cn("flex h-full min-w-0 flex-col overflow-hidden bg-dls-surface", props.primarySurface !== "flat" && "max-lg:rounded-none max-lg:border-0 max-lg:shadow-none lg:rounded-[14px] lg:border lg:border-border lg:shadow-[0_8px_24px_rgba(15,23,42,0.06)] dark:lg:shadow-[0_10px_30px_rgba(0,0,0,0.45)] mac:bg-dls-surface/85 mac:backdrop-blur-2xl mac:backdrop-saturate-150")}>
+              <main data-session-pane className={cn("flex h-full min-w-0 flex-col overflow-hidden bg-dls-surface", !flatPrimarySurface && "max-lg:rounded-none max-lg:border-0 max-lg:shadow-none lg:rounded-[14px] lg:border lg:border-border lg:shadow-[0_8px_24px_rgba(15,23,42,0.06)] dark:lg:shadow-[0_10px_30px_rgba(0,0,0,0.45)] mac:bg-dls-surface/85 mac:backdrop-blur-2xl mac:backdrop-saturate-150")}>
           {showNarrowPaneSwitcher ? (
             <NarrowPaneSwitcher
               activePane={narrowPane}

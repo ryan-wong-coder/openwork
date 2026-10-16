@@ -16,6 +16,7 @@ import { useDenAuth } from "./den-auth-provider";
 import { createInventoryRevisionGate } from "./inventory-revision";
 import { subscribeCloudProviderSyncTriggers } from "./use-cloud-provider-auto-sync";
 import { refreshMemberActivity } from "./member-activity-sync";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 
 /** One app-level observer using the same lifecycle triggers as desktop cloud sync. */
 export function useMemberActivitySync(enabled: boolean) {
@@ -29,7 +30,7 @@ export function useMemberActivitySync(enabled: boolean) {
 
   useLayoutEffect(() => {
     const feed = useActivityStore.getState();
-    if (!enabled || !token || !principalId || organizationId !== verifiedOrgId) {
+    if (isLocalGatewayClient() || !enabled || !token || !principalId || organizationId !== verifiedOrgId) {
       feed.setScope(null);
       return;
     }

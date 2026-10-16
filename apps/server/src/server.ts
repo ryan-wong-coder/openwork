@@ -116,6 +116,7 @@ import { registerWorkspaceRoutes } from "./routes/workspaces.js";
 import { registerCloudMcpRoutes } from "./routes/cloud-mcp.js";
 import { UiControlMailbox } from "./ui-control.js";
 import { captureServerException, isExpectedRequestCancellation } from "./telemetry.js";
+import { independentMcpMap } from "./client-profile.js";
 import {
   completeLocalManagedMcpAuthorization,
   createLocalManagedMcpConnection,
@@ -977,7 +978,7 @@ export async function startServer(
           const requestCanceled = isExpectedRequestCancellation(error, request.signal);
           if (!(error instanceof ApiError) && !requestCanceled) {
             recordUnhandledErrorCause(error);
-            captureServerException(error, { method: request.method, route: "/workspace/:id/opencode/*", requestSignal: request.signal });
+            captureServerException(error, { method: request.method, route: "/workspace/:id/opencode/*", requestSignal: request.signal }, config);
           }
           const apiError = error instanceof ApiError
             ? error
@@ -1041,7 +1042,7 @@ export async function startServer(
           const requestCanceled = isExpectedRequestCancellation(error, request.signal);
           if (!(error instanceof ApiError) && !requestCanceled) {
             recordUnhandledErrorCause(error);
-            captureServerException(error, { method: request.method, route: "/workspace/:id/opencode2/*", requestSignal: request.signal });
+            captureServerException(error, { method: request.method, route: "/workspace/:id/opencode2/*", requestSignal: request.signal }, config);
           }
           const apiError = error instanceof ApiError
             ? error
@@ -1112,7 +1113,7 @@ export async function startServer(
           const requestCanceled = isExpectedRequestCancellation(error, request.signal);
           if (!(error instanceof ApiError) && !requestCanceled) {
             recordUnhandledErrorCause(error);
-            captureServerException(error, { method: request.method, route: "/opencode/*", requestSignal: request.signal });
+            captureServerException(error, { method: request.method, route: "/opencode/*", requestSignal: request.signal }, config);
           }
           const apiError = error instanceof ApiError
             ? error
@@ -1158,7 +1159,7 @@ export async function startServer(
       } catch (error) {
         const requestCanceled = isExpectedRequestCancellation(error, request.signal);
         if (!(error instanceof ApiError) && !requestCanceled) {
-          captureServerException(error, { method: request.method, route: url.pathname, requestSignal: request.signal });
+          captureServerException(error, { method: request.method, route: url.pathname, requestSignal: request.signal }, config);
           console.error("[openwork-server] Unhandled error:", error);
         }
         const apiError = error instanceof ApiError
@@ -1202,7 +1203,7 @@ export async function startServer(
     });
   } catch (error) {
     await taskRecovery?.stop().catch(() => undefined);
-    captureServerException(error, { method: "START", route: "startServer" });
+    captureServerException(error, { method: "START", route: "startServer" }, config);
     anonymousInference.stop();
     cloudProviderSync.stop();
     await engineV2Preview.stop().catch(() => undefined);
@@ -1486,16 +1487,19 @@ export async function proxyOpencodeV2Request(input: {
     await input.prepareExecution?.(executionDirectory);
     // Session ownership was verified above. Replace one native instruction
     // entry immediately before admission; never append to conversation text.
-    const mcpUrl = new URL(target);
-    mcpUrl.pathname = "/api/mcp";
     const internalHeaders = new Headers({ authorization: headers.get("authorization") ?? "", "content-type": "application/json" });
-    const mcpResponse = await engineFetch(mcpUrl.toString(), { headers: internalHeaders, signal: AbortSignal.timeout(10_000) });
-    const mcpPayload: unknown = mcpResponse.ok ? await mcpResponse.json() : null;
-    const connectReady = isRecord(mcpPayload) && Array.isArray(mcpPayload.data) && mcpPayload.data.some((entry) =>
-      isRecord(entry) && entry.name === "openwork-cloud" && isRecord(entry.status) && entry.status.status === "connected");
+    let connectReady = false;
+    if (input.config.clientProfile !== "local-gateway") {
+      const mcpUrl = new URL(target);
+      mcpUrl.pathname = "/api/mcp";
+      const mcpResponse = await engineFetch(mcpUrl.toString(), { headers: internalHeaders, signal: AbortSignal.timeout(10_000) });
+      const mcpPayload: unknown = mcpResponse.ok ? await mcpResponse.json() : null;
+      connectReady = isRecord(mcpPayload) && Array.isArray(mcpPayload.data) && mcpPayload.data.some((entry) =>
+        isRecord(entry) && entry.name === "openwork-cloud" && isRecord(entry.status) && entry.status.status === "connected");
+    }
     // Keep organization skill discovery on demand through Connect. The full
     // catalog can exceed the engine's instruction-entry request limit.
-    const value = buildOpenWorkV2Instructions(connectReady);
+    const value = buildOpenWorkV2Instructions(connectReady, input.config.clientProfile);
     const instructionUrl = new URL(target);
     instructionUrl.pathname = `/api/experimental/session/${encodeURIComponent(sessionId)}/instructions/entries/${OPENWORK_V2_INSTRUCTION_KEY}`;
     const synced = await engineFetch(instructionUrl.toString(), {
@@ -5438,7 +5442,7 @@ async function runRuntimeMcpSyncToOpencodeEngine(
   }
 
   const runtimeConfig = await readEffectiveRuntimeOpencodeConfig(config, workspace.id);
-  const entries = Object.entries(runtimeMcpMap(runtimeConfig)).filter(
+  const entries = Object.entries(independentMcpMap(config, runtimeMcpMap(runtimeConfig))).filter(
     ([name]) => !name.startsWith(CONNECT_MCP_SERVER_NAME_PREFIX)
       && (!onlyNames || onlyNames.includes(name)),
   );

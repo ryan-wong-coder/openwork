@@ -16,6 +16,7 @@ import type { ReleaseChannel } from "../../../../app/types";
 import { isElectronRuntime, safeStringify } from "../../../../app/utils";
 import { t } from "../../../../i18n";
 import { useUpdateCheckRequestStore } from "./update-check-request";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 
 export type SettingsUpdateStatus = {
   state: "idle" | "checking" | "available" | "blocked" | "downloading" | "ready" | "error";
@@ -115,6 +116,7 @@ function electronUpdaterEnvReducer(
 }
 
 function electronUpdaterBridge(): ElectronUpdaterBridge | null {
+  if (isLocalGatewayClient()) return null;
   if (typeof window === "undefined") return null;
   if (import.meta.env.DEV && window.__openworkUpdaterEvalBridge) {
     return window.__openworkUpdaterEvalBridge;
@@ -216,6 +218,7 @@ export function useElectronUpdaterState(options: UseElectronUpdaterStateOptions)
   );
 
   useEffect(() => {
+    if (isLocalGatewayClient()) return;
     if (policyReleaseChannel !== releaseChannel) {
       onReleaseChannelChange(policyReleaseChannel);
     }
@@ -236,6 +239,10 @@ export function useElectronUpdaterState(options: UseElectronUpdaterStateOptions)
   ]);
 
   useEffect(() => {
+    if (isLocalGatewayClient()) {
+      dispatchEnvState({ type: "unsupported", reason: t("zeno.settings.self_managed") });
+      return;
+    }
     if (!isElectronRuntime()) {
       dispatchEnvState({ type: "unsupported", reason: ELECTRON_UPDATER_UNSUPPORTED_REASON });
       return;
@@ -271,6 +278,7 @@ export function useElectronUpdaterState(options: UseElectronUpdaterStateOptions)
   }, [onReleaseChannelChange, policyReleaseChannel]);
 
   const downloadUpdate = useCallback(async (channelOverride?: ReleaseChannel) => {
+    if (isLocalGatewayClient()) return;
     const status = updateStatusRef.current;
     if (!channelOverride && (status?.state === "downloading" || (status?.state === "ready" && readyCheckInFlightRef.current === checkRequestRef.current))) return;
     const candidate = !channelOverride && status?.state === "ready" ? status.candidate : undefined;
@@ -408,7 +416,7 @@ export function useElectronUpdaterState(options: UseElectronUpdaterStateOptions)
     manual = false,
     suppressAutoDownload = false,
   ) => {
-    if (!isElectronRuntime()) return;
+    if (isLocalGatewayClient() || !isElectronRuntime()) return;
     const requestId = checkRequestRef.current + 1;
     checkRequestRef.current = requestId;
     const isCurrentRequest = () => checkRequestRef.current === requestId;
@@ -732,6 +740,7 @@ export function useElectronUpdaterState(options: UseElectronUpdaterStateOptions)
 
   const checkForUpdates = useCallback(
     (channelOverride?: ReleaseChannel) => {
+      if (isLocalGatewayClient()) return Promise.resolve();
       const status = updateStatusRef.current;
       const state = status?.state;
       if (!channelOverride && state === "ready") return checkWhileReady();
@@ -789,6 +798,7 @@ export function useElectronUpdaterState(options: UseElectronUpdaterStateOptions)
   }, [checkForUpdates, updateCheckRequestedAt, updateEnv?.supported, allowedVersionsKnown]);
 
   const installUpdateAndRestart = useCallback(async () => {
+    if (isLocalGatewayClient()) return;
     // Restart onto the newest allowed build, fetching it first if one shipped
     // after the staged download.
     if (!(await refreshStagedUpdate("install"))) return;
@@ -879,6 +889,7 @@ export function useElectronUpdaterState(options: UseElectronUpdaterStateOptions)
 
   const setReleaseChannel = useCallback(
     async (next: ReleaseChannel) => {
+      if (isLocalGatewayClient()) return;
       const requestId = releaseChannelRequestRef.current + 1;
       releaseChannelRequestRef.current = requestId;
       checkRequestRef.current += 1;

@@ -26,6 +26,7 @@ config:
   #   "false" off for everyone; /admin shows "Set by deployment config"
   # The /admin kill switch still turns a feature off, even when locked on.
   features:
+    zenoInterface: ""              # default off · Use the Zeno identity, compact workspace navigation and refined local task interface without changing files, history or permissions.
     gatewayImageGeneration: ""     # default off · Generate and edit workspace image assets through the configured inference gateway, with artifacts available to chat and coding tools.
     visualConfiguration: ""        # default off · Edit complete project and global agent configuration through structured controls while preserving custom fields and document comments.
     secureSecretFields: ""         # default off · When an agent sets up a connection, plugin or AI Gateway provider that needs keys, people enter them in private fields in the chat and the agent continues once they are saved. Key fields across OpenWork and OpenWork Cloud can be shown while typing and show saved keys as Replace rows.

@@ -316,6 +316,7 @@ export function preventPendingUpdaterInstall(updater) {
 
 export function registerUpdaterIpc({
   app,
+  updatesEnabled = true,
   ipcMain,
   getMainWindow,
   loadAutoUpdater = () => import("electron-updater"),
@@ -334,6 +335,20 @@ export function registerUpdaterIpc({
   // and the renderer must not be able to check for, stage, or install updates.
   assertActivation = () => {},
 }) {
+  if (!updatesEnabled) {
+    const reason = "This distribution is installed and updated by its operator.";
+    const disabled = async () => ({ ok: false, reason });
+    for (const name of ["recordHealthy", "list", "use", "restorePrevious"]) {
+      ipcMain.handle(`openwork:recovery:${name}`, disabled);
+    }
+    ipcMain.handle("openwork:recovery:evalSnapshot", async () => ({ candidates: [], releases: [], installRequests: [], openedArtifactUrls: [], quitRequested: false }));
+    ipcMain.handle("openwork:updater:getChannel", async () => ({ channel: "stable", supported: false, supportsAlpha: false, reason }));
+    ipcMain.handle("openwork:updater:setChannel", disabled);
+    ipcMain.handle("openwork:updater:check", async () => ({ available: false, reason, totalBytes: null }));
+    ipcMain.handle("openwork:updater:download", disabled);
+    ipcMain.handle("openwork:updater:installAndRestart", disabled);
+    return { ensureAutoUpdater: async () => null };
+  }
   let autoUpdaterInstance = null;
   let autoUpdaterLoadPromise = null;
   let checkedUpdateVersion = null;

@@ -81,6 +81,8 @@ export type NewTaskComposerContext = {
 
 export type NewTaskComposerProps = {
   flush?: boolean;
+  /** A single setup action is already visible beside the new-task composer. */
+  gatewaySetupAvailable?: boolean;
   draft: string;
   onDraftChange: (value: string) => void;
   /** Called with a non-empty draft and in-memory attachments; the caller creates the session (and workspace if needed). */
@@ -528,6 +530,7 @@ export function NewTaskComposer(props: NewTaskComposerProps) {
         ...(failedSubmission !== null ? ["send_restore_unsent" as const] : []),
       ]}
       modelUnavailable={context?.modelUnavailable}
+      hideModelUnavailableMessage={props.gatewaySetupAvailable}
       modelUnavailableMessage={context?.modelUnavailableMessage}
       organizationModelsEmpty={context?.organizationModelsEmpty}
       statusLabel=""

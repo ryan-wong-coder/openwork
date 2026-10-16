@@ -4,6 +4,8 @@ import { ChevronLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { t } from "../../../../i18n";
+import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity";
+import { SettingsHelp } from "../settings-layout";
 
 /**
  * The frame every Library step shares: back to Library, where you are, one
@@ -37,7 +39,7 @@ export function LibraryPage(props: {
     <section
       data-testid={props.testId}
       aria-labelledby="library-page-title"
-      className="mx-auto flex w-full min-w-0 max-w-3xl flex-col animate-in fade-in duration-300"
+      className="zeno-library-page mx-auto flex w-full min-w-0 max-w-3xl flex-col animate-in fade-in duration-300"
     >
       <nav aria-label={t("extensions.page_breadcrumb")} className="mb-4 flex min-w-0 items-center gap-1 text-sm text-muted-foreground">
         <Button
@@ -68,15 +70,15 @@ export function LibraryPage(props: {
       </nav>
       <div className="flex items-center gap-3">
         {props.icon ? (
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-dls-border bg-dls-surface text-dls-secondary">
+          <div className="zeno-library-page-icon flex size-10 shrink-0 items-center justify-center rounded-xl border border-dls-border bg-dls-surface text-dls-secondary">
             {props.icon}
           </div>
         ) : null}
-        <div className="min-w-0">
+        <div className="zeno-library-page-heading min-w-0">
           <h1 id="library-page-title" className="text-xl font-semibold tracking-[-0.01em] text-dls-text">
             {props.title}
           </h1>
-          {props.subtitle ? <p className="mt-0.5 text-[13px] text-dls-secondary">{props.subtitle}</p> : null}
+          {props.subtitle ? isZenoInterfaceEnabled() ? <SettingsHelp label={`${props.title} · ${t("interface.help")}`}>{props.subtitle}</SettingsHelp> : <p className="mt-0.5 text-[13px] text-dls-secondary">{props.subtitle}</p> : null}
         </div>
       </div>
       <div className="mt-6 flex flex-col gap-5">{props.children}</div>

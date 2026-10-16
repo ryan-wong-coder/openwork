@@ -3,6 +3,7 @@ import { freeAutoSwitchedOff, modelForNewTask } from "@/app/lib/inference-access
 import { clientModelVisible, DEFAULT_LOCAL_GATEWAY_CHAT_MODEL, isLocalGatewayClient, LOCAL_GATEWAY_PROVIDER_ID } from "@/app/lib/client-profile";
 import { useAutoAccess, useObservedAutoAccessSnapshot } from "@/react-app/domains/cloud/auto-access-ui";
 import { newSessionDraftSlot, newSessionDraftOwnerKey, openNewSessionDraft } from "@/react-app/domains/session/chat/new-session-destination";
+import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity";
 import { getSessionDraft, clearSessionDraft } from "@/react-app/domains/session/sync/draft-store";
 import { acknowledgePendingSession, beginPendingConversation, bindPendingConversationWorkspace, createPendingConversation, ensurePendingConversationGroup, pendingConversationAutoSendPayload, pendingConversationForRoute, publishPendingSideChat, usePendingConversationStore, withPendingSessionPublication, type PendingConversation } from "@/react-app/domains/session/chat/pending-conversation-store";
 import { PendingConversationView } from "@/react-app/domains/session/chat/pending-conversation";
@@ -582,7 +583,7 @@ export function SessionRoute() {
   useEffect(() => {
     if (!isLocalGatewayClient() || !client) return;
     let cancelled = false;
-    void client.getGatewayConfig().then((config) => {
+    void client.getGatewayStatus().then((config) => {
       if (cancelled) return;
       setLocalGatewayConfigured(config.configured && config.ready !== false);
       local.setPrefs((previous) => previous.defaultModel?.providerID === LOCAL_GATEWAY_PROVIDER_ID ? previous : {
@@ -1440,7 +1441,7 @@ export function SessionRoute() {
     return String(source?.title ?? source?.slug ?? "").trim() || t("session.subagent_task");
   }, [activePermission, selectedSessionId, selectedWorkspaceId, sessionsByWorkspaceId, currentLocale()]);
   const modelUnavailableMessage = isLocalGatewayClient() && localGatewayConfigured === false
-    ? "先在设置中配置模型网关，即可开始对话和生成图片。"
+    ? isZenoInterfaceEnabled() ? t("zeno.gateway_setup") : "先在设置中配置模型网关，即可开始对话和生成图片。"
     : organizationModelsEmpty
     ? t("models.organization_models_empty")
     : selectedModelUnavailable

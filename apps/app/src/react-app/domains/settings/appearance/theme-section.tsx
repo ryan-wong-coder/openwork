@@ -1,5 +1,7 @@
 /** @jsxImportSource react */
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Monitor, Moon, Sun } from "lucide-react";
+import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity";
 import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
 import { t } from "@/i18n";
@@ -9,6 +11,7 @@ import {
   LayoutSectionItemDescription,
   LayoutSectionItemFootnote,
   LayoutSectionItemHeader,
+  LayoutSectionItemHeaderActions,
   LayoutSectionItemTitle,
 } from "../settings-layout";
 
@@ -18,6 +21,29 @@ interface ThemeSectionProps
   extends Pick<AppearanceViewProps, "busy" | "themeMode" | "setThemeMode"> {}
 
 export function ThemeSection(props: ThemeSectionProps) {
+  if (isZenoInterfaceEnabled()) {
+    const options = [
+      { value: "system", label: t("settings.theme_system"), icon: Monitor },
+      { value: "light", label: t("settings.theme_light"), icon: Sun },
+      { value: "dark", label: t("settings.theme_dark"), icon: Moon },
+    ];
+    return (
+      <LayoutSectionItem>
+        <LayoutSectionItemHeader>
+          <LayoutSectionItemTitle>{t("settings.theme_title")}</LayoutSectionItemTitle>
+          <LayoutSectionItemDescription optional helpLabel={t("settings.theme_title")}>{t("settings.theme_system_hint")}</LayoutSectionItemDescription>
+          <LayoutSectionItemHeaderActions>
+            <ToggleGroup value={[props.themeMode]} disabled={props.busy} className="zeno-theme-switch rounded-lg bg-muted/50 p-1" onValueChange={(values) => {
+              const value = values[0];
+              if (value === "system" || value === "light" || value === "dark") props.setThemeMode(value);
+            }}>
+              {options.map((option) => <ToggleGroupItem key={option.value} value={option.value} aria-label={option.label} className="h-8 gap-1.5 rounded-md px-3 text-xs data-pressed:bg-background data-pressed:shadow-sm"><option.icon className="size-3.5" />{option.label}</ToggleGroupItem>)}
+            </ToggleGroup>
+          </LayoutSectionItemHeaderActions>
+        </LayoutSectionItemHeader>
+      </LayoutSectionItem>
+    );
+  }
   return (
     <LayoutSectionItem className="items-center">
       <LayoutSectionItemHeader className="w-full">

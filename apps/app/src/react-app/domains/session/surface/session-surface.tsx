@@ -4,7 +4,7 @@ import { useCallback, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRe
 import type { UIMessage } from "ai";
 import { hashKey, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { SessionStatus } from "@opencode-ai/sdk/v2/client";
-import { Check, Minimize2 } from "lucide-react";
+import { Check, Minimize2, Settings2 } from "lucide-react";
 import { toast } from "@/components/ui/sonner";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,8 @@ import * as opencodeSessionNative from "@/app/lib/opencode-session-native";
 import type { NativeSessionSnapshotTarget } from "@/app/lib/opencode-session-native";
 import { isDesktopRuntime } from "@/app/lib/runtime-env";
 import { cn } from "@/lib/utils";
+import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity";
+import { sessionSuggestionDraft } from "../chat/zeno-intent-draft";
 import { setThemeMode } from "@/app/theme";
 import { t } from "@/i18n";
 import type { ComposerSettingsSection } from "@/react-app/domains/settings/library";
@@ -978,6 +980,7 @@ function uncopiedChatReason(error: unknown): string | undefined {
 }
 
 export function SessionSurface(props: SessionSurfaceProps) {
+  const zeno = isZenoInterfaceEnabled();
   const local = useLocal();
   const { config: shellConfig } = useShellConfig();
   const showThinking = local.prefs.showThinking;
@@ -3078,8 +3081,8 @@ export function SessionSurface(props: SessionSurfaceProps) {
   }, [props.onOpenSettingsSection]);
 
   const handleMessageListSetPrompt = useCallback((prompt: string) => {
-    void typeComposerText(prompt);
-  }, [typeComposerText]);
+    void typeComposerText(sessionSuggestionDraft(props.sessionId, prompt));
+  }, [props.sessionId, typeComposerText]);
 
   // Explicit user click on the interrupted-run error card or the
   // outcome-unknown recovery card. Re-submits the classified recovery prompt
@@ -3563,7 +3566,14 @@ export function SessionSurface(props: SessionSurfaceProps) {
         <GatewayUsageApprovalNotice />
         {gatewayNotice && gatewayScope ? <GatewayUsageNotice key={`${gatewayUsage.scopeKey}:${sessionOwner}:${gatewayCloudProviderId ?? ""}`} state={gatewayNotice} status={gatewayScope.status} stale={gatewayUsage.query.isError}
           providerName={gatewayScope.providerName} canSwitchProvider={gatewayCanSwitchProvider} /> : null}
-        {(props.providerConnectedCount ?? 0) === 0 ? (
+        {(props.providerConnectedCount ?? 0) === 0 ? zeno ? (
+          <div className="mb-2 flex justify-center">
+            <Button type="button" variant="outline" data-zeno-gateway-setup
+              onClick={() => props.onOpenSettingsSection?.("providers")}>
+              <Settings2 className="size-4" strokeWidth={1.5} aria-hidden="true" />{t("zeno.gateway_setup")}
+            </Button>
+          </div>
+        ) : (
           <button
             type="button"
             className="mx-3 mb-2 flex w-[calc(100%-1.5rem)] items-center gap-2 rounded-lg border border-dls-border bg-dls-hover px-3 py-2 text-left text-xs text-dls-text transition-colors hover:bg-dls-active"
@@ -3611,6 +3621,7 @@ export function SessionSurface(props: SessionSurfaceProps) {
         ) : null}
         {attachmentsUploading ? <div role="status" className="mx-3 mb-2 text-xs text-muted-foreground" data-attachment-status="uploading">{t("interface.preparing_attachments")} </div> : null}
         <ReactSessionComposer
+          hideModelUnavailableMessage={zeno && (props.providerConnectedCount ?? 0) === 0}
           runModeControl={<WorkspaceRunModeMenu client={props.client} workspaceId={props.workspaceId} busy={chatStreaming || preparingCloudTools || Boolean(props.activePermission || props.activeQuestion)} />}
           draft={autoSendPayload ? draft : autoSending ? "" : draft}
           mentions={mentions}

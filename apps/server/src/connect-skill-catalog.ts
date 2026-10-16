@@ -73,6 +73,7 @@ export async function readOpenWorkConnectSkillCatalog(
   config: ServerConfig,
   fetcher: McpFetch = externalFetch,
 ): Promise<OpenWorkConnectSkill[]> {
+  if (config.clientProfile === "local-gateway") return [];
   try {
     const serverCloud = await readConnectCloudMcp(config);
     const candidates: Array<{ cloud: Record<string, unknown>; source: "server" | "workspace" }> = [];

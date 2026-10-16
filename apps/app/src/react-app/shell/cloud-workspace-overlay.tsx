@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { useDenAuth } from "@/react-app/domains/cloud/den-auth-provider";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 import { denWebBillingUrl } from "@/react-app/domains/cloud/openwork-web-access-gate";
 import { useSessionActivityStore } from "@/react-app/domains/session/status/session-activity-store";
 import { usePlatform } from "@/react-app/kernel/platform";
@@ -151,6 +152,12 @@ export function cloudWorkspaceRequestFailureLogFields(error: unknown) {
 }
 
 export function CloudWorkspaceStatusProvider(props: { children: ReactNode }) {
+  return isLocalGatewayClient()
+    ? <CloudWorkspaceStatusContext.Provider value={fallbackCloudWorkspaceStatus}>{props.children}</CloudWorkspaceStatusContext.Provider>
+    : <ConnectedCloudWorkspaceStatusProvider>{props.children}</ConnectedCloudWorkspaceStatusProvider>;
+}
+
+function ConnectedCloudWorkspaceStatusProvider(props: { children: ReactNode }) {
   const denAuth = useDenAuth();
   const [instance, setInstance] = useState<DenCloudInstance | null>(null);
   const [accessRequired, setAccessRequired] = useState(false);

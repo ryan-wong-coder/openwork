@@ -78,6 +78,7 @@ export async function readOpenWorkAutomationCatalog(
   config: ServerConfig,
   fetcher: McpFetch = externalFetch,
 ): Promise<OpenWorkAutomationIndex | null> {
+  if (config.clientProfile === "local-gateway") return null;
   try {
     const candidates: Array<Record<string, unknown>> = [];
     const globalCloud = await readGlobalRuntimeMcpConfig(config, OPENWORK_CLOUD_MCP_NAME);

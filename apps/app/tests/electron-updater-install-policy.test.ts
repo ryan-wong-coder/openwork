@@ -4,6 +4,8 @@ import { act, createElement } from "react";
 import { createRoot } from "react-dom/client";
 
 import type { DenDesktopConfig } from "../src/app/lib/den";
+import { setClientProfileBootstrap } from "../src/app/lib/client-profile";
+import { currentLocale, setLocale } from "../src/i18n";
 import {
   useElectronUpdaterState,
   type SettingsUpdateStatus,
@@ -23,6 +25,7 @@ describe("install re-validates the organization's desktop version policy", () =>
   let refreshes: number;
   let refreshResult: () => Promise<DenDesktopConfig>;
   let downloadedConfig: DenDesktopConfig;
+  let previousLocale: ReturnType<typeof currentLocale>;
   const originalDev = process.env.DEV;
 
   // Stable callbacks, as the provider supplies them; new identities per render
@@ -51,6 +54,9 @@ describe("install re-validates the organization's desktop version policy", () =>
 
   beforeEach(async () => {
     GlobalRegistrator.register({ url: "http://localhost/" });
+    setClientProfileBootstrap({ requireSignin: true });
+    previousLocale = currentLocale();
+    setLocale("en");
     Object.defineProperty(globalThis, "IS_REACT_ACT_ENVIRONMENT", { configurable: true, value: true });
     // Bun aliases import.meta.env to process.env; DEV enables the metadata eval hook.
     process.env.DEV = "true";
@@ -94,6 +100,8 @@ describe("install re-validates the organization's desktop version policy", () =>
     await act(async () => root.unmount());
     if (originalDev === undefined) delete process.env.DEV;
     else process.env.DEV = originalDev;
+    setClientProfileBootstrap({ requireSignin: false, requireActivation: false });
+    setLocale(previousLocale);
     await GlobalRegistrator.unregister();
   });
 

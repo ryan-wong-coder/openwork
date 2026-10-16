@@ -19,12 +19,14 @@ type ClientProfileInput = {
   buildRequiresSignin?: boolean;
 };
 
-/** The local profile never overrides an install's authentication requirements. */
+/**
+ * Desktop and self-hosted web both default to the independent gateway client.
+ * A browser deployment or same-origin gateway marker does not imply a Den
+ * account. Explicit managed-install authentication requirements still win.
+ */
 export function resolveClientProfile(input: ClientProfileInput): ClientProfile {
   if (
-    input.deployment === "web"
-    || input.gatewayRuntime
-    || (input.distribution?.flavor !== undefined && input.distribution.flavor !== "public")
+    (input.distribution?.flavor !== undefined && input.distribution.flavor !== "public")
     || input.distribution?.requireSignin
     || input.distribution?.requireActivation
     || input.bootstrap?.requireSignin

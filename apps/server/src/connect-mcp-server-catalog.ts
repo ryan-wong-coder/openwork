@@ -13,6 +13,7 @@ import {
 } from "./runtime-opencode-config-store.js";
 import { externalFetch } from "./server-fetch.js";
 import type { ServerConfig, WorkspaceInfo } from "./types.js";
+import { isIndependentClient } from "./client-profile.js";
 import { createWorkspaceKvStore } from "./workspace-kv-store.js";
 
 export const CONNECT_MCP_SERVER_INDEX_URI = "openwork://connect/mcp-servers/index.json";
@@ -429,6 +430,7 @@ export async function refreshOpenWorkConnectMcpAppHostCatalog(
   workspaceId: string,
   fetcher?: McpFetch,
 ): Promise<{ status: "synced" | "unavailable"; appHostNames: string[]; diagnostic: ConnectMcpCatalogDiagnostic }> {
+  if (isIndependentClient(config)) return { status: "unavailable", appHostNames: [], diagnostic: "discovery_unavailable" };
   const cloudMcp = await readGlobalRuntimeMcpConfig(config, "openwork-cloud")
     ?? await readRuntimeMcpConfig(config, workspaceId, "openwork-cloud");
   if (!cloudMcp) {
@@ -463,6 +465,7 @@ export async function reconcileOpenWorkConnectMcpServers(input: {
   appHostAuthorization?: string;
   fetcher?: McpFetch;
 }): Promise<{ status: "synced" | "unavailable"; appHostNames: string[]; directNames: string[]; removedNames: string[]; diagnostic: ConnectMcpCatalogDiagnostic }> {
+  if (isIndependentClient(input.config)) return { status: "unavailable", appHostNames: [], directNames: [], removedNames: [], diagnostic: "discovery_unavailable" };
   const trustedCloudEndpoint = await trustedAppHostCloudEndpoint(input.cloudMcp);
   if (trustedCloudEndpoint && input.appHostAuthorization !== undefined) {
     await writeOpenWorkConnectMcpAppHostAuthorization(

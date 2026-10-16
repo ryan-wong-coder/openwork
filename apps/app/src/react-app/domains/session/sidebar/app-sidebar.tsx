@@ -1,5 +1,8 @@
 /** @jsxImportSource react */
 import { useNewTaskDraftState } from "../sync/draft-store";
+import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity";
+import { ZenoMark } from "@/components/brand/zeno-brand";
+import "./zeno-sidebar.css";
 import { newSessionDraftOwnerKey, newSessionDraftSlot } from "../chat/new-session-destination";
 import { persistableComposerDraftText, useComposerStateStore } from "../surface/composer-state-store";
 import * as React from "react";
@@ -645,6 +648,7 @@ function isSessionActivityStatus(status: string | undefined): status is SessionA
 
 export function AppSidebar(props: AppSidebarProps) {
   const { open, isMobile } = useSidebar();
+  const zeno = isZenoInterfaceEnabled();
   // Lives in the UI store (not component state) so the open/closed state of
   // each workspace group survives this sidebar unmounting, e.g. while the
   // user is in Settings.
@@ -751,12 +755,18 @@ export function AppSidebar(props: AppSidebarProps) {
   return (
     <SidebarContext.Provider value={contextValue}>
       <Sidebar
+        data-zeno-sidebar={zeno ? "true" : undefined}
         collapsible="offcanvas"
         className="border-e-0 group-data-[side=left]:border-e-0 mac:**:data-[sidebar=sidebar]:bg-transparent"
       >
         <SidebarTitlebar history={props.conversationHistory} />
-        <div className="flex shrink-0 items-center pr-2 titlebar-drag">
-        {brandLogoUrl ? (
+        <div data-zeno-brand-row={zeno ? "true" : undefined} className="flex shrink-0 items-center pr-2 titlebar-drag">
+        {zeno ? (
+          <div data-sidebar-brand className="zeno-sidebar-brand flex min-w-0 flex-1 items-center gap-2.5 pl-4 pr-1" aria-label="泽诺 Zeno">
+            <ZenoMark className="size-6 shrink-0" />
+            <span className="zeno-sidebar-wordmark" aria-hidden="true">zeno</span>
+          </div>
+        ) : brandLogoUrl ? (
           <div
             data-testid="brand-logo"
             className="flex h-14 min-w-0 flex-1 items-center px-3 pb-3 pt-2 mac:pt-0"
@@ -781,6 +791,7 @@ export function AppSidebar(props: AppSidebarProps) {
               <SidebarMenuButton
                 type="button"
                 data-sidebar-new-chat
+                isActive={zeno && !props.selectedSessionId && !props.extensionsActive && !props.dashboardActive && !props.automationsActive && !props.calendarActive}
                 className="text-sidebar-foreground/70"
                 aria-label={t("session.new_task")}
                 aria-keyshortcuts={isMacPlatform() ? "Meta+N" : "Control+N"}

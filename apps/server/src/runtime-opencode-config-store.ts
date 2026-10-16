@@ -2,6 +2,7 @@ import { desktopConfigSchema, type DesktopConfig } from "@openwork/types/den/des
 import { existsSync } from "node:fs";
 import { importNodeSqlite, runtimeDbPath } from "./runtime-db.js";
 import type { ServerConfig } from "./types.js";
+import { isIndependentClient, isOpenworkManagedMcp } from "./client-profile.js";
 import { createWorkspaceKvStore, isRecord } from "./workspace-kv-store.js";
 
 export { runtimeDbPath, runtimeStorageDir } from "./runtime-db.js";
@@ -107,6 +108,7 @@ export async function readRuntimeMcpConfig(
   workspaceId: string,
   name: string,
 ): Promise<Record<string, unknown> | null> {
+  if (isIndependentClient(config) && isOpenworkManagedMcp(name)) return null;
   return runtimeMcpMap(await readRuntimeOpencodeConfig(config, workspaceId))[name] ?? null;
 }
 

@@ -1,5 +1,6 @@
 /** @jsxImportSource react */
 import type * as React from "react";
+import "../zeno-settings.css";
 import { DesktopUpdateButton } from "../state/desktop-updater-provider";
 import { ChevronDown, X } from "lucide-react";
 
@@ -54,7 +55,7 @@ export function SettingsShell(props: SettingsShellProps) {
 
   if (props.compact) {
     return (
-      <div className="flex h-full min-h-0 w-full flex-col overflow-hidden bg-background">
+      <div data-settings-shell className="flex h-full min-h-0 w-full flex-col overflow-hidden bg-background">
         <header className="flex h-11 shrink-0 items-center justify-between gap-2 border-b border-dls-border px-3 mac:titlebar-drag">
           <div className="flex min-w-0 items-center gap-2 mac:titlebar-no-drag">
             <SettingsSectionMenu
@@ -97,7 +98,7 @@ export function SettingsShell(props: SettingsShellProps) {
   }
 
   return (
-    <div className="flex h-dvh min-h-dvh w-full overflow-hidden">
+    <div data-settings-shell className="flex h-dvh min-h-dvh w-full overflow-hidden">
       <SidebarProvider defaultOpen className="relative min-h-0 flex-1">
         <SettingsSidebar
           activeTab={props.activeTab}

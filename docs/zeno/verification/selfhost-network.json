@@ -1,0 +1,11 @@
+{
+  "scope": "Self-hosted Web cold reload; no host-header interception",
+  "requestCount": 1025,
+  "origins": [
+    "http://127.0.0.1:5178",
+    "null",
+    "http://127.0.0.1:8778"
+  ],
+  "officialRequests": [],
+  "runtimeExceptions": []
+}

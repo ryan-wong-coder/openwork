@@ -38,7 +38,7 @@ test("a captured error renders the recovery screen with the details collapsed", 
   error.stack = "Error: render exploded\n    at sessionRoute (session-route.tsx:1797)";
   const html = renderFallback(error);
 
-  expect(html).toContain("OpenWork 遇到意外错误");
+  expect(html).toContain("泽诺遇到意外错误");
   expect(html).toContain("重新加载");
   expect(html).toContain('aria-expanded="false"');
   expect(html).toContain("技术详情");
@@ -47,6 +47,62 @@ test("a captured error renders the recovery screen with the details collapsed", 
   expect(html).not.toContain("session-route.tsx:1797");
   expect(html).not.toContain("复制详情");
   expect(html).not.toContain("打开日志文件夹");
+});
+
+test("connected installations retain OpenWork startup and recovery branding", async () => {
+  const ownedDom = typeof window === "undefined";
+  if (ownedDom) GlobalRegistrator.register({ url: "http://localhost/" });
+  const bridge = window.__OPENWORK_ELECTRON__;
+  Reflect.set(window, "__OPENWORK_ELECTRON__", { meta: { distribution: { flavor: "cloud", requireSignin: true } } });
+  try {
+    expect(renderToStaticMarkup(<StartupScreen />)).toContain("正在启动 OpenWork");
+    expect(renderFallback(new Error("render exploded"))).toContain("OpenWork 遇到意外错误");
+    expect(renderFallback(new Error("render exploded"))).not.toContain("泽诺遇到意外错误");
+  } finally {
+    if (bridge === undefined) Reflect.deleteProperty(window, "__OPENWORK_ELECTRON__");
+    else Reflect.set(window, "__OPENWORK_ELECTRON__", bridge);
+    if (ownedDom) await GlobalRegistrator.unregister();
+  }
+});
+
+test("self-hosted web starts as Zeno without a Den sign-in surface and respects a required sign-in build", async () => {
+  const ownedDom = typeof window === "undefined";
+  if (ownedDom) GlobalRegistrator.register({ url: "http://self-hosted.example.test/" });
+  const bridge = window.__OPENWORK_ELECTRON__;
+  const gateway = window.__OPENWORK_GATEWAY__;
+  const previous = {
+    deployment: process.env.VITE_OPENWORK_DEPLOYMENT,
+    profile: process.env.VITE_OPENWORK_CLIENT_PROFILE,
+    requireSignin: process.env.VITE_DEN_REQUIRE_SIGNIN,
+  };
+  Reflect.deleteProperty(window, "__OPENWORK_ELECTRON__");
+  window.__OPENWORK_GATEWAY__ = { version: 1 };
+  process.env.VITE_OPENWORK_DEPLOYMENT = "web";
+  process.env.VITE_OPENWORK_CLIENT_PROFILE = "local-gateway";
+  process.env.VITE_DEN_REQUIRE_SIGNIN = "0";
+  try {
+    const localHtml = renderToStaticMarkup(<StartupScreen />);
+    expect(localHtml).toContain("正在启动泽诺");
+    expect(localHtml).not.toContain("web-startup-screen");
+    expect(renderFallback(new Error("render exploded"))).toContain("泽诺遇到意外错误");
+    process.env.VITE_DEN_REQUIRE_SIGNIN = "1";
+    const managedHtml = renderToStaticMarkup(<StartupScreen />);
+    expect(managedHtml).toContain("正在启动 OpenWork");
+    expect(managedHtml).toContain("web-startup-screen");
+    expect(renderFallback(new Error("render exploded"))).toContain("OpenWork 遇到意外错误");
+  } finally {
+    if (previous.deployment === undefined) delete process.env.VITE_OPENWORK_DEPLOYMENT;
+    else process.env.VITE_OPENWORK_DEPLOYMENT = previous.deployment;
+    if (previous.profile === undefined) delete process.env.VITE_OPENWORK_CLIENT_PROFILE;
+    else process.env.VITE_OPENWORK_CLIENT_PROFILE = previous.profile;
+    if (previous.requireSignin === undefined) delete process.env.VITE_DEN_REQUIRE_SIGNIN;
+    else process.env.VITE_DEN_REQUIRE_SIGNIN = previous.requireSignin;
+    if (bridge === undefined) Reflect.deleteProperty(window, "__OPENWORK_ELECTRON__");
+    else Reflect.set(window, "__OPENWORK_ELECTRON__", bridge);
+    if (gateway === undefined) delete window.__OPENWORK_GATEWAY__;
+    else window.__OPENWORK_GATEWAY__ = gateway;
+    if (ownedDom) await GlobalRegistrator.unregister();
+  }
 });
 
 test("non-Error throws still produce a readable message", () => {
@@ -269,7 +325,7 @@ test("the architecture check shows progress without mounting the gated applicati
         <ArchitectureMismatchGate><p>private workspace</p></ArchitectureMismatchGate>
       </BootStateProvider>,
     );
-    expect(html).toContain("正在检查此 OpenWork 安装");
+    expect(html).toContain("正在检查泽诺安装");
     expect(html).toContain("重新加载");
     expect(html).not.toContain("private workspace");
   } finally {
@@ -310,7 +366,7 @@ test.each(["ready", "error"])("pending startup remains actionable and settles to
         </StrictMode>,
       );
     });
-    expect(container.textContent).toContain("正在启动 OpenWork");
+    expect(container.textContent).toContain("正在启动泽诺");
     expect(mounted).toBe(0);
     const retry = container.querySelector("button");
     expect(retry?.textContent?.trim()).toBe("重新加载");
@@ -321,12 +377,12 @@ test.each(["ready", "error"])("pending startup remains actionable and settles to
       if (outcome === "ready") startup.resolve(<Session />);
       else startup.reject(new Error("bootstrap IPC failed"));
     });
-    expect(container.textContent).not.toContain("正在启动 OpenWork");
+    expect(container.textContent).not.toContain("正在启动泽诺");
     if (outcome === "ready") {
       expect(container.textContent).toBe("restored thread");
       expect(mounted).toBeGreaterThan(0);
     } else {
-      expect(container.textContent).toContain("OpenWork 遇到意外错误");
+      expect(container.textContent).toContain("泽诺遇到意外错误");
       expect(container.textContent).toContain("重新加载");
       expect(container.textContent).not.toContain("bootstrap IPC failed");
       expect(mounted).toBe(0);

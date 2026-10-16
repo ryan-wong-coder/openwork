@@ -1,7 +1,7 @@
 import type { EnvService } from "../env-file.js";
 import { ApiError } from "../errors.js";
 import {
-  gatewayRequest, parseGatewayInput, parseGatewayModels, publicGatewayConfig,
+  gatewayRequest, gatewayStatus, parseGatewayInput, parseGatewayModels, publicGatewayConfig,
   readGatewaySettings, saveGatewayConfig, syncGatewayModels, testGatewayConnection,
 } from "../gateway-config.js";
 import { generateGatewayImage } from "../gateway-images.js";
@@ -27,6 +27,7 @@ export function registerGatewayRoutes(options: {
     return response;
   };
   addRoute(routes, "POST", "/gateway/openai/chat/completions", "none", async (ctx) => forwardGatewayChat(config, env, ctx.request));
+  addRoute(routes, "GET", "/gateway/status", "client", async () => privateResponse(await gatewayStatus(env, config)));
   addRoute(routes, "GET", "/gateway/config", "host-token", async () => privateResponse(await publicGatewayConfig(env, config)));
   addRoute(routes, "PUT", "/gateway/config", "host-token", async (ctx) => {
     ensureWritable(config);

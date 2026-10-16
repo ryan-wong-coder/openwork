@@ -5,6 +5,7 @@ import { formatCrashDiagnostic } from "@/app/lib/crash-diagnostics";
 import { openworkServerInfo, readDesktopDistributionInfo, revealDesktopItemInDir } from "@/app/lib/desktop";
 import { reportCaughtWebError } from "@/app/lib/error-monitoring";
 import { getOpenWorkDeployment } from "@/app/lib/openwork-deployment";
+import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity";
 
 const APP_VERSION = String(import.meta.env.VITE_OPENWORK_APP_VERSION ?? "").trim();
 
@@ -104,7 +105,9 @@ function RecoveryScreen({ crash }: { crash: CrashDetails }) {
     <div className="flex h-screen w-screen items-center justify-center bg-background p-6" role="alert">
       <div className="flex w-full max-w-lg flex-col gap-4 text-sm">
         <div className="flex flex-col gap-1">
-          <h1 className="text-lg font-semibold text-foreground">{recoveryText("OpenWork hit an unexpected error", "OpenWork 遇到意外错误")}</h1>
+          <h1 className="text-lg font-semibold text-foreground">{isZenoInterfaceEnabled()
+            ? recoveryText("Zeno hit an unexpected error", "泽诺遇到意外错误")
+            : recoveryText("OpenWork hit an unexpected error", "OpenWork 遇到意外错误")}</h1>
           <p className="text-muted-foreground">
             {recoveryText("The window recovered instead of going blank. Reloading usually clears it.", "窗口已恢复，重新加载通常可以解决此问题。")}
           </p>

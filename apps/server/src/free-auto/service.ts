@@ -73,12 +73,13 @@ export class AnonymousInferenceService {
     this.activation = new TaskActivation(now);
     // The desktop host says whether this installation may offer Auto; OpenWork web and headless servers always may.
     this.host = config.anonymousInference?.desktop ?? null;
-    this.enabled = !config.readOnly && !this.settings.disabledByEnvironment;
+    this.enabled = config.clientProfile !== "local-gateway" && !config.readOnly && !this.settings.disabledByEnvironment;
   }
 
   // ── Identity ───────────────────────────────────────────────────────────
 
   setMemberSession(session: CloudProviderDenSession | null): Promise<void> {
+    if (this.config.clientProfile === "local-gateway") return Promise.resolve();
     const next = session ? { ...session, baseUrl: session.baseUrl.replace(/\/+$/, "") } : null;
     const previous = this.memberSession;
     if (previous?.baseUrl === next?.baseUrl && previous?.orgId === next?.orgId && previous?.token === next?.token) return this.relayConfigUpdate;
@@ -177,6 +178,7 @@ export class AnonymousInferenceService {
   // ── Engine configuration and dispatch guard ────────────────────────────
 
   async initialize(boundPort: number): Promise<boolean> {
+    if (this.config.clientProfile === "local-gateway") return false;
     this.boundPort = boundPort;
     this.cachedStatus = null;
     if (this.stopped || this.config.readOnly) return false;
@@ -277,6 +279,7 @@ export class AnonymousInferenceService {
   }
 
   async status(force = false): Promise<DesktopFreeAccessStatus> {
+    if (this.config.clientProfile === "local-gateway") return this.unavailable("free_disabled");
     // A deployment opt-out uses the same quiet UI state as a switched-off gateway.
     if (this.settings.disabledByEnvironment) return this.unavailable("free_disabled");
     const signal = this.identityController.signal;

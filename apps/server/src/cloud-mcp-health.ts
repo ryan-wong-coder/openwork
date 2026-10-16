@@ -18,6 +18,7 @@ import {
 } from "./runtime-opencode-config-store.js";
 import { externalFetch } from "./server-fetch.js";
 import type { ServerConfig, WorkspaceInfo } from "./types.js";
+import { isIndependentClient } from "./client-profile.js";
 import { validateMcpConfig } from "./validators.js";
 
 export const OPENWORK_CLOUD_MCP_NAME = "openwork-cloud";
@@ -953,6 +954,7 @@ async function readPersistedDesiredConfig(
   config: ServerConfig,
   workspaceId: string,
 ): Promise<Record<string, unknown> | undefined> {
+  if (isIndependentClient(config)) return undefined;
   const globalEntry = runtimeMcpMap(await readGlobalRuntimeOpencodeConfig(config))[OPENWORK_CLOUD_MCP_NAME];
   if (globalEntry) return globalEntry;
   return runtimeMcpMap(await readRuntimeOpencodeConfig(config, workspaceId))[OPENWORK_CLOUD_MCP_NAME];
@@ -961,6 +963,7 @@ async function readPersistedDesiredConfig(
 export async function migrateOpenworkCloudMcpRuntimeConfig(
   config: ServerConfig,
 ): Promise<{ config: Record<string, unknown> | null; changed: boolean }> {
+  if (isIndependentClient(config)) return { config: null, changed: false };
   const rows = await listRuntimeOpencodeConfigRows(config);
   const globalRow = rows.find((row) => row.workspaceId === ENGINE_GLOBAL_RUNTIME_CONFIG_ID);
   const globalEntry = globalRow
@@ -2543,6 +2546,7 @@ export async function reconcileOpenworkCloudMcp(input: {
   refreshRegistrationFromLiveStatus?: CloudMcpLiveStatusObserver;
   fanoutGlobalDesired?: boolean;
 }): Promise<CloudMcpHealth> {
+  if (isIndependentClient(input.config)) return readOpenworkCloudMcpHealth(input);
   let connectCatalogDiagnostic: ConnectMcpCatalogDiagnostic | undefined;
   const readHealth = async (directProbeReuse?: DirectProbeReuse): Promise<CloudMcpHealth> => ({
     ...await readOpenworkCloudMcpHealthInternal({

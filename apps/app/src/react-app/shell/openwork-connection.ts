@@ -11,6 +11,7 @@ import { isWebDeployment } from "../../app/lib/openwork-deployment";
 import { openworkServerInfo, type OpenworkServerInfo } from "../../app/lib/desktop";
 import { isDesktopRuntime } from "../../app/utils";
 import { isLocalGatewayClient } from "../../app/lib/client-profile";
+import { configuredSelfHostedUrls, selfHostedServerAllowed } from "../../app/lib/self-hosted-server-policy";
 
 export type OpenworkConnectionSource = "desktop-runtime" | "stored-settings" | "same-origin" | "gateway" | "empty";
 
@@ -60,7 +61,8 @@ export function isStaleStoredDesktopConnection(input: {
  * connections and for desktop cases where the runtime bridge is unavailable.
  */
 export async function resolveOpenworkConnection(): Promise<ResolvedOpenworkConnection> {
-  const gatewayOrigin = getOpenworkGatewayOrigin();
+  const localClient = isLocalGatewayClient();
+  const gatewayOrigin = localClient ? null : getOpenworkGatewayOrigin();
   if (gatewayOrigin) {
     return {
       normalizedBaseUrl: normalizeOpenworkServerUrl(gatewayOrigin) ?? "",
@@ -101,7 +103,8 @@ export async function resolveOpenworkConnection(): Promise<ResolvedOpenworkConne
 
   const settings = readOpenworkServerSettings();
   const normalizedBaseUrl = normalizeOpenworkServerUrl(settings.urlOverride ?? "") ?? "";
-  if (isLocalGatewayClient() && normalizedBaseUrl && !isLoopbackOpenworkServerUrl(normalizedBaseUrl)) {
+  const ownOrigin = !isDesktopRuntime() && isWebDeployment() && typeof window !== "undefined" ? window.location.origin : undefined;
+  if (localClient && normalizedBaseUrl && !selfHostedServerAllowed(normalizedBaseUrl, { appOrigin: ownOrigin, configuredUrls: configuredSelfHostedUrls() })) {
     return { normalizedBaseUrl: "", resolvedToken: "", resolvedHostToken: "", hostInfo: null, source: "empty" };
   }
   const sameOriginBaseUrl =
@@ -110,7 +113,7 @@ export async function resolveOpenworkConnection(): Promise<ResolvedOpenworkConne
       : "";
   const resolvedToken = settings.token?.trim() ?? "";
   const resolvedHostToken =
-    normalizedBaseUrl && isLoopbackOpenworkServerUrl(normalizedBaseUrl)
+    (localClient || (normalizedBaseUrl && isLoopbackOpenworkServerUrl(normalizedBaseUrl)))
       ? settings.hostToken?.trim() ?? ""
       : "";
   const storedConnectionIsStaleDesktopRuntime = isStaleStoredDesktopConnection({

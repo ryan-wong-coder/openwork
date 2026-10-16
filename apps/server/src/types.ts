@@ -88,6 +88,8 @@ export type DesktopFreeHost = {
 };
 
 export interface ServerConfig {
+  /** Trusted startup distribution; never accepted from the HTTP/workspace configuration. */
+  clientProfile?: "local-gateway" | "connected";
   host: string;
   port: number;
   token: string;

@@ -1,6 +1,7 @@
 /** @jsxImportSource react */
 import { useEffect, useState } from "react";
-import { Check, FileText, LayoutGrid, Plug, Server, SquareTerminal, UserRound } from "lucide-react";
+import { Check, ChevronRight, FileText, LayoutGrid, Plug, Server, SquareTerminal, UserRound } from "lucide-react";
+import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -160,14 +161,28 @@ export function LibraryAddKindPicker(props: {
         if (!open) props.onClose();
       }}
     >
-      <DialogContent className="max-h-[min(92dvh,880px)] overflow-y-auto lg:max-w-xl">
+      <DialogContent className={cn("max-h-[min(92dvh,880px)] overflow-y-auto lg:max-w-xl", isZenoInterfaceEnabled() && "zeno-library-kind-picker gap-4 sm:max-w-md")}>
         <DialogHeader>
-          <DialogTitle className="text-2xl font-semibold tracking-[-0.03em]">
+          <DialogTitle className={isZenoInterfaceEnabled() ? "text-lg font-semibold tracking-tight" : "text-2xl font-semibold tracking-[-0.03em]"}>
             {t("extensions.add_picker_title")}
           </DialogTitle>
-          <DialogDescription>{t("extensions.add_picker_hint")}</DialogDescription>
+          <DialogDescription className={isZenoInterfaceEnabled() ? "sr-only" : undefined}>{t("extensions.add_picker_hint")}</DialogDescription>
         </DialogHeader>
-        <div
+        {isZenoInterfaceEnabled() ? (
+          <div data-testid="library-add-choices" className="divide-y divide-border">
+            {orderedKinds.map((kind) => {
+              const meta = kindMeta(kind);
+              const Icon = meta.icon;
+              const showCues = (kind === "connection" || kind === "mcp") && (props.connectorCues?.length ?? 0) > 0;
+              return <Button key={kind} variant="ghost" type="button" data-kind={kind} className="h-auto min-h-12 w-full justify-start gap-3 rounded-none px-1 py-2.5" onClick={() => choose(kind)}>
+                <Icon className="size-4 text-muted-foreground" />
+                <span data-kind-title={kind} className="flex-1 text-left text-sm font-medium">{meta.title}</span>
+                {showCues ? <span className="flex items-center -space-x-1" data-testid="connection-logo-cues">{props.connectorCues?.slice(0, 3).map((cue) => <ConnectorLogoCue key={cue.id} cue={cue} />)}</span> : null}
+                <ChevronRight className="size-3.5 text-muted-foreground" />
+              </Button>;
+            })}
+          </div>
+        ) : <div
           role="radiogroup"
           aria-label={t("extensions.add_picker_title")}
           className="flex min-w-0 flex-col gap-1"
@@ -183,13 +198,13 @@ export function LibraryAddKindPicker(props: {
               connectorCues={props.connectorCues ?? []}
             />
           ))}
-        </div>
+        </div>}
         <DialogFooter>
-          <p className="me-auto text-xs text-dls-secondary">{t("extensions.add_picker_footer")}</p>
+          {!isZenoInterfaceEnabled() ? <p className="me-auto text-xs text-dls-secondary">{t("extensions.add_picker_footer")}</p> : null}
           <DialogClose render={<Button variant="outline" />}>{t("common.cancel")}</DialogClose>
-          <Button disabled={!selected} onClick={() => choose(selected)}>
+          {!isZenoInterfaceEnabled() ? <Button disabled={!selected} onClick={() => choose(selected)}>
             {t("extensions.add_picker_continue")}
-          </Button>
+          </Button> : null}
         </DialogFooter>
       </DialogContent>
     </Dialog>

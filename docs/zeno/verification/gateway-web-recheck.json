@@ -1,0 +1,28 @@
+{
+  "state": {
+    "width": 390,
+    "scrollWidth": 390,
+    "theme": "dark",
+    "readOnly": true,
+    "ready": "已就绪",
+    "inputs": 0
+  },
+  "requests": [
+    {
+      "path": "/gateway/config",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/gateway/config",
+      "method": "GET"
+    },
+    {
+      "path": "/gateway/status",
+      "method": "GET"
+    },
+    {
+      "path": "/gateway/status",
+      "method": "OPTIONS"
+    }
+  ]
+}

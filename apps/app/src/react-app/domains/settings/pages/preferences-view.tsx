@@ -11,6 +11,8 @@ import { Switch } from "@/components/ui/switch";
 
 import { t } from "@/i18n";
 import { isElectronRuntime } from "@/app/utils";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
+import { isZenoInterfaceEnabled, ZENO_PRODUCT_NAME } from "@/app/lib/zeno-identity";
 import { isLinkOpenDestination, type LinkOpenDestination } from "@/react-app/kernel/local-preferences-storage";
 import {
   DESKTOP_NOTIFICATION_PREFERENCE_VALUES,
@@ -60,8 +62,10 @@ function desktopNotificationPreferenceLabel(value: DesktopNotificationPreference
 }
 
 export function PreferencesView(props: PreferencesViewProps) {
+  const zeno = isZenoInterfaceEnabled();
+  const localOnly = isLocalGatewayClient();
   const linkDestinationItems = [
-    { value: "openwork", label: "OpenWork" },
+    { value: "openwork", label: zeno ? ZENO_PRODUCT_NAME : "OpenWork" },
     { value: "external", label: t("settings.links.external") },
   ];
   const desktopNotificationItems = DESKTOP_NOTIFICATION_PREFERENCE_VALUES.map((value) => ({
@@ -74,14 +78,14 @@ export function PreferencesView(props: PreferencesViewProps) {
       <LayoutSection>
         <LayoutSectionHeader>
           <LayoutSectionTitle>{t("settings.model_title")}</LayoutSectionTitle>
-          <LayoutSectionDescription>{t("settings.model_section_desc")}</LayoutSectionDescription>
+          <LayoutSectionDescription optional>{t("settings.model_section_desc")}</LayoutSectionDescription>
         </LayoutSectionHeader>
 
         {/* Show reasoning */}
         <LayoutSectionItem>
           <LayoutSectionItemHeader>
             <LayoutSectionItemTitle>{t("settings.show_model_reasoning")}</LayoutSectionItemTitle>
-            <LayoutSectionItemDescription>{t("settings.show_model_reasoning_desc")}</LayoutSectionItemDescription>
+            <LayoutSectionItemDescription optional helpLabel={t("settings.show_model_reasoning")}>{t("settings.show_model_reasoning_desc")}</LayoutSectionItemDescription>
             <LayoutSectionItemHeaderActions>
               <Switch
                 aria-label={t("settings.show_model_reasoning")}
@@ -97,7 +101,7 @@ export function PreferencesView(props: PreferencesViewProps) {
         <LayoutSectionItem>
           <LayoutSectionItemHeader>
             <LayoutSectionItemTitle>{t("settings.auto_compact")}</LayoutSectionItemTitle>
-            <LayoutSectionItemDescription>{t("settings.auto_compact_desc")}</LayoutSectionItemDescription>
+            <LayoutSectionItemDescription optional helpLabel={t("settings.auto_compact")}>{t("settings.auto_compact_desc")}</LayoutSectionItemDescription>
             <LayoutSectionItemHeaderActions>
               <Switch
                 aria-label={t("settings.auto_compact")}
@@ -113,13 +117,13 @@ export function PreferencesView(props: PreferencesViewProps) {
       <LayoutSection>
         <LayoutSectionHeader>
           <LayoutSectionTitle>{t("settings.desktop_notifications.title")}</LayoutSectionTitle>
-          <LayoutSectionDescription>{t("settings.desktop_notifications.section_desc")}</LayoutSectionDescription>
+          <LayoutSectionDescription optional>{t("settings.desktop_notifications.section_desc")}</LayoutSectionDescription>
         </LayoutSectionHeader>
 
         <LayoutSectionItem>
           <LayoutSectionItemHeader>
             <LayoutSectionItemTitle>{t("settings.desktop_notifications.mode")}</LayoutSectionItemTitle>
-            <LayoutSectionItemDescription>{t("settings.desktop_notifications.mode_desc")}</LayoutSectionItemDescription>
+            <LayoutSectionItemDescription optional helpLabel={t("settings.desktop_notifications.mode")}>{t("settings.desktop_notifications.mode_desc")}</LayoutSectionItemDescription>
             <LayoutSectionItemHeaderActions>
               <div className="w-44 max-w-full">
                 <Select
@@ -157,13 +161,13 @@ export function PreferencesView(props: PreferencesViewProps) {
         <LayoutSection>
           <LayoutSectionHeader>
             <LayoutSectionTitle>{t("settings.browser_title")}</LayoutSectionTitle>
-            <LayoutSectionDescription>{t("settings.browser_section_desc")}</LayoutSectionDescription>
+            <LayoutSectionDescription optional>{t("settings.browser_section_desc")}</LayoutSectionDescription>
           </LayoutSectionHeader>
 
           <LayoutSectionItem>
             <LayoutSectionItemHeader className="min-h-10 items-center">
               <LayoutSectionItemTitle>{t("settings.links.open_in")}</LayoutSectionItemTitle>
-              <LayoutSectionItemDescription>{t("settings.links.open_in_desc")}</LayoutSectionItemDescription>
+              <LayoutSectionItemDescription optional helpLabel={t("settings.links.open_in")}>{t("settings.links.open_in_desc")}</LayoutSectionItemDescription>
               <LayoutSectionItemHeaderActions className="self-center">
                 <Select
                   value={props.linkOpenDestination}
@@ -200,19 +204,20 @@ export function PreferencesView(props: PreferencesViewProps) {
       <LayoutSection>
         <LayoutSectionHeader>
           <LayoutSectionTitle>{t("settings.privacy_title")}</LayoutSectionTitle>
-          <LayoutSectionDescription>{t("settings.privacy_section_desc")}</LayoutSectionDescription>
+          {!zeno ? <LayoutSectionDescription>{t("settings.privacy_section_desc")}</LayoutSectionDescription> : null}
         </LayoutSectionHeader>
 
         <LayoutSectionItem>
           <LayoutSectionItemHeader>
             <LayoutSectionItemTitle>{t("settings.analytics_toggle")}</LayoutSectionItemTitle>
-            <LayoutSectionItemDescription>{t("settings.analytics_toggle_desc")}</LayoutSectionItemDescription>
+            <LayoutSectionItemDescription optional helpLabel={t("settings.analytics_toggle")}>{t("settings.analytics_toggle_desc")}</LayoutSectionItemDescription>
             <LayoutSectionItemHeaderActions>
+              {localOnly ? <span className="text-xs text-muted-foreground">{t("zeno.settings.analytics_local_disabled")}</span> : null}
               <Switch
                 aria-label={t("settings.analytics_toggle")}
-                checked={props.analyticsEnabled}
-                disabled={props.busy}
-                onCheckedChange={props.onToggleAnalytics}
+                checked={!localOnly && props.analyticsEnabled}
+                disabled={props.busy || localOnly}
+                onCheckedChange={() => { if (!localOnly) props.onToggleAnalytics(); }}
               />
             </LayoutSectionItemHeaderActions>
           </LayoutSectionItemHeader>

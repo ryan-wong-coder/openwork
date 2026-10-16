@@ -1,7 +1,8 @@
 /** @jsxImportSource react */
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { ChevronRight, RefreshCw } from "lucide-react";
-import type { OpenworkServerClient } from "@/app/lib/openwork-server";
+import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity";
+import { OpenworkServerError, type GatewayStatus, type OpenworkServerClient } from "@/app/lib/openwork-server";
 import { SecretField, type SecretFieldHandle } from "@/components/secret-field";
 import { Button } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
@@ -78,6 +79,7 @@ export function GatewayView(props: {
   onGatewayReady?: (modelId: string) => void | Promise<void>;
 }) {
   const id = useId();
+  const zeno = isZenoInterfaceEnabled();
   const secret = useRef<SecretFieldHandle>(null);
   const readyCallback = useRef(props.onGatewayReady);
   readyCallback.current = props.onGatewayReady;
@@ -92,13 +94,17 @@ export function GatewayView(props: {
   const [action, setAction] = useState<"save" | "sync" | "test" | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
-  const disabled = Boolean(props.busy || loading || action || !props.client);
+  const [managementRequired, setManagementRequired] = useState(false);
+  const [readOnlyStatus, setReadOnlyStatus] = useState<GatewayStatus | null>(null);
+  const disabled = Boolean(props.busy || loading || action || managementRequired || !props.client);
 
   const load = useCallback(async () => {
     if (!props.client) { setLoading(false); return; }
     setLoading(true);
     setError(null);
     setNotice(null);
+    setManagementRequired(false);
+    setReadOnlyStatus(null);
     try {
       const config = await props.client.getGatewayConfig();
       setDraft({
@@ -125,7 +131,18 @@ export function GatewayView(props: {
         setPendingApply(deferred || refreshed.refresh === "deferred");
         if (refreshed.refresh === "deferred") setNotice("配置已保存，等待引擎应用。");
       }
-    } catch (cause) { setError(errorMessage(cause)); }
+    } catch (cause) {
+      if (cause instanceof OpenworkServerError && (cause.status === 401 || cause.status === 403)) {
+        setManagementRequired(true);
+        try {
+          setReadOnlyStatus(await props.client.getGatewayStatus());
+        } catch (statusCause) {
+          setError(statusCause instanceof OpenworkServerError && (statusCause.status === 401 || statusCause.status === 403)
+            ? "服务访问授权不可用，请由部署者检查服务地址与访问凭据。"
+            : `无法读取网关状态：${errorMessage(statusCause)}`);
+        }
+      } else setError(errorMessage(cause));
+    }
     finally { setLoading(false); }
   }, [props.client]);
 
@@ -192,22 +209,42 @@ export function GatewayView(props: {
 
   if (loading) return <LayoutStack><Skeleton className="h-9 w-40" /><Skeleton className="h-20 w-full" /><Skeleton className="h-20 w-full" /><Skeleton className="h-20 w-full" /></LayoutStack>;
 
+  if (managementRequired) {
+    const ready = Boolean(readOnlyStatus?.configured && readOnlyStatus.ready === true);
+    return (
+      <LayoutStack>
+        <section className="zeno-gateway flex flex-col gap-5" data-testid="gateway-management-status">
+          <div className="zeno-gateway-heading flex items-center justify-between gap-3">
+            <h2 className="text-base font-medium">模型网关</h2>
+            <span className="zeno-gateway-state text-xs text-muted-foreground" data-ready={ready} role="status">{readOnlyStatus ? ready ? "已就绪" : "尚未就绪" : "状态不可用"}</span>
+          </div>
+          {readOnlyStatus?.chatModel ? <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4 text-sm"><span className="text-muted-foreground">对话模型</span><span className="break-all">{readOnlyStatus.chatModel}</span></div> : null}
+          <SettingsNotice>网关由部署者管理，请在服务器上修改配置。</SettingsNotice>
+          {error ? <div role="alert"><SettingsNotice tone="error">{error}</SettingsNotice></div> : null}
+          <div><Button variant="outline" size="sm" disabled={props.busy || !props.client} onClick={() => void load()}><RefreshCw />重新检查</Button></div>
+        </section>
+      </LayoutStack>
+    );
+  }
+
   return (
     <LayoutStack>
-      <section className="flex flex-col gap-5" data-testid="gateway-settings">
-        <div className="flex items-center justify-between gap-3">
+      <section className="zeno-gateway flex flex-col gap-5" data-testid="gateway-settings">
+        <div className="zeno-gateway-heading flex items-center justify-between gap-3">
           <h2 className="text-base font-medium">模型网关</h2>
-          <span className="text-xs text-muted-foreground">{configured ? `密钥已保存${keyLast4 ? ` · 末四位 ${keyLast4}` : ""}${pendingApply ? " · 等待引擎应用" : providerReady ? "" : " · 待同步模型"}` : "尚未配置密钥"}</span>
+          <span className="zeno-gateway-state text-xs text-muted-foreground" data-ready={configured && providerReady && !pendingApply} role="status">{configured ? `密钥已保存${keyLast4 ? ` · 末四位 ${keyLast4}` : ""}${pendingApply ? " · 等待引擎应用" : providerReady ? "" : " · 待同步模型"}` : "尚未配置密钥"}</span>
         </div>
         {!props.client ? <SettingsNotice>本地服务尚未连接，连接后即可保存网关配置。</SettingsNotice> : null}
+        <div className="zeno-gateway-connection flex flex-col gap-5">
         <Field><FieldLabel htmlFor={`${id}-url`}>网关地址</FieldLabel><Input id={`${id}-url`} type="url" value={draft.baseURL} disabled={disabled} onChange={(event) => setDraft((previous) => ({ ...previous, baseURL: event.currentTarget.value }))} placeholder={DEFAULT_DRAFT.baseURL} /></Field>
         <SecretField id={`${id}-key`} label="API 密钥" handleRef={secret} onValueChange={setHasNewKey} disabled={disabled} placeholder={configured ? "留空以保留已保存的密钥" : "粘贴网关 API 密钥"} onSubmit={() => void save()} testId="gateway-api-key" />
-        <div className="flex flex-wrap items-center gap-2">
-          <Button variant="outline" disabled={disabled || (!configured && !hasNewKey)} onClick={() => void sync()}><RefreshCw className={action === "sync" ? "animate-spin" : undefined} />{action === "sync" ? "正在同步模型…" : "同步模型目录"}</Button>
-          <Button variant="outline" disabled={disabled || !configured} onClick={() => void testConnection()}>{action === "test" ? "正在测试连接…" : "测试已保存连接"}</Button>
-          {models.length ? <span className="text-xs text-muted-foreground">{models.filter((model) => model.kind === "chat").length} 个对话模型 · {models.filter((model) => model.kind === "image").length} 个图片模型</span> : null}
         </div>
-        <div className="grid gap-4 border-t border-border pt-5 sm:grid-cols-2">
+        <div className="zeno-gateway-tools flex flex-wrap items-center gap-2">
+          <Button variant={zeno ? "ghost" : "outline"} size={zeno ? "sm" : "default"} aria-label={action === "sync" ? "正在同步模型…" : "同步模型目录"} disabled={disabled || (!configured && !hasNewKey)} onClick={() => void sync()}><RefreshCw className={action === "sync" ? "animate-spin" : undefined} />{action === "sync" ? "正在同步模型…" : zeno ? "同步模型" : "同步模型目录"}</Button>
+          <Button variant={zeno ? "ghost" : "outline"} size={zeno ? "sm" : "default"} aria-label={action === "test" ? "正在测试连接…" : "测试已保存连接"} disabled={disabled || !configured} onClick={() => void testConnection()}>{action === "test" ? "正在测试连接…" : zeno ? "测试连接" : "测试已保存连接"}</Button>
+          {models.length ? <span className="zeno-gateway-model-count text-xs text-muted-foreground">{models.filter((model) => model.kind === "chat").length} 个对话模型 · {models.filter((model) => model.kind === "image").length} 个图片模型</span> : null}
+        </div>
+        <div className="zeno-gateway-models grid gap-4 border-t border-border pt-5 sm:grid-cols-2">
           <GatewayModelField id={`${id}-chat`} label="默认对话模型" value={draft.chatModel} models={models.filter((model) => model.kind === "chat")} disabled={disabled} onChange={(chatModel) => setDraft((previous) => ({ ...previous, chatModel }))} />
           <GatewayModelField id={`${id}-image`} label="图片生成模型" value={draft.imageModel} models={models.filter((model) => model.kind === "image")} disabled={disabled} onChange={(imageModel) => setDraft((previous) => ({ ...previous, imageModel }))} />
         </div>
@@ -225,9 +262,9 @@ export function GatewayView(props: {
             }} /></Field>
           </div>
         </details>
-        {error ? <SettingsNotice tone="error">{error}</SettingsNotice> : null}
-        {notice ? <SettingsNotice>{notice}</SettingsNotice> : null}
-        <div className="flex justify-end"><Button disabled={disabled || (!configured && !hasNewKey) || !draft.baseURL.trim() || !draft.chatModel.trim() || !draft.imageModel.trim()} onClick={() => void save()}>{action === "save" ? "正在保存并同步…" : "保存并同步模型"}</Button></div>
+        {error ? <div role="alert"><SettingsNotice tone="error">{error}</SettingsNotice></div> : null}
+        {notice ? <div role="status"><SettingsNotice>{notice}</SettingsNotice></div> : null}
+        <div className="zeno-settings-save flex justify-end"><Button aria-label={action === "save" ? "正在保存并同步…" : "保存并同步模型"} disabled={disabled || (!configured && !hasNewKey) || !draft.baseURL.trim() || !draft.chatModel.trim() || !draft.imageModel.trim()} onClick={() => void save()}>{action === "save" ? "正在保存并同步…" : zeno ? "保存配置" : "保存并同步模型"}</Button></div>
       </section>
     </LayoutStack>
   );

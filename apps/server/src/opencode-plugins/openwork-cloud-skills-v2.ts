@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isStandaloneAgentProfile } from "./local-client-profile.js";
 
 const catalogSchema = z.object({
   skills: z.array(z.object({
@@ -58,6 +59,7 @@ export function discoverySkills(value: unknown): NativeSkill[] {
  * leave local skill discovery alone, including its cold initialization.
  * No storage, configuration rewrite, watcher, or admission hook is involved. */
 export async function registerCloudSkillDiscovery(context: CloudSkillContext) {
+  if (isStandaloneAgentProfile()) return async () => {};
   let skills: NativeSkill[] = [];
   let fingerprint = "[]";
   let closed = false;

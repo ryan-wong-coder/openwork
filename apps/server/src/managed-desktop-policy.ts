@@ -83,6 +83,7 @@ class ManagedDesktopPolicy {
     return actual.length === expected.length && timingSafeEqual(actual, expected);
   }
   async setSession(session: CloudProviderDenSession): Promise<void> {
+    if (this.config.clientProfile === "local-gateway") return;
     // The desktop re-delivers the same identity on every launch, reload, and
     // resume. Only a different account may invalidate in-flight verifications.
     const current = this.session;
@@ -103,6 +104,7 @@ class ManagedDesktopPolicy {
     else void this.current().catch(() => undefined);
   }
   async clearSession(): Promise<void> {
+    if (this.config.clientProfile === "local-gateway") return;
     this.session = null;
     this.generation++;
     this.installed = undefined;

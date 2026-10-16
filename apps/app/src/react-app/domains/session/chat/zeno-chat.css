@@ -1,0 +1,191 @@
+/* Product styling is scoped to the declared, reversible Zeno interface. */
+html[data-zeno-interface="true"] [data-chat-viewport] {
+  background: var(--background);
+}
+
+html[data-zeno-interface="true"] [data-session-pane] {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: var(--background);
+  backdrop-filter: none;
+}
+
+html[data-zeno-interface="true"] [data-zeno-empty-hero] {
+  max-width: 48rem;
+  gap: 1.75rem;
+}
+
+html[data-zeno-interface="true"] .zeno-greeting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+html[data-zeno-interface="true"] .zeno-greeting-mascot {
+  width: 10rem;
+  height: 10rem;
+  object-fit: contain;
+}
+
+html[data-zeno-interface="true"] .zeno-greeting h2 {
+  margin: 0;
+  color: var(--foreground);
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -.035em;
+  line-height: 1.5;
+}
+
+html[data-zeno-interface="true"] .zeno-quick-intents {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .5rem 1.5rem;
+}
+
+html[data-zeno-interface="true"] .zeno-intent {
+  height: 2.75rem;
+  gap: .625rem;
+  padding-inline: .75rem;
+  color: var(--muted-foreground);
+  font-size: .8125rem;
+  font-weight: 400;
+  border-radius: var(--radius);
+  transition: background-color 160ms ease-out, color 160ms ease-out;
+}
+
+html[data-zeno-interface="true"] .zeno-intent:hover {
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+html[data-zeno-interface="true"] [data-zeno-gateway-setup] {
+  align-self: center;
+  gap: .625rem;
+  color: var(--foreground);
+}
+
+html[data-zeno-interface="true"] [data-zeno-composer]:not([data-composer-flush]) {
+  background: var(--background);
+  padding-block: .75rem 1rem;
+}
+
+html[data-zeno-interface="true"] [data-composer-panel] {
+  background: var(--card);
+  border-color: var(--border);
+  border-radius: var(--dls-radius-lg);
+  transition: border-color 160ms ease-out, box-shadow 160ms ease-out;
+}
+
+html[data-zeno-interface="true"] [data-composer-panel]:focus-within {
+  border-color: color-mix(in oklab, var(--foreground) 35%, var(--border));
+  box-shadow: 0 0 0 .1875rem color-mix(in oklab, var(--ring) 10%, transparent);
+}
+
+html[data-zeno-interface="true"] [data-composer-editor-area] {
+  padding: 1rem 1rem .75rem;
+}
+
+html[data-zeno-interface="true"] [data-composer-panel] [contenteditable] {
+  min-height: 3.25rem;
+  font-size: .875rem;
+  line-height: 1.75;
+}
+
+html[data-zeno-interface="true"] [data-composer-toolbar] {
+  gap: .5rem;
+}
+
+html[data-zeno-interface="true"] [data-composer-settings] {
+  font-weight: 400;
+}
+
+html[data-zeno-interface="true"] [data-composer-actions] > button {
+  width: 2.5rem;
+  height: 2.5rem;
+  max-height: 2.5rem;
+}
+
+html[data-zeno-interface="true"] [data-composer-actions] > button:focus-visible {
+  outline: .125rem solid var(--ring);
+  outline-offset: .1875rem;
+}
+
+html[data-zeno-interface="true"] [data-thread-scroll] {
+  padding-top: 2rem;
+}
+
+html[data-zeno-interface="true"] [data-message-role="user"] {
+  margin-block: .5rem 1.5rem;
+}
+
+html[data-zeno-interface="true"] [data-message-role="user"] .not-prose {
+  background: var(--muted);
+  border-radius: var(--dls-radius);
+  font-weight: 500;
+}
+
+html[data-zeno-interface="true"] [data-message-role="assistant"] .prose {
+  line-height: 1.85;
+}
+
+html[data-zeno-interface="true"] [data-testid="completed-work-rail"] {
+  font-size: .75rem;
+}
+
+html[data-zeno-interface="true"] [data-testid="completed-work-rail"]:focus-visible {
+  outline: .125rem solid var(--ring);
+  outline-offset: .1875rem;
+  border-radius: var(--radius);
+}
+
+html[data-zeno-interface="true"] [data-zeno-empty-session] {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-block: 2rem;
+}
+
+@media (max-width: 1023px) {
+  html[data-zeno-interface="true"] [data-zeno-empty-hero] {
+    gap: 1.25rem;
+    padding-top: 1rem;
+  }
+
+  html[data-zeno-interface="true"] .zeno-greeting {
+    gap: 1rem;
+  }
+
+  html[data-zeno-interface="true"] .zeno-greeting h2 {
+    font-size: 1.125rem;
+  }
+
+  html[data-zeno-interface="true"] .zeno-quick-intents {
+    gap: .25rem;
+  }
+
+  html[data-zeno-interface="true"] .zeno-intent {
+    gap: .375rem;
+    padding-inline: .625rem;
+  }
+
+  html[data-zeno-interface="true"] [data-composer-panel] {
+    border-radius: var(--dls-radius);
+  }
+
+  html[data-zeno-interface="true"] [data-composer-editor-area] {
+    padding: .75rem .75rem .5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-zeno-interface="true"] [data-composer-panel],
+  html[data-zeno-interface="true"] .zeno-intent,
+  html[data-zeno-interface="true"] [data-completed-step-run] [data-slot="collapsible-content"],
+  html[data-zeno-interface="true"] [data-completed-step-run] [data-slot="collapsible-trigger"] svg {
+    transition: none;
+  }
+}

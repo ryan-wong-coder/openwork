@@ -336,16 +336,17 @@ function mcpContribution(mcp: EngineMcpDescriptor): OpenworkFeatureContribution 
 export function buildOpenworkProviderContributions(
   skills: ConnectSkillDescriptor[],
   mcps: EngineMcpDescriptor[] = [],
+  standalone = false,
 ): OpenworkFeatureContribution[] {
   const cloudMcp = mcps.find((mcp) => mcp.name === "openwork-cloud");
   const connect = connectContribution(skills, cloudMcp);
   return [
     sessionContribution(),
-    automationContribution(),
+    ...(!standalone ? [automationContribution()] : []),
     extensionContribution(),
     ...mcps
-      .filter((mcp) => mcp.name !== "openwork-cloud")
+      .filter((mcp) => mcp.name !== "openwork-cloud" && (!standalone || !/^(?:openwork-connect-|openwork-direct-|openwork-app-host-connect-)/.test(mcp.name)))
       .map(mcpContribution),
-    ...(connect ? [connect] : []),
+    ...(connect && !standalone ? [connect] : []),
   ];
 }

@@ -42,6 +42,7 @@ import {
   safeStringify,
 } from "../../../../app/utils";
 import { t } from "../../../../i18n";
+import { isLocalGatewayClient } from "@/app/lib/client-profile";
 import type { DebugViewProps } from "../pages/debug-view";
 import type { ReleaseChannel } from "../../../../app/types";
 import type { OpenworkServerStore, OpenworkServerStoreSnapshot } from "../../connections/openwork-server-store";
@@ -527,6 +528,7 @@ export function useDebugViewModel(options: UseDebugViewModelOptions) {
   }, [developerLog]);
 
   const onOpenElectronPreviewRelease = useCallback(async () => {
+    if (isLocalGatewayClient()) return;
     try {
       await openDesktopUrl(ELECTRON_ALPHA_RELEASE_PAGE_URL);
       setElectronMigrationStatus(t("settings_extra.opened_the_rolling_electron_alpha_release_download_links_live_there_after_dev_builds_"));
@@ -582,7 +584,7 @@ export function useDebugViewModel(options: UseDebugViewModelOptions) {
   }, []);
 
   useEffect(() => {
-    if (!developerMode || !isElectronRuntime()) return;
+    if (isLocalGatewayClient() || !developerMode || !isElectronRuntime()) return;
     const bridge = window.__OPENWORK_ELECTRON__?.updater;
     if (!bridge?.getChannel) return;
     let cancelled = false;
@@ -598,6 +600,7 @@ export function useDebugViewModel(options: UseDebugViewModelOptions) {
   }, [developerMode]);
 
   const onSetElectronAlphaUpdaterChannel = useCallback(async (channel: ReleaseChannel) => {
+    if (isLocalGatewayClient()) return;
     if (!isElectronRuntime()) {
       setElectronAlphaUpdaterStatus(t("settings_extra.electron_updater_channels_are_available_only_in_the_electron_desktop_app"));
       return;
@@ -628,6 +631,7 @@ export function useDebugViewModel(options: UseDebugViewModelOptions) {
   }, [pushDeveloperLog]);
 
   const onCheckElectronAlphaUpdates = useCallback(async () => {
+    if (isLocalGatewayClient()) return;
     if (!isElectronRuntime()) {
       setElectronAlphaUpdaterStatus(t("settings_extra.electron_update_checks_are_available_only_in_the_electron_desktop_app"));
       return;
@@ -1024,7 +1028,7 @@ export function useDebugViewModel(options: UseDebugViewModelOptions) {
       onRevealElectronMigrationBackup,
       onPrepareElectronMigrationSnapshot,
       onInstallElectronPreviewFromTauri,
-      electronAlphaUpdaterAvailable: isElectronRuntime() && isMacPlatform(),
+      electronAlphaUpdaterAvailable: !isLocalGatewayClient() && isElectronRuntime() && isMacPlatform(),
       electronAlphaUpdaterBusy,
       electronAlphaUpdaterStatus,
       electronAlphaUpdaterChannel,

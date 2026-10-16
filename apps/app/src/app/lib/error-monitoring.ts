@@ -21,6 +21,7 @@ import { isAnalyticsEnabled } from "./analytics";
 import { formatCrashDiagnostic, redactCrashText } from "./crash-diagnostics";
 import { getOpenWorkDeployment } from "./openwork-deployment";
 import { isElectronRuntime } from "./runtime-env";
+import { isLocalGatewayClient } from "./client-profile";
 
 declare global {
   interface Window {
@@ -159,7 +160,7 @@ function resourceUrl(target: EventTarget | null): string | null {
  * load failures are reported for web deployments.
  */
 export function startWebErrorMonitoring() {
-  if (monitor || typeof window === "undefined") return;
+  if (monitor || typeof window === "undefined" || isLocalGatewayClient()) return;
   const dsn = String(import.meta.env.VITE_OPENWORK_SENTRY_DSN ?? "").trim();
   const gate: WebErrorMonitoringGate = {
     dsn,
