@@ -2426,6 +2426,8 @@
           "key": {
             "type": "string",
             "enum": [
+              "zenoAbout",
+              "gatewayFirstRunSetup",
               "zenoInterface",
               "gatewayImageGeneration",
               "visualConfiguration",
@@ -2630,6 +2632,12 @@
                 "capabilities": {
                   "type": "object",
                   "properties": {
+                    "zenoAbout": {
+                      "type": "boolean"
+                    },
+                    "gatewayFirstRunSetup": {
+                      "type": "boolean"
+                    },
                     "zenoInterface": {
                       "type": "boolean"
                     },
@@ -2728,6 +2736,8 @@
                     }
                   },
                   "required": [
+                    "zenoAbout",
+                    "gatewayFirstRunSetup",
                     "zenoInterface",
                     "gatewayImageGeneration",
                     "visualConfiguration",
@@ -2764,6 +2774,118 @@
                 "featureStates": {
                   "type": "object",
                   "properties": {
+                    "zenoAbout": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
+                    "gatewayFirstRunSetup": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
                     "zenoInterface": {
                       "type": "object",
                       "properties": {
@@ -4446,6 +4568,8 @@
                     }
                   },
                   "required": [
+                    "zenoAbout",
+                    "gatewayFirstRunSetup",
                     "zenoInterface",
                     "gatewayImageGeneration",
                     "visualConfiguration",
@@ -4845,6 +4969,12 @@
                 "capabilities": {
                   "type": "object",
                   "properties": {
+                    "zenoAbout": {
+                      "type": "boolean"
+                    },
+                    "gatewayFirstRunSetup": {
+                      "type": "boolean"
+                    },
                     "zenoInterface": {
                       "type": "boolean"
                     },
@@ -4943,6 +5073,8 @@
                     }
                   },
                   "required": [
+                    "zenoAbout",
+                    "gatewayFirstRunSetup",
                     "zenoInterface",
                     "gatewayImageGeneration",
                     "visualConfiguration",
@@ -4979,6 +5111,118 @@
                 "featureStates": {
                   "type": "object",
                   "properties": {
+                    "zenoAbout": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
+                    "gatewayFirstRunSetup": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
                     "zenoInterface": {
                       "type": "object",
                       "properties": {
@@ -6661,6 +6905,8 @@
                     }
                   },
                   "required": [
+                    "zenoAbout",
+                    "gatewayFirstRunSetup",
                     "zenoInterface",
                     "gatewayImageGeneration",
                     "visualConfiguration",
@@ -30284,6 +30530,12 @@
                     "capabilities": {
                       "type": "object",
                       "properties": {
+                        "zenoAbout": {
+                          "type": "boolean"
+                        },
+                        "gatewayFirstRunSetup": {
+                          "type": "boolean"
+                        },
                         "zenoInterface": {
                           "type": "boolean"
                         },
@@ -30382,6 +30634,8 @@
                         }
                       },
                       "required": [
+                        "zenoAbout",
+                        "gatewayFirstRunSetup",
                         "zenoInterface",
                         "gatewayImageGeneration",
                         "visualConfiguration",
@@ -30418,6 +30672,118 @@
                     "featureStates": {
                       "type": "object",
                       "properties": {
+                        "zenoAbout": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
+                        "gatewayFirstRunSetup": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
                         "zenoInterface": {
                           "type": "object",
                           "properties": {
@@ -32100,6 +32466,8 @@
                         }
                       },
                       "required": [
+                        "zenoAbout",
+                        "gatewayFirstRunSetup",
                         "zenoInterface",
                         "gatewayImageGeneration",
                         "visualConfiguration",
@@ -32248,6 +32616,12 @@
                     "capabilities": {
                       "type": "object",
                       "properties": {
+                        "zenoAbout": {
+                          "type": "boolean"
+                        },
+                        "gatewayFirstRunSetup": {
+                          "type": "boolean"
+                        },
                         "zenoInterface": {
                           "type": "boolean"
                         },
@@ -32346,6 +32720,8 @@
                         }
                       },
                       "required": [
+                        "zenoAbout",
+                        "gatewayFirstRunSetup",
                         "zenoInterface",
                         "gatewayImageGeneration",
                         "visualConfiguration",
@@ -32382,6 +32758,118 @@
                     "featureStates": {
                       "type": "object",
                       "properties": {
+                        "zenoAbout": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
+                        "gatewayFirstRunSetup": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
                         "zenoInterface": {
                           "type": "object",
                           "properties": {
@@ -34064,6 +34552,8 @@
                         }
                       },
                       "required": [
+                        "zenoAbout",
+                        "gatewayFirstRunSetup",
                         "zenoInterface",
                         "gatewayImageGeneration",
                         "visualConfiguration",

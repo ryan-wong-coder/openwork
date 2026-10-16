@@ -5,6 +5,7 @@
 - [构建与自部署](self-hosting.md)
 - [视觉来源与生成提示词](visual-sources.md)
 - [真实界面验收与对照](design-qa.md)
+- [首次网关设置与关于页验收](first-run-and-about-qa.md)
 - [首页](verification/home-light.png) · [暗色](verification/home-dark.png) · [窄屏](verification/home-narrow.png) · [真实聊天](verification/chat-live.png)
 
 ## 本次实现

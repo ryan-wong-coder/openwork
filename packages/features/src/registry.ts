@@ -53,6 +53,20 @@ function defineFeatures<const T extends Record<string, FeatureDefinition>>(featu
 const everywhere = ["cloud", "self_hosted"] as const
 
 export const FEATURES = defineFeatures({
+  zenoAbout: {
+    label: "Zeno about page",
+    description: "Show the independent Zeno application's OpenWork attribution and personal birthday message.",
+    since: "2026-10",
+    deployments: ["self_hosted"],
+    default: false,
+  },
+  gatewayFirstRunSetup: {
+    label: "Gateway first-run setup",
+    description: "Guide independent desktop installations to save their own model gateway key before the first conversation, while preserving server management permissions.",
+    since: "2026-10",
+    deployments: ["self_hosted"],
+    default: false,
+  },
   zenoInterface: {
     label: "Zeno interface",
     description: "Use the Zeno identity, compact workspace navigation and refined local task interface without changing files, history or permissions.",

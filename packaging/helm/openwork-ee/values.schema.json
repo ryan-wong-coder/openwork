@@ -18,6 +18,26 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
+            "zenoAbout": {
+              "enum": [
+                "",
+                "true",
+                "false",
+                true,
+                false
+              ],
+              "description": "Zeno about page: Show the independent Zeno application's OpenWork attribution and personal birthday message. Renders DEN_FEATURE_ZENO_ABOUT."
+            },
+            "gatewayFirstRunSetup": {
+              "enum": [
+                "",
+                "true",
+                "false",
+                true,
+                false
+              ],
+              "description": "Gateway first-run setup: Guide independent desktop installations to save their own model gateway key before the first conversation, while preserving server management permissions. Renders DEN_FEATURE_GATEWAY_FIRST_RUN_SETUP."
+            },
             "zenoInterface": {
               "enum": [
                 "",

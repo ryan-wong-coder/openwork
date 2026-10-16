@@ -139,6 +139,7 @@ type PendingConversationHistoryNavigation = {
 
 /** Live status the route feeds into the sidebar footer account menu. */
 type StatusBarOverrides = {
+  showConnectionStatus?: boolean;
   showSettingsButton: boolean;
   reloadBusy: boolean;
   reloadError: string | null;
@@ -1434,7 +1435,7 @@ export function SessionPage(props: SessionPageProps) {
             clientConnected: props.clientConnected,
             openworkServerStatus: props.openworkServerStatus,
             developerMode: props.developerMode,
-            showConnectionStatus: Boolean(props.selectedWorkspaceId),
+            showConnectionStatus: props.statusBar?.showConnectionStatus ?? Boolean(props.selectedWorkspaceId),
             providerConnectedIds: props.providerConnectedIds,
             mcpConnectedCount: props.mcpConnectedCount,
             showSettingsButton: props.statusBar?.showSettingsButton,

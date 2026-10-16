@@ -4,6 +4,10 @@ import { clientModelVisible, DEFAULT_LOCAL_GATEWAY_CHAT_MODEL, isLocalGatewayCli
 import { useAutoAccess, useObservedAutoAccessSnapshot } from "@/react-app/domains/cloud/auto-access-ui";
 import { newSessionDraftSlot, newSessionDraftOwnerKey, openNewSessionDraft } from "@/react-app/domains/session/chat/new-session-destination";
 import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity";
+import { localClientFeatureEnabled } from "@/app/lib/local-client-features";
+import { GatewayFirstRun } from "@/react-app/domains/settings/pages/gateway-first-run";
+import { gatewayEngineModelReady, shouldShowGatewayFirstRun } from "@/react-app/domains/settings/pages/gateway-first-run-policy";
+import { useGatewaySetupClient } from "@/react-app/domains/settings/pages/use-gateway-setup-client";
 import { getSessionDraft, clearSessionDraft } from "@/react-app/domains/session/sync/draft-store";
 import { acknowledgePendingSession, beginPendingConversation, bindPendingConversationWorkspace, createPendingConversation, ensurePendingConversationGroup, pendingConversationAutoSendPayload, pendingConversationForRoute, publishPendingSideChat, usePendingConversationStore, withPendingSessionPublication, type PendingConversation } from "@/react-app/domains/session/chat/pending-conversation-store";
 import { PendingConversationView } from "@/react-app/domains/session/chat/pending-conversation";
@@ -33,7 +37,7 @@ import { prefetchOpeningSessionHistory, sessionHistoryIdentity, sessionHistoryRu
 import { sendSessionCommand, sessionWorkHeld } from "@/app/lib/opencode-interruption";
 import { useSessionManagementStore as sessionManagementStore } from "@/react-app/domains/session/sidebar/session-management-store";
 import { getSessionDescendantIds } from "@/react-app/domains/session/sidebar/utils";
-import { buildOpenworkWorkspaceBaseUrl } from "@/app/lib/openwork-server";
+import { buildOpenworkWorkspaceBaseUrl, readOpenworkServerSettings, type GatewayStatus, type OpenworkServerClient } from "@/app/lib/openwork-server";
 import {
   resolveEngineRootEndpoint,
   resolveWorkspaceEndpoint,
@@ -579,19 +583,39 @@ export function SessionRoute() {
     workspaceId: selectedWorkspaceEndpoint?.workspaceId ?? selectedWorkspaceId, opencodeBaseUrl, localRuntime: isDesktopRuntime() });
   const savedWorkspaceDefault = useWorkspaceDefaultModel(workspaceDefaultScope);
   const workspaceDefault = savedWorkspaceDefault && clientModelVisible(savedWorkspaceDefault.model) ? savedWorkspaceDefault : null;
-  const [localGatewayConfigured, setLocalGatewayConfigured] = useState<boolean | null>(null);
+  const localGatewayClient = useGatewaySetupClient({
+    client: isLocalGatewayClient() ? client : null,
+    baseUrl, token,
+    hostToken: openworkServerHostInfoState?.hostToken ?? readOpenworkServerSettings().hostToken,
+    generation: openworkServerHostInfoState?.generation,
+  });
+  const [localGatewaySnapshot, setLocalGatewaySnapshot] = useState<{
+    client: OpenworkServerClient;
+    status: GatewayStatus | null;
+  } | null>(null);
+  const currentGatewaySnapshot = localGatewaySnapshot?.client === localGatewayClient ? localGatewaySnapshot : null;
+  const localGatewayConfigured = currentGatewaySnapshot
+    ? Boolean(currentGatewaySnapshot.status?.configured && currentGatewaySnapshot.status.ready !== false)
+    : null;
+  const [gatewaySetupSkippedFor, setGatewaySetupSkippedFor] = useState<OpenworkServerClient | null>(null);
+  const [gatewaySetupPendingFor, setGatewaySetupPendingFor] = useState<OpenworkServerClient | null>(null);
+  const gatewaySetupClientRef = useRef(localGatewayClient);
   useEffect(() => {
-    if (!isLocalGatewayClient() || !client) return;
+    gatewaySetupClientRef.current = localGatewayClient;
+    return () => { gatewaySetupClientRef.current = null; };
+  }, [localGatewayClient]);
+  useEffect(() => {
+    if (!localGatewayClient) return;
     let cancelled = false;
-    void client.getGatewayStatus().then((config) => {
+    void localGatewayClient.getGatewayStatus().then((config) => {
       if (cancelled) return;
-      setLocalGatewayConfigured(config.configured && config.ready !== false);
+      setLocalGatewaySnapshot({ client: localGatewayClient, status: config });
       local.setPrefs((previous) => previous.defaultModel?.providerID === LOCAL_GATEWAY_PROVIDER_ID ? previous : {
         ...previous, defaultModel: { providerID: LOCAL_GATEWAY_PROVIDER_ID, modelID: config.chatModel }, modelVariant: null,
       });
-    }).catch(() => { if (!cancelled) setLocalGatewayConfigured(false); });
+    }).catch(() => { if (!cancelled) setLocalGatewaySnapshot({ client: localGatewayClient, status: null }); });
     return () => { cancelled = true; };
-  }, [client, local.setPrefs]);
+  }, [localGatewayClient, local.setPrefs]);
   // An organization model this desktop confirms it cannot use falls back to the app's own default.
   const [unusableOrgDefaultKey, setUnusableOrgDefaultKey] = useState<string | null>(null);
   const orgNewTaskModel = useMemo(() => {
@@ -3715,6 +3739,43 @@ export function SessionRoute() {
     focusPromptSoon();
   };
 
+  const showGatewayFirstRun = shouldShowGatewayFirstRun({
+    enabled: localClientFeatureEnabled("gatewayFirstRunSetup"),
+    hasClient: Boolean(localGatewayClient),
+    configured: currentGatewaySnapshot?.status?.configured ?? null,
+    pending: Boolean(gatewaySetupPendingFor && gatewaySetupPendingFor === localGatewayClient),
+    skipped: gatewaySetupSkippedFor === localGatewayClient,
+    conversation: Boolean(selectedSessionId || pendingConversation),
+    otherSurface: activityRouteActive || appsRouteActive || automationsRouteActive || calendarRouteActive || dashboardRouteActive || extensionsMainOpen,
+  });
+  useEffect(() => {
+    if (showGatewayFirstRun && localGatewayClient) setGatewaySetupPendingFor(localGatewayClient);
+  }, [showGatewayFirstRun, localGatewayClient]);
+  const completeGatewayFirstRun = async (modelID: string) => {
+    if (!localGatewayClient) throw new Error("本地服务尚未连接。");
+    const status = await localGatewayClient.getGatewayStatus();
+    if (gatewaySetupClientRef.current !== localGatewayClient) throw new Error("服务连接已更改。");
+    if (!status.configured || status.ready === false || status.chatModel !== modelID) {
+      throw new Error("网关配置尚未就绪。");
+    }
+    // An empty install goes to workspace creation; existing workspaces must prove
+    // their running V1/V2 engine has applied the model before chat is enabled.
+    if (workspaces.length > 0) {
+      const catalog = await providerListQuery.refetch({ throwOnError: true });
+      if (gatewaySetupClientRef.current !== localGatewayClient) throw new Error("服务连接已更改。");
+      if (!gatewayEngineModelReady(catalog.data, modelID)) {
+        throw new Error("密钥已保存，工作区尚未应用配置。请稍后重新检查。");
+      }
+      await sessionProviderAuthStore.refreshProviders({ force: true });
+    }
+    if (gatewaySetupClientRef.current !== localGatewayClient) throw new Error("服务连接已更改。");
+    local.setPrefs((previous) => ({ ...previous,
+      defaultModel: { providerID: LOCAL_GATEWAY_PROVIDER_ID, modelID }, modelVariant: null,
+    }));
+    setLocalGatewaySnapshot({ client: localGatewayClient, status });
+    setGatewaySetupPendingFor(null);
+  };
+
   return (
     <WorkspaceProvider
       client={opencodeClient}
@@ -3839,7 +3900,7 @@ export function SessionRoute() {
       // Page titles match their sidebar labels.
       primaryTitle={activityRouteActive ? t("activity.title") : appsRouteActive ? t("interface.dashboard") : automationsRouteActive ? t("interface.automations") : calendarRouteActive ? t("interface.calendar") : dashboardRouteActive ? t("interface.dashboard") : undefined}
       // Dashboard, Automations and Library share one flat page surface.
-      primarySurface={activityRouteActive || dashboardRouteActive || automationsRouteActive || calendarRouteActive || extensionsMainOpen ? "flat" : undefined}
+      primarySurface={showGatewayFirstRun || activityRouteActive || dashboardRouteActive || automationsRouteActive || calendarRouteActive || extensionsMainOpen ? "flat" : undefined}
       primarySlotIsConversation={!activityRouteActive && Boolean(pendingConversation)}
       primarySlot={activityRouteActive ? <ActivityPage onTrySkill={trySkillInNewSession} /> : pendingConversation ? <PendingConversationView conversation={pendingConversation} composer={newTaskComposerContext} /> : appsRouteActive ? (
         <WorkspaceProvider
@@ -3880,6 +3941,14 @@ export function SessionRoute() {
             onSignIn={() => handleOpenSettings("/settings/cloud-account")}
           />
         </WorkspaceProvider>
+      ) : showGatewayFirstRun && localGatewayClient ? (
+        <GatewayFirstRun
+          key={baseUrl}
+          client={localGatewayClient}
+          onComplete={completeGatewayFirstRun}
+          onSkip={() => { setGatewaySetupSkippedFor(localGatewayClient); setGatewaySetupPendingFor(null); }}
+          onOpenSettings={() => handleOpenSettings("/settings/ai")}
+        />
       ) : undefined}
       terminalOpen={terminalOpen}
       onTerminalOpenChange={setTerminalOpen}
@@ -4044,6 +4113,7 @@ export function SessionRoute() {
       onArchiveSession={opencodeClient ? handleArchiveSession : undefined}
       archiveDisabledReason={archiveDisabledReason}
       statusBar={{
+        showConnectionStatus: showGatewayFirstRun ? false : Boolean(selectedWorkspaceId),
         // No per-session loading state here: the account row renders only
         // app-scoped facts. Session loading lives in the pane; an unresolved
         // model surfaces in the composer where the person can act on it.

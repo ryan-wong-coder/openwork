@@ -5,6 +5,7 @@ import {
 } from "@openwork/types/den/desktop-policies";
 import type { DenDesktopConfig } from "../lib/den";
 import type { ModelRef, SettingsTab } from "../types";
+import { isZenoAboutEnabled } from "../lib/zeno-about";
 
 export type DesktopAppRestrictionKey = DesktopPolicyKey;
 
@@ -40,6 +41,7 @@ export function isSettingsTabAllowed(input: {
   tab: SettingsTab;
   checkRestriction: DesktopAppRestrictionChecker;
 }) {
+  if (input.tab === "about") return isZenoAboutEnabled();
   if (!input.checkRestriction({ restriction: "allowControlSettings" })) return true;
   return SETTINGS_TABS_WITHOUT_CONTROL.has(input.tab);
 }

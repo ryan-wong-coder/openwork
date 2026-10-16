@@ -26,6 +26,8 @@ config:
   #   "false" off for everyone; /admin shows "Set by deployment config"
   # The /admin kill switch still turns a feature off, even when locked on.
   features:
+    zenoAbout: ""                  # default off · Show the independent Zeno application's OpenWork attribution and personal birthday message.
+    gatewayFirstRunSetup: ""       # default off · Guide independent desktop installations to save their own model gateway key before the first conversation, while preserving server management permissions.
     zenoInterface: ""              # default off · Use the Zeno identity, compact workspace navigation and refined local task interface without changing files, history or permissions.
     gatewayImageGeneration: ""     # default off · Generate and edit workspace image assets through the configured inference gateway, with artifacts available to chat and coding tools.
     visualConfiguration: ""        # default off · Edit complete project and global agent configuration through structured controls while preserving custom fields and document comments.

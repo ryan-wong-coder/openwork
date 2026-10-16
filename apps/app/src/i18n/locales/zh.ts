@@ -1,5 +1,13 @@
 /** Simplified Chinese translations. Keep keys and placeholders aligned with en.ts. */
 export default {
+  "zeno.about.title": "关于泽诺",
+  "zeno.about.birthday_first": "生日快乐。愿你始终保有好奇与热爱，勇敢走向每一个想去的明天。",
+  "zeno.about.birthday_second": "愿泽诺陪你把灵感变成现实，也陪你认真享受生活里每一个小小的惊喜。",
+  "zeno.about.signature": "王思源",
+  "zeno.about.based_on": "基于 OpenWork 改造",
+  "zeno.about.core_license": "OpenWork 内核与许可",
+  "zeno.about.license_scope": "OpenWork 开源部分遵循 MIT 许可证。/ee 目录适用其独立许可证，第三方组件保留各自的版权与许可。",
+
   "zeno.greeting": "今天，想一起做点什么？",
   "zeno.starting": "正在启动泽诺",
   "zeno.checking_installation": "正在检查泽诺安装",

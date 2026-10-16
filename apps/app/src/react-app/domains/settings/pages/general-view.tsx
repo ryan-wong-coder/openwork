@@ -7,6 +7,7 @@ import {
   Cloud,
   Cog,
   FolderLock,
+  Info,
   Keyboard,
   LifeBuoy,
   MessageCircle,
@@ -22,6 +23,7 @@ import type { SettingsTab } from "../../../../app/types";
 import { Button } from "@/components/ui/button";
 import { isLocalGatewayClient } from "@/app/lib/client-profile";
 import { isZenoInterfaceEnabled, ZENO_PRODUCT_NAME } from "@/app/lib/zeno-identity";
+import { isZenoAboutEnabled } from "@/app/lib/zeno-about";
 
 export type GeneralSettingsViewProps = {
   onNavigateTab: (tab: SettingsTab) => void;
@@ -86,10 +88,18 @@ function SettingsCard(props: {
 export function GeneralSettingsView(props: GeneralSettingsViewProps) {
   const localOnly = isLocalGatewayClient();
   const visibleGlobalCards = globalCards.filter((card) => !localOnly || (card.tab !== "cloud-account" && card.tab !== "updates"));
-  const about = <section className="border-t border-border pt-4" data-testid="self-managed-about">
+  const version = props.appVersion?.trim() || String(import.meta.env?.VITE_OPENWORK_APP_VERSION ?? "").trim() || "—";
+  const about = isZenoAboutEnabled() ? <section className="border-t border-border pt-4" data-testid="self-managed-about">
+    <Button type="button" variant="ghost" className="zeno-settings-destination h-12 w-full justify-start rounded-none px-0 text-sm font-normal" onClick={() => props.onNavigateTab("about")}>
+      <Info className="size-4 text-muted-foreground" />
+      <span className="flex-1 text-left">{t("zeno.about.title")}</span>
+      <span className="font-mono text-xs text-muted-foreground">{version}</span>
+      <ChevronRight className="size-3.5 text-muted-foreground" />
+    </Button>
+  </section> : <section className="border-t border-border pt-4" data-testid="self-managed-about">
     <h2 className="text-xs font-medium text-muted-foreground">{t("interface.about")} {isZenoInterfaceEnabled() ? ZENO_PRODUCT_NAME : "OpenWork"}</h2>
     <dl className="mt-2 text-sm">
-      <div className="flex min-h-11 items-center justify-between gap-3"><dt>{t("updates.current_version")}</dt><dd className="font-mono text-xs text-muted-foreground">{props.appVersion?.trim() || String(import.meta.env?.VITE_OPENWORK_APP_VERSION ?? "").trim() || "—"}</dd></div>
+      <div className="flex min-h-11 items-center justify-between gap-3"><dt>{t("updates.current_version")}</dt><dd className="font-mono text-xs text-muted-foreground">{version}</dd></div>
     </dl>
     <p className="flex min-h-11 items-center text-xs text-muted-foreground">{t("zeno.settings.self_managed")}</p>
   </section>;

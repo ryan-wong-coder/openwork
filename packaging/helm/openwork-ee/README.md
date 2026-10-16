@@ -362,6 +362,8 @@ OpenWork Cloud. Don't change it on a customer install.
 <!-- BEGIN GENERATED features (pnpm features:sync) -->
 | `config.features.*` | Environment variable | Default | What it does |
 | --- | --- | --- | --- |
+| `zenoAbout` | `DEN_FEATURE_ZENO_ABOUT` | default off | Show the independent Zeno application's OpenWork attribution and personal birthday message. |
+| `gatewayFirstRunSetup` | `DEN_FEATURE_GATEWAY_FIRST_RUN_SETUP` | default off | Guide independent desktop installations to save their own model gateway key before the first conversation, while preserving server management permissions. |
 | `zenoInterface` | `DEN_FEATURE_ZENO_INTERFACE` | default off | Use the Zeno identity, compact workspace navigation and refined local task interface without changing files, history or permissions. |
 | `gatewayImageGeneration` | `DEN_FEATURE_GATEWAY_IMAGE_GENERATION` | default off | Generate and edit workspace image assets through the configured inference gateway, with artifacts available to chat and coding tools. |
 | `visualConfiguration` | `DEN_FEATURE_VISUAL_CONFIGURATION` | default off | Edit complete project and global agent configuration through structured controls while preserving custom fields and document comments. |

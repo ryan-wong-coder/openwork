@@ -4,6 +4,14 @@
  */
 
 export default {
+  "zeno.about.title": "About Zeno",
+  "zeno.about.birthday_first": "Happy birthday. May curiosity and passion always stay with you, and may you move bravely toward every tomorrow you want to reach.",
+  "zeno.about.birthday_second": "May Zeno help bring your ideas to life, and accompany you as you savor life's little surprises.",
+  "zeno.about.signature": "王思源",
+  "zeno.about.based_on": "Adapted from OpenWork",
+  "zeno.about.core_license": "OpenWork core and licenses",
+  "zeno.about.license_scope": "The open-source portion of OpenWork is licensed under MIT. The /ee directory has its own license; third-party components retain their respective copyright and licenses.",
+
   "zeno.greeting": "What shall we work on today?",
   "zeno.starting": "Starting Zeno",
   "zeno.checking_installation": "Checking this Zeno installation",

@@ -9,6 +9,7 @@ import {
   Cog,
   FolderLock,
   Gauge,
+  Info,
   Keyboard,
   Paintbrush,
   Puzzle,
@@ -46,6 +47,7 @@ import { isSettingsTabAllowed } from "../../../../app/cloud/desktop-app-restrict
 import type { PlatformCapabilities } from "../../../../app/lib/platform-capabilities";
 import type { SettingsTab } from "../../../../app/types";
 import { isLocalGatewayClient } from "@/app/lib/client-profile";
+import { isZenoAboutEnabled } from "@/app/lib/zeno-about";
 import { isZenoInterfaceEnabled } from "@/app/lib/zeno-identity";
 import { cn } from "@/lib/utils";
 import { usePlatform } from "../../../kernel/platform";
@@ -66,6 +68,8 @@ import { SidebarDestination } from "../../session/sidebar/sidebar-destination";
 
 export function getSettingsTabIcon(tab: SettingsTab) {
   switch (tab) {
+    case "about":
+      return Info;
     case "ai":
       return Zap;
     case "preferences":
@@ -107,6 +111,8 @@ export function getSettingsTabIcon(tab: SettingsTab) {
 
 export function getSettingsTabLabel(tab: SettingsTab) {
   switch (tab) {
+    case "about":
+      return t("zeno.about.title");
     case "ai":
       return isLocalGatewayClient() ? "模型网关" : t("interface.ai_providers");
     case "ollama":
@@ -152,6 +158,8 @@ export function getSettingsTabLabel(tab: SettingsTab) {
 
 export function getSettingsTabDescription(tab: SettingsTab) {
   switch (tab) {
+    case "about":
+      return t("zeno.about.based_on");
     case "ai":
       return isLocalGatewayClient() ? "网关连接、模型与图片生成。" : t("settings_extra.connect_openai_anthropic_local_models_and_more");
     case "ollama":
@@ -207,6 +215,7 @@ export function getGlobalSettingsTabs(
     ? ["ai", "appearance", "shortcuts", "environment"]
     : ["ai", "ollama", "appearance", "shortcuts", "environment"];
   if (capabilities.autoUpdate && !isLocalGatewayClient()) tabs.push("updates");
+  if (isZenoAboutEnabled()) tabs.push("about");
   if (developerMode) tabs.push("debug");
   return tabs;
 }
