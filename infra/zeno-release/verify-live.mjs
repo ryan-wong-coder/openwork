@@ -11,6 +11,11 @@ async function request(path, options = {}) {
 }
 const home = await request('/');
 assert.equal(home.status, 200); assert.match(home.headers.get('content-type'), /text\/html/);
+assert.match(home.headers.get('cache-control'), /no-cache/);
+for (const path of ['/app.js', '/releases.js', '/styles.css']) {
+  const response = await request(path, { method: 'HEAD' });
+  assert.equal(response.status, 200); assert.match(response.headers.get('cache-control'), /no-cache/);
+}
 const api = await request('/api/releases/latest.json');
 assert.equal(api.status, 200); assert.match(api.headers.get('cache-control'), /no-store/);
 const release = parseRelease(await api.json(), origin);
@@ -47,4 +52,4 @@ for (const target of targets) {
     assert.equal(packageResponse.status, 200); assert.equal(Number(packageResponse.headers.get('content-length')), file.size);
   }
 }
-console.log(JSON.stringify({ passed: true, origin, version: release.version, installers: release.artifacts.length, nativeFeeds: targets.size, checks: ['https', 'download-head', 'range', 'native-file-headers', 'metadata-integrity-agreement', 'architecture-feed-files', 'cache-policy'] }));
+console.log(JSON.stringify({ passed: true, checkedAt: new Date().toISOString(), origin, version: release.version, installers: release.artifacts.length, nativeFeeds: targets.size, checks: ['https', 'site-revalidation', 'download-head', 'range', 'native-file-headers', 'metadata-integrity-agreement', 'architecture-feed-files', 'cache-policy'] }));

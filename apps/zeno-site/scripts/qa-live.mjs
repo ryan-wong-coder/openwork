@@ -40,6 +40,7 @@ async function choose(id, value) {
 async function shot(name) {
   await evaluate('Promise.all(Array.from(document.images,image=>image.decode().catch(()=>{})))');
   await evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
+  await evaluate('Promise.all(document.getAnimations().map(animation=>animation.finished.catch(()=>{})))');
   const result = await send('Page.captureScreenshot', { format: 'png' });
   await writeFile(`${output}${name}.png`, Buffer.from(result.data, 'base64'));
 }

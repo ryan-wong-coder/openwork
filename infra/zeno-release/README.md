@@ -27,7 +27,7 @@ Nginx 使用本目录 `nginx.conf`。只新增 Zeno 虚拟主机，不替换其�
 | `/downloads/<version>/<filename>` | 持久安装包，支持 HTTP Range |
 | `/updates/<platform>/<arch>/` | electron-updater 原生元数据、安装包与 blockmap；没有目录索引 |
 
-`platform` 为 `darwin`、`win32` 或 `linux`；`arch` 为 `x64` 或 `arm64`。官网 API 与更新元数据均不缓存。下载包按版本命名并长期缓存。更新只允许自身域名下对应架构的目录。Nginx 将版本文件映射到持久下载目录：即使检查更新后官网切到下一版，之前检查到的更新文件仍然可下载，不依赖新 bundle 里的当前版本链接。
+`platform` 为 `darwin`、`win32` 或 `linux`；`arch` 为 `x64` 或 `arm64`。官网 HTML、JS、CSS 每次重新验证缓存，API 与更新元数据均不缓存。下载包按版本命名并长期缓存。更新只允许自身域名下对应架构的目录。Nginx 将版本文件映射到持久下载目录：即使检查更新后官网切到下一版，之前检查到的更新文件仍然可下载，不依赖新 bundle 里的当前版本链接。
 
 ## 签名连续性
 

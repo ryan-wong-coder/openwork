@@ -2,7 +2,19 @@
 
 Final result: passed
 
-验收范围：`apps/zeno-site` 本地源码、静态构建与独立 headless Chrome target。此结论表示官网实现与下述交互验收通过，不表示安装包已发布、已签名、公证或已完成真实安装。2026-10-16 检查正式域名时，首页与发布 API 尚为 404；正式发布由 operator 完成后另验。
+验收范围：`apps/zeno-site` 本地源码、静态构建与正式 HTTPS 官网的独立 headless Chrome target。此结论表示官网实现与下述交互验收通过；原生客户端的实际安装重启单独验证，网页验收不代替该验证。
+
+## 正式官网验收（2026-10-16）
+
+[正式官网](https://www.zeno.ryan-wong.cn) 的 [真实浏览器结果](verification/live-qa.json) 标记 `fixtureOnly: false`。本次未拦截或替换 API：实际发布接口返回 1.0.0、10 个安装包，macOS、Windows、Linux 各两种架构的选择与真实包、SHA-256 一致。桌面与 390px 手机均无横向溢出，暗色截图在主题过渡结束后采集；零 Runtime exception，请求全部来自本站。
+
+`node infra/zeno-release/verify-live.mjs` 的 [正式下载检查结果](verification/release-live.json) 通过 HTTPS、10 个下载文件的 HEAD/尺寸/Range/原生格式头、六套更新元数据与包哈希的一致性、更新路径和缓存策略检查。服务器启用前另对全部原始产物逐一验证尺寸、SHA-256 和 SHA-512。macOS 使用长期自签名，Windows 未签名，安装帮助保留相应首次启动说明。
+
+![正式官网桌面](verification/site-live-desktop.png)
+
+![正式官网手机](verification/site-live-mobile.png)
+
+![正式官网暗色手机](verification/site-live-mobile-dark.png)
 
 ## 参考与实际对比
 
@@ -48,6 +60,6 @@ Final result: passed
 - `pnpm --dir apps/zeno-site build`：生成独立 `dist/index.html`，无新增依赖或 lockfile 变动。
 - `node apps/zeno-site/scripts/qa.mjs`：10 张场景截图、0 Runtime exception，独立 target 已关闭。
 - 无官方账号、Den、遥测、第三方字体/CDN、浏览器持久化或模型密钥。保留 OpenWork MIT 版权与独立许可证边界。
-- 无未解决 P0/P1/P2 设计或交互问题。真实 HTTPS、安装包文件大小/hash、下载和更新 smoke 仍属于部署后验收，不能由 fixture 推定通过。
+- 无未解决 P0/P1/P2 设计或交互问题。上方正式官网验收独立于 fixture 执行；网页检查不推定原生安装重启通过。
 
 规则依据：DESIGN.md P1/P2/P3/P5/P7/P10、S1/S3、V1–V7。验证资产只含公开品牌、通用产品界面与明显命名的测试包，无凭据或客户内容。
