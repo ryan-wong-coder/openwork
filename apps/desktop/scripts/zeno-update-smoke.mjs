@@ -191,8 +191,15 @@ function plist(bundle) { return join(bundle, "Contents/Info.plist"); }
 function bundleVersion(bundle) { return quiet("/usr/libexec/PlistBuddy", ["-c", "Print :CFBundleShortVersionString", plist(bundle)]); }
 function archivePath(bundle) { return join(bundle, "Contents/Resources/app.asar"); }
 
+export function validateUpdaterCacheName(cacheName) {
+  // electron-builder flattens the scoped package name to one cache leaf,
+  // currently @openworkdesktop-updater. Keep that literal directory name.
+  assert.ok(typeof cacheName === "string" && /^@?[\w][\w.-]{0,255}$/.test(cacheName), "Unsafe update cache name.");
+  return cacheName;
+}
+
 function assertPristineMachine(cacheName) {
-  assert.ok(/^[\w.-]+$/.test(cacheName), "Unsafe update cache name.");
+  validateUpdaterCacheName(cacheName);
   const nativePaths = [join(homedir(), "Library/Caches", `${BUNDLE_ID}.ShipIt`), join(homedir(), "Library/Caches", cacheName),
     join(homedir(), "Library/Preferences", `${BUNDLE_ID}.ShipIt.plist`), join(homedir(), "Library/Application Support", BUNDLE_ID),
     join(homedir(), "Applications/OpenWork.app"), join(homedir(), `Applications/${PRODUCT}.app`), "/Applications/OpenWork.app", `/Applications/${PRODUCT}.app`];
@@ -329,6 +336,9 @@ async function selfTest() {
   assertHostedRunner(env, "darwin", "arm64");
   for (const key of ["CI", "GITHUB_ACTIONS", "RUNNER_ENVIRONMENT", "GITHUB_REF", "ZENO_MAC_CODESIGN_PASSWORD"]) assert.throws(() => assertHostedRunner({ ...env, [key]: "" }, "darwin", "arm64"));
   assert.throws(() => assertHostedRunner(env, "linux", "arm64"));
+  assert.equal(validateUpdaterCacheName("@openworkdesktop-updater"), "@openworkdesktop-updater");
+  assert.equal(validateUpdaterCacheName("openwork-updater"), "openwork-updater");
+  for (const cacheName of [undefined, "", ".", "..", "/tmp/cache", "../cache", "a/b", "a\\b", "@../cache", "cache\n", "a%2fb", "C:cache"]) assert.throws(() => validateUpdaterCacheName(cacheName));
   const name = `zeno-mac-arm64-${TARGET}.zip`; const sha256 = "1".repeat(64); const sha512 = "2".repeat(128);
   const release = { version: TARGET, publishedAt: "2026-10-16T00:00:00Z", artifacts: [{ platform: "darwin", arch: "arm64", name, url: `/downloads/${TARGET}/${name}`, size: 100, sha256, sha512, signature: "self-signed", format: "zip" }] };
   const manifest = { version: TARGET, files: [{ url: name, size: 100, sha512: Buffer.from(sha512, "hex").toString("base64") }] };
@@ -378,7 +388,7 @@ async function main() {
   assert.ok(!relative(runnerTemp, root).startsWith(".."));
   const evidence = join(runnerTemp, "zeno-update-smoke-evidence"); mkdirSync(evidence, { recursive: true });
   const report = { passed: false, target: TARGET, baseline: BASELINE, platform: "darwin", arch: process.arch, publicOrigin: ORIGIN, phases: [], isolation: "ephemeral github-hosted runner; no pre-existing native state; private bundle/profile/workspace", nativeUpdateExecuted: false };
-  const phase = (name, values = {}) => { report.phases.push({ name, ...values }); console.log(`[zeno-update-smoke] ${name}`); };
+  const phase = (name, values = {}) => { report.phases.push({ ...values, name }); console.log(`[zeno-update-smoke] ${name}`); };
   let identity; let child; let client; let browser; let port; let privateBundle; let restoreRelaunchEnvironment; let nativePaths = []; let ownsNativeCache = false;
   const exceptions = []; const origins = new Set();
   try {
@@ -395,7 +405,7 @@ async function main() {
     report.baselineSource = source;
     // Only baseline acquisition is deduplicated. The native updater below
     // still checks and downloads the complete ZIP from the real public feed.
-    phase("verified-public-feed-and-zip", { version: TARGET, feed, name: selected.zip.name, bytes: selected.zip.size, sha256: selected.zip.sha256, source });
+    phase("verified-public-feed-and-zip", { version: TARGET, feed, artifactName: selected.zip.name, bytes: selected.zip.size, sha256: selected.zip.sha256, source });
     const entries = quiet("/usr/bin/unzip", ["-Z1", zip]).split("\n");
     assert.ok(entries.every(entry => !isAbsolute(entry) && !entry.split("/").includes("..")), "Unsafe published ZIP path.");
     const install = join(root, "installation"); mkdirSync(install);
