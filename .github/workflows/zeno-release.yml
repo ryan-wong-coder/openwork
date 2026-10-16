@@ -83,13 +83,13 @@ jobs:
           - runner: windows-2025
             platform: win32
             arch: x64
-          - runner: windows-2025
+          - runner: windows-11-arm
             platform: win32
             arch: arm64
           - runner: ubuntu-24.04
             platform: linux
             arch: x64
-          - runner: ubuntu-24.04
+          - runner: ubuntu-24.04-arm
             platform: linux
             arch: arm64
     runs-on: ${{ matrix.runner }}
@@ -97,8 +97,8 @@ jobs:
       PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN: "false"
       ZENO_MAC_SIGNING: ${{ needs.validate.outputs.macos_signing }}
       ZENO_WINDOWS_SIGNING: ${{ needs.validate.outputs.windows_signing }}
-      # Both optional-native CPU variants are installed by pnpm-workspace.yaml.
-      # Windows/Linux ARM64 are cross-packaged on x64, as in the existing build.
+      # Build and smoke-test every package with its matching native CPU runtime.
+      # pnpm-workspace.yaml also installs both supported native module variants.
     defaults:
       run:
         shell: bash
