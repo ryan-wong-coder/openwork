@@ -734,6 +734,7 @@ export type AdminFeature = {
   key:
     | "zenoReleaseUpdates"
     | "zenoWebsite"
+    | "zenoWebsiteRefresh"
     | "zenoAbout"
     | "gatewayFirstRunSetup"
     | "zenoInterface"
@@ -806,6 +807,7 @@ export type AdminOrganizationsPageResponse = {
     capabilities?: {
       zenoReleaseUpdates: boolean;
       zenoWebsite: boolean;
+      zenoWebsiteRefresh: boolean;
       zenoAbout: boolean;
       gatewayFirstRunSetup: boolean;
       zenoInterface: boolean;
@@ -859,6 +861,15 @@ export type AdminOrganizationsPageResponse = {
         overrideApplies: boolean;
       };
       zenoWebsite: {
+        enabled: boolean;
+        source: "unavailable" | "killed" | "lock" | "override" | "everyone";
+        everyone: boolean;
+        killed: boolean;
+        lock: boolean | null;
+        override: boolean | null;
+        overrideApplies: boolean;
+      };
+      zenoWebsiteRefresh: {
         enabled: boolean;
         source: "unavailable" | "killed" | "lock" | "override" | "everyone";
         everyone: boolean;
@@ -1220,6 +1231,7 @@ export type AdminOverviewResponse = {
     capabilities: {
       zenoReleaseUpdates: boolean;
       zenoWebsite: boolean;
+      zenoWebsiteRefresh: boolean;
       zenoAbout: boolean;
       gatewayFirstRunSetup: boolean;
       zenoInterface: boolean;
@@ -1273,6 +1285,15 @@ export type AdminOverviewResponse = {
         overrideApplies: boolean;
       };
       zenoWebsite: {
+        enabled: boolean;
+        source: "unavailable" | "killed" | "lock" | "override" | "everyone";
+        everyone: boolean;
+        killed: boolean;
+        lock: boolean | null;
+        override: boolean | null;
+        overrideApplies: boolean;
+      };
+      zenoWebsiteRefresh: {
         enabled: boolean;
         source: "unavailable" | "killed" | "lock" | "override" | "everyone";
         everyone: boolean;
@@ -7589,6 +7610,7 @@ export type GetV1AdminOrganizationsByOrganizationIdCapabilitiesResponses = {
     capabilities: {
       zenoReleaseUpdates: boolean;
       zenoWebsite: boolean;
+      zenoWebsiteRefresh: boolean;
       zenoAbout: boolean;
       gatewayFirstRunSetup: boolean;
       zenoInterface: boolean;
@@ -7642,6 +7664,15 @@ export type GetV1AdminOrganizationsByOrganizationIdCapabilitiesResponses = {
         overrideApplies: boolean;
       };
       zenoWebsite: {
+        enabled: boolean;
+        source: "unavailable" | "killed" | "lock" | "override" | "everyone";
+        everyone: boolean;
+        killed: boolean;
+        lock: boolean | null;
+        override: boolean | null;
+        overrideApplies: boolean;
+      };
+      zenoWebsiteRefresh: {
         enabled: boolean;
         source: "unavailable" | "killed" | "lock" | "override" | "everyone";
         everyone: boolean;
@@ -7991,6 +8022,7 @@ export type PutV1AdminOrganizationsByOrganizationIdCapabilitiesResponses = {
     capabilities: {
       zenoReleaseUpdates: boolean;
       zenoWebsite: boolean;
+      zenoWebsiteRefresh: boolean;
       zenoAbout: boolean;
       gatewayFirstRunSetup: boolean;
       zenoInterface: boolean;
@@ -8044,6 +8076,15 @@ export type PutV1AdminOrganizationsByOrganizationIdCapabilitiesResponses = {
         overrideApplies: boolean;
       };
       zenoWebsite: {
+        enabled: boolean;
+        source: "unavailable" | "killed" | "lock" | "override" | "everyone";
+        everyone: boolean;
+        killed: boolean;
+        lock: boolean | null;
+        override: boolean | null;
+        overrideApplies: boolean;
+      };
+      zenoWebsiteRefresh: {
         enabled: boolean;
         source: "unavailable" | "killed" | "lock" | "override" | "everyone";
         everyone: boolean;

@@ -10,10 +10,10 @@
 
    ```sh
    node infra/zeno-release/prepare-publication.mjs RELEASE_DIRECTORY NEW_BUNDLE_DIRECTORY PUBLISHED_AT_ISO
-   pnpm --filter @zeno/site build
+   pnpm --filter @zeno/site build:published
    ```
 
-   `PUBLISHED_AT_ISO` 使用 Release 实际发布时间。脚本验证十个安装包及六套原生更新元数据的尺寸、SHA-256 和 SHA-512，生成官网 API；任何目标缺失都拒绝发布。它不接受其他域名、路径逃逸或不支持更新的 macOS 临时签名。
+   `PUBLISHED_AT_ISO` 使用官网启用该版本的实际时间。脚本验证十个安装包及六套原生更新元数据的尺寸、SHA-256 和 SHA-512，生成官网 API；任何目标缺失都拒绝发布。它不接受其他域名、路径逃逸或不支持更新的 macOS 临时签名。官网刷新由静态 operator profile 明确启用；使用普通 `build` 可构建原界面用于回退，详见官网 README。
 4. 将 bundle 上传至服务器新的 `/srv/zeno/releases/<version>`，把它的 `downloads/<version>` 移到持久的 `/srv/zeno/downloads/<version>`，再将 bundle 中的 `downloads` 替换为指向 `/srv/zeno/downloads` 的符号链接。已发布的下载文件不可覆写。
 5. 用临时符号链接加 `mv -T` 原子切换 `/srv/zeno/release-current` 到完整 bundle。静态官网单独放在 `/srv/zeno/site-releases/<commit>`，同样切换 `/srv/zeno/current`。旧目录可用于回退；保留旧版本下载。
 

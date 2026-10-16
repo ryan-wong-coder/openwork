@@ -364,6 +364,7 @@ OpenWork Cloud. Don't change it on a customer install.
 | --- | --- | --- | --- |
 | `zenoReleaseUpdates` | `DEN_FEATURE_ZENO_RELEASE_UPDATES` | default off | Check the independent Zeno release service, offer a new version, and install the downloaded desktop update without using an upstream release feed. |
 | `zenoWebsite` | `DEN_FEATURE_ZENO_WEBSITE` | default off | Serve the independently operated Zeno website and verified release downloads for each supported platform and architecture. |
+| `zenoWebsiteRefresh` | `DEN_FEATURE_ZENO_WEBSITE_REFRESH` | default off | Present the independent Zeno download website with refined brand artwork, interactive mascot motion, and a compact download flow; operators can keep the original site. |
 | `zenoAbout` | `DEN_FEATURE_ZENO_ABOUT` | default off | Show the independent Zeno application's OpenWork attribution and personal birthday message. |
 | `gatewayFirstRunSetup` | `DEN_FEATURE_GATEWAY_FIRST_RUN_SETUP` | default off | Guide independent desktop installations to save their own model gateway key before the first conversation, while preserving server management permissions. |
 | `zenoInterface` | `DEN_FEATURE_ZENO_INTERFACE` | default off | Use the Zeno identity, compact workspace navigation and refined local task interface without changing files, history or permissions. |

@@ -67,6 +67,13 @@ export const FEATURES = defineFeatures({
     deployments: ["self_hosted"],
     default: false,
   },
+  zenoWebsiteRefresh: {
+    label: "Zeno website visual refresh",
+    description: "Present the independent Zeno download website with refined brand artwork, interactive mascot motion, and a compact download flow; operators can keep the original site.",
+    since: "2026-10",
+    deployments: ["self_hosted"],
+    default: false,
+  },
   zenoAbout: {
     label: "Zeno about page",
     description: "Show the independent Zeno application's OpenWork attribution and personal birthday message.",

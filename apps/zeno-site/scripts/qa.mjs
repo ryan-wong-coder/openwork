@@ -6,7 +6,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 const base = process.env.ZENO_SITE_CDP || 'http://127.0.0.1:60238';
 const site = 'http://127.0.0.1:5197';
-const output = fileURLToPath(new URL('../verification/', import.meta.url));
+const output = fileURLToPath(new URL('../verification/v2-local/regression/', import.meta.url));
 await mkdir(output, { recursive: true });
 async function connect(url, onEvent = () => {}) {
   const ws = new WebSocket(url); let id = 0; const pending = new Map();
@@ -39,7 +39,7 @@ const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 async function until(expression) { for (let i = 0; i < 100; i += 1) { try { if (await evaluate(expression)) return; } catch {} await pause(50); } throw Error(`State timed out: ${expression}`); }
 async function screenshot(name) {
   await evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
-  await evaluate('Promise.all(Array.from(document.images,image=>image.decode().catch(()=>{})))');
+  await evaluate('Promise.all(Array.from(document.images).filter(image=>image.loading!=="lazy"||image.naturalWidth>0).map(image=>image.decode().catch(()=>{})))');
   if (!name.includes('install')) await evaluate('window.scrollTo({top:0,behavior:"instant"})');
   await evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
   await evaluate('document.getAnimations().forEach(a=>{if(Number.isFinite(a.effect?.getComputedTiming().endTime))a.finish()})');

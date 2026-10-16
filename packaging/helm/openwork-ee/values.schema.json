@@ -38,6 +38,16 @@
               ],
               "description": "Zeno download website: Serve the independently operated Zeno website and verified release downloads for each supported platform and architecture. Renders DEN_FEATURE_ZENO_WEBSITE."
             },
+            "zenoWebsiteRefresh": {
+              "enum": [
+                "",
+                "true",
+                "false",
+                true,
+                false
+              ],
+              "description": "Zeno website visual refresh: Present the independent Zeno download website with refined brand artwork, interactive mascot motion, and a compact download flow; operators can keep the original site. Renders DEN_FEATURE_ZENO_WEBSITE_REFRESH."
+            },
             "zenoAbout": {
               "enum": [
                 "",

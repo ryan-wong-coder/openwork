@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
+    "build:published": "node scripts/build.mjs --profile operator-profile.json",
     "dev": "node scripts/serve.mjs",
-    "check": "node --check src/app.js && node --check src/releases.js && node --test tests/*.test.mjs"
+    "check": "node --check src/app.js && node --check src/releases.js && node --check src/motion.js && node --test tests/*.test.mjs"
   }
 }

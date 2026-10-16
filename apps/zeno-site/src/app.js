@@ -64,8 +64,25 @@ function renderSelection() {
   }
   const link = byId('downloadLink');
   const unavailable = byId('downloadUnavailable');
+  const choices = byId('quickChoices');
+  choices.replaceChildren();
+  if (!artifact && release && platform && !arch) {
+    for (const cpu of ['arm64', 'x64']) {
+      const candidate = selectArtifact(release, platform, cpu, format);
+      if (!candidate) continue;
+      const choice = textElement('a', `下载 ${ARCH_LABELS[platform][cpu]} 版`, 'button');
+      choice.href = candidate.url;
+      choice.download = candidate.name;
+      choice.title = `${formatName(candidate.format)} · ${formatBytes(candidate.size)} · ${signatureLabels[candidate.signature]}`;
+      choice.setAttribute('aria-label', `下载 ${PLATFORM_LABELS[platform]} ${ARCH_LABELS[platform][cpu]} 版，${formatBytes(candidate.size)}`);
+      const group = textElement('div', '', 'quick-choice');
+      group.append(choice, textElement('p', `${formatName(candidate.format)} · ${formatBytes(candidate.size)} · ${signatureLabels[candidate.signature]}`, 'quick-meta'));
+      choices.append(group);
+    }
+  }
+  choices.hidden = !choices.childElementCount;
   link.hidden = !artifact;
-  unavailable.hidden = Boolean(artifact);
+  unavailable.hidden = Boolean(artifact) || choices.childElementCount > 0;
   if (artifact) {
     link.href = artifact.url;
     link.download = artifact.name;
@@ -79,7 +96,7 @@ function renderSelection() {
   status.setAttribute('role', failed && !release ? 'alert' : 'status');
   status.textContent = failed
     ? release ? `暂时无法检查新版本，仍显示 ${lastChecked.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })} 读取的记录。` : '暂时无法读取下载信息，请重新检查。'
-    : artifact ? artifact.name : release?.artifacts.length === 0 ? '当前版本尚无可下载的安装包。' : '';
+    : release?.artifacts.length === 0 ? '当前版本尚无可下载的安装包。' : '';
   byId('retry').hidden = !failed && release?.artifacts.length !== 0;
   byId('retry').disabled = loading;
   byId('checksumDetails').hidden = !artifact;
@@ -93,6 +110,7 @@ function renderArtifacts() {
   list.replaceChildren();
   byId('allDownloads').hidden = !release?.artifacts.length;
   byId('artifactCount').textContent = release ? String(release.artifacts.length) : '';
+  byId('releaseVersion').textContent = release ? `v${release.version}` : '';
   if (release) for (const item of release.artifacts) {
     const row = textElement('li', '', 'artifact-row');
     const information = document.createElement('div');
@@ -167,6 +185,7 @@ const darkMode = matchMedia('(prefers-color-scheme: dark)');
 const syncPreviewLink = () => { document.querySelector('.product-preview').href = darkMode.matches ? '/assets/product-full-dark.webp' : '/assets/product-full-light.webp'; };
 darkMode.addEventListener('change', syncPreviewLink);
 syncPreviewLink();
+byId('previewNav').addEventListener('click', () => { byId('workspacePreview').open = true; });
 platformInput.value = platform || '';
 updateArchitectures();
 platformInput.addEventListener('change', () => { platform = platformInput.value || null; arch = defaultArch(platform); format = null; updateArchitectures(); renderSelection(); });

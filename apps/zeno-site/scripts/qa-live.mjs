@@ -1,10 +1,12 @@
 // Verify the deployed site without intercepting its API or triggering installers.
 import assert from 'node:assert/strict';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 const base = process.env.ZENO_SITE_CDP || 'http://127.0.0.1:60238';
 const site = 'https://www.zeno.ryan-wong.cn';
-const output = fileURLToPath(new URL('../verification/', import.meta.url));
+const expectedVersion = process.argv[2] || JSON.parse(await readFile(new URL('../../desktop/package.json', import.meta.url), 'utf8')).version;
+assert.match(expectedVersion, /^\d+\.\d+\.\d+$/); assert.ok(process.argv.length <= 3);
+const output = fileURLToPath(new URL(`../verification/releases/${expectedVersion}/`, import.meta.url));
 await mkdir(output, { recursive: true });
 async function connect(url, onEvent = () => {}) {
   const ws = new WebSocket(url); let id = 0; const pending = new Map();
@@ -38,7 +40,7 @@ async function choose(id, value) {
   await evaluate(`(()=>{const field=document.getElementById(${JSON.stringify(id)});field.value=${JSON.stringify(value)};field.dispatchEvent(new Event('change',{bubbles:true}));})()`);
 }
 async function shot(name) {
-  await evaluate('Promise.all(Array.from(document.images,image=>image.decode().catch(()=>{})))');
+  await evaluate('Promise.all(Array.from(document.images).filter(image=>image.loading!=="lazy"||image.naturalWidth>0).map(image=>image.decode().catch(()=>{})))');
   await evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
   await evaluate('Promise.all(document.getAnimations().map(animation=>animation.finished.catch(()=>{})))');
   const result = await send('Page.captureScreenshot', { format: 'png' });
@@ -52,7 +54,7 @@ try {
   await send('Page.navigate', { url: site });
   await until('document.querySelectorAll(".artifact-row").length===10');
   const release = await evaluate('fetch("/api/releases/latest.json",{cache:"no-store"}).then(response=>{if(!response.ok)throw Error("API unavailable");return response.json()})');
-  assert.equal(release.version, '1.0.0'); assert.equal(release.artifacts.length, 10);
+  assert.equal(release.version, expectedVersion); assert.equal(release.artifacts.length, 10);
   for (const platform of ['darwin', 'win32', 'linux']) for (const arch of ['x64', 'arm64']) {
     await choose('platform', platform);
     if (platform === 'darwin') assert.equal(await evaluate('document.getElementById("downloadLink").hidden'), true);

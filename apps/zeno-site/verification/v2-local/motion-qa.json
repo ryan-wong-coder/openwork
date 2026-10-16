@@ -1,0 +1,729 @@
+{
+  "passed": true,
+  "fixtureOnly": true,
+  "dataSource": "Copied once from real public release JSON; only own local target API fulfilled",
+  "releaseVersion": "1.0.0",
+  "capturedAt": "2026-10-16T12:28:25.569Z",
+  "viewports": [
+    [
+      1440,
+      1000
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "browserContext": "Mac user agent retained for narrow viewport CPU-choice testing; no claim of mobile OS detection",
+  "clipboard": "Never accessed",
+  "installers": "Href checks only; no downloads",
+  "targetClosed": "E3DAE1B89A2B458913803CD169F55ECF",
+  "checks": [
+    {
+      "name": "default-mac-quick-cpu-downloads",
+      "passed": true,
+      "choices": [
+        {
+          "text": "下载 Apple Silicon 版",
+          "href": "/downloads/1.0.0/zeno-mac-arm64-1.0.0.dmg"
+        },
+        {
+          "text": "下载 Intel 版",
+          "href": "/downloads/1.0.0/zeno-mac-x64-1.0.0.dmg"
+        }
+      ],
+      "visibleMetadata": [
+        {
+          "text": "DMG · 412.7 MiB · 自签名",
+          "visible": true,
+          "fits": true
+        },
+        {
+          "text": "DMG · 431.1 MiB · 自签名",
+          "visible": true,
+          "fits": true
+        }
+      ]
+    },
+    {
+      "name": "video-decodes-advances-and-autoplays-once",
+      "passed": true,
+      "welcome": {
+        "src": "/assets/motion-v2/welcome-v2.mp4",
+        "currentSrc": "http://127.0.0.1:5197/assets/motion-v2/welcome-v2.mp4",
+        "width": 800,
+        "height": 800,
+        "time": 0.110607,
+        "duration": 5,
+        "paused": false,
+        "ended": false,
+        "loop": false,
+        "readyState": 4,
+        "error": null
+      },
+      "ended": {
+        "src": "/assets/motion-v2/welcome-v2.mp4",
+        "currentSrc": "http://127.0.0.1:5197/assets/motion-v2/welcome-v2.mp4",
+        "width": 800,
+        "height": 800,
+        "time": 5,
+        "duration": 5,
+        "paused": true,
+        "ended": true,
+        "loop": false,
+        "readyState": 4,
+        "error": null
+      }
+    },
+    {
+      "name": "canonical-download-matches-explicit-cpu",
+      "passed": true
+    },
+    {
+      "name": "manual-greeting-pause-resume-and-greet-again",
+      "passed": true,
+      "nod": {
+        "src": "/assets/motion-v2/nod-v2.mp4",
+        "currentSrc": "http://127.0.0.1:5197/assets/motion-v2/nod-v2.mp4",
+        "width": 800,
+        "height": 800,
+        "time": 0.144428,
+        "duration": 5,
+        "paused": false,
+        "ended": false,
+        "loop": false,
+        "readyState": 4,
+        "error": null
+      },
+      "paused": {
+        "src": "/assets/motion-v2/nod-v2.mp4",
+        "currentSrc": "http://127.0.0.1:5197/assets/motion-v2/nod-v2.mp4",
+        "width": 800,
+        "height": 800,
+        "time": 0.145417,
+        "duration": 5,
+        "paused": true,
+        "ended": false,
+        "loop": false,
+        "readyState": 4,
+        "error": null
+      },
+      "resumed": {
+        "src": "/assets/motion-v2/nod-v2.mp4",
+        "currentSrc": "http://127.0.0.1:5197/assets/motion-v2/nod-v2.mp4",
+        "width": 800,
+        "height": 800,
+        "time": 0.305184,
+        "duration": 5,
+        "paused": false,
+        "ended": false,
+        "loop": false,
+        "readyState": 4,
+        "error": null
+      }
+    },
+    {
+      "name": "offscreen-pauses-and-return-does-not-autoplay",
+      "passed": true,
+      "offscreen": {
+        "src": "/assets/motion-v2/welcome-v2.mp4",
+        "currentSrc": "http://127.0.0.1:5197/assets/motion-v2/welcome-v2.mp4",
+        "width": 800,
+        "height": 800,
+        "time": 0.249671,
+        "duration": 5,
+        "paused": true,
+        "ended": false,
+        "loop": false,
+        "readyState": 4,
+        "error": null
+      }
+    },
+    {
+      "name": "logo-loads-on-disclosure-and-plays-on-explicit-intent",
+      "passed": true,
+      "logo": {
+        "src": "/assets/motion-v2/logo-reveal-v2.mp4",
+        "currentSrc": "http://127.0.0.1:5197/assets/motion-v2/logo-reveal-v2.mp4",
+        "width": 1280,
+        "height": 720,
+        "time": 0.107839,
+        "duration": 4,
+        "paused": false,
+        "ended": false,
+        "loop": false,
+        "readyState": 4,
+        "error": null
+      }
+    },
+    {
+      "name": "reduced-motion-does-not-load-video-and-shows-seated-poster",
+      "passed": true,
+      "reduced": {
+        "src": null,
+        "currentSrc": "",
+        "width": 0,
+        "height": 0,
+        "time": 0,
+        "duration": null,
+        "paused": true,
+        "ended": false,
+        "loop": false,
+        "readyState": 0,
+        "error": null
+      }
+    },
+    {
+      "name": "dark-composites-decode-and-advance",
+      "passed": true,
+      "welcome": {
+        "src": "/assets/motion-v2/welcome-dark-v2.mp4",
+        "currentSrc": "http://127.0.0.1:5197/assets/motion-v2/welcome-dark-v2.mp4",
+        "width": 800,
+        "height": 800,
+        "time": 0.122097,
+        "duration": 5,
+        "paused": false,
+        "ended": false,
+        "loop": false,
+        "readyState": 4,
+        "error": null
+      },
+      "nod": {
+        "src": "/assets/motion-v2/nod-dark-v2.mp4",
+        "currentSrc": "http://127.0.0.1:5197/assets/motion-v2/nod-dark-v2.mp4",
+        "width": 800,
+        "height": 800,
+        "time": 0.148018,
+        "duration": 5,
+        "paused": false,
+        "ended": false,
+        "loop": false,
+        "readyState": 4,
+        "error": null
+      },
+      "darkCanvas": {
+        "videoRgb": [
+          15,
+          38,
+          37
+        ],
+        "canvasCss": "rgb(16, 38, 38)"
+      }
+    },
+    {
+      "name": "rapid-greetings-do-not-pause-latest-clip",
+      "passed": true,
+      "latest": {
+        "src": "/assets/motion-v2/nod-dark-v2.mp4",
+        "currentSrc": "http://127.0.0.1:5197/assets/motion-v2/nod-dark-v2.mp4",
+        "width": 800,
+        "height": 800,
+        "time": 0.142679,
+        "duration": 5,
+        "paused": false,
+        "ended": false,
+        "loop": false,
+        "readyState": 4,
+        "error": null
+      }
+    },
+    {
+      "name": "dark-reduced-motion-does-not-load-video",
+      "passed": true
+    },
+    {
+      "name": "mobile-and-dark-layout-images",
+      "passed": true,
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "visibleMetadata": [
+        {
+          "text": "DMG · 412.7 MiB · 自签名",
+          "visible": true,
+          "fits": true
+        },
+        {
+          "text": "DMG · 431.1 MiB · 自签名",
+          "visible": true,
+          "fits": true
+        }
+      ]
+    },
+    {
+      "name": "no-installer-downloads-or-runtime-exceptions",
+      "passed": true
+    }
+  ],
+  "screenshots": [
+    "01-desktop-motion.png",
+    "02-desktop-rest.png",
+    "03-logo-explicit-playback.png",
+    "04-desktop-reduced-motion.png",
+    "07-desktop-dark-motion.png",
+    "08-desktop-dark-reduced-motion.png",
+    "05-mobile-light.png",
+    "06-mobile-dark.png"
+  ],
+  "exceptions": [],
+  "failure": null,
+  "requests": [
+    {
+      "phase": "normal",
+      "path": "/",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Document"
+    },
+    {
+      "phase": "normal",
+      "path": "/styles.css",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "normal",
+      "path": "/app.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "normal",
+      "path": "/motion.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "normal",
+      "path": "/assets/mark.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "normal",
+      "path": "/assets/logo.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "normal",
+      "path": "/assets/motion-v2/mascot-poster.png",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "normal",
+      "path": "/assets/motion-v2/logo-poster.png",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "normal",
+      "path": "/releases.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "normal",
+      "path": "/motion-config.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "normal",
+      "path": "/api/releases/latest.json",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Fetch"
+    },
+    {
+      "phase": "normal",
+      "path": "/assets/motion-v2/welcome-v2.mp4",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Media"
+    },
+    {
+      "phase": "normal",
+      "path": "/assets/motion-v2/nod-v2.mp4",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Media"
+    },
+    {
+      "phase": "normal",
+      "path": "/assets/motion-v2/welcome-v2.mp4",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Media"
+    },
+    {
+      "phase": "normal",
+      "path": "/assets/motion-v2/logo-reveal-v2.mp4",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Media"
+    },
+    {
+      "phase": "reduced",
+      "path": "/",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Document"
+    },
+    {
+      "phase": "reduced",
+      "path": "/styles.css",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "reduced",
+      "path": "/app.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "reduced",
+      "path": "/motion.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "reduced",
+      "path": "/assets/mark.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "reduced",
+      "path": "/assets/logo.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "reduced",
+      "path": "/assets/static-v2/mascot-rest-v2.webp",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "reduced",
+      "path": "/assets/motion-v2/logo-poster.png",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "reduced",
+      "path": "/releases.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "reduced",
+      "path": "/motion-config.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "reduced",
+      "path": "/api/releases/latest.json",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Fetch"
+    },
+    {
+      "phase": "dark-desktop",
+      "path": "/",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Document"
+    },
+    {
+      "phase": "dark-desktop",
+      "path": "/styles.css",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "dark-desktop",
+      "path": "/app.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "dark-desktop",
+      "path": "/motion.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "dark-desktop",
+      "path": "/assets/mark-reverse.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "dark-desktop",
+      "path": "/assets/logo-reverse.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "dark-desktop",
+      "path": "/assets/mascot.webp",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "dark-desktop",
+      "path": "/assets/motion-v2/logo-poster.png",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "dark-desktop",
+      "path": "/motion-config.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "dark-desktop",
+      "path": "/releases.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "dark-desktop",
+      "path": "/api/releases/latest.json",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Fetch"
+    },
+    {
+      "phase": "dark-desktop",
+      "path": "/assets/motion-v2/welcome-dark-v2.mp4",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Media"
+    },
+    {
+      "phase": "dark-desktop",
+      "path": "/assets/motion-v2/nod-dark-v2.mp4",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Media"
+    },
+    {
+      "phase": "dark-desktop",
+      "path": "/assets/motion-v2/nod-dark-v2.mp4",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Media"
+    },
+    {
+      "phase": "reduced-dark",
+      "path": "/",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Document"
+    },
+    {
+      "phase": "reduced-dark",
+      "path": "/assets/static-v2/mascot-rest-v2.webp",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "reduced-dark",
+      "path": "/styles.css",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "reduced-dark",
+      "path": "/app.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "reduced-dark",
+      "path": "/motion.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "reduced-dark",
+      "path": "/assets/mark-reverse.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "reduced-dark",
+      "path": "/assets/logo-reverse.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "reduced-dark",
+      "path": "/assets/static-v2/mascot-rest-v2.webp",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "reduced-dark",
+      "path": "/assets/motion-v2/logo-poster.png",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "reduced-dark",
+      "path": "/releases.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "reduced-dark",
+      "path": "/motion-config.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "reduced-dark",
+      "path": "/api/releases/latest.json",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Fetch"
+    },
+    {
+      "phase": "mobile",
+      "path": "/",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Document"
+    },
+    {
+      "phase": "mobile",
+      "path": "/styles.css",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "mobile",
+      "path": "/app.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "mobile",
+      "path": "/motion.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "mobile",
+      "path": "/assets/mark.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "mobile",
+      "path": "/assets/logo.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "mobile",
+      "path": "/assets/motion-v2/mascot-poster.png",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "mobile",
+      "path": "/assets/motion-v2/logo-poster.png",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "mobile",
+      "path": "/motion-config.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "mobile",
+      "path": "/releases.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "mobile",
+      "path": "/api/releases/latest.json",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Fetch"
+    },
+    {
+      "phase": "mobile",
+      "path": "/assets/motion-v2/welcome-v2.mp4",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Media"
+    },
+    {
+      "phase": "dark-mobile",
+      "path": "/",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Document"
+    },
+    {
+      "phase": "dark-mobile",
+      "path": "/styles.css",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "dark-mobile",
+      "path": "/app.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "dark-mobile",
+      "path": "/motion.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "dark-mobile",
+      "path": "/assets/mark-reverse.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "dark-mobile",
+      "path": "/assets/logo-reverse.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "dark-mobile",
+      "path": "/assets/mascot.webp",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "dark-mobile",
+      "path": "/assets/motion-v2/logo-poster.png",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "dark-mobile",
+      "path": "/releases.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "dark-mobile",
+      "path": "/motion-config.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "dark-mobile",
+      "path": "/api/releases/latest.json",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Fetch"
+    },
+    {
+      "phase": "dark-mobile",
+      "path": "/assets/motion-v2/welcome-dark-v2.mp4",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Media"
+    }
+  ]
+}

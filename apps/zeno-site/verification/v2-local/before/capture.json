@@ -1,0 +1,467 @@
+{
+  "site": "https://www.zeno.ryan-wong.cn/",
+  "targetClosed": "6C748662C3CF3B9F5C019521417AFD0D",
+  "network": "unmodified production; no API interception; no downloads",
+  "records": [
+    {
+      "name": "01-desktop-default",
+      "title": "泽诺 Zeno — 下载",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "scrollWidth": 1425,
+      "pageHeight": 1288,
+      "platform": "darwin",
+      "arch": "",
+      "status": "",
+      "download": null,
+      "metrics": [
+        {
+          "selector": "site-header shell",
+          "x": 192.5,
+          "y": 0,
+          "width": 1040,
+          "height": 96,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "download",
+          "x": 192.5,
+          "y": 96,
+          "width": 1040,
+          "height": 430,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "download-panel",
+          "x": 192.5,
+          "y": 156.5,
+          "width": 440,
+          "height": 317,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "downloadTitle",
+          "x": 192.5,
+          "y": 156.5,
+          "width": 440,
+          "height": 28,
+          "font": "20px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "selectors",
+          "x": 192.5,
+          "y": 216.5,
+          "width": 440,
+          "height": 68,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "downloadUnavailable",
+          "x": 192.5,
+          "y": 340.5,
+          "width": 440,
+          "height": 44,
+          "font": "13px",
+          "color": "rgb(243, 241, 232)"
+        },
+        {
+          "selector": "hero-art",
+          "x": 712.5,
+          "y": 135,
+          "width": 520,
+          "height": 360,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "preview",
+          "x": 192.5,
+          "y": 526,
+          "width": 1040,
+          "height": 490.328125,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "product-preview",
+          "x": 192.5,
+          "y": 536,
+          "width": 1040,
+          "height": 448.328125,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "all-downloads shell",
+          "x": 192.5,
+          "y": 1016.328125,
+          "width": 1040,
+          "height": 155,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "about",
+          "x": 192.5,
+          "y": 1171.328125,
+          "width": 1040,
+          "height": 117,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        }
+      ]
+    },
+    {
+      "name": "02-desktop-download-ready",
+      "title": "泽诺 Zeno — 下载",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "scrollWidth": 1425,
+      "pageHeight": 1288,
+      "platform": "darwin",
+      "arch": "arm64",
+      "status": "zeno-mac-arm64-1.0.0.dmg",
+      "download": "/downloads/1.0.0/zeno-mac-arm64-1.0.0.dmg",
+      "metrics": [
+        {
+          "selector": "site-header shell",
+          "x": 192.5,
+          "y": 0,
+          "width": 1040,
+          "height": 96,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "download",
+          "x": 192.5,
+          "y": 96,
+          "width": 1040,
+          "height": 430,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "download-panel",
+          "x": 192.5,
+          "y": 156.5,
+          "width": 440,
+          "height": 317,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "downloadTitle",
+          "x": 192.5,
+          "y": 156.5,
+          "width": 440,
+          "height": 28,
+          "font": "20px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "selectors",
+          "x": 192.5,
+          "y": 216.5,
+          "width": 440,
+          "height": 68,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "downloadLink",
+          "x": 192.5,
+          "y": 340.5,
+          "width": 440,
+          "height": 44,
+          "font": "13px",
+          "color": "rgb(243, 241, 232)"
+        },
+        {
+          "selector": "hero-art",
+          "x": 712.5,
+          "y": 135,
+          "width": 520,
+          "height": 360,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "preview",
+          "x": 192.5,
+          "y": 526,
+          "width": 1040,
+          "height": 490.328125,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "product-preview",
+          "x": 192.5,
+          "y": 536,
+          "width": 1040,
+          "height": 448.328125,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "all-downloads shell",
+          "x": 192.5,
+          "y": 1016.328125,
+          "width": 1040,
+          "height": 155,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "about",
+          "x": 192.5,
+          "y": 1171.328125,
+          "width": 1040,
+          "height": 117,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        }
+      ]
+    },
+    {
+      "name": "03-mobile-default",
+      "title": "泽诺 Zeno — 下载",
+      "viewport": [
+        390,
+        844
+      ],
+      "scrollWidth": 390,
+      "pageHeight": 1082,
+      "platform": "",
+      "arch": "",
+      "status": "",
+      "download": null,
+      "metrics": [
+        {
+          "selector": "site-header shell",
+          "x": 20,
+          "y": 0,
+          "width": 350,
+          "height": 76,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "download",
+          "x": 20,
+          "y": 76,
+          "width": 350,
+          "height": 514,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "download-panel",
+          "x": 20,
+          "y": 282,
+          "width": 350,
+          "height": 272,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "downloadTitle",
+          "x": 20,
+          "y": 282,
+          "width": 350,
+          "height": 28,
+          "font": "20px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "selectors",
+          "x": 20,
+          "y": 338,
+          "width": 350,
+          "height": 68,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "downloadUnavailable",
+          "x": 20,
+          "y": 462,
+          "width": 350,
+          "height": 44,
+          "font": "13px",
+          "color": "rgb(243, 241, 232)"
+        },
+        {
+          "selector": "hero-art",
+          "x": 140,
+          "y": 100,
+          "width": 110,
+          "height": 158,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "preview",
+          "x": 20,
+          "y": 590,
+          "width": 350,
+          "height": 183.625,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "product-preview",
+          "x": 20,
+          "y": 598,
+          "width": 350,
+          "height": 151.625,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "all-downloads shell",
+          "x": 20,
+          "y": 773.625,
+          "width": 350,
+          "height": 155,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "about",
+          "x": 20,
+          "y": 928.625,
+          "width": 350,
+          "height": 153,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        }
+      ]
+    },
+    {
+      "name": "04-mobile-download-ready-full",
+      "title": "泽诺 Zeno — 下载",
+      "viewport": [
+        390,
+        844
+      ],
+      "scrollWidth": 390,
+      "pageHeight": 1123,
+      "platform": "darwin",
+      "arch": "arm64",
+      "status": "zeno-mac-arm64-1.0.0.dmg",
+      "download": "/downloads/1.0.0/zeno-mac-arm64-1.0.0.dmg",
+      "metrics": [
+        {
+          "selector": "site-header shell",
+          "x": 20,
+          "y": 0,
+          "width": 350,
+          "height": 76,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "download",
+          "x": 20,
+          "y": 76,
+          "width": 350,
+          "height": 555,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "download-panel",
+          "x": 20,
+          "y": 282,
+          "width": 350,
+          "height": 313,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "downloadTitle",
+          "x": 20,
+          "y": 282,
+          "width": 350,
+          "height": 28,
+          "font": "20px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "selectors",
+          "x": 20,
+          "y": 338,
+          "width": 350,
+          "height": 68,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "downloadLink",
+          "x": 20,
+          "y": 462,
+          "width": 350,
+          "height": 44,
+          "font": "13px",
+          "color": "rgb(243, 241, 232)"
+        },
+        {
+          "selector": "hero-art",
+          "x": 140,
+          "y": 100,
+          "width": 110,
+          "height": 158,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "preview",
+          "x": 20,
+          "y": 631,
+          "width": 350,
+          "height": 183.625,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "product-preview",
+          "x": 20,
+          "y": 639,
+          "width": 350,
+          "height": 151.625,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "all-downloads shell",
+          "x": 20,
+          "y": 814.625,
+          "width": 350,
+          "height": 155,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        },
+        {
+          "selector": "about",
+          "x": 20,
+          "y": 969.625,
+          "width": 350,
+          "height": 153,
+          "font": "13px",
+          "color": "rgb(22, 58, 58)"
+        }
+      ]
+    }
+  ]
+}
