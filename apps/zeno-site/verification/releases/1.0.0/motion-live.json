@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "fixtureOnly": false,
+  "checkedAt": "2026-10-16T12:38:33.125Z",
+  "websiteCommit": "4e47a9e08",
+  "releaseVersion": "1.0.0",
+  "checks": [
+    {
+      "file": "welcome-v2.mp4",
+      "size": 79748,
+      "sha256": "040f6ad82ea640f784b5826f23e559bdabace9bbe1dccc3b823b727efa00f73c",
+      "mime": "video/mp4",
+      "range": true
+    },
+    {
+      "file": "nod-v2.mp4",
+      "size": 88049,
+      "sha256": "80ecd0b2e4eaa3c77a2284fc4b6b94f3ae4f156a656f8b2328c882d4a9f4f44d",
+      "mime": "video/mp4",
+      "range": true
+    },
+    {
+      "file": "logo-reveal-v2.mp4",
+      "size": 94151,
+      "sha256": "689f62fc243e8e83b32c401ec3fcd940e91cc3fd92353ff73576bdbf2fddaee9",
+      "mime": "video/mp4",
+      "range": true
+    },
+    {
+      "file": "welcome-dark-v2.mp4",
+      "size": 98859,
+      "sha256": "a30732da356619bb1221e2f0e0ee1b6cdf7b7371489c721b6a7f964d39e0ec58",
+      "mime": "video/mp4",
+      "range": true
+    },
+    {
+      "file": "nod-dark-v2.mp4",
+      "size": 122253,
+      "sha256": "80486d38e7bcb434112d4f61e8fba074114447d837146456b64f0371fa7abe52",
+      "mime": "video/mp4",
+      "range": true
+    }
+  ],
+  "rawSourceExcluded": true,
+  "otherWebsiteAvailable": true
+}

@@ -2,9 +2,34 @@
 
 final result: passed
 
-2026-10-16。本报告验收新版本地静态构建，不把本地通过写成线上部署完成。
+2026-10-16。本报告分别记录新版本地构建与正式 HTTPS 上线后的实际验收。
 12 项动效检查、10 张回归场景截图均已实际执行；8 张动效截图已逐张查看。
 未发现仍需修复的 P0/P1/P2。旧版 [design-qa.md](design-qa.md) 保留原样作为历史。
+
+## 正式官网上线验证
+
+新版视觉已在 [正式官网](https://www.zeno.ryan-wong.cn) 上线，网站提交为
+`4e47a9e08`。**当前客户端下载与发布 API 仍为 1.0.0**；“官网 v2”指本次网站
+视觉改版，不表示客户端升级为 2.0，也未替换客户端安装包或更新 feed。
+
+本轮 `qa-live.mjs 1.0.0` 在 2026-10-16 12:38 UTC 实际访问线上站点，
+[live-qa.json](verification/releases/1.0.0/live-qa.json) 标记
+`fixtureOnly: false`、`passed: true`：未拦截 API，实际返回 10 个产物，
+macOS / Windows / Linux 各两种 CPU 共六组合的下载选择与真实产物、SHA-256
+对应。0 Runtime exception，请求源仅为本站。该验收只检查安装包链接，不触发
+安装包下载。
+
+[motion-live.json](verification/releases/1.0.0/motion-live.json) 另记录五个 web
+MP4 的真实 HTTPS 全量获取：大小与 SHA-256 均和本地发布产物一致，
+`Content-Type: video/mp4`、Range 均通过；原始生成视频路径不公开，另一现有网站
+仍可访问。视频获取与安装包下载是分开的检查，没有把本地替换 API 的结果当成
+这次线上验证。
+
+![新版正式官网桌面](verification/releases/1.0.0/site-live-desktop.png)
+
+![新版正式官网手机](verification/releases/1.0.0/site-live-mobile.png)
+
+![新版正式官网暗色手机](verification/releases/1.0.0/site-live-mobile-dark.png)
 
 ## 比较范围与证据
 
@@ -128,8 +153,9 @@ final result: passed
 
 ## 验收边界与后续
 
-- 本地 QA 不证明 v2 已部署；真实线上版本、产物、HTTPS/Range/hash 与 native
-  updater 由独立发布验收确认。本报告不挪用旧版线上 passed 作为新版上线证据。
+- 本地 QA 单独不能证明部署；本次新版上线由上方新增的真实线上报告确认，
+  未挪用旧版线上 passed。原生 updater 的安装重启仍由独立发布验收确认，
+  官网视频的 HTTPS/Range/hash 检查不代替客户端更新测试。
 - 已验原生控件键盘、可达继续按钮、浅/深与低动效；未进行完整读屏或所有系统的
   无障碍审计，也不声明 WCAG 认证。未覆盖每种缩放比例或浏览器版本。
 - 手机元数据属于安静辅助信息；如后续实测需要更高可读性，可提升其字号作为 P3
@@ -139,4 +165,4 @@ final result: passed
 - 无新增凭据、个人真名、客户内容或带签名资源 URL；证据只包含公开品牌、官网
   发布数据和明确命名的 fixture。原始内部生成记录不加入发布目录。
 
-本地实现与可回退构建已验收；上线后另运行真实线上检查。
+本地实现、可回退构建与本次正式官网上线分别验收通过；客户端仍为 1.0.0。
