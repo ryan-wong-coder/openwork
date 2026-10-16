@@ -129,7 +129,7 @@ function renderArtifacts() {
       platform = item.platform; arch = item.arch; format = item.format;
       platformInput.value = platform; updateArchitectures(); renderSelection();
       byId('checksumDetails').open = true;
-      byId('download').scrollIntoView();
+      byId('checksumDetails').scrollIntoView({ block: 'center' });
       byId('checksumDetails').querySelector('summary').focus();
     });
     const actions = textElement('div', '', 'artifact-actions');
@@ -186,6 +186,10 @@ const syncPreviewLink = () => { document.querySelector('.product-preview').href 
 darkMode.addEventListener('change', syncPreviewLink);
 syncPreviewLink();
 byId('previewNav').addEventListener('click', () => { byId('workspacePreview').open = true; });
+byId('installLink').addEventListener('click', () => {
+  byId('installHelp').open = true;
+  byId('installHelp').querySelector('summary').focus({ preventScroll: true });
+});
 platformInput.value = platform || '';
 updateArchitectures();
 platformInput.addEventListener('change', () => { platform = platformInput.value || null; arch = defaultArch(platform); format = null; updateArchitectures(); renderSelection(); });

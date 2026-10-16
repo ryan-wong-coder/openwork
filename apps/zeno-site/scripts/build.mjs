@@ -1,6 +1,6 @@
-import { cp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readFile, rm, stat } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { join, resolve } from 'node:path';
+import { basename, join, resolve, sep } from 'node:path';
 import { resolveFeature } from '../../../packages/features/src/resolve.ts';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const dist = join(root, 'dist');
@@ -13,16 +13,20 @@ if (args.length) {
   enabled = profile.features.zenoWebsiteRefresh;
 }
 const refreshed = resolveFeature('zenoWebsiteRefresh', { deployment: 'self_hosted', locks: enabled === undefined ? {} : { zenoWebsiteRefresh: enabled }, rollouts: {}, overrides: {} }).enabled;
+const heroDirectory = join(root, 'public/assets/hero-film-v3');
+const heroFiles = ['hero-worklife-v3.mp4', 'hero-worklife-v3-poster.webp', 'hero-worklife-v3-mobile.mp4', 'hero-worklife-v3-mobile-poster.webp'].map(file => join(heroDirectory, file));
+// Validate before replacing dist. An unfinished scene film must never quietly
+// ship the old standing-otter clip or erase the previous complete preview.
+if (refreshed) for (const path of heroFiles) {
+  try { if (!(await stat(path)).isFile() || (await stat(path)).size === 0) throw Error('Empty hero asset'); }
+  catch { throw Error(`Cannot build Zeno website v3: required scene asset is not ready (${basename(path)}).`); }
+}
 await rm(dist, { recursive: true, force: true });
 await mkdir(dist, { recursive: true });
 await cp(join(root, refreshed ? 'src' : 'classic'), dist, { recursive: true });
-await cp(join(root, 'public'), dist, { recursive: true, filter: source => !source.endsWith('-source.mp4') && !(source.includes('/static-v2/') && source.endsWith('.png')) && (refreshed || (!source.includes('/motion-v2') && !source.includes('/static-v2'))) });
-if (refreshed) {
-  const assets = {};
-  for (const [key, file] of Object.entries({ welcome: 'welcome-v2.mp4', nod: 'nod-v2.mp4', logo: 'logo-reveal-v2.mp4', welcomeDark: 'welcome-dark-v2.mp4', nodDark: 'nod-dark-v2.mp4' })) {
-    const path = join(root, 'public/assets/motion-v2', file);
-    try { if ((await stat(path)).isFile()) assets[key] = `/assets/motion-v2/${file}`; } catch { /* A missing optional animation keeps its static fallback. */ }
-  }
-  await writeFile(join(dist, 'motion-config.js'), `export const motionAssets = ${JSON.stringify(assets)};\n`);
-}
+await cp(join(root, 'public'), dist, { recursive: true, filter: source => {
+  if (source === heroDirectory) return refreshed;
+  if (source.startsWith(`${heroDirectory}${sep}`)) return refreshed && heroFiles.includes(source);
+  return !source.endsWith('-source.mp4') && !source.includes(`${sep}motion-v2`) && !source.includes(`${sep}static-v2`);
+} });
 console.log(`Built ${dist}; zenoWebsiteRefresh=${refreshed}`);

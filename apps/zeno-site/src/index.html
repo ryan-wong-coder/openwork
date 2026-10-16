@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f3f1e8">
+  <meta name="theme-color" content="#0b191b">
   <meta name="description" content="泽诺 Zeno。把想法，做成真的。下载适合你电脑的版本。">
   <meta name="referrer" content="same-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; media-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
@@ -20,17 +20,22 @@
 </head>
 <body>
   <a class="skip-link" href="#download">跳到下载</a>
-  <header class="site-header shell">
+  <main>
+    <section class="hero" id="download" aria-labelledby="downloadTitle">
+      <video id="heroFilm" class="hero-film" poster="/assets/hero-film-v3/hero-worklife-v3-poster.webp" autoplay loop muted playsinline preload="auto" aria-hidden="true" tabindex="-1">
+        <source media="(max-width: 700px)" src="/assets/hero-film-v3/hero-worklife-v3-mobile.mp4" type="video/mp4">
+        <source src="/assets/hero-film-v3/hero-worklife-v3.mp4" type="video/mp4">
+      </video>
+      <header class="site-header shell">
     <a class="brand" href="#download" aria-label="泽诺 Zeno 首页">
-      <picture><source media="(prefers-color-scheme: dark)" srcset="/assets/mark-reverse.svg"><img src="/assets/mark.svg" alt="" width="30" height="30"></picture><span>泽诺</span>
+      <img src="/assets/mark-reverse.svg" alt="" width="30" height="30"><span>泽诺</span>
     </a>
     <nav aria-label="主导航"><a href="#download">下载</a><a href="#preview" id="previewNav">工作台</a><a href="#about">关于</a></nav>
-  </header>
-  <main>
-    <section class="hero shell" id="download" aria-labelledby="downloadTitle">
+      </header>
+      <div class="hero-layout shell">
       <div class="hero-copy">
         <div class="brand-art">
-          <picture><source media="(prefers-color-scheme: dark)" srcset="/assets/logo-reverse.svg"><img src="/assets/logo.svg" alt="泽诺 Zeno" width="1369" height="473" fetchpriority="high"></picture>
+          <img src="/assets/logo-reverse.svg" alt="泽诺 Zeno" width="1369" height="473" fetchpriority="high">
         </div>
         <h1 id="downloadTitle">把想法，做成真的。</h1>
         <div class="release-controls">
@@ -44,9 +49,16 @@
             <div id="quickChoices" class="quick-choices" aria-label="选择芯片并下载" hidden></div>
           </div>
           <div class="release-metadata" id="releaseMetadata" aria-busy="true"><span class="skeleton" aria-hidden="true"></span><span class="skeleton short" aria-hidden="true"></span></div>
+          <a class="install-link" id="installLink" href="#installHelp">安装说明 <span aria-hidden="true">↗</span></a>
           <div class="release-feedback"><p id="releaseStatus" role="status" aria-live="polite"></p><button class="text-button" id="retry" type="button" hidden>重新检查</button></div>
+          <noscript><p>启用 JavaScript 后可读取当前发布的安装包。</p></noscript>
+        </div>
+      </div>
+      </div>
+    </section>
+    <section class="support shell" id="downloadDetails" aria-label="安装与发布信息">
           <div class="download-details">
-            <details class="install-help"><summary>安装说明</summary><div id="installSteps"><p>选择与你电脑一致的平台与芯片。</p></div><p>首次使用，连接你自己的模型网关。</p></details>
+            <details class="install-help" id="installHelp"><summary>安装说明</summary><div id="installSteps"><p>选择与你电脑一致的平台与芯片。</p></div><p>首次使用，连接你自己的模型网关。</p></details>
             <details class="chip-help" id="chipHelp" hidden><summary>怎么看 Mac 芯片？</summary><p>打开苹果菜单中的“关于本机”：显示“芯片”时选择 Apple Silicon，显示 Intel 处理器时选择 Intel。</p></details>
             <details class="checksum" id="checksumDetails" hidden>
               <summary>校验和</summary>
@@ -55,16 +67,10 @@
               <p class="quiet" id="copyStatus" role="status" aria-live="polite"></p>
             </details>
           </div>
-          <noscript><p>启用 JavaScript 后可读取当前发布的安装包。</p></noscript>
-        </div>
+      <div class="all-downloads">
+        <details id="allDownloads" hidden><summary>全部安装包 <span id="artifactCount"></span></summary><ul id="artifactList"></ul></details>
+        <details class="release-notes" id="releaseNotes" hidden><summary>此版本更新</summary><ul id="noteList"></ul></details>
       </div>
-      <figure class="hero-art">
-        <div class="mascot-stage" id="mascotStage">
-          <picture id="mascotPoster" class="mascot-poster"><source media="(prefers-reduced-motion: reduce)" srcset="/assets/static-v2/mascot-rest-v2.webp"><source media="(prefers-color-scheme: dark)" srcset="/assets/mascot.webp"><img src="/assets/motion-v2/mascot-poster.png" alt="青柠挎带的小水獭泽诺" width="1024" height="1024" fetchpriority="high"></picture>
-          <video id="mascotFilm" class="mascot-film" muted playsinline preload="none" aria-hidden="true"></video>
-        </div>
-        <figcaption class="mascot-caption"><span>想做点什么？泽诺在。</span><div class="motion-actions"><button id="greetMascot" class="text-button" type="button">打个招呼</button><button id="pauseMotion" class="text-button" type="button" hidden>暂停动画</button></div></figcaption>
-      </figure>
     </section>
     <section class="preview shell" id="preview" aria-label="工作台预览">
       <details id="workspacePreview">
@@ -72,19 +78,11 @@
         <a class="product-preview" href="/assets/product-full-light.webp" aria-label="查看完整产品界面">
           <picture><source media="(prefers-color-scheme: dark)" srcset="/assets/product-dark.webp"><img src="/assets/product-light.webp" alt="泽诺真实界面：工作区、对话输入框与整理文件、写代码、生成图片入口" width="1200" height="516" loading="lazy" decoding="async"></picture>
         </a>
-        <img class="preview-companion" src="/assets/static-v2/mascot-peek-v2.webp" alt="" width="1536" height="1024" loading="lazy" aria-hidden="true">
       </details>
-    </section>
-    <section class="resources shell" aria-label="下载与品牌资源">
-      <div class="all-downloads">
-        <details id="allDownloads" hidden><summary>全部安装包 <span id="artifactCount"></span></summary><ul id="artifactList"></ul></details>
-        <details class="release-notes" id="releaseNotes" hidden><summary>此版本更新</summary><ul id="noteList"></ul></details>
-      </div>
-      <details class="brand-film" id="brandFilmDetails"><summary>泽诺，动起来。</summary><video id="logoFilm" controls muted playsinline preload="none" poster="/assets/motion-v2/logo-poster.png" aria-label="泽诺品牌动态标志"></video></details>
     </section>
   </main>
   <footer class="about shell" id="about" aria-label="关于泽诺">
-    <div class="footer-brand"><picture><source media="(prefers-color-scheme: dark)" srcset="/assets/mark-reverse.svg"><img src="/assets/mark.svg" alt="" width="24" height="24"></picture><span>泽诺 Zeno</span><span id="releaseVersion"></span></div>
+    <div class="footer-brand"><img src="/assets/mark-reverse.svg" alt="" width="24" height="24"><span>泽诺 Zeno</span><span id="releaseVersion"></span></div>
     <div class="about-copy"><p>基于 OpenWork 改造。</p><details class="license"><summary>开源与许可</summary><p>OpenWork 开源部分遵循 MIT 许可证。/ee 目录适用其独立许可证，第三方组件保留各自的版权与许可。</p><p>Copyright (c) 2026-present Different AI, Inc.</p><a href="/LICENSE.txt">查看完整 MIT 许可</a></details></div>
   </footer>
 </body>

@@ -1,0 +1,568 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-16T13:35:26.296Z",
+  "fixtureOnly": true,
+  "fixture": "Copy of real public manifest, fulfilled only on owned local target",
+  "source": "https://www.zeno.ryan-wong.cn/api/releases/latest.json",
+  "releaseVersion": "1.0.0",
+  "viewport": [
+    1440,
+    1000
+  ],
+  "narrowViewport": [
+    390,
+    844
+  ],
+  "narrowUa": "Mac desktop UA retained to exercise CPU choices",
+  "systemClipboard": "Not accessed",
+  "installerDownloads": false,
+  "targetClosed": true,
+  "browserContextDisposed": true,
+  "checks": [
+    {
+      "name": "native-autoplay-loop-muted-inline-and-no-user-motion-controls",
+      "passed": true,
+      "initial": {
+        "src": null,
+        "currentSrc": "/assets/hero-film-v3/hero-worklife-v3.mp4",
+        "poster": "/assets/hero-film-v3/hero-worklife-v3-poster.webp",
+        "width": 1920,
+        "height": 1080,
+        "time": 0.147534,
+        "duration": 19.5,
+        "paused": false,
+        "loop": true,
+        "muted": true,
+        "autoplay": true,
+        "playsInline": true,
+        "controls": false,
+        "error": null
+      },
+      "advanced": {
+        "src": null,
+        "currentSrc": "/assets/hero-film-v3/hero-worklife-v3.mp4",
+        "poster": "/assets/hero-film-v3/hero-worklife-v3-poster.webp",
+        "width": 1920,
+        "height": 1080,
+        "time": 0.549517,
+        "duration": 19.5,
+        "paused": false,
+        "loop": true,
+        "muted": true,
+        "autoplay": true,
+        "playsInline": true,
+        "controls": false,
+        "error": null
+      }
+    },
+    {
+      "name": "real-manifest-cpu-downloads-and-visible-file-metadata",
+      "passed": true,
+      "version": "1.0.0",
+      "choices": [
+        {
+          "text": "下载 Apple Silicon 版",
+          "href": "/downloads/1.0.0/zeno-mac-arm64-1.0.0.dmg"
+        },
+        {
+          "text": "下载 Intel 版",
+          "href": "/downloads/1.0.0/zeno-mac-x64-1.0.0.dmg"
+        }
+      ],
+      "metadata": [
+        "DMG · 412.7 MiB · 自签名",
+        "DMG · 431.1 MiB · 自签名"
+      ],
+      "layout": {
+        "width": 1440,
+        "contentWidth": 1425,
+        "height": 1000,
+        "scrollWidth": 1425,
+        "download": {
+          "x": 0,
+          "y": 0,
+          "width": 1425,
+          "height": 1000,
+          "bottom": 1000
+        },
+        "heroFilm": {
+          "x": 0,
+          "y": 0,
+          "width": 1425,
+          "height": 1000,
+          "bottom": 1000
+        },
+        "releaseMetadata": {
+          "x": 72.5,
+          "y": 682.59375,
+          "width": 440,
+          "height": 20,
+          "bottom": 702.59375
+        },
+        "installLink": {
+          "x": 72.5,
+          "y": 706.59375,
+          "width": 59.453125,
+          "height": 36,
+          "bottom": 742.59375
+        }
+      }
+    },
+    {
+      "name": "three-real-scenes-decoded-and-screenshotted",
+      "passed": true
+    },
+    {
+      "name": "native-loop-wraps-without-manual-restart",
+      "passed": true,
+      "duration": 19.5,
+      "afterWrap": {
+        "src": null,
+        "currentSrc": "/assets/hero-film-v3/hero-worklife-v3.mp4",
+        "poster": "/assets/hero-film-v3/hero-worklife-v3-poster.webp",
+        "width": 1920,
+        "height": 1080,
+        "time": 0,
+        "duration": 19.5,
+        "paused": false,
+        "loop": true,
+        "muted": true,
+        "autoplay": true,
+        "playsInline": true,
+        "controls": false,
+        "error": null
+      }
+    },
+    {
+      "name": "canonical-download-matches-selected-cpu",
+      "passed": true
+    },
+    {
+      "name": "below-fold-install-guidance-and-technical-offscreen-pause-resume",
+      "passed": true
+    },
+    {
+      "name": "dark-preference-preserves-contrast-and-video",
+      "passed": true,
+      "layout": {
+        "width": 1440,
+        "contentWidth": 1425,
+        "height": 1000,
+        "scrollWidth": 1425,
+        "download": {
+          "x": 0,
+          "y": 0,
+          "width": 1425,
+          "height": 1000,
+          "bottom": 1000
+        },
+        "heroFilm": {
+          "x": 0,
+          "y": 0,
+          "width": 1425,
+          "height": 1000,
+          "bottom": 1000
+        },
+        "releaseMetadata": {
+          "x": 72.5,
+          "y": 682.59375,
+          "width": 440,
+          "height": 20,
+          "bottom": 702.59375
+        },
+        "installLink": {
+          "x": 72.5,
+          "y": 706.59375,
+          "width": 59.453125,
+          "height": 36,
+          "bottom": 742.59375
+        }
+      }
+    },
+    {
+      "name": "mobile-native-source-only-and-three-scenes-fit-viewport",
+      "passed": true,
+      "mobile": {
+        "src": null,
+        "currentSrc": "/assets/hero-film-v3/hero-worklife-v3-mobile.mp4",
+        "poster": "/assets/hero-film-v3/hero-worklife-v3-mobile-poster.webp",
+        "width": 720,
+        "height": 1280,
+        "time": 0.156074,
+        "duration": 19.5,
+        "paused": false,
+        "loop": true,
+        "muted": true,
+        "autoplay": true,
+        "playsInline": true,
+        "controls": false,
+        "error": null
+      },
+      "mediaRequests": [
+        "/assets/hero-film-v3/hero-worklife-v3-mobile.mp4"
+      ],
+      "layout": {
+        "width": 390,
+        "contentWidth": 390,
+        "height": 844,
+        "scrollWidth": 390,
+        "download": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 844,
+          "bottom": 844
+        },
+        "heroFilm": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 844,
+          "bottom": 844
+        },
+        "releaseMetadata": {
+          "x": 20,
+          "y": 736,
+          "width": 350,
+          "height": 20,
+          "bottom": 756
+        },
+        "installLink": {
+          "x": 20,
+          "y": 760,
+          "width": 59.453125,
+          "height": 36,
+          "bottom": 796
+        }
+      }
+    },
+    {
+      "name": "explicit-user-request-keeps-looping-film-in-reduce-but-removes-ui-transitions",
+      "passed": true
+    },
+    {
+      "name": "real-product-preview-and-openwork-attribution-preserved",
+      "passed": true
+    },
+    {
+      "name": "no-runtime-exceptions-external-requests-or-installer-downloads",
+      "passed": true
+    }
+  ],
+  "screenshots": [
+    "01-desktop-coding.png",
+    "02-desktop-data.png",
+    "03-desktop-life.png",
+    "04-install-help.png",
+    "05-desktop-dark.png",
+    "06-mobile-coding.png",
+    "07-mobile-data.png",
+    "08-mobile-life.png",
+    "09-mobile-reduced-motion.png",
+    "10-workspace-preview.png"
+  ],
+  "exceptions": [],
+  "requests": [
+    {
+      "phase": "desktop",
+      "path": "/",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Document"
+    },
+    {
+      "phase": "desktop",
+      "path": "/styles.css",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "desktop",
+      "path": "/app.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "desktop",
+      "path": "/motion.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "desktop",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-poster.webp",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "desktop",
+      "path": "/assets/mark-reverse.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "desktop",
+      "path": "/assets/logo-reverse.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "desktop",
+      "path": "/assets/hero-film-v3/hero-worklife-v3.mp4",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Media"
+    },
+    {
+      "phase": "desktop",
+      "path": "/releases.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "desktop",
+      "path": "/api/releases/latest.json",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Fetch"
+    },
+    {
+      "phase": "desktop",
+      "path": "/favicon.ico",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Other"
+    },
+    {
+      "phase": "desktop",
+      "path": "/favicon.ico",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Other"
+    },
+    {
+      "phase": "dark",
+      "path": "/",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Document"
+    },
+    {
+      "phase": "dark",
+      "path": "/styles.css",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "dark",
+      "path": "/app.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "dark",
+      "path": "/motion.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "dark",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-poster.webp",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "dark",
+      "path": "/assets/mark-reverse.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "dark",
+      "path": "/assets/logo-reverse.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "dark",
+      "path": "/assets/hero-film-v3/hero-worklife-v3.mp4",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Media"
+    },
+    {
+      "phase": "dark",
+      "path": "/releases.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "dark",
+      "path": "/api/releases/latest.json",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Fetch"
+    },
+    {
+      "phase": "dark",
+      "path": "/favicon.ico",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Other"
+    },
+    {
+      "phase": "mobile",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-mobile-poster.webp",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "mobile",
+      "path": "/",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Document"
+    },
+    {
+      "phase": "mobile",
+      "path": "/styles.css",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "mobile",
+      "path": "/app.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "mobile",
+      "path": "/motion.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "mobile",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-poster.webp",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "mobile",
+      "path": "/assets/mark-reverse.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "mobile",
+      "path": "/assets/logo-reverse.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "mobile",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-mobile.mp4",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Media"
+    },
+    {
+      "phase": "mobile",
+      "path": "/releases.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "mobile",
+      "path": "/api/releases/latest.json",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Fetch"
+    },
+    {
+      "phase": "mobile",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-mobile-poster.webp",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "mobile",
+      "path": "/favicon.ico",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Other"
+    },
+    {
+      "phase": "reduced",
+      "path": "/",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Document"
+    },
+    {
+      "phase": "reduced",
+      "path": "/styles.css",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "reduced",
+      "path": "/app.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "reduced",
+      "path": "/motion.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "reduced",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-poster.webp",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "reduced",
+      "path": "/assets/mark-reverse.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "reduced",
+      "path": "/assets/logo-reverse.svg",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "reduced",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-mobile.mp4",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Media"
+    },
+    {
+      "phase": "reduced",
+      "path": "/releases.js",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Script"
+    },
+    {
+      "phase": "reduced",
+      "path": "/api/releases/latest.json",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Fetch"
+    },
+    {
+      "phase": "reduced",
+      "path": "/assets/hero-film-v3/hero-worklife-v3-mobile-poster.webp",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "reduced",
+      "path": "/favicon.ico",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Other"
+    },
+    {
+      "phase": "reduced",
+      "path": "/assets/product-dark.webp",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Image"
+    },
+    {
+      "phase": "reduced",
+      "path": "/favicon.ico",
+      "origin": "http://127.0.0.1:5197",
+      "type": "Other"
+    }
+  ],
+  "failure": null
+}
