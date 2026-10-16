@@ -10,7 +10,31 @@ test("each release lane prepares matching sidecars and a separate output", () =>
     const plan = zenoPackagingPlan([`--${arch}`], platform, "x64", {});
     assert.equal(plan.target, targetTriple(platform, arch));
     assert.ok(plan.builderArgs.includes(`-c.directories.output=dist-zeno/${platform}/${arch}`));
+    assert.ok(plan.builderArgs.includes(`-c.artifactName=zeno-\${os}-${arch}-\${version}.\${ext}`));
     assert.deepEqual(plan.builderArgs.slice(plan.builderArgs.indexOf("--publish"), plan.builderArgs.indexOf("--publish") + 2), ["--publish", "never"]);
+  }
+});
+
+test("Linux explicitly selects the two installer targets without inheriting tar archives", () => {
+  const plan = zenoPackagingPlan(["--arm64"], "linux", "arm64", {});
+  assert.deepEqual(plan.builderArgs.slice(0, 3), ["--linux", "AppImage", "deb"]);
+  const directory = zenoPackagingPlan(["--dir"], "linux", "arm64", {});
+  assert.ok(!directory.builderArgs.includes("AppImage"));
+  const appImage = zenoPackagingPlan(["AppImage"], "linux", "arm64", {});
+  assert.ok(!appImage.builderArgs.includes("deb"));
+});
+
+test("electron-builder preserves feed architecture names across Linux installer formats", () => {
+  const builderRequire = createRequire(require.resolve("electron-builder"));
+  builderRequire("app-builder-lib");
+  const { PlatformPackager } = builderRequire("app-builder-lib/out/platformPackager");
+  const packager = { appInfo: { version: "1.0.0" }, platform: { buildConfigurationKey: "linux" }, expandMacro: PlatformPackager.prototype.expandMacro };
+  for (const [arch, value] of [["x64", 1], ["arm64", 3]]) {
+    const plan = zenoPackagingPlan([], "linux", arch, {});
+    const pattern = plan.builderArgs.find((argument) => argument.startsWith("-c.artifactName=")).slice("-c.artifactName=".length);
+    for (const extension of ["AppImage", "deb"]) {
+      assert.equal(PlatformPackager.prototype.computeArtifactName.call(packager, pattern, extension, value), `zeno-linux-${arch}-1.0.0.${extension}`);
+    }
   }
 });
 

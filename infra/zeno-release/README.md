@@ -27,7 +27,7 @@ Nginx 使用本目录 `nginx.conf`。只新增 Zeno 虚拟主机，不替换其�
 | `/downloads/<version>/<filename>` | 持久安装包，支持 HTTP Range |
 | `/updates/<platform>/<arch>/` | electron-updater 原生元数据、安装包与 blockmap；没有目录索引 |
 
-`platform` 为 `darwin`、`win32` 或 `linux`；`arch` 为 `x64` 或 `arm64`。官网 API 与更新元数据均不缓存。下载包按版本命名并长期缓存。更新只允许自身域名下对应架构的目录。
+`platform` 为 `darwin`、`win32` 或 `linux`；`arch` 为 `x64` 或 `arm64`。官网 API 与更新元数据均不缓存。下载包按版本命名并长期缓存。更新只允许自身域名下对应架构的目录。Nginx 将版本文件映射到持久下载目录：即使检查更新后官网切到下一版，之前检查到的更新文件仍然可下载，不依赖新 bundle 里的当前版本链接。
 
 ## 签名连续性
 
@@ -40,3 +40,5 @@ macOS 自签名没有 Apple 公证，首次安装可能需要在系统设置允�
 仅正式 Zeno 安装包开启独立更新。启动约 45 秒后检查一次，此后每 6 小时检查，关于页也可手动检查。用户选择“更新并重启”后下载；待草稿、附件、队列、活动会话以及后台权限/问题请求全部处理完毕，再由本地服务重新确认空闲后安装重启。探测失败不代表空闲。关闭更新 feature 会停止检查与安装，并保留工作区和历史。
 
 单测验证协议和状态逻辑；真实安装重启还必须使用同签名的两份安装包验证。跨平台包构建成功不能替代各系统的运行验证。
+
+验证命令：`node --test infra/zeno-release/prepare-publication.test.mjs`；Linux 上运行 `python3 infra/zeno-release/test-nginx-history.py`，会使用私有 loopback Nginx 验证切换版本后十种历史包及 Range 仍可读取，测试文件不会进入公网。发布后执行 `node infra/zeno-release/verify-live.mjs` 和 `node apps/zeno-site/scripts/qa-live.mjs`，后者使用独立 headless CDP target、真实官网 API，不注入测试下载数据。

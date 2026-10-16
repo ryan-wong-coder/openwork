@@ -203,7 +203,11 @@ jobs:
           RELEASE_TAG: ${{ needs.validate.outputs.release_tag }}
           RELEASE_VERSION: ${{ needs.validate.outputs.version }}
         run: |
-          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+          if zeno_release_is_draft="$(gh release view "$RELEASE_TAG" --json isDraft --jq .isDraft 2>/dev/null)"; then
+            if [ "$zeno_release_is_draft" != "true" ]; then
+              echo "Refusing to overwrite assets on an already published Zeno release."
+              exit 1
+            fi
             gh release upload "$RELEASE_TAG" dist-zeno-release/* --clobber
           else
             gh release create "$RELEASE_TAG" dist-zeno-release/* --verify-tag --latest=false --title "泽诺 Zeno $RELEASE_VERSION" --notes-file dist-zeno-release/RELEASE-NOTES.md

@@ -28,8 +28,12 @@ export function zenoPackagingPlan(args, platform = process.platform, hostArch = 
   if (platform === "win32" && !["unsigned", "certificate"].includes(signing)) throw new Error("Invalid ZENO_WINDOWS_SIGNING mode.");
   const builderArgs = args.filter((argument) => argument !== "--prepared");
   if (!builderArgs.includes(platformFlag)) builderArgs.unshift(platformFlag);
+  // A CLI target list replaces inherited targets; configuration arrays merge.
+  if (platform === "linux" && !args.includes("--dir") && !args.some((argument) => ["AppImage", "deb"].includes(argument))) builderArgs.splice(builderArgs.indexOf(platformFlag) + 1, 0, "AppImage", "deb");
   if (!architectures.length) builderArgs.push(`--${arch}`);
   builderArgs.push("--publish", "never", `-c.directories.output=dist-zeno/${platform}/${arch}`,
+    // Linux targets otherwise rewrite ${arch} to x86_64 or amd64 in filenames.
+    `-c.artifactName=zeno-\${os}-${arch}-\${version}.\${ext}`,
     `-c.extraMetadata.zenoReleaseSigning=${signing}`,
     `-c.extraMetadata.zenoReleaseUpdatesEnabled=${platform !== "darwin" || signing !== "adhoc"}`);
   if (platform === "darwin" && signing === "self-signed") builderArgs.push("-c.mac.identity=-", "-c.mac.sign=scripts/zeno-macos-sign.cjs");

@@ -18,12 +18,13 @@ function harness(options = {}) {
   let loads = 0;
   let downloads = 0;
   let installs = 0;
+  const relaunches = [];
   let canInstall = false;
   const platform = options.platform ?? "win32";
   const native = new EventEmitter();
   native.getFeedURL = () => "http://127.0.0.1:43111";
   native.checkForUpdates = () => {};
-  const updater = new EventEmitter();
+  const updater = options.appImage ? new (class AppImageUpdater extends EventEmitter {})() : new EventEmitter();
   updater.nativeUpdater = native;
   updater.setFeedURL = (feed) => feeds.push(feed);
   updater.checkForUpdates = async () => ({ isUpdateAvailable: true, updateInfo: release(platform) });
@@ -32,16 +33,17 @@ function harness(options = {}) {
   const webContents = { mainFrame: {}, send() {} };
   const event = { sender: webContents, senderFrame: webContents.mainFrame };
   const registration = registerZenoUpdaterIpc({
-    app: { isPackaged: options.packaged ?? true, getVersion: () => "1.0.0" },
+    app: { isPackaged: options.packaged ?? true, getVersion: () => "1.0.0", relaunch: (value) => relaunches.push(value) },
     enabled: options.enabled ?? true,
     ipcMain: { handle: (name, fn) => handlers.set(name, fn) },
     getMainWindow: () => ({ webContents, isDestroyed: () => false }),
     platform, arch: "x64", loadAutoUpdater: async () => { loads++; return { autoUpdater: updater }; },
     canInstall: async () => canInstall,
     nativeStagingTimeoutMs: options.timeout ?? 100,
+    appImagePath: options.appImagePath,
   });
   return {
-    ...registration, updater, native, feeds,
+    ...registration, updater, native, feeds, relaunches,
     invoke: (name, ...args) => handlers.get(`openwork:updater:${name}`)(event, ...args),
     recovery: (name) => handlers.get(`openwork:recovery:${name}`)(event),
     untrusted: () => handlers.get("openwork:updater:check")({ sender: {}, senderFrame: {} }),
@@ -137,6 +139,19 @@ test("native installer error events cannot claim a successful restart", async ()
   await h.invoke("check"); await h.invoke("download"); h.setIdle(true);
   h.updater.quitAndInstall = () => h.updater.emit("error", new Error("installer unavailable"));
   assert.equal((await h.invoke("installAndRestart")).reason, "install-failed");
+});
+
+test("a failed AppImage install never schedules a relaunch or retains its rename listener", async () => {
+  const h = harness({ platform: "linux", appImage: true, appImagePath: "/fixture/Zeno.AppImage" });
+  await h.invoke("check"); await h.invoke("download"); h.setIdle(true);
+  h.updater.quitAndInstall = () => {
+    h.updater.emit("appimage-filename-updated", "/fixture/zeno-linux-x64-1.0.1.AppImage");
+    h.updater.emit("error", new Error("install failed"));
+    h.updater.quitAndInstallCalled = false;
+  };
+  assert.equal((await h.invoke("installAndRestart")).reason, "install-failed");
+  assert.equal(h.relaunches.length, 0);
+  assert.equal(h.updater.listenerCount("appimage-filename-updated"), 0);
 });
 
 test("failed check/integrity download can retry without a fallback feed", async () => {

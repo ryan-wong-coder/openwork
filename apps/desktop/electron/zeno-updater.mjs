@@ -1,4 +1,5 @@
 import { compareStableVersions, stableVersion } from "./recovery.mjs";
+import path from "node:path";
 
 export const ZENO_RELEASE_ORIGIN = "https://www.zeno.ryan-wong.cn";
 
@@ -79,6 +80,8 @@ export function registerZenoUpdaterIpc({
   arch = process.arch,
   canInstall = async () => false,
   protectUpdateRequests = (_feedUrl) => {},
+  appImagePath = process.env.APPIMAGE,
+  relaunchArgs = process.argv.slice(1),
   nativeStagingTimeoutMs = 120_000,
 }) {
   const feedUrl = zenoUpdaterFeedUrl(platform, arch);
@@ -211,9 +214,29 @@ export function registerZenoUpdaterIpc({
     try {
       if (await canInstall() !== true) return { ok: false, reason: "tasks-active" };
       const updater = await ensureAutoUpdater();
+      const appImage = platform === "linux" && updater.constructor.name === "AppImageUpdater";
+      let installedAppImagePath = appImagePath;
+      const renamed = (filename) => {
+        if (typeof filename !== "string" || !path.isAbsolute(filename)) throw new Error("invalid-appimage-path");
+        installedAppImagePath = filename;
+      };
+      if (appImage) {
+        if (!appImagePath || !path.isAbsolute(appImagePath) || typeof app.relaunch !== "function") throw new Error("appimage-relaunch-unavailable");
+        // 6.8.3 otherwise spawns the new AppImage before quitting, while this
+        // process still owns the single-instance lock and stops its runtime.
+        // AppRun honours EXIT_AFTER_INSTALL, so the native replacement can
+        // finish without launching Electron. app.relaunch waits for our exit.
+        updater.autoRunAppAfterInstall = false;
+        updater.on("appimage-filename-updated", renamed);
+      }
       installing = true;
-      updater.quitAndInstall(false, true);
-      if (!installing || (platform !== "darwin" && updater.quitAndInstallCalled === false)) throw new Error("install-failed");
+      try {
+        updater.quitAndInstall(false, true);
+        if (!installing || (platform !== "darwin" && updater.quitAndInstallCalled === false)) throw new Error("install-failed");
+        if (appImage) app.relaunch({ execPath: installedAppImagePath, args: relaunchArgs });
+      } finally {
+        if (appImage) updater.removeListener("appimage-filename-updated", renamed);
+      }
       return { ok: true };
     } catch {
       installing = false;

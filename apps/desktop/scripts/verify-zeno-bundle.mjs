@@ -20,10 +20,11 @@ if (metadata.version !== version || metadata.openworkBrand !== "zeno" || metadat
 if (metadata.zenoReleaseSigning === "adhoc" && metadata.zenoReleaseUpdatesEnabled) throw new Error("Ad-hoc builds cannot enable release updates.");
 const feed = YAML.parse(readFileSync(join(resources, "app-update.yml"), "utf8"));
 if (feed.provider !== "generic" || feed.url !== `https://www.zeno.ryan-wong.cn/updates/${platform}/${arch}/`) throw new Error("Packaged updater does not use the correct independent architecture feed.");
-const feature = JSON.parse(asar.extractFile(archive, "node_modules/@openwork/features/package.json").toString());
+// asar 3 traverses directory names using the host's path separator.
+const feature = JSON.parse(asar.extractFile(archive, join("node_modules", "@openwork", "features", "package.json")).toString());
 if (feature.exports["."] !== "./index.js") throw new Error("Packaged feature resolver must load compiled Node ESM.");
 for (const name of ["local-client-profile", "session-activity", "gateway-image-tools", "openwork-chrome-devtools"]) {
-  if (!asar.extractFile(archive, `server/dist/opencode-plugins/${name}.js`).length) throw new Error(`Missing packaged host bridge dependency: ${name}`);
+  if (!asar.extractFile(archive, join("server", "dist", "opencode-plugins", `${name}.js`)).length) throw new Error(`Missing packaged host bridge dependency: ${name}`);
 }
 for (const name of ["opencode", "opencode2", "versions.json"]) readFileSync(join(resources, "sidecars", `${name}${platform === "win32" && name !== "versions.json" ? ".exe" : ""}`));
 const nativeTarget = platform === process.platform && arch === process.arch;
