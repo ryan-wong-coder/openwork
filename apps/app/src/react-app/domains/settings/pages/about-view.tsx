@@ -3,6 +3,7 @@ import { ChevronRight } from "lucide-react";
 import { isZenoAboutEnabled } from "@/app/lib/zeno-about";
 import { ZenoMascot, ZenoWordmark } from "@/components/brand/zeno-brand";
 import { t } from "@/i18n";
+import { ZenoUpdateControl } from "../state/desktop-updater-provider";
 
 // Preserve the upstream MIT notice verbatim. EE and third-party scope stays explicit below.
 const OPENWORK_MIT_NOTICE = "MIT License\n\nCopyright (c) 2026 Different AI\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n";
@@ -25,6 +26,7 @@ export function AboutView({ appVersion }: { appVersion?: string | null }) {
             <p>{t("zeno.about.birthday_second")}</p>
           </div>
           <p className="text-right text-sm text-muted-foreground" data-about-signature>{t("zeno.about.signature")}</p>
+          <ZenoUpdateControl />
         </div>
       </div>
       <div className="space-y-4 border-t border-border pt-5 text-xs text-muted-foreground">

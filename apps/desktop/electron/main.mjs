@@ -24,6 +24,7 @@ import { configureFakeMediaForTests, installMediaPermissionHandlers } from "./me
 import { registerMigrationIpc } from "./migration.mjs";
 import { createRuntimeManager, createSystemCaCertificateVerifyProc } from "./runtime.mjs";
 import { registerUpdaterIpc, resolveAppVersion } from "./updater.mjs";
+import { createZenoInstallGuard, registerZenoUpdaterIpc, zenoUpdateRequestAllowed } from "./zeno-updater.mjs";
 import { createUiControlServer } from "./ui-control-server.mjs";
 import { createApplicationMenu } from "./app-menu.mjs";
 import { nativeText, nativeTemplate, setNativeLanguage } from "./native-locale.mjs";
@@ -2732,7 +2733,27 @@ if (isDevMode && !app.isPackaged) {
   });
 }
 registerMigrationIpc({ app, ipcMain });
-const { ensureAutoUpdater } = registerUpdaterIpc({
+const { ensureAutoUpdater } = NATIVE_ZENO_IDENTITY ? registerZenoUpdaterIpc({
+  app,
+  enabled: Reflect.get(desktopPackageMetadata, "zenoReleaseUpdatesEnabled") === true,
+  releaseSigning: Reflect.get(desktopPackageMetadata, "zenoReleaseSigning"),
+  ipcMain,
+  getMainWindow: () => mainWindow,
+  protectUpdateRequests: (feedUrl) => {
+    // electron-updater owns this partition. Apply the same origin/path policy
+    // to redirects and downloads as to the initial metadata request.
+    session.fromPartition("electron-updater", { cache: false }).webRequest.onBeforeRequest(
+      { urls: ["<all_urls>"] },
+      (details, callback) => callback({ cancel: !zenoUpdateRequestAllowed(details.url, feedUrl) }),
+    );
+  },
+  canInstall: createZenoInstallGuard({
+    getLocalRuntime: async () => {
+      const server = await runtimeManager.openworkServerInfo();
+      return { baseUrl: server.baseUrl, token: server.clientToken ?? server.ownerToken };
+    },
+  }),
+}) : registerUpdaterIpc({
   app,
   updatesEnabled: !NATIVE_ZENO_IDENTITY,
   ipcMain,

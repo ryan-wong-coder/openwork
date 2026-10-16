@@ -4,6 +4,16 @@
  */
 
 export default {
+  "zeno.updates.update_and_restart": "Update and restart",
+  "zeno.updates.waiting": "Waiting for work to finish",
+  "zeno.updates.restarting": "Restarting…",
+  "zeno.updates.safe_restart": "Restarts when tasks are finished and drafts are clear.",
+  "zeno.updates.source": "Check the Zeno website for updates",
+  "zeno.updates.version": "Zeno {version} is available",
+  "zeno.updates.check_failed": "Couldn’t check for updates. Try again when online.",
+  "zeno.updates.download_failed": "Download failed. Try again.",
+  "zeno.updates.install_failed": "Couldn’t restart for the update. Try again.",
+  "zeno.updates.manual_install": "Updates are available in supported desktop installations.",
   "zeno.about.title": "About Zeno",
   "zeno.about.birthday_first": "Happy birthday. May curiosity and passion always stay with you, and may you move bravely toward every tomorrow you want to reach.",
   "zeno.about.birthday_second": "May Zeno help bring your ideas to life, and accompany you as you savor life's little surprises.",

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f1e8">
+  <meta name="description" content="下载泽诺 Zeno，在自己的工作区里，把想法交给泽诺。">
+  <meta name="referrer" content="same-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta property="og:title" content="泽诺 Zeno">
+  <meta property="og:description" content="把想法交给泽诺。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.zeno.ryan-wong.cn/">
+  <link rel="canonical" href="https://www.zeno.ryan-wong.cn/">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="stylesheet" href="/styles.css">
+  <title>泽诺 Zeno — 下载</title>
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#download">跳到下载</a>
+  <header class="site-header shell">
+    <a class="brand" href="#download" aria-label="泽诺 Zeno 首页">
+      <img class="brand-light" src="/assets/logo.svg" alt="泽诺 Zeno" width="112" height="36">
+      <img class="brand-dark" src="/assets/logo-reverse.svg" alt="" width="112" height="36" aria-hidden="true">
+    </a>
+    <nav aria-label="主导航"><a href="#download">下载</a><a href="#preview">预览</a><a href="#about">关于</a></nav>
+  </header>
+  <main>
+    <section class="hero shell" id="download" aria-labelledby="downloadTitle">
+      <div class="download-panel">
+        <h1 id="downloadTitle">把想法，做成真的。</h1>
+        <div class="release-controls">
+          <div class="selectors">
+            <label for="platform">平台<select id="platform"><option value="">选择电脑平台</option><option value="darwin">macOS</option><option value="win32">Windows</option><option value="linux">Linux</option></select></label>
+            <label for="arch">芯片<select id="arch" disabled><option value="">先选择平台</option></select></label>
+          </div>
+          <div class="release-metadata" id="releaseMetadata" aria-busy="true"><span class="skeleton" aria-hidden="true"></span><span class="skeleton short" aria-hidden="true"></span></div>
+          <a class="button primary" id="downloadLink" hidden download>下载泽诺</a>
+          <button class="button primary" id="downloadUnavailable" type="button" disabled>下载泽诺</button>
+          <div class="release-feedback"><p id="releaseStatus" role="status" aria-live="polite"></p><button class="text-button" id="retry" type="button" hidden>重新检查</button></div>
+          <details class="checksum" id="checksumDetails" hidden>
+            <summary>校验和</summary>
+            <div class="hash-row"><label for="sha256">SHA-256</label><input id="sha256" readonly spellcheck="false" aria-label="完整 SHA-256 校验和"><button class="text-button" id="copySha256" type="button">复制</button></div>
+            <div class="hash-row"><label for="sha512">SHA-512</label><input id="sha512" readonly spellcheck="false" aria-label="完整 SHA-512 校验和"><button class="text-button" id="copySha512" type="button">复制</button></div>
+            <p class="quiet" id="copyStatus" role="status" aria-live="polite"></p>
+          </details>
+          <details class="chip-help" id="chipHelp" hidden><summary>不确定 Mac 芯片？</summary><p>打开苹果菜单中的“关于本机”：显示“芯片”时选择 Apple Silicon，显示 Intel 处理器时选择 Intel。</p></details>
+          <noscript><p class="notice">启用 JavaScript 后可读取当前发布的安装包。</p></noscript>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true"><img src="/assets/mascot.webp" alt="" width="502" height="768" fetchpriority="high"></div>
+    </section>
+    <section class="preview shell" id="preview" aria-labelledby="previewTitle">
+      <h2 id="previewTitle" class="sr-only">产品预览</h2>
+      <a class="product-preview" href="/assets/product-full-light.webp" aria-label="查看完整产品界面">
+        <picture><source media="(prefers-color-scheme: dark)" srcset="/assets/product-dark.webp"><img src="/assets/product-light.webp" alt="泽诺真实界面局部：工作区、对话输入框与整理文件、写代码、生成图片入口" width="1200" height="516" loading="lazy" decoding="async"></picture>
+      </a>
+    </section>
+    <section class="all-downloads shell" aria-label="全部安装包">
+      <details id="allDownloads" hidden><summary>全部安装包 <span id="artifactCount"></span></summary><ul id="artifactList"></ul></details>
+      <details class="release-notes" id="releaseNotes" hidden><summary>此版本更新</summary><ul id="noteList"></ul></details>
+      <details class="install-help"><summary>安装与系统要求</summary><div id="installSteps"><p>选择与你电脑一致的平台与芯片。安装包、大小与签名状态以当前发布记录为准。</p></div><p>首次使用需要你自己的模型网关密钥；模型调用需要网络连接。</p></details>
+    </section>
+  </main>
+  <footer class="about shell" id="about" aria-label="关于泽诺">
+    <div class="about-copy"><picture><source media="(prefers-color-scheme: dark)" srcset="/assets/mark-reverse.svg"><img src="/assets/mark.svg" alt="" width="28" height="28" aria-hidden="true"></picture><p>基于 OpenWork 改造。<br>使用你自己的模型网关。</p></div>
+    <details class="license"><summary>开源与许可</summary><p>OpenWork 开源部分遵循 MIT 许可证。/ee 目录适用其独立许可证，第三方组件保留各自的版权与许可。</p><p>Copyright (c) 2026-present Different AI, Inc.</p><a href="/LICENSE.txt">查看完整 MIT 许可</a></details>
+  </footer>
+</body>
+</html>

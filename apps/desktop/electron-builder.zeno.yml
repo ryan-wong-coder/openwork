@@ -6,18 +6,46 @@ productName: 泽诺 Zeno
 extraMetadata:
   openworkDistribution: public
   openworkBrand: zeno
+  homepage: https://www.zeno.ryan-wong.cn
+  description: Zeno local agent workspace
+  author:
+    name: Zeno
+    email: null
 files:
   - from: resources/icons/zeno
     to: resources/icons/zeno
+  # Host bridges import these modules; the shared build also ships a separate
+  # resource copy for the OpenCode sidecars.
+  - from: server/dist/opencode-plugins
+    to: server/dist/opencode-plugins
+    filter:
+      - "**/*.js"
+      - "**/*.wasm"
+      - "**/*.json"
 mac:
   icon: resources/icons/zeno/icon.icns
+  publish:
+    provider: generic
+    url: https://www.zeno.ryan-wong.cn/updates/darwin/${arch}/
   extendInfo:
     NSMicrophoneUsageDescription: 泽诺在你允许页面使用音频输入时访问麦克风。
 win:
   icon: resources/icons/zeno/icon.ico
+  publish:
+    provider: generic
+    url: https://www.zeno.ryan-wong.cn/updates/win32/${arch}/
 linux:
   executableName: openwork
+  maintainer: Zeno
+  vendor: Zeno
   icon: resources/icons/zeno/linux
+  target:
+    - AppImage
+    - deb
+  publish:
+    provider: generic
+    url: https://www.zeno.ryan-wong.cn/updates/linux/${arch}/
 artifactName: zeno-${os}-${arch}-${version}.${ext}
-# The independent distribution does not publish to the upstream release feed.
+# Platform-specific generic feeds replace the inherited upstream publisher.
+# package-zeno always passes --publish never; the release workflow uploads assets.
 publish: null

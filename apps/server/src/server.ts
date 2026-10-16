@@ -1,4 +1,5 @@
 import { createV2SessionHomes, nativeSession, nativeSessionDirectory } from "./opencode-v2-session-home.js";
+import { readV2EngineActivity } from "./opencode-v2-engine-activity.js";
 import { createNativeCloudMcpResolver, createRoutedCloudMcpRegistrar } from "./cloud-mcp-v2.js";
 import { managedDesktopPolicy } from "./managed-desktop-policy.js";
 import { createTaskRecovery, setTaskRecovery } from "./task-recovery.js";
@@ -5060,36 +5061,19 @@ async function describeV2EngineActivity(
 ): Promise<EngineActivityCount | null> {
   if (!connection) return null;
   const authorization = buildEngineAuthProbeHeader(connection.username, connection.password);
-  const running = new Set<string>();
-  let unknown = false;
+  const signal = AbortSignal.timeout(4_000);
   const local = config.workspaces.filter((workspace) => workspace.workspaceType === "local");
-  await Promise.all(local.map(async (workspace) => {
-    try {
-      const url = new URL("/api/session/active", connection.url);
-      url.searchParams.set("location[directory]", workspace.path);
-      const response = await loopbackFetch(url.toString(), {
-        headers: { Authorization: authorization },
-        signal: AbortSignal.timeout(5_000),
-      });
-      if (!response.ok) throw new Error(`Activity probe failed with status ${response.status}`);
-      const payload: unknown = await response.json();
-      const data = isRecord(payload) && isRecord(payload.data) ? payload.data : null;
-      if (!data) {
-        unknown = true;
-        return;
-      }
-      for (const [id, status] of Object.entries(data)) {
-        if (isRecord(status) && ["running", "busy", "retry"].includes(String(status.type))) running.add(id);
-      }
-    } catch {
-      unknown = true;
-    }
-  }));
-  return {
-    verdict: running.size > 0 ? "busy" : unknown ? "unknown" : "idle",
-    busySessions: running.size,
-    waitingRequests: 0,
-  };
+  return readV2EngineActivity(async (directory, path) => {
+    signal.throwIfAborted();
+    const url = new URL(path, connection.url);
+    url.searchParams.set("location[directory]", directory);
+    const response = await loopbackFetch(url.toString(), {
+      headers: { Authorization: authorization }, signal, redirect: "error",
+    });
+    if (!response.ok) throw new Error(`Activity probe failed with status ${response.status}`);
+    const payload: unknown = await response.json();
+    return payload;
+  }, local.map((workspace) => workspace.path), signal);
 }
 
 /**

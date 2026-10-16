@@ -26,6 +26,8 @@ config:
   #   "false" off for everyone; /admin shows "Set by deployment config"
   # The /admin kill switch still turns a feature off, even when locked on.
   features:
+    zenoReleaseUpdates: ""         # default off · Check the independent Zeno release service, offer a new version, and install the downloaded desktop update without using an upstream release feed.
+    zenoWebsite: ""                # default off · Serve the independently operated Zeno website and verified release downloads for each supported platform and architecture.
     zenoAbout: ""                  # default off · Show the independent Zeno application's OpenWork attribution and personal birthday message.
     gatewayFirstRunSetup: ""       # default off · Guide independent desktop installations to save their own model gateway key before the first conversation, while preserving server management permissions.
     zenoInterface: ""              # default off · Use the Zeno identity, compact workspace navigation and refined local task interface without changing files, history or permissions.

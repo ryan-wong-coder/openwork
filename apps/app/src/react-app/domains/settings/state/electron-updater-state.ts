@@ -28,6 +28,8 @@ export type SettingsUpdateStatus = {
   downloadedBytes?: number;
   message?: string;
   failedAction?: "check" | "download" | "install";
+  waitingForIdle?: boolean;
+  installing?: boolean;
   checkingForNewer?: boolean;
   checkError?: string;
   checkCooldownUntil?: number;

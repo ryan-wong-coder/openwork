@@ -140,6 +140,10 @@ declare global {
           channel: "stable" | "alpha";
           feedUrl: string;
           currentVersion: string;
+          product?: "zeno";
+          supported?: boolean;
+          reason?: string;
+          releaseSigning?: string;
         }>;
         setChannel?: (channel: "stable" | "alpha") => Promise<{
           channel: "stable" | "alpha";
@@ -160,6 +164,8 @@ declare global {
         }>;
         download?: () => Promise<{ ok: boolean; reason?: string }>;
         installAndRestart?: () => Promise<{ ok: boolean; reason?: string }>;
+        onDownloadProgress?: (callback: (data: { transferred: number; total: number; percent: number; bytesPerSecond: number }) => void) => (() => void);
+        onInstallError?: (callback: () => void) => (() => void);
       };
       recovery?: {
         recordHealthy?: () => Promise<unknown>;

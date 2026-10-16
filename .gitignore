@@ -84,3 +84,6 @@ evals/results/
 
 # TypeScript incremental build state
 *.tsbuildinfo
+apps/desktop/dist-zeno/
+apps/desktop/dist-zeno-staged/
+dist-zeno-release/

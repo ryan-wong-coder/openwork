@@ -8,6 +8,10 @@ const sidecarBases = [
 ];
 
 function targetTriple(platformName, arch) {
+  // electron-builder supplies builder-util's numeric Arch enum; tests and
+  // standalone tooling may supply the descriptive string instead.
+  if (arch === 1) arch = "x64";
+  else if (arch === 3) arch = "arm64";
   if (platformName === "darwin") {
     if (arch === "arm64") return "aarch64-apple-darwin";
     if (arch === "x64") return "x86_64-apple-darwin";
@@ -151,3 +155,4 @@ async function afterPack(context) {
 module.exports = afterPack;
 module.exports.default = afterPack;
 module.exports.normalizeAsarEntryPath = normalizeAsarEntryPath;
+module.exports.targetTriple = targetTriple;

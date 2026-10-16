@@ -18,6 +18,26 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
+            "zenoReleaseUpdates": {
+              "enum": [
+                "",
+                "true",
+                "false",
+                true,
+                false
+              ],
+              "description": "Zeno release updates: Check the independent Zeno release service, offer a new version, and install the downloaded desktop update without using an upstream release feed. Renders DEN_FEATURE_ZENO_RELEASE_UPDATES."
+            },
+            "zenoWebsite": {
+              "enum": [
+                "",
+                "true",
+                "false",
+                true,
+                false
+              ],
+              "description": "Zeno download website: Serve the independently operated Zeno website and verified release downloads for each supported platform and architecture. Renders DEN_FEATURE_ZENO_WEBSITE."
+            },
             "zenoAbout": {
               "enum": [
                 "",

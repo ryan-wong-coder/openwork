@@ -2426,6 +2426,8 @@
           "key": {
             "type": "string",
             "enum": [
+              "zenoReleaseUpdates",
+              "zenoWebsite",
               "zenoAbout",
               "gatewayFirstRunSetup",
               "zenoInterface",
@@ -2632,6 +2634,12 @@
                 "capabilities": {
                   "type": "object",
                   "properties": {
+                    "zenoReleaseUpdates": {
+                      "type": "boolean"
+                    },
+                    "zenoWebsite": {
+                      "type": "boolean"
+                    },
                     "zenoAbout": {
                       "type": "boolean"
                     },
@@ -2736,6 +2744,8 @@
                     }
                   },
                   "required": [
+                    "zenoReleaseUpdates",
+                    "zenoWebsite",
                     "zenoAbout",
                     "gatewayFirstRunSetup",
                     "zenoInterface",
@@ -2774,6 +2784,118 @@
                 "featureStates": {
                   "type": "object",
                   "properties": {
+                    "zenoReleaseUpdates": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
+                    "zenoWebsite": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
                     "zenoAbout": {
                       "type": "object",
                       "properties": {
@@ -4568,6 +4690,8 @@
                     }
                   },
                   "required": [
+                    "zenoReleaseUpdates",
+                    "zenoWebsite",
                     "zenoAbout",
                     "gatewayFirstRunSetup",
                     "zenoInterface",
@@ -4969,6 +5093,12 @@
                 "capabilities": {
                   "type": "object",
                   "properties": {
+                    "zenoReleaseUpdates": {
+                      "type": "boolean"
+                    },
+                    "zenoWebsite": {
+                      "type": "boolean"
+                    },
                     "zenoAbout": {
                       "type": "boolean"
                     },
@@ -5073,6 +5203,8 @@
                     }
                   },
                   "required": [
+                    "zenoReleaseUpdates",
+                    "zenoWebsite",
                     "zenoAbout",
                     "gatewayFirstRunSetup",
                     "zenoInterface",
@@ -5111,6 +5243,118 @@
                 "featureStates": {
                   "type": "object",
                   "properties": {
+                    "zenoReleaseUpdates": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
+                    "zenoWebsite": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
                     "zenoAbout": {
                       "type": "object",
                       "properties": {
@@ -6905,6 +7149,8 @@
                     }
                   },
                   "required": [
+                    "zenoReleaseUpdates",
+                    "zenoWebsite",
                     "zenoAbout",
                     "gatewayFirstRunSetup",
                     "zenoInterface",
@@ -30530,6 +30776,12 @@
                     "capabilities": {
                       "type": "object",
                       "properties": {
+                        "zenoReleaseUpdates": {
+                          "type": "boolean"
+                        },
+                        "zenoWebsite": {
+                          "type": "boolean"
+                        },
                         "zenoAbout": {
                           "type": "boolean"
                         },
@@ -30634,6 +30886,8 @@
                         }
                       },
                       "required": [
+                        "zenoReleaseUpdates",
+                        "zenoWebsite",
                         "zenoAbout",
                         "gatewayFirstRunSetup",
                         "zenoInterface",
@@ -30672,6 +30926,118 @@
                     "featureStates": {
                       "type": "object",
                       "properties": {
+                        "zenoReleaseUpdates": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
+                        "zenoWebsite": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
                         "zenoAbout": {
                           "type": "object",
                           "properties": {
@@ -32466,6 +32832,8 @@
                         }
                       },
                       "required": [
+                        "zenoReleaseUpdates",
+                        "zenoWebsite",
                         "zenoAbout",
                         "gatewayFirstRunSetup",
                         "zenoInterface",
@@ -32616,6 +32984,12 @@
                     "capabilities": {
                       "type": "object",
                       "properties": {
+                        "zenoReleaseUpdates": {
+                          "type": "boolean"
+                        },
+                        "zenoWebsite": {
+                          "type": "boolean"
+                        },
                         "zenoAbout": {
                           "type": "boolean"
                         },
@@ -32720,6 +33094,8 @@
                         }
                       },
                       "required": [
+                        "zenoReleaseUpdates",
+                        "zenoWebsite",
                         "zenoAbout",
                         "gatewayFirstRunSetup",
                         "zenoInterface",
@@ -32758,6 +33134,118 @@
                     "featureStates": {
                       "type": "object",
                       "properties": {
+                        "zenoReleaseUpdates": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
+                        "zenoWebsite": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
                         "zenoAbout": {
                           "type": "object",
                           "properties": {
@@ -34552,6 +35040,8 @@
                         }
                       },
                       "required": [
+                        "zenoReleaseUpdates",
+                        "zenoWebsite",
                         "zenoAbout",
                         "gatewayFirstRunSetup",
                         "zenoInterface",

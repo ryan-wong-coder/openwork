@@ -221,6 +221,11 @@ contextBridge.exposeInMainWorld("__OPENWORK_ELECTRON__", {
     installAndRestart() {
       return ipcRenderer.invoke("openwork:updater:installAndRestart");
     },
+    onInstallError(callback) {
+      const handler = () => callback();
+      ipcRenderer.on("openwork:updater:install-error", handler);
+      return () => ipcRenderer.removeListener("openwork:updater:install-error", handler);
+    },
     /** Subscribe to incremental download progress from electron-updater. */
     onDownloadProgress(callback) {
       const handler = (_event, data) => callback(data);

@@ -1,5 +1,15 @@
 /** Simplified Chinese translations. Keep keys and placeholders aligned with en.ts. */
 export default {
+  "zeno.updates.update_and_restart": "更新并重启",
+  "zeno.updates.waiting": "等待任务完成",
+  "zeno.updates.restarting": "正在重启…",
+  "zeno.updates.safe_restart": "任务完成、草稿清空后自动重启。",
+  "zeno.updates.source": "检查泽诺官网更新",
+  "zeno.updates.version": "泽诺 {version} 已发布",
+  "zeno.updates.check_failed": "暂时无法检查更新，联网后可重试。",
+  "zeno.updates.download_failed": "下载失败，可重试。",
+  "zeno.updates.install_failed": "更新重启失败，可重试。",
+  "zeno.updates.manual_install": "自动更新适用于受支持的桌面安装。",
   "zeno.about.title": "关于泽诺",
   "zeno.about.birthday_first": "生日快乐。愿你始终保有好奇与热爱，勇敢走向每一个想去的明天。",
   "zeno.about.birthday_second": "愿泽诺陪你把灵感变成现实，也陪你认真享受生活里每一个小小的惊喜。",

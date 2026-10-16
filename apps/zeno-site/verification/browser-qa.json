@@ -1,0 +1,40 @@
+{
+  "fixtureOnly": true,
+  "viewport": [
+    1440,
+    1000
+  ],
+  "narrowViewport": [
+    390,
+    844
+  ],
+  "clipboard": {
+    "message": "剪贴板不可用，校验和已选中，可手动复制。",
+    "selected": 128
+  },
+  "realMissingApi": {
+    "disabled": true,
+    "link": null,
+    "rows": 0
+  },
+  "selectedMac": {
+    "href": "/downloads/1.0.0/fixture-zeno-darwin-arm64-1.0.0.dmg",
+    "metadata": "v1.0.0198 MiBDMG临时签名",
+    "rows": 5
+  },
+  "perArtifactChecksums": true,
+  "empty": {
+    "rows": 0,
+    "text": "安装包尚未发布",
+    "disabled": true
+  },
+  "narrow": {
+    "width": 390,
+    "scrollWidth": 375
+  },
+  "keyboardDetails": true,
+  "exceptions": [],
+  "origins": [
+    "http://127.0.0.1:5197"
+  ]
+}

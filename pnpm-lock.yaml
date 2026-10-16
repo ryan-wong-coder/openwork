@@ -535,6 +535,8 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  apps/zeno-site: {}
+
   ee/apps/den-api:
     dependencies:
       '@better-auth/api-key':
