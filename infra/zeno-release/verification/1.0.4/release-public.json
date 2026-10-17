@@ -1,0 +1,161 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-17T14:11:14.364249+00:00",
+  "authenticated": false,
+  "latest": true,
+  "releaseId": 415817717,
+  "tag": "zeno-v1.0.4",
+  "draft": false,
+  "prerelease": false,
+  "publishedAt": "2026-10-17T14:11:14Z",
+  "url": "https://github.com/ryan-wong-coder/openwork/releases/tag/zeno-v1.0.4",
+  "assetCount": 24,
+  "assetBytes": 3899677309,
+  "assetsMatchFrozenBuild": true,
+  "assets": [
+    {
+      "name": "RELEASE-NOTES.md",
+      "size": 584,
+      "digest": "sha256:65f5479ef098c08a45f2ea034903ebc93af4cfee20de092f962855dff35958c4",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-darwin-arm64-latest-mac.yml",
+      "size": 498,
+      "digest": "sha256:bfb40b2631a10b541663f538d64ffa62b97d2e128eb9349d6dd6ab270bedd820",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-darwin-x64-latest-mac.yml",
+      "size": 492,
+      "digest": "sha256:227796b947d0eb6e88ab5675399d616a4e9e7831e0aeecac8a6569cbe27a081e",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-linux-arm64-1.0.4.AppImage",
+      "size": 310068111,
+      "digest": "sha256:403c2bc91969014410b9db97e4df8e31b511c2f12ecdb01a252f249b22a98152",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-linux-arm64-1.0.4.deb",
+      "size": 376612972,
+      "digest": "sha256:ae84116902a276ad146c4e1ff3a31019b5f2fb02930d04dc4ec69572b056ab49",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-linux-arm64-latest-linux-arm64.yml",
+      "size": 539,
+      "digest": "sha256:a5b5a3d8be37ec11a28c507d2fcdc88a264beb3b587d3ae76469a7b5faf3ee0f",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-linux-x64-1.0.4.AppImage",
+      "size": 312187955,
+      "digest": "sha256:11d684fea4a7b1658877986b6728f33db44e99f79d6de57b33e36e7a67ba1584",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-linux-x64-1.0.4.deb",
+      "size": 392521912,
+      "digest": "sha256:8b1baf4c943b82d2de596be70675dfef835a12cadc6521cc67d5d27d5aa2c02b",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-linux-x64-latest-linux.yml",
+      "size": 533,
+      "digest": "sha256:4c5950295b929f3904d383b3453aa3065d4bfd0c5a03654279b9faf5f0d1c65b",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-mac-arm64-1.0.4.dmg",
+      "size": 432702517,
+      "digest": "sha256:4c84964f5c71c89df88621213ba00816d0aaa7ee5760c41f5f1047b5eae4ed29",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-mac-arm64-1.0.4.dmg.blockmap",
+      "size": 446585,
+      "digest": "sha256:46ff52300d320b185152d471e0a78d759f0ac8393bc0785e9afaf274dc7bda08",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-mac-arm64-1.0.4.zip",
+      "size": 431109099,
+      "digest": "sha256:69851571145612d8a8218e2bc4ff3d6eb6204834ebf62dc286c6a054d364f464",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-mac-arm64-1.0.4.zip.blockmap",
+      "size": 443538,
+      "digest": "sha256:91a2e5d8ac4d8b86d77a57b1f9f9f613e82a9244d50002f26c2cc327cb6df504",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-mac-x64-1.0.4.dmg",
+      "size": 451963650,
+      "digest": "sha256:46be2c929cfece430f258297407fb1e7b5824dd4b2299650f17e768a08ae3892",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-mac-x64-1.0.4.dmg.blockmap",
+      "size": 466624,
+      "digest": "sha256:a11641b90924554626300951878242894d069bace7a2846f64a1bcf73737878c",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-mac-x64-1.0.4.zip",
+      "size": 450494346,
+      "digest": "sha256:671018234bd5803740795c387a13c7185783ff66820f1517887b064c50389842",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-mac-x64-1.0.4.zip.blockmap",
+      "size": 467016,
+      "digest": "sha256:401985e0184daaa1b6711f9318275a680b340e068195067d96e058b12ca30a91",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-release.json",
+      "size": 10802,
+      "digest": "sha256:354e542900412836391ef12d93dafeccf590ee9e8a4af29480a8e8087a51d982",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-win-arm64-1.0.4.exe",
+      "size": 360000387,
+      "digest": "sha256:a7c0c076ea0971792b92687b825d133c51d3e2f10a3cd655a41d20774d08c430",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-win-arm64-1.0.4.exe.blockmap",
+      "size": 364993,
+      "digest": "sha256:8e2e33c76fb191eccc85ce55f58d1b9843a56cf58dd735b9d4cd8afd2fae7694",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-win-x64-1.0.4.exe",
+      "size": 379430334,
+      "digest": "sha256:ac7bc3cdfc3adaa37437b682cea7c2846269242e28c0da3b4eaa72ee8772bc12",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-win-x64-1.0.4.exe.blockmap",
+      "size": 383140,
+      "digest": "sha256:6615ee6e08d528af094184626b578658500928ded40727aa13c0177b6047c069",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-win32-arm64-latest.yml",
+      "size": 343,
+      "digest": "sha256:c186bced344038ea5e0be227b2ac6b701e5d66004221a9e8923184e89b1f3717",
+      "state": "uploaded"
+    },
+    {
+      "name": "zeno-win32-x64-latest.yml",
+      "size": 339,
+      "digest": "sha256:d3b23c05152e7724f20e189a80e78e7c04fc8f173f083d1f4e2e529fd9301de8",
+      "state": "uploaded"
+    }
+  ]
+}

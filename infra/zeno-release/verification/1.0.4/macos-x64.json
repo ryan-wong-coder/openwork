@@ -1,0 +1,65 @@
+{
+  "passed": true,
+  "target": "1.0.4",
+  "baseline": "1.0.0",
+  "platform": "darwin",
+  "arch": "x64",
+  "publicOrigin": "https://www.zeno.ryan-wong.cn",
+  "phases": [
+    {
+      "version": "1.0.0",
+      "artifactName": "zeno-mac-x64-1.0.0.zip",
+      "bytes": 450485918,
+      "sha256": "04af25c70682491db7de9d94dee6cdd122ef944585d39d8c14e0df0a2d3b2883",
+      "name": "verified-original-baseline-zip"
+    },
+    {
+      "version": "1.0.4",
+      "feed": "https://www.zeno.ryan-wong.cn/updates/darwin/x64/",
+      "artifactName": "zeno-mac-x64-1.0.4.zip",
+      "bytes": 450494346,
+      "sha256": "671018234bd5803740795c387a13c7185783ff66820f1517887b064c50389842",
+      "name": "verified-public-target-artifact"
+    },
+    {
+      "version": "1.0.0",
+      "originalSignature": true,
+      "codeChanges": "none",
+      "targetArchiveSha256": "9291e03534deb064076b1d79b108e16de87853aacf8019253b046ee3eb8db832",
+      "name": "verified-unmodified-original-baseline-and-signing-continuity"
+    },
+    {
+      "nativeVersion": "1.0.0",
+      "storedSession": true,
+      "storedMessage": true,
+      "name": "baseline-server-and-history-ready"
+    },
+    {
+      "latestVersion": "1.0.4",
+      "bytes": 450494346,
+      "name": "native-check-real-public-feed"
+    },
+    {
+      "name": "native-download-and-squirrel-staging-complete"
+    },
+    {
+      "nativeVersion": "1.0.4",
+      "diskVersion": "1.0.4",
+      "publishedCode": true,
+      "profile": true,
+      "workspace": true,
+      "history": true,
+      "embeddedServer": true,
+      "rendererExceptions": 0,
+      "name": "real-restart-target-server-and-preservation-verified"
+    }
+  ],
+  "isolation": "ephemeral github-hosted runner; no pre-existing native state; private bundle/profile/workspace",
+  "nativeUpdateExecuted": true,
+  "baselineSource": "original-historical-release-build-artifact",
+  "targetSource": "build-artifact-verified-against-live-api-and-feed",
+  "cleanup": "original app copy, profile and fresh-run caches removed after native processes exited",
+  "networkOrigins": [
+    "http://127.0.0.1:49220"
+  ]
+}

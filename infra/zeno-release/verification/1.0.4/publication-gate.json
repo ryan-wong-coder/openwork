@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-17T13:35:19.166774+00:00",
+  "version": "1.0.4",
+  "sourceCommit": "87ad6877b778cb9e69493f61b6915e688bcbd6b5",
+  "buildRun": "39035417871",
+  "publishedAt": "2026-10-17T13:34:00.000Z",
+  "bundle": "/srv/zeno/releases/1.0.4-87ad6877b",
+  "siteSource": "3e74875ff",
+  "githubAssets": 24,
+  "uploadedBytes": 3899677309,
+  "fullVerifiedLaneFiles": 22,
+  "installers": 10,
+  "nativeFeeds": 6,
+  "installerBytes": 3897091283,
+  "indexSha256": "354e542900412836391ef12d93dafeccf590ee9e8a4af29480a8e8087a51d982",
+  "publicMetadataMatchesFrozenBuild": true,
+  "gateScriptSha256": "4a84aab745683432d7db91ff23263a11220b1e0a488064347f7bf57fea2405d9",
+  "method": "All 24 GitHub assets were downloaded locally and verified by size/SHA-256, then rsync uploaded. The server prepare-publication gate exited 0 after full size/SHA-256/SHA-512 verification of all 22 indexed lane files and validation of six architectures/feeds/formats/signing metadata. Only then was release-current atomically switched. Public API installer sizes/SHA-256/SHA-512 were separately compared with the frozen build audit; public HEAD/Range/feeds are recorded in live-release.json. No historical installer bytes were modified."
+}

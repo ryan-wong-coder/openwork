@@ -1,0 +1,16 @@
+{
+  "passed": false,
+  "runId": "39037150576",
+  "jobId": "117409190095",
+  "attempt": 1,
+  "observedAt": "2026-10-17T13:47:23Z",
+  "requestPath": "/updates/darwin/arm64/zeno-mac-arm64-1.0.4.zip",
+  "responseFinishedAt": "2026-10-17T13:44:48Z",
+  "httpStatus": 200,
+  "nginxBodyBytesSent": 419291136,
+  "expectedPackageBytes": 431109099,
+  "completeHttpBody": false,
+  "matchingNginxErrorEntries": 0,
+  "method": "Read-only inspection of the server access/error logs, retaining only the public package path, response timestamp, status and byte count. No requester identity, IP, user agent or raw log was retained.",
+  "scope": "The server recorded an incomplete HTTP response before the native download returned download-failed. This supports a transfer failure, but does not identify which network peer closed the connection or recover the underlying exception swallowed by the baseline updater. It is not an installation or restart success."
+}

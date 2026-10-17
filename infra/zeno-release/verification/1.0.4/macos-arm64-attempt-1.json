@@ -1,0 +1,52 @@
+{
+  "passed": false,
+  "target": "1.0.4",
+  "baseline": "1.0.0",
+  "platform": "darwin",
+  "arch": "arm64",
+  "publicOrigin": "https://www.zeno.ryan-wong.cn",
+  "phases": [
+    {
+      "version": "1.0.0",
+      "artifactName": "zeno-mac-arm64-1.0.0.zip",
+      "bytes": 431100608,
+      "sha256": "6fba1fc265830414b270d5b83a55a1b5c34287e22af563059f9294b899b64631",
+      "name": "verified-original-baseline-zip"
+    },
+    {
+      "version": "1.0.4",
+      "feed": "https://www.zeno.ryan-wong.cn/updates/darwin/arm64/",
+      "artifactName": "zeno-mac-arm64-1.0.4.zip",
+      "bytes": 431109099,
+      "sha256": "69851571145612d8a8218e2bc4ff3d6eb6204834ebf62dc286c6a054d364f464",
+      "name": "verified-public-target-artifact"
+    },
+    {
+      "version": "1.0.0",
+      "originalSignature": true,
+      "codeChanges": "none",
+      "targetArchiveSha256": "9291e03534deb064076b1d79b108e16de87853aacf8019253b046ee3eb8db832",
+      "name": "verified-unmodified-original-baseline-and-signing-continuity"
+    },
+    {
+      "nativeVersion": "1.0.0",
+      "storedSession": true,
+      "storedMessage": true,
+      "name": "baseline-server-and-history-ready"
+    },
+    {
+      "latestVersion": "1.0.4",
+      "bytes": 431109099,
+      "name": "native-check-real-public-feed"
+    }
+  ],
+  "isolation": "ephemeral github-hosted runner; no pre-existing native state; private bundle/profile/workspace",
+  "nativeUpdateExecuted": false,
+  "baselineSource": "original-historical-release-build-artifact",
+  "targetSource": "build-artifact-verified-against-live-api-and-feed",
+  "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n+   ok: false,\n+   reason: 'download-failed'\n-   ok: true,\n-   version: '1.0.4'\n  }\n",
+  "cleanup": "original app copy, profile and fresh-run caches removed after native processes exited",
+  "networkOrigins": [
+    "http://127.0.0.1:49212"
+  ]
+}
