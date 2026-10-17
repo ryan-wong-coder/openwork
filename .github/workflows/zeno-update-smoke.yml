@@ -14,17 +14,47 @@ on:
         description: Successful Release Zeno run matching the checked-out desktop version
         type: string
         required: true
+      architecture:
+        description: Native macOS architecture to validate
+        type: choice
+        required: false
+        default: both
+        options: [both, x64, arm64]
 
 permissions:
   actions: read
   contents: read
 
 concurrency:
-  group: zeno-real-update-${{ github.ref }}
+  # Preserve the original default group; an isolated retry may run while the
+  # other architecture finishes on its separate ephemeral hosted runner.
+  group: zeno-real-update-${{ github.ref }}${{ inputs.architecture && inputs.architecture != 'both' && format('-{0}', inputs.architecture) || '' }}
   cancel-in-progress: false
 
 jobs:
+  select-architectures:
+    if: github.ref == 'refs/heads/personal'
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.select.outputs.matrix }}
+    steps:
+      - name: Validate the native architecture selection
+        id: select
+        env:
+          SMOKE_ARCHITECTURE: ${{ inputs.architecture || 'both' }}
+        run: |
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import { appendFileSync } from 'node:fs';
+          const selected = process.env.SMOKE_ARCHITECTURE ?? 'both';
+          assert.ok(['both', 'x64', 'arm64'].includes(selected), 'Unsupported native architecture selection.');
+          const lanes = [{ runner: 'macos-15-intel', arch: 'x64' }, { runner: 'macos-15', arch: 'arm64' }];
+          const include = selected === 'both' ? lanes : lanes.filter(lane => lane.arch === selected);
+          appendFileSync(process.env.GITHUB_OUTPUT, `matrix=${JSON.stringify({ include })}\n`);
+          JS
+
   macos-update:
+    needs: select-architectures
     if: github.ref == 'refs/heads/personal'
     name: Real update ${{ matrix.arch }}
     runs-on: ${{ matrix.runner }}
@@ -32,12 +62,7 @@ jobs:
     timeout-minutes: 75
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - runner: macos-15-intel
-            arch: x64
-          - runner: macos-15
-            arch: arm64
+      matrix: ${{ fromJSON(needs.select-architectures.outputs.matrix) }}
     env:
       PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN: "false"
     steps:

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { spawn, spawnSync } from "node:child_process";
 import { createHash, randomBytes, X509Certificate } from "node:crypto";
-import { constants, createReadStream, existsSync, lstatSync, mkdirSync, mkdtempSync, openSync, readFileSync, readdirSync, realpathSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import { closeSync, constants, createReadStream, existsSync, fstatSync, lstatSync, mkdirSync, mkdtempSync, openSync, readFileSync, readSync, readdirSync, realpathSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { createServer } from "node:net";
 import { homedir, tmpdir } from "node:os";
 import { basename, dirname, isAbsolute, join, relative, resolve } from "node:path";
@@ -26,6 +26,63 @@ const BUNDLE_ID = "com.differentai.openwork";
 const PRODUCT = "泽诺 Zeno";
 const pause = milliseconds => new Promise(resolvePause => setTimeout(resolvePause, milliseconds));
 const digest = (bytes, algorithm = "sha256", encoding = "hex") => createHash(algorithm).update(bytes).digest(encoding);
+
+export function numericDownloadProgress(value) {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) return {};
+  return Object.fromEntries(["transferred", "total", "percent", "bytesPerSecond"].flatMap(key => {
+    const number = value[key];
+    return typeof number === "number" && Number.isFinite(number) && number >= 0 && number <= Number.MAX_SAFE_INTEGER
+      && (key !== "percent" || number <= 100) && (!["transferred", "total"].includes(key) || Number.isSafeInteger(number))
+      ? [[key, number]] : [];
+  }));
+}
+
+export function safeUpdateFailureSignals(text) {
+  if (typeof text !== "string") return [];
+  const allowed = [
+    ["ERR_CONNECTION_RESET", "connection-reset"], ["ECONNRESET", "connection-reset"],
+    ["ERR_CONNECTION_CLOSED", "connection-closed"], ["ERR_CONNECTION_ABORTED", "connection-aborted"],
+    ["ECONNABORTED", "connection-aborted"], ["ERR_TIMED_OUT", "network-timeout"], ["ETIMEDOUT", "network-timeout"],
+    ["ERR_NETWORK_CHANGED", "network-changed"], ["ERR_INTERNET_DISCONNECTED", "network-disconnected"],
+    ["ERR_NAME_NOT_RESOLVED", "dns-failure"], ["ENOTFOUND", "dns-failure"], ["EAI_AGAIN", "dns-failure"],
+    ["ERR_CONTENT_LENGTH_MISMATCH", "incomplete-transfer"], ["ERR_INCOMPLETE_CHUNKED_ENCODING", "incomplete-transfer"],
+    ["ERR_STREAM_PREMATURE_CLOSE", "incomplete-transfer"], ["EPIPE", "connection-closed"],
+    ["ERR_CERT_AUTHORITY_INVALID", "tls-certificate-failure"], ["ERR_CERT_DATE_INVALID", "tls-certificate-failure"],
+    ["ERR_UPDATER_INVALID_SIGNATURE", "signature-verification-failed"],
+    ["ERR_UPDATER_CHECKSUM_MISMATCH", "integrity-check-failed"],
+  ];
+  const signals = allowed.flatMap(([code, classification]) => new RegExp(`\\b${code}\\b`).test(text) ? [{ code, classification }] : []);
+  for (const [code, classification] of [[-999, "network-cancelled"], [-1001, "network-timeout"], [-1003, "dns-failure"],
+    [-1004, "connection-failed"], [-1005, "connection-lost"], [-1009, "network-disconnected"], [-1200, "tls-failure"], [-1202, "tls-certificate-failure"]]) {
+    if (new RegExp(`\\bNSURLErrorDomain\\b[^\\r\\n]{0,120}\\bCode\\s*[=:]\\s*${code}\\b`).test(text)) signals.push({ code: `NSURLErrorDomain:${code}`, classification });
+  }
+  for (const [pattern, code, classification] of [
+    [/\bnative-stage-timeout\b/, "native-stage-timeout", "native-staging-timeout"],
+    [/\bnative-stage-unavailable\b/, "native-stage-unavailable", "native-staging-unavailable"],
+    [/\bsha512 checksum mismatch\b/i, "sha512-checksum-mismatch", "integrity-check-failed"],
+  ]) if (pattern.test(text)) signals.push({ code, classification });
+  return signals;
+}
+
+export function privateUpdateFailureDiagnostics(root) {
+  const signals = new Map(); let filesScanned = 0; let bytesScanned = 0; let readFailures = 0;
+  // Read only bounded tails of the two files created by this smoke's spawn.
+  // Never retain raw log text, paths, URLs, messages or unknown error codes.
+  for (const name of ["electron.log", "electron-error.log"]) {
+    let descriptor;
+    try {
+      descriptor = openSync(join(root, "logs", name), constants.O_RDONLY | constants.O_NOFOLLOW);
+      const info = fstatSync(descriptor);
+      if (!info.isFile()) continue;
+      const bytes = Buffer.alloc(Math.min(info.size, 256 * 1024));
+      const length = readSync(descriptor, bytes, 0, bytes.length, Math.max(0, info.size - bytes.length));
+      filesScanned += 1; bytesScanned += length;
+      for (const signal of safeUpdateFailureSignals(bytes.subarray(0, length).toString("utf8"))) signals.set(signal.code, signal);
+    } catch { readFailures += 1; }
+    finally { if (descriptor !== undefined) try { closeSync(descriptor); } catch { readFailures += 1; } }
+  }
+  return { collectedBeforeCleanup: true, filesScanned, bytesScanned, readFailures, signals: [...signals.values()] };
+}
 
 export function assertHostedRunner(environment, platform, arch) {
   assert.equal(platform, "darwin", "Native update smoke requires macOS.");
@@ -393,6 +450,45 @@ async function selfTest() {
   for (const target of [{ type: "iframe", url: renderer }, { type: "page", url: renderer.replace("app-dist", "app.asar") }, { type: "page", url: renderer.replace("private-bundle", "other-bundle") }, { type: "page", url: "https://www.zeno.ryan-wong.cn/index.html" }, { type: "page", url: "about:blank" }]) assert.equal(privateMainTarget(target, privateBundle), false);
   const root = mkdtempSync(join(tmpdir(), "zeno-smoke-self-test-"));
   try {
+    const workflow = YAML.parse(readFileSync(join(REPO, ".github/workflows/zeno-update-smoke.yml"), "utf8"));
+    assert.equal(workflow.on.workflow_dispatch.inputs.architecture.default, "both");
+    assert.deepEqual(workflow.on.workflow_dispatch.inputs.architecture.options, ["both", "x64", "arm64"]);
+    const selector = workflow.jobs["select-architectures"].steps.find(step => step.id === "select").run;
+    const selectionSource = /^node --input-type=module <<'JS'\n([\s\S]+)\nJS\n?$/.exec(selector)?.[1];
+    assert.ok(selectionSource, "The workflow architecture selector must be directly testable.");
+    const lanes = [{ runner: "macos-15-intel", arch: "x64" }, { runner: "macos-15", arch: "arm64" }];
+    for (const selected of [undefined, "both", "x64", "arm64", "", "linux", "x64,arm64", "__proto__"]) {
+      const output = join(root, `architecture-${String(selected).replace(/[^a-z0-9]/gi, "_")}.txt`);
+      const result = spawnSync(process.execPath, ["--input-type=module"], { input: selectionSource, encoding: "utf8",
+        env: { GITHUB_OUTPUT: output, ...(selected === undefined ? {} : { SMOKE_ARCHITECTURE: selected }) } });
+      if (selected === undefined || ["both", "x64", "arm64"].includes(selected)) {
+        assert.equal(result.status, 0, "Valid workflow architecture selection failed.");
+        assert.deepEqual(JSON.parse(readFileSync(output, "utf8").trim().replace(/^matrix=/, "")),
+          { include: selected === undefined || selected === "both" ? lanes : lanes.filter(lane => lane.arch === selected) });
+      } else { assert.notEqual(result.status, 0); assert.equal(existsSync(output), false); }
+    }
+    const privateMarker = "synthetic-secret-DO-NOT-RETAIN";
+    const diagnosticText = `Error net::ERR_CONNECTION_CLOSED https://private.invalid/${privateMarker} /private/${privateMarker}\n`
+      + `Error: ECONNRESET ${privateMarker}; NSURLErrorDomain Code=-1005 ${privateMarker}\nunknown ERR_PRIVATE_${privateMarker}`;
+    assert.deepEqual(safeUpdateFailureSignals(diagnosticText), [
+      { code: "ECONNRESET", classification: "connection-reset" }, { code: "ERR_CONNECTION_CLOSED", classification: "connection-closed" },
+      { code: "NSURLErrorDomain:-1005", classification: "connection-lost" },
+    ]);
+    assert.deepEqual(safeUpdateFailureSignals(`https://private.invalid/${privateMarker} ERR_PRIVATE native-message`), []);
+    assert.deepEqual(numericDownloadProgress({ transferred: 419291136, total: 431109099, percent: 97.25, bytesPerSecond: 1000.5,
+      url: privateMarker, error: privateMarker }), { transferred: 419291136, total: 431109099, percent: 97.25, bytesPerSecond: 1000.5 });
+    for (const invalid of [null, [], { transferred: -1, total: Infinity, percent: 101, bytesPerSecond: "123" },
+      { transferred: 1.5, total: Number.MAX_SAFE_INTEGER + 1, percent: NaN, bytesPerSecond: -1 }]) assert.deepEqual(numericDownloadProgress(invalid), {});
+    mkdirSync(join(root, "logs"));
+    writeFileSync(join(root, "logs/electron.log"), diagnosticText);
+    writeFileSync(join(root, "logs/electron-error.log"), `${privateMarker} `.repeat(30000) + "ERR_CONTENT_LENGTH_MISMATCH");
+    const diagnostics = privateUpdateFailureDiagnostics(root);
+    assert.equal(diagnostics.filesScanned, 2); assert.equal(diagnostics.readFailures, 0);
+    assert.ok(diagnostics.bytesScanned <= 512 * 1024);
+    assert.ok(diagnostics.signals.some(signal => signal.code === "ERR_CONTENT_LENGTH_MISMATCH"));
+    assert.ok(!JSON.stringify(diagnostics).includes(privateMarker));
+    assert.ok(!JSON.stringify(diagnostics).includes("private.invalid"));
+    assert.ok(!JSON.stringify(diagnostics).includes(root));
     const baseline = join(root, "baseline"); mkdirSync(baseline);
     const content = Buffer.from("release fixture bytes"); const file = { name, size: content.length, sha256: digest(content), sha512: digest(content, "sha512") };
     writeFileSync(join(baseline, name), content);
@@ -422,7 +518,7 @@ async function selfTest() {
     assert.throws(() => assertInstalledArchive(wrongArchive, archiveHash), /target archive/);
     assert.throws(() => assertInstalledArchive(archive, ""), /archive hash/);
   } finally { asar.uncacheAll(); rmSync(root, { recursive: true, force: true }); }
-  console.log("Zeno update smoke self-test passed (historical/target integrity only; no native update was run).");
+  console.log("Zeno update smoke self-test passed (integrity, architecture selection and sanitized diagnostics; no native update was run).");
 }
 
 async function main() {
@@ -523,8 +619,14 @@ async function main() {
     const checked = await client.evaluate("window.__OPENWORK_ELECTRON__.updater.check('stable')", 120_000);
     assert.equal(checked.product, "zeno"); assert.equal(checked.available, true); assert.equal(checked.latestVersion, TARGET); assert.equal(checked.feedUrl, feed); assert.equal(checked.totalBytes, selected.zip.size);
     phase("native-check-real-public-feed", { latestVersion: checked.latestVersion, bytes: checked.totalBytes });
+    try {
+      const subscribed = await client.evaluate(`(()=>{window.__zenoSmokeDownloadProgress={};const updater=window.__OPENWORK_ELECTRON__.updater;if(typeof updater.onDownloadProgress!=="function")return false;const numeric=${numericDownloadProgress.toString()};updater.onDownloadProgress(value=>{window.__zenoSmokeDownloadProgress={...window.__zenoSmokeDownloadProgress,...numeric(value)}});return true})()`, 2_000);
+      report.downloadProgress = { subscriptionSupported: subscribed === true };
+    } catch { report.downloadProgress = { subscriptionSupported: false }; }
     // Allow the same real public ZIP transfer budget inside electron-updater.
     const downloaded = await client.evaluate("window.__OPENWORK_ELECTRON__.updater.download()", 1_800_000);
+    try { report.downloadProgress = { ...report.downloadProgress, ...numericDownloadProgress(await client.evaluate("window.__zenoSmokeDownloadProgress", 2_000)) }; }
+    catch { /* Diagnostics must not change a healthy native update verdict. */ }
     assert.deepEqual(downloaded, { ok: true, version: TARGET });
     report.nativeUpdateExecuted = true;
     phase("native-download-and-squirrel-staging-complete");
@@ -559,6 +661,11 @@ async function main() {
     report.passed = true;
   } catch (error) {
     report.error = error.message;
+    try {
+      if (client) report.downloadProgress = { ...report.downloadProgress,
+        ...numericDownloadProgress(await client.evaluate("window.__zenoSmokeDownloadProgress", 2_000)) };
+    } catch { /* The owned renderer may already have exited. */ }
+    report.failureDiagnostics = privateUpdateFailureDiagnostics(root);
     throw error;
   } finally {
     try {
