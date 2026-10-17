@@ -9,6 +9,8 @@ import type { ServerConfig } from "./types.js";
 import { withConfigurationWriteLock } from "./configuration-write-lock.js";
 import { GATEWAY_PROXY_TOKEN_ENV, gatewayProxyBaseURL } from "./gateway-proxy-auth.js";
 import { canUseModelHelmClaudeSdk, fillGatewayRuntimeModelMetadata, gatewayNativeModelDefaults, gatewayReasoningMetadata, isModelHelmClaudeModel, parseGatewayReasoningMetadata, type GatewayReasoningMetadata } from "./gateway-model-capabilities.js";
+import { parseGatewayImageMetadata, type GatewayImageMetadata } from "./gateway-image-capabilities.js";
+import { gatewayImageBindingMatches, gatewayImageDefaultsOption, gatewayImageModelSignature, readGatewayImageDefaults, readGatewayImageOverrides, readGatewayImageSignatures, resolveGatewayImageConfig, type GatewayImageConfig } from "./gateway-image-config.js";
 
 export const GATEWAY_PROVIDER_ID = "modelhelm";
 export const DEFAULT_GATEWAY_BASE_URL = "https://api.modelhelm.com/v1";
@@ -26,7 +28,7 @@ export type GatewaySettings = {
   requestTimeoutMs: number;
   imageGenerationEnabled: boolean;
 };
-export type GatewayModel = { id: string; name: string; kind: "chat" | "image" | "other" } & GatewayReasoningMetadata;
+export type GatewayModel = { id: string; name: string; kind: "chat" | "image" | "other" } & GatewayReasoningMetadata & GatewayImageMetadata;
 export type GatewayConfigInput = Partial<GatewaySettings> & { apiKey?: string };
 
 const fields = {
@@ -68,7 +70,7 @@ export async function readGatewaySettings(env: Pick<EnvService, "list">) {
 export async function publicGatewayConfig(env: Pick<EnvService, "list">, config?: ServerConfig) {
   const { settings, apiKey } = await readGatewaySettings(env);
   const runtime = config ? await readGlobalRuntimeOpencodeConfig(config) : null;
-  const ready = config ? Boolean(apiKey) && runtimeGatewayReady(runtime?.provider, settings, config) : undefined;
+  const ready = config ? Boolean(apiKey) && runtimeGatewayReady(runtime?.provider, settings, config, catalogFingerprint(settings, apiKey)) : undefined;
   return { ...settings, configured: Boolean(apiKey), apiKeyLast4: apiKey ? apiKey.slice(-4) : null,
     ...(ready === undefined ? {} : { ready, ...(!ready && apiKey ? { readinessReason: "模型目录尚未在此客户端同步，请同步目录并保存网关配置。" } : {}) }),
   };
@@ -113,18 +115,19 @@ async function cachedCatalog(env: Pick<EnvService, "list">, settings: GatewaySet
   } catch { return { status: "invalid", models: [] }; }
 }
 
-function runtimeGatewayReady(providers: unknown, settings: GatewaySettings, config: ServerConfig): boolean {
+function runtimeGatewayReady(providers: unknown, settings: GatewaySettings, config: ServerConfig, binding: string): boolean {
   const provider = isRecord(providers) ? providers[GATEWAY_PROVIDER_ID] : null;
   if (!isRecord(provider) || provider.npm !== "@ai-sdk/openai-compatible" || !Array.isArray(provider.env) || !provider.env.includes(GATEWAY_PROXY_TOKEN_ENV)) return false;
   const options = isRecord(provider.options) ? provider.options : null;
-  return options?.baseURL === gatewayProxyBaseURL(config) && options.gatewayBaseURL === settings.baseURL && isRecord(provider.models) && isRecord(provider.models[settings.chatModel]);
+  return options?.baseURL === gatewayProxyBaseURL(config) && options.gatewayBaseURL === settings.baseURL
+    && gatewayImageBindingMatches(options, binding) && isRecord(provider.models) && isRecord(provider.models[settings.chatModel]);
 }
 
-async function materializeGatewayProvider(config: ServerConfig, settings: GatewaySettings, models: GatewayModel[] | null, preserveMetadata = true) {
+async function materializeGatewayProvider(config: ServerConfig, settings: GatewaySettings, models: GatewayModel[] | null, preserveMetadata = true, binding?: string) {
   const written = await writeGlobalRuntimeOpencodeConfig(config, (runtime) => {
     if (!models && (!isRecord(runtime.provider) || !(GATEWAY_PROVIDER_ID in runtime.provider))) return runtime;
     const provider = isRecord(runtime.provider) ? { ...runtime.provider } : {};
-    if (models) provider[GATEWAY_PROVIDER_ID] = buildGatewayProvider(settings, models, config, preserveMetadata ? provider[GATEWAY_PROVIDER_ID] : undefined);
+    if (models) provider[GATEWAY_PROVIDER_ID] = buildGatewayProvider(settings, models, config, preserveMetadata ? provider[GATEWAY_PROVIDER_ID] : undefined, binding);
     else delete provider[GATEWAY_PROVIDER_ID];
     return { ...runtime, provider };
   });
@@ -135,26 +138,45 @@ async function materializeGatewayProvider(config: ServerConfig, settings: Gatewa
 /** Rehydrate a profile before its engines start, using only private local data. */
 export async function restoreGatewayProvider(config: ServerConfig, env: Pick<EnvService, "list">) {
   const { settings, apiKey } = await readGatewaySettings(env);
+  const binding = catalogFingerprint(settings, apiKey);
   if (config.readOnly) {
     const runtime = await readGlobalRuntimeOpencodeConfig(config);
-    return { changed: false, ready: Boolean(apiKey) && runtimeGatewayReady(runtime.provider, settings, config) };
+    return { changed: false, ready: Boolean(apiKey) && runtimeGatewayReady(runtime.provider, settings, config, binding) };
   }
   const cache = await cachedCatalog(env, settings, apiKey);
   const matching = cache.models.some((model) => model.id === settings.chatModel && model.kind === "chat");
   if (apiKey && cache.status === "valid" && matching) {
-    return { changed: await materializeGatewayProvider(config, settings, cache.models), ready: true };
+    return { changed: await materializeGatewayProvider(config, settings, cache.models, true, binding), ready: true };
   }
   const current = await readGlobalRuntimeOpencodeConfig(config);
   // Older profiles may already own a correctly routed provider. A catalog
   // with a failed endpoint/key binding is never reused for a changed gateway.
-  if (apiKey && cache.status === "missing" && runtimeGatewayReady(current.provider, settings, config)) {
+  if (apiKey && cache.status === "missing" && runtimeGatewayReady(current.provider, settings, config, binding)) {
     const written = await writeGlobalRuntimeOpencodeConfig(config, (runtime) => {
       const provider = isRecord(runtime.provider) ? runtime.provider : {};
       const gateway = provider[GATEWAY_PROVIDER_ID];
       if (!isRecord(gateway) || !isRecord(gateway.models)) return runtime;
-      const models = Object.fromEntries(Object.entries(gateway.models).map(([id, model]) => [id, isRecord(model)
-        ? fillGatewayRuntimeModelMetadata(settings.baseURL, id, model) : model]));
-      return { ...runtime, provider: { ...provider, [GATEWAY_PROVIDER_ID]: { ...gateway, models } } };
+      const previousImages = readGatewayImageDefaults(gateway.options);
+      const previousImageOverrides = readGatewayImageOverrides(gateway.options);
+      const previousImageSignatures = readGatewayImageSignatures(gateway.options);
+      const imageDefaults: Record<string, GatewayImageConfig> = {};
+      const imageOverrides: string[] = [];
+      const imageSignatures: Record<string, string> = {};
+      const models = Object.fromEntries(Object.entries(gateway.models).map(([id, model]) => {
+        if (!isRecord(model)) return [id, model];
+        // Without a catalog, retain the last generated declaration. A missing
+        // cache is not evidence that a previously verified image route changed.
+        const declaredImage = previousImages[id] ? { image: previousImages[id].attachment } : {};
+        const image = resolveGatewayImageConfig(settings.baseURL, id, declaredImage, model, previousImages[id], previousImageOverrides.has(id), previousImageSignatures[id]);
+        const filled = { ...fillGatewayRuntimeModelMetadata(settings.baseURL, id, model), ...image.fields };
+        if (image.owned) imageDefaults[id] = image.owned;
+        else imageOverrides.push(id);
+        if (image.owned) imageSignatures[id] = gatewayImageModelSignature(filled);
+        return [id, filled];
+      }));
+      return { ...runtime, provider: { ...provider, [GATEWAY_PROVIDER_ID]: { ...gateway, models,
+        options: { ...(isRecord(gateway.options) ? gateway.options : {}), gatewayImageCapabilities: gatewayImageDefaultsOption(imageDefaults, imageOverrides, imageSignatures, binding) },
+      } } };
     });
     if (written.changed) await writeOpenworkRuntimeConfigFile(config);
     return { changed: written.changed, ready: true };
@@ -172,7 +194,7 @@ export async function syncGatewayModels(config: ServerConfig, env: EnvService, s
     const syncedAt = Date.now();
     if (config.readOnly) return { models, syncedAt, changed: false };
     await env.upsertMany([{ key: GATEWAY_MODEL_CATALOG_ENV, value: catalogValue(settings, apiKey, models, syncedAt) }]);
-    const changed = await materializeGatewayProvider(config, settings, models, previousCatalog.status !== "invalid");
+    const changed = await materializeGatewayProvider(config, settings, models, previousCatalog.status !== "invalid", catalogFingerprint(settings, apiKey));
     const auth = await syncManagedProviderAuth({ config, env });
     return { models, syncedAt, changed: changed || auth.delivered.length > 0 || auth.removed.length > 0 };
   });
@@ -211,7 +233,7 @@ export function parseGatewayModels(payload: unknown): GatewayModel[] {
     const name = typeof entry.name === "string" && entry.name.trim() ? entry.name.trim() : id;
     const kind = /image|imagen|dall-e|flux|stable-diffusion/i.test(id) ? "image"
       : /embedding|rerank|video|tts|audio|ocr|whisper/i.test(id) ? "other" : "chat";
-    return [{ id, name, kind, ...parseGatewayReasoningMetadata(entry) }];
+    return [{ id, name, kind, ...parseGatewayReasoningMetadata(entry), ...parseGatewayImageMetadata(entry) }];
   });
 }
 
@@ -221,39 +243,55 @@ export async function listGatewayModels(env: Pick<EnvService, "list">, signal?: 
   return { models, syncedAt: Date.now() };
 }
 
-export function buildGatewayProvider(settings: GatewaySettings, models: GatewayModel[], config: Pick<ServerConfig, "port">, previous?: unknown) {
+export function buildGatewayProvider(settings: GatewaySettings, models: GatewayModel[], config: Pick<ServerConfig, "port">, previous?: unknown, binding?: string) {
   const previousOptions = isRecord(previous) && isRecord(previous.options) ? previous.options : {};
   const sameGateway = isRecord(previous) && previous.npm === "@ai-sdk/openai-compatible"
     && Array.isArray(previous.env) && previous.env.includes(GATEWAY_PROXY_TOKEN_ENV)
-    && previousOptions.baseURL === gatewayProxyBaseURL(config) && previousOptions.gatewayBaseURL === settings.baseURL;
+    && previousOptions.baseURL === gatewayProxyBaseURL(config) && previousOptions.gatewayBaseURL === settings.baseURL
+    && (binding === undefined || gatewayImageBindingMatches(previousOptions, binding));
   const previousModels = sameGateway && isRecord(previous.models) ? previous.models : {};
+  const previousImages = sameGateway ? readGatewayImageDefaults(previousOptions) : {};
+  const previousImageOverrides = sameGateway ? readGatewayImageOverrides(previousOptions) : new Set<string>();
+  const previousImageSignatures = sameGateway ? readGatewayImageSignatures(previousOptions) : {};
+  const imageDefaults: Record<string, GatewayImageConfig> = {};
+  const imageOverrides: string[] = [];
+  const imageSignatures: Record<string, string> = {};
+  const runtimeModels = Object.fromEntries(models.filter((model) => model.kind === "chat").map((model) => {
+    const existing = previousModels[model.id];
+    const image = resolveGatewayImageConfig(settings.baseURL, model.id, model, isRecord(existing) ? existing : undefined, previousImages[model.id], previousImageOverrides.has(model.id), previousImageSignatures[model.id]);
+    if (image.owned) imageDefaults[model.id] = image.owned;
+    else imageOverrides.push(model.id);
+    const conflictingSdk = isRecord(existing) && isModelHelmClaudeModel(settings.baseURL, model.id)
+      && !canUseModelHelmClaudeSdk(settings.baseURL, model.id, existing);
+    const materialized = {
+      name: model.name,
+      tool_call: true,
+      ...image.fields,
+      ...(!conflictingSdk ? { ...gatewayNativeModelDefaults(settings.baseURL, model.id),
+        ...gatewayReasoningMetadata(settings.baseURL, model.id, model) } : {}),
+    };
+    if (!isRecord(existing)) {
+      if (image.owned) imageSignatures[model.id] = gatewayImageModelSignature(materialized);
+      return [model.id, materialized];
+    }
+    const filled = fillGatewayRuntimeModelMetadata(settings.baseURL, model.id, existing);
+    const merged = { ...filled, ...materialized, ...existing, ...image.fields,
+      ...(isRecord(filled.provider) ? { provider: filled.provider } : {}),
+      ...(isRecord(filled.options) ? { options: filled.options } : {}),
+      ...(conflictingSdk && existing.variants === undefined ? { variants: filled.variants } : {}),
+      ...(existing.reasoning === false && !Object.hasOwn(existing, "variants") ? { variants: filled.variants } : {}),
+    };
+    if (image.owned) imageSignatures[model.id] = gatewayImageModelSignature(merged);
+    return [model.id, merged];
+  }));
   return {
     npm: "@ai-sdk/openai-compatible",
     name: "ModelHelm",
     env: [GATEWAY_PROXY_TOKEN_ENV],
-    options: { baseURL: gatewayProxyBaseURL(config), gatewayBaseURL: settings.baseURL, timeout: settings.requestTimeoutMs },
+    options: { baseURL: gatewayProxyBaseURL(config), gatewayBaseURL: settings.baseURL, timeout: settings.requestTimeoutMs,
+      gatewayImageCapabilities: gatewayImageDefaultsOption(imageDefaults, imageOverrides, imageSignatures, binding) },
     // Model IDs are routing identities: retain their provider namespace verbatim.
-    models: Object.fromEntries(models.filter((model) => model.kind === "chat").map((model) => {
-      const existing = previousModels[model.id];
-      const conflictingSdk = isRecord(existing) && isModelHelmClaudeModel(settings.baseURL, model.id)
-        && !canUseModelHelmClaudeSdk(settings.baseURL, model.id, existing);
-      const materialized = {
-        name: model.name,
-        tool_call: true,
-        attachment: false,
-        modalities: { input: ["text"], output: ["text"] },
-        ...(!conflictingSdk ? { ...gatewayNativeModelDefaults(settings.baseURL, model.id),
-          ...gatewayReasoningMetadata(settings.baseURL, model.id, model) } : {}),
-      };
-      if (!isRecord(existing)) return [model.id, materialized];
-      const filled = fillGatewayRuntimeModelMetadata(settings.baseURL, model.id, existing);
-      return [model.id, { ...filled, ...materialized, ...existing,
-        ...(isRecord(filled.provider) ? { provider: filled.provider } : {}),
-        ...(isRecord(filled.options) ? { options: filled.options } : {}),
-        ...(conflictingSdk && existing.variants === undefined ? { variants: filled.variants } : {}),
-        ...(existing.reasoning === false && !Object.hasOwn(existing, "variants") ? { variants: filled.variants } : {}),
-      }];
-    })),
+    models: runtimeModels,
   };
 }
 
@@ -309,7 +347,8 @@ export async function saveGatewayConfig(config: ServerConfig, env: EnvService, i
     await writeGlobalRuntimeOpencodeConfig(config, (runtime) => {
       const provider = isRecord(runtime.provider) ? { ...runtime.provider } : {};
       if (apiKey) provider[GATEWAY_PROVIDER_ID] = buildGatewayProvider(settings, models, config,
-        apiKey === current.apiKey && settings.baseURL === current.settings.baseURL ? provider[GATEWAY_PROVIDER_ID] : undefined);
+        apiKey === current.apiKey && settings.baseURL === current.settings.baseURL ? provider[GATEWAY_PROVIDER_ID] : undefined,
+        catalogFingerprint(settings, apiKey));
       else delete provider[GATEWAY_PROVIDER_ID];
       return { ...runtime, provider };
     });

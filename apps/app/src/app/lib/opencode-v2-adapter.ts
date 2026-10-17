@@ -67,7 +67,33 @@ type PromptPart = {
   synthetic?: unknown;
   metadata?: unknown;
   filename?: unknown;
+  mime?: unknown;
+  url?: unknown;
 };
+
+const V2_DIRECT_IMAGE_MIMES = new Set(["image/png", "image/jpeg", "image/gif", "image/webp"]);
+
+/** The pinned v2 PromptInput accepts { uri, name }, and detects the MIME from
+ * bytes itself. Keep real images in the initial user turn; path notes remain
+ * available to tools and transcript markers keep their existing ordering.
+ * https://github.com/anomalyco/opencode/blob/v2.0.26/packages/schema/src/prompt-input.ts
+ */
+function v2PromptImages(parts: readonly PromptPart[]): Array<{ uri: string; name?: string }> {
+  return parts.flatMap((part) => {
+    if (part.type !== "file" || typeof part.mime !== "string" || !V2_DIRECT_IMAGE_MIMES.has(part.mime.toLowerCase())
+      || typeof part.url !== "string") return [];
+    let uri: URL;
+    try { uri = new URL(part.url); } catch { return []; }
+    // The native engine materializes only inline data and local file URIs.
+    // Do not turn other binary attachments or remote URLs into native files.
+    if (uri.protocol === "data:") {
+      if (!part.url.startsWith("data:")) return [];
+      const mime = /^data:(image\/(?:png|jpeg|gif|webp))(?:;[^,]*)?,/i.exec(part.url)?.[1];
+      if (mime?.toLowerCase() !== part.mime.toLowerCase()) return [];
+    } else if (uri.protocol !== "file:" || uri.username || uri.password) return [];
+    return [{ uri: part.url, ...(typeof part.filename === "string" ? { name: part.filename } : {}) }];
+  });
+}
 
 function selectedSkill(part: PromptPart): Record<string, unknown> | null {
   const selection = part.type === "text" && part.synthetic === true ? readRecord(part.metadata, "openworkSelectedSkill") : null;
@@ -2561,10 +2587,11 @@ export function createClientV2(
         if (!instructions.response.ok) return failedResult(instructions);
       }
       const text = v2PromptText(parameters.parts ?? []);
+      const files = v2PromptImages(parameters.parts ?? []);
       const promptResult = await request(
         "POST",
         `/api/session/${encodeURIComponent(parameters.sessionID)}/prompt`,
-        { text, ...(skills.length ? { skills } : {}) },
+        { text, ...(files.length ? { files } : {}), ...(skills.length ? { skills } : {}) },
         options?.signal,
       );
       return promptResult.response.ok ? successfulResult(promptResult, {}) : failedResult(promptResult);
