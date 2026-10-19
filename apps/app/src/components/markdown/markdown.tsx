@@ -29,6 +29,9 @@ import { LinkActionMenu } from "./link-action-menu";
 import { useMermaidEnhancer } from "./mermaid";
 import { useSelectionStableValue } from "./selection-stability";
 import { enhanceNearViewport } from "./near-viewport";
+import { localClientFeatureEnabled } from "@/app/lib/local-client-features";
+import { parseConversationCanvas } from "./canvas-parser";
+import { ConversationCanvas } from "./conversation-canvas";
 
 export { renderHighlightedMarkdownHtml, renderMarkdownHtml } from "./markdown-primitive";
 
@@ -502,5 +505,26 @@ function MarkdownBlockInner({
  * doesn't re-parse its markdown on every token. Only re-renders when its
  * own text / streaming / highlightQuery props change.
  */
-export const MarkdownBlock = memo(MarkdownBlockInner);
+type MarkdownBlockProps = MarkdownBlockInnerProps & {
+  /** Only the assistant's visible conversation prose may execute an opted-in canvas. */
+  assistantCanvas?: boolean;
+};
+
+function ConversationMarkdown({ assistantCanvas = false, ...props }: MarkdownBlockProps) {
+  const canvasEnabled = assistantCanvas && localClientFeatureEnabled("conversationCanvas");
+  const root = useRef<HTMLDivElement>(null);
+  const segments = useMemo(() => canvasEnabled ? parseConversationCanvas(props.text) : [], [canvasEnabled, props.text]);
+  const stableSegments = useSelectionStableValue(root, segments);
+  if (!canvasEnabled) return <MarkdownBlockInner {...props} />;
+  const { className, text: _text, streaming, sessionReferences, highlightQuery, ...rootProps } = props;
+  // This root never changes kind at the streaming/settled boundary. Only prose
+  // children use the old HTML lifecycle; ordinal canvas slots stay mounted.
+  return <div ref={root} className={className} {...rootProps}>
+    {stableSegments.map((segment, index) => segment.type === "canvas"
+      ? <ConversationCanvas key={`canvas-${segment.fence.ordinal}`} fence={segment.fence} />
+      : <MarkdownBlockInner key={`prose-${index}`} streaming={streaming} sessionReferences={sessionReferences} highlightQuery={highlightQuery} text={segment.text} />)}
+  </div>;
+}
+
+export const MarkdownBlock = memo(ConversationMarkdown);
 MarkdownBlock.displayName = "MarkdownBlock";

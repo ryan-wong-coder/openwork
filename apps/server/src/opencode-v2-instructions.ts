@@ -1,14 +1,14 @@
-import { buildOpenWorkAgentPrompt } from "./openwork-agent-prompt.js";
+import { buildOpenWorkAgentPrompt, type AgentRendererCapabilities } from "./openwork-agent-prompt.js";
 import { isStandaloneAgentProfile, STANDALONE_DISCOVERY_INSTRUCTION, STANDALONE_SKILL_INSTRUCTION } from "./opencode-plugins/local-client-profile.js";
 
 export const OPENWORK_V2_INSTRUCTION_KEY = "openwork.context";
 
 /** Discover remote skills on demand through Connect; native skills are workspace files. */
-export function buildOpenWorkV2Instructions(connectReady: boolean, profile = process.env.OPENWORK_CLIENT_PROFILE) {
+export function buildOpenWorkV2Instructions(connectReady: boolean, profile = process.env.OPENWORK_CLIENT_PROFILE, renderer: AgentRendererCapabilities = {}) {
   const standalone = isStandaloneAgentProfile(profile);
   return {
     // Keep v1 guidance, translating only the native MCP tool spelling.
-    operatingInstructions: buildOpenWorkAgentPrompt(profile).replaceAll("openwork-cloud_", "openwork-cloud."),
+    operatingInstructions: buildOpenWorkAgentPrompt(profile, renderer).replaceAll("openwork-cloud_", "openwork-cloud."),
     context: "Use openwork_context to discover OpenWork app reads. Use openwork_query with session.search then session.read to read another conversation without opening it. Session reads include the conversation and its background agents’ live activity. These are native tools, not tools.search calls. Only use capabilities actually returned by discovery.",
     connect: standalone ? STANDALONE_DISCOVERY_INSTRUCTION : connectReady ? "OpenWork Connect tools are connected. In Code Mode, discover callable tool paths with the bare search({ query, limit }) function, then call the exact returned path under tools. Use only capabilities actually returned by discovery."
       : "OpenWork Connect is not connected for this request. Do not claim remote capabilities are available.",

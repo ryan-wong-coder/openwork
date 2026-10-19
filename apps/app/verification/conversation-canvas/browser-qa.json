@@ -1,0 +1,166 @@
+{
+  "checkedAt": "2026-10-19T01:28:21.595Z",
+  "fixture": "http://127.0.0.1:58591/tests/fixtures/conversation-canvas-browser/index.html",
+  "scope": "actual MarkdownBlock and ConversationCanvas in an isolated Vite component fixture; no full app/native or model call",
+  "passed": true,
+  "checks": [
+    {
+      "name": "policy-bearing static shell authenticates and three isolated iframe layers become ready",
+      "passed": true,
+      "frames": 4,
+      "shellResponses": [
+        {
+          "status": 200,
+          "allowlist": "()",
+          "contentType": "text/html;charset=utf-8"
+        },
+        {
+          "status": 200,
+          "allowlist": "()",
+          "contentType": "text/html;charset=utf-8"
+        }
+      ]
+    },
+    {
+      "name": "slider changes actual canvas pixels and SVG geometry",
+      "passed": true,
+      "rate": 75,
+      "counter": 2,
+      "barWidth": 480
+    },
+    {
+      "name": "100 streamed prose updates, settlement and highlighting preserve controls and painting",
+      "passed": true,
+      "updates": 100,
+      "iframeLoads": 0,
+      "bootCount": 1,
+      "paintCount": 3
+    },
+    {
+      "name": "source roundtrip retains the running board and control state",
+      "passed": true
+    },
+    {
+      "name": "360, 736 and 1200 widths fit the host and board without internal scrolling; interactive labels remain legible",
+      "passed": true,
+      "layouts": [
+        {
+          "hostWidth": 1200,
+          "width": 910,
+          "height": 380,
+          "clientWidth": 895,
+          "clientHeight": 380,
+          "bodyClientHeight": 379,
+          "bodyScrollHeight": 379,
+          "scrollWidth": 895,
+          "scrollHeight": 380,
+          "rootScrollRange": 0
+        },
+        {
+          "hostWidth": 736,
+          "width": 686,
+          "height": 356,
+          "clientWidth": 686,
+          "clientHeight": 356,
+          "bodyClientHeight": 356,
+          "bodyScrollHeight": 356,
+          "scrollWidth": 686,
+          "scrollHeight": 356,
+          "rootScrollRange": 0
+        },
+        {
+          "hostWidth": 360,
+          "width": 334,
+          "height": 316,
+          "clientWidth": 334,
+          "clientHeight": 316,
+          "bodyClientHeight": 316,
+          "bodyScrollHeight": 316,
+          "scrollWidth": 334,
+          "scrollHeight": 316,
+          "rootScrollRange": 0
+        }
+      ]
+    },
+    {
+      "name": "dark theme forwarded without replacing the frame or resetting controls",
+      "passed": true
+    },
+    {
+      "name": "incomplete fence reserves 360px without executing partial code",
+      "passed": true
+    },
+    {
+      "name": "invalid source stays readable with a working retry action",
+      "passed": true
+    },
+    {
+      "name": "Ant Design statistical chart renders in the real isolated board",
+      "passed": true,
+      "canvases": 1,
+      "svgs": 0,
+      "title": "每周完成量",
+      "width": 910,
+      "viewport": 910
+    },
+    {
+      "name": "Ant Design relationship chart renders in the real isolated board",
+      "passed": true,
+      "canvases": 4,
+      "svgs": 0,
+      "title": "项目协作",
+      "width": 910,
+      "viewport": 910
+    },
+    {
+      "name": "five relationship families render together using the actual board chart API",
+      "passed": true,
+      "charts": [
+        {
+          "type": "FlowGraph",
+          "state": "ready",
+          "canvases": 4
+        },
+        {
+          "type": "MindMap",
+          "state": "ready",
+          "canvases": 4
+        },
+        {
+          "type": "OrganizationChart",
+          "state": "ready",
+          "canvases": 4
+        },
+        {
+          "type": "NetworkGraph",
+          "state": "ready",
+          "canvases": 4
+        },
+        {
+          "type": "IndentedTree",
+          "state": "ready",
+          "canvases": 4
+        }
+      ]
+    },
+    {
+      "name": "ordinary HTML remains fenced code",
+      "passed": true
+    },
+    {
+      "name": "unsupported Chromium 151 exposes source without creating any generated-code iframe",
+      "passed": true
+    },
+    {
+      "name": "removing the actual HTTP shell allowlist header leaves readable source without generated-code iframe",
+      "passed": true,
+      "removedHeaders": 1
+    }
+  ],
+  "runtimeExceptions": [],
+  "networkOrigins": [
+    "http://127.0.0.1:58591"
+  ],
+  "externalModelCalls": 0,
+  "userBrowserUsed": false
+}

@@ -18,6 +18,16 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
+            "conversationCanvas": {
+              "enum": [
+                "",
+                "true",
+                "false",
+                true,
+                false
+              ],
+              "description": "Conversation canvas: Render interactive HTML, SVG, Canvas and Ant Design Charts boards inside assistant Markdown, with stable streaming previews and isolated execution. Renders DEN_FEATURE_CONVERSATION_CANVAS."
+            },
             "zenoReleaseUpdates": {
               "enum": [
                 "",

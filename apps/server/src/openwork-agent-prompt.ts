@@ -5,9 +5,11 @@
  * browser and app-control mechanics are appended per request by the
  * server plugins, and the user's time zone and locale arrive from the app.
  *
- * Kept dependency-free so tests and specs can import it without the runtime
+ * Kept database-free so tests and specs can import it without the runtime
  * database.
  */
+import { localOperatorFeatureEnabled } from "@openwork/features";
+import { CONVERSATION_CANVAS_INSTRUCTION } from "./conversation-canvas-prompt.js";
 /**
  * The one Connect routing sentence in the base prompt. Exported so the v2
  * instructions can swap it for the native-skill wording without drifting.
@@ -90,6 +92,12 @@ Create files in the authorized workspace and return their exact workspace-relati
 
 Use openwork_image_generate when it is available for image generation or editing. Its returned path is relative to the registered workspace root; reuse that real file in code and artifacts. Do not invent generated files, progress, completed work, or image dimensions.`;
 
-export function buildOpenWorkAgentPrompt(profile = process.env.OPENWORK_CLIENT_PROFILE): string {
-  return profile?.trim().toLowerCase() === "local-gateway" ? ZENO_AGENT_PROMPT : OPENWORK_AGENT_PROMPT;
+export type AgentRendererCapabilities = { conversationCanvas?: boolean };
+
+export function buildOpenWorkAgentPrompt(profile = process.env.OPENWORK_CLIENT_PROFILE, renderer: AgentRendererCapabilities = {}): string {
+  const standalone = profile?.trim().toLowerCase() === "local-gateway";
+  const base = standalone ? ZENO_AGENT_PROMPT : OPENWORK_AGENT_PROMPT;
+  const canvas = renderer.conversationCanvas !== false
+    && localOperatorFeatureEnabled("conversationCanvas", standalone, renderer.conversationCanvas === true);
+  return canvas ? `${base}\n\n${CONVERSATION_CANVAS_INSTRUCTION}` : base;
 }

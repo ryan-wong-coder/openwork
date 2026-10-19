@@ -30,6 +30,7 @@ export async function serveStaticUi(request: Request, config: StaticUiConfig): P
   try {
     const fileResponse = await serveFile(root, relativePath, url.pathname, method, config.token);
     if (fileResponse) return fileResponse;
+    if (relativePath === "zeno-canvas-shell.html") return new Response(null, { status: 404 });
     if (url.pathname.startsWith("/assets/")) return null;
     return serveFile(root, "index.html", "/index.html", method, config.token);
   } catch (error) {
@@ -63,19 +64,21 @@ async function serveFile(
   if (method === "HEAD") {
     return new Response(null, {
       status: 200,
-      headers: responseHeaders(extension, cacheControl),
+      headers: responseHeaders(extension, cacheControl, relativePath),
     });
   }
 
   if (isTextExtension(extension)) {
     const body = await readFile(filePath, "utf8");
     const text = relativePath === "index.html" ? injectBootstrap(body, token) : body;
-    return withCacheControl(textResponse(extension, text), cacheControl);
+    const response = withCacheControl(textResponse(extension, text), cacheControl);
+    applyCanvasShellHeaders(response.headers, relativePath);
+    return response;
   }
 
   return new Response(await readFile(filePath), {
     status: 200,
-    headers: responseHeaders(extension, cacheControl),
+    headers: responseHeaders(extension, cacheControl, relativePath),
   });
 }
 
@@ -102,10 +105,19 @@ function withCacheControl(response: Response, cacheControl: string): Response {
   });
 }
 
-function responseHeaders(extension: string, cacheControl: string): Headers {
+function responseHeaders(extension: string, cacheControl: string, relativePath: string): Headers {
   const headers = new Headers({ "Cache-Control": cacheControl });
   headers.set("Content-Type", contentType(extension));
+  applyCanvasShellHeaders(headers, relativePath);
   return headers;
+}
+
+function applyCanvasShellHeaders(headers: Headers, relativePath: string) {
+  if (relativePath !== "zeno-canvas-shell.html") return;
+  headers.set("Connection-Allowlist", "()");
+  headers.set("Cache-Control", "no-store");
+  headers.set("Referrer-Policy", "no-referrer");
+  headers.set("X-Content-Type-Options", "nosniff");
 }
 
 function contentType(extension: string): string {

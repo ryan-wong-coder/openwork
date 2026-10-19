@@ -1,0 +1,47 @@
+{
+  "checkedAt": "2026-10-19T01:17:54.539Z",
+  "fixture": "http://127.0.0.1:58591/tests/fixtures/conversation-canvas-browser/index.html",
+  "scope": "actual MarkdownBlock and ConversationCanvas in an isolated Vite component fixture; no full app/native or model call",
+  "passed": false,
+  "checks": [
+    {
+      "name": "double sandbox renders and becomes ready",
+      "passed": true,
+      "frames": 3
+    },
+    {
+      "name": "slider changes actual canvas pixels and SVG geometry",
+      "passed": true,
+      "rate": 75,
+      "counter": 2,
+      "barWidth": 480
+    },
+    {
+      "name": "100 streamed prose updates, settlement and highlighting preserve controls and painting",
+      "passed": true,
+      "updates": 100,
+      "iframeLoads": 0,
+      "bootCount": 1,
+      "paintCount": 3
+    },
+    {
+      "name": "source roundtrip retains the running board and control state",
+      "passed": true
+    },
+    {
+      "name": "360, 736 and 1200 widths fit the host and interactive labels remain legible",
+      "passed": true,
+      "widths": [
+        360,
+        736,
+        1200
+      ]
+    },
+    {
+      "name": "dark theme forwarded without replacing the frame or resetting controls",
+      "passed": true
+    }
+  ],
+  "error": "Expected values to be strictly equal:\n\n316 !== 360\n",
+  "runtimeExceptions": []
+}

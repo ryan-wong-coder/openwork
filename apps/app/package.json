@@ -32,6 +32,9 @@
     "test:e2e": "node scripts/e2e.mjs && node scripts/session-switch.mjs && node scripts/fs-engine.mjs && node scripts/browser-entry.mjs"
   },
   "dependencies": {
+    "@ant-design/charts": "2.6.5",
+    "@ant-design/graphs": "2.1.1",
+    "@ant-design/plots": "2.6.5",
     "@base-ui/react": "^1.4.1",
     "@codemirror/commands": "^6.8.0",
     "@codemirror/lang-markdown": "^6.5.1",
@@ -96,6 +99,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.0.4",
     "babel-plugin-react-compiler": "^1.0.0",
+    "esbuild": "0.25.12",
     "htmlparser2": "8.0.2",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.6.3",

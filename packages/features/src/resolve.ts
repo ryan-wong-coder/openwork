@@ -134,6 +134,27 @@ export function resolveFeatures(context: FeatureContext): FeatureMap {
   return mapFeatures((key) => resolveFeature(key, context).enabled)
 }
 
+/** Operator configuration of the independent local/self-hosted distribution.
+ * The renderer and both engine prompts share this installation snapshot. */
+export const LOCAL_GATEWAY_OPERATOR_FEATURES: FeatureOverrides = {
+  zenoReleaseUpdates: true,
+  zenoAbout: true,
+  gatewayFirstRunSetup: true,
+  zenoInterface: true,
+  gatewayImageGeneration: true,
+  visualConfiguration: true,
+  conversationCanvas: true,
+}
+
+export function localOperatorFeatureEnabled(key: FeatureKey, localGateway: boolean, connectedEnabled = false): boolean {
+  return resolveFeature(key, {
+    deployment: "self_hosted",
+    locks: localGateway ? LOCAL_GATEWAY_OPERATOR_FEATURES : {},
+    overrides: {},
+    rollouts: { [key]: { enabled: connectedEnabled, killed: false } },
+  }).enabled
+}
+
 export type FeatureEnvironmentProblem = { variable: string; message: string; fatal: boolean }
 
 /**

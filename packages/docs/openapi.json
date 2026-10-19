@@ -2426,6 +2426,7 @@
           "key": {
             "type": "string",
             "enum": [
+              "conversationCanvas",
               "zenoReleaseUpdates",
               "zenoWebsite",
               "zenoWebsiteRefresh",
@@ -2635,6 +2636,9 @@
                 "capabilities": {
                   "type": "object",
                   "properties": {
+                    "conversationCanvas": {
+                      "type": "boolean"
+                    },
                     "zenoReleaseUpdates": {
                       "type": "boolean"
                     },
@@ -2748,6 +2752,7 @@
                     }
                   },
                   "required": [
+                    "conversationCanvas",
                     "zenoReleaseUpdates",
                     "zenoWebsite",
                     "zenoWebsiteRefresh",
@@ -2789,6 +2794,62 @@
                 "featureStates": {
                   "type": "object",
                   "properties": {
+                    "conversationCanvas": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
                     "zenoReleaseUpdates": {
                       "type": "object",
                       "properties": {
@@ -4751,6 +4812,7 @@
                     }
                   },
                   "required": [
+                    "conversationCanvas",
                     "zenoReleaseUpdates",
                     "zenoWebsite",
                     "zenoWebsiteRefresh",
@@ -5155,6 +5217,9 @@
                 "capabilities": {
                   "type": "object",
                   "properties": {
+                    "conversationCanvas": {
+                      "type": "boolean"
+                    },
                     "zenoReleaseUpdates": {
                       "type": "boolean"
                     },
@@ -5268,6 +5333,7 @@
                     }
                   },
                   "required": [
+                    "conversationCanvas",
                     "zenoReleaseUpdates",
                     "zenoWebsite",
                     "zenoWebsiteRefresh",
@@ -5309,6 +5375,62 @@
                 "featureStates": {
                   "type": "object",
                   "properties": {
+                    "conversationCanvas": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
                     "zenoReleaseUpdates": {
                       "type": "object",
                       "properties": {
@@ -7271,6 +7393,7 @@
                     }
                   },
                   "required": [
+                    "conversationCanvas",
                     "zenoReleaseUpdates",
                     "zenoWebsite",
                     "zenoWebsiteRefresh",
@@ -30899,6 +31022,9 @@
                     "capabilities": {
                       "type": "object",
                       "properties": {
+                        "conversationCanvas": {
+                          "type": "boolean"
+                        },
                         "zenoReleaseUpdates": {
                           "type": "boolean"
                         },
@@ -31012,6 +31138,7 @@
                         }
                       },
                       "required": [
+                        "conversationCanvas",
                         "zenoReleaseUpdates",
                         "zenoWebsite",
                         "zenoWebsiteRefresh",
@@ -31053,6 +31180,62 @@
                     "featureStates": {
                       "type": "object",
                       "properties": {
+                        "conversationCanvas": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
                         "zenoReleaseUpdates": {
                           "type": "object",
                           "properties": {
@@ -33015,6 +33198,7 @@
                         }
                       },
                       "required": [
+                        "conversationCanvas",
                         "zenoReleaseUpdates",
                         "zenoWebsite",
                         "zenoWebsiteRefresh",
@@ -33168,6 +33352,9 @@
                     "capabilities": {
                       "type": "object",
                       "properties": {
+                        "conversationCanvas": {
+                          "type": "boolean"
+                        },
                         "zenoReleaseUpdates": {
                           "type": "boolean"
                         },
@@ -33281,6 +33468,7 @@
                         }
                       },
                       "required": [
+                        "conversationCanvas",
                         "zenoReleaseUpdates",
                         "zenoWebsite",
                         "zenoWebsiteRefresh",
@@ -33322,6 +33510,62 @@
                     "featureStates": {
                       "type": "object",
                       "properties": {
+                        "conversationCanvas": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
                         "zenoReleaseUpdates": {
                           "type": "object",
                           "properties": {
@@ -35284,6 +35528,7 @@
                         }
                       },
                       "required": [
+                        "conversationCanvas",
                         "zenoReleaseUpdates",
                         "zenoWebsite",
                         "zenoWebsiteRefresh",

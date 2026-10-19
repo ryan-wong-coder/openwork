@@ -26,6 +26,7 @@ config:
   #   "false" off for everyone; /admin shows "Set by deployment config"
   # The /admin kill switch still turns a feature off, even when locked on.
   features:
+    conversationCanvas: ""         # default off · Render interactive HTML, SVG, Canvas and Ant Design Charts boards inside assistant Markdown, with stable streaming previews and isolated execution.
     zenoReleaseUpdates: ""         # default off · Check the independent Zeno release service, offer a new version, and install the downloaded desktop update without using an upstream release feed.
     zenoWebsite: ""                # default off · Serve the independently operated Zeno website and verified release downloads for each supported platform and architecture.
     zenoWebsiteRefresh: ""         # default off · Present the independent Zeno download website with refined brand artwork, interactive mascot motion, and a compact download flow; operators can keep the original site.

@@ -147,15 +147,18 @@ window.addEventListener("contextmenu", (event) => {
 
 let desktopBootstrap = null;
 let desktopDistribution = null;
+let conversationCanvas = null;
 try {
   desktopBootstrap = ipcRenderer.sendSync("openwork:desktop-bootstrap-sync");
   desktopDistribution = ipcRenderer.sendSync("openwork:desktop-distribution-sync");
+  if (process.isMainFrame) conversationCanvas = ipcRenderer.sendSync("openwork:conversation-canvas-shell-sync");
 } catch {
   desktopBootstrap = null;
   desktopDistribution = null;
 }
 
 contextBridge.exposeInMainWorld("__OPENWORK_ELECTRON__", {
+  ...(conversationCanvas ? { conversationCanvas } : {}),
   invokeDesktop(command, ...args) {
     return ipcRenderer.invoke("openwork:desktop", command, ...args);
   },

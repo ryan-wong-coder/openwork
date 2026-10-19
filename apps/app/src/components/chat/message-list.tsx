@@ -667,6 +667,7 @@ const AssistantMessage = React.memo(
                   className="text-foreground prose w-full min-w-0 flex-1 rounded-lg bg-transparent p-0"
                   markdown
                   sessionReferences
+                  assistantCanvas
                   isStreaming={isStreaming}
                   highlightQuery={highlightQuery}
                 >

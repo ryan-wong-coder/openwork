@@ -82,6 +82,10 @@ declare global {
       select: (id: string) => Promise<unknown>;
     };
     __OPENWORK_ELECTRON__?: {
+      conversationCanvas?: {
+        shellUrl: string;
+        networkPolicy: "connection-allowlist";
+      };
       invokeDesktop?: <C extends DesktopCommandName>(
         command: C,
         ...args: DesktopCommandArgs<C>

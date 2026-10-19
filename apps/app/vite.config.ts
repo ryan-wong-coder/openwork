@@ -8,6 +8,8 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { devOpenworkProxy } from "./dev-openwork-proxy";
 import { devDenProxy } from "./dev-den-proxy";
+import { canvasChartRuntimePlugin } from "./scripts/canvas-chart-runtime-vite-plugin";
+import { canvasShellHeadersPlugin } from "./scripts/canvas-shell-vite-plugin";
 
 const portValue = Number.parseInt(process.env.PORT ?? "", 10);
 const devPort = Number.isFinite(portValue) && portValue > 0 ? portValue : 5173;
@@ -102,6 +104,8 @@ export default defineConfig(({ command, isPreview }) => {
       "import.meta.env.VITE_OPENWORK_BUILD_SHA": JSON.stringify(shortBuildSha),
     },
     plugins: [
+      canvasChartRuntimePlugin(),
+      canvasShellHeadersPlugin(),
       {
         name: "openwork-dev-server-id",
         configureServer(server) {

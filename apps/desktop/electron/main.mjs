@@ -90,6 +90,7 @@ import {
   runDetachedTask,
 } from "./process-resilience.mjs";
 import { createQuitSequencer } from "./quit-sequence.mjs";
+import { installCanvasShellProtocol, prepareCanvasShellProtocol } from "./conversation-canvas-shell.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const APP_ROOT = path.resolve(__dirname, "../../..");
@@ -111,6 +112,7 @@ const {
   powerMonitor,
   Notification: ElectronNotification,
   session,
+  protocol,
   shell,
 } = require("electron");
 const pty = require(["node", "pty"].join("-"));
@@ -1073,6 +1075,8 @@ if (extraLaunchArgs) {
   }
 }
 configureFakeMediaForTests(app, envFlagEnabled("OPENWORK_ELECTRON_FAKE_MEDIA"));
+const canvasShellPrepared = prepareCanvasShellProtocol(app, protocol);
+let conversationCanvasCapability = null;
 const DEFAULT_LOCAL_BASE_URL = "http://127.0.0.1:4096";
 
 function envFlagEnabled(name) {
@@ -2642,6 +2646,10 @@ async function createMainWindow() {
 ipcMain.on("openwork:desktop-bootstrap-sync", (event) => {
   event.returnValue = workspaceStore.readDesktopBootstrapConfigSync();
 });
+ipcMain.on("openwork:conversation-canvas-shell-sync", (event) => {
+  event.returnValue = mainWindow && event.sender === mainWindow.webContents
+    && event.senderFrame === mainWindow.webContents.mainFrame ? conversationCanvasCapability : null;
+});
 ipcMain.on("openwork:desktop-distribution-sync", (event) => {
   event.returnValue = DESKTOP_DISTRIBUTION;
 });
@@ -2810,6 +2818,12 @@ or use: pnpm dev:worktree`);
   });
 
   app.whenReady().then(async () => {
+    const canvasShellPath = app.isPackaged
+      ? path.join(process.resourcesPath, "app-dist", "zeno-canvas-shell.html")
+      : path.resolve(__dirname, "../../app/public/zeno-canvas-shell.html");
+    conversationCanvasCapability = await installCanvasShellProtocol({
+      protocol, shellPath: canvasShellPath, prepared: canvasShellPrepared, chromiumVersion: process.versions.chrome,
+    });
     holdSpellcheckerUntilActivation(workspaceStore.readDesktopBootstrapConfigSync());
     const systemCaCertificates = await runtimeManager.systemCaCertificates();
     session.defaultSession.setCertificateVerifyProc(createSystemCaCertificateVerifyProc(systemCaCertificates));

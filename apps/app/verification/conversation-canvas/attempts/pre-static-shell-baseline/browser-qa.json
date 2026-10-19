@@ -1,0 +1,81 @@
+{
+  "checkedAt": "2026-10-19T01:18:43.756Z",
+  "fixture": "http://127.0.0.1:58591/tests/fixtures/conversation-canvas-browser/index.html",
+  "scope": "actual MarkdownBlock and ConversationCanvas in an isolated Vite component fixture; no full app/native or model call",
+  "passed": true,
+  "checks": [
+    {
+      "name": "double sandbox renders and becomes ready",
+      "passed": true,
+      "frames": 3
+    },
+    {
+      "name": "slider changes actual canvas pixels and SVG geometry",
+      "passed": true,
+      "rate": 75,
+      "counter": 2,
+      "barWidth": 480
+    },
+    {
+      "name": "100 streamed prose updates, settlement and highlighting preserve controls and painting",
+      "passed": true,
+      "updates": 100,
+      "iframeLoads": 0,
+      "bootCount": 1,
+      "paintCount": 3
+    },
+    {
+      "name": "source roundtrip retains the running board and control state",
+      "passed": true
+    },
+    {
+      "name": "360, 736 and 1200 widths fit the host and interactive labels remain legible",
+      "passed": true,
+      "widths": [
+        360,
+        736,
+        1200
+      ]
+    },
+    {
+      "name": "dark theme forwarded without replacing the frame or resetting controls",
+      "passed": true
+    },
+    {
+      "name": "incomplete fence reserves 360px without executing partial code",
+      "passed": true
+    },
+    {
+      "name": "invalid source stays readable with a working retry action",
+      "passed": true
+    },
+    {
+      "name": "Ant Design statistical chart renders in the real isolated board",
+      "passed": true,
+      "canvases": 1,
+      "svgs": 0,
+      "title": "每周完成量",
+      "width": 910,
+      "viewport": 910
+    },
+    {
+      "name": "Ant Design relationship chart renders in the real isolated board",
+      "passed": true,
+      "canvases": 4,
+      "svgs": 0,
+      "title": "项目协作",
+      "width": 910,
+      "viewport": 910
+    },
+    {
+      "name": "ordinary HTML remains fenced code",
+      "passed": true
+    }
+  ],
+  "runtimeExceptions": [],
+  "networkOrigins": [
+    "http://127.0.0.1:58591"
+  ],
+  "externalModelCalls": 0,
+  "userBrowserUsed": false
+}

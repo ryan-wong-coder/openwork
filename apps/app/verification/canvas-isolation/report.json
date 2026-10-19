@@ -1,0 +1,122 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "passed": true,
+      "runtime": "chrome-http",
+      "browser": "Chrome/155.0.8059.85",
+      "policy": "Connection-Allowlist: ()",
+      "actualTrustedShell": true,
+      "actualGeneratedDocuments": true,
+      "positiveControls": {
+        "http": true,
+        "udp": true
+      },
+      "isolatedHttpRequests": 0,
+      "isolatedSTUNPackets": 0,
+      "probes": {
+        "webrtc": {
+          "offerSet": true
+        },
+        "functional": {
+          "interactive": true,
+          "svg": true
+        },
+        "network": {
+          "started": true
+        },
+        "parent-and-bridge": {
+          "parentReadable": false,
+          "bridgeReadable": false,
+          "prototypeLocal": true
+        },
+        "fresh-frame-webrtc": {
+          "error": "SecurityError"
+        },
+        "script-closing": {
+          "hostWritable": false,
+          "ran": true
+        },
+        "navigation-http": {
+          "started": true
+        },
+        "navigation-blob": {
+          "started": true
+        },
+        "navigation-data": {
+          "started": true
+        },
+        "navigation-about-blank": {
+          "started": true
+        }
+      },
+      "spoofedBridgeMessagesRejected": 1,
+      "hostBridgeCalls": 0,
+      "hostPrototypeUnchanged": true,
+      "hostSentinelUnchanged": true,
+      "syntheticDataOnly": true,
+      "externalServicesUsed": false
+    },
+    {
+      "passed": true,
+      "runtime": "electron",
+      "browser": "Chrome/150.0.7871.250",
+      "electron": "43.7.7",
+      "nativeFlags": [
+        "ConnectionAllowlists",
+        "OverrideConnectionAllowlistOriginTrial"
+      ],
+      "policy": "Connection-Allowlist: ()",
+      "actualTrustedShell": true,
+      "actualGeneratedDocuments": true,
+      "positiveControls": {
+        "http": true,
+        "udp": true
+      },
+      "isolatedHttpRequests": 0,
+      "isolatedSTUNPackets": 0,
+      "probes": {
+        "functional": {
+          "interactive": true,
+          "svg": true
+        },
+        "network": {
+          "started": true
+        },
+        "webrtc": {
+          "error": "NotAllowedError"
+        },
+        "fresh-frame-webrtc": {
+          "error": "SecurityError"
+        },
+        "parent-and-bridge": {
+          "parentReadable": false,
+          "bridgeReadable": false,
+          "prototypeLocal": true
+        },
+        "script-closing": {
+          "hostWritable": false,
+          "ran": true
+        },
+        "navigation-http": {
+          "started": true
+        },
+        "navigation-data": {
+          "started": true
+        },
+        "navigation-blob": {
+          "started": true
+        },
+        "navigation-about-blank": {
+          "started": true
+        }
+      },
+      "spoofedBridgeMessagesRejected": 1,
+      "hostBridgeCalls": 0,
+      "hostPrototypeUnchanged": true,
+      "hostSentinelUnchanged": true,
+      "syntheticDataOnly": true,
+      "externalServicesUsed": false
+    }
+  ]
+}

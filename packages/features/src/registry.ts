@@ -53,6 +53,13 @@ function defineFeatures<const T extends Record<string, FeatureDefinition>>(featu
 const everywhere = ["cloud", "self_hosted"] as const
 
 export const FEATURES = defineFeatures({
+  conversationCanvas: {
+    label: "Conversation canvas",
+    description: "Render interactive HTML, SVG, Canvas and Ant Design Charts boards inside assistant Markdown, with stable streaming previews and isolated execution.",
+    since: "2026-10",
+    deployments: ["self_hosted"],
+    default: false,
+  },
   zenoReleaseUpdates: {
     label: "Zeno release updates",
     description: "Check the independent Zeno release service, offer a new version, and install the downloaded desktop update without using an upstream release feed.",

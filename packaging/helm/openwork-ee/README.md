@@ -362,6 +362,7 @@ OpenWork Cloud. Don't change it on a customer install.
 <!-- BEGIN GENERATED features (pnpm features:sync) -->
 | `config.features.*` | Environment variable | Default | What it does |
 | --- | --- | --- | --- |
+| `conversationCanvas` | `DEN_FEATURE_CONVERSATION_CANVAS` | default off | Render interactive HTML, SVG, Canvas and Ant Design Charts boards inside assistant Markdown, with stable streaming previews and isolated execution. |
 | `zenoReleaseUpdates` | `DEN_FEATURE_ZENO_RELEASE_UPDATES` | default off | Check the independent Zeno release service, offer a new version, and install the downloaded desktop update without using an upstream release feed. |
 | `zenoWebsite` | `DEN_FEATURE_ZENO_WEBSITE` | default off | Serve the independently operated Zeno website and verified release downloads for each supported platform and architecture. |
 | `zenoWebsiteRefresh` | `DEN_FEATURE_ZENO_WEBSITE_REFRESH` | default off | Present the independent Zeno download website with refined brand artwork, interactive mascot motion, and a compact download flow; operators can keep the original site. |

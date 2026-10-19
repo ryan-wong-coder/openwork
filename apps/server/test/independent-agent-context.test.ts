@@ -34,6 +34,7 @@ test("the actual V1 system transforms retain user capabilities without vendor-ac
     await extensions["experimental.chat.system.transform"]({}, { system });
     expect(system).toHaveLength(1);
     expectIndependentPrompt(system.join("\n"));
+    expect(system.join("\n")).toContain("Interactive visuals in this conversation");
     expect(Object.keys(knowledge.tool)).toEqual([]);
     expect(extensions.tool).toHaveProperty("openwork_image_generate");
     expect(extensions.tool).toHaveProperty("openwork_context");

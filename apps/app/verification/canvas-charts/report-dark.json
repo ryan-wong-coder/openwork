@@ -1,0 +1,278 @@
+{
+  "passed": true,
+  "dark": true,
+  "package": "@ant-design/charts",
+  "version": "2.6.5",
+  "runtimeBytes": 2545359,
+  "gzipBytes": 768502,
+  "runtimeSHA256": "b56da4564d6421ff3e58c7fc2977ec2c55de020ed6e296780961a94e485c5ebe",
+  "charts": [
+    {
+      "type": "Line",
+      "state": "ready",
+      "canvases": 1,
+      "svg": 0,
+      "visibleHTMLLabels": false,
+      "nonblank": true
+    },
+    {
+      "type": "Column",
+      "state": "ready",
+      "canvases": 1,
+      "svg": 0,
+      "visibleHTMLLabels": false,
+      "nonblank": true
+    },
+    {
+      "type": "Bar",
+      "state": "ready",
+      "canvases": 1,
+      "svg": 0,
+      "visibleHTMLLabels": false,
+      "nonblank": true
+    },
+    {
+      "type": "Pie",
+      "state": "ready",
+      "canvases": 1,
+      "svg": 0,
+      "visibleHTMLLabels": false,
+      "nonblank": true
+    },
+    {
+      "type": "Scatter",
+      "state": "ready",
+      "canvases": 1,
+      "svg": 0,
+      "visibleHTMLLabels": false,
+      "nonblank": true
+    },
+    {
+      "type": "Heatmap",
+      "state": "ready",
+      "canvases": 1,
+      "svg": 0,
+      "visibleHTMLLabels": false,
+      "nonblank": true
+    },
+    {
+      "type": "Area",
+      "state": "ready",
+      "canvases": 1,
+      "svg": 0,
+      "visibleHTMLLabels": false,
+      "nonblank": true
+    },
+    {
+      "type": "Radar",
+      "state": "ready",
+      "canvases": 1,
+      "svg": 0,
+      "visibleHTMLLabels": false,
+      "nonblank": true
+    },
+    {
+      "type": "Funnel",
+      "state": "ready",
+      "canvases": 1,
+      "svg": 0,
+      "visibleHTMLLabels": false,
+      "nonblank": true
+    },
+    {
+      "type": "FlowGraph",
+      "state": "ready",
+      "canvases": 4,
+      "svg": 0,
+      "visibleHTMLLabels": false,
+      "nonblank": true
+    },
+    {
+      "type": "MindMap",
+      "state": "ready",
+      "canvases": 4,
+      "svg": 0,
+      "visibleHTMLLabels": false,
+      "nonblank": true
+    },
+    {
+      "type": "OrganizationChart",
+      "state": "ready",
+      "canvases": 4,
+      "svg": 0,
+      "visibleHTMLLabels": false,
+      "nonblank": true
+    },
+    {
+      "type": "NetworkGraph",
+      "state": "ready",
+      "canvases": 4,
+      "svg": 0,
+      "visibleHTMLLabels": false,
+      "nonblank": true
+    },
+    {
+      "type": "IndentedTree",
+      "state": "ready",
+      "canvases": 4,
+      "svg": 0,
+      "visibleHTMLLabels": false,
+      "nonblank": true
+    }
+  ],
+  "tooltip": true,
+  "interactiveFilterChangesPixels": true,
+  "resize": true,
+  "resizedCharts": [
+    {
+      "type": "Line",
+      "width": 283,
+      "nonblank": true
+    },
+    {
+      "type": "Column",
+      "width": 283,
+      "nonblank": true
+    },
+    {
+      "type": "Bar",
+      "width": 283,
+      "nonblank": true
+    },
+    {
+      "type": "Pie",
+      "width": 283,
+      "nonblank": true
+    },
+    {
+      "type": "Scatter",
+      "width": 283,
+      "nonblank": true
+    },
+    {
+      "type": "Heatmap",
+      "width": 283,
+      "nonblank": true
+    },
+    {
+      "type": "Area",
+      "width": 283,
+      "nonblank": true
+    },
+    {
+      "type": "Radar",
+      "width": 283,
+      "nonblank": true
+    },
+    {
+      "type": "Funnel",
+      "width": 283,
+      "nonblank": true
+    },
+    {
+      "type": "FlowGraph",
+      "width": 898,
+      "nonblank": true
+    },
+    {
+      "type": "MindMap",
+      "width": 898,
+      "nonblank": true
+    },
+    {
+      "type": "OrganizationChart",
+      "width": 898,
+      "nonblank": true
+    },
+    {
+      "type": "NetworkGraph",
+      "width": 898,
+      "nonblank": true
+    },
+    {
+      "type": "IndentedTree",
+      "width": 898,
+      "nonblank": true
+    }
+  ],
+  "pageScreenshotPixels": [
+    {
+      "type": "Line",
+      "distinctPixels": 2906,
+      "nonblank": true
+    },
+    {
+      "type": "Column",
+      "distinctPixels": 29676,
+      "nonblank": true
+    },
+    {
+      "type": "Bar",
+      "distinctPixels": 27971,
+      "nonblank": true
+    },
+    {
+      "type": "Pie",
+      "distinctPixels": 35717,
+      "nonblank": true
+    },
+    {
+      "type": "Scatter",
+      "distinctPixels": 3271,
+      "nonblank": true
+    },
+    {
+      "type": "Heatmap",
+      "distinctPixels": 48846,
+      "nonblank": true
+    },
+    {
+      "type": "Area",
+      "distinctPixels": 39775,
+      "nonblank": true
+    },
+    {
+      "type": "Radar",
+      "distinctPixels": 3947,
+      "nonblank": true
+    },
+    {
+      "type": "Funnel",
+      "distinctPixels": 41653,
+      "nonblank": true
+    },
+    {
+      "type": "FlowGraph",
+      "distinctPixels": 10434,
+      "nonblank": true
+    },
+    {
+      "type": "MindMap",
+      "distinctPixels": 8304,
+      "nonblank": true
+    },
+    {
+      "type": "OrganizationChart",
+      "distinctPixels": 11655,
+      "nonblank": true
+    },
+    {
+      "type": "NetworkGraph",
+      "distinctPixels": 1966,
+      "nonblank": true
+    },
+    {
+      "type": "IndentedTree",
+      "distinctPixels": 4474,
+      "nonblank": true
+    }
+  ],
+  "themeChangePreservesFilter": true,
+  "localError": true,
+  "destroy": true,
+  "cspUnsafeEval": false,
+  "workerRequests": 0,
+  "externalRuntimeRequests": 0,
+  "rendererExceptions": 0,
+  "syntheticDataOnly": true
+}
