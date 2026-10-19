@@ -5,6 +5,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import asar from "@electron/asar";
 import YAML from "yaml";
+import { verifyCanvasPackaging } from "./verify-canvas-packaging.mjs";
 
 const desktop = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const [platform, arch] = process.argv.slice(2);
@@ -27,6 +28,7 @@ for (const name of ["local-client-profile", "session-activity", "gateway-image-t
   if (!asar.extractFile(archive, join("server", "dist", "opencode-plugins", `${name}.js`)).length) throw new Error(`Missing packaged host bridge dependency: ${name}`);
 }
 for (const name of ["opencode", "opencode2", "versions.json"]) readFileSync(join(resources, "sidecars", `${name}${platform === "win32" && name !== "versions.json" ? ".exe" : ""}`));
+const canvas = verifyCanvasPackaging({ archive, resources });
 const nativeTarget = platform === process.platform && arch === process.arch;
 if (nativeTarget) {
   const temporary = mkdtempSync(join(tmpdir(), "zeno-packaged-server-"));
@@ -69,4 +71,4 @@ try {
     if (result.error || result.status !== 0) throw new Error("Packaged Electron Node server smoke failed.");
   } finally { rmSync(temporary, { recursive: true, force: true }); }
 }
-console.log(JSON.stringify({ version, platform, arch, brand: metadata.openworkBrand, signing: metadata.zenoReleaseSigning, updatesEnabled: metadata.zenoReleaseUpdatesEnabled, feed: feed.url, runtimeSmoke: nativeTarget ? "passed" : "cross-architecture-static-only" }));
+console.log(JSON.stringify({ version, platform, arch, brand: metadata.openworkBrand, signing: metadata.zenoReleaseSigning, updatesEnabled: metadata.zenoReleaseUpdatesEnabled, feed: feed.url, runtimeSmoke: nativeTarget ? "passed" : "cross-architecture-static-only", canvas }));
