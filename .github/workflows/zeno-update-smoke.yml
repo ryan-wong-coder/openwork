@@ -155,5 +155,6 @@ jobs:
           path: |
             ${{ runner.temp }}/zeno-update-smoke-evidence/report.json
             ${{ runner.temp }}/zeno-update-smoke-evidence/updated-app.png
+            ${{ runner.temp }}/zeno-update-smoke-evidence/native-canvas.png
           if-no-files-found: warn
           retention-days: 14

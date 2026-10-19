@@ -12,6 +12,7 @@ import { createWriteStream } from "node:fs";
 import asar from "@electron/asar";
 import YAML from "yaml";
 import { compareStableVersions } from "../electron/recovery.mjs";
+import { assertCanvasProbeTarget, canvasProbeDocument, verifyPackagedCanvas } from "./zeno-canvas-packaged-probe.mjs";
 
 // This is deliberately NOT a local desktop test. Zeno preserves OpenWork's
 // bundle ID, hence Squirrel's native ShipIt domain. Only an ephemeral GitHub-
@@ -296,7 +297,7 @@ async function freePort() {
 }
 
 async function connect(webSocketUrl, onEvent = () => {}) {
-  const socket = new WebSocket(webSocketUrl); const pending = new Map(); let identifier = 0;
+  const socket = new WebSocket(webSocketUrl); const pending = new Map(); const observers = new Set([onEvent]); let identifier = 0;
   await new Promise((resolveOpen, reject) => { socket.onopen = resolveOpen; socket.onerror = () => reject(new Error("Owned CDP connection failed.")); });
   socket.onmessage = ({ data }) => {
     const message = JSON.parse(data);
@@ -304,10 +305,10 @@ async function connect(webSocketUrl, onEvent = () => {}) {
       const promise = pending.get(message.id); if (!promise) return;
       pending.delete(message.id); clearTimeout(promise.timer);
       message.error ? promise.reject(new Error("Owned CDP command failed.")) : promise.resolve(message.result);
-    } else onEvent(message);
+    } else for (const observe of observers) observe(message);
   };
   socket.onclose = () => { for (const promise of pending.values()) { clearTimeout(promise.timer); promise.reject(new Error("Owned CDP closed.")); } pending.clear(); };
-  return { socket, send(method, params = {}, timeout = 30_000) { return new Promise((resolveCommand, reject) => {
+  return { socket, observe(listener) { observers.add(listener); return () => observers.delete(listener); }, send(method, params = {}, timeout = 30_000) { return new Promise((resolveCommand, reject) => {
     const id = ++identifier;
     const timer = setTimeout(() => { pending.delete(id); reject(new Error(`Owned CDP timed out: ${method}.`)); }, timeout);
     pending.set(id, { resolve: resolveCommand, reject, timer }); socket.send(JSON.stringify({ id, method, params }));
@@ -448,6 +449,12 @@ async function selfTest() {
   const renderer = pathToFileURL(join(privateBundle, "Contents/Resources/app-dist/index.html")).href;
   for (const suffix of ["", "#/settings/about", "?smoke=true#/workspace/owned/session"]) assert.equal(privateMainTarget({ type: "page", url: renderer + suffix }, privateBundle), true);
   for (const target of [{ type: "iframe", url: renderer }, { type: "page", url: renderer.replace("app-dist", "app.asar") }, { type: "page", url: renderer.replace("private-bundle", "other-bundle") }, { type: "page", url: "https://www.zeno.ryan-wong.cn/index.html" }, { type: "page", url: "about:blank" }]) assert.equal(privateMainTarget(target, privateBundle), false);
+  assertCanvasProbeTarget(renderer + "#/settings/about", privateBundle);
+  for (const location of [renderer.replace("private-bundle", "other-bundle"), "https://outside.invalid/index.html", "about:blank"]) assert.throws(() => assertCanvasProbeTarget(location, privateBundle));
+  const syntheticCanvas = canvasProbeDocument("window.ZenoCharts={ready:Promise.resolve()}", "a".repeat(48));
+  assert.equal(syntheticCanvas.ok, true); assert.ok(syntheticCanvas.srcDoc.includes("Content-Security-Policy"));
+  assert.equal(canvasProbeDocument("fixture", "invalid token").ok, false);
+  await assert.rejects(verifyPackagedCanvas({ client: {}, bundle: privateBundle }), /CI-only|ephemeral|native macOS|client.evaluate/);
   const root = mkdtempSync(join(tmpdir(), "zeno-smoke-self-test-"));
   try {
     const workflow = YAML.parse(readFileSync(join(REPO, ".github/workflows/zeno-update-smoke.yml"), "utf8"));
@@ -658,6 +665,15 @@ async function main() {
     assert.ok([...origins].every(origin => !/openworklabs\.com|github\.com/.test(origin)), "An official upstream request occurred.");
     const screenshot = await client.send("Page.captureScreenshot", { format: "png" }); writeFileSync(join(evidence, "updated-app.png"), Buffer.from(screenshot.data, "base64"));
     phase("real-restart-target-server-and-preservation-verified", { nativeVersion: updatedBuild.version, diskVersion: bundleVersion(privateBundle), publishedCode: true, profile: true, workspace: true, history: true, embeddedServer: true, rendererExceptions: exceptions.length });
+    if (compareStableVersions(TARGET, "1.0.5") >= 0) {
+      const canvas = await verifyPackagedCanvas({ client, bundle: privateBundle });
+      writeFileSync(join(evidence, "native-canvas.png"), canvas.screenshot);
+      const retained = await afterRuntime.request(`${mount}/session/${encodeURIComponent(session.id)}/message`);
+      assert.ok(retained.some(message => message.parts?.some(part => part.type === "text" && part.text === marker)), "Native history changed after the canvas probe.");
+      assert.equal(exceptions.length, 0, "A host renderer exception occurred during the canvas probe.");
+      report.canvas = { ...canvas.report, hostStatePreservedAfterCleanup: true, historyPreservedAfterCleanup: true, rendererExceptions: exceptions.length };
+      phase("installed-target-native-canvas-verified", { nativePolicy: true, localInteraction: true, bundledAntCharts: true, hostStatePreserved: true });
+    }
     report.passed = true;
   } catch (error) {
     report.error = error.message;
