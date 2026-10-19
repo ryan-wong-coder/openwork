@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-19T03:18:44.312346+00:00",
+  "version": "1.0.5",
+  "sourceCommit": "51310c0200874451e07b46e3c9345d63b681e527",
+  "buildRun": "39189963114",
+  "publishedAt": "2026-10-19T03:18:44.256Z",
+  "bundle": "/srv/zeno/releases/1.0.5-51310c020",
+  "siteSource": "3e74875ff",
+  "githubAssets": 24,
+  "uploadedBytes": 3923106602,
+  "fullVerifiedLaneFiles": 22,
+  "installers": 10,
+  "nativeFeeds": 6,
+  "installerBytes": 3920501918,
+  "indexSha256": "4809622268e8f97ff747072945f2c9e5cad5fbfac92265a2f4b1140d56bad485",
+  "publicMetadataMatchesFrozenBuild": true,
+  "historicalFilesUnchanged": 40,
+  "gateScriptSha256": "4a84aab745683432d7db91ff23263a11220b1e0a488064347f7bf57fea2405d9",
+  "frozenBuildAuditSha256": "d6aa86d97876bc4589513b8e08b60035e5ceaece3052d2215a2b7813c17b3e96",
+  "method": "All 24 draft assets were copied into a private server stage and pinned by full size/SHA-256 to the frozen build audit. The publication gate fully verified all 22 indexed lane files by size/SHA-256/SHA-512, then moved only the new version downloads to their immutable directory and atomically switched release-current. The real public API matched the frozen index-derived metadata; 40 historical installer inodes, sizes, mtimes and first/last samples were unchanged. Public HTTPS HEAD/Range/feed checks and native updates are separate records."
+}

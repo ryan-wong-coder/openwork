@@ -1,0 +1,313 @@
+{
+  "passed": true,
+  "origin": "https://www.zeno.ryan-wong.cn",
+  "checkedAt": "2026-10-19T03:19:01.407566+00:00",
+  "baselineCapturedAt": "2026-10-19T02:32:38.146522+00:00",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "artifacts": [
+        {
+          "name": "zeno-mac-x64-1.0.0.dmg",
+          "size": 452008594,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-mac-x64-1.0.0.zip",
+          "size": 450485918,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-mac-arm64-1.0.0.dmg",
+          "size": 432748703,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-mac-arm64-1.0.0.zip",
+          "size": 431100608,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-win-x64-1.0.0.exe",
+          "size": 379417761,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-win-arm64-1.0.0.exe",
+          "size": 359987770,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-linux-x64-1.0.0.AppImage",
+          "size": 312187633,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-linux-x64-1.0.0.deb",
+          "size": 392502216,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-linux-arm64-1.0.0.AppImage",
+          "size": 310067643,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-linux-arm64-1.0.0.deb",
+          "size": 376576220,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        }
+      ],
+      "passed": true
+    },
+    {
+      "version": "1.0.2",
+      "artifacts": [
+        {
+          "name": "zeno-mac-x64-1.0.2.dmg",
+          "size": 452027475,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-mac-x64-1.0.2.zip",
+          "size": 450487844,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-mac-arm64-1.0.2.dmg",
+          "size": 432773091,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-mac-arm64-1.0.2.zip",
+          "size": 431102583,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-win-x64-1.0.2.exe",
+          "size": 379425798,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-win-arm64-1.0.2.exe",
+          "size": 359995636,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-linux-x64-1.0.2.AppImage",
+          "size": 312183617,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-linux-x64-1.0.2.deb",
+          "size": 392520372,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-linux-arm64-1.0.2.AppImage",
+          "size": 310063617,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-linux-arm64-1.0.2.deb",
+          "size": 376626368,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        }
+      ],
+      "passed": true
+    },
+    {
+      "version": "1.0.3",
+      "artifacts": [
+        {
+          "name": "zeno-mac-x64-1.0.3.dmg",
+          "size": 452024730,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-mac-x64-1.0.3.zip",
+          "size": 450489341,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-mac-arm64-1.0.3.dmg",
+          "size": 432739447,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-mac-arm64-1.0.3.zip",
+          "size": 431104084,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-win-x64-1.0.3.exe",
+          "size": 379426477,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-win-arm64-1.0.3.exe",
+          "size": 359996474,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-linux-x64-1.0.3.AppImage",
+          "size": 312175584,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-linux-x64-1.0.3.deb",
+          "size": 392512284,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-linux-arm64-1.0.3.AppImage",
+          "size": 310055609,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-linux-arm64-1.0.3.deb",
+          "size": 376605088,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        }
+      ],
+      "passed": true
+    },
+    {
+      "version": "1.0.4",
+      "artifacts": [
+        {
+          "name": "zeno-mac-x64-1.0.4.dmg",
+          "size": 451963650,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-mac-x64-1.0.4.zip",
+          "size": 450494346,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-mac-arm64-1.0.4.dmg",
+          "size": 432702517,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-mac-arm64-1.0.4.zip",
+          "size": 431109099,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-win-x64-1.0.4.exe",
+          "size": 379430334,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-win-arm64-1.0.4.exe",
+          "size": 360000387,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-linux-x64-1.0.4.AppImage",
+          "size": 312187955,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-linux-x64-1.0.4.deb",
+          "size": 392521912,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-linux-arm64-1.0.4.AppImage",
+          "size": 310068111,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        },
+        {
+          "name": "zeno-linux-arm64-1.0.4.deb",
+          "size": 376612972,
+          "headPassed": true,
+          "updaterHistoricalPathPassed": true,
+          "rangeSamplesPassed": 2
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "method": "Real public HTTPS HEAD checks on all historical download and updater URLs, plus first/last 64-byte Range hashes compared with a private pre-switch server snapshot; this is not a full public re-download hash."
+}

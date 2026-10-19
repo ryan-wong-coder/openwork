@@ -1,0 +1,44 @@
+{
+  "site": "https://www.zeno.ryan-wong.cn",
+  "checkedAt": "2026-10-19T03:19:38.966Z",
+  "fixtureOnly": false,
+  "selections": [
+    {
+      "platform": "darwin",
+      "arch": "x64",
+      "name": "zeno-mac-x64-1.0.5.dmg"
+    },
+    {
+      "platform": "darwin",
+      "arch": "arm64",
+      "name": "zeno-mac-arm64-1.0.5.dmg"
+    },
+    {
+      "platform": "win32",
+      "arch": "x64",
+      "name": "zeno-win-x64-1.0.5.exe"
+    },
+    {
+      "platform": "win32",
+      "arch": "arm64",
+      "name": "zeno-win-arm64-1.0.5.exe"
+    },
+    {
+      "platform": "linux",
+      "arch": "x64",
+      "name": "zeno-linux-x64-1.0.5.AppImage"
+    },
+    {
+      "platform": "linux",
+      "arch": "arm64",
+      "name": "zeno-linux-arm64-1.0.5.AppImage"
+    }
+  ],
+  "version": "1.0.5",
+  "installers": 10,
+  "runtimeExceptions": [],
+  "origins": [
+    "https://www.zeno.ryan-wong.cn"
+  ],
+  "passed": true
+}

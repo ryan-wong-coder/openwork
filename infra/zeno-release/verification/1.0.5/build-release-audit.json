@@ -1,0 +1,572 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-19T02:46:31.526Z",
+  "runId": "39189963114",
+  "workflowUrl": "https://github.com/ryan-wong-coder/openwork/actions/runs/39189963114",
+  "commit": "51310c0200874451e07b46e3c9345d63b681e527",
+  "version": "1.0.5",
+  "draftReleaseId": 416852799,
+  "isDraft": true,
+  "assetCount": 24,
+  "installerCount": 10,
+  "installerBytes": 3920501918,
+  "assetBytes": 3923106602,
+  "runtimeSmokes": [
+    {
+      "jobId": 117860440238,
+      "version": "1.0.5",
+      "platform": "darwin",
+      "arch": "x64",
+      "brand": "zeno",
+      "signing": "self-signed",
+      "updatesEnabled": true,
+      "feed": "https://www.zeno.ryan-wong.cn/updates/darwin/x64/",
+      "runtimeSmoke": "passed",
+      "nativeCpuMatched": true,
+      "packagedServer": true,
+      "nativeModules": true,
+      "clientStatus": true,
+      "hostBoundary": true,
+      "canvas": {
+        "scope": "packaged-presence-and-wiring",
+        "shell": true,
+        "nativeBridge": true,
+        "promptV1V2": true,
+        "sharedFeature": true,
+        "offlineAntRuntime": {
+          "bytes": 2548222,
+          "sha256": "2f6e7eccdb30041e3d198f6881e690a0a255785c6951acee4a4e7c9a431f8cee"
+        }
+      }
+    },
+    {
+      "jobId": 117860440274,
+      "version": "1.0.5",
+      "platform": "linux",
+      "arch": "arm64",
+      "brand": "zeno",
+      "signing": "none",
+      "updatesEnabled": true,
+      "feed": "https://www.zeno.ryan-wong.cn/updates/linux/arm64/",
+      "runtimeSmoke": "passed",
+      "nativeCpuMatched": true,
+      "packagedServer": true,
+      "nativeModules": true,
+      "clientStatus": true,
+      "hostBoundary": true,
+      "canvas": {
+        "scope": "packaged-presence-and-wiring",
+        "shell": true,
+        "nativeBridge": true,
+        "promptV1V2": true,
+        "sharedFeature": true,
+        "offlineAntRuntime": {
+          "bytes": 2548222,
+          "sha256": "2f6e7eccdb30041e3d198f6881e690a0a255785c6951acee4a4e7c9a431f8cee"
+        }
+      }
+    },
+    {
+      "jobId": 117860440288,
+      "version": "1.0.5",
+      "platform": "darwin",
+      "arch": "arm64",
+      "brand": "zeno",
+      "signing": "self-signed",
+      "updatesEnabled": true,
+      "feed": "https://www.zeno.ryan-wong.cn/updates/darwin/arm64/",
+      "runtimeSmoke": "passed",
+      "nativeCpuMatched": true,
+      "packagedServer": true,
+      "nativeModules": true,
+      "clientStatus": true,
+      "hostBoundary": true,
+      "canvas": {
+        "scope": "packaged-presence-and-wiring",
+        "shell": true,
+        "nativeBridge": true,
+        "promptV1V2": true,
+        "sharedFeature": true,
+        "offlineAntRuntime": {
+          "bytes": 2548222,
+          "sha256": "2f6e7eccdb30041e3d198f6881e690a0a255785c6951acee4a4e7c9a431f8cee"
+        }
+      }
+    },
+    {
+      "jobId": 117860440293,
+      "version": "1.0.5",
+      "platform": "linux",
+      "arch": "x64",
+      "brand": "zeno",
+      "signing": "none",
+      "updatesEnabled": true,
+      "feed": "https://www.zeno.ryan-wong.cn/updates/linux/x64/",
+      "runtimeSmoke": "passed",
+      "nativeCpuMatched": true,
+      "packagedServer": true,
+      "nativeModules": true,
+      "clientStatus": true,
+      "hostBoundary": true,
+      "canvas": {
+        "scope": "packaged-presence-and-wiring",
+        "shell": true,
+        "nativeBridge": true,
+        "promptV1V2": true,
+        "sharedFeature": true,
+        "offlineAntRuntime": {
+          "bytes": 2548222,
+          "sha256": "2f6e7eccdb30041e3d198f6881e690a0a255785c6951acee4a4e7c9a431f8cee"
+        }
+      }
+    },
+    {
+      "jobId": 117860440296,
+      "version": "1.0.5",
+      "platform": "win32",
+      "arch": "arm64",
+      "brand": "zeno",
+      "signing": "unsigned",
+      "updatesEnabled": true,
+      "feed": "https://www.zeno.ryan-wong.cn/updates/win32/arm64/",
+      "runtimeSmoke": "passed",
+      "nativeCpuMatched": true,
+      "packagedServer": true,
+      "nativeModules": true,
+      "clientStatus": true,
+      "hostBoundary": true,
+      "canvas": {
+        "scope": "packaged-presence-and-wiring",
+        "shell": true,
+        "nativeBridge": true,
+        "promptV1V2": true,
+        "sharedFeature": true,
+        "offlineAntRuntime": {
+          "bytes": 2548222,
+          "sha256": "2f6e7eccdb30041e3d198f6881e690a0a255785c6951acee4a4e7c9a431f8cee"
+        }
+      }
+    },
+    {
+      "jobId": 117860440343,
+      "version": "1.0.5",
+      "platform": "win32",
+      "arch": "x64",
+      "brand": "zeno",
+      "signing": "unsigned",
+      "updatesEnabled": true,
+      "feed": "https://www.zeno.ryan-wong.cn/updates/win32/x64/",
+      "runtimeSmoke": "passed",
+      "nativeCpuMatched": true,
+      "packagedServer": true,
+      "nativeModules": true,
+      "clientStatus": true,
+      "hostBoundary": true,
+      "canvas": {
+        "scope": "packaged-presence-and-wiring",
+        "shell": true,
+        "nativeBridge": true,
+        "promptV1V2": true,
+        "sharedFeature": true,
+        "offlineAntRuntime": {
+          "bytes": 2548222,
+          "sha256": "2f6e7eccdb30041e3d198f6881e690a0a255785c6951acee4a4e7c9a431f8cee"
+        }
+      }
+    }
+  ],
+  "feeds": [
+    {
+      "platform": "darwin",
+      "arch": "x64",
+      "url": "https://www.zeno.ryan-wong.cn/updates/darwin/x64/",
+      "asset": "zeno-darwin-x64-latest-mac.yml",
+      "version": "1.0.5",
+      "primary": "zeno-mac-x64-1.0.5.zip",
+      "files": [
+        {
+          "name": "zeno-mac-x64-1.0.5.zip",
+          "size": 453433252,
+          "sha512": "JDelK44XjoUJ8vzwaqFQBrSujDvoevtTiLmszTWrRxcqGi+v98FuOPtLYUA0ca4iqA3HsBr1HUcAMGRigRVm8w=="
+        },
+        {
+          "name": "zeno-mac-x64-1.0.5.dmg",
+          "size": 454870228,
+          "sha512": "XVG1mCfMn61J8ciQoey16ieRzZONdKHc8wGbHXl8ezGvOb9AJqI3ofXuRmFlM1qHScLxfvdAHtdDWllzdKd6Qw=="
+        }
+      ]
+    },
+    {
+      "platform": "darwin",
+      "arch": "arm64",
+      "url": "https://www.zeno.ryan-wong.cn/updates/darwin/arm64/",
+      "asset": "zeno-darwin-arm64-latest-mac.yml",
+      "version": "1.0.5",
+      "primary": "zeno-mac-arm64-1.0.5.zip",
+      "files": [
+        {
+          "name": "zeno-mac-arm64-1.0.5.zip",
+          "size": 434047989,
+          "sha512": "SDpkWbRzGXN13k26aZkzBfg6hoyazfvUMLBfl3JnAa8I0HlHXHMsHnsi1wQXXGILDXjwEF2kjJbuckvhZ4BsGg=="
+        },
+        {
+          "name": "zeno-mac-arm64-1.0.5.dmg",
+          "size": 435658966,
+          "sha512": "DxBKFUJblTisU6YlRHgltMV9d0MLGLjBrTzIzsNGl/RctGwMLlqG4nBVGrLE4VhYt1dUDjNHd1phtk6Sn3eqnw=="
+        }
+      ]
+    },
+    {
+      "platform": "win32",
+      "arch": "x64",
+      "url": "https://www.zeno.ryan-wong.cn/updates/win32/x64/",
+      "asset": "zeno-win32-x64-latest.yml",
+      "version": "1.0.5",
+      "primary": "zeno-win-x64-1.0.5.exe",
+      "files": [
+        {
+          "name": "zeno-win-x64-1.0.5.exe",
+          "size": 381285618,
+          "sha512": "x0zY2kSYtjmnrgp6VNcE4InQeGUk0afguFBcH6zN2SKQ1MhBowMmEw+HAH5iK9oFmtGoEFM80gA128ZeiVdVFw=="
+        }
+      ]
+    },
+    {
+      "platform": "win32",
+      "arch": "arm64",
+      "url": "https://www.zeno.ryan-wong.cn/updates/win32/arm64/",
+      "asset": "zeno-win32-arm64-latest.yml",
+      "version": "1.0.5",
+      "primary": "zeno-win-arm64-1.0.5.exe",
+      "files": [
+        {
+          "name": "zeno-win-arm64-1.0.5.exe",
+          "size": 361855525,
+          "sha512": "PHDZ27RX8yb8NVV9hyWVeBiSgNzDPHfnQADhBNRvh6wsAJZNgkINGyv6Kw+Od+v7lBB4O/I4DLGyYGmzfm8ZRg=="
+        }
+      ]
+    },
+    {
+      "platform": "linux",
+      "arch": "x64",
+      "url": "https://www.zeno.ryan-wong.cn/updates/linux/x64/",
+      "asset": "zeno-linux-x64-latest-linux.yml",
+      "version": "1.0.5",
+      "primary": "zeno-linux-x64-1.0.5.AppImage",
+      "files": [
+        {
+          "name": "zeno-linux-x64-1.0.5.AppImage",
+          "size": 315124826,
+          "sha512": "/jiHJdT+FCC62KOOiGKeWM+b4zaySP7+7oiznxPm90wI0fazohisKKVeO6EZMda/wgpI7LfOkvfvGRcJZLZlRw=="
+        },
+        {
+          "name": "zeno-linux-x64-1.0.5.deb",
+          "size": 393556592,
+          "sha512": "jkQetDTfNWhNUW6UGX6/omBPjJUbV52puxFsRI4xxd6Mxk43GGY3OCfE0a78PZqLJGZtIZjiWfrkvaeuZYHdXQ=="
+        }
+      ]
+    },
+    {
+      "platform": "linux",
+      "arch": "arm64",
+      "url": "https://www.zeno.ryan-wong.cn/updates/linux/arm64/",
+      "asset": "zeno-linux-arm64-latest-linux-arm64.yml",
+      "version": "1.0.5",
+      "primary": "zeno-linux-arm64-1.0.5.AppImage",
+      "files": [
+        {
+          "name": "zeno-linux-arm64-1.0.5.AppImage",
+          "size": 313005446,
+          "sha512": "huLP7UGOf38mcuBUPzSkWeJ7sjRmfgklYecQAMkK2OgvcXAo4WZFWegO9Ps3t1mP44xOKjXGC7sx/FEgvd5R1g=="
+        },
+        {
+          "name": "zeno-linux-arm64-1.0.5.deb",
+          "size": 377663476,
+          "sha512": "1F3j22fk9eEWKBYBYIeK5YCipkDNgeWcVqMAZPXQq9H2koYG6QAlJLniBpDfDB6zBujtZw8Qwe1YihAAY65wMQ=="
+        }
+      ]
+    }
+  ],
+  "metadataDownloads": [
+    {
+      "name": "zeno-release.json",
+      "size": 10883,
+      "sha256": "4809622268e8f97ff747072945f2c9e5cad5fbfac92265a2f4b1140d56bad485"
+    },
+    {
+      "name": "RELEASE-NOTES.md",
+      "size": 660,
+      "sha256": "88b48c7e77ae8bceb8310be7725285d90bff2af5582180950c995b254e561ba6"
+    },
+    {
+      "name": "zeno-darwin-x64-latest-mac.yml",
+      "size": 492,
+      "sha256": "0fedae9de1445c1fc5de833230a277b9ab0b0187b1a19489e915241b6156e2ce"
+    },
+    {
+      "name": "zeno-darwin-arm64-latest-mac.yml",
+      "size": 498,
+      "sha256": "a2d76592b4cc35a24d1d1f6104de0e422856e9964ddb733fa31555af48985362"
+    },
+    {
+      "name": "zeno-win32-x64-latest.yml",
+      "size": 339,
+      "sha256": "63c5db4d99d8ecb45eb45ce2d3e5421cdbaaea3189ef971ab411430a484185d8"
+    },
+    {
+      "name": "zeno-win32-arm64-latest.yml",
+      "size": 343,
+      "sha256": "7ae036716e3f5abfdb2d1c351e9c67a9a18348eb9fa00b8c906142b0dcc2480b"
+    },
+    {
+      "name": "zeno-linux-x64-latest-linux.yml",
+      "size": 533,
+      "sha256": "de9c18aab51bc2cd806b87140283c752605087debdaa35c4574a687cf9d4bfc4"
+    },
+    {
+      "name": "zeno-linux-arm64-latest-linux-arm64.yml",
+      "size": 539,
+      "sha256": "09f9e7764a4e1c665e0e939bd82e72e3ab19bd5dea34a112fdcc7cf4fd239e1d"
+    }
+  ],
+  "downloadedBytes": 14287,
+  "assets": [
+    {
+      "id": 655053425,
+      "name": "RELEASE-NOTES.md",
+      "size": 660,
+      "digest": "sha256:88b48c7e77ae8bceb8310be7725285d90bff2af5582180950c995b254e561ba6"
+    },
+    {
+      "id": 655053424,
+      "name": "zeno-darwin-arm64-latest-mac.yml",
+      "size": 498,
+      "digest": "sha256:a2d76592b4cc35a24d1d1f6104de0e422856e9964ddb733fa31555af48985362"
+    },
+    {
+      "id": 655053426,
+      "name": "zeno-darwin-x64-latest-mac.yml",
+      "size": 492,
+      "digest": "sha256:0fedae9de1445c1fc5de833230a277b9ab0b0187b1a19489e915241b6156e2ce"
+    },
+    {
+      "id": 655053423,
+      "name": "zeno-linux-arm64-1.0.5.AppImage",
+      "size": 313005446,
+      "digest": "sha256:eebd513d7287bed20e70d600e705b0cf3be4f1c792b4bdfc4f3c10d14de5ad05"
+    },
+    {
+      "id": 655053427,
+      "name": "zeno-linux-arm64-1.0.5.deb",
+      "size": 377663476,
+      "digest": "sha256:bb69bc4af912672c8064d4228972ea2c9d3f5171bcd89cf4517c6f513387c37f"
+    },
+    {
+      "id": 655053432,
+      "name": "zeno-linux-arm64-latest-linux-arm64.yml",
+      "size": 539,
+      "digest": "sha256:09f9e7764a4e1c665e0e939bd82e72e3ab19bd5dea34a112fdcc7cf4fd239e1d"
+    },
+    {
+      "id": 655053431,
+      "name": "zeno-linux-x64-1.0.5.AppImage",
+      "size": 315124826,
+      "digest": "sha256:482c4ab0ba0a3bff0e92a9d2dedcb546c76466782578578bfe606b0c0312a715"
+    },
+    {
+      "id": 655053439,
+      "name": "zeno-linux-x64-1.0.5.deb",
+      "size": 393556592,
+      "digest": "sha256:1b502f634c32176a904409541687d75a03f48072293938d6eefc417e7db34d91"
+    },
+    {
+      "id": 655053450,
+      "name": "zeno-linux-x64-latest-linux.yml",
+      "size": 533,
+      "digest": "sha256:de9c18aab51bc2cd806b87140283c752605087debdaa35c4574a687cf9d4bfc4"
+    },
+    {
+      "id": 655053468,
+      "name": "zeno-mac-arm64-1.0.5.dmg",
+      "size": 435658966,
+      "digest": "sha256:f09afa9852ebb5ff74f3e0787faddcf76eef2402144fb197842f050379ba0b2a"
+    },
+    {
+      "id": 655053686,
+      "name": "zeno-mac-arm64-1.0.5.dmg.blockmap",
+      "size": 450891,
+      "digest": "sha256:dd6a9214c243ce424e0b004457c60ded11f1b4b1e70b20b8ab730f62512ff149"
+    },
+    {
+      "id": 655053689,
+      "name": "zeno-mac-arm64-1.0.5.zip",
+      "size": 434047989,
+      "digest": "sha256:0a2325f4c25beefc3a52fc3822141b224990efc8f0303b31494c30fb2dd47d87"
+    },
+    {
+      "id": 655053694,
+      "name": "zeno-mac-arm64-1.0.5.zip.blockmap",
+      "size": 446897,
+      "digest": "sha256:04139d0b4ccb16b24b7dfe572a329e3f790935646e5222467cfebfc33639f1f4"
+    },
+    {
+      "id": 655053699,
+      "name": "zeno-mac-x64-1.0.5.dmg",
+      "size": 454870228,
+      "digest": "sha256:19c37965090877e20771e0167e0c3e642027cf71fed1ce630a12c741e3566b3f"
+    },
+    {
+      "id": 655053703,
+      "name": "zeno-mac-x64-1.0.5.dmg.blockmap",
+      "size": 471026,
+      "digest": "sha256:4c787ce2f135760b6a63d14971f5c8f1326a43a6b177cd3d790b79a7917c1c7a"
+    },
+    {
+      "id": 655053730,
+      "name": "zeno-mac-x64-1.0.5.zip",
+      "size": 453433252,
+      "digest": "sha256:4aa2103b73ed496ff167d910ba9d9478a52f8f292119c20f7330167fcd703a25"
+    },
+    {
+      "id": 655053735,
+      "name": "zeno-mac-x64-1.0.5.zip.blockmap",
+      "size": 469988,
+      "digest": "sha256:2b6ae577060aaa83a85c6b7268694f74c62f3f337a0e3af07b08b00adf98a6bf"
+    },
+    {
+      "id": 655053748,
+      "name": "zeno-release.json",
+      "size": 10883,
+      "digest": "sha256:4809622268e8f97ff747072945f2c9e5cad5fbfac92265a2f4b1140d56bad485"
+    },
+    {
+      "id": 655053754,
+      "name": "zeno-win-arm64-1.0.5.exe",
+      "size": 361855525,
+      "digest": "sha256:d91c6c22f1e0c3458b9ac0c74c51d5506b77fdee1d2b82508995b46692eb2a71"
+    },
+    {
+      "id": 655053758,
+      "name": "zeno-win-arm64-1.0.5.exe.blockmap",
+      "size": 366742,
+      "digest": "sha256:3c00f972e071d6d02ae4aeced0ba237a25dad25dad27d8d223a9b543e0ba627b"
+    },
+    {
+      "id": 655053784,
+      "name": "zeno-win-x64-1.0.5.exe",
+      "size": 381285618,
+      "digest": "sha256:05e3bafb74bf8c102f0506a855ea925c1ed7019f8db15413e85666982d240f17"
+    },
+    {
+      "id": 655054085,
+      "name": "zeno-win-x64-1.0.5.exe.blockmap",
+      "size": 384853,
+      "digest": "sha256:c376c82a47ac0a355bf6a93ab279bbe16b6887240ea623fdd7b64b45f5f28290"
+    },
+    {
+      "id": 655054086,
+      "name": "zeno-win32-arm64-latest.yml",
+      "size": 343,
+      "digest": "sha256:7ae036716e3f5abfdb2d1c351e9c67a9a18348eb9fa00b8c906142b0dcc2480b"
+    },
+    {
+      "id": 655054092,
+      "name": "zeno-win32-x64-latest.yml",
+      "size": 339,
+      "digest": "sha256:63c5db4d99d8ecb45eb45ce2d3e5421cdbaaea3189ef971ab411430a484185d8"
+    }
+  ],
+  "installers": [
+    {
+      "platform": "darwin",
+      "arch": "x64",
+      "format": "dmg",
+      "name": "zeno-mac-x64-1.0.5.dmg",
+      "size": 454870228,
+      "sha256": "19c37965090877e20771e0167e0c3e642027cf71fed1ce630a12c741e3566b3f",
+      "sha512": "XVG1mCfMn61J8ciQoey16ieRzZONdKHc8wGbHXl8ezGvOb9AJqI3ofXuRmFlM1qHScLxfvdAHtdDWllzdKd6Qw=="
+    },
+    {
+      "platform": "darwin",
+      "arch": "x64",
+      "format": "zip",
+      "name": "zeno-mac-x64-1.0.5.zip",
+      "size": 453433252,
+      "sha256": "4aa2103b73ed496ff167d910ba9d9478a52f8f292119c20f7330167fcd703a25",
+      "sha512": "JDelK44XjoUJ8vzwaqFQBrSujDvoevtTiLmszTWrRxcqGi+v98FuOPtLYUA0ca4iqA3HsBr1HUcAMGRigRVm8w=="
+    },
+    {
+      "platform": "darwin",
+      "arch": "arm64",
+      "format": "dmg",
+      "name": "zeno-mac-arm64-1.0.5.dmg",
+      "size": 435658966,
+      "sha256": "f09afa9852ebb5ff74f3e0787faddcf76eef2402144fb197842f050379ba0b2a",
+      "sha512": "DxBKFUJblTisU6YlRHgltMV9d0MLGLjBrTzIzsNGl/RctGwMLlqG4nBVGrLE4VhYt1dUDjNHd1phtk6Sn3eqnw=="
+    },
+    {
+      "platform": "darwin",
+      "arch": "arm64",
+      "format": "zip",
+      "name": "zeno-mac-arm64-1.0.5.zip",
+      "size": 434047989,
+      "sha256": "0a2325f4c25beefc3a52fc3822141b224990efc8f0303b31494c30fb2dd47d87",
+      "sha512": "SDpkWbRzGXN13k26aZkzBfg6hoyazfvUMLBfl3JnAa8I0HlHXHMsHnsi1wQXXGILDXjwEF2kjJbuckvhZ4BsGg=="
+    },
+    {
+      "platform": "win32",
+      "arch": "x64",
+      "format": "exe",
+      "name": "zeno-win-x64-1.0.5.exe",
+      "size": 381285618,
+      "sha256": "05e3bafb74bf8c102f0506a855ea925c1ed7019f8db15413e85666982d240f17",
+      "sha512": "x0zY2kSYtjmnrgp6VNcE4InQeGUk0afguFBcH6zN2SKQ1MhBowMmEw+HAH5iK9oFmtGoEFM80gA128ZeiVdVFw=="
+    },
+    {
+      "platform": "win32",
+      "arch": "arm64",
+      "format": "exe",
+      "name": "zeno-win-arm64-1.0.5.exe",
+      "size": 361855525,
+      "sha256": "d91c6c22f1e0c3458b9ac0c74c51d5506b77fdee1d2b82508995b46692eb2a71",
+      "sha512": "PHDZ27RX8yb8NVV9hyWVeBiSgNzDPHfnQADhBNRvh6wsAJZNgkINGyv6Kw+Od+v7lBB4O/I4DLGyYGmzfm8ZRg=="
+    },
+    {
+      "platform": "linux",
+      "arch": "x64",
+      "format": "AppImage",
+      "name": "zeno-linux-x64-1.0.5.AppImage",
+      "size": 315124826,
+      "sha256": "482c4ab0ba0a3bff0e92a9d2dedcb546c76466782578578bfe606b0c0312a715",
+      "sha512": "/jiHJdT+FCC62KOOiGKeWM+b4zaySP7+7oiznxPm90wI0fazohisKKVeO6EZMda/wgpI7LfOkvfvGRcJZLZlRw=="
+    },
+    {
+      "platform": "linux",
+      "arch": "x64",
+      "format": "deb",
+      "name": "zeno-linux-x64-1.0.5.deb",
+      "size": 393556592,
+      "sha256": "1b502f634c32176a904409541687d75a03f48072293938d6eefc417e7db34d91",
+      "sha512": "jkQetDTfNWhNUW6UGX6/omBPjJUbV52puxFsRI4xxd6Mxk43GGY3OCfE0a78PZqLJGZtIZjiWfrkvaeuZYHdXQ=="
+    },
+    {
+      "platform": "linux",
+      "arch": "arm64",
+      "format": "AppImage",
+      "name": "zeno-linux-arm64-1.0.5.AppImage",
+      "size": 313005446,
+      "sha256": "eebd513d7287bed20e70d600e705b0cf3be4f1c792b4bdfc4f3c10d14de5ad05",
+      "sha512": "huLP7UGOf38mcuBUPzSkWeJ7sjRmfgklYecQAMkK2OgvcXAo4WZFWegO9Ps3t1mP44xOKjXGC7sx/FEgvd5R1g=="
+    },
+    {
+      "platform": "linux",
+      "arch": "arm64",
+      "format": "deb",
+      "name": "zeno-linux-arm64-1.0.5.deb",
+      "size": 377663476,
+      "sha256": "bb69bc4af912672c8064d4228972ea2c9d3f5171bcd89cf4517c6f513387c37f",
+      "sha512": "1F3j22fk9eEWKBYBYIeK5YCipkDNgeWcVqMAZPXQq9H2koYG6QAlJLniBpDfDB6zBujtZw8Qwe1YihAAY65wMQ=="
+    }
+  ],
+  "method": "Read-only GitHub run, job logs and draft-release API audit. All six matching-CPU native packaged Electron Node startup, native module, client-status and host-boundary checks passed; each actual package also passed the canvas presence/wiring gate for trusted shell, native protocol/main/preload, V1/V2 prompts, shared feature runtime and reachable offline Ant chunk. Presence is not GUI rendering or network-isolation evidence. All 22 lane files match CI-index SHA-256 digests and sizes against GitHub upload metadata. Only eight small metadata files were downloaded and independently verified; six actual YAML feeds agree with indexed installer sizes/SHA-512 and release notes match the index. Signing modes are CI build attestations, not independent installer/signature inspection. No installer was downloaded, no release/tag modified, and no live update or model request was performed."
+}

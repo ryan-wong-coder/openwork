@@ -1,0 +1,31 @@
+{
+  "passed": false,
+  "evidenceVerified": true,
+  "runId": "39194107527",
+  "jobId": "117873034991",
+  "attempt": 1,
+  "observedAt": "2026-10-19T03:28:47.669Z",
+  "requestPath": "/updates/darwin/x64/zeno-mac-x64-1.0.5.zip",
+  "inspectedWindow": {
+    "start": "2026-10-19T03:20:00Z",
+    "endExclusive": "2026-10-19T03:25:00Z"
+  },
+  "matchingAccessRecords": 1,
+  "accessRecordAt": "2026-10-19T03:24:07Z",
+  "requestMethod": "GET",
+  "httpStatus": 200,
+  "nginxBodyBytesSent": 52731904,
+  "expectedPackageBytes": 453433252,
+  "missingBodyBytes": 400701348,
+  "completeHttpBody": false,
+  "expectedPackageSha256": "4aa2103b73ed496ff167d910ba9d9478a52f8f292119c20f7330167fcd703a25",
+  "clientDownloadProgress": {
+    "transferred": 49692654,
+    "total": 453433252,
+    "percent": 10.959199348705905
+  },
+  "clientDiagnosticCode": "ERR_CONNECTION_RESET",
+  "nativeUpdateExecuted": false,
+  "method": "Read-only server Nginx access-log inspection restricted to the public x64 ZIP path and the stated UTC time window. Only method, public path, response status, UTC timestamp and body-byte count were extracted. Expected package size/SHA-256 comes from the frozen 1.0.5 build audit; client counters and the allowlisted error code come from the separately archived failed attempt. No requester identity, client IP, user agent, raw log, certificate or credential was output or retained.",
+  "scope": "The origin logged HTTP 200 with only 52,731,904 body bytes sent instead of 453,433,252. This independently supports an incomplete package transfer, consistent with the client connection-reset failure. The origin counter differs from the client transferred counter and does not locate which network node reset the connection or prove every counted server byte reached the client. HTTP 200 is not evidence of a complete download. No staging, installation, restart or canvas success is established by this failed attempt."
+}
