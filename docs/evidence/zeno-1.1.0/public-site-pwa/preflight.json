@@ -1,0 +1,78 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-20T04:36:04.712Z",
+  "stage": "anonymous-public-preflight-before-installer-publication",
+  "sourceCommit": "15a286a5c",
+  "expectedPwaIndexSha256": "29ed8c406a6635cb6e8fd832f5550dc4ce65a2a92ebd81de962c31f606f7d49c",
+  "checks": [
+    {
+      "name": "eight-deep-links-exact-final-index-and-security-headers",
+      "passed": true,
+      "paths": [
+        "/app/",
+        "/app/calendar",
+        "/app/fitness",
+        "/app/tasks",
+        "/app/account",
+        "/app/invite",
+        "/app/reset",
+        "/app/device"
+      ]
+    },
+    {
+      "name": "entry-assets-icons-manifest-worker-match-final-dist",
+      "passed": true,
+      "count": 6
+    },
+    {
+      "name": "anonymous-account-api-protected",
+      "passed": true,
+      "status": 401
+    },
+    {
+      "name": "website-personal-entry-live-release-feed-intentionally-unchanged",
+      "passed": true
+    }
+  ],
+  "scope": {
+    "realPublicHttps": true,
+    "browserStarted": false,
+    "authenticatedAccountTested": false,
+    "modelCalls": 0,
+    "installersDownloaded": false,
+    "releaseVersionGatePending": true
+  },
+  "assets": [
+    {
+      "path": "/app/assets/personal-DIFUzQwN.js",
+      "bytes": 4956865,
+      "sha256": "5eade3a66edbe21d3f60e3a70a6e228a7f177a170e83053edbf7167c8e47a892"
+    },
+    {
+      "path": "/app/assets/personal-BHPLSPeC.css",
+      "bytes": 450260,
+      "sha256": "bf85e6895bf87c087ec4b354732af592adc4831ca60377e8c2e51fa87e635ae7"
+    },
+    {
+      "path": "/app/zeno-personal.svg",
+      "bytes": 2169,
+      "sha256": "292ea5016e18949ea8258b99ab24ee110a0475a4454efea4369c82d426b18341"
+    },
+    {
+      "path": "/app/apple-touch-icon.png",
+      "bytes": 14650,
+      "sha256": "5648944f82eb402fecdc7b6a26ef49a42de010699f3ad3f66beff94bebecb48d"
+    },
+    {
+      "path": "/app/personal.webmanifest",
+      "bytes": 381,
+      "sha256": "57033c0b3876ad77e87a0f2367bff242dba6c2361dfeeeacce9760db56ca97c4"
+    },
+    {
+      "path": "/app/personal-sw.js",
+      "bytes": 5143,
+      "sha256": "94f427ea6e602b98263dce647269ad1f566aebced8efa7fc0697fccf644010fe"
+    }
+  ],
+  "releaseVersionObserved": "1.0.5"
+}

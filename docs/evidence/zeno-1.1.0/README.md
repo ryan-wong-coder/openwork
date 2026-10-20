@@ -40,6 +40,19 @@ raw model responses belong in this directory.
 - [Live service deployment](live-service-deployment.json): actual unprivileged
   service, private SQLite/media backup restoration and a separately scoped
   matching-policy kernel network probe.
+- [Final deployed code](live-final-deployment.json): tag-matching API/PWA
+  hashes and a fresh private restoration after the final HTTPS acceptance.
+- [Post-acceptance cleanup](server-post-acceptance-cleanup.json): only the
+  owned synthetic accounts/media and disposable candidate service were removed;
+  the production service, administrator and a fresh backup remain available.
+- [First build attempt](build-attempt-1.json) and [second build attempt](build-attempt-2.json):
+  both were unpublished. The first reached Node's default heap limit; the second
+  built packages but the required ASAR license gate rejected them. The original
+  `zeno-v1.1.0` tag remains fixed. The corrected source uses
+  `zeno-v1.1.0-build.3`, while the application/update version remains `1.1.0`.
+  A new regression uses the pinned builder's actual matcher, collector and
+  `AsarPackager` in a separate Node process, then compares all five archived
+  texts byte for byte. Missing/empty inputs fail before packaging.
 - Real OS storage, six target installers, public website/PWA and original
   1.0.0 updates are separate release gates. Do not infer their result from the
   source checks above; their reports are added when those runs finish.

@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-20 04:54:17 UTC",
+  "scope": "owned-synthetic-live-api-acceptance-data-only",
+  "syntheticUsersRemoved": 2,
+  "privateSyntheticMediaRemoved": true,
+  "adminPreserved": true,
+  "foreignKeyCheck": true,
+  "disposableCandidateServiceStopped": true,
+  "disposableCandidateStateRemoved": true,
+  "productionServiceActive": true,
+  "postAcceptanceCleanupBackup": true,
+  "dailyBackupTimerActive": true
+}

@@ -1,0 +1,45 @@
+{
+  "scope": "release-build-attempt",
+  "version": "1.1.0",
+  "releaseTag": "zeno-v1.1.0",
+  "productCommit": "15a286a5c5af258cee0c62817f8b8145df6d2e19",
+  "runId": 39370314734,
+  "runUrl": "https://github.com/ryan-wong-coder/openwork/actions/runs/39370314734",
+  "jobId": 118456982355,
+  "jobUrl": "https://github.com/ryan-wong-coder/openwork/actions/runs/39370314734/job/118456982355",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "runner": "macos-15",
+  "nodeVersion": "24.20.0",
+  "preflight": "passed",
+  "dependencyInstallation": "passed",
+  "failedStep": "Build and package this Zeno target without automatic publishing",
+  "failedPhase": "desktop renderer: vite build",
+  "failureAt": "2026-10-20T04:39:25Z",
+  "failure": "JavaScript heap out of memory",
+  "signal": "SIGABRT",
+  "garbageCollection": [
+    {
+      "elapsedMs": 51909,
+      "kind": "Mark-Compact",
+      "usedBeforeMiB": 2018.4,
+      "heapBeforeMiB": 2058.6,
+      "usedAfterMiB": 2002.7,
+      "heapAfterMiB": 2074.9,
+      "reason": "allocation failure; scavenge might not succeed"
+    },
+    {
+      "elapsedMs": 52932,
+      "kind": "Mark-Compact",
+      "usedBeforeMiB": 2019.3,
+      "heapBeforeMiB": 2075.6,
+      "usedAfterMiB": 2003.6,
+      "heapAfterMiB": 2069.9,
+      "reason": "allocation failure; scavenge might not succeed"
+    }
+  ],
+  "electronPackagingReached": false,
+  "packagedRuntimeVerificationReached": false,
+  "diagnosis": "Node reached its default approximately 2 GiB heap limit during renderer compilation. The failed lane did not reach Electron packaging or packaged runtime checks.",
+  "evidencePolicy": "Only normalized public CI identifiers, numeric memory measurements, runtime version and failure classification are retained. No raw logs, private filesystem paths, credentials or signing material."
+}
