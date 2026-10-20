@@ -1,5 +1,9 @@
 import { z } from 'zod';
 
+// Standalone exports embed their own Zod instance. Configure it before schemas
+// so a self-only browser script policy never encounters an eval probe.
+z.config({ jitless: true });
+
 export const idSchema = z.string().regex(/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/);
 export const timestampSchema = z.number().int().nonnegative();
 export const dateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).refine(value => {

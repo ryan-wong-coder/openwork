@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { addDays, dateKey, parseDateKey } from "@openwork/calendar";
-import { dateTimeInZone, eventDataSchema, localDateKey, timeInZone, type EventData } from "@zeno/core";
+import { dateTimeInZone, eventDataSchema, localDateKey, timeInZone, type EventData, type WorkspaceChoice } from "@zeno/core";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -8,7 +8,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Field, InlineError, OptionSelect, SaveButton, useAction } from "./ui";
 
 export type SeriesScope = "one" | "following" | "all";
-export function EventEditor({ initial, recurring = false, onSave, onDelete, onCancel }: { initial: EventData; recurring?: boolean; onSave: (data: EventData, scope: SeriesScope) => Promise<void>; onDelete?: (scope: SeriesScope) => Promise<void>; onCancel: () => void }) {
+export function EventEditor({ initial, recurring = false, onSave, onDelete, onCancel, workspaces = [] }: { initial: EventData; recurring?: boolean; onSave: (data: EventData, scope: SeriesScope) => Promise<void>; onDelete?: (scope: SeriesScope) => Promise<void>; onCancel: () => void; workspaces?: readonly WorkspaceChoice[] }) {
+  const [workspaceId, setWorkspaceId] = useState(initial.workspaceId ?? "__personal__");
+  const workspaceOptions = [{ value: "__personal__", label: "个人全局" }, ...workspaces.map(workspace => ({ value: workspace.id, label: workspace.name })), ...(initial.workspaceId && !workspaces.some(workspace => workspace.id === initial.workspaceId) ? [{ value: initial.workspaceId, label: "已关联工作区（暂不可用）" }] : [])];
   const [status, setStatus] = useState(initial.status); const [category, setCategory] = useState(initial.category);
   const [title, setTitle] = useState(initial.title); const [description, setDescription] = useState(initial.description);
   const [zone, setZone] = useState(initial.timeZone); const [allDay, setAllDay] = useState(initial.allDay);
@@ -25,7 +27,7 @@ export function EventEditor({ initial, recurring = false, onSave, onDelete, onCa
     const startDate = start.slice(0, 10), lastDay = parseDateKey(end.slice(0, 10));
     if (!lastDay) throw new Error("请选择结束时间。");
     const finishDate = allDay ? dateKey(addDays(lastDay, 1)) : end.slice(0, 10);
-    const data = eventDataSchema.parse({ ...initial, title, description, location, status, category, timeZone: zone, allDay,
+    const data = eventDataSchema.parse({ ...initial, title, description, location, status, category, workspaceId: workspaceId === "__personal__" ? undefined : workspaceId, timeZone: zone, allDay,
       startAt: dateTimeInZone(startDate, allDay ? "00:00" : start.slice(11, 16), zone), endAt: dateTimeInZone(finishDate, allDay ? "00:00" : end.slice(11, 16), zone),
       ...(allDay ? { startDate, endDate: finishDate } : { startDate: undefined, endDate: undefined }),
       recurrence: { frequency, interval, weekdays, until: until ? dateTimeInZone(until, "23:59", zone) : null, count: count ? Number(count) : null }, reminders: reminder === "none" ? [] : [Number(reminder)],
@@ -44,6 +46,7 @@ export function EventEditor({ initial, recurring = false, onSave, onDelete, onCa
       {frequency !== "once" ? <div className="grid gap-3"><Field label="间隔"><Input type="number" min={1} max={365} value={interval} onChange={event => setInterval(Number(event.currentTarget.value))} /></Field>{frequency === "weekly" ? <div className="flex flex-wrap gap-2" role="group" aria-label="重复星期">{["日", "一", "二", "三", "四", "五", "六"].map((day, index) => <Button key={day} type="button" variant={weekdays.includes(index) ? "default" : "outline"} size="icon-sm" aria-pressed={weekdays.includes(index)} onClick={() => setWeekdays(current => current.includes(index) ? current.filter(value => value !== index) : [...current, index])}>{day}</Button>)}</div> : null}<div className="grid grid-cols-2 gap-3"><Field label="截止日期（可选）"><Input type="date" value={until} onChange={event => { setUntil(event.currentTarget.value); setCount(""); }} /></Field><Field label="重复次数（可选）"><Input type="number" min={1} max={10000} value={count} onChange={event => { setCount(event.currentTarget.value); setUntil(""); }} /></Field></div></div> : null}
       <details className="group border-t border-border pt-3"><summary className="cursor-pointer text-xs text-muted-foreground">更多选项</summary><div className="mt-4 grid gap-4"><Field label="地点"><Input value={location} onChange={event => setLocation(event.currentTarget.value)} /></Field><Field label="提醒"><OptionSelect label="提醒" value={reminder} onChange={setReminder} options={[{ value: "none", label: "不提醒" }, { value: "0", label: "开始时" }, { value: "5", label: "提前 5 分钟" }, { value: "10", label: "提前 10 分钟" }, { value: "30", label: "提前 30 分钟" }, { value: "1440", label: "提前一天" }]} /></Field><Field label="时区"><Input value={zone} onChange={event => setZone(event.currentTarget.value)} /></Field><Field label="备注"><Textarea value={description} onChange={event => setDescription(event.currentTarget.value)} rows={3} /></Field></div></details>
     </> : null}
+    <details className="border-t border-border pt-3"><summary className="cursor-pointer text-xs text-muted-foreground">工作区</summary><div className="mt-3"><Field label="关联工作区"><OptionSelect label="关联工作区" value={workspaceId} disabled={thisOnly} options={workspaceOptions} onChange={setWorkspaceId} /></Field></div></details>
     <InlineError message={action.error} />
     <div className="flex flex-wrap items-center gap-2 border-t border-border pt-4">{onDelete ? <Button type="button" variant="destructive" disabled={action.busy} onClick={() => void action.run(() => onDelete(scope))}>删除</Button> : null}<div className="flex-1" /><Button type="button" variant="outline" onClick={onCancel}>取消</Button><SaveButton busy={action.busy} /></div>
   </form>;

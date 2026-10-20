@@ -130,7 +130,7 @@ No GUI, real account, credential, external model or network request is used by t
 
 At the recorded verification run, all **240 tests / 2,605 assertions** passed (198 preserved
 upstream cases and 42 integration cases), together with strict source and test type checks.
-The separate native fixtures also passed **30 tests** with the actual native service/tool
+The separate native fixtures also passed **31 tests** with the actual native service/tool
 modules, synthetic fetch responses, temporary account directories and an AES-GCM mock of
 Electron safeStorage:
 

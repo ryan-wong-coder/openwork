@@ -1,0 +1,295 @@
+{
+  "verdict": "Passed",
+  "mode": "full",
+  "scope": "production PWA + real local Bun API, synthetic accounts only",
+  "startedAt": "2026-10-20T04:31:35.216Z",
+  "finishedAt": "2026-10-20T04:32:11.390Z",
+  "productionIndexSha256": "29ed8c406a6635cb6e8fd832f5550dc4ce65a2a92ebd81de962c31f606f7d49c",
+  "deploymentCspConfigSha256": "8e1bb1f78fb366119f5a5e1b3c4fcfffe2c1b9570ff20c80d3968ac4006697d3",
+  "observedPolicySha256": [
+    "fd85d75e5c5a88a9baabaf4ced8edf789c664069e3471c0d37321ad94314d9f4"
+  ],
+  "browserVersion": "Chrome/155.0.8059.85",
+  "viewport": {
+    "desktop": [
+      1440,
+      1000
+    ],
+    "mobile": [
+      390,
+      844
+    ]
+  },
+  "checks": [
+    {
+      "name": "invalid-login-visible",
+      "passed": true
+    },
+    {
+      "name": "real-form-login",
+      "passed": true
+    },
+    {
+      "name": "workspace-event-created-through-ui",
+      "passed": true
+    },
+    {
+      "name": "workspace-event-cleared-to-personal-through-ui",
+      "passed": true
+    },
+    {
+      "name": "missing-workspace-link-retained-with-safe-label",
+      "passed": true
+    },
+    {
+      "name": "calendar-created-through-ui",
+      "passed": true
+    },
+    {
+      "name": "calendar-edited-through-ui",
+      "passed": true
+    },
+    {
+      "name": "calendar-deleted-through-ui",
+      "passed": true
+    },
+    {
+      "name": "daily-series-following-edit-and-atomic-two-record-undo",
+      "passed": true
+    },
+    {
+      "name": "batch-undo-refuses-remote-version-and-preserves-both-records",
+      "passed": true,
+      "server409Observed": true
+    },
+    {
+      "name": "production-service-worker-controls-page",
+      "passed": true
+    },
+    {
+      "name": "service-worker-cache-contains-only-public-shell",
+      "passed": true,
+      "cachedPaths": 79
+    },
+    {
+      "name": "second-account-tab-is-explicitly-read-only",
+      "passed": true
+    },
+    {
+      "name": "read-only-tab-receives-offline-edit-broadcast",
+      "passed": true
+    },
+    {
+      "name": "writer-handoff-preserves-closed-tab-outbox-and-new-edit",
+      "passed": true
+    },
+    {
+      "name": "offline-cold-reload-keeps-account-and-history",
+      "passed": true
+    },
+    {
+      "name": "offline-ui-change-queued-without-server-write",
+      "passed": true
+    },
+    {
+      "name": "offline-outbox-syncs-after-reconnect",
+      "passed": true
+    },
+    {
+      "name": "real-v3-conflict-preserves-local-edit-as-v4",
+      "passed": true
+    },
+    {
+      "name": "timezone-and-weight-unit-saved-and-reloaded-through-ui",
+      "passed": true
+    },
+    {
+      "name": "day-note-saved-through-ui",
+      "passed": true
+    },
+    {
+      "name": "owned-equipment-saved-through-ui",
+      "passed": true
+    },
+    {
+      "name": "actual-plan-only-print-iframe-under-production-csp",
+      "passed": true,
+      "actualPdf": false
+    },
+    {
+      "name": "custom-exercise-video-upload-preserves-original-bytes",
+      "passed": true
+    },
+    {
+      "name": "custom-exercise-edited-with-media-link-preserved",
+      "passed": true
+    },
+    {
+      "name": "mobile-training-set-and-rest-persisted",
+      "passed": true
+    },
+    {
+      "name": "active-swap-reorder-removal-preserve-logged-exercise-identity",
+      "passed": true
+    },
+    {
+      "name": "mobile-workout-finished-through-ui",
+      "passed": true
+    },
+    {
+      "name": "actual-ant-design-statistics-chart-rendered",
+      "passed": true
+    },
+    {
+      "name": "history-edit-recomputes-statistics",
+      "passed": true
+    },
+    {
+      "name": "mobile-body-record-photos-and-two-date-comparison",
+      "passed": true
+    },
+    {
+      "name": "custom-exercise-deleted-through-ui",
+      "passed": true
+    },
+    {
+      "name": "ui-full-backup-restores-custom-video-workout-and-settings",
+      "passed": true,
+      "zipBytes": 8644,
+      "zipSha256": "d556ef6b5c743b40cbd467e5bb99b4cb4cfe69e364ce5bf76416973fff4d3f34"
+    },
+    {
+      "name": "real-request-waits-for-inactive-computer",
+      "passed": true
+    },
+    {
+      "name": "mobile-chat-queues-and-requests-cancellation-without-model-call",
+      "passed": true
+    },
+    {
+      "name": "account-switch-keeps-records-isolated",
+      "passed": true
+    },
+    {
+      "name": "actual-admin-users-panel-loads",
+      "passed": true
+    },
+    {
+      "name": "admin-invite-create-and-revoke-through-ui",
+      "passed": true
+    },
+    {
+      "name": "admin-feature-toggle-reaches-operator-and-enforces-read-only-ui",
+      "passed": true
+    },
+    {
+      "name": "account-feature-off-blocks-preferences-and-new-pairing-retains-security-and-admin-recovery",
+      "passed": true
+    },
+    {
+      "name": "production-nginx-csp-no-enforced-violations",
+      "passed": true
+    },
+    {
+      "name": "standalone-manifest",
+      "passed": true
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "screenshots/desktop-login-error.png",
+      "bytes": 23329,
+      "sha256": "7b43d56ce4a769423f05a3ea85371a471be4fed03ff944cedc8136443be332d7"
+    },
+    {
+      "file": "screenshots/desktop-workspace-association.png",
+      "bytes": 64476,
+      "sha256": "8757517a6cd9bc942eb29eaaa41a3e883ba36819f04e4759381a684fa637de65"
+    },
+    {
+      "file": "screenshots/desktop-calendar-light.png",
+      "bytes": 56620,
+      "sha256": "8984f85e9d1ec6d01989484223b6ab51f84668f033561a8cb9de8c6f8a21b6c4"
+    },
+    {
+      "file": "screenshots/desktop-calendar-dark.png",
+      "bytes": 56494,
+      "sha256": "3bbe3d48b1110a38cf1981700407780225fe2b2a41d0219d80540d8254dd433f"
+    },
+    {
+      "file": "screenshots/desktop-offline-calendar.png",
+      "bytes": 71662,
+      "sha256": "58af0357797bf2584b4507f0ab384efdeebe61020e811c4eebfbceda1cf70d98"
+    },
+    {
+      "file": "screenshots/desktop-conflict.png",
+      "bytes": 94877,
+      "sha256": "ba7e418715fb267e6aafea9839d33545deead79300989a57750194f1225554d8"
+    },
+    {
+      "file": "screenshots/desktop-fitness-plans.png",
+      "bytes": 40260,
+      "sha256": "7a41ca3bf97dba8ff3956ca7b3410885855c73b49026d8078bb7487d61e7672f"
+    },
+    {
+      "file": "screenshots/desktop-custom-exercise-media.png",
+      "bytes": 73979,
+      "sha256": "ee2012ff0603bd3da9a4a03a613a12382d045420aa81c8200233062be790b237"
+    },
+    {
+      "file": "screenshots/mobile-workout-light.png",
+      "bytes": 41696,
+      "sha256": "9884489eb514c61e116f588042aa3e5e30c84e9f7f1063bbaa12fc037f695456"
+    },
+    {
+      "file": "screenshots/mobile-workout-dark.png",
+      "bytes": 41544,
+      "sha256": "5acda58c30e1076f756139c7229d0f6e7acfb922fe85158a2f862875b8daa07a"
+    },
+    {
+      "file": "screenshots/mobile-statistics-light.png",
+      "bytes": 27733,
+      "sha256": "0744373397d6398bbfe85d85a1007f79d67d28bbf8f56864fb5104e0f5e28a6d"
+    },
+    {
+      "file": "screenshots/mobile-statistics-dark.png",
+      "bytes": 27574,
+      "sha256": "8a53abf1e562eb1e53101e3ef0849d846361f6cd391f4cf093ec4d0e15342db7"
+    },
+    {
+      "file": "screenshots/mobile-body-comparison-light.png",
+      "bytes": 29925,
+      "sha256": "9f97debfe4be8edead59e087f967ac1b55a6cf5469bbb9418881c6bed23fa9ad"
+    },
+    {
+      "file": "screenshots/mobile-body-comparison-dark.png",
+      "bytes": 29641,
+      "sha256": "7be548f57718da63d4c53f1fe6018dd163bee55978bfe0a94b547f167631b624"
+    },
+    {
+      "file": "screenshots/mobile-waiting-computer.png",
+      "bytes": 27434,
+      "sha256": "12f3b2bb934a12937a453352ecc3d1f658514af630e08fd5a65d3e46710df489"
+    },
+    {
+      "file": "screenshots/mobile-chat-cancel.png",
+      "bytes": 42828,
+      "sha256": "f9809d70c412f382c36ed81dfb0d6194dda0da2c46b38c3919c7e2f7f57d866b"
+    },
+    {
+      "file": "screenshots/mobile-second-account.png",
+      "bytes": 37000,
+      "sha256": "48c3211fcf0a04a17ed81c4019ad0e73778f00f3927337159564e44c52a28be6"
+    }
+  ],
+  "rendererExceptions": 0,
+  "rendererConsoleErrors": 0,
+  "enforcedCspViolations": 0,
+  "observedCspPolicies": 1,
+  "policyViolations": [],
+  "externalOrigins": 0,
+  "modelCalls": 0,
+  "visibleWindows": 0,
+  "nativeKeychainVerified": false,
+  "packagedAppVerified": false
+}

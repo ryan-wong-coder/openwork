@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "platform": "linux",
+  "arch": "x64",
+  "backend": "gnome_libsecret",
+  "version": {
+    "electron": "43.7.7",
+    "node": "24.21.0",
+    "chrome": "150.0.7871.250",
+    "zeno": "1.1.0"
+  },
+  "checks": {
+    "encryptionAvailable": true,
+    "encryptedFileNoPlaintext": true,
+    "sameProcessReload": true,
+    "newProcessReload": true,
+    "ownerFence": true,
+    "identityFence": true,
+    "authorizedHeaders": true,
+    "disconnectRevoked": true,
+    "disconnectDeleted": true,
+    "noWindow": true,
+    "privatePosixModes": true
+  },
+  "scope": {
+    "realOsSafeStorage": true,
+    "productionServiceSource": true,
+    "syntheticTransportOnly": true,
+    "noModelCalls": true,
+    "productionSignedAppIdentityTested": false,
+    "realAccountPairingTested": false,
+    "windowsAclAudit": false
+  },
+  "temporaryFilesRemoved": true
+}

@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "scope": "live-public-HTTPS-synthetic-accounts",
+  "checks": [
+    "public-flags-and-invitation-only",
+    "public-https-secure-cookie",
+    "one-time-invitations-and-browser-login",
+    "pkce-browser-approval-single-exchange",
+    "account-isolation-idempotency-conflict-and-device-sync",
+    "private-media-owner-only",
+    "one-time-password-reset-revokes-session",
+    "device-revocation"
+  ],
+  "noModelRequests": true,
+  "nativeKeychainValidated": false
+}

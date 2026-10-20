@@ -1,0 +1,44 @@
+{
+  "productionIndexSha256": "203122c04eb6ebb295ff3186d5bb9f9749caccc28f536b7ee60942d14b554f3d",
+  "enforcedCspViolations": 4,
+  "policyViolations": [
+    {
+      "directive": "script-src",
+      "disposition": "enforce",
+      "source": "personal-CBSey5Gh.js",
+      "line": 367,
+      "column": 14305,
+      "blockedType": "eval"
+    },
+    {
+      "directive": "script-src",
+      "disposition": "enforce",
+      "source": "personal-CBSey5Gh.js",
+      "line": 415,
+      "column": 23646,
+      "blockedType": "eval"
+    },
+    {
+      "directive": "script-src",
+      "disposition": "enforce",
+      "source": "personal-CBSey5Gh.js",
+      "line": 456,
+      "column": 13744,
+      "blockedType": "eval"
+    },
+    {
+      "directive": "script-src",
+      "disposition": "enforce",
+      "source": "personal-CBSey5Gh.js",
+      "line": 541,
+      "column": 15974,
+      "blockedType": "eval"
+    }
+  ],
+  "rendererExceptions": 0,
+  "rendererConsoleErrors": 0,
+  "scope": "Minimal isolated production PWA login and statistics fixture",
+  "verdict": "Failed",
+  "finding": "Four caught Zod eval feature probes in the main bundle were already observed after login, before visiting statistics. This does not establish an Ant Design Charts failure.",
+  "resolution": "Jitless Zod is configured before schemas are constructed; the later authoritative browser report must show zero enforced violations."
+}

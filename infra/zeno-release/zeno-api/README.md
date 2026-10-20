@@ -66,3 +66,10 @@ the public site or release assets.
 `smoke.mjs` confirms a private listener, not public TLS, secure-cookie behavior,
 PWA installation/offline behavior, systemd sandbox enforcement, backups or local
 desktop execution. Those require separate acceptance evidence.
+
+The supplied Nginx include disables ordinary access logging for private API and
+application routes: invitation and reset query strings are credentials. Keep
+the application HTML's CSP separate from the isolated canvas shell policy;
+serve neither private media nor account exports from the public application
+directory. The public landing page, historical downloads and updater routes
+retain their existing independent configuration.

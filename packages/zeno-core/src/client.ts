@@ -1,6 +1,8 @@
 import { z } from 'zod';
-import { validatePersonalMedia } from './media.js';
+import { personalMediaFilename, validatePersonalMedia } from './media.js';
 import { accountSessionSchema, batchMutationResultSchema, deviceSchema, mediaSchema, mutationResultSchema, personalFeaturesSchema, personalRecordSchema, recordMutationSchema, syncResultSchema, type RecordMutation, type PersonalRecord, type Device, type DeviceInventory, type ModelChoice, type WorkspaceChoice } from './schema.js';
+
+z.config({ jitless: true });
 
 export const ZENO_API_PREFIX = '/api/zeno/v1';
 export type ApiResponse = { status: number; body: unknown };
@@ -77,6 +79,7 @@ export class ZenoApiClient {
   async uploadMedia(file: Blob, name = 'photo') {
     if (!this.expectedUserId) throw new Error('请先绑定当前账号。');
     validatePersonalMedia(file);
+    name = personalMediaFilename(name, file.type);
     if (this.bridge) {
       const response = await this.bridge.uploadMedia({ name, mime: file.type, bytes: await file.arrayBuffer(), expectedUserId: this.expectedUserId });
       if (response.status >= 400) throw new ZenoApiError(response.status, response.body);

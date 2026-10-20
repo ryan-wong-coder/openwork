@@ -35,8 +35,8 @@
   ],
   "nativeServiceAndTools": {
     "scope": "actual native modules with synthetic fetch, private temporary directories and AES-256-GCM safeStorage mock",
-    "tests": 30,
-    "passed": 30,
+    "tests": 31,
+    "passed": 31,
     "failed": 0,
     "guiLaunched": false,
     "realCredentials": false,

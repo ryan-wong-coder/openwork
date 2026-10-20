@@ -2,7 +2,7 @@ import { createHash, randomBytes } from 'node:crypto';
 import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { z } from 'zod';
-import { accountSessionSchema, batchMutationSchema, deviceSchema, mediaSchema, recordMutationSchema, syncResultSchema, PERSONAL_VIDEO_LIMIT, validatePersonalMedia } from '@zeno/core';
+import { accountSessionSchema, batchMutationSchema, deviceSchema, mediaSchema, recordMutationSchema, syncResultSchema, PERSONAL_VIDEO_LIMIT, personalMediaFilename, validatePersonalMedia } from '@zeno/core';
 
 const PREFIX = '/api/zeno/v1';
 const credentialSchema = z.object({ origin: z.string().url(), deviceId: z.string(), accessToken: z.string(), expiresAt: z.number(), userId: z.string() }).strict();
@@ -138,7 +138,7 @@ export function createZenoPersonalService(options) {
     validatePersonalMedia({ type: input.mime, size: input.bytes.byteLength });
     const current = await readCredential(); if (!current) return { status: 401, body: { code: 'unauthorized' } };
     if (input.expectedUserId && input.expectedUserId !== current.userId) return { status: 409, body: { code: 'account_changed' } };
-    const body = new FormData(); body.append('file', new Blob([input.bytes], { type: input.mime }), input.name);
+    const body = new FormData(); body.append('file', new Blob([input.bytes], { type: input.mime }), personalMediaFilename(input.name, input.mime));
     const response = await remote('POST', '/media', body, current.accessToken, { headers: { 'X-Zeno-Account': current.userId } }); const result = { status: response.status, body: await response.json() };
     if (response.ok) mediaSchema.parse(result.body); return result;
   }

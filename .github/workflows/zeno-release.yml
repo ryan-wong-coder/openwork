@@ -111,7 +111,7 @@ jobs:
       - name: Build the desktop UI and independent mobile application
         run: |
           pnpm --filter @openwork/app typecheck
-          pnpm --filter @openwork/app exec bun test tests/zeno-personal-data.test.ts
+          pnpm --filter @openwork/app exec bun test tests/zeno-personal-data.test.ts tests/zeno-account-boundary.test.tsx tests/zeno-event-lifetime.test.ts tests/zeno-form-input.test.tsx
           pnpm --filter @openwork/app build:personal
 
   build:

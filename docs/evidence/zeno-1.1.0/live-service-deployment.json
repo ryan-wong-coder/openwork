@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "scope": "actual-deployed-service-and-private-operator-acceptance",
+  "apiMainSha256": "baca46a841cb40e0265bd1dd00418b1b199d39849c59b7d37e987a846fe77dde",
+  "unprivilegedService": true,
+  "strictFilesystemPolicy": true,
+  "privateStateModes": true,
+  "serviceConfigContainsNoModelKeys": true,
+  "backupAndRestore": {
+    "passed": true,
+    "consistentSqlite": true,
+    "allMediaHashesVerified": true,
+    "mediaCount": 1,
+    "privateDisposableRestoreRemoved": true
+  },
+  "dailyBackupTimerActive": true,
+  "networkPolicy": {
+    "scope": "matching-transient-systemd-policy-kernel-probe",
+    "publicAddressReachableOutsidePolicyBeforeAndAfter": true,
+    "loopbackReachable": true,
+    "publicDestinationBlocked": true,
+    "failureType": "TimeoutError",
+    "modelEndpointContacted": false
+  }
+}

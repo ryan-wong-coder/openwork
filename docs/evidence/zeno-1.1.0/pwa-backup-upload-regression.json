@@ -1,0 +1,14 @@
+{
+  "scope": "production PWA + real isolated Bun API; synthetic backup only",
+  "verdict": "Failed",
+  "stage": "fitness-backup-restore",
+  "reason": "deadline:backup-custom-restored",
+  "productionIndexSha256": "f95d66b1edfe9d41400066653e14ae0c5790b24a7b3160fa99b721993262080e",
+  "enforcedCspViolations": 0,
+  "rendererExceptions": 0,
+  "rendererConsoleErrors": 0,
+  "mediaPost415Observed": true,
+  "reproduction": "Bun Request.formData() yields File.type empty for a video/mp4 Blob sent with extensionless filename; the backup preserved MIME and SHA-256 but exported media names were record IDs.",
+  "originalUserUploadPassed": true,
+  "restoredUploadPassed": false
+}

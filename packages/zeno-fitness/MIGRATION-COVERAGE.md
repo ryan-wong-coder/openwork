@@ -17,7 +17,7 @@ implementation, every gesture or native platform integration.
 | 计划编辑: linear/Greyskull/double/triple/time progression, per-exercise override, exclusion | `calculateNextPrescription`, preserved `progression.js` with the two documented local overrides | Own routine/exercise progression and prescription/plan snapshots. Progression deload accepts 5–50%, matching the actual source kernel. |
 | 计划/训练组: warm-up, left/right, drop sets, rest-pause, failure, RIR/RPE, incline, speed/distance/duration, pyramid/backoff | `upstream-adapter.ts`, preserved workout/progression/pyramid/backoff kernels | Typed `TrainingSet` and `RoutineExercise` fields; advanced sub-sets survive own JSON/ZIP and session operations. |
 | 今日 → 开始/自由训练: prescription prefill, completed sets, rest timer, optional screen wake lock | `startTrainingWorkout`, `toggleTrainingSet`, `finishTrainingWorkout`; source session start/finish logic | An active `workout` record autosaves and syncs. Body-weight snapshot only uses measurements at or before the actual start. Browser wake-lock denial is harmless. |
-| Training exercise menu: replace, move, end an exercise | `swapTrainingExercise` uses source `active-exercise-swap.js`; `moveTrainingExercise` uses whole-supergroup ordering | Logged results retain the old exercise identity. Logged/grouped replacement requires explicit confirmation; group membership is chosen. Removing unfinished work preserves completed set IDs. |
+| Training exercise menu: replace, move, end an exercise | `swapTrainingExercise` uses source `active-exercise-swap.js`; `moveTrainingExercise` uses whole-supergroup ordering | Logged results retain the old exercise identity. Logged replacement requires explicit confirmation; a logged grouped replacement also chooses group membership. Removing unfinished work preserves completed set IDs. |
 | 今日 → 组合训练 / 补录训练 | `startCombinedTrainingWorkout`, `startBackfillWorkout`, source session merge and `historyAsOf` | Combined owner IDs and unit conversion retained. Backfill computes from preceding history, excludes a replaced session and uses entered duration. |
 | 记录 → 再练一次 / 存为训练计划 / 编辑 | `repeatTrainingWorkout`, `routineFromWorkout`, gap-aware finish, `finishBackfillWorkout` | Existing history is not silently rewritten by repeat/save-as-plan. Editing is a versioned write; statistics derive from the resulting records. |
 | 今日状态 / 过往备注 | Typed day notes and source `withDayNote` | Settings retain dated tag/text/timestamp, including clear tombstones. Future day creation is rejected. |
@@ -42,7 +42,7 @@ changes; changing the default unit does not reinterpret recorded history.
 
 - **Catalogue artwork is excluded.** No restricted upstream exercise photo, GIF, clip or
   video is bundled, fetched, referenced by media filename or generated as an imitation.
-  Users may upload their own media. The local body-map geometry retains its separate MIT
+  Users may upload their own media; uploads retain their original bytes, without an automatic EXIF/GPS-removal or transcoding claim. The local body-map geometry retains its separate MIT
   notice; the generic category SVG is an original diagram, not a movement demonstration.
 - **Mobile is the Zeno PWA.** This migration does not include upstream's Android Capacitor
   application, Android Health Connect platform bridge, app-store distribution or a new

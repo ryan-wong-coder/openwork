@@ -44,6 +44,19 @@ async function bounded(promise, ms = 4000) {
   let timer; try { return await Promise.race([promise, new Promise((_, reject) => { timer = setTimeout(() => reject(new Error('fixture deadline')), ms); })]); } finally { clearTimeout(timer); }
 }
 
+test('native extensionless media uploads preserve declared type with a safe multipart filename', async t => {
+  const value = await fixture(t, { fetchImpl: async (url, init) => {
+    assert.equal(url, ORIGIN + '/api/zeno/v1/media');
+    const file = (await new Request(url, { method: 'POST', body: init.body }).formData()).get('file');
+    assert.equal(file.name, 'opaque-backup-id.mp4'); assert.equal(file.type, 'video/mp4');
+    assert.deepEqual([...new Uint8Array(await file.arrayBuffer())], [1, 2, 3]);
+    return json({ id: 'media-fixture', name: file.name, mime: file.type, size: 3, createdAt: NOW });
+  } });
+  await seed(value);
+  const result = await value.service.uploadMedia({ name: 'opaque-backup-id', mime: 'video/mp4', bytes: new Uint8Array([1, 2, 3]).buffer, expectedUserId: 'user-a' });
+  assert.equal(result.status, 200);
+});
+
 test('device pairing proves S256 possession and exposes only safe account metadata', async t => {
   const changed = deferred(); const calls = []; let challenge;
   const value = await fixture(t, { onChanged: () => changed.resolve(), fetchImpl: async (url, init) => {

@@ -79,6 +79,11 @@ GET /api/releases/latest.json
 
 官网不会读取或持有模型密钥、host-token、客户端访问凭据或 SSH 信息。
 
+1.1.0 的“个人空间”链接进入独立 `/app/` 手机网页／PWA。账号、鉴权媒体和
+增量同步由独立 `/api/zeno/v1` 服务提供，部署说明位于
+`infra/zeno-release/zeno-api/README.md`；它们不复用下载 API。网页可以编辑日历、
+训练和任务定义，AI 请求由已绑定且打开的电脑执行。官网首页仍是公开静态页面。
+
 ## 浏览器验收
 
 先 `build:published` 并在 5197 启动本地预览，再用已有 headless Chrome。

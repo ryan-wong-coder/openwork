@@ -1,0 +1,51 @@
+{
+  "passed": true,
+  "syntheticPreflight": true,
+  "lane": "v1",
+  "engineVersion": "1.18.30",
+  "productionPlugin": true,
+  "productionSchema": true,
+  "modelToolActuallyCalled": false,
+  "wireTool": true,
+  "model": "openai/gpt-6.1-sol",
+  "modelRequests": 0,
+  "syntheticRequests": 5,
+  "maxModelRequests": 8,
+  "maxOutputTokens": 1536,
+  "httpStatuses": [],
+  "actions": [
+    {
+      "phase": "interactive",
+      "action": "write",
+      "ok": true,
+      "code": null
+    },
+    {
+      "phase": "interactive",
+      "action": "undo",
+      "ok": true,
+      "code": null
+    },
+    {
+      "phase": "scheduled",
+      "action": "propose",
+      "ok": true,
+      "code": null
+    }
+  ],
+  "calendarCreatedAndUndone": true,
+  "proactivePendingProposalOnly": true,
+  "controllerMutations": 0,
+  "schedulerAdmissionTested": false,
+  "serverAI": false,
+  "nativeNetwork": "loopback-only",
+  "upstreamKeyOnlyInHostMemory": true,
+  "rawAnswerAndThinkingRetained": false,
+  "keyAbsentOnDisk": true,
+  "nativeProfileRemoved": true,
+  "nativeLogsDiscarded": true,
+  "dataBackend": "isolated-in-memory-fixture",
+  "osCredentialStorageTested": false,
+  "desktopUiOpened": false,
+  "testedOn": "2026-10-20"
+}

@@ -1,0 +1,25 @@
+{
+  "verdict": "Failed before fix",
+  "scope": "actual production PWA / real local Bun API / synthetic account / own headless Chrome",
+  "productionIndexSha256": "729ffaf9542b7545b91c0dd04a85a31b8298e379c49c03592b2aa883165a24ac",
+  "bundle": {
+    "file": "personal-Bp5H3sp2.js",
+    "sha256": "ee53206892729a09660f56e65a64a3d37b54eba45a179572b8b5e46792e3f058"
+  },
+  "steps": [
+    "Sign in through the actual form",
+    "Fitness / exercise library / custom exercise",
+    "Enter an exercise name then primary muscles"
+  ],
+  "observed": {
+    "caughtConsoleError": "TypeError: Cannot read properties of null (reading 'value')",
+    "appErrorBoundaryVisible": true,
+    "customFormUnmounted": true
+  },
+  "rootCause": "React state updater read event.currentTarget.value after the event callback returned",
+  "remediation": "Capture each input primitive synchronously before a functional or asynchronous state update; add caught console-error and boundary gates",
+  "modelCalls": 0,
+  "visibleWindows": 0,
+  "rawStackArchived": false,
+  "credentialsArchived": false
+}

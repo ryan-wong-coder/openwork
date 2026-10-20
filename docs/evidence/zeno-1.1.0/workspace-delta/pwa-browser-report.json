@@ -1,0 +1,75 @@
+{
+  "verdict": "Passed",
+  "mode": "workspace",
+  "scope": "production PWA + real local Bun API, synthetic accounts only",
+  "startedAt": "2026-10-20T04:27:57.685Z",
+  "finishedAt": "2026-10-20T04:28:04.362Z",
+  "productionIndexSha256": "f95d66b1edfe9d41400066653e14ae0c5790b24a7b3160fa99b721993262080e",
+  "deploymentCspConfigSha256": "8e1bb1f78fb366119f5a5e1b3c4fcfffe2c1b9570ff20c80d3968ac4006697d3",
+  "observedPolicySha256": [
+    "fd85d75e5c5a88a9baabaf4ced8edf789c664069e3471c0d37321ad94314d9f4"
+  ],
+  "browserVersion": "Chrome/155.0.8059.85",
+  "viewport": {
+    "desktop": [
+      1440,
+      1000
+    ],
+    "mobile": [
+      390,
+      844
+    ]
+  },
+  "checks": [
+    {
+      "name": "invalid-login-visible",
+      "passed": true
+    },
+    {
+      "name": "real-form-login",
+      "passed": true
+    },
+    {
+      "name": "workspace-event-created-through-ui",
+      "passed": true
+    },
+    {
+      "name": "workspace-event-cleared-to-personal-through-ui",
+      "passed": true
+    },
+    {
+      "name": "missing-workspace-link-retained-with-safe-label",
+      "passed": true
+    },
+    {
+      "name": "production-nginx-csp-no-enforced-violations",
+      "passed": true
+    },
+    {
+      "name": "standalone-manifest",
+      "passed": true
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "screenshots/desktop-login-error.png",
+      "bytes": 23329,
+      "sha256": "7b43d56ce4a769423f05a3ea85371a471be4fed03ff944cedc8136443be332d7"
+    },
+    {
+      "file": "screenshots/desktop-workspace-association.png",
+      "bytes": 61125,
+      "sha256": "5b4f25fbb69f106efaf11859182103bf39baebf8744e0eea999e1ad358011a85"
+    }
+  ],
+  "rendererExceptions": 0,
+  "rendererConsoleErrors": 0,
+  "enforcedCspViolations": 0,
+  "observedCspPolicies": 1,
+  "policyViolations": [],
+  "externalOrigins": 0,
+  "modelCalls": 0,
+  "visibleWindows": 0,
+  "nativeKeychainVerified": false,
+  "packagedAppVerified": false
+}
