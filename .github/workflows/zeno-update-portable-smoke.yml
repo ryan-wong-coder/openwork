@@ -131,8 +131,43 @@ jobs:
       - name: Prepare hosted Linux virtual display and standard user namespace sandbox
         if: matrix.platform == 'linux'
         run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends xvfb xauth libgtk-3-0t64 libnss3 libasound2t64
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import {execFileSync} from 'node:child_process';
+          import {writeFileSync} from 'node:fs';
+          import {join} from 'node:path';
+          const packageName='fonts-noto-cjk';
+          const destination=join(process.env.RUNNER_TEMP,'zeno-font-prerequisites.json');
+          function inventory(){
+            let available=true, familyNames=[];
+            try {
+              const output=execFileSync('fc-list',[':lang=zh','family'],{encoding:'utf8',stdio:['ignore','pipe','pipe'],timeout:10000});
+              familyNames=[...new Set(output.split(/\r?\n/).flatMap(line=>line.split(',')).map(name=>name.trim()).filter(Boolean))].sort();
+            } catch(error) {
+              if(error.code!=='ENOENT') throw new Error('Unable to enumerate Chinese font families.');
+              available=false;
+            }
+            const installedPackage={name:packageName,installed:false,version:null};
+            try {
+              const [status,version]=execFileSync('dpkg-query',['-W','-f=${Status}\t${Version}',packageName],{encoding:'utf8',stdio:['ignore','pipe','pipe'],timeout:10000}).trim().split('\t');
+              installedPackage.installed=status==='install ok installed';
+              if(installedPackage.installed) installedPackage.version=version;
+            } catch(error) {
+              if(error.code!=='ENOENT'&&error.status!==1) throw new Error('Unable to inspect the CJK prerequisite package.');
+            }
+            return {available,familyNames,count:familyNames.length,installedPackage};
+          }
+          const record={scope:'This runner before/after CJK prerequisites; no observation of an earlier runner.',before:inventory(),after:null};
+          const save=()=>writeFileSync(destination,JSON.stringify(record,null,2)+'\n');
+          save();
+          execFileSync('sudo',['apt-get','update'],{stdio:'inherit'});
+          execFileSync('sudo',['apt-get','install','-y','--no-install-recommends','xvfb','xauth','libgtk-3-0t64','libnss3','libasound2t64','fontconfig',packageName],{stdio:'inherit'});
+          execFileSync('fc-cache',['-f'],{stdio:'inherit'});
+          record.after=inventory(); save();
+          assert.equal(record.after.available,true,'Fontconfig is unavailable after prerequisite installation.');
+          assert.equal(record.after.installedPackage.installed,true,'The CJK prerequisite package is not installed.');
+          assert.ok(record.after.count>0,'No Chinese font family is available to the native UI.');
+          JS
           # Ubuntu's hosted AppArmor setting otherwise blocks Electron's userns
           # sandbox in an unchanged AppImage. This modifies only the disposable VM.
           if test -e /proc/sys/kernel/apparmor_restrict_unprivileged_userns; then sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0; fi
@@ -150,6 +185,19 @@ jobs:
           ZENO_UPDATE_BASELINE_METADATA: ${{ runner.temp }}/zeno-baseline-metadata/zeno-release.json
           ZENO_UPDATE_TARGET_DIR: ${{ runner.temp }}/zeno-release-target
         run: xvfb-run --auto-servernum --server-args="-screen 0 1440x1000x24 -nolisten tcp" node apps/desktop/scripts/zeno-update-portable-smoke.mjs
+      - name: Preserve Linux font prerequisites outside application cleanup
+        if: always() && matrix.platform == 'linux'
+        run: |
+          node --input-type=module <<'JS'
+          import {copyFileSync,existsSync,mkdirSync} from 'node:fs';
+          import {join} from 'node:path';
+          const source=join(process.env.RUNNER_TEMP,'zeno-font-prerequisites.json');
+          if(existsSync(source)){
+            const directory=join(process.env.RUNNER_TEMP,'zeno-portable-update-evidence');
+            mkdirSync(directory,{recursive:true});
+            copyFileSync(source,join(directory,'font-prerequisites.json'));
+          }
+          JS
       - name: Retain sanitized evidence only, never app state, credentials or raw logs
         if: always()
         uses: actions/upload-artifact@v4
@@ -159,5 +207,6 @@ jobs:
             ${{ runner.temp }}/zeno-portable-update-evidence/report.json
             ${{ runner.temp }}/zeno-portable-update-evidence/updated-app.png
             ${{ runner.temp }}/zeno-portable-update-evidence/native-navigation.png
+            ${{ runner.temp }}/zeno-portable-update-evidence/font-prerequisites.json
           if-no-files-found: warn
           retention-days: 14
