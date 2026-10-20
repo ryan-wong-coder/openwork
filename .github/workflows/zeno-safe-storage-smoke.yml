@@ -4,6 +4,12 @@ name: Zeno real OS safeStorage smoke
 # No production app install, BrowserWindow, real login or model request.
 on:
   workflow_dispatch:
+  push:
+    branches: [personal]
+    paths:
+      - .github/workflows/zeno-safe-storage-smoke.yml
+      - apps/desktop/scripts/zeno-safe-storage-probe.mjs
+      - apps/desktop/test/zeno-safe-storage-probe.test.mjs
 
 permissions:
   contents: read

@@ -3,6 +3,9 @@ name: Zeno real Windows and Linux update smoke
 # Dispatch only after the public website's target feeds have been activated.
 # Original NSIS/AppImage baseline -> actual updater -> automatic native restart.
 on:
+  push:
+    branches: [personal]
+    paths: [.github/workflows/zeno-update-portable-smoke.yml]
   workflow_dispatch:
     inputs:
       baseline_run_id:
@@ -29,8 +32,14 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  register:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo "Workflow registered; real updates require an explicit deployed target run."
+
   select-platforms:
-    if: github.ref == 'refs/heads/personal'
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/personal'
     runs-on: ubuntu-24.04
     outputs:
       matrix: ${{ steps.select.outputs.matrix }}
