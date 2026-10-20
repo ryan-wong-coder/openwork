@@ -41,9 +41,12 @@ and activated 1.1.2 for all six targets while preserving historical downloads.
 The [real website acceptance](site-downloads-attempt02/README.md) passed 14
 checks; all eleven successful screenshots were viewed. Its earlier selector
 failure remains preserved separately.
-The [native receipts](native-updates/README.md) distinguish actual upgrade
-successes, download connection resets and hosted-runner capacity cancellations.
-Actual native upgrades and GitHub stable publication remain separate pending
-gates. Historical 1.1.1 native reports, including failed
+The [native receipts](native-updates/README.md) now accept original 1.0.0 to
+1.1.2 automatic upgrades on macOS x64/arm64, Windows x64 and Linux x64. They
+verify the real new process, original profile, both workspace registries, files,
+sessions and messages; failed runs and their observation limits remain intact.
+The [anonymous public audit](release-public.json) separately verifies the stable
+GitHub latest release, all 24 asset tuples and the immutable annotated tag.
+Historical 1.1.1 native reports, including failed
 Windows/Linux attempts, remain unchanged in
 [the prior native evidence](../zeno-1.1.1/native-updates/README.md).

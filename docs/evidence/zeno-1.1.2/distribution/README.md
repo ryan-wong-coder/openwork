@@ -32,6 +32,7 @@ under [mainstream](../mainstream/public-media/README.md).
   restart was observed. This does not identify the peer or cause of the TCP
   resets; the client-side sanitizer evidence is in the original native reports.
 
-These receipts prove distribution integrity and availability. The GitHub stable
-release and actual native installations/upgrades remain separate acceptance
-gates; no native success is inferred from these files.
+These receipts prove distribution integrity and availability. Actual native
+upgrade acceptance is recorded separately in the [native reports](../native-updates/README.md),
+and stable GitHub publication in the [anonymous public audit](../release-public.json).
+No native success is inferred from asset integrity checks.
