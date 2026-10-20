@@ -293,6 +293,119 @@ export function decodeNativeWindowsWire(text) {
   return JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(Buffer.from(text, 'base64')));
 }
 
+export const NATIVE_CDP_PORTS = Object.freeze([9223, 9224, 9225, 9226, 9227]);
+const NATIVE_PROCESS_ROLES = new Set(['unclassified', 'electron-child', 'blank-slate-cleanup-entry', 'nuke-worker-entry', 'v2-migration-entry']);
+
+export function safeNativeCdpFacts(value) {
+  const unknown = { readKnown: false };
+  if (!value || value.readKnown !== true || !Array.isArray(value.ports) || value.ports.length !== 5
+    || typeof value.oldBrowserAbsent !== 'boolean') return unknown;
+  const ports = [];
+  for (const [index, item] of value.ports.entries()) {
+    if (item?.port !== NATIVE_CDP_PORTS[index] || typeof item.listenerPresent !== 'boolean'
+      || typeof item.ownedNewListener !== 'boolean' || item.ownedNewListener && !item.listenerPresent) return unknown;
+    ports.push({ port: item.port, listenerPresent: item.listenerPresent, ownedNewListener: item.ownedNewListener });
+  }
+  const result = { readKnown: true, oldBrowserAbsent: value.oldBrowserAbsent, ports };
+  if (Number.isSafeInteger(value.processCount) && value.processCount >= 0 && value.processCount <= 16
+    && typeof value.processCountCapped === 'boolean') {
+    result.processCount = value.processCount; result.processCountCapped = value.processCountCapped;
+  }
+  if (Array.isArray(value.roles) && value.roles.length <= 16) {
+    result.roles = value.roles.flatMap(item => {
+      if (!NATIVE_PROCESS_ROLES.has(item?.role) || typeof item.sameSession !== 'boolean'
+        || !Number.isSafeInteger(item.ageSeconds) || item.ageSeconds < 0 || item.ageSeconds > 86400 || typeof item.ageCapped !== 'boolean') return [];
+      return [{ role: item.role, sameSession: item.sameSession, ageSeconds: item.ageSeconds, ageCapped: item.ageCapped }];
+    });
+  }
+  return result;
+}
+
+export function selectNativeOwnedCdp(value, oldPid) {
+  assert.ok(Number.isSafeInteger(oldPid) && oldPid > 1, 'Missing original native browser identity.');
+  const facts = safeNativeCdpFacts(value?.facts);
+  if (value?.known !== true || !facts.readKnown || !Array.isArray(value.candidates)) return { kind: 'pending', facts: { readKnown: false } };
+  const candidates = new Map();
+  for (const candidate of value.candidates) {
+    assert.ok(Number.isSafeInteger(candidate?.pid) && candidate.pid > 1 && candidate.pid !== oldPid
+      && NATIVE_CDP_PORTS.includes(candidate.port) && typeof candidate.creationTicks === 'string'
+      && /^[1-9]\d{15,19}$/.test(candidate.creationTicks), 'Invalid owned native CDP identity.');
+    assert.ok(facts.ports.find(item => item.port === candidate.port)?.ownedNewListener === true, 'Native CDP ownership is unproved.');
+    const copy = { pid: candidate.pid, port: candidate.port, creationTicks: candidate.creationTicks };
+    candidates.set(JSON.stringify(copy), copy);
+  }
+  if (!facts.oldBrowserAbsent || candidates.size === 0) return { kind: 'pending', facts };
+  if (candidates.size !== 1) return { kind: 'ambiguous', facts };
+  return { kind: 'candidate', candidate: [...candidates.values()][0], facts };
+}
+
+export function assertNativeCdpIdentity(expected, actual) {
+  assert.equal(actual?.kind, 'candidate', 'Owned native CDP listener became unavailable or ambiguous.');
+  assert.deepEqual(actual.candidate, expected, 'Owned native CDP identity changed.');
+}
+
+export function assertNativeCdpBrowserIdentity(expected, browserPid, actual) {
+  assert.equal(browserPid, expected.pid, 'CDP browser is not the OS-owned native listener.');
+  assertNativeCdpIdentity(expected, actual);
+}
+
+export async function readNativeOwnedCdpPage(discover, readPage, timeout) {
+  const observed = discover(timeout);
+  if (observed.kind === 'ambiguous') return { ambiguous: true };
+  if (observed.kind !== 'candidate') return null;
+  const page = await readPage(observed.candidate.port);
+  return page ? { page, candidate: observed.candidate } : null;
+}
+
+export function assertNativeCdpWebSocket(url, port) {
+  const parsed = new URL(url);
+  assert.ok(NATIVE_CDP_PORTS.includes(port) && parsed.protocol === 'ws:' && parsed.hostname === '127.0.0.1'
+    && parsed.port === String(port) && !parsed.username && !parsed.password && !parsed.hash && !parsed.search
+    && parsed.pathname.startsWith('/devtools/'), 'Native CDP WebSocket is outside the owned loopback listener.');
+}
+
+export function windowsNativeTargetCdpScript() {
+  return String.raw`$ErrorActionPreference='Stop'
+$result=[ordered]@{known=$false;facts=[ordered]@{readKnown=$false}}
+try {
+ @@WIRE_INPUT@@
+ $allowed=@(9223,9224,9225,9226,9227)
+ $escaped=$v.executable.Replace('\','\\').Replace("'","\'")
+ $items=@(Get-CimInstance Win32_Process -Filter ("ExecutablePath = '"+$escaped+"'") -ErrorAction Stop | Where-Object{[string]::Equals($_.ExecutablePath,$v.executable,[StringComparison]::OrdinalIgnoreCase)})
+ $oldAbsent=@(Get-CimInstance Win32_Process -Filter ('ProcessId = '+[string]$v.oldPid) -ErrorAction Stop).Count -eq 0
+ $listeners=@(Get-NetTCPConnection -State Listen -ErrorAction Stop | Where-Object{$allowed -contains [int]$_.LocalPort -and [string]$_.LocalAddress -ceq '127.0.0.1'})
+ $candidates=@();$ports=@()
+ foreach($port in $allowed){
+  $rows=@($listeners|Where-Object{$_.LocalPort -eq $port});$owned=$false
+  foreach($owner in @($rows.OwningProcess|Sort-Object -Unique)){
+   $first=@($items|Where-Object{$_.ProcessId -eq $owner -and $_.ProcessId -ne $v.oldPid})
+   if($first.Count -ne 1){continue}
+   $current=@(Get-CimInstance Win32_Process -Filter ('ProcessId = '+[string]$owner) -ErrorAction Stop)
+   if($current.Count -ne 1 -or $current[0].CreationDate -ne $first[0].CreationDate -or -not [string]::Equals($current[0].ExecutablePath,$v.executable,[StringComparison]::OrdinalIgnoreCase)){continue}
+   $confirm=@(Get-NetTCPConnection -OwningProcess ([uint32]$owner) -State Listen -ErrorAction Stop | Where-Object{$_.LocalPort -eq $port -and [string]$_.LocalAddress -ceq '127.0.0.1'})
+   if($confirm.Count -eq 0){continue}
+   $owned=$true
+   $candidates+= [ordered]@{pid=[int]$owner;port=[int]$port;creationTicks=$current[0].CreationDate.ToUniversalTime().Ticks.ToString([Globalization.CultureInfo]::InvariantCulture)}
+  }
+  $ports+= [ordered]@{port=[int]$port;listenerPresent=($rows.Count -gt 0);ownedNewListener=$owned}
+ }
+ $roles=@();$session=(Get-Process -Id $PID -ErrorAction Stop).SessionId
+ foreach($item in @($items|Select-Object -First 16)){
+  $role='unclassified';$line=[string]$item.CommandLine
+  if($line -match '(?:^|\s)--type(?:=|\s)'){$role='electron-child'}
+  else {
+   foreach($entry in @($v.entries)){
+    if($line -match ('(?i)(?:^|\s|")'+[regex]::Escape([string]$entry.path)+'(?:$|\s|")')){$role=$entry.role;break}
+   }
+  }
+  $age=[Math]::Max(0,[Math]::Floor(([DateTime]::UtcNow-$item.CreationDate.ToUniversalTime()).TotalSeconds))
+  $roles+= [ordered]@{role=$role;sameSession=($item.SessionId -eq $session);ageSeconds=[int][Math]::Min(86400,$age);ageCapped=($age -gt 86400)}
+ }
+ $result=[ordered]@{known=$true;candidates=@($candidates);facts=[ordered]@{readKnown=$true;oldBrowserAbsent=$oldAbsent;ports=@($ports);processCount=[Math]::Min(16,$items.Count);processCountCapped=($items.Count -gt 16);roles=@($roles)}}
+} catch {}
+@@WIRE_OUTPUT@@`.replace('@@WIRE_INPUT@@', wireInput).replace('@@WIRE_OUTPUT@@', wireOutput);
+}
+
 export function assertNativeEffectiveProfile(plan, expectedRealpath) {
   assertNativeOwnedPath(plan, plan.profile);
   const actual = realpathSync(plan.profile);

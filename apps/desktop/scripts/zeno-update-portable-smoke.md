@@ -96,10 +96,18 @@ for disposal of the entire hosted VM on success or failure; HOME and AppData
 are never recursively removed.
 
 All original production CDP candidates 9223–9227 must be free before installing
-and immediately before launching the baseline. Both baseline and automatic
-restart must use the original native first choice 9223. There is no port
-environment override, fallback-port search or manual target start. The actual
-CDP SystemInfo browser PID, exact original installed EXE, file resources,
+and immediately before launching the baseline. The native baseline uses the
+original first choice 9223. Only the automatic native-defaults target may use
+another port in the product's original 9223–9227 range: the original shared
+180-second page-read window first requires the old PID absent and exactly one
+stable new installed-EXE PID/creation-time/127.0.0.1 listener tuple. No owned
+listener means wait; multiple tuples fail closed before HTTP. Exact duplicate
+rows are one tuple. Unknown OS reads cannot admit a connection. Both debugger
+WebSockets must stay on that confirmed host and port; OS identity and listener
+ownership are checked again before connection and after SystemInfo, whose
+actual browser PID must equal the OS owner. There is no port environment
+override or manual target start. Isolated Windows, Linux and the baseline keep
+their fixed-port behavior. The actual CDP SystemInfo browser PID, exact original installed EXE, file resources,
 original read-only IPC userData and the profile's realpath must all agree;
 the automatic target must have a different actual browser PID. A same-EXE
 process candidate or listener diagnostic is never restart/profile proof.
@@ -119,6 +127,15 @@ Earlier isolated failures remain unchanged. A refused expected port and known
 installed target bytes do not establish the target process environment, its
 profile, when NSIS completed or the actual browser's startup age. This second
 scenario does not retroactively resolve those unknowns or extend a timeout.
+
+Native target connection reports retain only the discovery source, prior
+expected and actual allowed ports, and a sanitized last OS observation. The
+observation contains five port-presence/owned-listener booleans and at most 16
+same-EXE process role/age/session summaries. Roles name only known script-entry
+arguments or Electron-child markers; an unclassified process is not a browser
+proof. Ages cap at 86400 seconds. PIDs, exact creation times, executable paths,
+command lines and environment values are never reported. Attempt 08 remains
+unresolved by these source-based changes; no prior port switch is inferred.
 
 Native prerequisite diagnostics are recorded before either guard is asserted.
 `nativeDefaultsPrerequisites.node` and `.powershell` retain only fixed enums,

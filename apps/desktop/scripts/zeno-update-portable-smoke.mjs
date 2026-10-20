@@ -15,7 +15,9 @@ import { compareStableVersions } from '../electron/recovery.mjs';
 import { verifyPackagedNavigation, workspaceSessionIdentitySnapshot, assertWorkspaceSessionsUnchanged } from './zeno-packaged-navigation-probe.mjs';
 import { windowsProfileMode, nativeWindowsPackageIdentity, windowsNativePlan, assertNativeOwnedPath,
   inspectNativePristineLeaves, verifyNativePrerequisites, nativeDefaultsEnvironment, windowsNativeRootsScript, windowsNativePristineScript,
-  windowsNativeInstallationScript, decodeNativeWindowsWire, assertNativeEffectiveProfile, sameWindowsPath, assertNativeEnvironmentRoots } from './zeno-windows-native-defaults.mjs';
+  windowsNativeInstallationScript, decodeNativeWindowsWire, assertNativeEffectiveProfile, sameWindowsPath, assertNativeEnvironmentRoots,
+  windowsNativeTargetCdpScript, selectNativeOwnedCdp, assertNativeCdpIdentity, assertNativeCdpWebSocket, safeNativeCdpFacts,
+  readNativeOwnedCdpPage, assertNativeCdpBrowserIdentity } from './zeno-windows-native-defaults.mjs';
 
 // This entry point refuses developer machines and self-hosted runners. Linux
 // uses the hosted VM's Xvfb; Windows uses its disposable hosted desktop. Only
@@ -585,11 +587,27 @@ export async function readPortablePageList(response, diagnostics) {
 async function attach(port, platform, installation, root, profile, exceptions, origins, diagnostics, failureContext) {
   if (failureContext) { delete failureContext.observedBrowserPid; delete failureContext.observedBrowserResources; delete failureContext.observedBrowserEffectiveProfileMatches; }
   diagnostics?.enter('attach-page-list');
-  const target = await until(async () => {
+  const discover = failureContext?.nativeTargetDiscovery;
+  const deadline = Date.now() + 180_000;
+  const readPage = async selectedPort => {
     diagnostics?.cdpPageList();
-    const targets = await readPortablePageList(await fetch(`http://127.0.0.1:${port}/json/list`, { redirect: 'error', signal: AbortSignal.timeout(1000) }), diagnostics);
+    const targets = await readPortablePageList(await fetch(`http://127.0.0.1:${selectedPort}/json/list`, { redirect: 'error', signal: AbortSignal.timeout(discover ? Math.max(1, Math.min(1000, deadline - Date.now())) : 1000) }), diagnostics);
     return targets.find(item => pageResources(item, platform, installation, root));
+  };
+  const selectedPage = await until(async () => {
+    if (discover) return readNativeOwnedCdpPage(discover, readPage, Math.max(1, Math.min(5000, deadline - Date.now())));
+    const page = await readPage(port);
+    return page ? { page } : null;
   }, Boolean, 180_000, 'owned installed main renderer', diagnostics);
+  assert.ok(!selectedPage.ambiguous, 'Multiple owned native CDP listeners are ambiguous.');
+  const target = selectedPage.page;
+  const selected = selectedPage.candidate;
+  const recheck = () => discover(Math.max(1, Math.min(5000, deadline - Date.now())));
+  if (discover) {
+    port = selected.port;
+    assertNativeCdpIdentity(selected, recheck());
+    assertNativeCdpWebSocket(target.webSocketDebuggerUrl, port);
+  }
   diagnostics?.enter('attach-page-cdp');
   const client = await connect(target.webSocketDebuggerUrl, event => {
     if (event.method === 'Runtime.exceptionThrown') exceptions.push('renderer-exception');
@@ -602,12 +620,23 @@ async function attach(port, platform, installation, root, profile, exceptions, o
     assert.ok(!result.exceptionDetails, 'Owned renderer operation failed.'); return result.result.value;
   };
   diagnostics?.enter('attach-browser-version');
+  if (discover) assertNativeCdpIdentity(selected, recheck());
   const browserInfo = await (await fetch(`http://127.0.0.1:${port}/json/version`, { signal: AbortSignal.timeout(1000) })).json();
+  if (discover) {
+    assertNativeCdpIdentity(selected, recheck());
+    assertNativeCdpWebSocket(browserInfo.webSocketDebuggerUrl, port);
+  }
   diagnostics?.enter('attach-browser-cdp');
   const browser = await connect(browserInfo.webSocketDebuggerUrl);
   diagnostics?.enter('attach-browser-pid');
   const processes = await browser.send('SystemInfo.getProcessInfo'); const pid = processes.processInfo.find(item => item.type === 'browser')?.id;
   assert.ok(Number.isSafeInteger(pid) && pid > 1 && pid !== process.pid, 'Missing actual browser PID.');
+  if (discover) {
+    assertNativeCdpBrowserIdentity(selected, pid, recheck());
+    failureContext.port = port;
+    failureContext.nativeTargetSelection = { source: 'os-owned-default-cdp', priorExpectedPort: 9223, actualAllowedPort: port,
+      originalBrowserAbsent: true, stableOsOwnerVerified: true, actualBrowserPidMatchesOwner: true };
+  }
   const resources = pageResources(target, platform, installation, root);
   if (failureContext) { failureContext.observedBrowserPid = pid; failureContext.observedBrowserResources = resources; }
   diagnostics?.enter('attach-profile-identity');
@@ -672,9 +701,21 @@ function publishWindowsRelaunchEnvironment(environment, root) {
   return () => { update(previous); };
 }
 
-function nativeWindowsRead(script, input) {
+function nativeWindowsRead(script, input, timeout = 30_000) {
   return decodeNativeWindowsWire(command('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', script],
-    { ...(input === undefined ? {} : { input: Buffer.from(JSON.stringify(input), 'utf8').toString('base64') }), timeout: 30_000 }));
+    { ...(input === undefined ? {} : { input: Buffer.from(JSON.stringify(input), 'utf8').toString('base64') }), timeout }));
+}
+
+function discoverNativeTargetCdp(context, oldPid, timeout) {
+  const executable = assertNativeOwnedPath(context.nativeDefaults, context.executable);
+  const resources = join(context.installation, 'resources');
+  const entries = [
+    { path: join(resources, 'app.asar/electron/blank-slate-cleanup.mjs'), role: 'blank-slate-cleanup-entry' },
+    { path: join(resources, 'app.asar/electron/nuke-worker.mjs'), role: 'nuke-worker-entry' },
+    ...['server/dist/opencode-v2-migration-process.js', 'app.asar/server/dist/opencode-v2-migration-process.js']
+      .map(name => ({ path: join(resources, name), role: 'v2-migration-entry' })),
+  ];
+  return selectNativeOwnedCdp(nativeWindowsRead(windowsNativeTargetCdpScript(), { executable, oldPid, entries }, timeout), oldPid);
 }
 
 function ownNativeDiagnosticValue(value, key) {
@@ -927,7 +968,17 @@ async function main() {
     client.socket.close(); client.browser.socket.close(); client = null;
     // No spawn, installer command, Browser.close or kill is permitted between
     // admission above and these actual target/restart/preservation assertions.
+    if (nativeDefaults) {
+      failureContext.nativeTargetDiscovery = timeout => {
+        const observed = discoverNativeTargetCdp(failureContext, oldPid, timeout);
+        report.nativeTargetConnection = { ...report.nativeTargetConnection, source: 'os-owned-default-cdp', priorExpectedPort: 9223,
+          selectionState: observed.kind, ...(observed.kind === 'candidate' ? { observedAllowedPort: observed.candidate.port } : {}),
+          lastOsObservation: safeNativeCdpFacts(observed.facts) };
+        return observed;
+      };
+    }
     client = await attach(port, platform, installation, root, profile, exceptions, origins, diagnostics, failureContext);
+    if (nativeDefaults) Object.assign(report.nativeTargetConnection, failureContext.nativeTargetSelection);
     assert.notEqual(client.pid, oldPid, 'The target was not automatically relaunched in a new native process.');
     diagnostics.enter('target-code-verification');
     const afterCode = verifyResources(client.resources, TARGET, feed, platform); assert.equal(afterCode.archiveSha256, targetCode.archiveSha256, 'Installed ASAR differs from the frozen published target.');
@@ -978,6 +1029,11 @@ async function main() {
   } catch (error) {
     if (error.navigationReport) report.navigation = error.navigationReport;
     failure = true; report.failure = { classification: 'native-update-validation-failed', lastPhase: report.phases.at(-1)?.name ?? 'initialization', ...diagnostics.snapshot(error) };
+    if (failureContext?.nativeTargetDiscovery) {
+      try { failureContext.nativeTargetDiscovery(5000); }
+      catch { report.nativeTargetConnection = { ...report.nativeTargetConnection, failureSnapshotReadKnown: false }; }
+      if (failureContext.nativeTargetSelection) Object.assign(report.nativeTargetConnection ??= {}, failureContext.nativeTargetSelection);
+    }
     try { report.failureState = collectPortableFailureState(failureContext, oldPid, child); } catch { report.failureState = { collected: false }; }
     try { if (client) report.downloadProgress = { ...report.downloadProgress, ...numericDownloadProgress(await client.evaluate('window.__zenoSmokeDownloadProgress', 2000)) }; } catch {}
     report.failureDiagnostics = privateUpdateFailureDiagnostics(root);

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { appendFileSync, copyFileSync, mkdtempSync, realpathSync, mkdirSync, readFileSync, renameSync, truncateSync, writeFileSync, symlinkSync, existsSync, rmSync } from 'node:fs';
 import { createServer } from 'node:net';
@@ -21,7 +21,9 @@ import { numericDownloadProgress, safeUpdateFailureSignals } from '../scripts/ze
 import { windowsProfileMode, windowsNativeLeaf, nativeWindowsPackageIdentity, windowsNativePlan, nativeDefaultsEnvironment,
   sameWindowsPath, windowsNativeRootsScript, windowsNativePristineScript, windowsNativeInstallationScript, decodeNativeWindowsWire,
   assertNativePristineLeaves, assertNativeOwnedPath, assertNativeEffectiveProfile, assertNativeEnvironmentRoots,
-  inspectNativePristineLeaves, safeNativePrerequisite, verifyNativePrerequisites } from '../scripts/zeno-windows-native-defaults.mjs';
+  inspectNativePristineLeaves, safeNativePrerequisite, verifyNativePrerequisites, NATIVE_CDP_PORTS,
+  safeNativeCdpFacts, selectNativeOwnedCdp, assertNativeCdpIdentity, assertNativeCdpWebSocket, readNativeOwnedCdpPage,
+  windowsNativeTargetCdpScript, assertNativeCdpBrowserIdentity } from '../scripts/zeno-windows-native-defaults.mjs';
 
 const origin = 'https://www.zeno.ryan-wong.cn';
 const sha256 = 'a'.repeat(64); const sha512 = Buffer.alloc(64, 2).toString('base64');
@@ -367,6 +369,102 @@ function generatedKnownFolderCondition() {
   return matches[0][1];
 }
 
+function nativeCdpObservation(candidates = [{ pid: 1002, port: 9224, creationTicks: '638965000000000001' }]) {
+  return { known: true, candidates, facts: { readKnown: true, oldBrowserAbsent: true,
+    ports: NATIVE_CDP_PORTS.map(port => ({ port, listenerPresent: candidates.some(item => item.port === port), ownedNewListener: candidates.some(item => item.port === port) })),
+    processCount: 1, processCountCapped: false, roles: [{ role: 'unclassified', ageSeconds: 3, ageCapped: false, sameSession: true }] } };
+}
+
+test('native target discovery admits only one stable new owned listener, including an alternate product default port', async () => {
+  const value = nativeCdpObservation();
+  const selected = selectNativeOwnedCdp(value, 1001);
+  assert.equal(selected.kind, 'candidate'); assert.equal(selected.candidate.port, 9224);
+  assert.deepEqual(selectNativeOwnedCdp(nativeCdpObservation([value.candidates[0], value.candidates[0]]), 1001).candidate, selected.candidate);
+  assert.deepEqual(selectNativeOwnedCdp(nativeCdpObservation(Array(7).fill(value.candidates[0])), 1001).candidate, selected.candidate);
+  let pageReads = 0;
+  const page = { type: 'page' };
+  const result = await readNativeOwnedCdpPage(timeout => { assert.equal(timeout, 99); return selected; },
+    async port => { assert.equal(port, 9224); pageReads++; return page; }, 99);
+  assert.equal(result.page, page); assert.equal(pageReads, 1);
+  for (const pending of [{ known: false }, nativeCdpObservation([]), { ...value, facts: { ...value.facts, oldBrowserAbsent: false } }]) {
+    assert.equal(await readNativeOwnedCdpPage(() => selectNativeOwnedCdp(pending, 1001), () => { throw new Error('Unowned endpoint must never be read.'); }, 99), null);
+  }
+  for (const candidate of [{ ...value.candidates[0], pid: 1001 }, { ...value.candidates[0], port: 9300 }, { ...value.candidates[0], creationTicks: 638965000000000000 }]) {
+    assert.throws(() => selectNativeOwnedCdp(nativeCdpObservation([candidate]), 1001));
+  }
+});
+
+test('native discovery ambiguity stops before HTTP and identity rechecks reject PID reuse, port changes and another browser', async () => {
+  const value = nativeCdpObservation(); const selected = selectNativeOwnedCdp(value, 1001);
+  const ambiguous = selectNativeOwnedCdp(nativeCdpObservation([value.candidates[0], { ...value.candidates[0], port: 9225 }]), 1001);
+  assert.equal(ambiguous.kind, 'ambiguous');
+  assert.deepEqual(await readNativeOwnedCdpPage(() => ambiguous, () => { throw new Error('Ambiguous endpoint must never be read.'); }, 99), { ambiguous: true });
+  assertNativeCdpBrowserIdentity(selected.candidate, 1002, selected);
+  assert.throws(() => assertNativeCdpBrowserIdentity(selected.candidate, 1003, selected));
+  for (const changed of [
+    { ...value.candidates[0], pid: 1003 }, { ...value.candidates[0], port: 9225 },
+    { ...value.candidates[0], creationTicks: '638965000000000002' },
+  ]) assert.throws(() => assertNativeCdpIdentity(selected.candidate, selectNativeOwnedCdp(nativeCdpObservation([changed]), 1001)));
+  assert.throws(() => assertNativeCdpIdentity(selected.candidate, ambiguous));
+  assert.throws(() => assertNativeCdpIdentity(selected.candidate, { kind: 'pending' }));
+});
+
+test('both native debugger WebSockets stay on the same exact owned loopback listener', () => {
+  for (const kind of ['page', 'browser']) assertNativeCdpWebSocket('ws://127.0.0.1:9224/devtools/' + kind + '/synthetic', 9224);
+  for (const value of ['ws://localhost:9224/devtools/page/a', 'ws://127.0.0.1:9223/devtools/page/a',
+    'ws://127.0.0.2:9224/devtools/page/a', 'ws://example.invalid:9224/devtools/page/a', 'wss://127.0.0.1:9224/devtools/page/a',
+    'ws://private:secret@127.0.0.1:9224/devtools/page/a', 'ws://127.0.0.1:9224/other', 'ws://127.0.0.1:9224/devtools/page/a?private=secret']) {
+    assert.throws(() => assertNativeCdpWebSocket(value, 9224));
+  }
+});
+
+test('native CDP public observations contain only allowed ports, bounded counts and known role facts', () => {
+  const value = nativeCdpObservation(); value.facts.privatePath = 'never-publish-private-fixture';
+  value.facts.roles.push({ role: 'never-publish-private-fixture', ageSeconds: 1, ageCapped: false, sameSession: true });
+  const safe = safeNativeCdpFacts(value.facts);
+  assert.ok(!JSON.stringify(safe).includes('never-publish-private-fixture'));
+  assert.equal(safe.roles.length, 1);
+  assert.ok(!JSON.stringify(safe).includes('638965000000000001'));
+  assert.deepEqual(safeNativeCdpFacts({ readKnown: false }), { readKnown: false });
+  const contradictory = nativeCdpObservation();
+  contradictory.facts.ports[1].listenerPresent = false;
+  assert.equal(selectNativeOwnedCdp(contradictory, 1001).kind, 'pending');
+  assert.deepEqual(safeNativeCdpFacts(contradictory.facts), { readKnown: false });
+});
+
+test('actual Windows native discovery confirms the owned TCP listener and exact stable process without launching an app', { skip: process.platform !== 'win32' }, async () => {
+  const root = realpathSync(mkdtempSync(join(tmpdir(), 'zeno-native-cdp-test-')));
+  const executable = join(root, '合成 Node 进程.exe'); const scriptPath = join(root, 'owned-worker.mjs');
+  let child;
+  try {
+    copyFileSync(process.execPath, executable);
+    const old = spawnSync(executable, ['-e', 'process.exit(0)'], { timeout: 15_000 }); assert.equal(old.status, 0);
+    writeFileSync(scriptPath, 'import net from \"node:net\";let port=9227;function open(){const server=net.createServer();server.once(\"error\",()=>{if(--port<9223)process.exit(2);else open()});server.listen(port,\"127.0.0.1\",()=>process.send({port}));}open();');
+    child = spawn(executable, [scriptPath], { stdio: ['ignore', 'ignore', 'ignore', 'ipc'] });
+    const port = await new Promise((done, fail) => {
+      const timer = setTimeout(() => fail(new Error('Owned synthetic TCP process did not become ready.')), 15_000);
+      child.once('message', value => { clearTimeout(timer); done(value.port); });
+      child.once('error', () => { clearTimeout(timer); fail(new Error('Owned synthetic TCP process failed.')); });
+      child.once('exit', () => { clearTimeout(timer); fail(new Error('Owned synthetic TCP process exited before observation.')); });
+    });
+    const read = input => {
+      const result = spawnSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', windowsNativeTargetCdpScript()],
+        { input: Buffer.from(JSON.stringify(input)).toString('base64'), encoding: 'utf8', timeout: 15_000 });
+      assert.equal(result.status, 0); return decodeNativeWindowsWire(result.stdout.trim());
+    };
+    const input = { executable, oldPid: old.pid, entries: [{ path: scriptPath, role: 'nuke-worker-entry' }] };
+    const selected = selectNativeOwnedCdp(read(input), old.pid);
+    assert.equal(selected.kind, 'candidate'); assert.equal(selected.candidate.pid, child.pid); assert.equal(selected.candidate.port, port);
+    assert.equal(selected.facts.roles[0].role, 'nuke-worker-entry');
+    assertNativeCdpIdentity(selected.candidate, selectNativeOwnedCdp(read(input), old.pid));
+    assert.equal(selectNativeOwnedCdp(read({ ...input, oldPid: child.pid }), child.pid).kind, 'pending');
+    assert.equal(selectNativeOwnedCdp(read({ ...input, executable: join(root, 'absent.exe') }), old.pid).kind, 'pending');
+  } finally {
+    if (child && child.exitCode === null) { const stopped = new Promise(done => child.once('exit', done)); child.kill(); await stopped; }
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test('the emitted native folder drive guard accepts Windows separators and rejects non-absolute paths', () => {
   const condition = generatedKnownFolderCondition();
   const pattern = /^\$expanded -notmatch '([^']+)' -or/.exec(condition)?.[1];
@@ -409,7 +507,7 @@ $json=ConvertTo-Json -InputObject $checks -Compress
 });
 
 test('native Windows prerequisite scripts parse without executing a fixture or exposing Unicode over the console', { skip: process.platform !== 'win32' }, () => {
-  for (const source of [windowsNativeRootsScript(), windowsNativePristineScript(), windowsNativeInstallationScript()]) {
+  for (const source of [windowsNativeRootsScript(), windowsNativePristineScript(), windowsNativeInstallationScript(), windowsNativeTargetCdpScript()]) {
     const encoded = Buffer.from(source, 'utf8').toString('base64');
     const script = `$source=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('${encoded}'));$tokens=$null;$parseErrors=$null;[void][Management.Automation.Language.Parser]::ParseInput($source,[ref]$tokens,[ref]$parseErrors);if($parseErrors.Count -gt 0){exit 1}`;
     const result = spawnSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', script], { encoding: 'utf8', timeout: 15_000 });
