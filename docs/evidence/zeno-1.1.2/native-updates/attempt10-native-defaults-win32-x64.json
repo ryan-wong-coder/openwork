@@ -1,0 +1,377 @@
+{
+  "passed": true,
+  "baseline": "1.0.0",
+  "target": "1.1.2",
+  "platform": "win32",
+  "arch": "x64",
+  "phases": [
+    {
+      "name": "original-installers-verified",
+      "at": "2026-10-20T17:55:54.360Z",
+      "baselineSha256": "2fd5184a2f5a41d50c11b63014add54518805816a68c67dbe72b6217d3139716",
+      "targetSha256": "0690872dad2d7ff57f3e7e308b6fca864528a8c059bfa1934bdb98ba7d4efba3",
+      "baselineBytes": 379417761,
+      "targetBytes": 390804422
+    },
+    {
+      "name": "original-nsis-installed",
+      "at": "2026-10-20T17:56:52.709Z",
+      "privateDirectory": false,
+      "pristineNativeDefaultDirectory": true,
+      "noResigning": true
+    },
+    {
+      "name": "baseline-native-history-created",
+      "at": "2026-10-20T17:58:24.846Z",
+      "installedVersion": "1.0.0",
+      "workspace": true,
+      "serverRegistryIdentity": true,
+      "storedSession": true,
+      "storedMessage": true,
+      "noModelCall": true
+    },
+    {
+      "name": "native-public-download-started",
+      "at": "2026-10-20T17:58:25.059Z",
+      "bytes": 390804422,
+      "installer": "exe"
+    },
+    {
+      "name": "native-public-download-completed",
+      "at": "2026-10-20T18:03:56.584Z",
+      "version": "1.1.2",
+      "successfulAttempt": 1
+    },
+    {
+      "name": "original-target-installed-and-automatically-relaunched",
+      "at": "2026-10-20T18:04:44.965Z",
+      "installedVersion": "1.1.2",
+      "publishedAsar": true,
+      "actualProcessChanged": true
+    },
+    {
+      "name": "real-native-upgrade-and-preservation-verified",
+      "at": "2026-10-20T18:04:45.076Z",
+      "installedVersion": "1.1.2",
+      "successfulDownloadAttempt": 1,
+      "publishedAsar": true,
+      "actualProcessChanged": true,
+      "chromiumProfile": true,
+      "workspaceIdentity": true,
+      "serverRegistryIdentity": true,
+      "workspaceFile": true,
+      "historicalSession": true,
+      "historicalMessage": true,
+      "embeddedServer": true
+    },
+    {
+      "name": "installed-target-four-personal-sidebar-routes-verified",
+      "at": "2026-10-20T18:04:51.173Z",
+      "realClicks": 4,
+      "stablePersonalRoutes": true,
+      "unpairedAccountGate": true,
+      "noNewChat": true,
+      "historicalMessageRetained": true
+    }
+  ],
+  "nativeUpdateExecuted": true,
+  "downloadPolicy": {
+    "additionalRetries": 2,
+    "mode": "whole-file; same baseline session; no resume; reset-only retry"
+  },
+  "downloadAttempts": [
+    {
+      "attempt": 1,
+      "startedAt": "2026-10-20T17:58:25.062Z",
+      "finishedAt": "2026-10-20T18:03:56.582Z",
+      "elapsedMs": 331521,
+      "outcome": "downloaded",
+      "reason": "download-completed",
+      "signal": "not-inspected",
+      "progress": {
+        "transferred": 390804422,
+        "total": 390804422,
+        "percent": 100,
+        "bytesPerSecond": 1180382
+      },
+      "retryRequested": false
+    }
+  ],
+  "scope": {
+    "originalBaseline": true,
+    "originalTarget": true,
+    "realPublicFeed": true,
+    "installedUpgrade": true,
+    "automaticRelaunch": true,
+    "historicalChatPreservation": true,
+    "accountPairingTested": false,
+    "osCredentialStorageTested": false,
+    "aiRequested": false
+  },
+  "windowsProfileMode": "native-defaults",
+  "isolation": "ephemeral GitHub-hosted Windows account; pristine exact native leaves; no injected paths; VM disposal",
+  "publicOrigin": "https://www.zeno.ryan-wong.cn",
+  "nativeDefaultsPrerequisites": {
+    "node": {
+      "engine": "node",
+      "passed": true,
+      "check": "complete",
+      "reason": "clear",
+      "nativeLeavesChecked": 17,
+      "shortcutsChecked": 8,
+      "checkOnlyLeavesChecked": 29,
+      "pristine": true
+    },
+    "powershell": {
+      "engine": "powershell",
+      "passed": true,
+      "check": "complete",
+      "reason": "clear",
+      "nativeLeavesChecked": 17,
+      "shortcutsChecked": 8,
+      "checkOnlyLeavesChecked": 29,
+      "environmentScopesChecked": 3,
+      "registryViewsChecked": 4,
+      "pristine": true,
+      "nativeInstallationRegistered": true,
+      "exactDefaultInstallation": true,
+      "historicalEngine": "v1",
+      "originalFreshV2SettingObserved": true,
+      "selectedThroughOriginalSettings": true,
+      "savedV1BeforeHistory": true,
+      "defaultV2HistoryTested": false,
+      "savedV1Retained": true,
+      "actualDefaultProfileRealpathRetained": true
+    }
+  },
+  "nativeDefaults": {
+    "engine": "powershell",
+    "passed": true,
+    "check": "complete",
+    "reason": "clear",
+    "nativeLeavesChecked": 17,
+    "shortcutsChecked": 8,
+    "checkOnlyLeavesChecked": 29,
+    "environmentScopesChecked": 3,
+    "registryViewsChecked": 4,
+    "pristine": true,
+    "nativeInstallationRegistered": true,
+    "exactDefaultInstallation": true,
+    "historicalEngine": "v1",
+    "originalFreshV2SettingObserved": true,
+    "selectedThroughOriginalSettings": true,
+    "savedV1BeforeHistory": true,
+    "defaultV2HistoryTested": false,
+    "savedV1Retained": true,
+    "actualDefaultProfileRealpathRetained": true
+  },
+  "nativeV1Settings": {
+    "baseline": {
+      "step": "complete",
+      "initialV2Verified": true,
+      "selectionReturnedV1": true,
+      "statusVerifiedV1": true,
+      "savedVerifiedV1": true,
+      "idleVerified": true,
+      "activityReads": 3,
+      "activityReadsCapped": false,
+      "readFailures": 0,
+      "readFailuresCapped": false,
+      "lastActivity": {
+        "shape": "object",
+        "v1": {
+          "shape": "object",
+          "verdict": "idle",
+          "busySessions": {
+            "known": true,
+            "value": 0,
+            "capped": false
+          },
+          "waitingRequests": {
+            "known": true,
+            "value": 0,
+            "capped": false
+          }
+        },
+        "v2": {
+          "shape": "null"
+        }
+      },
+      "lastHttp": {
+        "endpoint": "engine-activity",
+        "status": 200
+      }
+    },
+    "target": {
+      "step": "complete",
+      "initialV2Verified": false,
+      "selectionReturnedV1": false,
+      "statusVerifiedV1": true,
+      "savedVerifiedV1": true,
+      "idleVerified": true,
+      "activityReads": 1,
+      "activityReadsCapped": false,
+      "readFailures": 0,
+      "readFailuresCapped": false,
+      "lastActivity": {
+        "shape": "object",
+        "v1": {
+          "shape": "object",
+          "verdict": "idle",
+          "busySessions": {
+            "known": true,
+            "value": 0,
+            "capped": false
+          },
+          "waitingRequests": {
+            "known": true,
+            "value": 0,
+            "capped": false
+          }
+        },
+        "v2": {
+          "shape": "null"
+        }
+      },
+      "lastHttp": {
+        "endpoint": "engine-activity",
+        "status": 200
+      }
+    }
+  },
+  "downloadProgress": {
+    "subscriptionSupported": true
+  },
+  "nativeTargetConnection": {
+    "source": "os-owned-default-cdp",
+    "priorExpectedPort": 9223,
+    "selectionState": "candidate",
+    "lastOsObservation": {
+      "readKnown": true,
+      "oldBrowserAbsent": true,
+      "ports": [
+        {
+          "port": 9223,
+          "listenerPresent": false,
+          "ownedNewListener": false
+        },
+        {
+          "port": 9224,
+          "listenerPresent": true,
+          "ownedNewListener": true
+        },
+        {
+          "port": 9225,
+          "listenerPresent": false,
+          "ownedNewListener": false
+        },
+        {
+          "port": 9226,
+          "listenerPresent": false,
+          "ownedNewListener": false
+        },
+        {
+          "port": 9227,
+          "listenerPresent": false,
+          "ownedNewListener": false
+        }
+      ],
+      "processCount": 4,
+      "processCountCapped": false,
+      "roles": [
+        {
+          "role": "unclassified",
+          "sameSession": true,
+          "ageSeconds": 12,
+          "ageCapped": false
+        },
+        {
+          "role": "electron-child",
+          "sameSession": true,
+          "ageSeconds": 11,
+          "ageCapped": false
+        },
+        {
+          "role": "electron-child",
+          "sameSession": true,
+          "ageSeconds": 11,
+          "ageCapped": false
+        },
+        {
+          "role": "electron-child",
+          "sameSession": true,
+          "ageSeconds": 9,
+          "ageCapped": false
+        }
+      ]
+    },
+    "observedAllowedPort": 9224,
+    "actualAllowedPort": 9224,
+    "originalBrowserAbsent": true,
+    "stableOsOwnerVerified": true,
+    "actualBrowserPidMatchesOwner": true
+  },
+  "navigation": {
+    "passed": true,
+    "scope": "Actual installed AppSidebar clicks in the original upgraded, unpaired profile; account connection gate only, not authenticated personal forms",
+    "input": "CDP mouse press/release on visible sidebar buttons; no direct route mutation",
+    "noAccountPairing": true,
+    "noModelCalls": true,
+    "destinations": [
+      {
+        "section": "calendar",
+        "route": "/personal/calendar",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      },
+      {
+        "section": "fitness",
+        "route": "/personal/fitness",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      },
+      {
+        "section": "tasks",
+        "route": "/personal/tasks",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      },
+      {
+        "section": "account",
+        "route": "/personal/account",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      }
+    ],
+    "hostBridgeRootAndProfileMarkerRetained": true,
+    "workspaceSessionSetUnchanged": true,
+    "historicalMessageRetained": true,
+    "rendererExceptions": 0
+  },
+  "cleanup": "native default leaves and private fixture retained for disposable hosted VM destruction",
+  "rendererNetworkScope": {
+    "observedOrigins": 1,
+    "upstreamObserved": false,
+    "monitoring": "renderer CDP only; not a system network audit"
+  }
+}

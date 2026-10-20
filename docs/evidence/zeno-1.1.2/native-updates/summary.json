@@ -5,7 +5,7 @@
   "targetReleaseRunId": 39431901305,
   "frozenProductCommit": "46e5e38a5d7c4a147b0888d3a50e4788f045385e",
   "allDispatchedRunsEnded": true,
-  "allFourLanesAccepted": false,
+  "allFourLanesAccepted": true,
   "lanes": {
     "macos-x64": {
       "functional": "passed",
@@ -23,24 +23,24 @@
       "originalMissingGlyphScreenshotsRetained": true
     },
     "win32-x64": {
-      "functional": "native-defaults-baseline-runtime-readiness-not-accepted",
-      "visual": "not-produced",
+      "functional": "passed-native-defaults-saved-V1",
+      "visual": "passed",
       "receipts": [
         "win32-x64.json",
         "attempt02-win32-x64.json"
       ],
       "nsisInstallOrTargetRelaunchFailureEstablished": false,
       "latestAttempt": {
-        "attempt": 9,
-        "runId": 39468437116,
-        "jobId": 118785918919,
+        "attempt": 10,
+        "runId": 39469997478,
+        "jobId": 118791302556,
         "windowsProfileMode": "native-defaults",
         "additionalWholeFileRetriesAllowed": 2,
-        "historicalEngineScope": "Intended original saved V1; runtime readiness failed before setting facts or verified historical session.",
-        "status": "failed-baseline-runtime-workspace-ready",
-        "nativeVerdict": "not-executed-baseline-runtime-readiness-failed",
-        "receipt": "attempt09-native-defaults-win32-x64.json",
-        "artifactReceipt": "attempt09-native-defaults-win32-x64-artifact.json",
+        "historicalEngineScope": "Original saved V1, target setting and history retained; default V2 history not tested.",
+        "status": "passed",
+        "nativeVerdict": "passed",
+        "receipt": "attempt10-native-defaults-win32-x64.json",
+        "artifactReceipt": "attempt10-native-defaults-win32-x64-artifact.json",
         "actualWindowsPreflight": {
           "tests": 60,
           "pass": 60,
@@ -49,11 +49,19 @@
         },
         "bothNativePrerequisitesPassed": true,
         "originalBaselineNsisInstalled": true,
-        "observedBaselineBrowserAndEffectiveProfile": true,
-        "actualWholeFileDownloadCount": 0,
-        "targetOwnedPortDiscoveryExercised": false,
-        "lastReadErrorKind": "TimeoutError",
-        "lastHttpEndpoint": "workspace-session-list"
+        "actualWholeFileDownloadCount": 1,
+        "successfulWholeFileDownloadAttempt": 1,
+        "retryEverRequestedThisRun": false,
+        "nativeTargetConnectionSource": "os-owned-default-cdp",
+        "actualAllowedPort": 9224,
+        "stableOsOwnerAndActualBrowserPidVerified": true,
+        "frozenTargetVersionAndAsarVerified": true,
+        "actualNewBrowserAndAutomaticRelaunchVerified": true,
+        "originalEffectiveProfileAndRealpathRetained": true,
+        "bothRegistriesWorkspaceFileAndHistoryRetained": true,
+        "savedV1Retained": true,
+        "actualSidebarClicksPassed": 4,
+        "originalScreenshotsActuallyViewed": 2
       },
       "completedFailedWorkflowAttempts": 9,
       "priorIsolatedReceipts": [
@@ -68,8 +76,11 @@
         "attempt06-native-defaults-win32-x64.json",
         "attempt07-native-defaults-win32-x64.json",
         "attempt08-native-defaults-win32-x64.json",
-        "attempt09-native-defaults-win32-x64.json"
-      ]
+        "attempt09-native-defaults-win32-x64.json",
+        "attempt10-native-defaults-win32-x64.json"
+      ],
+      "receipt": "attempt10-native-defaults-win32-x64.json",
+      "artifactReceipt": "attempt10-native-defaults-win32-x64-artifact.json"
     },
     "macos-arm64": {
       "functional": "passed",
@@ -96,18 +107,19 @@
     }
   },
   "integrityChecks": {
-    "downloadedArtifactZipDigestsMatchedGitHub": 13,
-    "extractedOriginalFilesRehashed": 24,
+    "downloadedArtifactZipDigestsMatchedGitHub": 14,
+    "extractedOriginalFilesRehashed": 27,
     "originalCapacityAnnotationResponsesRehashed": 2,
-    "actualScreenshotsReviewed": 10,
-    "screenshotsWithReadableChinese": 8,
+    "actualScreenshotsReviewed": 12,
+    "screenshotsWithReadableChinese": 10,
     "originalNativeReceiptsRewritten": false
   },
   "acceptanceLimits": [
     "Unpaired native account connection gates, not authenticated personal forms.",
-    "Synthetic native canvas on macOS Intel, not model-generated output.",
+    "Synthetic native canvas on both macOS architectures, not model-generated output.",
     "No model calls or OS credential-storage acceptance.",
     "Renderer network observations are not a system network audit.",
-    "New Linux font inventory does not attest the first runner inventory."
+    "New Linux font inventory does not attest the first runner inventory.",
+    "Windows acceptance uses original saved V1 in native-defaults; default V2 history and the earlier isolated scenarios are not accepted retrospectively."
   ]
 }

@@ -19,7 +19,7 @@ workflow is rerun without explicit approval. This directory is separate from the
 | Lane | Actual result | Evidence boundary |
 | --- | --- | --- |
 | Linux x64 | Native functional and Chinese screenshot pass in attempt 2 | Both original AppImage runs passed actual upgrade and history/registry/sidebar gates. Original screenshots retain missing-glyph boxes; attempt 2 added explicit CJK host prerequisites and its two actually viewed screenshots have readable Chinese. |
-| Windows x64 | Attempt 9 stopped at baseline runtime readiness; target connection change unexercised | All 60 Windows tests, pristine checks, original NSIS and baseline browser/profile/listener passed. Runtime readiness stopped with TimeoutError before setting facts/history/download. Attempt 8 retains its complete download and on-disk target verification, with target browser/profile/history unaccepted. |
+| Windows x64 | Native functional and Chinese screenshot pass in attempt 10 | On the identical checkout as attempt 9, all 60 Windows tests passed. Original saved V1/history, first full download without retry, automatic original NSIS restart, target ASAR/version/new browser, exact profile/realpath, both registries and historical data passed. Stable OS-owned allowed port 9224 matched the actual browser. Four actual sidebar clicks and both actually viewed screenshots passed. |
 | macOS x64 | Native functional and screenshot pass | Real ZIP download and Squirrel install/automatic restart, original signatures and published ASAR, isolated profile, both registries, history, native Canvas/SVG/Ant Design Charts, and four actual sidebar clicks passed. All three screenshots were actually viewed and Chinese is readable. |
 | macOS arm64 | Native functional and screenshot pass in attempt 4 | On `xcode-27`, the original package and signatures, real 444,118,404-byte public download, Squirrel installation, automatic restart, both registries, profile/history, native canvas and four actual sidebar clicks passed. All three screenshots were actually viewed with readable Chinese and no clipping. Earlier capacity cancellations and the stale preflight failure remain unchanged. |
 
@@ -34,11 +34,12 @@ pool or available capacity; its observed runner acquisition is recorded
 separately. Attempt 3's raw workflow log is privately retained; its SHA and the
 fixed selector mismatch are recorded in `attempt03-macos-arm64-preflight.json`.
 It produced zero artifacts and no native report or PNG is fabricated. All
-dispatched runs have ended. Mac both architectures and Linux have passing native
-receipts; four-lane acceptance remains incomplete. Native-defaults attempts 5 through
+dispatched runs have ended. Both Mac architectures, Linux and Windows have passing
+native functional and screenshot receipts within the scope described here. Native-defaults attempts 5 through
 7 did not complete their intended V1 history setup. Attempt 8 verified the original
 saved V1 setting and baseline history; the updated target history was not verified.
-The original default V2 history and isolated attempts are separate acceptance boundaries.
+Attempt 10 verified original saved V1 and target history preservation. Original
+default V2 history and earlier isolated Windows attempts remain separate acceptance boundaries.
 
 Windows attempt 3 keeps the same original packages, process, profile, workspace
 and historical chat. Its explicitly selected retry limit is 2 (default 0), with
@@ -121,6 +122,23 @@ connection facts were produced. Historical session creation, download and the ne
 target-only discovery were not reached, so this run cannot establish that
 change's outcome or explain attempt 8 retrospectively. No screenshot was produced.
 See `attempt09-native-defaults-trajectory.json`.
+
+
+Attempt 10 is the explicitly authorized single fresh-host controlled repeat of
+attempt 9 at the identical checkout. All 60 Windows tests ran and passed. Original
+saved V1 and historical session/message preparation passed. Its first
+390,804,422-byte whole-file public download completed in 331,521 ms without
+requesting or exercising a retry. The original updater installed and automatically
+launched frozen 1.1.2. The actual allowed port was 9224; stable OS ownership,
+old-browser absence and actual browser PID matching the listener owner were
+verified before completing all target gates. Published version/ASAR, new browser
+PID, exact effective profile and realpath, profile marker, both workspace
+registries, workspace file, historical session/message and saved V1 were retained.
+Four actual sidebar clicks passed without renderer exceptions. Both original
+screenshots were actually viewed with clear Chinese and complete layouts. This
+establishes the native-defaults saved-V1 scenario; it does not explain earlier
+unknown failure causes or accept default V2 history retrospectively. See
+`attempt10-native-defaults-trajectory.json`.
 
 Windows' failed checkpoint in the first two attempts is `update-download`. Its baseline process
 remained running and the target was absent from disk; the effective baseline

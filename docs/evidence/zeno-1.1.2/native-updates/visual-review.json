@@ -163,6 +163,21 @@
       "targetScreenshotsAvailable": false,
       "reason": "Original NSIS/baseline identity passed, then runtime workspace readiness stopped before historical session or updater download; target owned-port discovery and target UI were not reached.",
       "nativeReceiptAltered": false
+    },
+    "attempt10-native-defaults-win32-x64": {
+      "nativeFunctionalReceiptPassed": true,
+      "artifactDigestVerified": true,
+      "attempt": 10,
+      "windowsProfileMode": "native-defaults",
+      "actuallyViewed": [
+        "attempt10-native-defaults-win32-x64.png",
+        "attempt10-native-defaults-win32-x64-navigation.png"
+      ],
+      "targetScreenshotsAvailable": true,
+      "layoutObservation": "The original upgraded onboarding and account connection gate fit the native window. Chinese sidebar and center text are readable, with no missing-glyph boxes or visible clipping.",
+      "chineseFontVisualAcceptance": true,
+      "nativeReceiptAltered": false,
+      "scope": "Unpaired account connection gate; authenticated personal forms and AI/model execution were not tested."
     }
   }
 }

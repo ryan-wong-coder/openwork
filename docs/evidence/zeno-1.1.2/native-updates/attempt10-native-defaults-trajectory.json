@@ -1,0 +1,356 @@
+{
+  "scope": "Original 1.0.0 to frozen 1.1.2 real native-defaults Windows update acceptance on the controlled identical-checkout fresh host. Original receipt and both screenshots retained unchanged; prior causes not reattributed.",
+  "runId": 39469997478,
+  "jobId": 118791302556,
+  "lane": "win32-x64",
+  "workflowAttempt": 10,
+  "windowsProfileMode": "native-defaults",
+  "checkoutCommit": "bc7e716dceead7a69a6c8cff7056f72ea9a6f944",
+  "nativeReceipt": {
+    "file": "attempt10-native-defaults-win32-x64.json",
+    "sha256": "98e225eabcaebc4f3f0a648a981c46f33273f6df293dfb0faf0f01638e649072"
+  },
+  "actualWindowsPreflightTests": {
+    "tests": 60,
+    "pass": 60,
+    "fail": 0,
+    "skipped": 0,
+    "source": "Completed original workflow summary at lines319/321/322/324; API preflight conclusion success"
+  },
+  "sameExactCheckoutAsAttempt09": true,
+  "nativeDefaultsPrerequisites": {
+    "node": {
+      "engine": "node",
+      "passed": true,
+      "check": "complete",
+      "reason": "clear",
+      "nativeLeavesChecked": 17,
+      "shortcutsChecked": 8,
+      "checkOnlyLeavesChecked": 29,
+      "pristine": true
+    },
+    "powershell": {
+      "engine": "powershell",
+      "passed": true,
+      "check": "complete",
+      "reason": "clear",
+      "nativeLeavesChecked": 17,
+      "shortcutsChecked": 8,
+      "checkOnlyLeavesChecked": 29,
+      "environmentScopesChecked": 3,
+      "registryViewsChecked": 4,
+      "pristine": true,
+      "nativeInstallationRegistered": true,
+      "exactDefaultInstallation": true,
+      "historicalEngine": "v1",
+      "originalFreshV2SettingObserved": true,
+      "selectedThroughOriginalSettings": true,
+      "savedV1BeforeHistory": true,
+      "defaultV2HistoryTested": false,
+      "savedV1Retained": true,
+      "actualDefaultProfileRealpathRetained": true
+    }
+  },
+  "nativeDefaultsInstallation": {
+    "engine": "powershell",
+    "passed": true,
+    "check": "complete",
+    "reason": "clear",
+    "nativeLeavesChecked": 17,
+    "shortcutsChecked": 8,
+    "checkOnlyLeavesChecked": 29,
+    "environmentScopesChecked": 3,
+    "registryViewsChecked": 4,
+    "pristine": true,
+    "nativeInstallationRegistered": true,
+    "exactDefaultInstallation": true,
+    "historicalEngine": "v1",
+    "originalFreshV2SettingObserved": true,
+    "selectedThroughOriginalSettings": true,
+    "savedV1BeforeHistory": true,
+    "defaultV2HistoryTested": false,
+    "savedV1Retained": true,
+    "actualDefaultProfileRealpathRetained": true
+  },
+  "nativeV1Settings": {
+    "baseline": {
+      "step": "complete",
+      "initialV2Verified": true,
+      "selectionReturnedV1": true,
+      "statusVerifiedV1": true,
+      "savedVerifiedV1": true,
+      "idleVerified": true,
+      "activityReads": 3,
+      "activityReadsCapped": false,
+      "readFailures": 0,
+      "readFailuresCapped": false,
+      "lastActivity": {
+        "shape": "object",
+        "v1": {
+          "shape": "object",
+          "verdict": "idle",
+          "busySessions": {
+            "known": true,
+            "value": 0,
+            "capped": false
+          },
+          "waitingRequests": {
+            "known": true,
+            "value": 0,
+            "capped": false
+          }
+        },
+        "v2": {
+          "shape": "null"
+        }
+      },
+      "lastHttp": {
+        "endpoint": "engine-activity",
+        "status": 200
+      }
+    },
+    "target": {
+      "step": "complete",
+      "initialV2Verified": false,
+      "selectionReturnedV1": false,
+      "statusVerifiedV1": true,
+      "savedVerifiedV1": true,
+      "idleVerified": true,
+      "activityReads": 1,
+      "activityReadsCapped": false,
+      "readFailures": 0,
+      "readFailuresCapped": false,
+      "lastActivity": {
+        "shape": "object",
+        "v1": {
+          "shape": "object",
+          "verdict": "idle",
+          "busySessions": {
+            "known": true,
+            "value": 0,
+            "capped": false
+          },
+          "waitingRequests": {
+            "known": true,
+            "value": 0,
+            "capped": false
+          }
+        },
+        "v2": {
+          "shape": "null"
+        }
+      },
+      "lastHttp": {
+        "endpoint": "engine-activity",
+        "status": 200
+      }
+    }
+  },
+  "historicalEngineScope": "Original fresh V2 setting observed, V1 selected/saved before historical session creation and retained by target; default V2 history not tested.",
+  "downloadPolicy": {
+    "additionalRetries": 2,
+    "mode": "whole-file; same baseline session; no resume; reset-only retry"
+  },
+  "actualWholeFileDownloadCount": 1,
+  "successfulWholeFileDownloadAttempt": 1,
+  "additionalRetriesActuallyStarted": 0,
+  "retryEverRequestedThisRun": false,
+  "downloadAttempts": [
+    {
+      "attempt": 1,
+      "startedAt": "2026-10-20T17:58:25.062Z",
+      "finishedAt": "2026-10-20T18:03:56.582Z",
+      "elapsedMs": 331521,
+      "outcome": "downloaded",
+      "reason": "download-completed",
+      "signal": "not-inspected",
+      "progress": {
+        "transferred": 390804422,
+        "total": 390804422,
+        "percent": 100,
+        "bytesPerSecond": 1180382
+      },
+      "retryRequested": false
+    }
+  ],
+  "downloadCompletedBytes": 390804422,
+  "resumeClaimed": false,
+  "nativeTargetConnection": {
+    "source": "os-owned-default-cdp",
+    "priorExpectedPort": 9223,
+    "selectionState": "candidate",
+    "lastOsObservation": {
+      "readKnown": true,
+      "oldBrowserAbsent": true,
+      "ports": [
+        {
+          "port": 9223,
+          "listenerPresent": false,
+          "ownedNewListener": false
+        },
+        {
+          "port": 9224,
+          "listenerPresent": true,
+          "ownedNewListener": true
+        },
+        {
+          "port": 9225,
+          "listenerPresent": false,
+          "ownedNewListener": false
+        },
+        {
+          "port": 9226,
+          "listenerPresent": false,
+          "ownedNewListener": false
+        },
+        {
+          "port": 9227,
+          "listenerPresent": false,
+          "ownedNewListener": false
+        }
+      ],
+      "processCount": 4,
+      "processCountCapped": false,
+      "roles": [
+        {
+          "role": "unclassified",
+          "sameSession": true,
+          "ageSeconds": 12,
+          "ageCapped": false
+        },
+        {
+          "role": "electron-child",
+          "sameSession": true,
+          "ageSeconds": 11,
+          "ageCapped": false
+        },
+        {
+          "role": "electron-child",
+          "sameSession": true,
+          "ageSeconds": 11,
+          "ageCapped": false
+        },
+        {
+          "role": "electron-child",
+          "sameSession": true,
+          "ageSeconds": 9,
+          "ageCapped": false
+        }
+      ]
+    },
+    "observedAllowedPort": 9224,
+    "actualAllowedPort": 9224,
+    "originalBrowserAbsent": true,
+    "stableOsOwnerVerified": true,
+    "actualBrowserPidMatchesOwner": true
+  },
+  "automaticRelaunchPhase": {
+    "name": "original-target-installed-and-automatically-relaunched",
+    "at": "2026-10-20T18:04:44.965Z",
+    "installedVersion": "1.1.2",
+    "publishedAsar": true,
+    "actualProcessChanged": true
+  },
+  "targetPreservationPhase": {
+    "name": "real-native-upgrade-and-preservation-verified",
+    "at": "2026-10-20T18:04:45.076Z",
+    "installedVersion": "1.1.2",
+    "successfulDownloadAttempt": 1,
+    "publishedAsar": true,
+    "actualProcessChanged": true,
+    "chromiumProfile": true,
+    "workspaceIdentity": true,
+    "serverRegistryIdentity": true,
+    "workspaceFile": true,
+    "historicalSession": true,
+    "historicalMessage": true,
+    "embeddedServer": true
+  },
+  "navigation": {
+    "passed": true,
+    "scope": "Actual installed AppSidebar clicks in the original upgraded, unpaired profile; account connection gate only, not authenticated personal forms",
+    "input": "CDP mouse press/release on visible sidebar buttons; no direct route mutation",
+    "noAccountPairing": true,
+    "noModelCalls": true,
+    "destinations": [
+      {
+        "section": "calendar",
+        "route": "/personal/calendar",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      },
+      {
+        "section": "fitness",
+        "route": "/personal/fitness",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      },
+      {
+        "section": "tasks",
+        "route": "/personal/tasks",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      },
+      {
+        "section": "account",
+        "route": "/personal/account",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      }
+    ],
+    "hostBridgeRootAndProfileMarkerRetained": true,
+    "workspaceSessionSetUnchanged": true,
+    "historicalMessageRetained": true,
+    "rendererExceptions": 0
+  },
+  "nativeUpdateExecuted": true,
+  "acceptanceScope": {
+    "originalBaseline": true,
+    "originalTarget": true,
+    "realPublicFeed": true,
+    "installedUpgrade": true,
+    "automaticRelaunch": true,
+    "historicalChatPreservation": true,
+    "accountPairingTested": false,
+    "osCredentialStorageTested": false,
+    "aiRequested": false
+  },
+  "actuallyViewedScreenshots": [
+    "attempt10-native-defaults-win32-x64.png",
+    "attempt10-native-defaults-win32-x64-navigation.png"
+  ],
+  "visualObservation": "Both original screenshots show readable Chinese and complete onboarding/account-gate layouts without visible clipping. Account pairing, authenticated personal forms and model calls are outside this native smoke scope.",
+  "rawWorkflowCompletedJobLog": {
+    "bytes": 59612,
+    "sha256": "f26936e7fa0e3a625f35634d4f8a90ea276bc5b0b550d7ae43489e0ca0fef5a6",
+    "retainedInPublicTree": false
+  },
+  "inProgressJobLogProbe": {
+    "attempts": 1,
+    "httpStatus": 404,
+    "countsAvailable": false,
+    "repeatedWhileRunning": false
+  },
+  "earlierAttemptCauseBackfilled": false,
+  "interpretation": "The first whole-file public download completed at 100 percent in 331521ms without requesting or exercising a retry. The unchanged original updater installed and automatically launched frozen 1.1.2. Target allowed port 9224 was established from stable exact-executable OS ownership and the actual browser identity, with the old browser absent. Published ASAR/version, actual new PID, original effective profile/realpath and marker, both workspace registries, workspace file, historical session/message and saved V1 were verified. Four actual sidebar clicks passed without renderer exceptions. Both original screenshots were actually viewed. This run does not establish the unknown earlier attachment or readiness causes, and default V2 history remains outside the tested Windows scenario."
+}
