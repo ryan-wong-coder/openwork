@@ -19,7 +19,7 @@ workflow is rerun without explicit approval. This directory is separate from the
 | Lane | Actual result | Evidence boundary |
 | --- | --- | --- |
 | Linux x64 | Native functional and Chinese screenshot pass in attempt 2 | Both original AppImage runs passed actual upgrade and history/registry/sidebar gates. Original screenshots retain missing-glyph boxes; attempt 2 added explicit CJK host prerequisites and its two actually viewed screenshots have readable Chinese. |
-| Windows x64 | Attempt 7 stopped at original baseline V1-setting preparation | All 52 Windows tests and both pristine checks passed; original default NSIS installation/registration and actual baseline browser/profile/CDP were observed. V1-setting preparation then failed before historical chat, updater download or target UI. The underlying reason was not recorded. Earlier receipts remain unchanged. |
+| Windows x64 | Attempt 8 downloaded and verified the target on disk; target attachment failed | All 55 Windows tests, pristine checks, original default NSIS, saved V1 and baseline history passed. The first whole-file download completed without retry and frozen target version/ASAR were verified on disk. Expected target CDP refused the connection; actual target browser/profile/history and UI remain unverified. |
 | macOS x64 | Native functional and screenshot pass | Real ZIP download and Squirrel install/automatic restart, original signatures and published ASAR, isolated profile, both registries, history, native Canvas/SVG/Ant Design Charts, and four actual sidebar clicks passed. All three screenshots were actually viewed and Chinese is readable. |
 | macOS arm64 | Native functional and screenshot pass in attempt 4 | On `xcode-27`, the original package and signatures, real 444,118,404-byte public download, Squirrel installation, automatic restart, both registries, profile/history, native canvas and four actual sidebar clicks passed. All three screenshots were actually viewed with readable Chinese and no clipping. Earlier capacity cancellations and the stale preflight failure remain unchanged. |
 
@@ -36,8 +36,9 @@ fixed selector mismatch are recorded in `attempt03-macos-arm64-preflight.json`.
 It produced zero artifacts and no native report or PNG is fabricated. All
 dispatched runs have ended. Mac both architectures and Linux have passing native
 receipts; four-lane acceptance remains incomplete. Native-defaults attempts 5 through
-7 did not complete their intended V1 history setup. The original default V2 history and
-isolated attempts are separate acceptance boundaries.
+7 did not complete their intended V1 history setup. Attempt 8 verified the original
+saved V1 setting and baseline history; the updated target history was not verified.
+The original default V2 history and isolated attempts are separate acceptance boundaries.
 
 Windows attempt 3 keeps the same original packages, process, profile, workspace
 and historical chat. Its explicitly selected retry limit is 2 (default 0), with
@@ -90,6 +91,22 @@ response. Saved V1 and historical chat were not verified. There was no updater
 download, retry, target installation or target screenshot. These facts do not
 establish an updater failure or retrospectively explain any earlier attempt.
 See `attempt07-native-defaults-trajectory.json`.
+
+
+Attempt 8 adds only fixed setting-step/completion flags and safe summaries of the
+same existing activity request. Its 55 Windows tests all ran and passed. Both
+pristine checks, the original default NSIS installation, fresh V2 setting,
+selection/readback/saved V1 and idle check passed. One activity read reported V1
+idle with zero busy sessions and zero waiting requests; V2 was null. The baseline
+workspace, server registry, historical session and message were verified without
+a model call. The first 390,804,422-byte whole-file public download completed in
+335,966 ms without requesting or exercising any retry. The original baseline
+exited and frozen 1.1.2 version/ASAR were verified on disk. The following target
+CDP connection was refused (`ECONNREFUSED`, page-list shape pending), with no
+expected owned listener or identified actual target browser. Target profile,
+history and UI remain unverified. No screenshot was produced. These observations
+do not retrospectively explain attempt 7's unknown setting failure or establish
+target environment loss. See `attempt08-native-defaults-trajectory.json`.
 
 Windows' failed checkpoint in the first two attempts is `update-download`. Its baseline process
 remained running and the target was absent from disk; the effective baseline

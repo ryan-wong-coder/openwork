@@ -271,5 +271,32 @@
     "authorizationBoundary": "One Windows attempt07 only; no further run authorized.",
     "outcome": "52/52 Windows tests and both pristine checks passed; original NSIS installed/registered in native defaults and actual baseline browser/profile/CDP were observed, then V1-setting preparation failed before history/download/update. Underlying reason not recorded.",
     "nativeReceipt": "attempt07-native-defaults-win32-x64.json"
+  },
+  "windowsNativeDefaultsSettingDiagnostics": {
+    "workflowId": 390119143,
+    "runId": 39462867382,
+    "jobId": 118766623216,
+    "ref": "personal",
+    "checkoutCommit": "93576dd1d698ebf9fc5e32022b3a7e5a25b4efb2",
+    "checkoutDesktopVersion": "1.1.2",
+    "platform": "win32",
+    "windows_profile_mode": "native-defaults",
+    "windows_download_retries": "2",
+    "attempt": 8,
+    "createdAt": "2026-10-20T17:04:26Z",
+    "operatorExplicitlyApproved": true,
+    "sameFrozenBaselineAndTarget": true,
+    "reason": "Add fixed setting step/completion flags and same-call activity response/error categories; original predicate, timeout and endpoint call sites remain unchanged. No extra probe, repair or engine start added.",
+    "priorNativeDefaultsReceipt": "attempt07-native-defaults-win32-x64.json",
+    "priorUnderlyingFailureCauseRemainsUnknown": true,
+    "newEvidenceFilenamePrefix": "attempt08-native-defaults-",
+    "workflowRegistrationActiveVerified": true,
+    "githubWorkflowBytesMatchExactSource": true,
+    "runCheckoutExactShaVerified": true,
+    "productBytesAndNativeGatesUnchanged": true,
+    "cacheSeedOrManualTargetLaunch": false,
+    "authorizationBoundary": "One Windows attempt08 only; no further run authorized.",
+    "outcome": "55/55 Windows tests, both pristine checks, original NSIS, saved V1 and baseline history passed. First whole-file public download completed without retry, target version/ASAR verified on disk, then expected target CDP connection refused; actual target browser/profile/history unverified.",
+    "nativeReceipt": "attempt08-native-defaults-win32-x64.json"
   }
 }

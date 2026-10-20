@@ -143,6 +143,16 @@
       "targetScreenshotsAvailable": false,
       "reason": "Pristine checks and original default NSIS installation passed, then original baseline V1-setting preparation stopped before history or updater download; no target image was produced.",
       "nativeReceiptAltered": false
+    },
+    "attempt08-native-defaults-win32-x64": {
+      "nativeFunctionalVerdict": "target-browser-profile-unverified",
+      "artifactDigestVerified": true,
+      "attempt": 8,
+      "windowsProfileMode": "native-defaults",
+      "actuallyViewed": [],
+      "targetScreenshotsAvailable": false,
+      "reason": "Original saved V1 and baseline history passed. The first full download completed without retry and target version/ASAR were verified on disk. Target CDP attachment refused the connection, so no verified target UI image was produced.",
+      "nativeReceiptAltered": false
     }
   }
 }

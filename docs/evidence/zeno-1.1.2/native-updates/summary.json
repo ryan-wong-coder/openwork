@@ -23,7 +23,7 @@
       "originalMissingGlyphScreenshotsRetained": true
     },
     "win32-x64": {
-      "functional": "native-defaults-baseline-v1-setting-not-accepted",
+      "functional": "native-defaults-target-attachment-not-accepted",
       "visual": "not-produced",
       "receipts": [
         "win32-x64.json",
@@ -31,29 +31,34 @@
       ],
       "nsisInstallOrTargetRelaunchFailureEstablished": false,
       "latestAttempt": {
-        "attempt": 7,
-        "runId": 39460429086,
-        "jobId": 118758221250,
+        "attempt": 8,
+        "runId": 39462867382,
+        "jobId": 118766623216,
         "windowsProfileMode": "native-defaults",
         "additionalWholeFileRetriesAllowed": 2,
-        "historicalEngineScope": "Intended saved V1 through original settings; V1-setting preparation did not pass and history was not created.",
-        "status": "failed-baseline-native-v1-setting",
-        "nativeVerdict": "not-executed-v1-setting-preparation-failed",
-        "receipt": "attempt07-native-defaults-win32-x64.json",
-        "artifactReceipt": "attempt07-native-defaults-win32-x64-artifact.json",
+        "historicalEngineScope": "Original saved V1 and baseline history verified; updated target history not verified. Default V2 history not tested.",
+        "status": "failed-target-attach-page-list",
+        "nativeVerdict": "not-accepted-target-browser-profile-unverified",
+        "receipt": "attempt08-native-defaults-win32-x64.json",
+        "artifactReceipt": "attempt08-native-defaults-win32-x64-artifact.json",
         "actualWindowsPreflight": {
-          "tests": 52,
-          "pass": 52,
+          "tests": 55,
+          "pass": 55,
           "fail": 0,
           "skipped": 0
         },
         "bothNativePrerequisitesPassed": true,
         "originalBaselineNsisInstalled": true,
-        "observedBaselineBrowserAndEffectiveProfile": true,
-        "actualWholeFileDownloadCount": 0,
-        "underlyingSettingFailureCauseRecorded": false
+        "baselineSavedV1AndHistoryVerified": true,
+        "actualWholeFileDownloadCount": 1,
+        "successfulWholeFileDownloadAttempt": 1,
+        "retryEverRequestedThisRun": false,
+        "frozenTargetVersionAndAsarVerifiedOnDisk": true,
+        "observedTargetBrowserPidKnown": false,
+        "targetProfileAndHistoryVerified": false,
+        "failureCauseCode": "ECONNREFUSED"
       },
-      "completedFailedWorkflowAttempts": 7,
+      "completedFailedWorkflowAttempts": 8,
       "priorIsolatedReceipts": [
         "win32-x64.json",
         "attempt02-win32-x64.json",
@@ -64,7 +69,8 @@
       "nativeDefaultsReceipts": [
         "attempt05-native-defaults-win32-x64.json",
         "attempt06-native-defaults-win32-x64.json",
-        "attempt07-native-defaults-win32-x64.json"
+        "attempt07-native-defaults-win32-x64.json",
+        "attempt08-native-defaults-win32-x64.json"
       ]
     },
     "macos-arm64": {
@@ -92,8 +98,8 @@
     }
   },
   "integrityChecks": {
-    "downloadedArtifactZipDigestsMatchedGitHub": 11,
-    "extractedOriginalFilesRehashed": 22,
+    "downloadedArtifactZipDigestsMatchedGitHub": 12,
+    "extractedOriginalFilesRehashed": 23,
     "originalCapacityAnnotationResponsesRehashed": 2,
     "actualScreenshotsReviewed": 10,
     "screenshotsWithReadableChinese": 8,

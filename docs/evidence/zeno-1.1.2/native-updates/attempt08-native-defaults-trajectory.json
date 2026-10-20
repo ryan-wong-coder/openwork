@@ -1,0 +1,181 @@
+{
+  "scope": "Exact native-defaults saved-V1 history, first completed whole-file download and verified on-disk target, with subsequent target attachment unaccepted; original receipt unchanged.",
+  "runId": 39462867382,
+  "jobId": 118766623216,
+  "lane": "win32-x64",
+  "workflowAttempt": 8,
+  "windowsProfileMode": "native-defaults",
+  "checkoutCommit": "93576dd1d698ebf9fc5e32022b3a7e5a25b4efb2",
+  "nativeReceipt": {
+    "file": "attempt08-native-defaults-win32-x64.json",
+    "sha256": "3d176705c425c45c2e6813f5f3be9b3fc021f54196abf1975c0780e403302c51"
+  },
+  "actualWindowsPreflightTests": {
+    "tests": 55,
+    "pass": 55,
+    "fail": 0,
+    "skipped": 0,
+    "source": "Original job-log endpoint summary at lines313/315/316/318; API preflight conclusion success"
+  },
+  "nativeDefaultsPrerequisites": {
+    "node": {
+      "engine": "node",
+      "passed": true,
+      "check": "complete",
+      "reason": "clear",
+      "nativeLeavesChecked": 17,
+      "shortcutsChecked": 8,
+      "checkOnlyLeavesChecked": 29,
+      "pristine": true
+    },
+    "powershell": {
+      "engine": "powershell",
+      "passed": true,
+      "check": "complete",
+      "reason": "clear",
+      "nativeLeavesChecked": 17,
+      "shortcutsChecked": 8,
+      "checkOnlyLeavesChecked": 29,
+      "environmentScopesChecked": 3,
+      "registryViewsChecked": 4,
+      "pristine": true,
+      "nativeInstallationRegistered": true,
+      "exactDefaultInstallation": true,
+      "historicalEngine": "v1",
+      "originalFreshV2SettingObserved": true,
+      "selectedThroughOriginalSettings": true,
+      "savedV1BeforeHistory": true,
+      "defaultV2HistoryTested": false
+    }
+  },
+  "nativeV1Settings": {
+    "baseline": {
+      "step": "complete",
+      "initialV2Verified": true,
+      "selectionReturnedV1": true,
+      "statusVerifiedV1": true,
+      "savedVerifiedV1": true,
+      "idleVerified": true,
+      "activityReads": 1,
+      "activityReadsCapped": false,
+      "readFailures": 0,
+      "readFailuresCapped": false,
+      "lastActivity": {
+        "shape": "object",
+        "v1": {
+          "shape": "object",
+          "verdict": "idle",
+          "busySessions": {
+            "known": true,
+            "value": 0,
+            "capped": false
+          },
+          "waitingRequests": {
+            "known": true,
+            "value": 0,
+            "capped": false
+          }
+        },
+        "v2": {
+          "shape": "null"
+        }
+      },
+      "lastHttp": {
+        "endpoint": "engine-activity",
+        "status": 200
+      }
+    }
+  },
+  "historicalEngineScope": "Original fresh V2 setting observed, V1 selected/saved through original settings before historical session creation; default V2 history not tested.",
+  "baselineNsisInstalled": true,
+  "baselineNoResigning": true,
+  "historicalV1SessionCreated": true,
+  "originalBaselineHistoryFacts": {
+    "name": "baseline-native-history-created",
+    "at": "2026-10-20T17:08:44.758Z",
+    "installedVersion": "1.0.0",
+    "workspace": true,
+    "serverRegistryIdentity": true,
+    "storedSession": true,
+    "storedMessage": true,
+    "noModelCall": true
+  },
+  "downloadPolicy": {
+    "additionalRetries": 2,
+    "mode": "whole-file; same baseline session; no resume; reset-only retry"
+  },
+  "actualWholeFileDownloadCount": 1,
+  "successfulWholeFileDownloadAttempt": 1,
+  "additionalRetriesActuallyStarted": 0,
+  "retryEverRequestedThisRun": false,
+  "downloadAttempts": [
+    {
+      "attempt": 1,
+      "startedAt": "2026-10-20T17:08:44.977Z",
+      "finishedAt": "2026-10-20T17:14:20.943Z",
+      "elapsedMs": 335966,
+      "outcome": "downloaded",
+      "reason": "download-completed",
+      "signal": "not-inspected",
+      "progress": {
+        "transferred": 390804422,
+        "total": 390804422,
+        "percent": 100,
+        "bytesPerSecond": 1164717
+      },
+      "retryRequested": false
+    }
+  ],
+  "downloadCompletedBytes": 390804422,
+  "resumeClaimed": false,
+  "failure": {
+    "classification": "native-update-validation-failed",
+    "lastPhase": "native-public-download-completed",
+    "activeCheck": "attach-page-list",
+    "errorKind": "Error",
+    "lastReadError": {
+      "errorKind": "TypeError",
+      "causeCode": "ECONNREFUSED"
+    },
+    "lastHttp": {
+      "endpoint": "engine-activity",
+      "status": 200
+    },
+    "lastPageList": {
+      "shape": "pending"
+    }
+  },
+  "observedProcessFacts": {
+    "oldBrowserPidAbsent": true,
+    "spawnedBaselineProcessExited": true,
+    "samePrivateMainProcessCount": 1,
+    "observedBrowserPidKnown": false,
+    "userDebugEnvironmentMatches": false,
+    "userProfileEnvironmentMatches": false,
+    "mainHasExpectedDebugArgument": false,
+    "mainHasExpectedProfileArgument": false,
+    "ownedMainListenerProbeSucceeded": true,
+    "ownedMainExpectedPortListening": false
+  },
+  "targetDiskVerification": {
+    "diskReadSucceeded": true,
+    "archiveHashReadSucceeded": true,
+    "archiveMetadataReadSucceeded": true,
+    "targetVersionOnDisk": true,
+    "publishedAsarOnDisk": true
+  },
+  "verifiedOnDiskVersion": "1.1.2",
+  "effectiveTargetProfile": "unknown",
+  "runningTargetIdentity": "unverified",
+  "targetHistoricalStateVerified": false,
+  "observedSanitizedUpdaterLogSignals": [],
+  "rawWorkflowJobLog": {
+    "bytes": 42015,
+    "sha256": "2c84ea5028a8c6916c87f5ecdb2ccb2ae19e0968026d8e01ae2b63579a8d94e2",
+    "retainedInPublicTree": false,
+    "source": "GitHub job-log endpoint fetched once; run completed by the subsequent status read"
+  },
+  "earlierAttemptCauseBackfilled": false,
+  "candidateProcessCountBoundary": "The count filters the exact executable path and excludes --type arguments only. A no-type ELECTRON_RUN_AS_NODE helper can be a candidate, so count1 does not identify an actual browser or prove target restart.",
+  "interpretation": "Both pristine checks and the normal original NSIS installation passed. The original fresh V2 setting, selected/saved V1, idle predicate and real V1 history were verified. The first whole-file download completed at 100 percent without requesting or exercising a retry. The original baseline exited and frozen 1.1.2 version/ASAR were verified on disk, but the expected CDP connection was refused and no actual target browser PID/profile/history was observed. This does not establish installation failure, target environment loss or the unknown setting-preparation cause from attempt 7."
+}
