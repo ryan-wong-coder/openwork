@@ -65,6 +65,84 @@ export function finishPortableRun(passed, exit) {
   if (!passed) exit(1);
 }
 
+export function safePortableFailureState(value) {
+  const booleans = ['collected', 'diskReadSucceeded', 'targetVersionOnDisk', 'publishedAsarOnDisk', 'publishedAppImageOnDisk',
+    'oldPidKnown', 'oldBrowserPidAbsent', 'spawnedBaselineProcessExited', 'processScanCompleted',
+    'mainHasExpectedDebugArgument', 'mainHasExpectedProfileArgument', 'mainHasExpectedDebugEnvironment',
+    'mainHasExpectedProfileEnvironment', 'mainHasExpectedAppImageEnvironment', 'userDebugEnvironmentMatches', 'userProfileEnvironmentMatches'];
+  return Object.fromEntries([...booleans.filter(key => typeof value?.[key] === 'boolean').map(key => [key, value[key]]),
+    ...(Number.isSafeInteger(value?.samePrivateMainProcessCount) && value.samePrivateMainProcessCount >= 0 && value.samePrivateMainProcessCount <= 1024
+      ? [['samePrivateMainProcessCount', value.samePrivateMainProcessCount]] : [])]);
+}
+
+export function hasExactProcessArgument(argv, name, value) {
+  return argv.some((argument, index) => argument === name + '=' + value || argument === name && argv[index + 1] === value);
+}
+
+export function windowsFailureProbeScript() {
+  return `$ErrorActionPreference='Stop'
+$v=ConvertFrom-Json ([Text.Encoding]::UTF8.GetString([Convert]::FromBase64String([Console]::In.ReadToEnd().Trim())))
+$escaped=$v.executable.Replace('\\','\\\\').Replace("'","\\'")
+$items=@(Get-CimInstance Win32_Process -Filter ("ExecutablePath = '"+$escaped+"'") -ErrorAction Stop | Where-Object { [string]::Equals($_.ExecutablePath,$v.executable,[StringComparison]::OrdinalIgnoreCase) -and $_.CommandLine -notmatch '(?:^|\\s)--type(?:=|\\s)' })
+$debug=$false; $profile=$false
+foreach($item in $items){$line=$item.CommandLine.Replace('"','');$debug=$debug -or [regex]::IsMatch($line,'(?:^|\\s)--remote-debugging-port='+[regex]::Escape([string]$v.port)+'(?:\\s|$)');$profile=$profile -or [regex]::IsMatch($line,'(?:^|\\s)--user-data-dir='+[regex]::Escape($v.profile)+'(?:\\s|$)')}
+$known=$v.oldPid -gt 1; $absent=$false
+if($known){$absent=@(Get-CimInstance Win32_Process -Filter ('ProcessId = '+[string]$v.oldPid) -ErrorAction Stop).Count -eq 0}
+[ordered]@{processScanCompleted=$true;samePrivateMainProcessCount=$items.Count;oldPidKnown=[bool]$known;oldBrowserPidAbsent=[bool]$absent;mainHasExpectedDebugArgument=[bool]$debug;mainHasExpectedProfileArgument=[bool]$profile;userDebugEnvironmentMatches=([Environment]::GetEnvironmentVariable('OPENWORK_ELECTRON_REMOTE_DEBUG_PORT','User') -ceq [string]$v.port);userProfileEnvironmentMatches=([Environment]::GetEnvironmentVariable('OPENWORK_ELECTRON_USERDATA','User') -ceq $v.profile)}|ConvertTo-Json -Compress`;
+}
+
+function collectPortableFailureState(context, oldPid, child) {
+  // This is only called after the guarded hosted verifier has failed, before
+  // its finally block restores the User environment or disposes private data.
+  if (!context) return { collected: false };
+  assertPortableHostedRunner(process.env, process.platform, process.arch);
+  const { platform, root, installation, profile, port, executable, targetAsarSha256, targetInstallerSha256 } = context;
+  assertPrivatePath(root, installation); assertPrivatePath(root, profile); assertPrivatePath(root, executable);
+  const facts = { collected: true, diskReadSucceeded: false, processScanCompleted: false,
+    oldPidKnown: Number.isSafeInteger(oldPid) && oldPid > 1,
+    spawnedBaselineProcessExited: Boolean(child && (child.exitCode !== null || child.signalCode !== null)) };
+  try {
+    if (platform === 'win32') {
+      const archive = join(installation, 'resources/app.asar'); assertPrivatePath(root, archive);
+      facts.targetVersionOnDisk = JSON.parse(asar.extractFile(archive, 'package.json').toString()).version === TARGET;
+      facts.publishedAsarOnDisk = hash(readFileSync(archive)) === targetAsarSha256;
+    } else facts.publishedAppImageOnDisk = hash(readFileSync(executable)) === targetInstallerSha256;
+    facts.diskReadSucceeded = true;
+  } catch { /* Unknown disk state is separate from a known target mismatch. */ }
+  try {
+    if (platform === 'win32') {
+      const input = Buffer.from(JSON.stringify({ executable, profile, port, oldPid: facts.oldPidKnown ? oldPid : 0 }), 'utf8').toString('base64');
+      Object.assign(facts, safePortableFailureState(JSON.parse(command('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', windowsFailureProbeScript()], { input, timeout: 10_000 }))));
+    } else {
+      facts.oldBrowserPidAbsent = facts.oldPidKnown && !existsSync('/proc/' + oldPid);
+      facts.samePrivateMainProcessCount = 0;
+      facts.processScanCompleted = true;
+      for (const pid of readdirSync('/proc').filter(name => /^[1-9]\d*$/.test(name))) {
+        let privateProcess = false;
+        try {
+          const exe = realpathSync('/proc/' + pid + '/exe');
+          if (basename(exe) !== 'openwork') continue;
+          assertPrivatePath(join(root, 'tmp'), exe);
+          privateProcess = true;
+          const argv = readFileSync('/proc/' + pid + '/cmdline', 'utf8').split('\0');
+          if (argv.some(argument => /^--type(?:=|$)/.test(argument))) continue;
+          // Only the exact private extracted executable may have its flags read.
+          const environment = readFileSync('/proc/' + pid + '/environ', 'utf8').split('\0');
+          facts.samePrivateMainProcessCount++;
+          for (const [key, match] of Object.entries({
+            mainHasExpectedDebugArgument: hasExactProcessArgument(argv, '--remote-debugging-port', String(port)),
+            mainHasExpectedProfileArgument: hasExactProcessArgument(argv, '--user-data-dir', profile),
+            mainHasExpectedDebugEnvironment: environment.includes('OPENWORK_ELECTRON_REMOTE_DEBUG_PORT=' + port),
+            mainHasExpectedProfileEnvironment: environment.includes('OPENWORK_ELECTRON_USERDATA=' + profile),
+            mainHasExpectedAppImageEnvironment: environment.includes('APPIMAGE=' + executable),
+          })) facts[key] = facts[key] === true || match;
+        } catch { if (privateProcess) facts.processScanCompleted = false; /* No details from other processes are read. */ }
+      }
+    }
+  } catch { /* Do not replace the primary failure with a diagnostic failure. */ }
+  return safePortableFailureState(facts);
+}
+
 export function portableErrorMetadata(error) {
   const value = error && typeof error === 'object' ? error : {};
   return { errorKind: ERROR_KINDS.has(value.name) ? value.name : 'UnknownError',
@@ -401,7 +479,7 @@ async function main() {
     scope: { originalBaseline: false, originalTarget: false, realPublicFeed: false, installedUpgrade: false, automaticRelaunch: false, historicalChatPreservation: false, accountPairingTested: false, osCredentialStorageTested: false, aiRequested: false },
     isolation: 'ephemeral GitHub-hosted VM; private installation, Electron profile, workspace, XDG data and temporary runtime', publicOrigin: ORIGIN };
   const phase = (name, values = {}) => { report.phases.push({ name, at: new Date().toISOString(), ...values }); console.log(`[zeno-portable-update] ${name}`); };
-  let client; let child; let oldPid; let cleanupAllowed = false; let failure = false; let restoreEnvironment;
+  let client; let child; let oldPid; let cleanupAllowed = false; let failure = false; let restoreEnvironment; let failureContext;
   const exceptions = []; const origins = new Set();
   const diagnostics = portableDiagnosticState();
   try {
@@ -426,6 +504,8 @@ async function main() {
     diagnostics.enter('private-directories');
     for (const name of ['installation', 'profile', 'workspace', 'state', 'data', 'config', 'cache', 'logs', 'tmp']) mkdirSync(join(root, name));
     const installation = join(root, 'installation'); const profile = join(root, 'profile'); const workspace = join(root, 'workspace'); const port = await freePort();
+    failureContext = { platform, root, installation, profile, port, executable: join(installation, platform === 'win32' ? PRODUCT + '.exe' : 'Zeno.AppImage'),
+      targetAsarSha256: targetCode.archiveSha256, targetInstallerSha256: selected.installer.sha256 };
     const environment = isolatedEnvironment(root, port);
     writeFileSync(join(profile, 'openwork-workspaces.json'), JSON.stringify({ selectedId: '', activeId: null, watchedId: null, workspaces: [] }));
     const marker = 'zeno-update-fixture-' + randomBytes(16).toString('hex'); writeFileSync(join(workspace, 'update-smoke-marker.txt'), marker);
@@ -540,6 +620,7 @@ async function main() {
   } catch (error) {
     if (error.navigationReport) report.navigation = error.navigationReport;
     failure = true; report.failure = { classification: 'native-update-validation-failed', lastPhase: report.phases.at(-1)?.name ?? 'initialization', ...diagnostics.snapshot(error) };
+    try { report.failureState = collectPortableFailureState(failureContext, oldPid, child); } catch { report.failureState = { collected: false }; }
     try { if (client) report.downloadProgress = { ...report.downloadProgress, ...numericDownloadProgress(await client.evaluate('window.__zenoSmokeDownloadProgress', 2000)) }; } catch {}
     report.failureDiagnostics = privateUpdateFailureDiagnostics(root);
     // Never publish assertion values, private paths, runtime tokens or raw logs.

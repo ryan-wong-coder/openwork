@@ -9,7 +9,8 @@ import { createServer as createHttpServer } from 'node:http';
 import YAML from 'yaml';
 import { assertPortableHostedRunner, assertPrivatePath, validatePortableHistorical, validatePortableTarget, nsisPayloadPath,
   portableErrorMetadata, portableDiagnosticState, windowsProcessPathCommand, decodeWindowsProcessPath, until,
-  portableHttpEndpoint, validWorkspaceSessionStatus, runtime, finishPortableRun } from '../scripts/zeno-update-portable-smoke.mjs';
+  portableHttpEndpoint, validWorkspaceSessionStatus, runtime, finishPortableRun,
+  safePortableFailureState, hasExactProcessArgument, windowsFailureProbeScript } from '../scripts/zeno-update-portable-smoke.mjs';
 import { numericDownloadProgress, safeUpdateFailureSignals } from '../scripts/zeno-update-smoke.mjs';
 
 const origin = 'https://www.zeno.ryan-wong.cn';
@@ -249,3 +250,36 @@ test('real native entry refuses a developer invocation before any installation o
   assert.equal(result.error, undefined); assert.equal(result.status, 1);
   assert.match(result.stderr, /Unsupported native platform|CI-only native validation/);
 });
+
+test('failure process/disk facts contain only allowlisted booleans and bounded counts', () => {
+  const value = { collected: true, diskReadSucceeded: true, publishedAsarOnDisk: false, oldBrowserPidAbsent: true,
+    samePrivateMainProcessCount: 2, mainHasExpectedDebugArgument: false, userProfileEnvironmentMatches: true };
+  for (const key of ['argv', 'path', 'token', 'environment', 'oldPid', 'actual', 'expected']) Object.defineProperty(value, key, { get() { throw Error('private fixture accessed'); } });
+  assert.deepEqual(safePortableFailureState(value), { collected: true, diskReadSucceeded: true, publishedAsarOnDisk: false,
+    oldBrowserPidAbsent: true, mainHasExpectedDebugArgument: false, userProfileEnvironmentMatches: true, samePrivateMainProcessCount: 2 });
+  for (const count of [-1, 1.5, Infinity, 1025, '2']) assert.deepEqual(safePortableFailureState({ samePrivateMainProcessCount: count, targetVersionOnDisk: 'private-path' }), {});
+});
+
+test('expected process arguments require exact values, including Unicode and spaces', () => {
+  const profile = 'D:\\synthetic 私有目录\\profile';
+  assert.equal(hasExactProcessArgument(['app', '--user-data-dir=' + profile], '--user-data-dir', profile), true);
+  assert.equal(hasExactProcessArgument(['app', '--user-data-dir', profile], '--user-data-dir', profile), true);
+  assert.equal(hasExactProcessArgument(['app', '--user-data-dir=' + profile + '-other'], '--user-data-dir', profile), false);
+  assert.equal(hasExactProcessArgument(['app', '--remote-debugging-port=12345'], '--remote-debugging-port', '1234'), false);
+  assert.equal(hasExactProcessArgument(['app', '--remote-debugging-port', '1234'], '--remote-debugging-port', '1234'), true);
+});
+
+test('hosted Windows failure probe filters one exact private exe and emits no raw process/registry values',
+  { skip: process.platform !== 'win32' || process.env.RUNNER_ENVIRONMENT !== 'github-hosted' }, () => {
+    const input = Buffer.from(JSON.stringify({ executable: 'C:\\zeno-synthetic-fixture\\泽诺 Zeno.exe',
+      profile: 'C:\\zeno-synthetic-fixture\\profile', port: 1234, oldPid: process.pid }), 'utf8').toString('base64');
+    const result = spawnSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', windowsFailureProbeScript()], { input, encoding: 'utf8', timeout: 10_000 });
+    assert.equal(result.status, 0);
+    const value = JSON.parse(result.stdout.trim());
+    assert.deepEqual(value, safePortableFailureState(value));
+    assert.equal(value.processScanCompleted, true); assert.equal(value.samePrivateMainProcessCount, 0);
+    assert.equal(value.oldPidKnown, true); assert.equal(value.oldBrowserPidAbsent, false);
+    assert.equal(value.mainHasExpectedDebugArgument, false); assert.equal(value.mainHasExpectedProfileArgument, false);
+    assert.equal(typeof value.userDebugEnvironmentMatches, 'boolean'); assert.equal(typeof value.userProfileEnvironmentMatches, 'boolean');
+    assert.equal(result.stdout.includes('zeno-synthetic-fixture'), false);
+  });
