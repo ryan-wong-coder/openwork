@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-20T08:45:29.717984+00:00",
+  "ownedSyntheticAccountsRemoved": 1,
+  "ownedInvitesRemoved": 1,
+  "ownedAuthorizationsRemoved": 1,
+  "ownedDeviceRemoved": true,
+  "privateDatabaseBackupCreated": true,
+  "otherAccountsAndAdministratorsPreserved": true,
+  "businessRecordOrMediaDeletion": false,
+  "foreignKeyCheckPassed": true,
+  "identityOrTokenIncluded": false
+}

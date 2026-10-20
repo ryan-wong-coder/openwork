@@ -38,6 +38,14 @@ while retaining the active workspace and existing chat inventory.
   anonymous browser run passed, with four reviewed screenshots, exact PWA
   assets and all architecture choices. Authenticated records and installed
   desktop navigation are outside that check's scope.
+- [Device approval follow-up](device-approval/README.md): the old PWA's
+  second-tab authorization bug was reproduced and fixed separately at
+  `e166ccd42`. The PWA was atomically hot-updated, superseding the earlier
+  `29ed8c40` anonymous check with index `33a3b317`. Real public HTTPS registration,
+  two-tab approval, PKCE binding and device reads passed using one owned
+  synthetic account; local record writer protection stayed in place. Exact
+  synthetic cleanup and a private database backup are recorded there. This
+  static deployment did not move the frozen installer tag or restart the API.
 - [Staging cleanup](staging-cleanup.json): only the two completed private
   release transfer directories were removed after confirming public download
   files resolve independently. Account data, backups, installed profiles and

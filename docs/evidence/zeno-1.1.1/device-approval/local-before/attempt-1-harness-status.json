@@ -1,0 +1,26 @@
+{
+  "passed": false,
+  "mode": "blocked",
+  "checkedAt": "2026-10-20T08:31:17.043Z",
+  "checks": [
+    {
+      "name": "first-authenticated-tab-holds-real-record-writer-lock",
+      "passed": true
+    }
+  ],
+  "screenshots": [],
+  "scope": {
+    "realIsolatedApi": true,
+    "realProductionPwa": true,
+    "actualTwoTabs": true,
+    "liveAccount": false,
+    "modelsInvoked": false,
+    "nativeDesktop": false
+  },
+  "pwaIndexSha256": "29ed8c406a6635cb6e8fd832f5550dc4ce65a2a92ebd81de962c31f606f7d49c",
+  "failedStage": "login-writer-tab",
+  "errorKind": "AssertionError",
+  "cleanup": "owned API, Chrome, synthetic account database and temporary profiles removed",
+  "rendererExceptions": 0,
+  "externalOriginsObserved": 0
+}

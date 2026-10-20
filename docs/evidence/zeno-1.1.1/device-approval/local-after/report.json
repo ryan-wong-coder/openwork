@@ -1,0 +1,74 @@
+{
+  "passed": true,
+  "mode": "fixed",
+  "checkedAt": "2026-10-20T08:36:37.517Z",
+  "checks": [
+    {
+      "name": "first-authenticated-tab-holds-real-record-writer-lock",
+      "passed": true
+    },
+    {
+      "name": "real-pkce-device-poll-starts-pending",
+      "passed": true
+    },
+    {
+      "name": "server-only-approval-enabled-while-local-calendar-and-preferences-remain-locked",
+      "passed": true
+    },
+    {
+      "name": "actual-approval-pkce-exchange-owner-binding-and-server-device-list",
+      "passed": true
+    },
+    {
+      "name": "approved-pkce-grant-cannot-be-replayed",
+      "passed": true
+    },
+    {
+      "name": "server-rejection-shown-without-false-approval",
+      "passed": true
+    },
+    {
+      "name": "device-bearer-cannot-approve-another-device",
+      "passed": true
+    },
+    {
+      "name": "feature-off-blocks-input-button-and-forged-form-submit",
+      "passed": true
+    },
+    {
+      "name": "server-feature-gate-independently-rejects-approval",
+      "passed": true
+    },
+    {
+      "name": "writer-ownership-and-all-personal-records-preserved-with-no-model-call",
+      "passed": true
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "second-tab-approved.png",
+      "bytes": 71911,
+      "sha256": "62a7cf62e8fbca05f148d9135e364f0c71d466db0d9b1f4c50741cdb9b13691c"
+    }
+  ],
+  "scope": {
+    "realIsolatedApi": true,
+    "realProductionPwa": true,
+    "actualTwoTabs": true,
+    "liveAccount": false,
+    "modelsInvoked": false,
+    "nativeDesktop": false
+  },
+  "pwaIndexSha256": "33a3b317539c456f01a7bbf63608cc2dffa8e5a5f5b855cf9b6c7917d71f3e0e",
+  "secondTab": {
+    "prefilled": true,
+    "inputDisabled": false,
+    "approvalDisabled": false,
+    "readonly": true,
+    "calendarDisabled": true,
+    "preferencesDisabled": true
+  },
+  "cleanup": "owned API, Chrome, synthetic account database and temporary profiles removed",
+  "rendererExceptions": 0,
+  "externalOriginsObserved": 0
+}

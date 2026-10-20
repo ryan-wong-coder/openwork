@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "mode": "blocked",
+  "checkedAt": "2026-10-20T08:32:50.731Z",
+  "checks": [
+    {
+      "name": "first-authenticated-tab-holds-real-record-writer-lock",
+      "passed": true
+    },
+    {
+      "name": "real-pkce-device-poll-starts-pending",
+      "passed": true
+    },
+    {
+      "name": "original-production-pwa-reproduces-disabled-approval-in-second-tab",
+      "passed": true
+    }
+  ],
+  "screenshots": [],
+  "scope": {
+    "realIsolatedApi": true,
+    "realProductionPwa": true,
+    "actualTwoTabs": true,
+    "liveAccount": false,
+    "modelsInvoked": false,
+    "nativeDesktop": false
+  },
+  "pwaIndexSha256": "29ed8c406a6635cb6e8fd832f5550dc4ce65a2a92ebd81de962c31f606f7d49c",
+  "secondTab": {
+    "prefilled": true,
+    "inputDisabled": true,
+    "approvalDisabled": true,
+    "readonly": true,
+    "calendarDisabled": true,
+    "preferencesDisabled": true
+  },
+  "cleanup": "owned API, Chrome, synthetic account database and temporary profiles removed",
+  "rendererExceptions": 0,
+  "externalOriginsObserved": 0
+}

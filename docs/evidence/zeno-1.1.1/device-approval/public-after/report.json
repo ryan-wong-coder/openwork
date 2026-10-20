@@ -1,0 +1,70 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-20T08:43:16.844Z",
+  "origin": "https://www.zeno.ryan-wong.cn",
+  "checks": [
+    {
+      "name": "public-device-page-matches-reviewed-hotfix-with-strict-csp",
+      "passed": true
+    },
+    {
+      "name": "owned-invitation-redeemed-and-first-tab-holds-real-writer-lock",
+      "passed": true
+    },
+    {
+      "name": "owned-pkce-authorization-awaits-manual-browser-approval",
+      "passed": true
+    },
+    {
+      "name": "prefilled-approval-enabled-with-calendar-and-preferences-still-locked",
+      "passed": true
+    },
+    {
+      "name": "approved-pkce-device-owner-me-list-and-read-boundary-verified",
+      "passed": true
+    },
+    {
+      "name": "original-record-writer-retained-with-zero-personal-writes-or-renderer-errors",
+      "passed": true
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "second-tab-approved.png",
+      "bytes": 69476,
+      "sha256": "27ae6f11148a1fecd37ca3129384489f923a669c46b1831400932eedfb1485a8",
+      "syntheticAccountIdentifierRedacted": true,
+      "authorizationInputEmpty": true
+    }
+  ],
+  "scope": {
+    "ownedSyntheticAccount": true,
+    "actualPublicHttps": true,
+    "actualTwoTabs": true,
+    "realBrowserApprovalClick": true,
+    "devicePkceExchange": true,
+    "personalRecordWrites": false,
+    "administratorActions": false,
+    "modelsInvoked": false,
+    "nativeDesktop": false
+  },
+  "pwaIndexSha256": "33a3b317539c456f01a7bbf63608cc2dffa8e5a5f5b855cf9b6c7917d71f3e0e",
+  "browserVersion": "Chrome/155.0.8059.85",
+  "secondTab": {
+    "codeMatches": true,
+    "inputEnabled": true,
+    "approvalEnabled": true,
+    "recordReadonly": true,
+    "calendarLocked": true,
+    "preferencesLocked": true
+  },
+  "network": {
+    "blockedRequests": 0,
+    "externalRequests": 0,
+    "personalRecordWrites": 0,
+    "rendererExceptions": 0,
+    "cspViolations": 0,
+    "scope": "owned-page CDP plus external DNS denial, not system packet capture"
+  },
+  "cleanup": "owned Chrome/profile removed; synthetic service account/device/invitation cleanup belongs to release operator"
+}

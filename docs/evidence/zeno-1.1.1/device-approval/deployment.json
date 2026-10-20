@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-20T08:40:38.405397+00:00",
+  "scope": "Independent PWA static hotfix only; no desktop installer or API source changed",
+  "sourceCommit": "e166ccd42a727c0149c0b346726330deaaaf5496",
+  "indexSha256": "33a3b317539c456f01a7bbf63608cc2dffa8e5a5f5b855cf9b6c7917d71f3e0e",
+  "verifiedFiles": 103,
+  "retainedPriorHashedAssets": 3,
+  "atomicSwitch": true,
+  "priorPwaDirectoryRetained": true,
+  "apiCodeAndProcessUnchanged": true,
+  "downloadAndUpdateCurrentUnchanged": true,
+  "accountAndMediaPathsUntouched": true
+}

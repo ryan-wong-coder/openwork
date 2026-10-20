@@ -1,0 +1,56 @@
+{
+  "recordedAt": "2026-10-20T08:40:42.934Z",
+  "productUiFilesChanged": [
+    "apps/app/src/react-app/domains/zeno/account-page.tsx"
+  ],
+  "sourceSha256": "ee19f7bb85afc69d532777bc3bc0173d20c8e6eeb0ce5d7a84f614ae14910b14",
+  "change": "Only device approval input/button/submit guard stopped depending on store.writable; readOnly feature guard retained",
+  "apiChanged": false,
+  "dataSchemaChanged": false,
+  "migrationAdded": false,
+  "recordWriterLockChanged": false,
+  "desktopVersionChanged": false,
+  "unit": {
+    "file": "apps/app/tests/zeno-account-boundary.test.tsx",
+    "before": {
+      "passed": 3,
+      "failed": 2,
+      "assertions": 18
+    },
+    "after": {
+      "passed": 5,
+      "failed": 0,
+      "assertions": 30,
+      "exitCode": 0
+    }
+  },
+  "typecheck": {
+    "command": "PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false pnpm --filter @openwork/app typecheck",
+    "exitCode": 0
+  },
+  "build": {
+    "command": "PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false NODE_OPTIONS=--max-old-space-size=6144 pnpm --filter @openwork/app build:personal",
+    "exitCode": 0,
+    "durationSeconds": 12.88,
+    "indexSha256": "33a3b317539c456f01a7bbf63608cc2dffa8e5a5f5b855cf9b6c7917d71f3e0e",
+    "entryAssets": [
+      "/app/assets/personal-B_G5hiPX.js",
+      "/app/assets/personal-BHPLSPeC.css"
+    ]
+  },
+  "localBrowser": {
+    "before": "local-before/report.json",
+    "after": "local-after/report.json",
+    "realIsolatedApi": true,
+    "actualTwoTabs": true,
+    "checksPassed": 10,
+    "serverFeatureOffStatus": 404,
+    "deviceBearerApprovalStatus": 403,
+    "invalidCodeStatus": 400,
+    "initialPollStatus": 428,
+    "successfulPollStatus": 200,
+    "modelsInvoked": false,
+    "successScreenshotActuallyViewed": true
+  },
+  "scope": "No public account, live browser session, installed application or desktop update was used by these local tests"
+}
