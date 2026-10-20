@@ -9,6 +9,10 @@ feeds are active. `baseline_run_id` defaults to the original 1.0.0 run
 `windows_download_retries` defaults to `0`. Explicit `1` or `2` allows at most
 that many additional Windows download attempts; Linux-only dispatch rejects a
 nonzero value. The existing 75-minute job limit remains unchanged.
+`windows_profile_mode` defaults to `isolated`. The optional `native-defaults`
+choice requires an explicit Windows-only dispatch (`platform=win32`); both and
+Linux reject that choice. It uses the same installers and all existing upgrade
+gates. A local test pass does not prove that either native scenario passes.
 
 The harness refuses developer machines, self-hosted runners, another branch,
 another CPU, and artifact paths outside `RUNNER_TEMP`. Its local tests launch no
@@ -24,13 +28,97 @@ to the public historical GitHub release index, the target to the live official
 website API and native feed. Target resources are extracted only to obtain a
 reference ASAR hash. Extracting those resources does not count as an upgrade.
 
-Windows silently installs the unchanged baseline NSIS into a private directory.
+The default isolated Windows mode silently installs the unchanged baseline NSIS into a private directory.
 The native updater subsequently downloads the real public target EXE, invokes
 NSIS, and automatically starts the updated installation. Because NSIS uses
 `ExecShellAsUser`, non-secret isolated paths and the CDP port are also published
 to this disposable hosted login's user environment, broadcast to Explorer and
 restored afterwards. Existing OpenWork/Zeno installation registrations are
 refused. No application identity, signature or updater setting is patched.
+
+The optional native-defaults mode starts the original 1.0.0 installer with `/S`
+and no `/D`. Its expected per-user installation leaf is computed from the two
+original statically extracted ASAR package names, public distribution identity
+and actual top-level payload executable names using the pinned electron-builder
+26.15.3 NSIS/sanitize-filename rule. Both package identities must agree. The
+updater cache leaf is read from each original `app-update.yml`, validated as a
+single safe Windows filename, checked against the same pinned identity rule and
+required to agree. No copied state, seed file, junction, resigned binary or
+target launch is used. The 7-Zip Unicode payload listing uses `-sccUTF-8`;
+PowerShell paths travel only as ASCII Base64 containing UTF-8 JSON.
+
+This mode reads the actual Windows user SID and Known Folders, including
+`FOLDERID_UserProgramFiles`. `KF_FLAG_DONT_VERIFY` reads that path without
+creating it. Redirected home/AppData/UserProgramFiles layouts are outside this
+strict fixture: they fail before installation. Process, User and Machine
+environment scopes must have no pre-existing storage/engine overrides or
+provider credentials covered by the prerequisite check. No User/Machine
+environment is written. Child OS paths and native temporary directories are
+retained, while fixture variables and authentication tokens are stripped.
+Ambient APPDATA, LOCALAPPDATA and ProgramData must agree with their actual
+Known Folders; explicit conflicting values in any of those three environment
+scopes are refused instead of sending the baseline outside the ledger.
+Process ProgramData must be nonempty: the original managed loader otherwise
+falls back to C:/ProgramData, which must not silently differ from a Known Folder.
+
+Before installation the ownership ledger requires these exact leaves absent,
+including their link/reparse checks (H=user home, R=Roaming, L=Local AppData):
+
+* Native UserProgramFiles/package leaf, `R/com.differentai.openwork`, and
+  `L/<actual updaterCacheDirName>`.
+* `R/openwork` (server configuration, runtime SQLite, tokens, env and saved
+  engine setting), `L/openwork` (bootstrap), and legacy `H/.config/openwork`.
+* `H/.config/opencode`, the engine's home `H/.opencode` configuration directory,
+  `H/.local/share/opencode`, `R/opencode`, `L/opencode`,
+  `H/.cache/opencode`, `H/.local/state/opencode`, native TEMP/opencode.
+* `H/.openwork/openwork-server`, legacy `H/.openwork/openwork-orchestrator`, and
+  the real first-launch `H/OpenWork Chat` directory.
+
+Additional read-only configuration checks do not grant deletion/ownership:
+the original V1 managed loader reads CommonApplicationData/opencode/opencode.json
+and opencode.jsonc. Those two exact files must be absent, and their ancestry
+must have no reparse points; CommonApplicationData itself is never owned or
+removed. `OPENCODE_TEST_MANAGED_CONFIG_DIR` is already refused by the scoped
+OPENCODE prefix check. The original V2 discovery also reads H/.claude, H/.agents
+and exact .opencode/.claude/.agents/opencode.json(c) entries along the private
+workspace's bounded ancestor chain. These check-only entries must be absent;
+they are never read, modified or deleted by the fixture.
+
+Exact OpenWork/Zeno Start Menu/Desktop shortcut leaves and protocol/application
+registrations must also be absent. HKCU/HKLM, both 32/64-bit registry views,
+are checked for the original APP_GUID, uninstall identity, public app ID,
+`openwork` protocol and executable associations. Existing installations are
+also refused by the original registration gate. After baseline installation,
+its real HKCU InstallLocation must equal the verified default leaf. These are
+account/Known Folder/pristine ownership checks, not an assertion that every
+Windows ACL owner is the current SID. Native files and registrations remain
+for disposal of the entire hosted VM on success or failure; HOME and AppData
+are never recursively removed.
+
+All original production CDP candidates 9223–9227 must be free before installing
+and immediately before launching the baseline. Both baseline and automatic
+restart must use the original native first choice 9223. There is no port
+environment override, fallback-port search or manual target start. The actual
+CDP SystemInfo browser PID, exact original installed EXE, file resources,
+original read-only IPC userData and the profile's realpath must all agree;
+the automatic target must have a different actual browser PID. A same-EXE
+process candidate or listener diagnostic is never restart/profile proof.
+
+True zero-state startup selects V2. This fixture observes that original setting,
+then uses the original authenticated `PUT /experimental/engine-v2-preview` to
+select `{chatRouting:false,enabled:false}` before writing any history. It reads
+the real status, persisted default engine-state file and idle activity before
+creating the V1 no-reply conversation. The existing V1 mounted readiness reads
+before that selection perform no model request or history mutation. After the
+upgrade the target only verifies the same saved choice; it never reapplies it.
+The report explicitly identifies historical V1, original settings selection
+and default-path/profile preservation. It does not claim default V2 history,
+account pairing or provider/credential-storage acceptance.
+
+Earlier isolated failures remain unchanged. A refused expected port and known
+installed target bytes do not establish the target process environment, its
+profile, when NSIS completed or the actual browser's startup age. This second
+scenario does not retroactively resolve those unknowns or extend a timeout.
 
 An opted-in retry uses the original 1.0.0 UI bridge's existing `download` action
 in the same verified baseline process, Chromium profile and historical session.

@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 import { appendFileSync, copyFileSync, mkdtempSync, realpathSync, mkdirSync, readFileSync, renameSync, truncateSync, writeFileSync, symlinkSync, existsSync, rmSync } from 'node:fs';
 import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import './zeno-update-runtime-fixture.test.mjs';
 import YAML from 'yaml';
@@ -15,8 +15,11 @@ import { assertPortableHostedRunner, assertPrivatePath, validatePortableHistoric
   portableHttpEndpoint, validWorkspaceSessionList, effectivePortableProfileMatches, finishPortableRun,
   safePortableFailureState, hasExactProcessArgument, windowsFailureProbeScript, portableDownloadRetries,
   snapshotDownloadLogs, inspectDownloadLogWindow, resetOnlyDownloadLogText, runPortableDownloadAttempts,
-  readPortableArchiveMetadata, inspectPortableArchive, readPortablePageList, windowsOwnedListenerProbeScript } from '../scripts/zeno-update-portable-smoke.mjs';
+  readPortableArchiveMetadata, inspectPortableArchive, readPortablePageList, windowsOwnedListenerProbeScript, verifyNativeV1HistorySetting } from '../scripts/zeno-update-portable-smoke.mjs';
 import { numericDownloadProgress, safeUpdateFailureSignals } from '../scripts/zeno-update-smoke.mjs';
+import { windowsProfileMode, windowsNativeLeaf, nativeWindowsPackageIdentity, windowsNativePlan, nativeDefaultsEnvironment,
+  sameWindowsPath, windowsNativeRootsScript, windowsNativePristineScript, windowsNativeInstallationScript, decodeNativeWindowsWire,
+  assertNativePristineLeaves, assertNativeOwnedPath, assertNativeEffectiveProfile, assertNativeEnvironmentRoots } from '../scripts/zeno-windows-native-defaults.mjs';
 
 const origin = 'https://www.zeno.ryan-wong.cn';
 const sha256 = 'a'.repeat(64); const sha512 = Buffer.alloc(64, 2).toString('base64');
@@ -88,14 +91,17 @@ test('workflow selector derives only matching hosted runners and rejects injecte
   const input = workflow.on.workflow_dispatch.inputs;
   assert.equal(input.baseline_run_id.default, '38883434626'); assert.equal(input.platform.default, 'both'); assert.deepEqual(input.platform.options, ['both', 'win32', 'linux']);
   assert.equal(input.windows_download_retries.default, '0'); assert.deepEqual(input.windows_download_retries.options, ['0', '1', '2']);
+  assert.equal(input.windows_profile_mode.default, 'isolated'); assert.deepEqual(input.windows_profile_mode.options, ['isolated', 'native-defaults']);
+  const windowsStep = workflow.jobs['native-update'].steps.find(step => step.name === 'Run original NSIS update on hosted Windows');
+  assert.equal(windowsStep.env.ZENO_SMOKE_WINDOWS_PROFILE_MODE, "${{ inputs.windows_profile_mode || 'isolated' }}");
   const selection = workflow.jobs['select-platforms'].steps.find(step => step.id === 'select').run;
   const source = /^node --input-type=module <<'JS'\n([\s\S]+)\nJS\n?$/.exec(selection)?.[1]; assert.ok(source);
   const root = mkdtempSync(join(tmpdir(), 'zeno-workflow-selftest-'));
   try {
-    for (const selected of ['both', 'win32', 'linux', '', 'darwin', 'linux,win32', '__proto__']) for (const retries of ['0', '1', '2', '', '3', '1;exit']) {
-      const output = join(root, 'matrix-' + selected.replaceAll(/[^a-z]/g, '_') + '-' + retries.replaceAll(/[^a-z0-9]/g, '_'));
-      const result = spawnSync(process.execPath, ['--input-type=module'], { input: source, encoding: 'utf8', env: { ...process.env, GITHUB_OUTPUT: output, SMOKE_PLATFORM: selected, SMOKE_WINDOWS_DOWNLOAD_RETRIES: retries } });
-      if (['both', 'win32', 'linux'].includes(selected) && ['0', '1', '2'].includes(retries) && (selected !== 'linux' || retries === '0')) {
+    for (const selected of ['both', 'win32', 'linux', '', 'darwin', 'linux,win32', '__proto__']) for (const retries of ['0', '1', '2', '', '3', '1;exit']) for (const profile of ['isolated', 'native-defaults', '', 'native-defaults;exit']) {
+      const output = join(root, 'matrix-' + selected.replaceAll(/[^a-z]/g, '_') + '-' + retries.replaceAll(/[^a-z0-9]/g, '_') + '-' + profile.replaceAll(/[^a-z]/g, '_'));
+      const result = spawnSync(process.execPath, ['--input-type=module'], { input: source, encoding: 'utf8', env: { ...process.env, GITHUB_OUTPUT: output, SMOKE_PLATFORM: selected, SMOKE_WINDOWS_DOWNLOAD_RETRIES: retries, SMOKE_WINDOWS_PROFILE_MODE: profile } });
+      if (['both', 'win32', 'linux'].includes(selected) && ['0', '1', '2'].includes(retries) && (selected !== 'linux' || retries === '0') && ['isolated', 'native-defaults'].includes(profile) && (profile === 'isolated' || selected === 'win32')) {
         assert.equal(result.status, 0);
         const expected = [{ platform: 'win32', runner: 'windows-2025' }, { platform: 'linux', runner: 'ubuntu-24.04' }].filter(item => selected === 'both' || item.platform === selected);
         assert.deepEqual(JSON.parse(readFileSync(output, 'utf8').trim().replace(/^matrix=/, '')), { include: expected });
@@ -109,6 +115,121 @@ test('whole-file retry selection defaults off and rejects non-Windows or unbound
   for (const value of ['0', '1', '2']) assert.equal(portableDownloadRetries('win32', value), Number(value));
   for (const value of ['', '3', '-1', '01', '1.0', 'true', 1, null, {}, '2;exit']) assert.throws(() => portableDownloadRetries('win32', value));
   for (const platform of ['linux', 'darwin', 'unknown']) assert.throws(() => portableDownloadRetries(platform, '1'));
+});
+
+const nativeDistribution = readFileSync(new URL('../electron/desktop-distribution.mjs', import.meta.url), 'utf8');
+const nativePackage = () => nativeWindowsPackageIdentity({ name: '@openwork/desktop', openworkBrand: 'zeno', openworkDistribution: 'public' },
+  '@openworkdesktop-updater', nativeDistribution, ['泽诺 Zeno.exe']);
+const nativeRoots = () => ({ home: 'C:\\Users\\fixture', roaming: 'C:\\Users\\fixture\\AppData\\Roaming', local: 'C:\\Users\\fixture\\AppData\\Local',
+  programFiles: 'C:\\Users\\fixture\\AppData\\Local\\Programs', programData: 'C:\\ProgramData', programs: 'C:\\Users\\fixture\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs',
+  desktop: 'C:\\Users\\fixture\\Desktop', commonPrograms: 'C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs', commonDesktop: 'C:\\Users\\Public\\Desktop',
+  temp: 'C:\\Users\\fixture\\AppData\\Local\\Temp', sid: 'S-1-5-21-100-200-300-1001' });
+
+test('native-defaults mode is explicit Windows-only and derives the pinned NSIS identity from original package metadata', () => {
+  for (const platform of ['linux', 'win32']) assert.equal(windowsProfileMode(platform), 'isolated');
+  assert.equal(windowsProfileMode('win32', 'native-defaults'), 'native-defaults');
+  for (const value of ['native', '', 'native-defaults;exit', true]) assert.throws(() => windowsProfileMode('win32', value));
+  assert.throws(() => windowsProfileMode('linux', 'native-defaults'));
+  assert.deepEqual(nativePackage(), { installationLeaf: '@openworkdesktop', cacheLeaf: '@openworkdesktop-updater', appId: 'com.differentai.openwork',
+    protocol: 'openwork', appGuid: '29165f8a-586b-5470-a1cc-cfff30a85ed3', executableName: '泽诺 Zeno.exe' });
+  for (const names of [[], ['Zeno.exe'], ['泽诺 Zeno.exe', 'other.exe']]) assert.throws(() => nativeWindowsPackageIdentity({ name: '@openwork/desktop', openworkBrand: 'zeno', openworkDistribution: 'public' }, '@openworkdesktop-updater', nativeDistribution, names));
+  for (const name of ['../escape', '@scope/../escape', 'desktop', '@scope/name/extra']) assert.throws(() => nativeWindowsPackageIdentity({ name, openworkBrand: 'zeno', openworkDistribution: 'public' }, 'cache', nativeDistribution, ['泽诺 Zeno.exe']));
+  assert.throws(() => nativeWindowsPackageIdentity({ name: '@openwork/desktop', openworkBrand: 'zeno', openworkDistribution: 'public' }, 'other-updater', nativeDistribution, ['泽诺 Zeno.exe']));
+  assert.throws(() => nativeWindowsPackageIdentity({ name: '@openwork/desktop', openworkBrand: 'zeno', openworkDistribution: 'public' }, '@openworkdesktop-updater', nativeDistribution.replaceAll('com.differentai.openwork', 'com.invalid.example'), ['泽诺 Zeno.exe']));
+  for (const leaf of ['', '.', '..', '../escape', 'C:\\escape', '\\\\server\\share', 'name:stream', 'name.', 'name ', 'NUL', 'COM1.txt', 'bad\nname']) assert.throws(() => windowsNativeLeaf(leaf));
+  assert.equal(windowsNativeLeaf('中文 空格'), '中文 空格');
+});
+
+test('native ownership includes all exact default leaves and refuses redirected/overlapping roots without owning HOME', () => {
+  const roots = nativeRoots(); const plan = windowsNativePlan(roots, nativePackage());
+  assert.equal(plan.profile, roots.roaming + '\\com.differentai.openwork');
+  assert.equal(plan.installation, roots.programFiles + '\\@openworkdesktop');
+  assert.equal(plan.engineState, roots.roaming + '\\openwork\\engine-v2-preview.json');
+  assert.equal(plan.leaves.length, 17); assert.equal(plan.shortcuts.length, 8);
+  assert.deepEqual(plan.checkOnlyLeaves, [roots.programData + '\\opencode\\opencode.json', roots.programData + '\\opencode\\opencode.jsonc', roots.home + '\\.claude', roots.home + '\\.agents']);
+  for (const path of plan.checkOnlyLeaves) assert.ok(!plan.leaves.includes(path));
+  const projectPlan = windowsNativePlan(roots, nativePackage(), 'D:\\fixture\\workspace');
+  for (const path of ['D:\\fixture\\workspace\\.agents', 'D:\\fixture\\.claude', 'D:\\opencode.jsonc']) assert.ok(projectPlan.checkOnlyLeaves.includes(path));
+  assert.ok(projectPlan.checkOnlyLeaves.every(path => !sameWindowsPath(path, roots.programData)));
+  assert.throws(() => windowsNativePlan(roots, nativePackage(), 'D:\\' + 'segment\\'.repeat(65) + 'workspace'));
+  for (const path of [roots.home + '\\.config\\openwork', roots.home + '\\.config\\opencode', roots.home + '\\.opencode', roots.home + '\\.cache\\opencode', roots.home + '\\.local\\share\\opencode',
+    roots.home + '\\.local\\state\\opencode', roots.home + '\\OpenWork Chat', roots.roaming + '\\opencode', roots.local + '\\opencode', roots.temp + '\\opencode']) assert.ok(plan.leaves.includes(path));
+  for (const path of [roots.home, roots.roaming, roots.local, roots.temp, roots.programFiles]) assert.ok(!plan.leaves.includes(path));
+  for (const key of ['home', 'roaming', 'local', 'programFiles', 'programs', 'sid']) assert.throws(() => windowsNativePlan({ ...roots, [key]: 'invalid' }, nativePackage()));
+  assert.throws(() => windowsNativePlan({ ...roots, programFiles: 'D:\\redirected' }, nativePackage()));
+  assert.throws(() => windowsNativePlan(roots, { ...nativePackage(), cacheLeaf: 'openwork' }));
+  assert.equal(sameWindowsPath('C:\\Users\\fixture', 'c:\\users\\fixture'), true);
+  assert.equal(sameWindowsPath('C:\\Users\\fixture', 'C:\\Users\\fixture-other'), false);
+  const osEnv = { USERPROFILE: roots.home, HOME: roots.home, APPDATA: roots.roaming, LOCALAPPDATA: roots.local, ProgramData: roots.programData };
+  assertNativeEnvironmentRoots(roots, osEnv);
+  for (const name of Object.keys(osEnv)) assert.throws(() => assertNativeEnvironmentRoots(roots, { ...osEnv, [name]: 'D:\\redirected' }));
+  assert.throws(() => assertNativeEnvironmentRoots(roots, { ...osEnv, ProgramData: undefined }));
+  assert.throws(() => assertNativeEnvironmentRoots(roots, { ...osEnv, ProgramData: '' }));
+  assert.throws(() => assertNativeEnvironmentRoots(roots, { APPDATA: 'relative' }));
+});
+
+test('native child environment retains original OS paths while stripping fixture, credential and storage overrides', () => {
+  const roots = nativeRoots();
+  const original = { USERPROFILE: roots.home, HOME: roots.home, APPDATA: roots.roaming, LOCALAPPDATA: roots.local, TEMP: roots.temp, PATH: 'synthetic-system-path', CI: 'true',
+    OPENWORK_ELECTRON_USERDATA: 'private', OPENCODE_DB: 'private', XDG_CONFIG_HOME: 'private', ZENO_SMOKE_WINDOWS_PROFILE_MODE: 'native-defaults', GH_TOKEN: 'private', ELECTRON_RUN_AS_NODE: '1', NODE_OPTIONS: 'private' };
+  const value = nativeDefaultsEnvironment(original);
+  assert.deepEqual(value, { USERPROFILE: roots.home, HOME: roots.home, APPDATA: roots.roaming, LOCALAPPDATA: roots.local, TEMP: roots.temp, PATH: 'synthetic-system-path', CI: 'true' });
+  assert.equal(original.ELECTRON_RUN_AS_NODE, '1');
+  const text = JSON.stringify({ path: 'C:\\用户\\中文 目录', count: 1 });
+  assert.deepEqual(decodeNativeWindowsWire(Buffer.from(text).toString('base64')), JSON.parse(text));
+  for (const text of ['not base64', Buffer.from([255]).toString('base64'), Buffer.from('{').toString('base64')]) assert.throws(() => decodeNativeWindowsWire(text));
+});
+
+test('native V1 history uses one real settings mutation before history and target only verifies the saved choice', async () => {
+  const paths = []; let saved = false;
+  const request = async (path, options = {}) => {
+    paths.push([path, options]);
+    if (options.method === 'PUT') { assert.deepEqual(JSON.parse(options.body), { chatRouting: false, enabled: false }); saved = true; }
+    return { enabled: !saved, chatRouting: !saved };
+  };
+  let idleChecked = 0;
+  const wait = async (read, predicate, timeout) => { idleChecked++; assert.equal(timeout, 30_000); assert.equal(predicate({ v1: { verdict: 'idle', busySessions: 0, waitingRequests: 0 }, v2: null }), true); assert.equal(predicate({ v1: { verdict: 'busy', busySessions: 1, waitingRequests: 0 }, v2: null }), false); await read(); };
+  await verifyNativeV1HistorySetting(request, () => { assert.equal(saved, true); return { enabled: false, chatRouting: false }; }, wait, true);
+  await verifyNativeV1HistorySetting(request, () => ({ enabled: false, chatRouting: false }), wait);
+  assert.equal(paths.filter(([, options]) => options.method === 'PUT').length, 1); assert.equal(idleChecked, 2);
+  await assert.rejects(verifyNativeV1HistorySetting(async () => ({ enabled: true, chatRouting: true }), () => ({}), wait));
+  await assert.rejects(verifyNativeV1HistorySetting(request, () => ({ enabled: true, chatRouting: false }), wait));
+});
+
+test('native Windows prerequisite scripts parse without executing a fixture or exposing Unicode over the console', { skip: process.platform !== 'win32' }, () => {
+  for (const source of [windowsNativeRootsScript(), windowsNativePristineScript(), windowsNativeInstallationScript()]) {
+    const encoded = Buffer.from(source, 'utf8').toString('base64');
+    const script = `$source=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('${encoded}'));$tokens=$null;$parseErrors=$null;[void][Management.Automation.Language.Parser]::ParseInput($source,[ref]$tokens,[ref]$parseErrors);if($parseErrors.Count -gt 0){exit 1}`;
+    const result = spawnSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', script], { encoding: 'utf8', timeout: 15_000 });
+    assert.equal(result.status, 0);
+  }
+});
+
+test('native owned leaves reject pre-existing data, outside paths and junction ancestors using disposable synthetic Windows paths', { skip: process.platform !== 'win32' }, () => {
+  const root = realpathSync(mkdtempSync(join(tmpdir(), 'zeno-native-leaf-test-')));
+  const outside = realpathSync(mkdtempSync(join(tmpdir(), 'zeno-native-outside-test-')));
+  const home = join(root, '用户 空格');
+  const roots = { home, roaming: join(home, 'AppData/Roaming'), local: join(home, 'AppData/Local'), programFiles: join(home, 'AppData/Local/Programs'),
+    programData: join(root, 'CommonData'), programs: join(home, 'AppData/Roaming/Microsoft/Windows/Start Menu/Programs'), desktop: join(home, 'Desktop'), commonPrograms: join(root, 'CommonPrograms'), commonDesktop: join(root, 'CommonDesktop'), temp: join(root, 'Temp'), sid: nativeRoots().sid };
+  const plan = windowsNativePlan(roots, nativePackage(), join(root, 'private/workspace'));
+  try {
+    mkdirSync(home); assertNativePristineLeaves(plan);
+    const managedConfig = plan.checkOnlyLeaves[0]; mkdirSync(dirname(managedConfig), { recursive: true }); writeFileSync(managedConfig, '{}');
+    assert.throws(() => assertNativePristineLeaves(plan)); rmSync(managedConfig); assertNativePristineLeaves(plan);
+    const ancestorConfig = join(root, 'opencode.jsonc'); assert.ok(plan.checkOnlyLeaves.includes(ancestorConfig)); writeFileSync(ancestorConfig, '{}');
+    assert.throws(() => assertNativePristineLeaves(plan)); rmSync(ancestorConfig); assertNativePristineLeaves(plan);
+    mkdirSync(plan.profile, { recursive: true });
+    assert.throws(() => assertNativePristineLeaves(plan));
+    assert.equal(assertNativeOwnedPath(plan, plan.profile), plan.profile);
+    assert.throws(() => assertNativeOwnedPath(plan, home)); assert.throws(() => assertNativeOwnedPath(plan, outside));
+    assert.throws(() => assertNativeOwnedPath(plan, plan.checkOnlyLeaves[0]));
+    const before = assertNativeEffectiveProfile(plan); assert.equal(sameWindowsPath(before, plan.profile), true);
+    assert.equal(assertNativeEffectiveProfile(plan, before), before);
+    assert.throws(() => assertNativeEffectiveProfile(plan, outside));
+    rmSync(plan.profile, { recursive: true }); symlinkSync(outside, plan.profile, 'junction');
+    assert.throws(() => assertNativeOwnedPath(plan, join(plan.profile, 'state.json')));
+    assert.throws(() => assertNativePristineLeaves(plan));
+  } finally { rmSync(root, { recursive: true, force: true }); rmSync(outside, { recursive: true, force: true }); }
 });
 
 const resetLog = 'Error: Error: net::ERR_CONNECTION_RESET\n    at SimpleURLLoaderWrapper.<anonymous> (node:electron/js2c/browser_init:1:1)\n';

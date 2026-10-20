@@ -3,6 +3,7 @@ import { spawn, spawnSync } from 'node:child_process';
 import { createHash, randomBytes } from 'node:crypto';
 import { constants, existsSync, fstatSync, lstatSync, mkdirSync, mkdtempSync, openSync, closeSync, readFileSync, readSync, readdirSync, realpathSync, rmSync, writeFileSync, chmodSync } from 'node:fs';
 import { createServer } from 'node:net';
+import { homedir } from 'node:os';
 import { dirname, basename, isAbsolute, join, relative, resolve, sep, win32 } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import asar from '@electron/asar';
@@ -12,6 +13,9 @@ export { runtime, until, portableHttpEndpoint, portableServerWorkspace, validWor
 import { copyVerifiedArtifact, numericDownloadProgress, privateUpdateFailureDiagnostics } from './zeno-update-smoke.mjs';
 import { compareStableVersions } from '../electron/recovery.mjs';
 import { verifyPackagedNavigation, workspaceSessionIdentitySnapshot, assertWorkspaceSessionsUnchanged } from './zeno-packaged-navigation-probe.mjs';
+import { windowsProfileMode, nativeWindowsPackageIdentity, windowsNativePlan, assertNativeOwnedPath,
+  assertNativePristineLeaves, nativeDefaultsEnvironment, windowsNativeRootsScript, windowsNativePristineScript,
+  windowsNativeInstallationScript, decodeNativeWindowsWire, assertNativeEffectiveProfile, sameWindowsPath, assertNativeEnvironmentRoots } from './zeno-windows-native-defaults.mjs';
 
 // This entry point refuses developer machines and self-hosted runners. Linux
 // uses the hosted VM's Xvfb; Windows uses its disposable hosted desktop. Only
@@ -32,7 +36,8 @@ const lane = platform => {
 };
 
 const ACTIVE_CHECKS = new Set(['initialization', 'release-metadata', 'artifact-copy', 'target-reference', 'private-directories',
-  'windows-pristine-installation', 'windows-relaunch-environment', 'baseline-nsis-install', 'baseline-resource-verification',
+  'windows-pristine-installation', 'windows-relaunch-environment', 'windows-native-reference', 'windows-native-pristine', 'windows-native-ports',
+  'windows-native-installation', 'baseline-native-v1-setting', 'target-native-v1-setting', 'baseline-nsis-install', 'baseline-resource-verification',
   'baseline-appimage-install', 'baseline-app-launch', 'attach-page-list', 'attach-page-cdp', 'attach-domains',
   'attach-browser-version', 'attach-browser-cdp', 'attach-browser-pid', 'attach-profile-identity', 'attach-private-executable', 'attach-profile-environment', 'attach-windows-executable', 'attach-effective-profile',
   'attach-updater-bridge', 'baseline-build-info', 'baseline-updater-channel', 'baseline-workspace-create',
@@ -250,7 +255,9 @@ function collectPortableFailureState(context, oldPid, child) {
   if (!context) return { collected: false };
   assertPortableHostedRunner(process.env, process.platform, process.arch);
   const { platform, root, installation, profile, port, executable, targetAsarSha256, targetInstallerSha256 } = context;
-  assertPrivatePath(root, installation); assertPrivatePath(root, profile); assertPrivatePath(root, executable);
+  for (const value of [installation, profile, executable]) {
+    if (context.nativeDefaults) assertNativeOwnedPath(context.nativeDefaults, value); else assertPrivatePath(root, value);
+  }
   const facts = { collected: true, diskReadSucceeded: false, processScanCompleted: false,
     oldPidKnown: Number.isSafeInteger(oldPid) && oldPid > 1,
     observedBrowserPidKnown: Number.isSafeInteger(context.observedBrowserPid) && context.observedBrowserPid > 1,
@@ -258,7 +265,8 @@ function collectPortableFailureState(context, oldPid, child) {
   if (typeof context.observedBrowserEffectiveProfileMatches === 'boolean') facts.observedBrowserEffectiveProfileMatches = context.observedBrowserEffectiveProfileMatches;
   try {
     if (platform === 'win32') {
-      const archive = join(installation, 'resources/app.asar'); assertPrivatePath(root, archive);
+      const archive = join(installation, 'resources/app.asar');
+      if (context.nativeDefaults) assertNativeOwnedPath(context.nativeDefaults, archive); else assertPrivatePath(root, archive);
       Object.assign(facts, inspectPortableArchive(archive, TARGET, targetAsarSha256));
     } else {
       facts.publishedAppImageOnDisk = hash(readFileSync(executable)) === targetInstallerSha256;
@@ -478,12 +486,12 @@ export function nsisPayloadPath(listing) {
   return payloads[0];
 }
 
-function referenceResources(installer, destination, platform) {
+function referenceResources(installer, destination, platform, nativeDefaults = false) {
   mkdirSync(destination);
   if (platform === 'linux') {
     chmodSync(installer, 0o755);
     command(installer, ['--appimage-extract', 'resources/*'], { cwd: destination });
-    return join(destination, 'squashfs-root', 'resources');
+    return { resources: join(destination, 'squashfs-root', 'resources') };
   }
   const zip = sevenZip();
   // Extract only the embedded app payload, then its resources. Neither the
@@ -492,11 +500,14 @@ function referenceResources(installer, destination, platform) {
   command(zip, ['e', '-y', '-bso0', '-bsp0', `-o${destination}`, installer, payload]);
   const payloads = readdirSync(destination).filter(name => /^app-64\.(7z|zip)$/.test(name));
   assert.equal(payloads.length, 1, 'Original NSIS payload is missing or ambiguous.');
+  let executableNames;
+  if (nativeDefaults) executableNames = [...command(zip, ['l', '-slt', '-sccUTF-8', join(destination, payloads[0])]).matchAll(/^Path = (.+)\r?$/gm)]
+    .map(match => match[1].replace(/\r$/, '')).filter(name => /^[^\\/]+\.exe$/i.test(name)).sort();
   command(zip, ['x', '-y', '-bso0', '-bsp0', `-o${join(destination, 'app')}`, join(destination, payloads[0]), 'resources\\*']);
-  return join(destination, 'app', 'resources');
+  return { resources: join(destination, 'app', 'resources'), executableNames };
 }
 
-function verifyResources(resources, version, feed, platform) {
+function verifyResources(resources, version, feed, platform, executableNames) {
   const archive = join(resources, 'app.asar');
   const metadata = readPortableArchiveMetadata(archive);
   assert.equal(metadata.version, version); assert.equal(metadata.openworkBrand, 'zeno'); assert.equal(metadata.openworkDistribution, 'public');
@@ -504,7 +515,9 @@ function verifyResources(resources, version, feed, platform) {
   const config = YAML.parse(readFileSync(join(resources, 'app-update.yml'), 'utf8'));
   assert.equal(config.provider, 'generic'); assert.equal(config.url, feed);
   assert.match(config.updaterCacheDirName ?? '', /^@?[\w][\w.-]{0,255}$/);
-  return { archiveSha256: hash(readFileSync(archive)), updaterCacheDirName: config.updaterCacheDirName };
+  const nativeIdentity = executableNames === undefined ? undefined : nativeWindowsPackageIdentity(metadata, config.updaterCacheDirName,
+    asar.extractFile(archive, 'electron/desktop-distribution.mjs').toString(), executableNames);
+  return { archiveSha256: hash(readFileSync(archive)), updaterCacheDirName: config.updaterCacheDirName, ...(nativeIdentity ? { nativeIdentity } : {}) };
 }
 
 async function publicResponse(url) {
@@ -516,6 +529,16 @@ async function publicResponse(url) {
 async function freePort() {
   const server = createServer(); await new Promise((done, fail) => { server.once('error', fail); server.listen(0, '127.0.0.1', done); });
   const port = server.address().port; await new Promise(done => server.close(done)); return port;
+}
+
+async function assertNativeCdpPortsFree() {
+  // The unchanged production app chooses its first free native candidate. Do
+  // not inject a port, hold one open or accept another port after a failure.
+  for (const port of [9223, 9224, 9225, 9226, 9227]) {
+    const server = createServer();
+    await new Promise((done, fail) => { server.once('error', fail); server.listen(port, '127.0.0.1', done); });
+    await new Promise((done, fail) => server.close(error => error ? fail(error) : done()));
+  }
 }
 
 async function connect(url, events = () => {}) {
@@ -605,6 +628,10 @@ async function attach(port, platform, installation, root, profile, exceptions, o
   const effectiveProfileMatches = await effectivePortableProfileMatches(invoke, profile);
   if (failureContext) failureContext.observedBrowserEffectiveProfileMatches = effectiveProfileMatches;
   assert.equal(effectiveProfileMatches, true, 'CDP process uses another Electron userData directory.');
+  if (failureContext?.nativeDefaults) {
+    const actual = assertNativeEffectiveProfile(failureContext.nativeDefaults, failureContext.baselineProfileRealpath);
+    failureContext.baselineProfileRealpath ??= actual;
+  }
   return { ...client, browser, pid, resources, evaluate, invoke };
 }
 
@@ -645,18 +672,41 @@ function publishWindowsRelaunchEnvironment(environment, root) {
   return () => { update(previous); };
 }
 
+function nativeWindowsRead(script, input) {
+  return decodeNativeWindowsWire(command('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', script],
+    { ...(input === undefined ? {} : { input: Buffer.from(JSON.stringify(input), 'utf8').toString('base64') }), timeout: 30_000 }));
+}
+
+export async function verifyNativeV1HistorySetting(request, readSavedState, waitUntil, select = false) {
+  if (select) {
+    const initial = await request('/experimental/engine-v2-preview/status');
+    assert.equal(initial.enabled, true); assert.equal(initial.chatRouting, true);
+    const status = await request('/experimental/engine-v2-preview', { method: 'PUT', body: JSON.stringify({ chatRouting: false, enabled: false }) });
+    assert.equal(status.enabled, false); assert.equal(status.chatRouting, false);
+  }
+  const status = await request('/experimental/engine-v2-preview/status');
+  assert.equal(status.enabled, false); assert.equal(status.chatRouting, false);
+  const saved = readSavedState(); assert.equal(saved.enabled, false); assert.equal(saved.chatRouting, false);
+  await waitUntil(() => request('/experimental/engine-v2-preview/activity'),
+    value => value.v1?.verdict === 'idle' && value.v1.busySessions === 0 && value.v1.waitingRequests === 0
+      && (value.v2 === null || value.v2?.verdict === 'idle'), 30_000, 'saved native V1 setting and idle historical engine');
+}
+
 async function main() {
   assertPortableHostedRunner(process.env, process.platform, process.arch);
   const additionalRetries = portableDownloadRetries(process.platform, process.env.ZENO_SMOKE_WINDOWS_DOWNLOAD_RETRIES);
+  const profileMode = windowsProfileMode(process.platform, process.env.ZENO_SMOKE_WINDOWS_PROFILE_MODE);
   assert.notEqual(process.getuid?.(), 0, 'Refusing native desktop execution as root.');
   const platform = process.platform; const spec = lane(platform); const runner = realpathSync(process.env.RUNNER_TEMP);
   const root = mkdtempSync(join(runner, 'zeno-portable-update-')); const evidence = join(runner, 'zeno-portable-update-evidence'); mkdirSync(evidence, { recursive: true });
   const report = { passed: false, baseline: BASELINE, target: TARGET, platform, arch: 'x64', phases: [], nativeUpdateExecuted: false,
     downloadPolicy: { additionalRetries, mode: 'whole-file; same baseline session; no resume; reset-only retry' }, downloadAttempts: [],
     scope: { originalBaseline: false, originalTarget: false, realPublicFeed: false, installedUpgrade: false, automaticRelaunch: false, historicalChatPreservation: false, accountPairingTested: false, osCredentialStorageTested: false, aiRequested: false },
-    isolation: 'ephemeral GitHub-hosted VM; private installation, Electron profile, workspace, XDG data and temporary runtime', publicOrigin: ORIGIN };
+    windowsProfileMode: profileMode,
+    isolation: profileMode === 'native-defaults' ? 'ephemeral GitHub-hosted Windows account; pristine exact native leaves; no injected paths; VM disposal'
+      : 'ephemeral GitHub-hosted VM; private installation, Electron profile, workspace, XDG data and temporary runtime', publicOrigin: ORIGIN };
   const phase = (name, values = {}) => { report.phases.push({ name, at: new Date().toISOString(), ...values }); console.log(`[zeno-portable-update] ${name}`); };
-  let client; let child; let oldPid; let cleanupAllowed = false; let failure = false; let restoreEnvironment; let failureContext;
+  let client; let child; let oldPid; let cleanupAllowed = false; let failure = false; let restoreEnvironment; let failureContext; let nativeDefaults;
   const exceptions = []; const origins = new Set();
   const diagnostics = portableDiagnosticState();
   try {
@@ -676,29 +726,57 @@ async function main() {
     report.scope.originalBaseline = true; report.scope.originalTarget = true;
     phase('original-installers-verified', { baselineSha256: baseline.sha256, targetSha256: selected.installer.sha256, baselineBytes: baseline.size, targetBytes: selected.installer.size });
     diagnostics.enter('target-reference');
-    const reference = referenceResources(targetFile, join(root, 'reference-only'), platform);
-    const targetCode = verifyResources(reference, TARGET, feed, platform); rmSync(join(root, 'reference-only'), { recursive: true, force: true });
+    const reference = referenceResources(targetFile, join(root, 'reference-only'), platform, profileMode === 'native-defaults');
+    const targetCode = verifyResources(reference.resources, TARGET, feed, platform, reference.executableNames); rmSync(join(root, 'reference-only'), { recursive: true, force: true });
+    if (profileMode === 'native-defaults') {
+      diagnostics.enter('windows-native-reference');
+      const historicalReference = referenceResources(baselineFile, join(root, 'baseline-reference-only'), platform, true);
+      const historicalCode = verifyResources(historicalReference.resources, BASELINE, feed, platform, historicalReference.executableNames);
+      assert.deepEqual(historicalCode.nativeIdentity, targetCode.nativeIdentity, 'Original NSIS native installation/cache identities differ.');
+      rmSync(join(root, 'baseline-reference-only'), { recursive: true, force: true });
+      const roots = nativeWindowsRead(windowsNativeRootsScript());
+      assert.ok(sameWindowsPath(roots.home, homedir()) && sameWindowsPath(roots.home, process.env.USERPROFILE));
+      assertNativeEnvironmentRoots(roots, process.env);
+      nativeDefaults = windowsNativePlan(roots, targetCode.nativeIdentity, join(root, 'workspace'));
+      diagnostics.enter('windows-native-pristine');
+      assertNativePristineLeaves(nativeDefaults);
+      report.nativeDefaults = nativeWindowsRead(windowsNativePristineScript(), nativeDefaults);
+      assert.equal(report.nativeDefaults.pristine, true);
+    }
     diagnostics.enter('private-directories');
-    for (const name of ['installation', 'profile', 'workspace', 'state', 'data', 'config', 'cache', 'logs', 'tmp']) mkdirSync(join(root, name));
-    const installation = join(root, 'installation'); const profile = join(root, 'profile'); const workspace = join(root, 'workspace'); const port = await freePort();
+    for (const name of nativeDefaults ? ['workspace', 'logs'] : ['installation', 'profile', 'workspace', 'state', 'data', 'config', 'cache', 'logs', 'tmp']) mkdirSync(join(root, name));
+    const installation = nativeDefaults?.installation ?? join(root, 'installation'); const profile = nativeDefaults?.profile ?? join(root, 'profile'); const workspace = join(root, 'workspace');
+    const port = nativeDefaults ? 9223 : await freePort();
     failureContext = { platform, root, installation, profile, port, executable: join(installation, platform === 'win32' ? PRODUCT + '.exe' : 'Zeno.AppImage'),
-      targetAsarSha256: targetCode.archiveSha256, targetInstallerSha256: selected.installer.sha256 };
-    const environment = isolatedEnvironment(root, port);
-    writeFileSync(join(profile, 'openwork-workspaces.json'), JSON.stringify({ selectedId: '', activeId: null, watchedId: null, workspaces: [] }));
+      targetAsarSha256: targetCode.archiveSha256, targetInstallerSha256: selected.installer.sha256, ...(nativeDefaults ? { nativeDefaults } : {}) };
+    const environment = nativeDefaults ? nativeDefaultsEnvironment(process.env) : isolatedEnvironment(root, port);
+    if (!nativeDefaults) writeFileSync(join(profile, 'openwork-workspaces.json'), JSON.stringify({ selectedId: '', activeId: null, watchedId: null, workspaces: [] }));
     const marker = 'zeno-update-fixture-' + randomBytes(16).toString('hex'); writeFileSync(join(workspace, 'update-smoke-marker.txt'), marker);
     let executable;
     if (platform === 'win32') {
       diagnostics.enter('windows-pristine-installation');
       windowsPristineInstallation();
-      diagnostics.enter('windows-relaunch-environment');
-      restoreEnvironment = publishWindowsRelaunchEnvironment(environment, root);
+      if (!nativeDefaults) {
+        diagnostics.enter('windows-relaunch-environment');
+        restoreEnvironment = publishWindowsRelaunchEnvironment(environment, root);
+      } else {
+        diagnostics.enter('windows-native-ports'); await assertNativeCdpPortsFree();
+      }
       diagnostics.enter('baseline-nsis-install');
-      command(baselineFile, ['/S', `/D=${installation}`], { env: environment });
+      command(baselineFile, nativeDefaults ? ['/S'] : ['/S', `/D=${installation}`], { env: environment });
+      if (nativeDefaults) {
+        diagnostics.enter('windows-native-installation');
+        assertNativeOwnedPath(nativeDefaults, installation);
+        assert.ok(sameWindowsPath(realpathSync(installation), installation));
+        const observed = nativeWindowsRead(windowsNativeInstallationScript(), nativeDefaults);
+        assert.equal(observed.nativeInstallationRegistered, true); assert.equal(observed.exactDefaultInstallation, true);
+        Object.assign(report.nativeDefaults, observed);
+      }
       executable = join(installation, PRODUCT + '.exe'); assert.ok(existsSync(executable), 'NSIS did not install into its private directory.');
       diagnostics.enter('baseline-resource-verification');
       const installed = verifyResources(join(installation, 'resources'), BASELINE, feed, platform);
       assert.equal(installed.updaterCacheDirName, targetCode.updaterCacheDirName);
-      phase('original-nsis-installed', { privateDirectory: true, noResigning: true });
+      phase('original-nsis-installed', { privateDirectory: !nativeDefaults, ...(nativeDefaults ? { pristineNativeDefaultDirectory: true } : {}), noResigning: true });
     } else {
       diagnostics.enter('baseline-appimage-install');
       executable = join(installation, 'Zeno.AppImage');
@@ -708,6 +786,7 @@ async function main() {
       phase('original-appimage-installed', { privateDirectory: true, unchangedExecutableBytes: hash(readFileSync(executable)) === baseline.sha256 });
     }
     diagnostics.enter('baseline-app-launch');
+    if (nativeDefaults) await assertNativeCdpPortsFree();
     const output = openSync(join(root, 'logs/electron.log'), 'a', 0o600); const errors = openSync(join(root, 'logs/electron-error.log'), 'a', 0o600);
     child = spawn(executable, [], { env: environment, cwd: workspace, stdio: ['ignore', output, errors], detached: true });
     child.on('error', () => {}); closeSync(output); closeSync(errors);
@@ -724,6 +803,12 @@ async function main() {
     diagnostics.enter('baseline-workspace-identity');
     const workspaceRecord = created.workspaces.find(item => item.path === workspace); assert.ok(workspaceRecord?.id);
     const before = await runtime(client, workspace, { registerWorkspace: true }, diagnostics);
+    if (nativeDefaults) {
+      diagnostics.enter('baseline-native-v1-setting');
+      await verifyNativeV1HistorySetting(before.request, () => JSON.parse(readFileSync(assertNativeOwnedPath(nativeDefaults, nativeDefaults.engineState), 'utf8')),
+        (read, predicate, timeout, description) => until(read, predicate, timeout, description, diagnostics), true);
+      Object.assign(report.nativeDefaults, { historicalEngine: 'v1', originalFreshV2SettingObserved: true, selectedThroughOriginalSettings: true, savedV1BeforeHistory: true, defaultV2HistoryTested: false });
+    }
     const mount = before.mount; const serverWorkspaceRecord = before.workspace;
     diagnostics.enter('baseline-session-create');
     const session = await before.request(mount + '/session', { method: 'POST', body: JSON.stringify({ title: marker }) });
@@ -792,6 +877,12 @@ async function main() {
     diagnostics.enter('target-workspace-identity');
     const retained = await client.invoke('workspaceBootstrap'); assert.ok(retained.workspaces.some(item => item.id === workspaceRecord.id && item.path === workspace), 'Workspace identity was lost.');
     const after = await runtime(client, workspace, { expectedWorkspaceId: serverWorkspaceRecord.id }, diagnostics);
+    if (nativeDefaults) {
+      diagnostics.enter('target-native-v1-setting');
+      await verifyNativeV1HistorySetting(after.request, () => JSON.parse(readFileSync(assertNativeOwnedPath(nativeDefaults, nativeDefaults.engineState), 'utf8')),
+        (read, predicate, timeout, description) => until(read, predicate, timeout, description, diagnostics));
+      Object.assign(report.nativeDefaults, { savedV1Retained: true, actualDefaultProfileRealpathRetained: true });
+    }
     assert.deepEqual(after.workspace, serverWorkspaceRecord, 'Historical server workspace registry was lost.');
     assert.equal(after.mount, mount, 'Historical server workspace mount changed.');
     diagnostics.enter('target-session-read');
@@ -828,7 +919,12 @@ async function main() {
   } finally {
     if (client) { try { await client.browser.send('Browser.close', {}, 5000).catch(() => {}); } catch {} client.socket.close(); client.browser.socket.close(); }
     try { restoreEnvironment?.(); } catch { report.environmentCleanup = 'private hosted environment restoration failed; VM disposal required'; report.passed = false; failure = true; }
-    if (cleanupAllowed) {
+    if (nativeDefaults) {
+      // Native default state, registration and shortcuts belong only to this
+      // disposable account. Never recursively remove HOME/AppData or rewrite
+      // a profile/registry to make the upgrade pass. VM disposal removes it.
+      report.cleanup = 'native default leaves and private fixture retained for disposable hosted VM destruction';
+    } else if (cleanupAllowed) {
       // All important assertions precede cleanup. Failure files and processes
       // stay private until this disposable hosted VM is destroyed.
       await pause(1500);

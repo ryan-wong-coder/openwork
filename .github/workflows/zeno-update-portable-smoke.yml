@@ -27,6 +27,11 @@ on:
         type: choice
         default: "0"
         options: ["0", "1", "2"]
+      windows_profile_mode:
+        description: Windows-only native defaults use a pristine disposable account and a real saved V1 setting
+        type: choice
+        default: isolated
+        options: [isolated, native-defaults]
 
 permissions:
   actions: read
@@ -54,6 +59,7 @@ jobs:
         env:
           SMOKE_PLATFORM: ${{ inputs.platform || 'both' }}
           SMOKE_WINDOWS_DOWNLOAD_RETRIES: ${{ inputs.windows_download_retries || '0' }}
+          SMOKE_WINDOWS_PROFILE_MODE: ${{ inputs.windows_profile_mode || 'isolated' }}
         run: |
           node --input-type=module <<'JS'
           import assert from 'node:assert/strict';
@@ -63,6 +69,9 @@ jobs:
           const retries=process.env.SMOKE_WINDOWS_DOWNLOAD_RETRIES;
           assert.ok(['0','1','2'].includes(retries));
           assert.ok(selected!=='linux'||retries==='0');
+          const profile=process.env.SMOKE_WINDOWS_PROFILE_MODE;
+          assert.ok(['isolated','native-defaults'].includes(profile));
+          assert.ok(profile==='isolated'||selected==='win32');
           const lanes=[{platform:'win32',runner:'windows-2025'},{platform:'linux',runner:'ubuntu-24.04'}];
           appendFileSync(process.env.GITHUB_OUTPUT, `matrix=${JSON.stringify({include:lanes.filter(lane=>selected==='both'||lane.platform===selected)})}\n`);
           JS
@@ -184,6 +193,7 @@ jobs:
         if: matrix.platform == 'win32'
         env:
           ZENO_SMOKE_WINDOWS_DOWNLOAD_RETRIES: ${{ inputs.windows_download_retries || '0' }}
+          ZENO_SMOKE_WINDOWS_PROFILE_MODE: ${{ inputs.windows_profile_mode || 'isolated' }}
           ZENO_UPDATE_BASELINE_DIR: ${{ runner.temp }}/zeno-release-baseline
           ZENO_UPDATE_BASELINE_METADATA: ${{ runner.temp }}/zeno-baseline-metadata/zeno-release.json
           ZENO_UPDATE_TARGET_DIR: ${{ runner.temp }}/zeno-release-target
