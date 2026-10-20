@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-10-20T13:59:39.403808+00:00",
+  "lookup": "GET /repos/{owner}/{repo}/releases/tags/zeno-v1.1.2",
+  "observedStatus": 404,
+  "phase": "after completed successful release workflow",
+  "interpretation": "This draft was not returned by the tag lookup endpoint; not a build or release-upload failure.",
+  "authenticatedReleaseList": {
+    "matchingReleases": 1,
+    "releaseId": 418463565,
+    "draft": true,
+    "assetCount": 24
+  },
+  "auditAction": "Read the existing release by its authenticated list ID. No release/tag mutation."
+}

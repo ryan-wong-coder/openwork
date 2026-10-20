@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-10-20T14:01:44.454253+00:00",
+  "releaseId": 418463565,
+  "releaseTag": "zeno-v1.1.2",
+  "tagCommit": "46e5e38a5d7c4a147b0888d3a50e4788f045385e",
+  "runId": 39431901305,
+  "scope": "Independent GitHub asset metadata tuple comparison only, not complete installer-byte reads.",
+  "matchedRootFrozenManifest": true,
+  "assetCount": 24,
+  "totalAssetBytes": 4019823853,
+  "tupleFields": [
+    "name",
+    "size",
+    "sha256"
+  ],
+  "validatedTuplesFile": "validated-tuples-attempt02.json",
+  "validatedTuplesSha256": "b51cebc780610ae3e44e2654a6ed15192b79718318835057a092ec30a0d36bdd"
+}

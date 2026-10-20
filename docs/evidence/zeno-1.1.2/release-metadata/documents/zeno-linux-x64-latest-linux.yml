@@ -1,0 +1,12 @@
+version: 1.1.2
+files:
+  - url: zeno-linux-x64-1.1.2.AppImage
+    sha512: gBQ1zY+MRpX2CT3h2syze+pHGGDVgA5jZ+vmK61SVyoAlDKZ48K5bnAFDixZGFBJvWpu8IZntaHsYJFpEUMErA==
+    size: 325053811
+    blockMapSize: 336759
+  - url: zeno-linux-x64-1.1.2.deb
+    sha512: b/htlUQ1QNyjCp1M/UXJzOJeJCqUx6gYpuCxBCAuz0WDR3gjAAWsHmwGKRrIuoNAnD58rjfX81j1LveVX15Vew==
+    size: 402170500
+path: zeno-linux-x64-1.1.2.AppImage
+sha512: gBQ1zY+MRpX2CT3h2syze+pHGGDVgA5jZ+vmK61SVyoAlDKZ48K5bnAFDixZGFBJvWpu8IZntaHsYJFpEUMErA==
+releaseDate: 2026-10-20T13:48:16.144Z

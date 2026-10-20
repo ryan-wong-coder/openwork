@@ -1,0 +1,33 @@
+{
+  "checkedAt": "2026-10-20T14:02:08.439164+00:00",
+  "runId": 39431901305,
+  "jobId": 118658978442,
+  "jobName": "Verify personal data and local execution",
+  "stepName": "Verify local execution recovery and desktop account boundaries",
+  "sourceCommit": "46e5e38a5d7c4a147b0888d3a50e4788f045385e",
+  "passed": true,
+  "source": "Actual completed GitHub Actions job log, sanitized named test receipts only.",
+  "tests": [
+    {
+      "name": "real electron-builder collection and AsarPackager include five complete original licenses",
+      "passed": true,
+      "observedAt": "2026-10-20T13:38:33.6072745Z"
+    },
+    {
+      "name": "missing or empty input fails before producing any partial license staging directory",
+      "passed": true,
+      "observedAt": "2026-10-20T13:38:33.6074202Z"
+    },
+    {
+      "name": "repeat staging removes stale files and preserves all source bytes without text normalization",
+      "passed": true,
+      "observedAt": "2026-10-20T13:38:33.6075646Z"
+    },
+    {
+      "name": "packaged fitness media must include every source video/poster pair and unchanged bytes",
+      "passed": true,
+      "observedAt": "2026-10-20T13:38:33.6071127Z"
+    }
+  ],
+  "scope": "Real electron-builder file collection and AsarPackager test fixture compares five complete original license files. The six actual architecture package verifiers separately check archived notice presence/content markers; this fixture does not claim six-package complete legal byte comparison."
+}

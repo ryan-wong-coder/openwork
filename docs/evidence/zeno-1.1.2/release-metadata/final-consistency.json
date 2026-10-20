@@ -1,0 +1,70 @@
+{
+  "checkedAt": "2026-10-20T14:06:33.619543+00:00",
+  "passed": true,
+  "runId": 39431901305,
+  "releaseId": 418463565,
+  "tagCommit": "46e5e38a5d7c4a147b0888d3a50e4788f045385e",
+  "scope": "Link independently parsed actual six native job reports to independently downloaded release metadata. Large installer bytes are outside this audit.",
+  "lanes": [
+    {
+      "target": "darwin/x64",
+      "actualNativeJobId": 118660093367,
+      "runtimeSmoke": "passed",
+      "signingMatchesIndex": true,
+      "actualCheckoutMatchesFrozenTag": true,
+      "mediaFiles": 64,
+      "indexFiles": 5,
+      "feedInstallers": 2
+    },
+    {
+      "target": "darwin/arm64",
+      "actualNativeJobId": 118660093488,
+      "runtimeSmoke": "passed",
+      "signingMatchesIndex": true,
+      "actualCheckoutMatchesFrozenTag": true,
+      "mediaFiles": 64,
+      "indexFiles": 5,
+      "feedInstallers": 2
+    },
+    {
+      "target": "win32/x64",
+      "actualNativeJobId": 118660093437,
+      "runtimeSmoke": "passed",
+      "signingMatchesIndex": true,
+      "actualCheckoutMatchesFrozenTag": true,
+      "mediaFiles": 64,
+      "indexFiles": 3,
+      "feedInstallers": 1
+    },
+    {
+      "target": "win32/arm64",
+      "actualNativeJobId": 118660093369,
+      "runtimeSmoke": "passed",
+      "signingMatchesIndex": true,
+      "actualCheckoutMatchesFrozenTag": true,
+      "mediaFiles": 64,
+      "indexFiles": 3,
+      "feedInstallers": 1
+    },
+    {
+      "target": "linux/x64",
+      "actualNativeJobId": 118660093465,
+      "runtimeSmoke": "passed",
+      "signingMatchesIndex": true,
+      "actualCheckoutMatchesFrozenTag": true,
+      "mediaFiles": 64,
+      "indexFiles": 3,
+      "feedInstallers": 2
+    },
+    {
+      "target": "linux/arm64",
+      "actualNativeJobId": 118660093455,
+      "runtimeSmoke": "passed",
+      "signingMatchesIndex": true,
+      "actualCheckoutMatchesFrozenTag": true,
+      "mediaFiles": 64,
+      "indexFiles": 3,
+      "feedInstallers": 2
+    }
+  ]
+}

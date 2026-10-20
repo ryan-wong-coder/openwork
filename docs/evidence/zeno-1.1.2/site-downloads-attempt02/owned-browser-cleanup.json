@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-10-20T14:23:27.987715+00:00",
+  "scope": "Only the two Chrome processes and disposable profiles created by this audit wrapper.",
+  "headlessLaunch": true,
+  "visibleWindowsOpened": false,
+  "firstRunExitCode": 1,
+  "retryExitCode": 0,
+  "targetClosed": true,
+  "browserContextDisposed": true,
+  "ownedChromeStoppedInFinally": true,
+  "ownedPrivateProfilesRemoved": true,
+  "observedRemainingOwnedProfileDirectories": 0,
+  "systemClipboard": "Not accessed",
+  "installerDownloads": false
+}

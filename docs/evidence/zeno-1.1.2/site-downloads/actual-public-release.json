@@ -1,0 +1,121 @@
+{
+  "version": "1.1.2",
+  "publishedAt": "2026-10-20T14:18:20.654911+00:00",
+  "notes": [
+    "修复同时打开多个网页时，电脑授权页无法点击同意连接的问题。",
+    "为 32 个常用动作补齐原创海报和演示视频，动作详情显示正背肌群图。",
+    "训练中可直接查看动作详情，支持播放控制和减少动态效果。"
+  ],
+  "artifacts": [
+    {
+      "platform": "darwin",
+      "arch": "x64",
+      "format": "dmg",
+      "name": "zeno-mac-x64-1.1.2.dmg",
+      "url": "/downloads/1.1.2/zeno-mac-x64-1.1.2.dmg",
+      "size": 465082932,
+      "sha256": "adaf7fec7eb4158ff7f080ff5a95e5379a7dceac99d305f411fdd93893d7fd95",
+      "sha512": "dbaA/rDkXfB+O8Zb6YeWCkXk6d5mQWDIv5yVBLYMz3hDx7vUMpSsgxcn+AS7GczbprB9EGlNqQuWgdsO4SVYug==",
+      "signature": "self-signed"
+    },
+    {
+      "platform": "darwin",
+      "arch": "x64",
+      "format": "zip",
+      "name": "zeno-mac-x64-1.1.2.zip",
+      "url": "/downloads/1.1.2/zeno-mac-x64-1.1.2.zip",
+      "size": 463503671,
+      "sha256": "ad33b30f42563304526ebfe187247a88e7278d8945b3042d08af1b507b8de9eb",
+      "sha512": "8TNs+rFYqWdjEk1IV3QZA5idgTP0eTginljaxv1PeT/KPHZ0vfMncpaHinDIWIzw89VBu/Ly4Nju+BhVf7drIA==",
+      "signature": "self-signed"
+    },
+    {
+      "platform": "darwin",
+      "arch": "arm64",
+      "format": "dmg",
+      "name": "zeno-mac-arm64-1.1.2.dmg",
+      "url": "/downloads/1.1.2/zeno-mac-arm64-1.1.2.dmg",
+      "size": 445831550,
+      "sha256": "b3b6721b3a298342085ef8a33444016dc11f5cfb815844820fa66c779f1e23eb",
+      "sha512": "Gd15EOtHw/FrCwET9+4V5N2BP1xX9+9QX3ciaVHVEtbOe398QiRytWicfxJJQ8MWNH649V4QCF+Pv83k1yag3g==",
+      "signature": "self-signed"
+    },
+    {
+      "platform": "darwin",
+      "arch": "arm64",
+      "format": "zip",
+      "name": "zeno-mac-arm64-1.1.2.zip",
+      "url": "/downloads/1.1.2/zeno-mac-arm64-1.1.2.zip",
+      "size": 444118404,
+      "sha256": "7c4094269511f904edbbee1abc9d11f7728172cfefd689771df3350aa66740ff",
+      "sha512": "HZUruAOFxDh2164zhr+ZpeaDG8H4214t5pUnj9g4WvnPqEsLNHZm/GCOuYS1rG16DlvIfkhBTeEqmRgzes4TNA==",
+      "signature": "self-signed"
+    },
+    {
+      "platform": "win32",
+      "arch": "x64",
+      "format": "exe",
+      "name": "zeno-win-x64-1.1.2.exe",
+      "url": "/downloads/1.1.2/zeno-win-x64-1.1.2.exe",
+      "size": 390804422,
+      "sha256": "0690872dad2d7ff57f3e7e308b6fca864528a8c059bfa1934bdb98ba7d4efba3",
+      "sha512": "iytcDR7Eo6F0bSvKeNaqp7/rofF34rMKPOkZd1Y3iGKMWqmnI62B5+KRkXtKXULmGyf7u2TcLXbFAUaQzRNZCQ==",
+      "signature": "unsigned"
+    },
+    {
+      "platform": "win32",
+      "arch": "arm64",
+      "format": "exe",
+      "name": "zeno-win-arm64-1.1.2.exe",
+      "url": "/downloads/1.1.2/zeno-win-arm64-1.1.2.exe",
+      "size": 371374453,
+      "sha256": "bab5f2fb01a9656b008addc2acaf996f570ee817eaaf71cc905f1dce62bc78dd",
+      "sha512": "HLrJbDvR3WRX+RHS8/+Cv31MR/YKWqphVr/TEnswJHVSxiWq9VSRly699jCaatAZiHQGibZ1FnhG9AFotkzx7A==",
+      "signature": "unsigned"
+    },
+    {
+      "platform": "linux",
+      "arch": "x64",
+      "format": "AppImage",
+      "name": "zeno-linux-x64-1.1.2.AppImage",
+      "url": "/downloads/1.1.2/zeno-linux-x64-1.1.2.AppImage",
+      "size": 325053811,
+      "sha256": "28b689ff182c4c84d9076cd23fa9817624bdd21778b56a8471f64453d8eabbfd",
+      "sha512": "gBQ1zY+MRpX2CT3h2syze+pHGGDVgA5jZ+vmK61SVyoAlDKZ48K5bnAFDixZGFBJvWpu8IZntaHsYJFpEUMErA==",
+      "signature": "unsigned"
+    },
+    {
+      "platform": "linux",
+      "arch": "x64",
+      "format": "deb",
+      "name": "zeno-linux-x64-1.1.2.deb",
+      "url": "/downloads/1.1.2/zeno-linux-x64-1.1.2.deb",
+      "size": 402170500,
+      "sha256": "8bdd5812560debb20d6af8d1ce4585dac9504bd5ae174d9c1859396a7732ae67",
+      "sha512": "b/htlUQ1QNyjCp1M/UXJzOJeJCqUx6gYpuCxBCAuz0WDR3gjAAWsHmwGKRrIuoNAnD58rjfX81j1LveVX15Vew==",
+      "signature": "unsigned"
+    },
+    {
+      "platform": "linux",
+      "arch": "arm64",
+      "format": "AppImage",
+      "name": "zeno-linux-arm64-1.1.2.AppImage",
+      "url": "/downloads/1.1.2/zeno-linux-arm64-1.1.2.AppImage",
+      "size": 322934838,
+      "sha256": "fe6ae45bdc44e2197dcf61863c6bab90d3f8542a1535d2c4becd9f06f849e0a2",
+      "sha512": "8A6E/kqaooXkVvoOW3HhRZw456K4C+mNeEXw1Ke31ux0xBUvgSMl8FV9akthky5VPgLe3tyKtTpIrk14vePdOg==",
+      "signature": "unsigned"
+    },
+    {
+      "platform": "linux",
+      "arch": "arm64",
+      "format": "deb",
+      "name": "zeno-linux-arm64-1.1.2.deb",
+      "url": "/downloads/1.1.2/zeno-linux-arm64-1.1.2.deb",
+      "size": 386281764,
+      "sha256": "dc135eb37390c430645faeb6e43c08c824cad948d83c6a108494bda69a9f2140",
+      "sha512": "bv52+hOLTe1guECtL5sfq65NKJkY7j6hDx7jkWczmGeAIFNLvjs1j/V/rvMza5Kqi5jdwif653pARQPjAEqk0A==",
+      "signature": "unsigned"
+    }
+  ]
+}

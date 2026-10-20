@@ -1,0 +1,8 @@
+version: 1.1.2
+files:
+  - url: zeno-win-x64-1.1.2.exe
+    sha512: iytcDR7Eo6F0bSvKeNaqp7/rofF34rMKPOkZd1Y3iGKMWqmnI62B5+KRkXtKXULmGyf7u2TcLXbFAUaQzRNZCQ==
+    size: 390804422
+path: zeno-win-x64-1.1.2.exe
+sha512: iytcDR7Eo6F0bSvKeNaqp7/rofF34rMKPOkZd1Y3iGKMWqmnI62B5+KRkXtKXULmGyf7u2TcLXbFAUaQzRNZCQ==
+releaseDate: 2026-10-20T13:48:59.944Z

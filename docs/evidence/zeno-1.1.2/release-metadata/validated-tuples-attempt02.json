@@ -1,0 +1,488 @@
+{
+  "version": "1.1.2",
+  "releaseId": 418463565,
+  "tag": "zeno-v1.1.2",
+  "tagCommit": "46e5e38a5d7c4a147b0888d3a50e4788f045385e",
+  "tagObject": "f576d0e877eabe611d1ea0af9400e3b16f8aa60e",
+  "runId": 39431901305,
+  "checkedAt": "2026-10-20T14:00:27.477Z",
+  "actualAssets": [
+    {
+      "id": 659476013,
+      "name": "RELEASE-NOTES.md",
+      "size": 648,
+      "sha256": "af4b9b560763241e3bfce73c3d6bb594cac17ea7629159e3fa7f586eb14baefb"
+    },
+    {
+      "id": 659476017,
+      "name": "zeno-darwin-arm64-latest-mac.yml",
+      "size": 498,
+      "sha256": "12f68cec1372ed5d10d788a20b908ef763e3e845bf85da343e1ebee1a56aa7fc"
+    },
+    {
+      "id": 659476019,
+      "name": "zeno-darwin-x64-latest-mac.yml",
+      "size": 492,
+      "sha256": "29e903925e0a02e4b3e8ecfa21c9bab14686bcb747736599c14cb4834e0e3141"
+    },
+    {
+      "id": 659476018,
+      "name": "zeno-linux-arm64-1.1.2.AppImage",
+      "size": 322934838,
+      "sha256": "fe6ae45bdc44e2197dcf61863c6bab90d3f8542a1535d2c4becd9f06f849e0a2"
+    },
+    {
+      "id": 659476014,
+      "name": "zeno-linux-arm64-1.1.2.deb",
+      "size": 386281764,
+      "sha256": "dc135eb37390c430645faeb6e43c08c824cad948d83c6a108494bda69a9f2140"
+    },
+    {
+      "id": 659476039,
+      "name": "zeno-linux-arm64-latest-linux-arm64.yml",
+      "size": 539,
+      "sha256": "baf6c3780ba6444e09ef8d5a95efb2f57d4aa4746552a2d4933fa177e25aa851"
+    },
+    {
+      "id": 659476043,
+      "name": "zeno-linux-x64-1.1.2.AppImage",
+      "size": 325053811,
+      "sha256": "28b689ff182c4c84d9076cd23fa9817624bdd21778b56a8471f64453d8eabbfd"
+    },
+    {
+      "id": 659476044,
+      "name": "zeno-linux-x64-1.1.2.deb",
+      "size": 402170500,
+      "sha256": "8bdd5812560debb20d6af8d1ce4585dac9504bd5ae174d9c1859396a7732ae67"
+    },
+    {
+      "id": 659476076,
+      "name": "zeno-linux-x64-latest-linux.yml",
+      "size": 533,
+      "sha256": "e95b1cc9fbccc5707c1b3da487a2f6df9d006fadfe6c6de2c1edc439236a01ea"
+    },
+    {
+      "id": 659476127,
+      "name": "zeno-mac-arm64-1.1.2.dmg",
+      "size": 445831550,
+      "sha256": "b3b6721b3a298342085ef8a33444016dc11f5cfb815844820fa66c779f1e23eb"
+    },
+    {
+      "id": 659476714,
+      "name": "zeno-mac-arm64-1.1.2.dmg.blockmap",
+      "size": 463772,
+      "sha256": "859961e01e3ce8d3fedeaee0f1e7e8409a4c2f4966c5da420ad4958f022469e1"
+    },
+    {
+      "id": 659476734,
+      "name": "zeno-mac-arm64-1.1.2.zip",
+      "size": 444118404,
+      "sha256": "7c4094269511f904edbbee1abc9d11f7728172cfefd689771df3350aa66740ff"
+    },
+    {
+      "id": 659476860,
+      "name": "zeno-mac-arm64-1.1.2.zip.blockmap",
+      "size": 456274,
+      "sha256": "44f9f7368e71bce88c0a2eecb2697efef4bf8ef9903012723d4b4c90d1f450ad"
+    },
+    {
+      "id": 659476898,
+      "name": "zeno-mac-x64-1.1.2.dmg",
+      "size": 465082932,
+      "sha256": "adaf7fec7eb4158ff7f080ff5a95e5379a7dceac99d305f411fdd93893d7fd95"
+    },
+    {
+      "id": 659476968,
+      "name": "zeno-mac-x64-1.1.2.dmg.blockmap",
+      "size": 480829,
+      "sha256": "5742361dc487707494f525f0d641501095422f00132b696e15def8e72aa93968"
+    },
+    {
+      "id": 659477001,
+      "name": "zeno-mac-x64-1.1.2.zip",
+      "size": 463503671,
+      "sha256": "ad33b30f42563304526ebfe187247a88e7278d8945b3042d08af1b507b8de9eb"
+    },
+    {
+      "id": 659477043,
+      "name": "zeno-mac-x64-1.1.2.zip.blockmap",
+      "size": 480559,
+      "sha256": "e11408fd50ffc7408d4cf360541a9b8e184cec47a271a63490ad0677bbe9de3a"
+    },
+    {
+      "id": 659477070,
+      "name": "zeno-release.json",
+      "size": 10871,
+      "sha256": "73e1b64fff1059b67d8da10173d89b02842705fbc65551ef5658933196f7bfd7"
+    },
+    {
+      "id": 659477103,
+      "name": "zeno-win-arm64-1.1.2.exe",
+      "size": 371374453,
+      "sha256": "bab5f2fb01a9656b008addc2acaf996f570ee817eaaf71cc905f1dce62bc78dd"
+    },
+    {
+      "id": 659477536,
+      "name": "zeno-win-arm64-1.1.2.exe.blockmap",
+      "size": 376578,
+      "sha256": "6d9328c5dc635068a77ae625732a41afc312d01880a879184f2367cc29d4f5b5"
+    },
+    {
+      "id": 659477564,
+      "name": "zeno-win-x64-1.1.2.exe",
+      "size": 390804422,
+      "sha256": "0690872dad2d7ff57f3e7e308b6fca864528a8c059bfa1934bdb98ba7d4efba3"
+    },
+    {
+      "id": 659477565,
+      "name": "zeno-win-x64-1.1.2.exe.blockmap",
+      "size": 395233,
+      "sha256": "ae5fdbea6b707feedaea65a10a3a8eb1656fdc92567745a6a04b421d341e65d1"
+    },
+    {
+      "id": 659477596,
+      "name": "zeno-win32-arm64-latest.yml",
+      "size": 343,
+      "sha256": "f3e252158e45bd510ff4af0eb15a5be6f17ef3651e65637e487a401efa8fe8bf"
+    },
+    {
+      "id": 659477631,
+      "name": "zeno-win32-x64-latest.yml",
+      "size": 339,
+      "sha256": "24b505ae87dcccd7f0d5fac222de7f55713fcdd6b3a5ab40bf164c5917c39fe7"
+    }
+  ],
+  "indexReferences": 22,
+  "installerCount": 10,
+  "blockmapCount": 6,
+  "manifestCount": 6,
+  "metadataCount": 2,
+  "lanes": [
+    {
+      "target": "darwin/x64",
+      "feedUrl": "https://www.zeno.ryan-wong.cn/updates/darwin/x64/",
+      "manifest": "latest-mac.yml",
+      "manifestAsset": "zeno-darwin-x64-latest-mac.yml",
+      "yamlVersion": "1.1.2",
+      "yamlPath": "zeno-mac-x64-1.1.2.zip",
+      "yamlSha512": "8TNs+rFYqWdjEk1IV3QZA5idgTP0eTginljaxv1PeT/KPHZ0vfMncpaHinDIWIzw89VBu/Ly4Nju+BhVf7drIA==",
+      "yamlFiles": [
+        {
+          "name": "zeno-mac-x64-1.1.2.zip",
+          "size": 463503671,
+          "sha512": "8TNs+rFYqWdjEk1IV3QZA5idgTP0eTginljaxv1PeT/KPHZ0vfMncpaHinDIWIzw89VBu/Ly4Nju+BhVf7drIA=="
+        },
+        {
+          "name": "zeno-mac-x64-1.1.2.dmg",
+          "size": 465082932,
+          "sha512": "dbaA/rDkXfB+O8Zb6YeWCkXk6d5mQWDIv5yVBLYMz3hDx7vUMpSsgxcn+AS7GczbprB9EGlNqQuWgdsO4SVYug=="
+        }
+      ],
+      "files": [
+        {
+          "name": "zeno-mac-x64-1.1.2.dmg",
+          "assetName": "zeno-mac-x64-1.1.2.dmg",
+          "size": 465082932,
+          "sha256": "adaf7fec7eb4158ff7f080ff5a95e5379a7dceac99d305f411fdd93893d7fd95",
+          "sha512": "dbaA/rDkXfB+O8Zb6YeWCkXk6d5mQWDIv5yVBLYMz3hDx7vUMpSsgxcn+AS7GczbprB9EGlNqQuWgdsO4SVYug==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/darwin/x64/zeno-mac-x64-1.1.2.dmg",
+          "category": "installer"
+        },
+        {
+          "name": "zeno-mac-x64-1.1.2.dmg.blockmap",
+          "assetName": "zeno-mac-x64-1.1.2.dmg.blockmap",
+          "size": 480829,
+          "sha256": "5742361dc487707494f525f0d641501095422f00132b696e15def8e72aa93968",
+          "sha512": "Kug+KQZadtU4N40cd7yd4uXSip/K019Z8WVZNlrqmrUDKpf6LD9LQL6Sg8jWZLTa6ZxVIkywuZyT0bO80WGncw==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/darwin/x64/zeno-mac-x64-1.1.2.dmg.blockmap",
+          "category": "blockmap"
+        },
+        {
+          "name": "zeno-mac-x64-1.1.2.zip",
+          "assetName": "zeno-mac-x64-1.1.2.zip",
+          "size": 463503671,
+          "sha256": "ad33b30f42563304526ebfe187247a88e7278d8945b3042d08af1b507b8de9eb",
+          "sha512": "8TNs+rFYqWdjEk1IV3QZA5idgTP0eTginljaxv1PeT/KPHZ0vfMncpaHinDIWIzw89VBu/Ly4Nju+BhVf7drIA==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/darwin/x64/zeno-mac-x64-1.1.2.zip",
+          "category": "installer"
+        },
+        {
+          "name": "zeno-mac-x64-1.1.2.zip.blockmap",
+          "assetName": "zeno-mac-x64-1.1.2.zip.blockmap",
+          "size": 480559,
+          "sha256": "e11408fd50ffc7408d4cf360541a9b8e184cec47a271a63490ad0677bbe9de3a",
+          "sha512": "RUn5KoZrt6XDufoD6eSLVvf4J9ICBbTKexEpwG09fis3O6kblpirVKLtBbb3vQFy9O11+lrsSI06xnrHXbpboA==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/darwin/x64/zeno-mac-x64-1.1.2.zip.blockmap",
+          "category": "blockmap"
+        },
+        {
+          "name": "latest-mac.yml",
+          "assetName": "zeno-darwin-x64-latest-mac.yml",
+          "size": 492,
+          "sha256": "29e903925e0a02e4b3e8ecfa21c9bab14686bcb747736599c14cb4834e0e3141",
+          "sha512": "JkXcwrbHm3zURBdgwgWPstYbwzA7leTUZLN5oFxws57LhMKuFkRUn3SS54lBBoQI7ByJUtFUAjjIzjwHH1C9Vg==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/darwin/x64/latest-mac.yml",
+          "category": "manifest"
+        }
+      ]
+    },
+    {
+      "target": "darwin/arm64",
+      "feedUrl": "https://www.zeno.ryan-wong.cn/updates/darwin/arm64/",
+      "manifest": "latest-mac.yml",
+      "manifestAsset": "zeno-darwin-arm64-latest-mac.yml",
+      "yamlVersion": "1.1.2",
+      "yamlPath": "zeno-mac-arm64-1.1.2.zip",
+      "yamlSha512": "HZUruAOFxDh2164zhr+ZpeaDG8H4214t5pUnj9g4WvnPqEsLNHZm/GCOuYS1rG16DlvIfkhBTeEqmRgzes4TNA==",
+      "yamlFiles": [
+        {
+          "name": "zeno-mac-arm64-1.1.2.zip",
+          "size": 444118404,
+          "sha512": "HZUruAOFxDh2164zhr+ZpeaDG8H4214t5pUnj9g4WvnPqEsLNHZm/GCOuYS1rG16DlvIfkhBTeEqmRgzes4TNA=="
+        },
+        {
+          "name": "zeno-mac-arm64-1.1.2.dmg",
+          "size": 445831550,
+          "sha512": "Gd15EOtHw/FrCwET9+4V5N2BP1xX9+9QX3ciaVHVEtbOe398QiRytWicfxJJQ8MWNH649V4QCF+Pv83k1yag3g=="
+        }
+      ],
+      "files": [
+        {
+          "name": "zeno-mac-arm64-1.1.2.dmg",
+          "assetName": "zeno-mac-arm64-1.1.2.dmg",
+          "size": 445831550,
+          "sha256": "b3b6721b3a298342085ef8a33444016dc11f5cfb815844820fa66c779f1e23eb",
+          "sha512": "Gd15EOtHw/FrCwET9+4V5N2BP1xX9+9QX3ciaVHVEtbOe398QiRytWicfxJJQ8MWNH649V4QCF+Pv83k1yag3g==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/darwin/arm64/zeno-mac-arm64-1.1.2.dmg",
+          "category": "installer"
+        },
+        {
+          "name": "zeno-mac-arm64-1.1.2.dmg.blockmap",
+          "assetName": "zeno-mac-arm64-1.1.2.dmg.blockmap",
+          "size": 463772,
+          "sha256": "859961e01e3ce8d3fedeaee0f1e7e8409a4c2f4966c5da420ad4958f022469e1",
+          "sha512": "aWcH7q60rj9f/uE88DKF+n6LpdkPy3BDPtmOSnlWo2iLOuwV6DqarGmTWocVcN2XoUq7xqOaMq9jaCT3MzIozg==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/darwin/arm64/zeno-mac-arm64-1.1.2.dmg.blockmap",
+          "category": "blockmap"
+        },
+        {
+          "name": "zeno-mac-arm64-1.1.2.zip",
+          "assetName": "zeno-mac-arm64-1.1.2.zip",
+          "size": 444118404,
+          "sha256": "7c4094269511f904edbbee1abc9d11f7728172cfefd689771df3350aa66740ff",
+          "sha512": "HZUruAOFxDh2164zhr+ZpeaDG8H4214t5pUnj9g4WvnPqEsLNHZm/GCOuYS1rG16DlvIfkhBTeEqmRgzes4TNA==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/darwin/arm64/zeno-mac-arm64-1.1.2.zip",
+          "category": "installer"
+        },
+        {
+          "name": "zeno-mac-arm64-1.1.2.zip.blockmap",
+          "assetName": "zeno-mac-arm64-1.1.2.zip.blockmap",
+          "size": 456274,
+          "sha256": "44f9f7368e71bce88c0a2eecb2697efef4bf8ef9903012723d4b4c90d1f450ad",
+          "sha512": "fHofipLEiK7+QocsitqpDLUzaEW/MqavaOmaaiSRzkVbGcI0I/Z6ENaj/39roCMY5ZVXGQwqdu3YCDI9EEhlvw==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/darwin/arm64/zeno-mac-arm64-1.1.2.zip.blockmap",
+          "category": "blockmap"
+        },
+        {
+          "name": "latest-mac.yml",
+          "assetName": "zeno-darwin-arm64-latest-mac.yml",
+          "size": 498,
+          "sha256": "12f68cec1372ed5d10d788a20b908ef763e3e845bf85da343e1ebee1a56aa7fc",
+          "sha512": "Jeg4QNu5n9igMo28zD15q2J9+mJQgG5183eFQagHxQz4p0EIJkMxTAw2hIcuXXEvP26kA0c4wWhlyup7WL41qg==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/darwin/arm64/latest-mac.yml",
+          "category": "manifest"
+        }
+      ]
+    },
+    {
+      "target": "win32/x64",
+      "feedUrl": "https://www.zeno.ryan-wong.cn/updates/win32/x64/",
+      "manifest": "latest.yml",
+      "manifestAsset": "zeno-win32-x64-latest.yml",
+      "yamlVersion": "1.1.2",
+      "yamlPath": "zeno-win-x64-1.1.2.exe",
+      "yamlSha512": "iytcDR7Eo6F0bSvKeNaqp7/rofF34rMKPOkZd1Y3iGKMWqmnI62B5+KRkXtKXULmGyf7u2TcLXbFAUaQzRNZCQ==",
+      "yamlFiles": [
+        {
+          "name": "zeno-win-x64-1.1.2.exe",
+          "size": 390804422,
+          "sha512": "iytcDR7Eo6F0bSvKeNaqp7/rofF34rMKPOkZd1Y3iGKMWqmnI62B5+KRkXtKXULmGyf7u2TcLXbFAUaQzRNZCQ=="
+        }
+      ],
+      "files": [
+        {
+          "name": "zeno-win-x64-1.1.2.exe",
+          "assetName": "zeno-win-x64-1.1.2.exe",
+          "size": 390804422,
+          "sha256": "0690872dad2d7ff57f3e7e308b6fca864528a8c059bfa1934bdb98ba7d4efba3",
+          "sha512": "iytcDR7Eo6F0bSvKeNaqp7/rofF34rMKPOkZd1Y3iGKMWqmnI62B5+KRkXtKXULmGyf7u2TcLXbFAUaQzRNZCQ==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/win32/x64/zeno-win-x64-1.1.2.exe",
+          "category": "installer"
+        },
+        {
+          "name": "zeno-win-x64-1.1.2.exe.blockmap",
+          "assetName": "zeno-win-x64-1.1.2.exe.blockmap",
+          "size": 395233,
+          "sha256": "ae5fdbea6b707feedaea65a10a3a8eb1656fdc92567745a6a04b421d341e65d1",
+          "sha512": "eBCK2PMdYNRWpGZR//4Bw4t1LP3nNM6J8T1mYnsa/q7rKUXkzMRc6lELDb52FPHiKcGcmCoLU+EAF0sZ1UHnzA==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/win32/x64/zeno-win-x64-1.1.2.exe.blockmap",
+          "category": "blockmap"
+        },
+        {
+          "name": "latest.yml",
+          "assetName": "zeno-win32-x64-latest.yml",
+          "size": 339,
+          "sha256": "24b505ae87dcccd7f0d5fac222de7f55713fcdd6b3a5ab40bf164c5917c39fe7",
+          "sha512": "usGkIFsovhE5B6fU21cKjU+8bZvebizxtOoHLatQlBysHrju4BqTfwji4whwWn40MvZ6hixgZcsu5Vf2WQ1tLA==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/win32/x64/latest.yml",
+          "category": "manifest"
+        }
+      ]
+    },
+    {
+      "target": "win32/arm64",
+      "feedUrl": "https://www.zeno.ryan-wong.cn/updates/win32/arm64/",
+      "manifest": "latest.yml",
+      "manifestAsset": "zeno-win32-arm64-latest.yml",
+      "yamlVersion": "1.1.2",
+      "yamlPath": "zeno-win-arm64-1.1.2.exe",
+      "yamlSha512": "HLrJbDvR3WRX+RHS8/+Cv31MR/YKWqphVr/TEnswJHVSxiWq9VSRly699jCaatAZiHQGibZ1FnhG9AFotkzx7A==",
+      "yamlFiles": [
+        {
+          "name": "zeno-win-arm64-1.1.2.exe",
+          "size": 371374453,
+          "sha512": "HLrJbDvR3WRX+RHS8/+Cv31MR/YKWqphVr/TEnswJHVSxiWq9VSRly699jCaatAZiHQGibZ1FnhG9AFotkzx7A=="
+        }
+      ],
+      "files": [
+        {
+          "name": "zeno-win-arm64-1.1.2.exe",
+          "assetName": "zeno-win-arm64-1.1.2.exe",
+          "size": 371374453,
+          "sha256": "bab5f2fb01a9656b008addc2acaf996f570ee817eaaf71cc905f1dce62bc78dd",
+          "sha512": "HLrJbDvR3WRX+RHS8/+Cv31MR/YKWqphVr/TEnswJHVSxiWq9VSRly699jCaatAZiHQGibZ1FnhG9AFotkzx7A==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/win32/arm64/zeno-win-arm64-1.1.2.exe",
+          "category": "installer"
+        },
+        {
+          "name": "zeno-win-arm64-1.1.2.exe.blockmap",
+          "assetName": "zeno-win-arm64-1.1.2.exe.blockmap",
+          "size": 376578,
+          "sha256": "6d9328c5dc635068a77ae625732a41afc312d01880a879184f2367cc29d4f5b5",
+          "sha512": "/FTf4hNy6BMGlbIArwq7nQM+x/QKDauHXUBZ5/gZAjQczkGxXSXvEqhbIwAWO6pMA8IvctobFmrOGb7MISd6/Q==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/win32/arm64/zeno-win-arm64-1.1.2.exe.blockmap",
+          "category": "blockmap"
+        },
+        {
+          "name": "latest.yml",
+          "assetName": "zeno-win32-arm64-latest.yml",
+          "size": 343,
+          "sha256": "f3e252158e45bd510ff4af0eb15a5be6f17ef3651e65637e487a401efa8fe8bf",
+          "sha512": "JzLfWdIRqJlTjGSZ0mwn6+/Cq3+ydR60UBMT4Kdm11qWU0cnqLSX/fro28RAUWDAxW7uw93Kf9uv9viYg/QUXQ==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/win32/arm64/latest.yml",
+          "category": "manifest"
+        }
+      ]
+    },
+    {
+      "target": "linux/x64",
+      "feedUrl": "https://www.zeno.ryan-wong.cn/updates/linux/x64/",
+      "manifest": "latest-linux.yml",
+      "manifestAsset": "zeno-linux-x64-latest-linux.yml",
+      "yamlVersion": "1.1.2",
+      "yamlPath": "zeno-linux-x64-1.1.2.AppImage",
+      "yamlSha512": "gBQ1zY+MRpX2CT3h2syze+pHGGDVgA5jZ+vmK61SVyoAlDKZ48K5bnAFDixZGFBJvWpu8IZntaHsYJFpEUMErA==",
+      "yamlFiles": [
+        {
+          "name": "zeno-linux-x64-1.1.2.AppImage",
+          "size": 325053811,
+          "sha512": "gBQ1zY+MRpX2CT3h2syze+pHGGDVgA5jZ+vmK61SVyoAlDKZ48K5bnAFDixZGFBJvWpu8IZntaHsYJFpEUMErA=="
+        },
+        {
+          "name": "zeno-linux-x64-1.1.2.deb",
+          "size": 402170500,
+          "sha512": "b/htlUQ1QNyjCp1M/UXJzOJeJCqUx6gYpuCxBCAuz0WDR3gjAAWsHmwGKRrIuoNAnD58rjfX81j1LveVX15Vew=="
+        }
+      ],
+      "files": [
+        {
+          "name": "zeno-linux-x64-1.1.2.AppImage",
+          "assetName": "zeno-linux-x64-1.1.2.AppImage",
+          "size": 325053811,
+          "sha256": "28b689ff182c4c84d9076cd23fa9817624bdd21778b56a8471f64453d8eabbfd",
+          "sha512": "gBQ1zY+MRpX2CT3h2syze+pHGGDVgA5jZ+vmK61SVyoAlDKZ48K5bnAFDixZGFBJvWpu8IZntaHsYJFpEUMErA==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/linux/x64/zeno-linux-x64-1.1.2.AppImage",
+          "category": "installer"
+        },
+        {
+          "name": "zeno-linux-x64-1.1.2.deb",
+          "assetName": "zeno-linux-x64-1.1.2.deb",
+          "size": 402170500,
+          "sha256": "8bdd5812560debb20d6af8d1ce4585dac9504bd5ae174d9c1859396a7732ae67",
+          "sha512": "b/htlUQ1QNyjCp1M/UXJzOJeJCqUx6gYpuCxBCAuz0WDR3gjAAWsHmwGKRrIuoNAnD58rjfX81j1LveVX15Vew==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/linux/x64/zeno-linux-x64-1.1.2.deb",
+          "category": "installer"
+        },
+        {
+          "name": "latest-linux.yml",
+          "assetName": "zeno-linux-x64-latest-linux.yml",
+          "size": 533,
+          "sha256": "e95b1cc9fbccc5707c1b3da487a2f6df9d006fadfe6c6de2c1edc439236a01ea",
+          "sha512": "FdwjW4323fqBbohalLyCVXZ3/S1/zWNwdIvU7zR/j5j6tXBWQFys65i7IyqXFIKx9QbCTdMMlYTLgMsdM1qRqg==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/linux/x64/latest-linux.yml",
+          "category": "manifest"
+        }
+      ]
+    },
+    {
+      "target": "linux/arm64",
+      "feedUrl": "https://www.zeno.ryan-wong.cn/updates/linux/arm64/",
+      "manifest": "latest-linux-arm64.yml",
+      "manifestAsset": "zeno-linux-arm64-latest-linux-arm64.yml",
+      "yamlVersion": "1.1.2",
+      "yamlPath": "zeno-linux-arm64-1.1.2.AppImage",
+      "yamlSha512": "8A6E/kqaooXkVvoOW3HhRZw456K4C+mNeEXw1Ke31ux0xBUvgSMl8FV9akthky5VPgLe3tyKtTpIrk14vePdOg==",
+      "yamlFiles": [
+        {
+          "name": "zeno-linux-arm64-1.1.2.AppImage",
+          "size": 322934838,
+          "sha512": "8A6E/kqaooXkVvoOW3HhRZw456K4C+mNeEXw1Ke31ux0xBUvgSMl8FV9akthky5VPgLe3tyKtTpIrk14vePdOg=="
+        },
+        {
+          "name": "zeno-linux-arm64-1.1.2.deb",
+          "size": 386281764,
+          "sha512": "bv52+hOLTe1guECtL5sfq65NKJkY7j6hDx7jkWczmGeAIFNLvjs1j/V/rvMza5Kqi5jdwif653pARQPjAEqk0A=="
+        }
+      ],
+      "files": [
+        {
+          "name": "zeno-linux-arm64-1.1.2.AppImage",
+          "assetName": "zeno-linux-arm64-1.1.2.AppImage",
+          "size": 322934838,
+          "sha256": "fe6ae45bdc44e2197dcf61863c6bab90d3f8542a1535d2c4becd9f06f849e0a2",
+          "sha512": "8A6E/kqaooXkVvoOW3HhRZw456K4C+mNeEXw1Ke31ux0xBUvgSMl8FV9akthky5VPgLe3tyKtTpIrk14vePdOg==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/linux/arm64/zeno-linux-arm64-1.1.2.AppImage",
+          "category": "installer"
+        },
+        {
+          "name": "zeno-linux-arm64-1.1.2.deb",
+          "assetName": "zeno-linux-arm64-1.1.2.deb",
+          "size": 386281764,
+          "sha256": "dc135eb37390c430645faeb6e43c08c824cad948d83c6a108494bda69a9f2140",
+          "sha512": "bv52+hOLTe1guECtL5sfq65NKJkY7j6hDx7jkWczmGeAIFNLvjs1j/V/rvMza5Kqi5jdwif653pARQPjAEqk0A==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/linux/arm64/zeno-linux-arm64-1.1.2.deb",
+          "category": "installer"
+        },
+        {
+          "name": "latest-linux-arm64.yml",
+          "assetName": "zeno-linux-arm64-latest-linux-arm64.yml",
+          "size": 539,
+          "sha256": "baf6c3780ba6444e09ef8d5a95efb2f57d4aa4746552a2d4933fa177e25aa851",
+          "sha512": "VZ2PZUymLBFgPCWWn5ERwX/rXPcmQMDnnr91CXZEB9YZkNI5ziAoc9Yt6H3jBtI+fmt5eISRWKJdo1rHre66ig==",
+          "url": "https://www.zeno.ryan-wong.cn/updates/linux/arm64/latest-linux-arm64.yml",
+          "category": "manifest"
+        }
+      ]
+    }
+  ]
+}

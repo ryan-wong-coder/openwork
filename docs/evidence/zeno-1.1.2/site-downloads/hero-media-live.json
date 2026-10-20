@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "fixtureOnly": false,
+  "checkedAt": "2026-10-20T14:19:19.766Z",
+  "site": "https://www.zeno.ryan-wong.cn",
+  "websiteCommit": "15a286a5c",
+  "releaseVersion": "1.1.2",
+  "checks": [
+    {
+      "name": "hero-worklife-v3.mp4",
+      "size": 1850779,
+      "mime": "video/mp4",
+      "sha256": "8e367f00d7c3c1e2ccb59de28d7def61835ec8ee058f815ccfb130d2bc316d97",
+      "sha512": "b50ecb3268df33a9a4c7aed522a2868ff59f6a1b96687a58de9c6df35cd48b00835558b24085a27ddc258f86ab9623b6bbd86fce9237c45170f04c36e4d6d5e9",
+      "identicalToLocalDist": true,
+      "range": true
+    },
+    {
+      "name": "hero-worklife-v3-mobile.mp4",
+      "size": 1291194,
+      "mime": "video/mp4",
+      "sha256": "fab71f2fbd0d2ca8bd49aa75977eb2e5d75e0179642e95d89460f8e621092a31",
+      "sha512": "a371c276c1121dc595620af1055d581ec892ca3083fdabc54c77e73bb1964a8c5f8ac4d0582dd7ccf0e8e4dde4bf6b38c3c05c5651a8df76611775992fe7781e",
+      "identicalToLocalDist": true,
+      "range": true
+    },
+    {
+      "name": "hero-worklife-v3-poster.webp",
+      "size": 54868,
+      "mime": "image/webp",
+      "sha256": "25608f0e5d6ba9ad162dc87480e231f6adfefea7306e3dd991a81e48f1aaffe4",
+      "sha512": "e5b4056e98b81f50776d6198e30606dacdd4cedc11006c41d7a046a9adb4bfa9c81a019df0ee0abc6a6da587882136f56bb2fe813a0a6d9263f45515c2983683",
+      "identicalToLocalDist": true,
+      "range": true
+    },
+    {
+      "name": "hero-worklife-v3-mobile-poster.webp",
+      "size": 43532,
+      "mime": "image/webp",
+      "sha256": "e353c3285bb7398d03493f2f667dbabddaf550f40eac6b018c2131b4ad4ffd91",
+      "sha512": "69d56bd47a21494113046ed05f9fd81615cfaedb706f64dfb23b88c9fbd0077f2d1a666a7e6a82a227cb9d4e8c9892b6b582d4324a5c5bafec71e374a27c6248",
+      "identicalToLocalDist": true,
+      "range": true
+    }
+  ],
+  "excludedSourcePaths": [
+    "/assets/hero-film-v3/coding-reference.png",
+    "/art-source/hero-film-v3/coding-reference.png",
+    "/assets/hero-film-v3/data-reference.png",
+    "/art-source/hero-film-v3/data-reference.png",
+    "/assets/hero-film-v3/life-reference.png",
+    "/art-source/hero-film-v3/life-reference.png"
+  ],
+  "excludedSourceStatus": 404,
+  "otherWebsite": {
+    "url": "https://www.party.ryan-wong.cn",
+    "status": 200
+  },
+  "installerDownloads": false
+}

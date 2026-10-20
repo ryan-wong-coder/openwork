@@ -1,0 +1,11 @@
+{
+  "observedAt": "2026-10-20T13:49:55.566733+00:00",
+  "runId": 39431901305,
+  "jobId": 118660093367,
+  "jobConclusionAtObservation": "success",
+  "runStillInProgress": true,
+  "request": "gh run view --job --log",
+  "exitCode": 1,
+  "observedResult": "Run logs unavailable while the overall workflow is in progress.",
+  "scope": "Tool availability only, not a failed product build or runtime check. No lane log will be claimed verified until fetched after workflow completion."
+}

@@ -1,0 +1,45 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-20T14:19:16.833Z",
+  "version": "1.1.2",
+  "indexCommit": "46e5e38a5d7c4a147b0888d3a50e4788f045385e",
+  "installerDownloads": false,
+  "feeds": [
+    {
+      "target": "darwin/x64",
+      "size": 492,
+      "sha256": "29e903925e0a02e4b3e8ecfa21c9bab14686bcb747736599c14cb4834e0e3141",
+      "sha512": "JkXcwrbHm3zURBdgwgWPstYbwzA7leTUZLN5oFxws57LhMKuFkRUn3SS54lBBoQI7ByJUtFUAjjIzjwHH1C9Vg=="
+    },
+    {
+      "target": "darwin/arm64",
+      "size": 498,
+      "sha256": "12f68cec1372ed5d10d788a20b908ef763e3e845bf85da343e1ebee1a56aa7fc",
+      "sha512": "Jeg4QNu5n9igMo28zD15q2J9+mJQgG5183eFQagHxQz4p0EIJkMxTAw2hIcuXXEvP26kA0c4wWhlyup7WL41qg=="
+    },
+    {
+      "target": "win32/x64",
+      "size": 339,
+      "sha256": "24b505ae87dcccd7f0d5fac222de7f55713fcdd6b3a5ab40bf164c5917c39fe7",
+      "sha512": "usGkIFsovhE5B6fU21cKjU+8bZvebizxtOoHLatQlBysHrju4BqTfwji4whwWn40MvZ6hixgZcsu5Vf2WQ1tLA=="
+    },
+    {
+      "target": "win32/arm64",
+      "size": 343,
+      "sha256": "f3e252158e45bd510ff4af0eb15a5be6f17ef3651e65637e487a401efa8fe8bf",
+      "sha512": "JzLfWdIRqJlTjGSZ0mwn6+/Cq3+ydR60UBMT4Kdm11qWU0cnqLSX/fro28RAUWDAxW7uw93Kf9uv9viYg/QUXQ=="
+    },
+    {
+      "target": "linux/x64",
+      "size": 533,
+      "sha256": "e95b1cc9fbccc5707c1b3da487a2f6df9d006fadfe6c6de2c1edc439236a01ea",
+      "sha512": "FdwjW4323fqBbohalLyCVXZ3/S1/zWNwdIvU7zR/j5j6tXBWQFys65i7IyqXFIKx9QbCTdMMlYTLgMsdM1qRqg=="
+    },
+    {
+      "target": "linux/arm64",
+      "size": 539,
+      "sha256": "baf6c3780ba6444e09ef8d5a95efb2f57d4aa4746552a2d4933fa177e25aa851",
+      "sha512": "VZ2PZUymLBFgPCWWn5ERwX/rXPcmQMDnnr91CXZEB9YZkNI5ziAoc9Yt6H3jBtI+fmt5eISRWKJdo1rHre66ig=="
+    }
+  ]
+}

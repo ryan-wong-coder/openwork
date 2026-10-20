@@ -34,7 +34,11 @@ remains included. The earlier three-video phase under `fitness-visuals/` and
 
 The immutable tag `zeno-v1.1.2` points to
 `46e5e38a5d7c4a147b0888d3a50e4788f045385e`; six-target build `39431901305`
-started from that source. Final installer publication and actual native upgrades
-remain separate pending gates. Historical 1.1.1 native reports, including failed
+completed successfully from that source. [Independent release metadata](release-metadata/README.md)
+links the six actual runtime/media receipts and the complete manifest audit.
+[Website distribution](distribution/README.md) passed complete byte verification
+and activated 1.1.2 for all six targets while preserving historical downloads.
+Actual native upgrades and GitHub stable publication remain separate pending
+gates. Historical 1.1.1 native reports, including failed
 Windows/Linux attempts, remain unchanged in
 [the prior native evidence](../zeno-1.1.1/native-updates/README.md).

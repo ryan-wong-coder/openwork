@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-10-20T14:21:52.238Z",
+  "site": "https://www.zeno.ryan-wong.cn/",
+  "landingCommit": "15a286a5c",
+  "htmlSha256": "bc17ebb7e1485e21c928af01f7a2f3d9f9d32bbc35af4d20c3b4551bb81a45db",
+  "firstAttemptReport": "hero-live-qa.json",
+  "firstAttemptPassed": false,
+  "staleTestSelector": "#previewNav",
+  "staleSelectorPresent": false,
+  "actualExistingControl": "#workspacePreview > summary",
+  "existingDetailsPresent": true,
+  "productRuntimeExceptions": 0,
+  "interpretation": "The inherited QA script referenced a removed navigation ID. Only the private QA selector was corrected to the existing details summary; the website was not changed. The original failed report and screenshots are retained.",
+  "retryOutput": "../site-downloads-attempt02/",
+  "installerDownloads": false,
+  "systemClipboard": "Not accessed"
+}

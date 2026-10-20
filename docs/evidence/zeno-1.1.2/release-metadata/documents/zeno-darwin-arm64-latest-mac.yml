@@ -1,0 +1,11 @@
+version: 1.1.2
+files:
+  - url: zeno-mac-arm64-1.1.2.zip
+    sha512: HZUruAOFxDh2164zhr+ZpeaDG8H4214t5pUnj9g4WvnPqEsLNHZm/GCOuYS1rG16DlvIfkhBTeEqmRgzes4TNA==
+    size: 444118404
+  - url: zeno-mac-arm64-1.1.2.dmg
+    sha512: Gd15EOtHw/FrCwET9+4V5N2BP1xX9+9QX3ciaVHVEtbOe398QiRytWicfxJJQ8MWNH649V4QCF+Pv83k1yag3g==
+    size: 445831550
+path: zeno-mac-arm64-1.1.2.zip
+sha512: HZUruAOFxDh2164zhr+ZpeaDG8H4214t5pUnj9g4WvnPqEsLNHZm/GCOuYS1rG16DlvIfkhBTeEqmRgzes4TNA==
+releaseDate: 2026-10-20T13:56:03.405Z

@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-20T14:18:48.012272+00:00",
+  "version": "1.1.2",
+  "productCommit": "46e5e38a5d7c4a147b0888d3a50e4788f045385e",
+  "workflowCommit": "46e5e38a5d7c4a147b0888d3a50e4788f045385e",
+  "runId": 39431901305,
+  "mirroredGitHubAssetsSha256Verified": 24,
+  "indexedFilesSha256AndSha512Verified": 22,
+  "installers": 10,
+  "nativeFeeds": 6,
+  "atomicCurrentSwitch": true,
+  "historicalDownloads": {
+    "files": 112,
+    "bytes": 27419514014,
+    "sameSizesInodesMtimes": true,
+    "firstAndLast64KiBSha256Match": true,
+    "publicHttpsHeadAndRange": true,
+    "publicNativeVersionedPaths": true,
+    "scope": "all historical file metadata and sampled edges; not a full-file rehash"
+  }
+}

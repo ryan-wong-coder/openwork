@@ -1,0 +1,100 @@
+{
+  "checkedAt": "2026-10-20T14:23:27.980587+00:00",
+  "scope": "Manual actual view of every unmodified screenshot captured by this owned headless browser run; real public site and release API, no installer download.",
+  "qaVerdict": "Failed",
+  "visualVerdict": "Passed",
+  "allScreenshotsActuallyViewed": true,
+  "screenshots": [
+    {
+      "file": "hero-live-01-desktop-coding.png",
+      "bytes": 1080925,
+      "sha256": "d63bf1d3448eebd424ae50cd1dcbcd5a55d33f60100e87f8a637aec48db29e0b",
+      "width": 1440,
+      "height": 1000,
+      "actuallyViewed": true
+    },
+    {
+      "file": "hero-live-02-desktop-data.png",
+      "bytes": 1137469,
+      "sha256": "c69bc48e8982a76c501510f56f8d8c3fa669c63d035c406b5f599894930289fe",
+      "width": 1440,
+      "height": 1000,
+      "actuallyViewed": true
+    },
+    {
+      "file": "hero-live-03-desktop-life.png",
+      "bytes": 1097639,
+      "sha256": "a82ede8924a0f733514619acc670ae75ce187d37a917048b6af670692d56ef0f",
+      "width": 1440,
+      "height": 1000,
+      "actuallyViewed": true
+    },
+    {
+      "file": "hero-live-11-all-downloads.png",
+      "bytes": 98707,
+      "sha256": "975cab86e2f01b5d2943aa7b568711591ccfe860f281344807ddddd297d314d8",
+      "width": 1440,
+      "height": 1000,
+      "actuallyViewed": true
+    },
+    {
+      "file": "hero-live-04-install-help.png",
+      "bytes": 126653,
+      "sha256": "0ff874ad88fe33ffb286c62191793bc602c7994b5a9ccf3d07e19a89b7f217c5",
+      "width": 1440,
+      "height": 1000,
+      "actuallyViewed": true
+    },
+    {
+      "file": "hero-live-05-desktop-dark.png",
+      "bytes": 1137469,
+      "sha256": "c69bc48e8982a76c501510f56f8d8c3fa669c63d035c406b5f599894930289fe",
+      "width": 1440,
+      "height": 1000,
+      "actuallyViewed": true
+    },
+    {
+      "file": "hero-live-06-mobile-coding.png",
+      "bytes": 266184,
+      "sha256": "57a79910256d848ddf3b1a22bc3408482d0f5c3d9aa17cea6c902d9a0eb1eea7",
+      "width": 390,
+      "height": 844,
+      "actuallyViewed": true
+    },
+    {
+      "file": "hero-live-07-mobile-data.png",
+      "bytes": 279227,
+      "sha256": "75c85bd4bfcad96422975e06e6d01f792cf2ab22e61869dcfdcbd40bcbd14520",
+      "width": 390,
+      "height": 844,
+      "actuallyViewed": true
+    },
+    {
+      "file": "hero-live-08-mobile-life.png",
+      "bytes": 263036,
+      "sha256": "8cdc38709359336d4884749851d459fc027f15c618f40baa14276f480db49c6e",
+      "width": 390,
+      "height": 844,
+      "actuallyViewed": true
+    },
+    {
+      "file": "hero-live-09-mobile-reduced-motion.png",
+      "bytes": 279227,
+      "sha256": "75c85bd4bfcad96422975e06e6d01f792cf2ab22e61869dcfdcbd40bcbd14520",
+      "width": 390,
+      "height": 844,
+      "actuallyViewed": true
+    }
+  ],
+  "findings": [
+    "Desktop coding/data/life scenes render fully behind a legible Zeno mark and v1.1.2 CPU downloads.",
+    "All 10 installer rows and their size/format/action labels are visible without horizontal overflow; checksum display fields and separate copy controls are legible. Copy controls were never activated.",
+    "Mobile coding/data/life and reduced-motion-preference screenshots preserve readable navigation and download controls inside the 390px viewport.",
+    "The final preview action was not reached because the inherited QA selector referenced a removed ID; original failure is retained in hero-live-qa.json and selector-observation.json."
+  ],
+  "systemClipboard": "Not accessed",
+  "copyControlsActivated": false,
+  "installerDownloads": false,
+  "apiMocked": false,
+  "uiApiSubstitutes": false
+}
