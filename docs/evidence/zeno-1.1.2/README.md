@@ -38,6 +38,11 @@ completed successfully from that source. [Independent release metadata](release-
 links the six actual runtime/media receipts and the complete manifest audit.
 [Website distribution](distribution/README.md) passed complete byte verification
 and activated 1.1.2 for all six targets while preserving historical downloads.
+The [real website acceptance](site-downloads-attempt02/README.md) passed 14
+checks; all eleven successful screenshots were viewed. Its earlier selector
+failure remains preserved separately.
+The [native receipts](native-updates/README.md) distinguish actual upgrade
+successes, download connection resets and hosted-runner capacity cancellations.
 Actual native upgrades and GitHub stable publication remain separate pending
 gates. Historical 1.1.1 native reports, including failed
 Windows/Linux attempts, remain unchanged in

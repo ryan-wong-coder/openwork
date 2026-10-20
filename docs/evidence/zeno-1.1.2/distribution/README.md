@@ -26,6 +26,11 @@ under [mainstream](../mainstream/public-media/README.md).
   sixteen versioned installers/blockmaps passed HEAD and exact first-64-byte
   Range checks on both download and native-feed URLs. No installer body was
   fully downloaded in this public HTTP check.
+- `windows-download-server-observation.json`: a later read-only check of nginx
+  configuration, service and filtered current-installer logs records the two
+  incomplete Windows download responses. No matching server error or nginx
+  restart was observed. This does not identify the peer or cause of the TCP
+  resets; the client-side sanitizer evidence is in the original native reports.
 
 These receipts prove distribution integrity and availability. The GitHub stable
 release and actual native installations/upgrades remain separate acceptance

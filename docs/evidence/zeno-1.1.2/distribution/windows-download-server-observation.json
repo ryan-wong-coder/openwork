@@ -1,0 +1,49 @@
+{
+  "checkedAt": "2026-10-20T14:51:33Z",
+  "scope": "Read-only nginx configuration, service and filtered logs for the public 1.1.2 Windows x64 installer. No source or server configuration changed; no client addresses, account data or raw logs retained.",
+  "nginxDownloadSettings": [
+    "sendfile on;",
+    "tcp_nopush on;",
+    "access_log /var/log/nginx/access.log;",
+    "access_log off;",
+    "error_log /var/log/nginx/error.log;",
+    "proxy_read_timeout 180s;",
+    "proxy_send_timeout 180s;"
+  ],
+  "nginxService": {
+    "active": true,
+    "restarts": 0,
+    "startedAtReported": "Mon 2026-10-12 14:20:17 CST"
+  },
+  "filteredAccessStatusCounts": {
+    "200": 6,
+    "206": 4
+  },
+  "headBodyBytes": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "rangeBodyBytes": [
+    64,
+    64,
+    64,
+    64
+  ],
+  "streamResponseBodyBytes": [
+    219504640,
+    349020160
+  ],
+  "matchingErrorClassCounts": {},
+  "searchedErrorClasses": [
+    "timed out",
+    "reset by peer",
+    "prematurely closed",
+    "sendfile() failed",
+    "No space left",
+    "Connection reset",
+    "broken pipe"
+  ],
+  "interpretation": "Both installer responses began as HTTP 200 and ended before the complete 390804422-byte installer. No matching errors in the inspected current logs and no nginx restart were observed. This does not identify the cause or peer responsible for either TCP reset. Client updater sanitizer evidence and exact download progress are separate original native reports."
+}
