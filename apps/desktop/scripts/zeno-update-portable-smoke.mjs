@@ -35,7 +35,7 @@ const ACTIVE_CHECKS = new Set(['initialization', 'release-metadata', 'artifact-c
   'attach-browser-version', 'attach-browser-cdp', 'attach-browser-pid', 'attach-profile-identity', 'attach-windows-executable',
   'attach-updater-bridge', 'baseline-build-info', 'baseline-updater-channel', 'baseline-workspace-create',
   'baseline-workspace-identity', 'runtime-engine-start', 'runtime-server-info', 'runtime-server-health',
-  'baseline-session-create', 'baseline-message-create', 'baseline-message-read', 'baseline-profile-marker',
+  'runtime-workspace-ready', 'baseline-session-create', 'baseline-session-identity', 'baseline-message-create', 'baseline-message-read', 'baseline-profile-marker',
   'update-check', 'update-download', 'update-idle', 'update-install', 'update-process-exit', 'target-code-verification',
   'target-build-info', 'target-profile-marker', 'target-workspace-file', 'target-workspace-identity',
   'target-session-read', 'target-message-read', 'target-renderer', 'target-screenshot', 'target-navigation']);
@@ -43,6 +43,22 @@ const ERROR_KINDS = new Set(['Error', 'AssertionError', 'TypeError', 'RangeError
 const ERROR_CODES = new Set(['ERR_ASSERTION', 'ENOENT', 'EACCES', 'EPERM', 'EINVAL', 'ENOTDIR', 'EISDIR', 'ETIMEDOUT',
   'ECONNREFUSED', 'ECONNRESET', 'ERR_INVALID_ARG_TYPE', 'ERR_INVALID_ARG_VALUE', 'ABORT_ERR',
   'UND_ERR_CONNECT_TIMEOUT', 'UND_ERR_HEADERS_TIMEOUT', 'UND_ERR_SOCKET']);
+const HTTP_ENDPOINTS = new Set(['server-health', 'workspace-session-status', 'workspace-session-create', 'workspace-session-list',
+  'workspace-session-read', 'workspace-message-read', 'workspace-message-write', 'engine-activity', 'unknown']);
+
+export function portableHttpEndpoint(path, method = 'GET') {
+  if (path === '/health') return 'server-health';
+  if (path === '/experimental/engine-v2-preview/activity') return 'engine-activity';
+  if (/^\/workspace\/[^/]+\/opencode\/session\/status$/.test(path)) return 'workspace-session-status';
+  if (/^\/workspace\/[^/]+\/opencode\/session$/.test(path)) return method === 'POST' ? 'workspace-session-create' : 'workspace-session-list';
+  if (/^\/workspace\/[^/]+\/opencode\/session\/[^/]+\/message$/.test(path)) return method === 'POST' ? 'workspace-message-write' : 'workspace-message-read';
+  if (/^\/workspace\/[^/]+\/opencode\/session\/[^/]+$/.test(path)) return 'workspace-session-read';
+  return 'unknown';
+}
+
+export function validWorkspaceSessionStatus(value) {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
 
 export function portableErrorMetadata(error) {
   const value = error && typeof error === 'object' ? error : {};
@@ -51,11 +67,15 @@ export function portableErrorMetadata(error) {
 }
 
 export function portableDiagnosticState() {
-  let activeCheck = 'initialization'; let lastReadError;
+  let activeCheck = 'initialization'; let lastReadError; let lastHttp;
   return {
     enter(check) { assert.ok(ACTIVE_CHECKS.has(check), 'Unknown native diagnostic checkpoint.'); activeCheck = check; lastReadError = undefined; },
     readError(error) { lastReadError = portableErrorMetadata(error); },
-    snapshot(error) { return { activeCheck, ...portableErrorMetadata(error), ...(lastReadError ? { lastReadError } : {}) }; },
+    http(endpoint, status) {
+      assert.ok(HTTP_ENDPOINTS.has(endpoint) && (status === undefined || Number.isSafeInteger(status) && status >= 100 && status <= 599), 'Invalid native HTTP diagnostic.');
+      lastHttp = { endpoint, ...(status === undefined ? {} : { status }) };
+    },
+    snapshot(error) { return { activeCheck, ...portableErrorMetadata(error), ...(lastReadError ? { lastReadError } : {}), ...(lastHttp ? { lastHttp } : {}) }; },
   };
 }
 
@@ -305,7 +325,7 @@ async function attach(port, platform, installation, root, profile, exceptions, o
   return { ...client, browser, pid, resources, evaluate, invoke: (name, ...args) => evaluate(`window.__OPENWORK_ELECTRON__.invokeDesktop(${JSON.stringify(name)},...${JSON.stringify(args)})`, 120_000) };
 }
 
-async function runtime(client, workspace, diagnostics) {
+export async function runtime(client, workspace, mount, diagnostics) {
   diagnostics?.enter('runtime-engine-start');
   await client.invoke('engineStart', workspace, { workspacePaths: [workspace] });
   return until(async () => {
@@ -314,11 +334,19 @@ async function runtime(client, workspace, diagnostics) {
     const url = new URL(info.baseUrl); assert.equal(url.protocol, 'http:'); assert.ok(['127.0.0.1', 'localhost', '[::1]'].includes(url.hostname));
     assert.ok(!url.username && !url.password); const token = info.clientToken || info.ownerToken; assert.ok(token);
     const request = async (path, options = {}) => {
+      const endpoint = portableHttpEndpoint(path, options.method ?? 'GET'); diagnostics?.http(endpoint);
       const response = await fetch(url.href.replace(/\/$/, '') + path, { ...options, redirect: 'error', signal: AbortSignal.timeout(30_000), headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' } });
+      diagnostics?.http(endpoint, response.status);
       assert.equal(response.status, 200, 'Owned embedded runtime request failed.'); return response.json();
     };
     diagnostics?.enter('runtime-server-health');
-    assert.equal((await request('/health')).ok, true); return { request };
+    assert.equal((await request('/health')).ok, true);
+    // A healthy host does not prove that this workspace's separate OpenCode
+    // engine accepts requests yet. Only this read is retried, in the same
+    // original 120-second window; session/message mutations remain single-shot.
+    diagnostics?.enter('runtime-workspace-ready');
+    assert.ok(validWorkspaceSessionStatus(await request(mount + '/session/status')), 'Owned workspace engine status must be an object.');
+    return { request };
   }, Boolean, 120_000, 'installed embedded server', diagnostics);
 }
 
@@ -433,9 +461,11 @@ async function main() {
     const created = await client.invoke('workspaceCreate', { folderPath: workspace, name: 'Zeno update fixture' });
     diagnostics.enter('baseline-workspace-identity');
     const workspaceRecord = created.workspaces.find(item => item.path === workspace); assert.ok(workspaceRecord?.id);
-    const before = await runtime(client, workspace, diagnostics); const mount = `/workspace/${encodeURIComponent(workspaceRecord.id)}/opencode`;
+    const mount = `/workspace/${encodeURIComponent(workspaceRecord.id)}/opencode`;
+    const before = await runtime(client, workspace, mount, diagnostics);
     diagnostics.enter('baseline-session-create');
-    const session = await before.request(mount + '/session', { method: 'POST', body: JSON.stringify({ title: marker }) }); assert.ok(session.id);
+    const session = await before.request(mount + '/session', { method: 'POST', body: JSON.stringify({ title: marker }) });
+    diagnostics.enter('baseline-session-identity'); assert.ok(session.id);
     diagnostics.enter('baseline-message-create');
     await before.request(`${mount}/session/${encodeURIComponent(session.id)}/message`, { method: 'POST', body: JSON.stringify({ noReply: true, parts: [{ type: 'text', text: marker }] }) });
     const hasMarker = messages => messages.some(message => message.parts?.some(part => part.type === 'text' && part.text === marker));
@@ -477,7 +507,7 @@ async function main() {
     assert.equal(readFileSync(join(workspace, 'update-smoke-marker.txt'), 'utf8'), marker, 'Workspace contents were lost.');
     diagnostics.enter('target-workspace-identity');
     const retained = await client.invoke('workspaceBootstrap'); assert.ok(retained.workspaces.some(item => item.id === workspaceRecord.id && item.path === workspace), 'Workspace identity was lost.');
-    const after = await runtime(client, workspace, diagnostics);
+    const after = await runtime(client, workspace, mount, diagnostics);
     diagnostics.enter('target-session-read');
     assert.equal((await after.request(`${mount}/session/${encodeURIComponent(session.id)}`)).title, marker);
     diagnostics.enter('target-message-read');

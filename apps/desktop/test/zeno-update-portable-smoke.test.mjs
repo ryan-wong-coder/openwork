@@ -4,9 +4,11 @@ import { spawnSync } from 'node:child_process';
 import { mkdtempSync, realpathSync, mkdirSync, readFileSync, writeFileSync, symlinkSync, existsSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { createServer as createHttpServer } from 'node:http';
 import YAML from 'yaml';
 import { assertPortableHostedRunner, assertPrivatePath, validatePortableHistorical, validatePortableTarget, nsisPayloadPath,
-  portableErrorMetadata, portableDiagnosticState, windowsProcessPathCommand, decodeWindowsProcessPath, until } from '../scripts/zeno-update-portable-smoke.mjs';
+  portableErrorMetadata, portableDiagnosticState, windowsProcessPathCommand, decodeWindowsProcessPath, until,
+  portableHttpEndpoint, validWorkspaceSessionStatus, runtime } from '../scripts/zeno-update-portable-smoke.mjs';
 import { numericDownloadProgress, safeUpdateFailureSignals } from '../scripts/zeno-update-smoke.mjs';
 
 const origin = 'https://www.zeno.ryan-wong.cn';
@@ -160,4 +162,63 @@ test('polling retains only fixed last-read error metadata without changing its f
     return true;
   });
   assert.equal(attempts, 1);
+});
+
+test('HTTP diagnostics retain only fixed endpoint categories and valid numeric status', () => {
+  const mount = '/workspace/never-publish-private-fixture/opencode';
+  assert.equal(portableHttpEndpoint('/health'), 'server-health');
+  assert.equal(portableHttpEndpoint(mount + '/session/status'), 'workspace-session-status');
+  assert.equal(portableHttpEndpoint(mount + '/session', 'POST'), 'workspace-session-create');
+  assert.equal(portableHttpEndpoint(mount + '/session'), 'workspace-session-list');
+  assert.equal(portableHttpEndpoint(mount + '/session/private-session'), 'workspace-session-read');
+  assert.equal(portableHttpEndpoint(mount + '/session/private-session/message'), 'workspace-message-read');
+  assert.equal(portableHttpEndpoint(mount + '/session/private-session/message', 'POST'), 'workspace-message-write');
+  assert.equal(portableHttpEndpoint('https://private.invalid/?token=never-publish-private-fixture'), 'unknown');
+  const diagnostics = portableDiagnosticState(); diagnostics.enter('runtime-workspace-ready');
+  diagnostics.http(portableHttpEndpoint(mount + '/session/status'), 502);
+  const safe = diagnostics.snapshot(new Error('private URL/token/body'));
+  assert.deepEqual(safe, { activeCheck: 'runtime-workspace-ready', errorKind: 'Error', lastHttp: { endpoint: 'workspace-session-status', status: 502 } });
+  assert.equal(JSON.stringify(safe).includes('private'), false);
+  for (const status of [NaN, Infinity, 0, 99, 600, '502']) assert.throws(() => diagnostics.http('workspace-session-status', status));
+  assert.throws(() => diagnostics.http('never-publish-private-fixture', 200));
+  diagnostics.http('workspace-session-status');
+  assert.deepEqual(diagnostics.snapshot(new Error()).lastHttp, { endpoint: 'workspace-session-status' });
+  for (const value of [null, [], 'ready', 200, false]) assert.equal(validWorkspaceSessionStatus(value), false);
+  for (const value of [{}, { fixture: { type: 'idle' } }]) assert.equal(validWorkspaceSessionStatus(value), true);
+});
+
+test('global health alone cannot admit a workspace, and no failed POST is retried', async () => {
+  let workspaceReads = 0; let mutations = 0; let starts = 0;
+  const mount = '/workspace/synthetic-owned-workspace/opencode';
+  const server = createHttpServer((request, response) => {
+    response.setHeader('Content-Type', 'application/json');
+    if (request.method === 'GET' && request.url === '/health') { response.end(JSON.stringify({ ok: true })); return; }
+    if (request.method === 'GET' && request.url === mount + '/session/status') {
+      workspaceReads++; response.statusCode = workspaceReads < 3 ? 502 : 200;
+      response.end(JSON.stringify(workspaceReads < 3 ? { error: 'opencode_unreachable' } : {})); return;
+    }
+    if (request.method === 'POST' && request.url === mount + '/session') {
+      mutations++; response.statusCode = 502; response.end(JSON.stringify({ error: 'synthetic-no-retry' })); return;
+    }
+    response.statusCode = 404; response.end('{}');
+  });
+  await new Promise(done => server.listen(0, '127.0.0.1', done));
+  const address = server.address(); assert.ok(address && typeof address !== 'string');
+  const diagnostics = portableDiagnosticState();
+  const client = { async invoke(name) {
+    if (name === 'engineStart') { starts++; return; }
+    assert.equal(name, 'openworkServerInfo');
+    return { running: true, baseUrl: 'http://127.0.0.1:' + address.port, clientToken: 'synthetic-fixture-only' };
+  } };
+  try {
+    const owned = await runtime(client, 'synthetic-workspace', mount, diagnostics);
+    assert.equal(starts, 1); assert.equal(workspaceReads, 3); assert.equal(mutations, 0);
+    assert.deepEqual(diagnostics.snapshot(new Error()).lastHttp, { endpoint: 'workspace-session-status', status: 200 });
+    diagnostics.enter('baseline-session-create');
+    await assert.rejects(owned.request(mount + '/session', { method: 'POST', body: '{}' }));
+    assert.equal(mutations, 1); assert.equal(workspaceReads, 3);
+    assert.deepEqual(diagnostics.snapshot(new Error()).lastHttp, { endpoint: 'workspace-session-create', status: 502 });
+  } finally {
+    server.closeAllConnections(); await new Promise(done => server.close(done));
+  }
 });
