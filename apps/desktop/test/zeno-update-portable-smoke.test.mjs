@@ -1,17 +1,21 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { spawnSync } from 'node:child_process';
-import { appendFileSync, mkdtempSync, realpathSync, mkdirSync, readFileSync, renameSync, truncateSync, writeFileSync, symlinkSync, existsSync, rmSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { appendFileSync, copyFileSync, mkdtempSync, realpathSync, mkdirSync, readFileSync, renameSync, truncateSync, writeFileSync, symlinkSync, existsSync, rmSync } from 'node:fs';
+import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import './zeno-update-runtime-fixture.test.mjs';
 import YAML from 'yaml';
+import asar from '@electron/asar';
 import { assertPortableHostedRunner, assertPrivatePath, validatePortableHistorical, validatePortableTarget, nsisPayloadPath,
   portableErrorMetadata, portableDiagnosticState, windowsProcessPathCommand, decodeWindowsProcessPath, until,
   portableHttpEndpoint, validWorkspaceSessionList, effectivePortableProfileMatches, finishPortableRun,
   safePortableFailureState, hasExactProcessArgument, windowsFailureProbeScript, portableDownloadRetries,
-  snapshotDownloadLogs, inspectDownloadLogWindow, resetOnlyDownloadLogText, runPortableDownloadAttempts } from '../scripts/zeno-update-portable-smoke.mjs';
+  snapshotDownloadLogs, inspectDownloadLogWindow, resetOnlyDownloadLogText, runPortableDownloadAttempts,
+  readPortableArchiveMetadata, inspectPortableArchive, readPortablePageList, windowsOwnedListenerProbeScript } from '../scripts/zeno-update-portable-smoke.mjs';
 import { numericDownloadProgress, safeUpdateFailureSignals } from '../scripts/zeno-update-smoke.mjs';
 
 const origin = 'https://www.zeno.ryan-wong.cn';
@@ -286,6 +290,75 @@ test('checkpoint diagnostics allowlist names/codes and never access private erro
   assert.deepEqual(diagnostics.snapshot(error), { activeCheck: 'baseline-workspace-identity', errorKind: 'AssertionError', code: 'ERR_ASSERTION' });
 });
 
+test('fetch diagnostics retain only an own allowlisted cause code, never messages, paths or getters', () => {
+  const privateMarker = 'never-publish-private-cause';
+  const cause = { code: 'ECONNREFUSED' };
+  for (const key of ['message', 'path', 'stack', 'token']) Object.defineProperty(cause, key, { get() { throw Error(privateMarker); } });
+  const error = new TypeError(privateMarker, { cause });
+  assert.deepEqual(portableErrorMetadata(error), { errorKind: 'TypeError', causeCode: 'ECONNREFUSED' });
+  assert.deepEqual(portableErrorMetadata(new TypeError(privateMarker, { cause: { code: privateMarker } })), { errorKind: 'TypeError' });
+  const getterCause = new TypeError(privateMarker); Object.defineProperty(getterCause, 'cause', { get() { throw Error(privateMarker); } });
+  assert.deepEqual(portableErrorMetadata(getterCause), { errorKind: 'TypeError' });
+  const getterCode = {}; Object.defineProperty(getterCode, 'code', { get() { throw Error(privateMarker); } });
+  assert.deepEqual(portableErrorMetadata(new TypeError(privateMarker, { cause: getterCode })), { errorKind: 'TypeError' });
+  const diagnostics = portableDiagnosticState(); diagnostics.enter('attach-page-list'); diagnostics.readError(error);
+  assert.deepEqual(diagnostics.snapshot(new Error()), { activeCheck: 'attach-page-list', errorKind: 'Error', lastReadError: { errorKind: 'TypeError', causeCode: 'ECONNREFUSED' } });
+  assert.equal(JSON.stringify(diagnostics.snapshot(error)).includes(privateMarker), false);
+});
+
+test('page-list diagnostics distinguish HTTP, malformed JSON and non-array shapes without serializing bodies', async () => {
+  const diagnostics = portableDiagnosticState(); diagnostics.enter('attach-page-list');
+  const cases = [
+    [503, '{"private":"never-publish-private-page"}', 'unexpected-http-status'],
+    [200, '{"private":"never-publish-private-page"}', 'non-array'],
+    [200, 'null', 'non-array'], [200, 'invalid-private-json', 'invalid-json'],
+  ];
+  for (const [status, body, shape] of cases) {
+    await assert.rejects(readPortablePageList(new Response(body, { status }), diagnostics));
+    assert.deepEqual(diagnostics.snapshot(new Error()).lastPageList, { status, shape });
+    assert.equal(JSON.stringify(diagnostics.snapshot(new Error())).includes('private'), false);
+  }
+  diagnostics.readError(new TypeError('private', { cause: { code: 'ECONNREFUSED' } }));
+  const list = [{ type: 'page', url: 'file:///synthetic-private/index.html' }];
+  assert.deepEqual(await readPortablePageList(new Response(JSON.stringify(list)), diagnostics), list);
+  assert.deepEqual(diagnostics.snapshot(new Error()), { activeCheck: 'attach-page-list', errorKind: 'Error', lastPageList: { status: 200, shape: 'array' } });
+  diagnostics.cdpPageList(); assert.deepEqual(diagnostics.snapshot(new Error()).lastPageList, { shape: 'pending' });
+  for (const [status, shape] of [[99, 'array'], [600, 'array'], [200, 'private'], [undefined, 'array']]) assert.throws(() => diagnostics.cdpPageList(status, shape));
+});
+
+test('installed ASAR replacement rereads real target headers and keeps raw hash independent of malformed metadata', async () => {
+  const root = realpathSync(mkdtempSync(join(tmpdir(), 'zeno-asar-replacement-')));
+  const installed = join(root, 'installed.asar'); const target = join(root, 'target.asar');
+  const oldSource = join(root, 'old'); const targetSource = join(root, 'target'); const malformedSource = join(root, 'malformed');
+  try {
+    for (const path of [oldSource, targetSource, malformedSource]) mkdirSync(path);
+    writeFileSync(join(oldSource, 'package.json'), JSON.stringify({ version: '1.0.0', fixture: 'old' }));
+    writeFileSync(join(targetSource, 'package.json'), JSON.stringify({ version: '1.1.2', fixture: 'new', differentHeader: 'x'.repeat(256) }));
+    writeFileSync(join(targetSource, 'a-before-package.txt'), 'synthetic header shifts file offsets');
+    await asar.createPackage(oldSource, installed); await asar.createPackage(targetSource, target);
+    assert.equal(JSON.parse(asar.extractFile(installed, 'package.json').toString()).version, '1.0.0');
+    copyFileSync(target, installed);
+    const targetHash = createHash('sha256').update(readFileSync(target)).digest('hex');
+    assert.equal(createHash('sha256').update(readFileSync(installed)).digest('hex'), targetHash);
+    // This is the real pinned-library defect, before using the corrected reader.
+    assert.throws(() => JSON.parse(asar.extractFile(installed, 'package.json').toString()), SyntaxError);
+    assert.equal(readPortableArchiveMetadata(installed).version, '1.1.2');
+    assert.deepEqual(inspectPortableArchive(installed, '1.1.2', targetHash), {
+      diskReadSucceeded: true, archiveHashReadSucceeded: true, archiveMetadataReadSucceeded: true, publishedAsarOnDisk: true, targetVersionOnDisk: true,
+    });
+    assert.equal(inspectPortableArchive(installed, '1.0.0', '0'.repeat(64)).publishedAsarOnDisk, false);
+    assert.equal(inspectPortableArchive(installed, '1.0.0', targetHash).targetVersionOnDisk, false);
+    writeFileSync(join(malformedSource, 'package.json'), '{'); await asar.createPackage(malformedSource, target); copyFileSync(target, installed);
+    const malformedHash = createHash('sha256').update(readFileSync(installed)).digest('hex');
+    assert.deepEqual(inspectPortableArchive(installed, '1.1.2', malformedHash), {
+      diskReadSucceeded: false, archiveHashReadSucceeded: true, archiveMetadataReadSucceeded: false, publishedAsarOnDisk: true,
+    });
+    assert.deepEqual(inspectPortableArchive(join(root, 'missing.asar'), '1.1.2', targetHash), {
+      diskReadSucceeded: false, archiveHashReadSucceeded: false, archiveMetadataReadSucceeded: false,
+    });
+  } finally { for (const archive of [installed, target]) asar.uncache(archive); rmSync(root, { recursive: true, force: true }); }
+});
+
 test('polling retains only fixed last-read error metadata without changing its failure gate', async () => {
   const diagnostics = portableDiagnosticState(); diagnostics.enter('attach-page-list');
   const error = Object.assign(new TypeError('private URL/path/token must never be emitted'), { code: 'ECONNREFUSED' });
@@ -379,6 +452,10 @@ test('failure process/disk facts contain only allowlisted booleans and bounded c
     observedBrowserPidKnown: true, observedBrowserPrivateExecutableMatches: true, observedBrowserDetailsReadable: true,
     observedBrowserDebugEnvironmentMatches: true, observedBrowserProfileEnvironmentMatches: false, observedBrowserEffectiveProfileMatches: false,
   });
+  assert.deepEqual(safePortableFailureState({ archiveHashReadSucceeded: true, archiveMetadataReadSucceeded: false,
+    ownedMainListenerProbeSucceeded: true, ownedMainExpectedPortListening: false, port: 1234, listenerPid: 12345 }), {
+    archiveHashReadSucceeded: true, archiveMetadataReadSucceeded: false, ownedMainListenerProbeSucceeded: true, ownedMainExpectedPortListening: false,
+  });
 });
 
 test('expected process arguments require exact values, including Unicode and spaces', () => {
@@ -403,4 +480,21 @@ test('hosted Windows failure probe filters one exact private exe and emits no ra
     assert.equal(value.mainHasExpectedDebugArgument, false); assert.equal(value.mainHasExpectedProfileArgument, false);
     assert.equal(typeof value.userDebugEnvironmentMatches, 'boolean'); assert.equal(typeof value.userProfileEnvironmentMatches, 'boolean');
     assert.equal(result.stdout.includes('zeno-synthetic-fixture'), false);
+  });
+
+test('Windows listener probe validates the same process identity and reports only owned expected-port booleans',
+  { skip: process.platform !== 'win32' }, async () => {
+    const server = createServer();
+    await new Promise((done, fail) => { server.once('error', fail); server.listen(0, '127.0.0.1', done); });
+    try {
+      const port = server.address().port;
+      const script = `$ErrorActionPreference='Stop'\n${windowsOwnedListenerProbeScript()}\n$owned=Get-CimInstance Win32_Process -Filter 'ProcessId = ${process.pid}' -ErrorAction Stop\n$good=Read-OwnedListenerFact $owned ${port}\n$wrongPort=Read-OwnedListenerFact $owned 1\n$changed=[pscustomobject]@{ProcessId=$owned.ProcessId;ExecutablePath=$owned.ExecutablePath;CreationDate=$owned.CreationDate.AddMilliseconds(1)}\n$changedIdentity=Read-OwnedListenerFact $changed ${port}\n[ordered]@{good=$good;wrongPort=$wrongPort;changedIdentity=$changedIdentity}|ConvertTo-Json -Depth 3 -Compress`;
+      const result = spawnSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', script], { encoding: 'utf8', timeout: 15_000 });
+      assert.equal(result.status, 0);
+      const value = JSON.parse(result.stdout.trim());
+      assert.deepEqual(value.good, { ownedMainListenerProbeSucceeded: true, ownedMainExpectedPortListening: true });
+      assert.deepEqual(value.wrongPort, { ownedMainListenerProbeSucceeded: true, ownedMainExpectedPortListening: false });
+      assert.deepEqual(value.changedIdentity, { ownedMainListenerProbeSucceeded: false });
+      assert.equal(result.stdout.includes('ExecutablePath'), false); assert.equal(result.stdout.includes(String(process.pid)), false);
+    } finally { await new Promise(done => server.close(done)); }
   });

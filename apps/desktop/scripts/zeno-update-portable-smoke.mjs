@@ -173,13 +173,14 @@ export function finishPortableRun(passed, exit) {
 }
 
 export function safePortableFailureState(value) {
-  const booleans = ['collected', 'diskReadSucceeded', 'targetVersionOnDisk', 'publishedAsarOnDisk', 'publishedAppImageOnDisk',
+  const booleans = ['collected', 'diskReadSucceeded', 'archiveHashReadSucceeded', 'archiveMetadataReadSucceeded', 'targetVersionOnDisk', 'publishedAsarOnDisk', 'publishedAppImageOnDisk',
     'oldPidKnown', 'oldBrowserPidAbsent', 'spawnedBaselineProcessExited', 'processScanCompleted',
     'mainHasExpectedDebugArgument', 'mainHasExpectedProfileArgument', 'mainHasExpectedDebugEnvironment',
     'mainHasExpectedProfileEnvironment', 'mainHasExpectedAppImageEnvironment', 'userDebugEnvironmentMatches', 'userProfileEnvironmentMatches',
     'observedBrowserPidKnown', 'observedBrowserPrivateExecutableMatches', 'observedBrowserDetailsReadable',
     'observedBrowserDebugEnvironmentMatches', 'observedBrowserProfileEnvironmentMatches', 'observedBrowserAppImageEnvironmentMatches',
-    'observedBrowserDebugArgumentMatches', 'observedBrowserProfileArgumentMatches', 'observedBrowserEffectiveProfileMatches'];
+    'observedBrowserDebugArgumentMatches', 'observedBrowserProfileArgumentMatches', 'observedBrowserEffectiveProfileMatches',
+    'ownedMainListenerProbeSucceeded', 'ownedMainExpectedPortListening'];
   return Object.fromEntries([...booleans.filter(key => typeof value?.[key] === 'boolean').map(key => [key, value[key]]),
     ...(Number.isSafeInteger(value?.samePrivateMainProcessCount) && value.samePrivateMainProcessCount >= 0 && value.samePrivateMainProcessCount <= 1024
       ? [['samePrivateMainProcessCount', value.samePrivateMainProcessCount]] : [])]);
@@ -189,8 +190,48 @@ export function hasExactProcessArgument(argv, name, value) {
   return argv.some((argument, index) => argument === name + '=' + value || argument === name && argv[index + 1] === value);
 }
 
+export function readPortableArchiveMetadata(archive) {
+  // NSIS replaces this exact path in place. @electron/asar otherwise reuses
+  // the baseline header/offsets when reading the new installed file's bytes.
+  asar.uncache(archive);
+  return JSON.parse(asar.extractFile(archive, 'package.json').toString());
+}
+
+export function inspectPortableArchive(archive, targetVersion, targetSha256) {
+  const facts = { diskReadSucceeded: false, archiveHashReadSucceeded: false, archiveMetadataReadSucceeded: false };
+  try {
+    facts.publishedAsarOnDisk = hash(readFileSync(archive)) === targetSha256;
+    facts.archiveHashReadSucceeded = true;
+  } catch { /* A metadata failure must not erase an independent byte hash. */ }
+  try {
+    const metadata = readPortableArchiveMetadata(archive);
+    assert.ok(metadata && typeof metadata.version === 'string');
+    facts.targetVersionOnDisk = metadata.version === targetVersion;
+    facts.archiveMetadataReadSucceeded = true;
+  } catch { /* Unknown metadata is distinct from a known version mismatch. */ }
+  facts.diskReadSucceeded = facts.archiveHashReadSucceeded && facts.archiveMetadataReadSucceeded;
+  return facts;
+}
+
+export function windowsOwnedListenerProbeScript() {
+  return `function Read-OwnedListenerFact($owned,$port){
+$fact=[ordered]@{ownedMainListenerProbeSucceeded=$false}
+try {
+  if($owned.ProcessId -le 1 -or $port -lt 1 -or $port -gt 65535){return $fact}
+  $connections=@(Get-NetTCPConnection -OwningProcess ([uint32]$owned.ProcessId) -ErrorAction Stop)
+  $current=@(Get-CimInstance Win32_Process -Filter ('ProcessId = '+[string]$owned.ProcessId) -ErrorAction Stop)
+  if($current.Count -ne 1 -or $current[0].CreationDate -ne $owned.CreationDate -or -not [string]::Equals($current[0].ExecutablePath,$owned.ExecutablePath,[StringComparison]::OrdinalIgnoreCase)){return $fact}
+  $listening=@($connections | Where-Object { $_.OwningProcess -eq $owned.ProcessId -and $_.LocalPort -eq $port -and [string]$_.State -ceq 'Listen' })
+  $fact['ownedMainListenerProbeSucceeded']=$true
+  $fact['ownedMainExpectedPortListening']=$listening.Count -gt 0
+} catch { }
+return $fact
+}`;
+}
+
 export function windowsFailureProbeScript() {
   return `$ErrorActionPreference='Stop'
+${windowsOwnedListenerProbeScript()}
 $v=ConvertFrom-Json ([Text.Encoding]::UTF8.GetString([Convert]::FromBase64String([Console]::In.ReadToEnd().Trim())))
 $escaped=$v.executable.Replace('\\','\\\\').Replace("'","\\'")
 $items=@(Get-CimInstance Win32_Process -Filter ("ExecutablePath = '"+$escaped+"'") -ErrorAction Stop | Where-Object { [string]::Equals($_.ExecutablePath,$v.executable,[StringComparison]::OrdinalIgnoreCase) -and $_.CommandLine -notmatch '(?:^|\\s)--type(?:=|\\s)' })
@@ -198,7 +239,9 @@ $debug=$false; $profile=$false
 foreach($item in $items){$line=$item.CommandLine.Replace('"','');$debug=$debug -or [regex]::IsMatch($line,'(?:^|\\s)--remote-debugging-port='+[regex]::Escape([string]$v.port)+'(?:\\s|$)');$profile=$profile -or [regex]::IsMatch($line,'(?:^|\\s)--user-data-dir='+[regex]::Escape($v.profile)+'(?:\\s|$)')}
 $known=$v.oldPid -gt 1; $absent=$false
 if($known){$absent=@(Get-CimInstance Win32_Process -Filter ('ProcessId = '+[string]$v.oldPid) -ErrorAction Stop).Count -eq 0}
-[ordered]@{processScanCompleted=$true;samePrivateMainProcessCount=$items.Count;oldPidKnown=[bool]$known;oldBrowserPidAbsent=[bool]$absent;mainHasExpectedDebugArgument=[bool]$debug;mainHasExpectedProfileArgument=[bool]$profile;userDebugEnvironmentMatches=([Environment]::GetEnvironmentVariable('OPENWORK_ELECTRON_REMOTE_DEBUG_PORT','User') -ceq [string]$v.port);userProfileEnvironmentMatches=([Environment]::GetEnvironmentVariable('OPENWORK_ELECTRON_USERDATA','User') -ceq $v.profile)}|ConvertTo-Json -Compress`;
+$facts=[ordered]@{processScanCompleted=$true;samePrivateMainProcessCount=$items.Count;oldPidKnown=[bool]$known;oldBrowserPidAbsent=[bool]$absent;mainHasExpectedDebugArgument=[bool]$debug;mainHasExpectedProfileArgument=[bool]$profile;userDebugEnvironmentMatches=([Environment]::GetEnvironmentVariable('OPENWORK_ELECTRON_REMOTE_DEBUG_PORT','User') -ceq [string]$v.port);userProfileEnvironmentMatches=([Environment]::GetEnvironmentVariable('OPENWORK_ELECTRON_USERDATA','User') -ceq $v.profile)}
+if($items.Count -eq 1){$listener=Read-OwnedListenerFact $items[0] ([int]$v.port);foreach($key in $listener.Keys){$facts[$key]=$listener[$key]}}
+$facts|ConvertTo-Json -Compress`;
 }
 
 function collectPortableFailureState(context, oldPid, child) {
@@ -216,10 +259,11 @@ function collectPortableFailureState(context, oldPid, child) {
   try {
     if (platform === 'win32') {
       const archive = join(installation, 'resources/app.asar'); assertPrivatePath(root, archive);
-      facts.targetVersionOnDisk = JSON.parse(asar.extractFile(archive, 'package.json').toString()).version === TARGET;
-      facts.publishedAsarOnDisk = hash(readFileSync(archive)) === targetAsarSha256;
-    } else facts.publishedAppImageOnDisk = hash(readFileSync(executable)) === targetInstallerSha256;
-    facts.diskReadSucceeded = true;
+      Object.assign(facts, inspectPortableArchive(archive, TARGET, targetAsarSha256));
+    } else {
+      facts.publishedAppImageOnDisk = hash(readFileSync(executable)) === targetInstallerSha256;
+      facts.diskReadSucceeded = true;
+    }
   } catch { /* Unknown disk state is separate from a known target mismatch. */ }
   try {
     if (platform === 'win32') {
@@ -277,20 +321,29 @@ function collectPortableFailureState(context, oldPid, child) {
 
 export function portableErrorMetadata(error) {
   const value = error && typeof error === 'object' ? error : {};
+  const cause = Object.getOwnPropertyDescriptor(value, 'cause')?.value;
+  const causeCode = cause && typeof cause === 'object' ? Object.getOwnPropertyDescriptor(cause, 'code')?.value : undefined;
   return { errorKind: ERROR_KINDS.has(value.name) ? value.name : 'UnknownError',
-    ...(ERROR_CODES.has(value.code) ? { code: value.code } : {}) };
+    ...(ERROR_CODES.has(value.code) ? { code: value.code } : {}),
+    ...(ERROR_CODES.has(causeCode) ? { causeCode } : {}) };
 }
 
 export function portableDiagnosticState() {
-  let activeCheck = 'initialization'; let lastReadError; let lastHttp;
+  let activeCheck = 'initialization'; let lastReadError; let lastHttp; let lastPageList;
   return {
-    enter(check) { assert.ok(ACTIVE_CHECKS.has(check), 'Unknown native diagnostic checkpoint.'); activeCheck = check; lastReadError = undefined; },
+    enter(check) { assert.ok(ACTIVE_CHECKS.has(check), 'Unknown native diagnostic checkpoint.'); activeCheck = check; lastReadError = undefined; lastPageList = undefined; },
     readError(error) { lastReadError = portableErrorMetadata(error); },
+    cdpPageList(status, shape = 'pending') {
+      assert.ok(['pending', 'unparsed', 'unexpected-http-status', 'invalid-json', 'non-array', 'array'].includes(shape));
+      assert.ok(status === undefined && shape === 'pending' || Number.isSafeInteger(status) && status >= 100 && status <= 599);
+      lastPageList = { ...(status === undefined ? {} : { status }), shape };
+      if (shape === 'array') lastReadError = undefined; // A successful later read supersedes an earlier connection failure.
+    },
     http(endpoint, status) {
       assert.ok(HTTP_ENDPOINTS.has(endpoint) && (status === undefined || Number.isSafeInteger(status) && status >= 100 && status <= 599), 'Invalid native HTTP diagnostic.');
       lastHttp = { endpoint, ...(status === undefined ? {} : { status }) };
     },
-    snapshot(error) { return { activeCheck, ...portableErrorMetadata(error), ...(lastReadError ? { lastReadError } : {}), ...(lastHttp ? { lastHttp } : {}) }; },
+    snapshot(error) { return { activeCheck, ...portableErrorMetadata(error), ...(lastReadError ? { lastReadError } : {}), ...(lastHttp ? { lastHttp } : {}), ...(lastPageList ? { lastPageList } : {}) }; },
   };
 }
 
@@ -445,7 +498,7 @@ function referenceResources(installer, destination, platform) {
 
 function verifyResources(resources, version, feed, platform) {
   const archive = join(resources, 'app.asar');
-  const metadata = JSON.parse(asar.extractFile(archive, 'package.json').toString());
+  const metadata = readPortableArchiveMetadata(archive);
   assert.equal(metadata.version, version); assert.equal(metadata.openworkBrand, 'zeno'); assert.equal(metadata.openworkDistribution, 'public');
   assert.equal(metadata.zenoReleaseUpdatesEnabled, true); assert.equal(metadata.zenoReleaseSigning, lane(platform).signing);
   const config = YAML.parse(readFileSync(join(resources, 'app-update.yml'), 'utf8'));
@@ -495,11 +548,23 @@ function pageResources(target, platform, installation, root) {
   } catch { return null; }
 }
 
+export async function readPortablePageList(response, diagnostics) {
+  diagnostics?.cdpPageList(response.status, response.status === 200 ? 'unparsed' : 'unexpected-http-status');
+  assert.equal(response.status, 200, 'Owned CDP page-list HTTP request failed.');
+  let targets;
+  try { targets = await response.json(); }
+  catch (error) { diagnostics?.cdpPageList(response.status, 'invalid-json'); throw error; }
+  diagnostics?.cdpPageList(response.status, Array.isArray(targets) ? 'array' : 'non-array');
+  assert.ok(Array.isArray(targets), 'Owned CDP page-list response must be an array.');
+  return targets;
+}
+
 async function attach(port, platform, installation, root, profile, exceptions, origins, diagnostics, failureContext) {
   if (failureContext) { delete failureContext.observedBrowserPid; delete failureContext.observedBrowserResources; delete failureContext.observedBrowserEffectiveProfileMatches; }
   diagnostics?.enter('attach-page-list');
   const target = await until(async () => {
-    const targets = await (await fetch(`http://127.0.0.1:${port}/json/list`, { signal: AbortSignal.timeout(1000) })).json();
+    diagnostics?.cdpPageList();
+    const targets = await readPortablePageList(await fetch(`http://127.0.0.1:${port}/json/list`, { redirect: 'error', signal: AbortSignal.timeout(1000) }), diagnostics);
     return targets.find(item => pageResources(item, platform, installation, root));
   }, Boolean, 180_000, 'owned installed main renderer', diagnostics);
   diagnostics?.enter('attach-page-cdp');
