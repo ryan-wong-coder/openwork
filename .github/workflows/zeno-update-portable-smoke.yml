@@ -22,6 +22,11 @@ on:
         type: choice
         default: both
         options: [both, win32, linux]
+      windows_download_retries:
+        description: Additional whole-file Windows download attempts after a fresh verified connection reset only
+        type: choice
+        default: "0"
+        options: ["0", "1", "2"]
 
 permissions:
   actions: read
@@ -48,12 +53,16 @@ jobs:
         id: select
         env:
           SMOKE_PLATFORM: ${{ inputs.platform || 'both' }}
+          SMOKE_WINDOWS_DOWNLOAD_RETRIES: ${{ inputs.windows_download_retries || '0' }}
         run: |
           node --input-type=module <<'JS'
           import assert from 'node:assert/strict';
           import {appendFileSync} from 'node:fs';
           const selected=process.env.SMOKE_PLATFORM;
           assert.ok(['both','win32','linux'].includes(selected));
+          const retries=process.env.SMOKE_WINDOWS_DOWNLOAD_RETRIES;
+          assert.ok(['0','1','2'].includes(retries));
+          assert.ok(selected!=='linux'||retries==='0');
           const lanes=[{platform:'win32',runner:'windows-2025'},{platform:'linux',runner:'ubuntu-24.04'}];
           appendFileSync(process.env.GITHUB_OUTPUT, `matrix=${JSON.stringify({include:lanes.filter(lane=>selected==='both'||lane.platform===selected)})}\n`);
           JS
@@ -174,6 +183,7 @@ jobs:
       - name: Run original NSIS update on hosted Windows
         if: matrix.platform == 'win32'
         env:
+          ZENO_SMOKE_WINDOWS_DOWNLOAD_RETRIES: ${{ inputs.windows_download_retries || '0' }}
           ZENO_UPDATE_BASELINE_DIR: ${{ runner.temp }}/zeno-release-baseline
           ZENO_UPDATE_BASELINE_METADATA: ${{ runner.temp }}/zeno-baseline-metadata/zeno-release.json
           ZENO_UPDATE_TARGET_DIR: ${{ runner.temp }}/zeno-release-target

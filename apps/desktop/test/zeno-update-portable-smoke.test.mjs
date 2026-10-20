@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, realpathSync, mkdirSync, readFileSync, writeFileSync, symlinkSync, existsSync, rmSync } from 'node:fs';
+import { appendFileSync, mkdtempSync, realpathSync, mkdirSync, readFileSync, renameSync, truncateSync, writeFileSync, symlinkSync, existsSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -10,7 +10,8 @@ import YAML from 'yaml';
 import { assertPortableHostedRunner, assertPrivatePath, validatePortableHistorical, validatePortableTarget, nsisPayloadPath,
   portableErrorMetadata, portableDiagnosticState, windowsProcessPathCommand, decodeWindowsProcessPath, until,
   portableHttpEndpoint, validWorkspaceSessionList, effectivePortableProfileMatches, finishPortableRun,
-  safePortableFailureState, hasExactProcessArgument, windowsFailureProbeScript } from '../scripts/zeno-update-portable-smoke.mjs';
+  safePortableFailureState, hasExactProcessArgument, windowsFailureProbeScript, portableDownloadRetries,
+  snapshotDownloadLogs, inspectDownloadLogWindow, resetOnlyDownloadLogText, runPortableDownloadAttempts } from '../scripts/zeno-update-portable-smoke.mjs';
 import { numericDownloadProgress, safeUpdateFailureSignals } from '../scripts/zeno-update-smoke.mjs';
 
 const origin = 'https://www.zeno.ryan-wong.cn';
@@ -82,20 +83,152 @@ test('workflow selector derives only matching hosted runners and rejects injecte
   const workflow = YAML.parse(readFileSync(new URL('../../../.github/workflows/zeno-update-portable-smoke.yml', import.meta.url), 'utf8'));
   const input = workflow.on.workflow_dispatch.inputs;
   assert.equal(input.baseline_run_id.default, '38883434626'); assert.equal(input.platform.default, 'both'); assert.deepEqual(input.platform.options, ['both', 'win32', 'linux']);
+  assert.equal(input.windows_download_retries.default, '0'); assert.deepEqual(input.windows_download_retries.options, ['0', '1', '2']);
   const selection = workflow.jobs['select-platforms'].steps.find(step => step.id === 'select').run;
   const source = /^node --input-type=module <<'JS'\n([\s\S]+)\nJS\n?$/.exec(selection)?.[1]; assert.ok(source);
   const root = mkdtempSync(join(tmpdir(), 'zeno-workflow-selftest-'));
   try {
-    for (const selected of ['both', 'win32', 'linux', '', 'darwin', 'linux,win32', '__proto__']) {
-      const output = join(root, 'matrix-' + selected.replaceAll(/[^a-z]/g, '_'));
-      const result = spawnSync(process.execPath, ['--input-type=module'], { input: source, encoding: 'utf8', env: { ...process.env, GITHUB_OUTPUT: output, SMOKE_PLATFORM: selected } });
-      if (['both', 'win32', 'linux'].includes(selected)) {
+    for (const selected of ['both', 'win32', 'linux', '', 'darwin', 'linux,win32', '__proto__']) for (const retries of ['0', '1', '2', '', '3', '1;exit']) {
+      const output = join(root, 'matrix-' + selected.replaceAll(/[^a-z]/g, '_') + '-' + retries.replaceAll(/[^a-z0-9]/g, '_'));
+      const result = spawnSync(process.execPath, ['--input-type=module'], { input: source, encoding: 'utf8', env: { ...process.env, GITHUB_OUTPUT: output, SMOKE_PLATFORM: selected, SMOKE_WINDOWS_DOWNLOAD_RETRIES: retries } });
+      if (['both', 'win32', 'linux'].includes(selected) && ['0', '1', '2'].includes(retries) && (selected !== 'linux' || retries === '0')) {
         assert.equal(result.status, 0);
         const expected = [{ platform: 'win32', runner: 'windows-2025' }, { platform: 'linux', runner: 'ubuntu-24.04' }].filter(item => selected === 'both' || item.platform === selected);
         assert.deepEqual(JSON.parse(readFileSync(output, 'utf8').trim().replace(/^matrix=/, '')), { include: expected });
       } else { assert.notEqual(result.status, 0); assert.equal(existsSync(output), false); }
     }
   } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('whole-file retry selection defaults off and rejects non-Windows or unbounded overrides', () => {
+  for (const platform of ['win32', 'linux']) assert.equal(portableDownloadRetries(platform), 0);
+  for (const value of ['0', '1', '2']) assert.equal(portableDownloadRetries('win32', value), Number(value));
+  for (const value of ['', '3', '-1', '01', '1.0', 'true', 1, null, {}, '2;exit']) assert.throws(() => portableDownloadRetries('win32', value));
+  for (const platform of ['linux', 'darwin', 'unknown']) assert.throws(() => portableDownloadRetries(platform, '1'));
+});
+
+const resetLog = 'Error: Error: net::ERR_CONNECTION_RESET\n    at SimpleURLLoaderWrapper.<anonymous> (node:electron/js2c/browser_init:1:1)\n';
+
+test('only complete actual reset error headers admit retry; mixed and unknown errors fail closed', () => {
+  for (const header of ['Error: Error: net::ERR_CONNECTION_RESET', 'Error: net::ERR_CONNECTION_RESET']) {
+    assert.equal(resetOnlyDownloadLogText(['', header + '\r\n    at synthetic (fixture:1:1)\r\n']), 'connection-reset');
+  }
+  for (const error of ['Error: network failed', 'Error: Error: net::ERR_TIMED_OUT', 'Error: EPIPE', 'Error: cancelled',
+    'Error: sha512 checksum mismatch', 'ERR_UPDATER_INVALID_SIGNATURE', 'HttpError: 403 forbidden', 'TLS certificate problem',
+    'Warning: disk full', 'Permission denied', 'integrity mismatch', 'fatal updater termination', 'TypeError: unexpected value',
+    'TypeError [PRIVATE_CODE]: unexpected value', 'NetworkError: digest mismatch', 'ValidationError: denied', 'RuntimeException: unexpected',
+    'Uncaught (in promise) synthetic', 'UnhandledPromiseRejectionWarning: unexpected', 'Error: ECONNRESET unrelated context', 'Error: Error: read ECONNRESET']) {
+    assert.equal(resetOnlyDownloadLogText([resetLog, error + '\n']), 'non-reset-error');
+  }
+  for (const text of ['', 'Downloading update from synthetic-url\n']) {
+    assert.equal(resetOnlyDownloadLogText([text, '']), 'no-reset-signal');
+  }
+  assert.equal(resetOnlyDownloadLogText(['Downloading https://fixture.invalid/ERR_CONNECTION_RESET\n', '']), 'non-reset-error');
+  assert.equal(resetOnlyDownloadLogText(['    at synthetic (fixture:1:1)\n', resetLog]), 'log-window-invalid');
+  for (const texts of [[], [''], [null, resetLog], ['', resetLog.trimEnd()]]) assert.equal(resetOnlyDownloadLogText(texts), 'log-window-invalid');
+});
+
+function withDownloadLogs(run) {
+  const root = realpathSync(mkdtempSync(join(tmpdir(), 'zeno-download-window-')));
+  mkdirSync(join(root, 'logs'));
+  const output = join(root, 'logs/electron.log'); const errors = join(root, 'logs/electron-error.log');
+  writeFileSync(output, 'synthetic old output\n'); writeFileSync(errors, resetLog);
+  try { return run({ root, output, errors }); } finally { rmSync(root, { recursive: true, force: true }); }
+}
+
+test('owned two-log offsets exclude a previous reset and cannot authorize a newer non-reset failure', () => {
+  withDownloadLogs(({ root, output, errors }) => {
+    const before = snapshotDownloadLogs(root); assert.ok(before);
+    assert.equal(inspectDownloadLogWindow(root, before), 'no-reset-signal');
+    appendFileSync(errors, 'Error: certificate verification failed\n');
+    assert.equal(inspectDownloadLogWindow(root, before), 'non-reset-error');
+    const next = snapshotDownloadLogs(root); appendFileSync(output, 'Downloading update from synthetic-url\n');
+    appendFileSync(errors, resetLog);
+    assert.equal(inspectDownloadLogWindow(root, next), 'connection-reset');
+    const last = snapshotDownloadLogs(root);
+    assert.equal(inspectDownloadLogWindow(root, last), 'no-reset-signal');
+  });
+});
+
+test('log rotation, truncation, rewritten anchors, symlinks, oversized or incomplete UTF-8 windows reject', () => {
+  const mutations = [
+    ({ errors }) => truncateSync(errors, 0),
+    ({ errors }) => { renameSync(errors, errors + '.old'); writeFileSync(errors, resetLog); },
+    ({ errors }) => writeFileSync(errors, 'x'.repeat(resetLog.length) + '\n' + resetLog),
+    ({ output }) => { renameSync(output, output + '.old'); symlinkSync(output + '.old', output); },
+    ({ errors }) => appendFileSync(errors, 'x'.repeat(256 * 1024) + '\n' + resetLog),
+    ({ errors }) => appendFileSync(errors, resetLog.trimEnd()),
+    ({ errors }) => appendFileSync(errors, Buffer.from([255, 10])),
+    ({ output }) => rmSync(output),
+  ];
+  for (const mutate of mutations) withDownloadLogs(fixture => {
+    const before = snapshotDownloadLogs(fixture.root); assert.ok(before); mutate(fixture);
+    assert.equal(inspectDownloadLogWindow(fixture.root, before), 'log-window-invalid');
+  });
+  withDownloadLogs(({ root, errors }) => {
+    appendFileSync(errors, 'incomplete'); assert.equal(snapshotDownloadLogs(root), null);
+    assert.equal(inspectDownloadLogWindow(root, null), 'log-window-invalid');
+  });
+});
+
+test('default-off attempts stop once; opted-in attempts are bounded and retain separate sanitized failures', async () => {
+  for (const retries of [0, 1, 2]) {
+    const records = []; const calls = []; let downloaded = 0;
+    const result = await runPortableDownloadAttempts({ platform: 'win32', additionalRetries: retries, records,
+      begin: attempt => { calls.push(['begin', attempt]); return attempt; },
+      download: async () => { downloaded++; return downloaded === 3 ? { ok: true, version: 'synthetic' } : { ok: false, reason: 'download-failed', privatePath: 'never-publish-fixture' }; },
+      progress: () => ({ transferred: downloaded * 10, total: 100, token: 'never-publish-fixture' }),
+      inspectFailure: attempt => { calls.push(['inspect', attempt]); return 'connection-reset'; },
+      wait: milliseconds => { assert.equal(milliseconds, 500); },
+    });
+    assert.equal(result.ok, retries === 2); assert.equal(downloaded, retries + 1); assert.equal(records.length, retries + 1);
+    assert.deepEqual(calls.filter(call => call[0] === 'begin').map(call => call[1]), Array.from({ length: retries + 1 }, (_, i) => i + 1));
+    assert.deepEqual(records.map(record => record.retryRequested), Array.from({ length: retries + 1 }, (_, i) => i < retries));
+    assert.equal(records[0].reason, 'download-failed'); assert.equal(records[0].signal, 'connection-reset');
+    assert.deepEqual(records[0].progress, { transferred: 10, total: 100 });
+    assert.equal(JSON.stringify(records).includes('never-publish-fixture'), false);
+    for (const record of records) { assert.ok(Number.isFinite(Date.parse(record.startedAt))); assert.ok(Number.isFinite(Date.parse(record.finishedAt))); assert.ok(record.elapsedMs >= 0); }
+    if (retries === 2) { assert.equal(records[2].outcome, 'downloaded'); assert.equal(records[2].signal, 'not-inspected'); }
+  }
+});
+
+test('non-reset, stale, malformed signals, IPC rejection and thrown bridges never trigger another attempt', async () => {
+  for (const signal of ['non-reset-error', 'no-reset-signal', 'log-window-invalid', 'ERR_CONNECTION_RESET', undefined]) {
+    const records = []; let calls = 0;
+    await runPortableDownloadAttempts({ platform: 'win32', additionalRetries: 2, records, begin: () => null,
+      download: () => { calls++; return { ok: false, reason: 'download-failed' }; }, progress: () => ({}), inspectFailure: () => signal, wait: () => {},
+    });
+    assert.equal(calls, 1); assert.equal(records[0].retryRequested, false);
+  }
+  for (const thrown of [false, true]) {
+    const records = []; let calls = 0; let inspected = false;
+    const run = () => runPortableDownloadAttempts({ platform: 'win32', additionalRetries: 2, records, begin: () => null,
+      download: () => { calls++; if (thrown) throw new Error('never-publish-fixture'); return { ok: false, reason: 'private-unknown-error' }; },
+      progress: () => ({}), inspectFailure: () => { inspected = true; return 'connection-reset'; }, wait: () => {},
+    });
+    if (thrown) await assert.rejects(run); else await run();
+    assert.equal(calls, 1); assert.equal(inspected, false); assert.equal(records[0].retryRequested, false);
+    assert.equal(JSON.stringify(records).includes('never-publish-fixture'), false);
+  }
+});
+
+test('retry identity rejection cannot issue a second download; Linux and invalid budgets cannot opt in', async () => {
+  let calls = 0; const records = [];
+  await assert.rejects(runPortableDownloadAttempts({ platform: 'win32', additionalRetries: 2, records,
+    begin: attempt => { if (attempt > 1) throw Error('synthetic baseline identity changed'); },
+    download: () => { calls++; return { ok: false, reason: 'download-failed' }; }, progress: () => ({}),
+    inspectFailure: () => 'connection-reset', wait: () => {},
+  }));
+  assert.equal(calls, 1); assert.equal(records.length, 1); assert.equal(records[0].retryRequested, true);
+  for (const [platform, additionalRetries] of [['linux', 1], ['win32', 3], ['win32', -1], ['win32', 1.5], ['win32', '1']]) {
+    await assert.rejects(runPortableDownloadAttempts({ platform, additionalRetries, records: [], begin: () => { throw Error('must not begin'); } }),
+      error => !error.message.includes('must not begin'));
+  }
+  const linuxRecords = [];
+  await runPortableDownloadAttempts({ platform: 'linux', additionalRetries: 0, records: linuxRecords, begin: () => {},
+    download: () => ({ ok: false, reason: 'download-failed' }), progress: () => ({}), inspectFailure: () => 'connection-reset', wait: () => {},
+  });
+  assert.equal(linuxRecords.length, 1); assert.equal(linuxRecords[0].retryRequested, false);
 });
 
 test('shared failure diagnostics and progress never expose paths, URLs or unknown values', () => {

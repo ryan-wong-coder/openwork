@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { spawn, spawnSync } from 'node:child_process';
 import { createHash, randomBytes } from 'node:crypto';
-import { existsSync, lstatSync, mkdirSync, mkdtempSync, openSync, closeSync, readFileSync, readdirSync, realpathSync, rmSync, writeFileSync, chmodSync } from 'node:fs';
+import { constants, existsSync, fstatSync, lstatSync, mkdirSync, mkdtempSync, openSync, closeSync, readFileSync, readSync, readdirSync, realpathSync, rmSync, writeFileSync, chmodSync } from 'node:fs';
 import { createServer } from 'node:net';
 import { dirname, basename, isAbsolute, join, relative, resolve, sep, win32 } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -48,6 +48,115 @@ const ERROR_CODES = new Set(['ERR_ASSERTION', 'ENOENT', 'EACCES', 'EPERM', 'EINV
   'UND_ERR_CONNECT_TIMEOUT', 'UND_ERR_HEADERS_TIMEOUT', 'UND_ERR_SOCKET']);
 const HTTP_ENDPOINTS = new Set(['server-health', 'workspace-registry-read', 'workspace-registry-create', 'workspace-session-status', 'workspace-session-create', 'workspace-session-list',
   'workspace-session-read', 'workspace-message-read', 'workspace-message-write', 'engine-activity', 'unknown']);
+
+export function portableDownloadRetries(platform, value = '0') {
+  assert.ok(['win32', 'linux'].includes(platform), 'Unsupported download retry platform.');
+  assert.ok(['0', '1', '2'].includes(value), 'Download retries must be an explicit 0, 1 or 2.');
+  assert.ok(platform === 'win32' || value === '0', 'Download retries are Windows-only.');
+  return Number(value);
+}
+
+const DOWNLOAD_LOGS = ['electron.log', 'electron-error.log'];
+const DOWNLOAD_LOG_LIMIT = 256 * 1024;
+function ownedDownloadLog(root, name, inspect) {
+  let descriptor;
+  try {
+    const path = assertPrivatePath(root, join(root, 'logs', name));
+    descriptor = openSync(path, constants.O_RDONLY | constants.O_NOFOLLOW);
+    const info = fstatSync(descriptor, { bigint: true });
+    assert.ok(info.isFile() && info.nlink === 1n && info.ino > 0n && info.size <= BigInt(Number.MAX_SAFE_INTEGER));
+    const result = inspect(descriptor, info);
+    const after = fstatSync(descriptor, { bigint: true });
+    const current = lstatSync(path, { bigint: true });
+    assert.ok(!current.isSymbolicLink() && current.dev === info.dev && current.ino === info.ino
+      && current.birthtimeNs === info.birthtimeNs && after.size === info.size && current.size === info.size);
+    return result;
+  } finally { if (descriptor !== undefined) closeSync(descriptor); }
+}
+
+function exactLogBytes(descriptor, start, length) {
+  const bytes = Buffer.alloc(length); let read = 0;
+  while (read < length) {
+    const count = readSync(descriptor, bytes, read, length - read, start + read);
+    assert.ok(count > 0, 'Incomplete owned download log window.'); read += count;
+  }
+  return bytes;
+}
+
+export function snapshotDownloadLogs(root) {
+  try {
+    return DOWNLOAD_LOGS.map(name => ownedDownloadLog(root, name, (descriptor, info) => {
+      const offset = Number(info.size); const length = Math.min(offset, 64);
+      const anchor = exactLogBytes(descriptor, offset - length, length);
+      assert.ok(!length || anchor.at(-1) === 10, 'Download log offset is not a complete line.');
+      return { name, dev: info.dev, ino: info.ino, birthtimeNs: info.birthtimeNs, offset, anchor };
+    }));
+  } catch { return null; } // Unknown ownership/boundaries can never authorize a retry.
+}
+
+export function resetOnlyDownloadLogText(texts) {
+  if (!Array.isArray(texts) || texts.length !== 2 || texts.some(text => typeof text !== 'string')) return 'log-window-invalid';
+  let reset = false;
+  for (const text of texts) {
+    if (text && !text.endsWith('\n')) return 'log-window-invalid';
+    let resetBlock = false;
+    for (const line of text.split(/\r?\n/)) {
+      if (!line) { resetBlock = false; continue; }
+      // Pinned electron-updater's default console logger emits Error: followed
+      // by error.stack. A code mentioned in a URL/info line is not an error.
+      if (/^Error: (?:Error: )?net::ERR_CONNECTION_RESET$/.test(line)) { reset = true; resetBlock = true; continue; }
+      if (/\b(?:ERR_[A-Z0-9_]+|E[A-Z]{2,}[A-Z0-9_]*)\b/.test(line)) return 'non-reset-error';
+      if (/^\s+at\s/.test(line)) { if (!resetBlock) return 'log-window-invalid'; continue; }
+      resetBlock = false;
+      if (/\b(?:[A-Za-z_$][\w$]*(?:Error|Exception|Failure)|Uncaught|Unhandled\w*)\b/.test(line)) return 'non-reset-error';
+      if (/\b(?:error|warn(?:ing)?|exception|fail(?:ed|ure)?|cancel(?:led|ed)?|abort(?:ed)?|checksum|signature|sha512|hash|digest|integrity|mismatch|HTTP(?:Error)?|certificate|TLS|cannot|permission|denied|fatal|panic)\b/i.test(line)) return 'non-reset-error';
+    }
+  }
+  return reset ? 'connection-reset' : 'no-reset-signal';
+}
+
+export function inspectDownloadLogWindow(root, snapshots) {
+  try {
+    assert.ok(Array.isArray(snapshots) && snapshots.length === 2);
+    const texts = DOWNLOAD_LOGS.map((name, index) => ownedDownloadLog(root, name, (descriptor, info) => {
+      const before = snapshots[index];
+      assert.ok(before.name === name && before.dev === info.dev && before.ino === info.ino && before.birthtimeNs === info.birthtimeNs);
+      const length = Number(info.size) - before.offset;
+      assert.ok(Number.isSafeInteger(length) && length >= 0 && length <= DOWNLOAD_LOG_LIMIT);
+      assert.ok(exactLogBytes(descriptor, before.offset - before.anchor.length, before.anchor.length).equals(before.anchor));
+      return new TextDecoder('utf-8', { fatal: true }).decode(exactLogBytes(descriptor, before.offset, length));
+    }));
+    return resetOnlyDownloadLogText(texts);
+  } catch { return 'log-window-invalid'; }
+}
+
+export async function runPortableDownloadAttempts({ platform, additionalRetries, records, begin, download, progress, inspectFailure, wait = pause }) {
+  assert.ok(Number.isInteger(additionalRetries) && additionalRetries >= 0 && additionalRetries <= 2);
+  const retries = portableDownloadRetries(platform, String(additionalRetries));
+  for (let attempt = 1; attempt <= retries + 1; attempt++) {
+    const snapshot = await begin(attempt);
+    const started = Date.now();
+    const record = { attempt, startedAt: new Date(started).toISOString(), finishedAt: null, elapsedMs: 0,
+      outcome: 'failed', reason: 'bridge-threw', signal: 'not-inspected', progress: {}, retryRequested: false };
+    records.push(record);
+    let result;
+    try { result = await download(); }
+    finally {
+      record.finishedAt = new Date().toISOString(); record.elapsedMs = Math.max(0, Date.now() - started);
+      try { record.progress = numericDownloadProgress(await progress()); } catch { /* Unknown progress is not evidence. */ }
+    }
+    if (result?.ok === true) { record.outcome = 'downloaded'; record.reason = 'download-completed'; return result; }
+    record.reason = result?.ok === false && result.reason === 'download-failed' ? 'download-failed' : 'updater-rejected';
+    if (record.reason === 'download-failed') {
+      await wait(500); // Bounded log flush, not a network timeout override.
+      const signal = await inspectFailure(snapshot);
+      record.signal = ['connection-reset', 'non-reset-error', 'no-reset-signal', 'log-window-invalid'].includes(signal) ? signal : 'log-window-invalid';
+    }
+    if (platform !== 'win32' || attempt > retries || record.signal !== 'connection-reset') return result;
+    record.retryRequested = true;
+  }
+  throw new Error('Download attempt bound exceeded.');
+}
 
 export async function effectivePortableProfileMatches(invoke, profile) {
   // This read-only IPC exists in the original 1.0.0 main process and returns
@@ -473,10 +582,12 @@ function publishWindowsRelaunchEnvironment(environment, root) {
 
 async function main() {
   assertPortableHostedRunner(process.env, process.platform, process.arch);
+  const additionalRetries = portableDownloadRetries(process.platform, process.env.ZENO_SMOKE_WINDOWS_DOWNLOAD_RETRIES);
   assert.notEqual(process.getuid?.(), 0, 'Refusing native desktop execution as root.');
   const platform = process.platform; const spec = lane(platform); const runner = realpathSync(process.env.RUNNER_TEMP);
   const root = mkdtempSync(join(runner, 'zeno-portable-update-')); const evidence = join(runner, 'zeno-portable-update-evidence'); mkdirSync(evidence, { recursive: true });
   const report = { passed: false, baseline: BASELINE, target: TARGET, platform, arch: 'x64', phases: [], nativeUpdateExecuted: false,
+    downloadPolicy: { additionalRetries, mode: 'whole-file; same baseline session; no resume; reset-only retry' }, downloadAttempts: [],
     scope: { originalBaseline: false, originalTarget: false, realPublicFeed: false, installedUpgrade: false, automaticRelaunch: false, historicalChatPreservation: false, accountPairingTested: false, osCredentialStorageTested: false, aiRequested: false },
     isolation: 'ephemeral GitHub-hosted VM; private installation, Electron profile, workspace, XDG data and temporary runtime', publicOrigin: ORIGIN };
   const phase = (name, values = {}) => { report.phases.push({ name, at: new Date().toISOString(), ...values }); console.log(`[zeno-portable-update] ${name}`); };
@@ -566,9 +677,31 @@ async function main() {
     try { report.downloadProgress = { subscriptionSupported: await client.evaluate(`(()=>{window.__zenoSmokeDownloadProgress={};const updater=window.__OPENWORK_ELECTRON__.updater;if(typeof updater.onDownloadProgress!=='function')return false;const numeric=${numericDownloadProgress.toString()};updater.onDownloadProgress(value=>window.__zenoSmokeDownloadProgress={...window.__zenoSmokeDownloadProgress,...numeric(value)});return true})()`, 2000) === true }; } catch { report.downloadProgress = { subscriptionSupported: false }; }
     phase('native-public-download-started', { bytes: selected.installer.size, installer: spec.suffix });
     diagnostics.enter('update-download');
-    const downloaded = await client.evaluate('window.__OPENWORK_ELECTRON__.updater.download()', 1_800_000);
+    const downloaded = await runPortableDownloadAttempts({ platform, additionalRetries, records: report.downloadAttempts,
+      begin: async attempt => {
+        if (attempt > 1) {
+          // Retry the same original UI bridge/session. No re-check, cache seed,
+          // installer command, new profile, baseline restart or target launch.
+          assert.equal(child.exitCode, null); assert.equal(child.signalCode, null);
+          const processes = await client.browser.send('SystemInfo.getProcessInfo');
+          assert.equal(processes.processInfo.find(item => item.type === 'browser')?.id, oldPid);
+          assert.equal((await client.invoke('appBuildInfo')).version, BASELINE);
+          assert.equal(await effectivePortableProfileMatches(client.invoke, profile), true);
+          assert.equal(await client.evaluate("localStorage.getItem('zeno.update.smoke')"), marker);
+          assert.equal(readFileSync(join(workspace, 'update-smoke-marker.txt'), 'utf8'), marker);
+          assert.ok((await client.invoke('workspaceBootstrap')).workspaces.some(item => item.id === workspaceRecord.id && item.path === workspace));
+          assert.equal((await before.request(`${mount}/session/${encodeURIComponent(session.id)}`)).title, marker);
+          assert.ok(hasMarker(await before.request(`${mount}/session/${encodeURIComponent(session.id)}/message`)));
+        }
+        await client.evaluate('window.__zenoSmokeDownloadProgress={}', 2000);
+        return snapshotDownloadLogs(root);
+      },
+      download: () => client.evaluate('window.__OPENWORK_ELECTRON__.updater.download()', 1_800_000),
+      progress: () => client.evaluate('window.__zenoSmokeDownloadProgress', 2000),
+      inspectFailure: snapshot => inspectDownloadLogWindow(root, snapshot),
+    });
     assert.equal(downloaded.ok, true, 'Real public native download failed.'); assert.equal(downloaded.version, TARGET);
-    phase('native-public-download-completed', { version: TARGET });
+    phase('native-public-download-completed', { version: TARGET, successfulAttempt: report.downloadAttempts.length });
     diagnostics.enter('update-idle');
     await until(() => before.request('/experimental/engine-v2-preview/activity'), value => value.v1?.verdict === 'idle' && value.v1.busySessions === 0 && value.v1.waitingRequests === 0 && (value.v2 === null || value.v2?.verdict === 'idle'), 30_000, 'idle historical engine', diagnostics);
     diagnostics.enter('update-install');
@@ -606,7 +739,7 @@ async function main() {
     diagnostics.enter('target-screenshot');
     const image = await client.send('Page.captureScreenshot', { format: 'png' }); writeFileSync(join(evidence, 'updated-app.png'), Buffer.from(image.data, 'base64'));
     report.scope.historicalChatPreservation = true;
-    phase('real-native-upgrade-and-preservation-verified', { installedVersion: TARGET, publishedAsar: true, actualProcessChanged: true, chromiumProfile: true, workspaceIdentity: true, serverRegistryIdentity: true, workspaceFile: true, historicalSession: true, historicalMessage: true, embeddedServer: true });
+    phase('real-native-upgrade-and-preservation-verified', { installedVersion: TARGET, successfulDownloadAttempt: report.downloadAttempts.length, publishedAsar: true, actualProcessChanged: true, chromiumProfile: true, workspaceIdentity: true, serverRegistryIdentity: true, workspaceFile: true, historicalSession: true, historicalMessage: true, embeddedServer: true });
     if (compareStableVersions(TARGET, '1.1.1') >= 0) {
       diagnostics.enter('target-navigation');
       const previousSessions = workspaceSessionIdentitySnapshot(await after.request(`${mount}/session`));
