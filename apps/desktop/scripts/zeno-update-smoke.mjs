@@ -441,19 +441,32 @@ async function selfTest() {
     const workflow = YAML.parse(readFileSync(join(REPO, ".github/workflows/zeno-update-smoke.yml"), "utf8"));
     assert.equal(workflow.on.workflow_dispatch.inputs.architecture.default, "both");
     assert.deepEqual(workflow.on.workflow_dispatch.inputs.architecture.options, ["both", "x64", "arm64"]);
-    const selector = workflow.jobs["select-architectures"].steps.find(step => step.id === "select").run;
+    assert.equal(workflow.on.workflow_dispatch.inputs.arm_image.required, false);
+    assert.equal(workflow.on.workflow_dispatch.inputs.arm_image.default, "macos-26");
+    assert.deepEqual(workflow.on.workflow_dispatch.inputs.arm_image.options, ["macos-26", "xcode-27"]);
+    const selectorStep = workflow.jobs["select-architectures"].steps.find(step => step.id === "select");
+    assert.equal(selectorStep.env.SMOKE_ARM_IMAGE, "${{ inputs.arm_image || 'macos-26' }}");
+    const selector = selectorStep.run;
     const selectionSource = /^node --input-type=module <<'JS'\n([\s\S]+)\nJS\n?$/.exec(selector)?.[1];
     assert.ok(selectionSource, "The workflow architecture selector must be directly testable.");
-    const lanes = [{ runner: "macos-15-intel", arch: "x64" }, { runner: "macos-15", arch: "arm64" }];
-    for (const selected of [undefined, "both", "x64", "arm64", "", "linux", "x64,arm64", "__proto__"]) {
-      const output = join(root, `architecture-${String(selected).replace(/[^a-z0-9]/gi, "_")}.txt`);
-      const result = spawnSync(process.execPath, ["--input-type=module"], { input: selectionSource, encoding: "utf8",
-        env: { GITHUB_OUTPUT: output, ...(selected === undefined ? {} : { SMOKE_ARCHITECTURE: selected }) } });
-      if (selected === undefined || ["both", "x64", "arm64"].includes(selected)) {
-        assert.equal(result.status, 0, "Valid workflow architecture selection failed.");
-        assert.deepEqual(JSON.parse(readFileSync(output, "utf8").trim().replace(/^matrix=/, "")),
-          { include: selected === undefined || selected === "both" ? lanes : lanes.filter(lane => lane.arch === selected) });
-      } else { assert.notEqual(result.status, 0); assert.equal(existsSync(output), false); }
+    let selectionCase = 0;
+    const architectureSelections = [undefined, "both", "x64", "arm64", "", "linux", "x64,arm64", "__proto__"];
+    const armImages = [undefined, "macos-26", "xcode-27", "", "macos-15", "macos-latest", "macos-26-xlarge", "xcode-27-xlarge", "__proto__"];
+    for (const selected of architectureSelections) {
+      for (const armImage of armImages) {
+        const output = join(root, `architecture-${++selectionCase}.txt`);
+        const result = spawnSync(process.execPath, ["--input-type=module"], { input: selectionSource, encoding: "utf8",
+          env: { GITHUB_OUTPUT: output, ...(selected === undefined ? {} : { SMOKE_ARCHITECTURE: selected }),
+            ...(armImage === undefined ? {} : { SMOKE_ARM_IMAGE: armImage }) } });
+        const validArchitecture = selected === undefined || ["both", "x64", "arm64"].includes(selected);
+        const validArmImage = armImage === undefined || ["macos-26", "xcode-27"].includes(armImage);
+        if (validArchitecture && validArmImage) {
+          assert.equal(result.status, 0, "Valid workflow architecture/image selection failed.");
+          const lanes = [{ runner: "macos-15-intel", arch: "x64" }, { runner: armImage ?? "macos-26", arch: "arm64" }];
+          assert.deepEqual(JSON.parse(readFileSync(output, "utf8").trim().replace(/^matrix=/, "")),
+            { include: selected === undefined || selected === "both" ? lanes : lanes.filter(lane => lane.arch === selected) });
+        } else { assert.notEqual(result.status, 0); assert.equal(existsSync(output), false); }
+      }
     }
     const privateMarker = "synthetic-secret-DO-NOT-RETAIN";
     const diagnosticText = `Error net::ERR_CONNECTION_CLOSED https://private.invalid/${privateMarker} /private/${privateMarker}\n`
