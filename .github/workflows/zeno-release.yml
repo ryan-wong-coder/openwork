@@ -145,6 +145,9 @@ jobs:
       PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN: "false"
       ZENO_MAC_SIGNING: ${{ needs.validate.outputs.macos_signing }}
       ZENO_WINDOWS_SIGNING: ${{ needs.validate.outputs.windows_signing }}
+      # The combined desktop/fitness renderer exceeds Node 24's 2 GiB default
+      # on the native 8 GiB Apple Silicon runner. This is a cap, not reservation.
+      NODE_OPTIONS: --max-old-space-size=6144
       # Build and smoke-test every package with its matching native CPU runtime.
       # pnpm-workspace.yaml also installs both supported native module variants.
     defaults:
