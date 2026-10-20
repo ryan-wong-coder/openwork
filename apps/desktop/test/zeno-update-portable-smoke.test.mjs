@@ -15,7 +15,8 @@ import { assertPortableHostedRunner, assertPrivatePath, validatePortableHistoric
   portableHttpEndpoint, validWorkspaceSessionList, effectivePortableProfileMatches, finishPortableRun,
   safePortableFailureState, hasExactProcessArgument, windowsFailureProbeScript, portableDownloadRetries,
   snapshotDownloadLogs, inspectDownloadLogWindow, resetOnlyDownloadLogText, runPortableDownloadAttempts,
-  readPortableArchiveMetadata, inspectPortableArchive, readPortablePageList, windowsOwnedListenerProbeScript, verifyNativeV1HistorySetting } from '../scripts/zeno-update-portable-smoke.mjs';
+  readPortableArchiveMetadata, inspectPortableArchive, readPortablePageList, windowsOwnedListenerProbeScript, verifyNativeV1HistorySetting,
+  safeNativeSettingActivity } from '../scripts/zeno-update-portable-smoke.mjs';
 import { numericDownloadProgress, safeUpdateFailureSignals } from '../scripts/zeno-update-smoke.mjs';
 import { windowsProfileMode, windowsNativeLeaf, nativeWindowsPackageIdentity, windowsNativePlan, nativeDefaultsEnvironment,
   sameWindowsPath, windowsNativeRootsScript, windowsNativePristineScript, windowsNativeInstallationScript, decodeNativeWindowsWire,
@@ -268,6 +269,96 @@ test('native V1 history uses one real settings mutation before history and targe
   assert.equal(paths.filter(([, options]) => options.method === 'PUT').length, 1); assert.equal(idleChecked, 2);
   await assert.rejects(verifyNativeV1HistorySetting(async () => ({ enabled: true, chatRouting: true }), () => ({}), wait));
   await assert.rejects(verifyNativeV1HistorySetting(request, () => ({ enabled: true, chatRouting: false }), wait));
+});
+
+test('native activity diagnostics allow only shapes, fixed verdicts and capped known counts', () => {
+  const idle = { verdict: 'idle', busySessions: 0, waitingRequests: 0 };
+  assert.deepEqual(safeNativeSettingActivity({ v1: idle, v2: null, token: 'never-publish-private-fixture' }), {
+    shape: 'object', v1: { shape: 'object', verdict: 'idle', busySessions: { known: true, value: 0, capped: false }, waitingRequests: { known: true, value: 0, capped: false } }, v2: { shape: 'null' },
+  });
+  for (const verdict of ['idle', 'busy', 'unknown']) {
+    assert.equal(safeNativeSettingActivity({ v1: { ...idle, verdict }, v2: null }).v1.verdict, verdict);
+  }
+  const unknown = safeNativeSettingActivity({ v1: { verdict: 'never-publish-private-fixture', busySessions: 513, waitingRequests: Number.MAX_SAFE_INTEGER }, v2: [] });
+  assert.equal(unknown.v1.verdict, 'invalid');
+  assert.deepEqual(unknown.v1.busySessions, { known: true, value: 512, capped: true });
+  assert.deepEqual(unknown.v1.waitingRequests, { known: true, value: 512, capped: true });
+  assert.deepEqual(unknown.v2, { shape: 'non-object' });
+  for (const count of [-1, '0', NaN, Infinity, Number.MAX_SAFE_INTEGER + 1, undefined]) {
+    assert.deepEqual(safeNativeSettingActivity({ v1: { ...idle, busySessions: count } }).v1.busySessions, { known: false });
+  }
+  let getterReads = 0;
+  const withGetter = Object.defineProperty({}, 'v1', { get() { getterReads++; throw new Error('never-publish-private-fixture'); } });
+  assert.deepEqual(safeNativeSettingActivity(withGetter), { shape: 'object', v1: { shape: 'unreadable' }, v2: { shape: 'missing' } });
+  const engine = Object.defineProperties({}, { verdict: { get() { getterReads++; return 'idle'; } }, busySessions: { get() { getterReads++; return 0; } } });
+  assert.equal(safeNativeSettingActivity({ v1: engine }).v1.verdict, 'invalid');
+  assert.equal(getterReads, 0);
+  assert.ok(!JSON.stringify(unknown).includes('never-publish-private-fixture'));
+  for (const value of [null, undefined, [], 'never-publish-private-fixture']) assert.deepEqual(safeNativeSettingActivity(value), { shape: 'non-object' });
+});
+
+test('native setting receipts record real completed stages and activity before the unchanged idle verdict', async () => {
+  const idle = { v1: { verdict: 'idle', busySessions: 0, waitingRequests: 0 }, v2: null };
+  const records = []; let selected = false;
+  const request = async (path, options = {}) => {
+    if (options.method === 'PUT') selected = true;
+    return path.endsWith('/activity') ? idle : { enabled: !selected, chatRouting: !selected };
+  };
+  await verifyNativeV1HistorySetting(request, () => ({ enabled: false, chatRouting: false }), async (read, accept, timeout) => {
+    assert.equal(timeout, 30_000);
+    const activity = await read();
+    assert.equal(records.at(-1).step, 'idle-activity');
+    assert.equal(records.at(-1).savedVerifiedV1, true);
+    assert.equal(records.at(-1).idleVerified, false);
+    assert.equal(records.at(-1).lastActivity.v1.verdict, 'idle');
+    assert.equal(accept(activity), true);
+  }, true, value => records.push(value));
+  const complete = records.at(-1);
+  assert.equal(complete.step, 'complete');
+  for (const key of ['initialV2Verified', 'selectionReturnedV1', 'statusVerifiedV1', 'savedVerifiedV1', 'idleVerified']) assert.equal(complete[key], true);
+  assert.equal(complete.activityReads, 1); assert.equal(complete.readFailures, 0);
+  assert.equal(records[0].initialV2Verified, false);
+  assert.equal(records[0].savedVerifiedV1, false);
+});
+
+test('native activity failures remain strict and retain only sanitized fixed facts, never raw body or errors', async () => {
+  const records = []; let activityReads = 0;
+  const idle = { verdict: 'idle', busySessions: 0, waitingRequests: 0 };
+  const activityCases = [
+    { v1: { ...idle, verdict: 'unknown' }, v2: null },
+    { v1: { ...idle, verdict: 'busy', busySessions: 1 }, v2: null },
+    { v1: idle, v2: { ...idle, verdict: 'unknown' } },
+    { v1: { ...idle, waitingRequests: 1 }, v2: null },
+    { v1: { ...idle, busySessions: 513 }, v2: null },
+    { v2: null }, null,
+  ];
+  const request = async path => path.endsWith('/activity') ? activityCases[activityReads++ % activityCases.length] : { enabled: false, chatRouting: false };
+  await assert.rejects(verifyNativeV1HistorySetting(request, () => ({ enabled: false, chatRouting: false }), async (read, accept, timeout) => {
+    assert.equal(timeout, 30_000);
+    for (let index = 0; index < activityCases.length; index++) {
+      const value = await read();
+      assert.equal(records.at(-1).step, 'idle-activity');
+      try { assert.equal(accept(value), false); } catch (error) { assert.equal(value, null); assert.ok(error instanceof TypeError); }
+    }
+    throw new Error('synthetic idle deadline');
+  }, false, value => records.push(value)));
+  assert.equal(records.at(-1).savedVerifiedV1, true); assert.equal(records.at(-1).idleVerified, false);
+  assert.deepEqual(records.at(-1).lastActivity, { shape: 'non-object' });
+  let getters = 0;
+  const failedRecords = [];
+  const failure = Object.defineProperties(new TypeError('never-publish-private-fixture'), {
+    code: { get() { getters++; return 'ECONNREFUSED'; } }, privatePath: { get() { getters++; return 'never-publish-private-fixture'; } },
+    cause: { value: Object.assign(new Error('never-publish-private-fixture'), { code: 'ECONNREFUSED' }) },
+  });
+  await assert.rejects(verifyNativeV1HistorySetting(async path => {
+    if (path.endsWith('/activity')) throw failure;
+    return { enabled: false, chatRouting: false };
+  }, () => ({ enabled: false, chatRouting: false }), async read => { await read(); }, false, value => failedRecords.push(value)));
+  assert.equal(getters, 0);
+  assert.deepEqual(failedRecords.at(-1).lastReadFailure, { errorKind: 'TypeError', causeCode: 'ECONNREFUSED' });
+  assert.equal(failedRecords.at(-1).readFailures, 1);
+  assert.equal(failedRecords.at(-1).activityReads, 0);
+  assert.ok(!JSON.stringify(failedRecords).includes('never-publish-private-fixture'));
 });
 
 function generatedKnownFolderCondition() {

@@ -150,6 +150,19 @@ drive-relative paths and UNC paths. The template escapes both JavaScript and
 the emitted regular expression. No live environment value is printed or
 changed by these tests.
 
+The native V1 setting check retains separate baseline/target receipts with a
+fixed substep and completion booleans for the original fresh V2 observation,
+V1 selection response, status, saved setting and idle verification. Each
+activity read is summarized before the original idle predicate: only object
+shape, `idle`/`busy`/`unknown`/`invalid` verdicts, and known nonnegative counts
+are retained. Counts and read totals cap at 512 with an explicit capped flag;
+unreadable counts stay unknown. Read failures retain only the fixed error
+class/code allowlist and the existing last HTTP endpoint/status, never a
+response body, path, credential or raw error. The idle predicate and original
+30-second deadline are unchanged. Earlier attempt 07 did not contain these
+receipts, so its `engine-activity` HTTP 200 does not prove an idle verdict or
+identify the underlying engine condition.
+
 An opted-in retry uses the original 1.0.0 UI bridge's existing `download` action
 in the same verified baseline process, Chromium profile and historical session.
 It does not run `check` again, restart the baseline, seed the updater cache,

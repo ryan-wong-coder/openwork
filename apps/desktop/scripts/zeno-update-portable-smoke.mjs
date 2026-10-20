@@ -677,19 +677,78 @@ function nativeWindowsRead(script, input) {
     { ...(input === undefined ? {} : { input: Buffer.from(JSON.stringify(input), 'utf8').toString('base64') }), timeout: 30_000 }));
 }
 
-export async function verifyNativeV1HistorySetting(request, readSavedState, waitUntil, select = false) {
+function ownNativeDiagnosticValue(value, key) {
+  return value && typeof value === 'object' ? Object.getOwnPropertyDescriptor(value, key)?.value : undefined;
+}
+
+function nativeBoundedCount(value) {
+  return Number.isSafeInteger(value) && value >= 0
+    ? { known: true, value: Math.min(value, 512), capped: value > 512 } : { known: false };
+}
+
+export function safeNativeSettingActivity(value) {
+  const describe = (source, key) => {
+    const descriptor = source && typeof source === 'object' ? Object.getOwnPropertyDescriptor(source, key) : undefined;
+    if (!descriptor) return { shape: 'missing' };
+    if (!('value' in descriptor)) return { shape: 'unreadable' };
+    const engine = descriptor.value;
+    if (engine === null) return { shape: 'null' };
+    if (!engine || typeof engine !== 'object' || Array.isArray(engine)) return { shape: 'non-object' };
+    const verdict = ownNativeDiagnosticValue(engine, 'verdict');
+    return { shape: 'object', verdict: ['idle', 'busy', 'unknown'].includes(verdict) ? verdict : 'invalid',
+      busySessions: nativeBoundedCount(ownNativeDiagnosticValue(engine, 'busySessions')),
+      waitingRequests: nativeBoundedCount(ownNativeDiagnosticValue(engine, 'waitingRequests')) };
+  };
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return { shape: 'non-object' };
+  return { shape: 'object', v1: describe(value, 'v1'), v2: describe(value, 'v2') };
+}
+
+function nativeSettingReadError(error) {
+  const ownName = ownNativeDiagnosticValue(error, 'name');
+  const prototype = error && typeof error === 'object' ? Object.getPrototypeOf(error) : undefined;
+  const name = ownName ?? ownNativeDiagnosticValue(prototype, 'name');
+  const cause = ownNativeDiagnosticValue(error, 'cause');
+  return portableErrorMetadata({ name, code: ownNativeDiagnosticValue(error, 'code'),
+    cause: { code: ownNativeDiagnosticValue(cause, 'code') } });
+}
+
+export async function verifyNativeV1HistorySetting(request, readSavedState, waitUntil, select = false, record = () => {}) {
+  const facts = { step: 'initialization', initialV2Verified: false, selectionReturnedV1: false, statusVerifiedV1: false,
+    savedVerifiedV1: false, idleVerified: false, activityReads: 0, activityReadsCapped: false, readFailures: 0, readFailuresCapped: false };
+  const publish = () => record(JSON.parse(JSON.stringify(facts)));
+  const read = async (step, operation) => {
+    facts.step = step; publish();
+    try {
+      const value = await operation(); delete facts.lastReadFailure; publish(); return value;
+    } catch (error) {
+      facts.readFailuresCapped ||= facts.readFailures >= 512;
+      facts.readFailures = Math.min(facts.readFailures + 1, 512);
+      facts.lastReadFailure = nativeSettingReadError(error); publish(); throw error;
+    }
+  };
+  publish();
   if (select) {
-    const initial = await request('/experimental/engine-v2-preview/status');
+    const initial = await read('initial-status', () => request('/experimental/engine-v2-preview/status'));
     assert.equal(initial.enabled, true); assert.equal(initial.chatRouting, true);
-    const status = await request('/experimental/engine-v2-preview', { method: 'PUT', body: JSON.stringify({ chatRouting: false, enabled: false }) });
+    facts.initialV2Verified = true; publish();
+    const status = await read('select-v1', () => request('/experimental/engine-v2-preview', { method: 'PUT', body: JSON.stringify({ chatRouting: false, enabled: false }) }));
     assert.equal(status.enabled, false); assert.equal(status.chatRouting, false);
+    facts.selectionReturnedV1 = true; publish();
   }
-  const status = await request('/experimental/engine-v2-preview/status');
+  const status = await read('verify-status', () => request('/experimental/engine-v2-preview/status'));
   assert.equal(status.enabled, false); assert.equal(status.chatRouting, false);
-  const saved = readSavedState(); assert.equal(saved.enabled, false); assert.equal(saved.chatRouting, false);
-  await waitUntil(() => request('/experimental/engine-v2-preview/activity'),
+  facts.statusVerifiedV1 = true; publish();
+  const saved = await read('verify-saved', readSavedState); assert.equal(saved.enabled, false); assert.equal(saved.chatRouting, false);
+  facts.savedVerifiedV1 = true; publish();
+  await waitUntil(() => read('idle-activity', async () => {
+    const value = await request('/experimental/engine-v2-preview/activity');
+    facts.activityReadsCapped ||= facts.activityReads >= 512;
+    facts.activityReads = Math.min(facts.activityReads + 1, 512);
+    facts.lastActivity = safeNativeSettingActivity(value); publish(); return value;
+  }),
     value => value.v1?.verdict === 'idle' && value.v1.busySessions === 0 && value.v1.waitingRequests === 0
       && (value.v2 === null || value.v2?.verdict === 'idle'), 30_000, 'saved native V1 setting and idle historical engine');
+  facts.idleVerified = true; facts.step = 'complete'; publish();
 }
 
 async function main() {
@@ -709,6 +768,11 @@ async function main() {
   let client; let child; let oldPid; let cleanupAllowed = false; let failure = false; let restoreEnvironment; let failureContext; let nativeDefaults;
   const exceptions = []; const origins = new Set();
   const diagnostics = portableDiagnosticState();
+  const recordNativeV1Setting = side => facts => {
+    report.nativeV1Settings ??= {};
+    const lastHttp = diagnostics.snapshot().lastHttp;
+    report.nativeV1Settings[side] = { ...facts, ...(lastHttp ? { lastHttp } : {}) };
+  };
   try {
     diagnostics.enter('release-metadata');
     const historicalFile = assertPrivatePath(runner, resolve(process.env.ZENO_UPDATE_BASELINE_METADATA));
@@ -808,7 +872,7 @@ async function main() {
     if (nativeDefaults) {
       diagnostics.enter('baseline-native-v1-setting');
       await verifyNativeV1HistorySetting(before.request, () => JSON.parse(readFileSync(assertNativeOwnedPath(nativeDefaults, nativeDefaults.engineState), 'utf8')),
-        (read, predicate, timeout, description) => until(read, predicate, timeout, description, diagnostics), true);
+        (read, predicate, timeout, description) => until(read, predicate, timeout, description, diagnostics), true, recordNativeV1Setting('baseline'));
       Object.assign(report.nativeDefaults, { historicalEngine: 'v1', originalFreshV2SettingObserved: true, selectedThroughOriginalSettings: true, savedV1BeforeHistory: true, defaultV2HistoryTested: false });
     }
     const mount = before.mount; const serverWorkspaceRecord = before.workspace;
@@ -882,7 +946,7 @@ async function main() {
     if (nativeDefaults) {
       diagnostics.enter('target-native-v1-setting');
       await verifyNativeV1HistorySetting(after.request, () => JSON.parse(readFileSync(assertNativeOwnedPath(nativeDefaults, nativeDefaults.engineState), 'utf8')),
-        (read, predicate, timeout, description) => until(read, predicate, timeout, description, diagnostics));
+        (read, predicate, timeout, description) => until(read, predicate, timeout, description, diagnostics), false, recordNativeV1Setting('target'));
       Object.assign(report.nativeDefaults, { savedV1Retained: true, actualDefaultProfileRealpathRetained: true });
     }
     assert.deepEqual(after.workspace, serverWorkspaceRecord, 'Historical server workspace registry was lost.');
