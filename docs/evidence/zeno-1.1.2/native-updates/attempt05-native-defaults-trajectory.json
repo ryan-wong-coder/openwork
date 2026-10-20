@@ -1,0 +1,47 @@
+{
+  "scope": "Explicit native-defaults attempt stopped at its required pristine-state precondition; original native receipt unchanged.",
+  "runId": 39456398540,
+  "jobId": 118744354280,
+  "lane": "win32-x64",
+  "workflowAttempt": 5,
+  "windowsProfileMode": "native-defaults",
+  "checkoutCommit": "826805aa097fa4f7d86f7d98decbad3889037b32",
+  "nativeReceipt": {
+    "file": "attempt05-native-defaults-win32-x64.json",
+    "sha256": "624203e885d2db888484fc05404fd5cef1885da606517eab8e7c4a5bfdc7a0bc"
+  },
+  "actualWindowsPreflightTests": {
+    "tests": 46,
+    "pass": 46,
+    "fail": 0,
+    "skipped": 0,
+    "source": "Original workflow log summary and API preflight step conclusion success"
+  },
+  "downloadPolicy": {
+    "additionalRetries": 2,
+    "mode": "whole-file; same baseline session; no resume; reset-only retry"
+  },
+  "actualWholeFileDownloadCount": 0,
+  "additionalRetriesActuallyStarted": 0,
+  "originalPackagesVerified": true,
+  "baselineNsisInstalled": false,
+  "appLaunched": false,
+  "originalSettingsApiSavedV1Reached": false,
+  "historicalV1SessionCreated": false,
+  "failure": {
+    "classification": "native-update-validation-failed",
+    "lastPhase": "original-installers-verified",
+    "activeCheck": "windows-native-pristine",
+    "errorKind": "AssertionError",
+    "code": "ERR_ASSERTION"
+  },
+  "pristineFailureSpecificCause": "Not recorded; no exact leaf, registry value or assertion detail can be established from the sanitized receipt.",
+  "candidateOrBrowserProcessObserved": false,
+  "nativeAcceptanceVerdict": "not-executed-prerequisite-failed",
+  "rawWorkflowFailedStepLog": {
+    "bytes": 56145,
+    "sha256": "020323587df9591f77d04707d07ee6cb03c5dbc7ccdaede6f2d08d8450a6a94e",
+    "retainedInPublicTree": false
+  },
+  "interpretation": "The Windows-specific tests ran successfully and the original installer hashes were verified. The strong native-defaults pristine-state gate then failed before original NSIS installation, application launch, V1 settings/history, public updater download or target execution. No pre-existing leaf was erased and no product installation failure is established."
+}

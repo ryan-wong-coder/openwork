@@ -23,34 +23,38 @@
       "originalMissingGlyphScreenshotsRetained": true
     },
     "win32-x64": {
-      "functional": "target-attachment-not-accepted",
+      "functional": "native-defaults-prerequisite-not-accepted",
       "visual": "not-produced",
-      "observedSignal": "connection-reset-in-original-receipts-sanitized-updater-log-scans",
       "receipts": [
         "win32-x64.json",
         "attempt02-win32-x64.json"
       ],
       "nsisInstallOrTargetRelaunchFailureEstablished": false,
       "latestAttempt": {
-        "attempt": 4,
-        "runId": 39450252810,
-        "jobId": 118722931090,
+        "attempt": 5,
+        "runId": 39456398540,
+        "jobId": 118744354280,
+        "windowsProfileMode": "native-defaults",
         "additionalWholeFileRetriesAllowed": 2,
-        "status": "completed-target-disk-verified-CDP-refused",
-        "nativeVerdict": "not-accepted",
-        "receipt": "attempt04-win32-x64.json",
-        "trajectoryReceipt": "attempt04-download-trajectory.json",
-        "actualWholeFileDownloadCount": 1,
-        "successfulWholeFileDownloadAttempt": 1,
+        "historicalEngineScope": "saved V1 via original settings API; default V2 history not tested",
+        "status": "completed-pristine-precondition-failure",
+        "nativeVerdict": "not-executed-prerequisite-failed",
+        "receipt": "attempt05-native-defaults-win32-x64.json",
+        "trajectoryReceipt": "attempt05-native-defaults-trajectory.json",
+        "actualWholeFileDownloadCount": 0,
         "additionalRetriesActuallyStarted": 0,
-        "verifiedOnDiskVersion": "1.1.2",
-        "publishedAsarOnDiskVerified": true,
-        "effectiveTargetProfile": "unknown",
-        "runningTargetIdentity": "unverified",
-        "actualBrowserPidKnown": false,
-        "candidateProcessCountBoundary": "One same-executable no-type candidate does not prove an actual browser or target restart."
+        "historicalV1SettingOrHistoryReached": false,
+        "originalNsisInstalled": false,
+        "actualWindowsPreflightTestsPassed": 46
       },
-      "completedFailedWorkflowAttempts": 4
+      "completedFailedWorkflowAttempts": 5,
+      "priorIsolatedReceipts": [
+        "win32-x64.json",
+        "attempt02-win32-x64.json",
+        "attempt03-win32-x64.json",
+        "attempt04-win32-x64.json"
+      ],
+      "firstTwoAttemptsObservedSignal": "connection-reset-in-original-receipts-sanitized-updater-log-scans"
     },
     "macos-arm64": {
       "functional": "passed",
@@ -77,8 +81,8 @@
     }
   },
   "integrityChecks": {
-    "downloadedArtifactZipDigestsMatchedGitHub": 8,
-    "extractedOriginalFilesRehashed": 19,
+    "downloadedArtifactZipDigestsMatchedGitHub": 9,
+    "extractedOriginalFilesRehashed": 20,
     "originalCapacityAnnotationResponsesRehashed": 2,
     "actualScreenshotsReviewed": 10,
     "screenshotsWithReadableChinese": 8,

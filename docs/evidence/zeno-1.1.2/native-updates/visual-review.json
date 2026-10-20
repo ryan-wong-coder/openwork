@@ -113,6 +113,16 @@
       "targetScreenshotsAvailable": false,
       "reason": "First full download succeeded without retry and the exact target version/ASAR were verified on disk. The target CDP identity/profile gate did not pass, so no verified target UI image was produced.",
       "nativeReceiptAltered": false
+    },
+    "attempt05-native-defaults-win32-x64": {
+      "nativeFunctionalVerdict": "not-executed-prerequisite-failed",
+      "artifactDigestVerified": true,
+      "attempt": 5,
+      "windowsProfileMode": "native-defaults",
+      "actuallyViewed": [],
+      "targetScreenshotsAvailable": false,
+      "reason": "The native-defaults pristine-state precondition failed before the original NSIS installation or app launch; no target image was produced.",
+      "nativeReceiptAltered": false
     }
   }
 }

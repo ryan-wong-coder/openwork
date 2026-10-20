@@ -198,5 +198,31 @@
     "runCheckoutExactShaVerified": true,
     "outcome": "First whole-file download completed without retry; target 1.1.2 and exact published ASAR verified on disk; expected CDP connection refused and running target identity/profile not verified.",
     "nativeReceipt": "attempt04-win32-x64.json"
+  },
+  "windowsNativeDefaultsSavedV1Acceptance": {
+    "workflowId": 390119143,
+    "runId": 39456398540,
+    "jobId": 118744354280,
+    "ref": "personal",
+    "checkoutCommit": "826805aa097fa4f7d86f7d98decbad3889037b32",
+    "checkoutDesktopVersion": "1.1.2",
+    "platform": "win32",
+    "windows_profile_mode": "native-defaults",
+    "windows_download_retries": "2",
+    "attempt": 5,
+    "createdAt": "2026-10-20T16:19:21Z",
+    "operatorExplicitlyApproved": true,
+    "sameFrozenBaselineAndTarget": true,
+    "reason": "Explicitly select pristine native Windows installation/profile/cache leaves and save V1 through the original settings API before creating history. The original isolated attempts and their failed attachment evidence remain unchanged.",
+    "historicalEngineScope": "Real saved V1 setting before history; default V2 history is not tested.",
+    "workflowRegistrationActiveVerified": true,
+    "githubWorkflowBytesMatchExactSource": true,
+    "runCheckoutExactShaVerified": true,
+    "priorIsolatedAttemptReport": "attempt04-win32-x64.json",
+    "newEvidenceFilenamePrefix": "attempt05-native-defaults-",
+    "productBytesAndNativeGatesUnchanged": true,
+    "cacheSeedOrManualTargetLaunch": false,
+    "outcome": "Windows-specific preflight 46/46 passed and original hashes verified, then pristine-state prerequisite failed before NSIS/app/V1/history/download; no exact precondition cause recorded.",
+    "nativeReceipt": "attempt05-native-defaults-win32-x64.json"
   }
 }

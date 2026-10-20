@@ -1,0 +1,60 @@
+{
+  "passed": false,
+  "baseline": "1.0.0",
+  "target": "1.1.2",
+  "platform": "win32",
+  "arch": "x64",
+  "phases": [
+    {
+      "name": "original-installers-verified",
+      "at": "2026-10-20T16:21:15.751Z",
+      "baselineSha256": "2fd5184a2f5a41d50c11b63014add54518805816a68c67dbe72b6217d3139716",
+      "targetSha256": "0690872dad2d7ff57f3e7e308b6fca864528a8c059bfa1934bdb98ba7d4efba3",
+      "baselineBytes": 379417761,
+      "targetBytes": 390804422
+    }
+  ],
+  "nativeUpdateExecuted": false,
+  "downloadPolicy": {
+    "additionalRetries": 2,
+    "mode": "whole-file; same baseline session; no resume; reset-only retry"
+  },
+  "downloadAttempts": [],
+  "scope": {
+    "originalBaseline": true,
+    "originalTarget": true,
+    "realPublicFeed": true,
+    "installedUpgrade": false,
+    "automaticRelaunch": false,
+    "historicalChatPreservation": false,
+    "accountPairingTested": false,
+    "osCredentialStorageTested": false,
+    "aiRequested": false
+  },
+  "windowsProfileMode": "native-defaults",
+  "isolation": "ephemeral GitHub-hosted Windows account; pristine exact native leaves; no injected paths; VM disposal",
+  "publicOrigin": "https://www.zeno.ryan-wong.cn",
+  "failure": {
+    "classification": "native-update-validation-failed",
+    "lastPhase": "original-installers-verified",
+    "activeCheck": "windows-native-pristine",
+    "errorKind": "AssertionError",
+    "code": "ERR_ASSERTION"
+  },
+  "failureState": {
+    "collected": false
+  },
+  "failureDiagnostics": {
+    "collectedBeforeCleanup": true,
+    "filesScanned": 0,
+    "bytesScanned": 0,
+    "readFailures": 2,
+    "signals": []
+  },
+  "cleanup": "native default leaves and private fixture retained for disposable hosted VM destruction",
+  "rendererNetworkScope": {
+    "observedOrigins": 0,
+    "upstreamObserved": false,
+    "monitoring": "renderer CDP only; not a system network audit"
+  }
+}
