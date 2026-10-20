@@ -9,7 +9,7 @@ import { createServer as createHttpServer } from 'node:http';
 import YAML from 'yaml';
 import { assertPortableHostedRunner, assertPrivatePath, validatePortableHistorical, validatePortableTarget, nsisPayloadPath,
   portableErrorMetadata, portableDiagnosticState, windowsProcessPathCommand, decodeWindowsProcessPath, until,
-  portableHttpEndpoint, validWorkspaceSessionStatus, runtime, finishPortableRun,
+  portableHttpEndpoint, validWorkspaceSessionList, effectivePortableProfileMatches, runtime, finishPortableRun,
   safePortableFailureState, hasExactProcessArgument, windowsFailureProbeScript } from '../scripts/zeno-update-portable-smoke.mjs';
 import { numericDownloadProgress, safeUpdateFailureSignals } from '../scripts/zeno-update-smoke.mjs';
 
@@ -185,19 +185,23 @@ test('HTTP diagnostics retain only fixed endpoint categories and valid numeric s
   assert.throws(() => diagnostics.http('never-publish-private-fixture', 200));
   diagnostics.http('workspace-session-status');
   assert.deepEqual(diagnostics.snapshot(new Error()).lastHttp, { endpoint: 'workspace-session-status' });
-  for (const value of [null, [], 'ready', 200, false]) assert.equal(validWorkspaceSessionStatus(value), false);
-  for (const value of [{}, { fixture: { type: 'idle' } }]) assert.equal(validWorkspaceSessionStatus(value), true);
+  for (const value of [null, {}, 'ready', 200, false, [null], [[]], [{}], [{ id: '' }], [{ id: ' ' }], [{ id: 123 }], [{ error: 'unreachable' }]]) assert.equal(validWorkspaceSessionList(value), false);
+  for (const value of [[], [{ id: 'synthetic-owned-session' }]]) assert.equal(validWorkspaceSessionList(value), true);
 });
 
-test('global health alone cannot admit a workspace, and no failed POST is retried', async () => {
-  let workspaceReads = 0; let mutations = 0; let starts = 0;
+test('workspace readiness uses the original read-only session list, rejects malformed lists and never retries a failed POST', async () => {
+  let workspaceReads = 0; let statusReads = 0; let mutations = 0; let starts = 0;
   const mount = '/workspace/synthetic-owned-workspace/opencode';
   const server = createHttpServer((request, response) => {
     response.setHeader('Content-Type', 'application/json');
     if (request.method === 'GET' && request.url === '/health') { response.end(JSON.stringify({ ok: true })); return; }
     if (request.method === 'GET' && request.url === mount + '/session/status') {
+      statusReads++; response.statusCode = 404; response.end('{}'); return;
+    }
+    if (request.method === 'GET' && request.url === mount + '/session') {
       workspaceReads++; response.statusCode = workspaceReads < 3 ? 502 : 200;
-      response.end(JSON.stringify(workspaceReads < 3 ? { error: 'opencode_unreachable' } : {})); return;
+      if (workspaceReads === 2) response.statusCode = 200;
+      response.end(JSON.stringify(workspaceReads < 3 ? { error: 'opencode_unreachable' } : [])); return;
     }
     if (request.method === 'POST' && request.url === mount + '/session') {
       mutations++; response.statusCode = 502; response.end(JSON.stringify({ error: 'synthetic-no-retry' })); return;
@@ -214,8 +218,8 @@ test('global health alone cannot admit a workspace, and no failed POST is retrie
   } };
   try {
     const owned = await runtime(client, 'synthetic-workspace', mount, diagnostics);
-    assert.equal(starts, 1); assert.equal(workspaceReads, 3); assert.equal(mutations, 0);
-    assert.deepEqual(diagnostics.snapshot(new Error()).lastHttp, { endpoint: 'workspace-session-status', status: 200 });
+    assert.equal(starts, 1); assert.equal(workspaceReads, 3); assert.equal(statusReads, 0); assert.equal(mutations, 0);
+    assert.deepEqual(diagnostics.snapshot(new Error()).lastHttp, { endpoint: 'workspace-session-list', status: 200 });
     diagnostics.enter('baseline-session-create');
     await assert.rejects(owned.request(mount + '/session', { method: 'POST', body: '{}' }));
     assert.equal(mutations, 1); assert.equal(workspaceReads, 3);
@@ -223,6 +227,22 @@ test('global health alone cannot admit a workspace, and no failed POST is retrie
   } finally {
     server.closeAllConnections(); await new Promise(done => server.close(done));
   }
+});
+
+test('native profile identity reads the actual main-process directory and rejects a different or malformed discovery path', async () => {
+  const profile = join(tmpdir(), 'synthetic owned profile');
+  for (const value of [
+    { OPENWORK_UI_CONTROL_DISCOVERY: join(profile, 'openwork-ui-control.json') },
+    { OPENWORK_UI_CONTROL_DISCOVERY: join(profile, 'other.json') },
+    { OPENWORK_UI_CONTROL_DISCOVERY: join(profile, '..', 'openwork-ui-control.json') },
+    { OPENWORK_ELECTRON_USERDATA: profile }, null, [], 'ready', {},
+  ]) {
+    const operations = [];
+    const matched = await effectivePortableProfileMatches(async (...args) => { operations.push(args); return value; }, profile);
+    assert.equal(matched, value !== null && value.OPENWORK_UI_CONTROL_DISCOVERY === join(profile, 'openwork-ui-control.json'));
+    assert.deepEqual(operations, [['getOpenworkUiMcpEnvironment']]);
+  }
+  await assert.rejects(effectivePortableProfileMatches(async () => { throw new Error('synthetic unavailable bridge'); }, profile));
 });
 
 test('only a completed failed verdict requests explicit exit; success remains natural', () => {
@@ -254,10 +274,16 @@ test('real native entry refuses a developer invocation before any installation o
 test('failure process/disk facts contain only allowlisted booleans and bounded counts', () => {
   const value = { collected: true, diskReadSucceeded: true, publishedAsarOnDisk: false, oldBrowserPidAbsent: true,
     samePrivateMainProcessCount: 2, mainHasExpectedDebugArgument: false, userProfileEnvironmentMatches: true };
-  for (const key of ['argv', 'path', 'token', 'environment', 'oldPid', 'actual', 'expected']) Object.defineProperty(value, key, { get() { throw Error('private fixture accessed'); } });
+  for (const key of ['argv', 'path', 'token', 'environment', 'oldPid', 'actual', 'expected', 'observedBrowserPid', 'observedBrowserResources']) Object.defineProperty(value, key, { get() { throw Error('private fixture accessed'); } });
   assert.deepEqual(safePortableFailureState(value), { collected: true, diskReadSucceeded: true, publishedAsarOnDisk: false,
     oldBrowserPidAbsent: true, mainHasExpectedDebugArgument: false, userProfileEnvironmentMatches: true, samePrivateMainProcessCount: 2 });
   for (const count of [-1, 1.5, Infinity, 1025, '2']) assert.deepEqual(safePortableFailureState({ samePrivateMainProcessCount: count, targetVersionOnDisk: 'private-path' }), {});
+  assert.deepEqual(safePortableFailureState({ observedBrowserPidKnown: true, observedBrowserPrivateExecutableMatches: true,
+    observedBrowserDetailsReadable: true, observedBrowserProfileEnvironmentMatches: false, observedBrowserDebugEnvironmentMatches: true,
+    observedBrowserEffectiveProfileMatches: false, observedBrowserPid: 12345, observedBrowserResources: 'never-publish-private-fixture' }), {
+    observedBrowserPidKnown: true, observedBrowserPrivateExecutableMatches: true, observedBrowserDetailsReadable: true,
+    observedBrowserDebugEnvironmentMatches: true, observedBrowserProfileEnvironmentMatches: false, observedBrowserEffectiveProfileMatches: false,
+  });
 });
 
 test('expected process arguments require exact values, including Unicode and spaces', () => {

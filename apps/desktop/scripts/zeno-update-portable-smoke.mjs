@@ -32,7 +32,7 @@ const lane = platform => {
 const ACTIVE_CHECKS = new Set(['initialization', 'release-metadata', 'artifact-copy', 'target-reference', 'private-directories',
   'windows-pristine-installation', 'windows-relaunch-environment', 'baseline-nsis-install', 'baseline-resource-verification',
   'baseline-appimage-install', 'baseline-app-launch', 'attach-page-list', 'attach-page-cdp', 'attach-domains',
-  'attach-browser-version', 'attach-browser-cdp', 'attach-browser-pid', 'attach-profile-identity', 'attach-windows-executable',
+  'attach-browser-version', 'attach-browser-cdp', 'attach-browser-pid', 'attach-profile-identity', 'attach-private-executable', 'attach-profile-environment', 'attach-windows-executable', 'attach-effective-profile',
   'attach-updater-bridge', 'baseline-build-info', 'baseline-updater-channel', 'baseline-workspace-create',
   'baseline-workspace-identity', 'runtime-engine-start', 'runtime-server-info', 'runtime-server-health',
   'runtime-workspace-ready', 'baseline-session-create', 'baseline-session-identity', 'baseline-message-create', 'baseline-message-read', 'baseline-profile-marker',
@@ -56,8 +56,18 @@ export function portableHttpEndpoint(path, method = 'GET') {
   return 'unknown';
 }
 
-export function validWorkspaceSessionStatus(value) {
-  return value !== null && typeof value === 'object' && !Array.isArray(value);
+export function validWorkspaceSessionList(value) {
+  return Array.isArray(value) && value.every(session => session !== null && typeof session === 'object'
+    && !Array.isArray(session) && typeof session.id === 'string' && session.id.trim().length > 0);
+}
+
+export async function effectivePortableProfileMatches(invoke, profile) {
+  // This read-only IPC exists in the original 1.0.0 main process and returns
+  // app.getPath('userData') directly. It does not derive the path from env,
+  // change settings, open a terminal, or execute a reset/cleanup operation.
+  const value = await invoke('getOpenworkUiMcpEnvironment');
+  return value !== null && typeof value === 'object' && !Array.isArray(value)
+    && value.OPENWORK_UI_CONTROL_DISCOVERY === join(profile, 'openwork-ui-control.json');
 }
 
 export function finishPortableRun(passed, exit) {
@@ -69,7 +79,10 @@ export function safePortableFailureState(value) {
   const booleans = ['collected', 'diskReadSucceeded', 'targetVersionOnDisk', 'publishedAsarOnDisk', 'publishedAppImageOnDisk',
     'oldPidKnown', 'oldBrowserPidAbsent', 'spawnedBaselineProcessExited', 'processScanCompleted',
     'mainHasExpectedDebugArgument', 'mainHasExpectedProfileArgument', 'mainHasExpectedDebugEnvironment',
-    'mainHasExpectedProfileEnvironment', 'mainHasExpectedAppImageEnvironment', 'userDebugEnvironmentMatches', 'userProfileEnvironmentMatches'];
+    'mainHasExpectedProfileEnvironment', 'mainHasExpectedAppImageEnvironment', 'userDebugEnvironmentMatches', 'userProfileEnvironmentMatches',
+    'observedBrowserPidKnown', 'observedBrowserPrivateExecutableMatches', 'observedBrowserDetailsReadable',
+    'observedBrowserDebugEnvironmentMatches', 'observedBrowserProfileEnvironmentMatches', 'observedBrowserAppImageEnvironmentMatches',
+    'observedBrowserDebugArgumentMatches', 'observedBrowserProfileArgumentMatches', 'observedBrowserEffectiveProfileMatches'];
   return Object.fromEntries([...booleans.filter(key => typeof value?.[key] === 'boolean').map(key => [key, value[key]]),
     ...(Number.isSafeInteger(value?.samePrivateMainProcessCount) && value.samePrivateMainProcessCount >= 0 && value.samePrivateMainProcessCount <= 1024
       ? [['samePrivateMainProcessCount', value.samePrivateMainProcessCount]] : [])]);
@@ -100,7 +113,9 @@ function collectPortableFailureState(context, oldPid, child) {
   assertPrivatePath(root, installation); assertPrivatePath(root, profile); assertPrivatePath(root, executable);
   const facts = { collected: true, diskReadSucceeded: false, processScanCompleted: false,
     oldPidKnown: Number.isSafeInteger(oldPid) && oldPid > 1,
+    observedBrowserPidKnown: Number.isSafeInteger(context.observedBrowserPid) && context.observedBrowserPid > 1,
     spawnedBaselineProcessExited: Boolean(child && (child.exitCode !== null || child.signalCode !== null)) };
+  if (typeof context.observedBrowserEffectiveProfileMatches === 'boolean') facts.observedBrowserEffectiveProfileMatches = context.observedBrowserEffectiveProfileMatches;
   try {
     if (platform === 'win32') {
       const archive = join(installation, 'resources/app.asar'); assertPrivatePath(root, archive);
@@ -115,6 +130,26 @@ function collectPortableFailureState(context, oldPid, child) {
       Object.assign(facts, safePortableFailureState(JSON.parse(command('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', windowsFailureProbeScript()], { input, timeout: 10_000 }))));
     } else {
       facts.oldBrowserPidAbsent = facts.oldPidKnown && !existsSync('/proc/' + oldPid);
+      // This PID came from the actual connected CDP browser, not from the
+      // broader private-executable candidate scan. Never serialize it.
+      if (facts.observedBrowserPidKnown) {
+        facts.observedBrowserDetailsReadable = false;
+        try {
+          const expected = join(dirname(context.observedBrowserResources), 'openwork');
+          assertPrivatePath(join(root, 'tmp'), expected);
+          facts.observedBrowserPrivateExecutableMatches = realpathSync('/proc/' + context.observedBrowserPid + '/exe') === expected;
+          if (facts.observedBrowserPrivateExecutableMatches) {
+            const argv = readFileSync('/proc/' + context.observedBrowserPid + '/cmdline', 'utf8').split('\0');
+            const env = readFileSync('/proc/' + context.observedBrowserPid + '/environ', 'utf8').split('\0');
+            facts.observedBrowserDebugEnvironmentMatches = env.includes('OPENWORK_ELECTRON_REMOTE_DEBUG_PORT=' + port);
+            facts.observedBrowserProfileEnvironmentMatches = env.includes('OPENWORK_ELECTRON_USERDATA=' + profile);
+            facts.observedBrowserAppImageEnvironmentMatches = env.includes('APPIMAGE=' + executable);
+            facts.observedBrowserDebugArgumentMatches = hasExactProcessArgument(argv, '--remote-debugging-port', String(port));
+            facts.observedBrowserProfileArgumentMatches = hasExactProcessArgument(argv, '--user-data-dir', profile);
+            facts.observedBrowserDetailsReadable = true;
+          }
+        } catch { /* Missing or mismatched browser details remain unknown. */ }
+      }
       facts.samePrivateMainProcessCount = 0;
       facts.processScanCompleted = true;
       for (const pid of readdirSync('/proc').filter(name => /^[1-9]\d*$/.test(name))) {
@@ -363,12 +398,14 @@ function pageResources(target, platform, installation, root) {
     const resources = dirname(dirname(file));
     if (platform === 'win32') return resolve(resources) === resolve(installation, 'resources') ? resources : null;
     // AppImage extract-and-run creates a fresh private TMPDIR child per launch.
-    // The next attach also verifies its real browser PID's environment and exe.
+    // The next attach verifies its real browser PID's exe and the effective
+    // Electron profile through the original app's read-only IPC.
     assertPrivatePath(join(root, 'tmp'), resources); return resources;
   } catch { return null; }
 }
 
-async function attach(port, platform, installation, root, profile, exceptions, origins, diagnostics) {
+async function attach(port, platform, installation, root, profile, exceptions, origins, diagnostics, failureContext) {
+  if (failureContext) { delete failureContext.observedBrowserPid; delete failureContext.observedBrowserResources; delete failureContext.observedBrowserEffectiveProfileMatches; }
   diagnostics?.enter('attach-page-list');
   const target = await until(async () => {
     const targets = await (await fetch(`http://127.0.0.1:${port}/json/list`, { signal: AbortSignal.timeout(1000) })).json();
@@ -393,11 +430,13 @@ async function attach(port, platform, installation, root, profile, exceptions, o
   const processes = await browser.send('SystemInfo.getProcessInfo'); const pid = processes.processInfo.find(item => item.type === 'browser')?.id;
   assert.ok(Number.isSafeInteger(pid) && pid > 1 && pid !== process.pid, 'Missing actual browser PID.');
   const resources = pageResources(target, platform, installation, root);
+  if (failureContext) { failureContext.observedBrowserPid = pid; failureContext.observedBrowserResources = resources; }
   diagnostics?.enter('attach-profile-identity');
   if (platform === 'linux') {
-    const environment = readFileSync(`/proc/${pid}/environ`, 'utf8').split('\0');
-    assert.ok(environment.includes(`OPENWORK_ELECTRON_USERDATA=${profile}`), 'CDP process does not own the isolated profile.');
+    diagnostics?.enter('attach-private-executable');
     assert.equal(realpathSync(`/proc/${pid}/exe`), join(dirname(resources), 'openwork'), 'CDP process is outside its original AppImage runtime.');
+    // /proc's environment remains a failure diagnostic. The live main process's
+    // actual userData directory is checked below, after private exe ownership.
   } else {
     diagnostics?.enter('attach-windows-executable');
     const executable = decodeWindowsProcessPath(command('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', windowsProcessPathCommand(pid)]));
@@ -405,7 +444,12 @@ async function attach(port, platform, installation, root, profile, exceptions, o
   }
   diagnostics?.enter('attach-updater-bridge');
   await until(() => evaluate('Boolean(window.__OPENWORK_ELECTRON__?.updater)'), Boolean, 30_000, 'native updater bridge', diagnostics);
-  return { ...client, browser, pid, resources, evaluate, invoke: (name, ...args) => evaluate(`window.__OPENWORK_ELECTRON__.invokeDesktop(${JSON.stringify(name)},...${JSON.stringify(args)})`, 120_000) };
+  const invoke = (name, ...args) => evaluate(`window.__OPENWORK_ELECTRON__.invokeDesktop(${JSON.stringify(name)},...${JSON.stringify(args)})`, 120_000);
+  diagnostics?.enter('attach-effective-profile');
+  const effectiveProfileMatches = await effectivePortableProfileMatches(invoke, profile);
+  if (failureContext) failureContext.observedBrowserEffectiveProfileMatches = effectiveProfileMatches;
+  assert.equal(effectiveProfileMatches, true, 'CDP process uses another Electron userData directory.');
+  return { ...client, browser, pid, resources, evaluate, invoke };
 }
 
 export async function runtime(client, workspace, mount, diagnostics) {
@@ -428,7 +472,7 @@ export async function runtime(client, workspace, mount, diagnostics) {
     // engine accepts requests yet. Only this read is retried, in the same
     // original 120-second window; session/message mutations remain single-shot.
     diagnostics?.enter('runtime-workspace-ready');
-    assert.ok(validWorkspaceSessionStatus(await request(mount + '/session/status')), 'Owned workspace engine status must be an object.');
+    assert.ok(validWorkspaceSessionList(await request(mount + '/session')), 'Owned workspace engine session list must be an array of session identities.');
     return { request };
   }, Boolean, 120_000, 'installed embedded server', diagnostics);
 }
@@ -534,7 +578,7 @@ async function main() {
     const output = openSync(join(root, 'logs/electron.log'), 'a', 0o600); const errors = openSync(join(root, 'logs/electron-error.log'), 'a', 0o600);
     child = spawn(executable, [], { env: environment, cwd: workspace, stdio: ['ignore', output, errors], detached: true });
     child.on('error', () => {}); closeSync(output); closeSync(errors);
-    client = await attach(port, platform, installation, root, profile, exceptions, origins, diagnostics); oldPid = client.pid;
+    client = await attach(port, platform, installation, root, profile, exceptions, origins, diagnostics, failureContext); oldPid = client.pid;
     diagnostics.enter('baseline-resource-verification');
     const baselineCode = verifyResources(client.resources, BASELINE, feed, platform); assert.equal(baselineCode.updaterCacheDirName, targetCode.updaterCacheDirName);
     diagnostics.enter('baseline-build-info');
@@ -577,7 +621,7 @@ async function main() {
     client.socket.close(); client.browser.socket.close(); client = null;
     // No spawn, installer command, Browser.close or kill is permitted between
     // admission above and these actual target/restart/preservation assertions.
-    client = await attach(port, platform, installation, root, profile, exceptions, origins, diagnostics);
+    client = await attach(port, platform, installation, root, profile, exceptions, origins, diagnostics, failureContext);
     assert.notEqual(client.pid, oldPid, 'The target was not automatically relaunched in a new native process.');
     diagnostics.enter('target-code-verification');
     const afterCode = verifyResources(client.resources, TARGET, feed, platform); assert.equal(afterCode.archiveSha256, targetCode.archiveSha256, 'Installed ASAR differs from the frozen published target.');
