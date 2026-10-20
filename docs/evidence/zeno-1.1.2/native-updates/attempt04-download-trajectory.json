@@ -1,0 +1,85 @@
+{
+  "scope": "Exact completed download and verified on-disk target bytes, with subsequent target attachment still unaccepted; original receipt unchanged.",
+  "runId": 39450252810,
+  "jobId": 118722931090,
+  "lane": "win32-x64",
+  "workflowAttempt": 4,
+  "nativeReceipt": {
+    "file": "attempt04-win32-x64.json",
+    "sha256": "6673057dc7f6566cbd6535b9c2336597727c48161763f2de6eaf6c760a091028"
+  },
+  "downloadPolicy": {
+    "additionalRetries": 2,
+    "mode": "whole-file; same baseline session; no resume; reset-only retry"
+  },
+  "actualWholeFileDownloadCount": 1,
+  "successfulWholeFileDownloadAttempt": 1,
+  "additionalRetriesActuallyStarted": 0,
+  "retryEverRequestedThisRun": false,
+  "downloadAttempts": [
+    {
+      "attempt": 1,
+      "startedAt": "2026-10-20T15:41:06.981Z",
+      "finishedAt": "2026-10-20T15:46:35.952Z",
+      "elapsedMs": 328971,
+      "outcome": "downloaded",
+      "reason": "download-completed",
+      "signal": "not-inspected",
+      "progress": {
+        "transferred": 390804422,
+        "total": 390804422,
+        "percent": 100,
+        "bytesPerSecond": 1189830
+      },
+      "retryRequested": false
+    }
+  ],
+  "downloadCompletedBytes": 390804422,
+  "resumeClaimed": false,
+  "failure": {
+    "classification": "native-update-validation-failed",
+    "lastPhase": "native-public-download-completed",
+    "activeCheck": "attach-page-list",
+    "errorKind": "Error",
+    "lastReadError": {
+      "errorKind": "TypeError",
+      "causeCode": "ECONNREFUSED"
+    },
+    "lastHttp": {
+      "endpoint": "engine-activity",
+      "status": 200
+    },
+    "lastPageList": {
+      "shape": "pending"
+    }
+  },
+  "observedProcessFacts": {
+    "oldBrowserPidAbsent": true,
+    "spawnedBaselineProcessExited": true,
+    "samePrivateMainProcessCount": 1,
+    "observedBrowserPidKnown": false,
+    "userDebugEnvironmentMatches": true,
+    "userProfileEnvironmentMatches": true,
+    "mainHasExpectedDebugArgument": false,
+    "mainHasExpectedProfileArgument": false,
+    "ownedMainListenerProbeSucceeded": true,
+    "ownedMainExpectedPortListening": false
+  },
+  "targetDiskVerification": {
+    "diskReadSucceeded": true,
+    "archiveHashReadSucceeded": true,
+    "archiveMetadataReadSucceeded": true,
+    "targetVersionOnDisk": true,
+    "publishedAsarOnDisk": true
+  },
+  "verifiedOnDiskVersion": "1.1.2",
+  "effectiveTargetProfile": "unknown",
+  "runningTargetIdentity": "unverified",
+  "observedSanitizedUpdaterLogSignals": [],
+  "rawWorkflowFailedStepLog": {
+    "bytes": 55247,
+    "sha256": "6c1f62ca51d3c3fa2691bfe2cacc027cfc2c2244fa6049491dd52ebd2d46d408",
+    "retainedInPublicTree": false
+  },
+  "interpretation": "The first full download completed without retry. The original baseline exited; the frozen 1.1.2 version and ASAR are independently verified on disk. The expected CDP endpoint refused the connection and the one exact private executable main process did not own the expected listening port. Effective target profile, target UI process identity and historical state were not verified. This is not a finding that product installation failed, and flags/User registry values do not establish target environment loss."
+}

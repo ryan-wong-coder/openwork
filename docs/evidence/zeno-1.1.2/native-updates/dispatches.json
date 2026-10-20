@@ -176,5 +176,27 @@
     "productBytesAndNativeGatesUnchanged": true,
     "outcome": "Native PASS; original artifact digest verified and all three screenshots actually viewed.",
     "nativeReceipt": "attempt04-macos-arm64.json"
+  },
+  "windowsCorrectedAsarReaderAndConnectionDiagnostics": {
+    "workflowId": 390119143,
+    "runId": 39450252810,
+    "jobId": 118722931090,
+    "ref": "personal",
+    "checkoutCommit": "967e2193bfa3f59debec26493efec54c54fed567",
+    "checkoutDesktopVersion": "1.1.2",
+    "platform": "win32",
+    "windows_download_retries": "2",
+    "attempt": 4,
+    "createdAt": "2026-10-20T15:38:16Z",
+    "operatorExplicitlyApproved": true,
+    "sameFrozenBaselineAndTarget": true,
+    "reason": "A synthetic same-path ASAR replacement reproduced a stale development-reader header cache, now invalidated before reads; fixed-category HTTP/process/listener diagnostics were added. This does not retroactively establish the original Win03 attachment cause.",
+    "priorAttemptReport": "attempt03-win32-x64.json",
+    "newEvidenceFilenamePrefix": "attempt04-",
+    "productBytesAndNativeGatesUnchanged": true,
+    "cacheSeedOrManualTargetLaunch": false,
+    "runCheckoutExactShaVerified": true,
+    "outcome": "First whole-file download completed without retry; target 1.1.2 and exact published ASAR verified on disk; expected CDP connection refused and running target identity/profile not verified.",
+    "nativeReceipt": "attempt04-win32-x64.json"
   }
 }

@@ -103,6 +103,16 @@
       "targetScreenshotsAvailable": false,
       "reason": "First whole-file download succeeded without retry; the following CDP attachment gate failed, so no verified target UI image was produced. Target installation state is unknown.",
       "nativeReceiptAltered": false
+    },
+    "attempt04-win32-x64": {
+      "nativeFunctionalReceiptPassed": false,
+      "artifactDigestVerified": true,
+      "attempt": 4,
+      "isRetry": true,
+      "actuallyViewed": [],
+      "targetScreenshotsAvailable": false,
+      "reason": "First full download succeeded without retry and the exact target version/ASAR were verified on disk. The target CDP identity/profile gate did not pass, so no verified target UI image was produced.",
+      "nativeReceiptAltered": false
     }
   }
 }

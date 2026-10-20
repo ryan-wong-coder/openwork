@@ -3,9 +3,10 @@
 These are real updater runs on disposable GitHub-hosted machines, using original
 1.0.0 installers from release run `38883434626` and the frozen 1.1.2 target from
 release run `39431901305` / tag `zeno-v1.1.2` / product commit
-`46e5e38a5d7c4a147b0888d3a50e4788f045385e`. The development harness checkout is
+`46e5e38a5d7c4a147b0888d3a50e4788f045385e`. The initial development harness checkout was
 `4e2adbb95c4a313555488bbdb11e920b30d0f678` and includes the shared server-registry
-fixture. See [dispatches.json](dispatches.json) for run and job identities.
+fixture. Later exact checkouts and their correction reasons are recorded with
+each run in [dispatches.json](dispatches.json).
 
 The two workflows were dispatched together only after explicit confirmation of
 the complete website publication and independent confirmation that the public
@@ -18,7 +19,7 @@ workflow is rerun without explicit approval. This directory is separate from the
 | Lane | Actual result | Evidence boundary |
 | --- | --- | --- |
 | Linux x64 | Native functional and Chinese screenshot pass in attempt 2 | Both original AppImage runs passed actual upgrade and history/registry/sidebar gates. Original screenshots retain missing-glyph boxes; attempt 2 added explicit CJK host prerequisites and its two actually viewed screenshots have readable Chinese. |
-| Windows x64 | Attempt 3 downloaded fully, then failed target attachment | Attempts 1 and 2 stopped during public download with reset signals. In attempt 3, the first whole-file download completed all 390,804,422 bytes without retry; the old baseline then exited, but the fixed CDP page-list gate failed. Target disk metadata could not be read, so target installation/restart identity is unverified. No target screenshot exists. |
+| Windows x64 | Attempt 4 verified target bytes on disk; running target identity/profile unaccepted | Its first complete 390,804,422-byte download succeeded without retry. The original baseline exited; target 1.1.2 and the exact published ASAR were verified on disk. The expected CDP endpoint refused the connection, and the exact private main process did not own that listening port. Target UI identity, effective profile and historical state were not verified; no target screenshot exists. |
 | macOS x64 | Native functional and screenshot pass | Real ZIP download and Squirrel install/automatic restart, original signatures and published ASAR, isolated profile, both registries, history, native Canvas/SVG/Ant Design Charts, and four actual sidebar clicks passed. All three screenshots were actually viewed and Chinese is readable. |
 | macOS arm64 | Native functional and screenshot pass in attempt 4 | On `xcode-27`, the original package and signatures, real 444,118,404-byte public download, Squirrel installation, automatic restart, both registries, profile/history, native canvas and four actual sidebar clicks passed. All three screenshots were actually viewed with readable Chinese and no clipping. Earlier capacity cancellations and the stale preflight failure remain unchanged. |
 
@@ -34,8 +35,8 @@ separately. Attempt 3's raw workflow log is privately retained; its SHA and the
 fixed selector mismatch are recorded in `attempt03-macos-arm64-preflight.json`.
 It produced zero artifacts and no native report or PNG is fabricated. Four-lane
 All dispatched runs have ended. Mac both architectures and Linux have passing
-native receipts; four-lane acceptance remains incomplete because Windows target
-attachment has not passed.
+native receipts; four-lane acceptance remains incomplete because Windows running
+target identity and effective profile have not passed.
 
 Windows attempt 3 keeps the same original packages, process, profile, workspace
 and historical chat. Its explicitly selected retry limit is 2 (default 0), with
@@ -46,6 +47,15 @@ actual whole-file download, successful attempt 1, 100 percent, and no retry
 request. Allowing retries did not exercise a retry in this run. See
 `attempt03-download-trajectory.json` for the observed process facts and the
 distinct unknown target-installation state.
+
+Attempt 4 again succeeded on its first whole-file download without exercising a
+retry. It verified the frozen target version and ASAR on disk, while the fixed
+CDP port refused the connection (`ECONNREFUSED`, page-list shape still pending).
+The owned-process listener probe succeeded and found no expected listening port.
+These facts are recorded in `attempt04-download-trajectory.json`; they do not
+establish installation failure or loss of target process environment. The fixed
+ASAR reader improves this new run's disk evidence without retrospectively
+explaining attempt 3's unreadable diagnostic.
 
 Windows' failed checkpoint in the first two attempts is `update-download`. Its baseline process
 remained running and the target was absent from disk; the effective baseline
