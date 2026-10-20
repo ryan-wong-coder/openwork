@@ -8,10 +8,19 @@ import { fileURLToPath } from 'node:url';
 
 const ORIGIN = 'https://www.zeno.ryan-wong.cn';
 const ROOT = fileURLToPath(new URL('../../../', import.meta.url));
-const OUTPUT = resolve(ROOT, 'docs/evidence/zeno-1.1.0/public-site-pwa');
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const pause = milliseconds => new Promise(done => setTimeout(done, milliseconds));
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
+
+// Only the expected stable version is configurable. The public origin, profile,
+// API permissions and evidence root remain fixed by this verification script.
+export function publicQaTarget(args = [], environment = {}) {
+  assert.ok(args.length === 0 || args.length === 2 && args[0] === '--version', 'Only --version X.Y.Z is accepted; origin, profile, credentials and API overrides are forbidden.');
+  const version = args[1] ?? environment.ZENO_PUBLIC_QA_VERSION ?? '1.1.0';
+  assert.equal(typeof version, 'string', 'Expected a stable X.Y.Z version.');
+  assert.match(version, /^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$/, 'Expected a stable X.Y.Z version.');
+  return { version, output: resolve(ROOT, 'docs/evidence', 'zeno-' + version, 'public-site-pwa') };
+}
 
 export function publicReadAllowed(rawUrl, method) {
   try {
@@ -71,8 +80,8 @@ async function connect(url, observe = () => {}) {
 }
 
 async function main() {
-  assert.equal(process.argv.length, 2, 'No public origin, profile, credentials or API overrides are accepted.');
-  const version = JSON.parse(await readFile(join(ROOT, 'apps/desktop/package.json'), 'utf8')).version; assert.equal(version, '1.1.0');
+  const { version, output: OUTPUT } = publicQaTarget(process.argv.slice(2), process.env);
+  assert.equal(JSON.parse(await readFile(join(ROOT, 'apps/desktop/package.json'), 'utf8')).version, version, 'The expected public version must match the checked-out desktop version.');
   const report = { passed: false, version, checkedAt: new Date().toISOString(), origin: ORIGIN, checks: [], assets: [], screenshots: [],
     scope: { realPublicHttps: false, freshHeadlessProfile: false, authenticatedAccountTested: false, mutationsAllowed: false, installersDownloaded: false, modelsInvoked: false, mobileDeviceInstallationTested: false } };
   let stage = 'http'; let temporary; let child; let browser; let page;

@@ -96,7 +96,7 @@ export type UseWorkspaceRouteStateInput = {
   /** A local first-send owner must survive workspace preparation until it has a real session. */
   preservePendingConversationRoute?: boolean;
   developerMode: boolean;
-  workspaceRoute?: "session" | "automations" | "calendar" | "dashboard" | "apps" | "activity";
+  workspaceRoute?: "session" | "automations" | "calendar" | "dashboard" | "apps" | "activity" | "personal";
   /** Invoked when the openwork-server settings-changed event fires (the route bumps its settings version). */
   onServerSettingsChanged: () => void;
   /** Receives the local openwork-server host info discovered during refresh. */
@@ -171,6 +171,8 @@ export function useWorkspaceRouteState(input: UseWorkspaceRouteStateInput) {
     navigate(workspaceSessionRoute(id, sessionId), options);
   }, [navigate]);
   const normalizeWorkspaceRoute = useCallback((workspaceId: string, sessionId?: string | null, options?: { replace?: boolean }) => {
+    // Personal pages share the active workspace context, but own their URL.
+    if (workspaceRoute === "personal") return;
     if (extensionsRouteActive) {
       navigate(workspaceExtensionsRoute(workspaceId, extensionsRoutePath), options);
       return;

@@ -119,8 +119,8 @@ let root: Root | null = null;
 let container: HTMLDivElement | null = null;
 const input = { developerMode: false, preservePendingConversationRoute: false, onServerSettingsChanged: () => undefined, onHostInfo: () => undefined };
 
-function Probe() {
-  handle.current = useWorkspaceRouteState(input);
+function Probe({ personal = false }: { personal?: boolean }) {
+  handle.current = useWorkspaceRouteState(personal ? { ...input, workspaceRoute: "personal" } : input);
   useEffect(() => {
     probeMounts += 1;
     return () => { probeUnmounts += 1; handle.current = null; };
@@ -160,6 +160,7 @@ async function mount(workspaceId = "ws_1", sessionId?: string, initialPath?: str
         <NavigationProbe />
         <Routes>
           <Route path="/session" element={<Probe />} />
+          <Route path="/personal/:section" element={<Probe personal />} />
           <Route path="/workspace/:workspaceId/session" element={<Probe />} />
           <Route path="/workspace/:workspaceId/session/:sessionId" element={<Probe />} />
           <Route path="/workspace/:workspaceId/settings/*" element={<div>Settings</div>} />
@@ -205,6 +206,45 @@ afterEach(async () => {
 });
 
 afterAll(async () => { if (ownedDom) await GlobalRegistrator.unregister(); });
+
+for (const v2 of [false, true]) {
+  for (const section of ["calendar", "fitness", "tasks", "account"]) {
+    test(`${v2 ? "v2" : "v1"} personal ${section} deep link survives workspace bootstrap and refresh`, async () => {
+      const pathname = `/personal/${section}`;
+      await mount("ws_1", undefined, pathname);
+      await publishRouting(v2);
+      expect(route().loading).toBe(false);
+      expect(route().selectedWorkspaceId).toBe("ws_1");
+      expect(router.pathname).toBe(pathname);
+      expect(route().selectedSessionId).toBeNull();
+      await act(async () => {
+        for (const request of requests) request.response.resolve([session(request.workspaceId, "existing")]);
+      });
+      await act(async () => { await route().refreshRouteState({ supersede: true }); });
+      expect(router.pathname).toBe(pathname);
+      expect(route().sessionsByWorkspaceId.ws_1.map(item => item.id)).toEqual(["existing"]);
+      expect(hydrationRequests).toHaveLength(0);
+    });
+  }
+}
+
+test("personal navigation and history retain their destination while chat retains workspace normalization", async () => {
+  await mount();
+  await publishRouting(false);
+  for (const section of ["calendar", "fitness", "tasks", "account"]) {
+    await navigate(`/personal/${section}`);
+    expect(router.pathname).toBe(`/personal/${section}`);
+    expect(route().selectedWorkspaceId).toBe("ws_1");
+    expect(route().selectedSessionId).toBeNull();
+  }
+  await navigate(-1);
+  expect(router.pathname).toBe("/personal/tasks");
+  await navigate(1);
+  expect(router.pathname).toBe("/personal/account");
+  await navigate("/session");
+  expect(router.pathname).toBe("/workspace/ws_1/session");
+  expect(hydrationRequests).toHaveLength(0);
+});
 
 test("workspace initialization preserves an owned pending route and never hydrates its local identity", async () => {
   input.preservePendingConversationRoute = true;

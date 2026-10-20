@@ -1,8 +1,27 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { assertPwaCsp, publicReadAllowed, pwaAssetPaths } from '../scripts/qa-public-personal.mjs';
+import { assertPwaCsp, publicReadAllowed, publicQaTarget, pwaAssetPaths } from '../scripts/qa-public-personal.mjs';
 
 const origin = 'https://www.zeno.ryan-wong.cn';
+test('public QA preserves the default and separates explicitly selected release evidence', () => {
+  const previous = publicQaTarget();
+  const next = publicQaTarget([], { ZENO_PUBLIC_QA_VERSION: '1.1.1' });
+  assert.equal(previous.version, '1.1.0');
+  assert.ok(previous.output.endsWith('/docs/evidence/zeno-1.1.0/public-site-pwa'));
+  assert.equal(next.version, '1.1.1');
+  assert.ok(next.output.endsWith('/docs/evidence/zeno-1.1.1/public-site-pwa'));
+  assert.notEqual(previous.output, next.output, 'New-version evidence must not overwrite the earlier release.');
+  assert.deepEqual(publicQaTarget(['--version', '1.1.1'], { ZENO_PUBLIC_QA_VERSION: '1.1.0' }), next);
+});
+
+test('public QA rejects unsafe versions and unrelated overrides before any network or file writes', () => {
+  for (const version of ['', 'v1.1.1', '1.1', '01.1.1', '1.1.1-beta', '../outside', '1.1.1/../../outside', '1.1.1\n', 'https://outside.invalid']) {
+    assert.throws(() => publicQaTarget(['--version', version]));
+    assert.throws(() => publicQaTarget([], { ZENO_PUBLIC_QA_VERSION: version }));
+  }
+  for (const args of [['--version'], ['--origin', origin], ['--profile', 'fixture'], ['--version', '1.1.1', '--output', '../outside']]) assert.throws(() => publicQaTarget(args));
+});
+
 test('public QA allows only same-origin reads and never installer, account mutation or model routes', () => {
   for (const path of ['/', '/app/', '/app/calendar', '/app/assets/main-a123.js', '/api/releases/latest.json', '/api/zeno/v1/me']) assert.equal(publicReadAllowed(origin + path, 'GET'), true);
   for (const method of ['POST', 'PUT', 'PATCH', 'DELETE']) assert.equal(publicReadAllowed(origin + '/api/zeno/v1/me', method), false);
