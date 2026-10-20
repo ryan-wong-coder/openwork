@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-10-20T09:12:28.271911+00:00",
+  "version": "1.1.2",
+  "visualImplementationCommit": "639285fed1d6b05c94d42af12336dfa6b98cb9ab",
+  "versionPreparationCommit": "d7065f6d4be96931718b009f71f33671b58b6dc7",
+  "pwaIndexSha256": "449c944c1217fa0d86df756bd689539178e9a92a87a49ad1c93bd1c166e9f24a",
+  "apiAndDataContractsChanged": false,
+  "storageMigrationAdded": false,
+  "rendererProductionBuild": {
+    "exitCode": 0,
+    "durationSeconds": 39.03,
+    "command": "PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false NODE_OPTIONS=--max-old-space-size=6144 pnpm --filter @openwork/app build"
+  },
+  "mediaPackagingRegression": {
+    "exitCode": 0,
+    "passedTests": 1,
+    "scope": "Disposable packaged-resource fixture: all six exact files; rejects missing and corrupted bytes. Actual six-target installer validation is separate."
+  },
+  "scope": "Source and local renderer/static media checks; not a released installer or native upgrade verdict"
+}

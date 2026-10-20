@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-20T09:05:19.073102+00:00",
+  "scope": "Independent fitness PWA static deployment, including prior device approval fix; not a desktop installer or native playback proof",
+  "sourceCommit": "639285fed1d6b05c94d42af12336dfa6b98cb9ab",
+  "indexSha256": "449c944c1217fa0d86df756bd689539178e9a92a87a49ad1c93bd1c166e9f24a",
+  "verifiedFiles": 109,
+  "mascotVideos": 3,
+  "mascotPosters": 3,
+  "retainedPriorHashedAssets": 7,
+  "atomicSwitch": true,
+  "priorPwaDirectoryRetained": true,
+  "apiCodeAndProcessUnchanged": true,
+  "downloadAndUpdateCurrentUnchanged": true,
+  "accountAndMediaPathsUntouched": true
+}

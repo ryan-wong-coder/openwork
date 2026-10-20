@@ -1,0 +1,170 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-20T09:07:20.432Z",
+  "origin": "https://www.zeno.ryan-wong.cn",
+  "sourceCommit": "639285fed1d6b05c94d42af12336dfa6b98cb9ab",
+  "expectedIndexSha256": "449c944c1217fa0d86df756bd689539178e9a92a87a49ad1c93bd1c166e9f24a",
+  "checks": [
+    {
+      "name": "device-route-exact-deployed-pwa-and-strict-headers",
+      "passed": true
+    },
+    {
+      "name": "six-complete-media-digests-mime-and-three-video-ranges",
+      "passed": true
+    },
+    {
+      "name": "fresh-anonymous-public-pwa-loaded",
+      "passed": true
+    },
+    {
+      "name": "three-real-public-videos-decoded-played-and-paused",
+      "passed": true
+    },
+    {
+      "name": "no-csp-renderer-external-mutation-or-model-attempts",
+      "passed": true
+    }
+  ],
+  "assets": [
+    {
+      "path": "/app/zeno/fitness/curl.mp4",
+      "id": "0294",
+      "bytes": 172313,
+      "sha256": "6ae62c9fedd4cd8f2df21c620a1b437808963b78a8c5fc67fac4a30c32677cf8",
+      "contentType": "video/mp4",
+      "range": {
+        "status": 206,
+        "start": 0,
+        "end": 1023,
+        "total": 172313,
+        "bytesMatched": true
+      }
+    },
+    {
+      "path": "/app/zeno/fitness/curl-poster.webp",
+      "id": "0294",
+      "bytes": 18782,
+      "sha256": "059b8d7b33ea805fafb7c110b2bd59c201a76bcb63a2faaa005bbde8f6476fb5",
+      "contentType": "image/webp"
+    },
+    {
+      "path": "/app/zeno/fitness/squat.mp4",
+      "id": "1197",
+      "bytes": 212931,
+      "sha256": "0c6bee9d3ae7158b5e2e98f606043029b1aaed84349480899cbbedb72f6e1693",
+      "contentType": "video/mp4",
+      "range": {
+        "status": 206,
+        "start": 0,
+        "end": 1023,
+        "total": 212931,
+        "bytesMatched": true
+      }
+    },
+    {
+      "path": "/app/zeno/fitness/squat-poster.webp",
+      "id": "1197",
+      "bytes": 17112,
+      "sha256": "9bd7ac0969be0d9f87abb8556c001493acac3da9acc8f0560114b215a5cdbc04",
+      "contentType": "image/webp"
+    },
+    {
+      "path": "/app/zeno/fitness/shoulder-press.mp4",
+      "id": "0405",
+      "bytes": 178474,
+      "sha256": "ba27d9ecff1cdc2e635264dfc80f6e3a859a4fe290f017eff35bb76b093859f3",
+      "contentType": "video/mp4",
+      "range": {
+        "status": 206,
+        "start": 0,
+        "end": 1023,
+        "total": 178474,
+        "bytesMatched": true
+      }
+    },
+    {
+      "path": "/app/zeno/fitness/shoulder-press-poster.webp",
+      "id": "0405",
+      "bytes": 19898,
+      "sha256": "368bab89da2d80e37e681136e605906e8d67730a29f445b04818439df802b15f",
+      "contentType": "image/webp"
+    }
+  ],
+  "decodedVideos": [
+    {
+      "path": "/app/zeno/fitness/curl.mp4",
+      "passed": true,
+      "width": 1024,
+      "height": 576,
+      "duration": 8.041667,
+      "currentTime": 0.159323,
+      "presentedFrames": 4,
+      "frameWidth": 1024,
+      "frameHeight": 576,
+      "paused": true,
+      "errorCode": null
+    },
+    {
+      "path": "/app/zeno/fitness/squat.mp4",
+      "passed": true,
+      "width": 1024,
+      "height": 576,
+      "duration": 8.041667,
+      "currentTime": 0.154861,
+      "presentedFrames": 4,
+      "frameWidth": 1024,
+      "frameHeight": 576,
+      "paused": true,
+      "errorCode": null
+    },
+    {
+      "path": "/app/zeno/fitness/shoulder-press.mp4",
+      "passed": true,
+      "width": 1024,
+      "height": 576,
+      "duration": 7.958008,
+      "currentTime": 0.158345,
+      "presentedFrames": 3,
+      "frameWidth": 1024,
+      "frameHeight": 576,
+      "paused": true,
+      "errorCode": null
+    }
+  ],
+  "screenshots": [],
+  "scope": {
+    "publicHttps": true,
+    "anonymousFreshHeadlessProfile": true,
+    "productExerciseUiTested": false,
+    "temporarySameOriginVideoElements": true,
+    "authenticatedAccountTested": false,
+    "mutationsAllowed": false,
+    "installersDownloaded": false,
+    "modelCallsAllowed": false,
+    "nativeDesktopTested": false
+  },
+  "pwa": {
+    "path": "/app/device",
+    "bytes": 1092,
+    "sha256": "449c944c1217fa0d86df756bd689539178e9a92a87a49ad1c93bd1c166e9f24a",
+    "strictCsp": true,
+    "cacheControl": "no-cache"
+  },
+  "browserVersion": "Chrome/155.0.8059.85",
+  "ownedProfileRemoved": true,
+  "network": {
+    "externalRequests": 0,
+    "blockedRequests": 0,
+    "mutationAttempts": 0,
+    "modelAttempts": 0,
+    "unexpectedHttpFailures": 0,
+    "runtimeExceptions": 0,
+    "consoleErrors": 0,
+    "cspViolations": 0,
+    "observedOrigins": [
+      "https://www.zeno.ryan-wong.cn"
+    ],
+    "scope": "owned page CDP, request allowlist, CSP and external DNS denial; not system packet capture"
+  }
+}
