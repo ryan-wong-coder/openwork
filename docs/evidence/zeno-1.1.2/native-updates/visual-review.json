@@ -1,0 +1,85 @@
+{
+  "scope": "Actual artifact screenshots inspected after independent ZIP SHA-256 verification; this authored review never rewrites native receipts.",
+  "lanes": {
+    "linux-x64": {
+      "nativeFunctionalReceiptPassed": true,
+      "artifactDigestVerified": true,
+      "actuallyViewed": [
+        "linux-x64.png",
+        "linux-x64-navigation.png"
+      ],
+      "layoutObservation": "The Zeno sidebar, onboarding form and final account connection gate are visible, stable and not clipped.",
+      "chineseGlyphObservation": "Chinese text renders as missing-glyph boxes in both screenshots on this hosted Linux runner.",
+      "chineseFontVisualAcceptance": false,
+      "cause": "Pending read-only font and packaging investigation; no product or environment attribution is established by the screenshots alone.",
+      "nativeReceiptAltered": false,
+      "attempt": 1,
+      "isRetry": false
+    },
+    "win32-x64": {
+      "nativeFunctionalReceiptPassed": false,
+      "artifactDigestVerified": true,
+      "actuallyViewed": [],
+      "targetScreenshotsAvailable": false,
+      "reason": "The real public download failed before target installation; no target UI image was produced.",
+      "nativeReceiptAltered": false,
+      "attempt": 1,
+      "isRetry": false
+    },
+    "macos-x64": {
+      "nativeFunctionalReceiptPassed": true,
+      "artifactDigestVerified": true,
+      "actuallyViewed": [
+        "macos-x64.png",
+        "macos-x64-canvas.png",
+        "macos-x64-navigation.png"
+      ],
+      "layoutObservation": "Onboarding and final account gate fit the window; sidebar and Chinese text are readable. The synthetic installed canvas shows Canvas/SVG shapes, the Ant Design line chart and a three-node flow with no visible clipping.",
+      "chineseFontVisualAcceptance": true,
+      "nativeCanvasVisualAcceptance": true,
+      "nativeReceiptAltered": false,
+      "scope": "The connection gate is an unpaired native profile. The canvas is synthetic and does not involve model calls.",
+      "attempt": 1,
+      "isRetry": false
+    },
+    "attempt02-linux-x64": {
+      "nativeFunctionalReceiptPassed": true,
+      "artifactDigestVerified": true,
+      "attempt": 2,
+      "isRetry": true,
+      "actuallyViewed": [
+        "attempt02-linux-x64.png",
+        "attempt02-linux-x64-navigation.png"
+      ],
+      "layoutObservation": "Onboarding and final account gate fit the native window. All sidebar labels and center text are readable Chinese without missing-glyph boxes or visible clipping.",
+      "chineseFontVisualAcceptance": true,
+      "fontPrerequisiteReceipt": "attempt02-linux-x64-font-prerequisites.json",
+      "newRunnerBeforeChineseFamilyCount": 0,
+      "newRunnerAfterChineseFamilyCount": 15,
+      "fontScope": "Inventory applies only to this new hosted runner; no claim about the original machine inventory.",
+      "nativeReceiptAltered": false
+    },
+    "attempt02-win32-x64": {
+      "nativeFunctionalReceiptPassed": false,
+      "artifactDigestVerified": true,
+      "attempt": 2,
+      "isRetry": true,
+      "actuallyViewed": [],
+      "targetScreenshotsAvailable": false,
+      "reason": "The second real public download failed before target installation; no target UI image was produced.",
+      "nativeReceiptAltered": false
+    },
+    "macos-arm64": {
+      "nativeFunctionalVerdict": "not-executed",
+      "attempts": 2,
+      "runnerAssignedInEitherAttempt": false,
+      "actuallyViewed": [],
+      "targetScreenshotsAvailable": false,
+      "reason": "Both hosted pools cancelled the job before a runner was assigned; no app ran.",
+      "sourceCapacityReceipts": [
+        "macos-arm64-capacity.json",
+        "attempt02-macos-arm64-capacity.json"
+      ]
+    }
+  }
+}

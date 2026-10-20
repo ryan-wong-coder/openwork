@@ -1,0 +1,24 @@
+{
+  "runId": 39438268096,
+  "jobId": 118681066575,
+  "lane": "macos-arm64",
+  "attempt": 1,
+  "checkoutCommit": "4e2adbb95c4a313555488bbdb11e920b30d0f678",
+  "jobStatus": "completed",
+  "jobConclusion": "cancelled",
+  "labels": [
+    "macos-15"
+  ],
+  "runnerAssigned": false,
+  "stepCount": 0,
+  "startedAt": "2026-10-20T14:20:16Z",
+  "completedAt": "2026-10-20T14:35:18Z",
+  "nativeAcceptanceVerdict": "not-executed",
+  "nativeUpdateExecuted": false,
+  "sourceAnnotations": {
+    "file": "macos-arm64-capacity-annotations.json",
+    "bytes": 1438,
+    "sha256": "d7d00b0f43891ee958d026516372ad78a5fd74f2aa6d7088bbe94378dcd389a9"
+  },
+  "interpretation": "GitHub annotated hosted-runner acquisition failure and macOS arm64 capacity constraints. No application or native acceptance step ran; this is not a product failure verdict."
+}

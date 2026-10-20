@@ -1,0 +1,39 @@
+{
+  "scope": "This runner before/after CJK prerequisites; no observation of an earlier runner.",
+  "before": {
+    "available": true,
+    "familyNames": [],
+    "count": 0,
+    "installedPackage": {
+      "name": "fonts-noto-cjk",
+      "installed": false,
+      "version": null
+    }
+  },
+  "after": {
+    "available": true,
+    "familyNames": [
+      "Noto Sans CJK HK",
+      "Noto Sans CJK JP",
+      "Noto Sans CJK KR",
+      "Noto Sans CJK SC",
+      "Noto Sans CJK TC",
+      "Noto Sans Mono CJK HK",
+      "Noto Sans Mono CJK JP",
+      "Noto Sans Mono CJK KR",
+      "Noto Sans Mono CJK SC",
+      "Noto Sans Mono CJK TC",
+      "Noto Serif CJK HK",
+      "Noto Serif CJK JP",
+      "Noto Serif CJK KR",
+      "Noto Serif CJK SC",
+      "Noto Serif CJK TC"
+    ],
+    "count": 15,
+    "installedPackage": {
+      "name": "fonts-noto-cjk",
+      "installed": true,
+      "version": "1:20230817+repack1-3"
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "baselineVersion": "1.0.0",
+  "targetVersion": "1.1.2",
+  "baselineReleaseRunId": 38883434626,
+  "targetReleaseRunId": 39431901305,
+  "frozenProductCommit": "46e5e38a5d7c4a147b0888d3a50e4788f045385e",
+  "allDispatchedRunsEnded": true,
+  "allFourLanesAccepted": false,
+  "lanes": {
+    "macos-x64": {
+      "functional": "passed",
+      "visual": "passed",
+      "receipt": "macos-x64.json",
+      "artifactReceipt": "macos-x64-artifact.json",
+      "nativeCanvasPassed": true
+    },
+    "linux-x64": {
+      "functional": "passed",
+      "visual": "passed-on-explicit-CJK-new-runner",
+      "receipt": "attempt02-linux-x64.json",
+      "artifactReceipt": "attempt02-linux-x64-artifact.json",
+      "fontReceipt": "attempt02-linux-x64-font-prerequisites.json",
+      "originalMissingGlyphScreenshotsRetained": true
+    },
+    "win32-x64": {
+      "functional": "failed-before-target-install",
+      "visual": "not-produced",
+      "attempts": 2,
+      "observedSignal": "connection-reset-in-original-receipts-sanitized-updater-log-scans",
+      "receipts": [
+        "win32-x64.json",
+        "attempt02-win32-x64.json"
+      ],
+      "nsisInstallOrTargetRelaunchFailureEstablished": false
+    },
+    "macos-arm64": {
+      "functional": "not-executed",
+      "visual": "not-produced",
+      "hostedCapacityCancelledAttempts": 2,
+      "receipts": [
+        "macos-arm64-capacity.json",
+        "attempt02-macos-arm64-capacity.json"
+      ],
+      "productFailureEstablished": false
+    }
+  },
+  "integrityChecks": {
+    "downloadedArtifactZipDigestsMatchedGitHub": 5,
+    "extractedOriginalFilesRehashed": 13,
+    "originalCapacityAnnotationResponsesRehashed": 2,
+    "actualScreenshotsReviewed": 7,
+    "screenshotsWithReadableChinese": 5,
+    "originalNativeReceiptsRewritten": false
+  },
+  "acceptanceLimits": [
+    "Unpaired native account connection gates, not authenticated personal forms.",
+    "Synthetic native canvas on macOS Intel, not model-generated output.",
+    "No model calls or OS credential-storage acceptance.",
+    "Renderer network observations are not a system network audit.",
+    "New Linux font inventory does not attest the first runner inventory."
+  ]
+}

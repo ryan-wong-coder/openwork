@@ -1,0 +1,154 @@
+{
+  "passed": true,
+  "baseline": "1.0.0",
+  "target": "1.1.2",
+  "platform": "linux",
+  "arch": "x64",
+  "phases": [
+    {
+      "name": "original-installers-verified",
+      "at": "2026-10-20T14:40:51.463Z",
+      "baselineSha256": "c31e75122f9ffcd04d051a2f94e9788a723e752c171f0f54d4200911e6f18d70",
+      "targetSha256": "28b689ff182c4c84d9076cd23fa9817624bdd21778b56a8471f64453d8eabbfd",
+      "baselineBytes": 312187633,
+      "targetBytes": 325053811
+    },
+    {
+      "name": "original-appimage-installed",
+      "at": "2026-10-20T14:40:55.190Z",
+      "privateDirectory": true,
+      "unchangedExecutableBytes": true
+    },
+    {
+      "name": "baseline-native-history-created",
+      "at": "2026-10-20T14:41:11.843Z",
+      "installedVersion": "1.0.0",
+      "workspace": true,
+      "serverRegistryIdentity": true,
+      "storedSession": true,
+      "storedMessage": true,
+      "noModelCall": true
+    },
+    {
+      "name": "native-public-download-started",
+      "at": "2026-10-20T14:41:13.344Z",
+      "bytes": 325053811,
+      "installer": "AppImage"
+    },
+    {
+      "name": "native-public-download-completed",
+      "at": "2026-10-20T14:48:08.918Z",
+      "version": "1.1.2"
+    },
+    {
+      "name": "original-target-installed-and-automatically-relaunched",
+      "at": "2026-10-20T14:48:15.465Z",
+      "installedVersion": "1.1.2",
+      "publishedAsar": true,
+      "actualProcessChanged": true
+    },
+    {
+      "name": "real-native-upgrade-and-preservation-verified",
+      "at": "2026-10-20T14:48:17.238Z",
+      "installedVersion": "1.1.2",
+      "publishedAsar": true,
+      "actualProcessChanged": true,
+      "chromiumProfile": true,
+      "workspaceIdentity": true,
+      "serverRegistryIdentity": true,
+      "workspaceFile": true,
+      "historicalSession": true,
+      "historicalMessage": true,
+      "embeddedServer": true
+    },
+    {
+      "name": "installed-target-four-personal-sidebar-routes-verified",
+      "at": "2026-10-20T14:48:23.080Z",
+      "realClicks": 4,
+      "stablePersonalRoutes": true,
+      "unpairedAccountGate": true,
+      "noNewChat": true,
+      "historicalMessageRetained": true
+    }
+  ],
+  "nativeUpdateExecuted": true,
+  "scope": {
+    "originalBaseline": true,
+    "originalTarget": true,
+    "realPublicFeed": true,
+    "installedUpgrade": true,
+    "automaticRelaunch": true,
+    "historicalChatPreservation": true,
+    "accountPairingTested": false,
+    "osCredentialStorageTested": false,
+    "aiRequested": false
+  },
+  "isolation": "ephemeral GitHub-hosted VM; private installation, Electron profile, workspace, XDG data and temporary runtime",
+  "publicOrigin": "https://www.zeno.ryan-wong.cn",
+  "downloadProgress": {
+    "subscriptionSupported": true
+  },
+  "navigation": {
+    "passed": true,
+    "scope": "Actual installed AppSidebar clicks in the original upgraded, unpaired profile; account connection gate only, not authenticated personal forms",
+    "input": "CDP mouse press/release on visible sidebar buttons; no direct route mutation",
+    "noAccountPairing": true,
+    "noModelCalls": true,
+    "destinations": [
+      {
+        "section": "calendar",
+        "route": "/personal/calendar",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      },
+      {
+        "section": "fitness",
+        "route": "/personal/fitness",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      },
+      {
+        "section": "tasks",
+        "route": "/personal/tasks",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      },
+      {
+        "section": "account",
+        "route": "/personal/account",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      }
+    ],
+    "hostBridgeRootAndProfileMarkerRetained": true,
+    "workspaceSessionSetUnchanged": true,
+    "historicalMessageRetained": true,
+    "rendererExceptions": 0
+  },
+  "cleanup": "verified private installation/profile removed",
+  "rendererNetworkScope": {
+    "observedOrigins": 1,
+    "upstreamObserved": false,
+    "monitoring": "renderer CDP only; not a system network audit"
+  }
+}

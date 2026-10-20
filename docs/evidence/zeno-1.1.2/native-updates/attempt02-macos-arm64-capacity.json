@@ -1,0 +1,24 @@
+{
+  "runId": 39441185942,
+  "jobId": 118691216601,
+  "lane": "macos-arm64",
+  "attempt": 2,
+  "checkoutCommit": "e3d1e9bdd7907041f6ec365174229ff8de44a8f7",
+  "jobStatus": "completed",
+  "jobConclusion": "cancelled",
+  "labels": [
+    "macos-26"
+  ],
+  "runnerAssigned": false,
+  "stepCount": 0,
+  "startedAt": "2026-10-20T14:39:22Z",
+  "completedAt": "2026-10-20T14:54:24Z",
+  "nativeAcceptanceVerdict": "not-executed",
+  "nativeUpdateExecuted": false,
+  "sourceAnnotations": {
+    "file": "attempt02-macos-arm64-capacity-annotations.json",
+    "bytes": 1438,
+    "sha256": "d59cfbb2aec2c65393c3a946e3995c7c500186c474c25ca65fe16f273139c540"
+  },
+  "interpretation": "The explicitly authorized macos-26 arm64 pool attempt was also cancelled before runner acquisition. No application or native acceptance step ran; this is not a product failure verdict."
+}

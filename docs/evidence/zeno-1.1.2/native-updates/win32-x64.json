@@ -1,0 +1,106 @@
+{
+  "passed": false,
+  "baseline": "1.0.0",
+  "target": "1.1.2",
+  "platform": "win32",
+  "arch": "x64",
+  "phases": [
+    {
+      "name": "original-installers-verified",
+      "at": "2026-10-20T14:21:41.440Z",
+      "baselineSha256": "2fd5184a2f5a41d50c11b63014add54518805816a68c67dbe72b6217d3139716",
+      "targetSha256": "0690872dad2d7ff57f3e7e308b6fca864528a8c059bfa1934bdb98ba7d4efba3",
+      "baselineBytes": 379417761,
+      "targetBytes": 390804422
+    },
+    {
+      "name": "original-nsis-installed",
+      "at": "2026-10-20T14:22:20.899Z",
+      "privateDirectory": true,
+      "noResigning": true
+    },
+    {
+      "name": "baseline-native-history-created",
+      "at": "2026-10-20T14:22:45.413Z",
+      "installedVersion": "1.0.0",
+      "workspace": true,
+      "serverRegistryIdentity": true,
+      "storedSession": true,
+      "storedMessage": true,
+      "noModelCall": true
+    },
+    {
+      "name": "native-public-download-started",
+      "at": "2026-10-20T14:22:46.307Z",
+      "bytes": 390804422,
+      "installer": "exe"
+    }
+  ],
+  "nativeUpdateExecuted": false,
+  "scope": {
+    "originalBaseline": true,
+    "originalTarget": true,
+    "realPublicFeed": true,
+    "installedUpgrade": false,
+    "automaticRelaunch": false,
+    "historicalChatPreservation": false,
+    "accountPairingTested": false,
+    "osCredentialStorageTested": false,
+    "aiRequested": false
+  },
+  "isolation": "ephemeral GitHub-hosted VM; private installation, Electron profile, workspace, XDG data and temporary runtime",
+  "publicOrigin": "https://www.zeno.ryan-wong.cn",
+  "downloadProgress": {
+    "subscriptionSupported": true,
+    "transferred": 217137098,
+    "total": 390804422,
+    "percent": 55.561576526889965,
+    "bytesPerSecond": 435478
+  },
+  "failure": {
+    "classification": "native-update-validation-failed",
+    "lastPhase": "native-public-download-started",
+    "activeCheck": "update-download",
+    "errorKind": "AssertionError",
+    "code": "ERR_ASSERTION",
+    "lastHttp": {
+      "endpoint": "workspace-message-read",
+      "status": 200
+    }
+  },
+  "failureState": {
+    "collected": true,
+    "diskReadSucceeded": true,
+    "targetVersionOnDisk": false,
+    "publishedAsarOnDisk": false,
+    "oldPidKnown": true,
+    "oldBrowserPidAbsent": false,
+    "spawnedBaselineProcessExited": false,
+    "processScanCompleted": true,
+    "mainHasExpectedDebugArgument": false,
+    "mainHasExpectedProfileArgument": false,
+    "userDebugEnvironmentMatches": true,
+    "userProfileEnvironmentMatches": true,
+    "observedBrowserPidKnown": true,
+    "observedBrowserEffectiveProfileMatches": true,
+    "samePrivateMainProcessCount": 1
+  },
+  "failureDiagnostics": {
+    "collectedBeforeCleanup": true,
+    "filesScanned": 2,
+    "bytesScanned": 26760,
+    "readFailures": 0,
+    "signals": [
+      {
+        "code": "ERR_CONNECTION_RESET",
+        "classification": "connection-reset"
+      }
+    ]
+  },
+  "cleanup": "failed attempt private files retained for hosted runner disposal",
+  "rendererNetworkScope": {
+    "observedOrigins": 1,
+    "upstreamObserved": false,
+    "monitoring": "renderer CDP only; not a system network audit"
+  }
+}

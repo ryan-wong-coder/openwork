@@ -1,0 +1,35 @@
+{
+  "lane": "linux-x64",
+  "attempt": 2,
+  "passed": true,
+  "runId": 39441185994,
+  "jobId": 118691330764,
+  "artifactId": 12273547732,
+  "artifactName": "zeno-real-update-linux-x64",
+  "artifactZipBytes": 67807,
+  "githubArtifactSize": 67807,
+  "githubDigest": "sha256:9f19b2959ffdcf355132374d204388c47abc89f8909a0eb84835d790d4adc931",
+  "independentlyVerifiedZipSha256": "9f19b2959ffdcf355132374d204388c47abc89f8909a0eb84835d790d4adc931",
+  "files": [
+    {
+      "file": "attempt02-linux-x64.json",
+      "bytes": 4591,
+      "sha256": "9a467a0eefc481e33b5cbbab3d6aa38b274c90859687dc630ce5f27d6743d50b"
+    },
+    {
+      "file": "attempt02-linux-x64-navigation.png",
+      "bytes": 34949,
+      "sha256": "e0edc666010d205e3ad443cc99e24b175cb14324534fef6ade23cfe6d917238f"
+    },
+    {
+      "file": "attempt02-linux-x64.png",
+      "bytes": 39084,
+      "sha256": "3296a97bdaadbbea6e48db778a35642c7818acf3b0714d129167efd9dcfb9bbb"
+    },
+    {
+      "file": "attempt02-linux-x64-font-prerequisites.json",
+      "bytes": 925,
+      "sha256": "e3d0c57bca256e081849ae6e85e2c5d15bcecf8fad724ab23ec7141cbeefd7d2"
+    }
+  ]
+}

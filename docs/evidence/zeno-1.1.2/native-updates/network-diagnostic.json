@@ -1,0 +1,51 @@
+{
+  "scope": "Fixed download telemetry and error codes only; original native receipt is unchanged.",
+  "runId": 39438268727,
+  "jobId": 118681051764,
+  "lane": "win32-x64",
+  "attempt": 1,
+  "nativeReceipt": {
+    "file": "win32-x64.json",
+    "sha256": "302a02e27cc42984ad47ea71982c7d4e872b9ab87342dab0ef14187c10e075c6",
+    "errorKind": "AssertionError",
+    "errorCode": "ERR_ASSERTION",
+    "activeCheck": "update-download",
+    "lastRecordedPhase": "native-public-download-started"
+  },
+  "download": {
+    "transferred": 217137098,
+    "total": 390804422,
+    "percent": 55.561576526889965,
+    "bytesPerSecond": 435478
+  },
+  "updaterPrivateLogScan": {
+    "source": "Original receipt.failureDiagnostics, captured from private updater log files before cleanup",
+    "filesScanned": 2,
+    "bytesScanned": 26760,
+    "readFailures": 0,
+    "signals": [
+      {
+        "code": "ERR_CONNECTION_RESET",
+        "classification": "connection-reset"
+      }
+    ],
+    "rawUpdaterLogFilesRetainedInArtifact": false,
+    "rawUpdaterLogSha256Available": false,
+    "collectedBeforeCleanup": true
+  },
+  "rawWorkflowFailedStepLog": {
+    "sha256": "bdd45df9b2ca07f3d5ad52406f3c19b6573ffec309e780c350c15e455fd1f256",
+    "bytes": 53064,
+    "containsLiteralConnectionResetCode": false,
+    "containsDownloadStartedPhase": true,
+    "retainedInPublicTree": false
+  },
+  "installationFacts": {
+    "targetVersionOnDisk": false,
+    "publishedAsarOnDisk": false,
+    "spawnedBaselineProcessExited": false,
+    "nativeUpdateExecuted": false,
+    "targetInstallPhaseReached": false
+  },
+  "interpretation": "Connection-reset is an observed sanitized updater-log signal. It is distinct from the AssertionError produced when the real download returned failure. No NSIS installation or relaunch failure is established."
+}

@@ -1,0 +1,105 @@
+{
+  "scope": "Explicitly authorized original-release updates on disposable GitHub-hosted native runners; dispatch is not a passing verdict",
+  "baseline": {
+    "version": "1.0.0",
+    "releaseRunId": 38883434626,
+    "productCommit": "92688046400df5d1e2807d63dce986431bc7623a"
+  },
+  "target": {
+    "version": "1.1.2",
+    "releaseRunId": 39431901305,
+    "productTag": "zeno-v1.1.2",
+    "productCommit": "46e5e38a5d7c4a147b0888d3a50e4788f045385e"
+  },
+  "publicActivation": {
+    "version": "1.1.2",
+    "publishedAt": "2026-10-20T14:18:20.654911+00:00",
+    "artifactCount": 10,
+    "independentPublicApiCheck": true,
+    "operatorConfirmedFull24AndPublicationAndLiveGatesBeforeDispatch": true
+  },
+  "scheduling": "Both workflows dispatched in parallel after explicit activation approval; no automatic retries.",
+  "acceptanceBoundary": "Original updater download/install/automatic restart and personal AppSidebar clicks in an unpaired profile. Authenticated personal forms are covered separately by PWA evidence.",
+  "macos": {
+    "workflowId": 386584037,
+    "runId": 39438268096,
+    "ref": "personal",
+    "checkoutCommit": "4e2adbb95c4a313555488bbdb11e920b30d0f678",
+    "architecture": "both",
+    "createdAt": "2026-10-20T14:20:07Z",
+    "jobs": {
+      "arm64": 118681066575,
+      "x64": 118681066633
+    }
+  },
+  "portable": {
+    "workflowId": 390119143,
+    "runId": 39438268727,
+    "ref": "personal",
+    "checkoutCommit": "4e2adbb95c4a313555488bbdb11e920b30d0f678",
+    "platform": "both",
+    "createdAt": "2026-10-20T14:20:07Z",
+    "jobs": {
+      "linux-x64": 118681051709,
+      "win32-x64": 118681051764
+    }
+  },
+  "constraints": {
+    "manualTargetLaunch": false,
+    "automaticRetry": false,
+    "updaterProductChanges": false,
+    "oldEvidenceModified": false
+  },
+  "windowsDownloadRetry": {
+    "workflowId": 390119143,
+    "runId": 39440553472,
+    "jobId": 118689006058,
+    "ref": "personal",
+    "checkoutCommit": "f9f74cce5c4f2e9cfaa5b3f6ef4e542bdc99b129",
+    "checkoutDesktopVersion": "1.1.2",
+    "platform": "win32",
+    "attempt": 2,
+    "createdAt": "2026-10-20T14:35:04Z",
+    "operatorExplicitlyApproved": true,
+    "sameFrozenBaselineAndTarget": true,
+    "reason": "Observed connection-reset signal in the first attempt original receipt sanitized updater-log scan during real public download; no install/relaunch problem inferred.",
+    "priorAttemptReport": "win32-x64.json",
+    "newEvidenceFilenamePrefix": "attempt02-"
+  },
+  "linuxFontEnvironmentRetry": {
+    "workflowId": 390119143,
+    "runId": 39441185994,
+    "jobId": 118691330764,
+    "ref": "personal",
+    "checkoutCommit": "e3d1e9bdd7907041f6ec365174229ff8de44a8f7",
+    "checkoutDesktopVersion": "1.1.2",
+    "platform": "linux",
+    "attempt": 2,
+    "createdAt": "2026-10-20T14:39:14Z",
+    "operatorExplicitlyApproved": true,
+    "sameFrozenBaselineAndTarget": true,
+    "reason": "Install explicit CJK host prerequisites and record this new runner before/after font inventory; preserve earlier native PASS and missing-glyph screenshots without retroactive attribution.",
+    "priorAttemptReport": "linux-x64.json",
+    "newEvidenceFilenamePrefix": "attempt02-",
+    "productBytesAndNativeGatesUnchanged": true
+  },
+  "macosArmHostedCapacityRetry": {
+    "workflowId": 386584037,
+    "runId": 39441185942,
+    "jobId": 118691216601,
+    "ref": "personal",
+    "checkoutCommit": "e3d1e9bdd7907041f6ec365174229ff8de44a8f7",
+    "checkoutDesktopVersion": "1.1.2",
+    "architecture": "arm64",
+    "attempt": 2,
+    "createdAt": "2026-10-20T14:39:14Z",
+    "operatorExplicitlyApproved": true,
+    "sameFrozenBaselineAndTarget": true,
+    "reason": "Original macos-15 job was never acquired by a hosted runner and GitHub reported arm64 capacity constraints. Use the GA macos-26 hosted arm64 pool with all native gates unchanged.",
+    "previousRunnerLabel": "macos-15",
+    "runnerLabel": "macos-26",
+    "priorCapacityReceipt": "macos-arm64-capacity.json",
+    "newEvidenceFilenamePrefix": "attempt02-",
+    "productBytesAndNativeGatesUnchanged": true
+  }
+}
