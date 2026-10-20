@@ -12,6 +12,53 @@ const { markAccountSignedOut, clearAccountSignedOut, clearAccountHint, isAccount
 const previousAct = Reflect.get(globalThis, "IS_REACT_ACT_ENVIRONMENT"); Reflect.set(globalThis, "IS_REACT_ACT_ENVIRONMENT", true);
 afterAll(async () => { Reflect.set(globalThis, "IS_REACT_ACT_ENVIRONMENT", previousAct); if (ownsDom) await GlobalRegistrator.unregister(); });
 
+function lockedStore(onSave: PersonalStore["save"] = async () => {}): PersonalStore {
+  const noop = async () => {};
+  return { records: [], ready: true, writable: false, offline: false, syncing: false, error: null, accountChanged: false, pending: 0, conflicts: [], failedChanges: [], failedMedia: [], retryFailedChange: noop, retryFailedMedia: noop, discardFailedChange: noop, discardFailedMedia: noop, registerDraftFlusher: () => () => {}, flushDrafts: noop, save: onSave, remove: noop, saveMutations: noop, addMedia: async () => "media", readMedia: async () => new Blob(), synchronize: noop, resolveConflict: noop, undo: noop, undoKinds: [], canUndo: false };
+}
+
+test("a secondary record tab can approve a device through its bound account while preferences stay locked", async () => {
+  const requests: { method: string; path: string; body: unknown; expectedUserId?: string }[] = [];
+  const client = new ZenoApiClient({ transport: async (method, path, body, expectedUserId) => { requests.push({ method, path, body, expectedUserId }); return { status: 200, body: { approved: true } }; } }).forAccount("test-user");
+  let refreshed = 0, recordWrites = 0;
+  const host = document.createElement("div"); document.body.append(host); const root = createRoot(host);
+  try {
+    await act(async () => root.render(<PersonalAccountPage client={client} user={{ id: "test-user", email: "member@example.test", name: "测试用户", role: "user" }} devices={[]} refreshDevices={async () => { refreshed++; }} onLogout={async () => {}} store={lockedStore(async () => { recordWrites++; })} approvalCode="SYNTHETIC" />));
+    const approval = [...host.querySelectorAll("button")].find(button => button.textContent === "同意连接");
+    const input = host.querySelector<HTMLInputElement>("form input");
+    expect(approval?.disabled).toBe(false); expect(input?.disabled).toBe(false); expect(input?.value).toBe("SYNTHETIC");
+    expect(host.querySelector<HTMLButtonElement>('[aria-label="日历时区"]')?.disabled).toBe(true);
+    expect(host.querySelector<HTMLButtonElement>('[aria-label="默认重量单位"]')?.disabled).toBe(true);
+    await act(async () => { host.querySelector("form")?.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true })); });
+    expect(requests).toEqual([{ method: "POST", path: "/devices/approve", body: { userCode: "SYNTHETIC" }, expectedUserId: "test-user" }]);
+    expect(refreshed).toBe(1); expect(recordWrites).toBe(0); expect(input?.value).toBe(""); expect(host.textContent).toContain("已授权此电脑同步");
+  } finally { await act(async () => root.unmount()); host.remove(); }
+});
+
+test("account feature off still blocks a forged approval submit in a secondary record tab", async () => {
+  let requests = 0;
+  const client = new ZenoApiClient({ transport: async () => { requests++; return { status: 200, body: { approved: true } }; } }).forAccount("test-user");
+  const host = document.createElement("div"); document.body.append(host); const root = createRoot(host);
+  try {
+    await act(async () => root.render(<PersonalAccountPage client={client} user={{ id: "test-user", email: "member@example.test", name: "测试用户", role: "user" }} devices={[]} refreshDevices={async () => {}} onLogout={async () => {}} store={lockedStore()} approvalCode="SYNTHETIC" readOnly />));
+    expect([...host.querySelectorAll("button")].find(button => button.textContent === "同意连接")?.disabled).toBe(true);
+    expect(host.querySelector<HTMLInputElement>("form input")?.disabled).toBe(true);
+    await act(async () => { host.querySelector("form")?.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true })); });
+    expect(requests).toBe(0); expect(host.textContent).toContain("账号功能已停用"); expect(host.textContent).not.toContain("已授权此电脑同步");
+  } finally { await act(async () => root.unmount()); host.remove(); }
+});
+
+test("server rejection in a secondary record tab keeps the code and shows no success state", async () => {
+  let requests = 0;
+  const client = new ZenoApiClient({ transport: async () => { requests++; return { status: 400, body: { code: "authorization_invalid", message: "合成授权已失效" } }; } }).forAccount("test-user");
+  const host = document.createElement("div"); document.body.append(host); const root = createRoot(host);
+  try {
+    await act(async () => root.render(<PersonalAccountPage client={client} user={{ id: "test-user", email: "member@example.test", name: "测试用户", role: "user" }} devices={[]} refreshDevices={async () => {}} onLogout={async () => {}} store={lockedStore()} approvalCode="SYNTHETIC" />));
+    await act(async () => { host.querySelector("form")?.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true })); });
+    expect(requests).toBe(1); expect(host.textContent).toContain("合成授权已失效"); expect(host.querySelector<HTMLInputElement>("form input")?.value).toBe("SYNTHETIC"); expect(host.textContent).not.toContain("已授权此电脑同步");
+  } finally { await act(async () => root.unmount()); host.remove(); }
+});
+
 test("account rollout off blocks preferences and new pairing while retaining privacy and recovery actions", async () => {
   let requests = 0;
   const client = new ZenoApiClient({ transport: async () => { requests++; return { status: 500, body: {} }; } });
