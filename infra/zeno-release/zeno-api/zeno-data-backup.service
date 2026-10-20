@@ -1,0 +1,16 @@
+[Unit]
+Description=Private Zeno data snapshot
+
+[Service]
+Type=oneshot
+User=zeno-data
+Group=zeno-data
+UMask=0077
+ExecStart=/usr/bin/python3 /opt/zeno-data/current/infra/zeno-release/zeno-api/backup.py --database /var/lib/zeno-data/accounts.sqlite --media-root /var/lib/zeno-data/media --destination /var/lib/zeno-data/backups
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/zeno-data
+IPAddressDeny=any

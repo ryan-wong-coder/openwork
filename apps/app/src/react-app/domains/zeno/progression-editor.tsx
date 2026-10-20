@@ -1,0 +1,8 @@
+import type { Progression } from "@zeno/core";
+import { Input } from "@/components/ui/input";
+import { Field, OptionSelect } from "./ui";
+
+export const progressionOptions = [{ value: "none", label: "手动调整" }, { value: "linear", label: "线性加重" }, { value: "greyskull", label: "Greyskull" }, { value: "double", label: "双进阶" }, { value: "triple", label: "三进阶" }, { value: "time", label: "时长进阶" }];
+export function ProgressionEditor({ value, onChange }: { value: Progression; onChange: (next: Progression) => void }) {
+  return <div className="grid gap-3"><Field label="进阶方式"><OptionSelect label="进阶方式" value={value.mode} options={progressionOptions} onChange={mode => { if (mode === "none" || mode === "linear" || mode === "greyskull" || mode === "double" || mode === "triple" || mode === "time") onChange({ ...value, mode }); }} /></Field><div className="grid grid-cols-2 gap-3">{([{ key: "increment", label: value.mode === "time" ? "增加秒数" : "增加重量", min: 0, max: 100 }, { key: "repMin", label: "最少次数", min: 1, max: 1000 }, { key: "repMax", label: "最多次数", min: 1, max: 1000 }, { key: "maxSets", label: "最多组数", min: 1, max: 30 }, { key: "deloadPercent", label: "减量（%）", min: 5, max: 50 }, { key: "stallLimit", label: "停滞次数", min: 1, max: 20 }] satisfies { key: Exclude<keyof Progression, "mode">; label: string; min: number; max: number }[]).map(field => <Field key={field.key} label={field.label}><Input type="number" min={field.min} max={field.max} step={field.key === "increment" ? "any" : 1} value={value[field.key]} onChange={event => onChange({ ...value, [field.key]: Number(event.currentTarget.value) })} /></Field>)}</div></div>;
+}

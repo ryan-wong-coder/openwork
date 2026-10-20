@@ -212,10 +212,32 @@ export function createDesktopSessionAdapter(options) {
         const native = await snapshotFor(receipt, operationSignal, 200)
         // Status and messages are separate native reads. Until the accepted
         // stable user message appears, even an idle old reply is not this turn.
-        const visible = !native.messageId || remoteSessionTurnVisible(native.snapshot, { messageId: native.messageId })
-        const observation = visible
-          ? remoteSessionObservation(native.snapshot, await waitingFor(native, receipt, operationSignal))
+        const messageId = options.observationMessageId
+          ? await options.observationMessageId(receipt)
+          : native.messageId
+        const visible = (!options.observationMessageId && !messageId)
+          || Boolean(messageId && remoteSessionTurnVisible(native.snapshot, { messageId }))
+        let snapshot = native.snapshot
+        let hasFollowingTurn = false
+        if (visible && options.observationMessageId && messageId) {
+          // A recovered local task owns one durable turn. A later interactive
+          // message in the same thread must never become its result or status.
+          const start = snapshot.messages.findIndex((message) => message.role === "user" && message.id === messageId)
+          const following = snapshot.messages.findIndex((message, index) => index > start && message.role === "user")
+          hasFollowingTurn = following >= 0
+          snapshot = {
+            ...snapshot,
+            messages: snapshot.messages.slice(start, following < 0 ? undefined : following),
+            ...(following < 0 ? {} : { status: { type: "idle" } }),
+          }
+        }
+        let observation = visible
+          ? remoteSessionObservation(snapshot, hasFollowingTurn ? null : await waitingFor(native, receipt, operationSignal))
           : { status: "running", messageCount: native.snapshot.messages.length }
+        if (hasFollowingTurn && observation.status === "silent") {
+          observation = { status: "error", messageCount: snapshot.messages.length,
+            error: { code: "turn_superseded", message: "The scheduled turn has no recoverable reply before a later conversation turn. Inspect the original session before running it again." } }
+        }
         return parseProgress({
           ...observation,
           // An idle snapshot with no reply is not a failed turn. The shared

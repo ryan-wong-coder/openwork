@@ -2426,6 +2426,10 @@
           "key": {
             "type": "string",
             "enum": [
+              "zenoAccounts",
+              "personalCalendar",
+              "fitnessTracking",
+              "localScheduledTasks",
               "conversationCanvas",
               "zenoReleaseUpdates",
               "zenoWebsite",
@@ -2636,6 +2640,18 @@
                 "capabilities": {
                   "type": "object",
                   "properties": {
+                    "zenoAccounts": {
+                      "type": "boolean"
+                    },
+                    "personalCalendar": {
+                      "type": "boolean"
+                    },
+                    "fitnessTracking": {
+                      "type": "boolean"
+                    },
+                    "localScheduledTasks": {
+                      "type": "boolean"
+                    },
                     "conversationCanvas": {
                       "type": "boolean"
                     },
@@ -2752,6 +2768,10 @@
                     }
                   },
                   "required": [
+                    "zenoAccounts",
+                    "personalCalendar",
+                    "fitnessTracking",
+                    "localScheduledTasks",
                     "conversationCanvas",
                     "zenoReleaseUpdates",
                     "zenoWebsite",
@@ -2794,6 +2814,230 @@
                 "featureStates": {
                   "type": "object",
                   "properties": {
+                    "zenoAccounts": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
+                    "personalCalendar": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
+                    "fitnessTracking": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
+                    "localScheduledTasks": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
                     "conversationCanvas": {
                       "type": "object",
                       "properties": {
@@ -4812,6 +5056,10 @@
                     }
                   },
                   "required": [
+                    "zenoAccounts",
+                    "personalCalendar",
+                    "fitnessTracking",
+                    "localScheduledTasks",
                     "conversationCanvas",
                     "zenoReleaseUpdates",
                     "zenoWebsite",
@@ -5217,6 +5465,18 @@
                 "capabilities": {
                   "type": "object",
                   "properties": {
+                    "zenoAccounts": {
+                      "type": "boolean"
+                    },
+                    "personalCalendar": {
+                      "type": "boolean"
+                    },
+                    "fitnessTracking": {
+                      "type": "boolean"
+                    },
+                    "localScheduledTasks": {
+                      "type": "boolean"
+                    },
                     "conversationCanvas": {
                       "type": "boolean"
                     },
@@ -5333,6 +5593,10 @@
                     }
                   },
                   "required": [
+                    "zenoAccounts",
+                    "personalCalendar",
+                    "fitnessTracking",
+                    "localScheduledTasks",
                     "conversationCanvas",
                     "zenoReleaseUpdates",
                     "zenoWebsite",
@@ -5375,6 +5639,230 @@
                 "featureStates": {
                   "type": "object",
                   "properties": {
+                    "zenoAccounts": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
+                    "personalCalendar": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
+                    "fitnessTracking": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
+                    "localScheduledTasks": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "unavailable",
+                            "killed",
+                            "lock",
+                            "override",
+                            "everyone"
+                          ]
+                        },
+                        "everyone": {
+                          "type": "boolean"
+                        },
+                        "killed": {
+                          "type": "boolean"
+                        },
+                        "lock": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "override": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "overrideApplies": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled",
+                        "source",
+                        "everyone",
+                        "killed",
+                        "lock",
+                        "override",
+                        "overrideApplies"
+                      ]
+                    },
                     "conversationCanvas": {
                       "type": "object",
                       "properties": {
@@ -7393,6 +7881,10 @@
                     }
                   },
                   "required": [
+                    "zenoAccounts",
+                    "personalCalendar",
+                    "fitnessTracking",
+                    "localScheduledTasks",
                     "conversationCanvas",
                     "zenoReleaseUpdates",
                     "zenoWebsite",
@@ -31022,6 +31514,18 @@
                     "capabilities": {
                       "type": "object",
                       "properties": {
+                        "zenoAccounts": {
+                          "type": "boolean"
+                        },
+                        "personalCalendar": {
+                          "type": "boolean"
+                        },
+                        "fitnessTracking": {
+                          "type": "boolean"
+                        },
+                        "localScheduledTasks": {
+                          "type": "boolean"
+                        },
                         "conversationCanvas": {
                           "type": "boolean"
                         },
@@ -31138,6 +31642,10 @@
                         }
                       },
                       "required": [
+                        "zenoAccounts",
+                        "personalCalendar",
+                        "fitnessTracking",
+                        "localScheduledTasks",
                         "conversationCanvas",
                         "zenoReleaseUpdates",
                         "zenoWebsite",
@@ -31180,6 +31688,230 @@
                     "featureStates": {
                       "type": "object",
                       "properties": {
+                        "zenoAccounts": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
+                        "personalCalendar": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
+                        "fitnessTracking": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
+                        "localScheduledTasks": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
                         "conversationCanvas": {
                           "type": "object",
                           "properties": {
@@ -33198,6 +33930,10 @@
                         }
                       },
                       "required": [
+                        "zenoAccounts",
+                        "personalCalendar",
+                        "fitnessTracking",
+                        "localScheduledTasks",
                         "conversationCanvas",
                         "zenoReleaseUpdates",
                         "zenoWebsite",
@@ -33352,6 +34088,18 @@
                     "capabilities": {
                       "type": "object",
                       "properties": {
+                        "zenoAccounts": {
+                          "type": "boolean"
+                        },
+                        "personalCalendar": {
+                          "type": "boolean"
+                        },
+                        "fitnessTracking": {
+                          "type": "boolean"
+                        },
+                        "localScheduledTasks": {
+                          "type": "boolean"
+                        },
                         "conversationCanvas": {
                           "type": "boolean"
                         },
@@ -33468,6 +34216,10 @@
                         }
                       },
                       "required": [
+                        "zenoAccounts",
+                        "personalCalendar",
+                        "fitnessTracking",
+                        "localScheduledTasks",
                         "conversationCanvas",
                         "zenoReleaseUpdates",
                         "zenoWebsite",
@@ -33510,6 +34262,230 @@
                     "featureStates": {
                       "type": "object",
                       "properties": {
+                        "zenoAccounts": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
+                        "personalCalendar": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
+                        "fitnessTracking": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
+                        "localScheduledTasks": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "unavailable",
+                                "killed",
+                                "lock",
+                                "override",
+                                "everyone"
+                              ]
+                            },
+                            "everyone": {
+                              "type": "boolean"
+                            },
+                            "killed": {
+                              "type": "boolean"
+                            },
+                            "lock": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "override": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "overrideApplies": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "source",
+                            "everyone",
+                            "killed",
+                            "lock",
+                            "override",
+                            "overrideApplies"
+                          ]
+                        },
                         "conversationCanvas": {
                           "type": "object",
                           "properties": {
@@ -35528,6 +36504,10 @@
                         }
                       },
                       "required": [
+                        "zenoAccounts",
+                        "personalCalendar",
+                        "fitnessTracking",
+                        "localScheduledTasks",
                         "conversationCanvas",
                         "zenoReleaseUpdates",
                         "zenoWebsite",

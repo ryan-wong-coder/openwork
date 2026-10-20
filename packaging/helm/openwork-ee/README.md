@@ -362,6 +362,10 @@ OpenWork Cloud. Don't change it on a customer install.
 <!-- BEGIN GENERATED features (pnpm features:sync) -->
 | `config.features.*` | Environment variable | Default | What it does |
 | --- | --- | --- | --- |
+| `zenoAccounts` | `DEN_FEATURE_ZENO_ACCOUNTS` | default off | Use independent invitation-only Zeno accounts to synchronize personal data and pair devices without an upstream account or server-side AI execution. |
+| `personalCalendar` | `DEN_FEATURE_PERSONAL_CALENDAR` | default off | Manage personal events, recurring plans, reminders and training schedules through the same validated interface used by people and local agents. |
+| `fitnessTracking` | `DEN_FEATURE_FITNESS_TRACKING` | default off | Plan and log workouts, track body measurements and progress, and review local AI coaching proposals in the independent Zeno interface. |
+| `localScheduledTasks` | `DEN_FEATURE_LOCAL_SCHEDULED_TASKS` | default off | Run explicitly scheduled tasks on a selected local computer while its Zeno window is open, preserving run receipts and requiring manual recovery for missed tasks. |
 | `conversationCanvas` | `DEN_FEATURE_CONVERSATION_CANVAS` | default off | Render interactive HTML, SVG, Canvas and Ant Design Charts boards inside assistant Markdown, with stable streaming previews and isolated execution. |
 | `zenoReleaseUpdates` | `DEN_FEATURE_ZENO_RELEASE_UPDATES` | default off | Check the independent Zeno release service, offer a new version, and install the downloaded desktop update without using an upstream release feed. |
 | `zenoWebsite` | `DEN_FEATURE_ZENO_WEBSITE` | default off | Serve the independently operated Zeno website and verified release downloads for each supported platform and architecture. |

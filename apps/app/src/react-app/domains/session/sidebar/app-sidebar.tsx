@@ -18,6 +18,9 @@ import {
   Blocks,
   CalendarDays,
   Clock3,
+  Dumbbell,
+  ListChecks,
+  UserRound,
   ChevronRight,
   Columns2,
   FolderPlus,
@@ -624,6 +627,12 @@ export type AppSidebarProps = {
   automationsActive?: boolean;
   automationsNeedAttention?: boolean;
   onOpenAutomations?: () => void;
+  fitnessActive?: boolean;
+  tasksActive?: boolean;
+  personalAccountActive?: boolean;
+  onOpenFitness?: () => void;
+  onOpenPersonalTasks?: () => void;
+  onOpenPersonalAccount?: () => void;
   calendarActive?: boolean;
   onOpenCalendar?: () => void;
   dashboardActive?: boolean;
@@ -791,7 +800,7 @@ export function AppSidebar(props: AppSidebarProps) {
               <SidebarMenuButton
                 type="button"
                 data-sidebar-new-chat
-                isActive={zeno && !props.selectedSessionId && !props.extensionsActive && !props.dashboardActive && !props.automationsActive && !props.calendarActive}
+                isActive={zeno && !props.selectedSessionId && !props.extensionsActive && !props.dashboardActive && !props.automationsActive && !props.calendarActive && !props.fitnessActive && !props.tasksActive && !props.personalAccountActive}
                 className="text-sidebar-foreground/70"
                 aria-label={t("session.new_task")}
                 aria-keyshortcuts={isMacPlatform() ? "Meta+N" : "Control+N"}
@@ -842,6 +851,9 @@ export function AppSidebar(props: AppSidebarProps) {
                 onSelect={props.onOpenCalendar}
               />
             ) : null}
+            {props.onOpenFitness ? <SidebarDestination active={props.fitnessActive === true} icon={Dumbbell} label="健身" onSelect={props.onOpenFitness} /> : null}
+            {props.onOpenPersonalTasks ? <SidebarDestination active={props.tasksActive === true} icon={ListChecks} label="任务" onSelect={props.onOpenPersonalTasks} /> : null}
+            {props.onOpenPersonalAccount ? <SidebarDestination active={props.personalAccountActive === true} icon={UserRound} label="账号" onSelect={props.onOpenPersonalAccount} /> : null}
             <SidebarDestination
               active={props.extensionsActive === true}
               icon={LayoutGrid}

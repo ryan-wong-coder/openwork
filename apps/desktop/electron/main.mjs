@@ -26,6 +26,9 @@ import { createRuntimeManager, createSystemCaCertificateVerifyProc } from "./run
 import { registerUpdaterIpc, resolveAppVersion } from "./updater.mjs";
 import { createZenoInstallGuard, registerZenoUpdaterIpc, zenoUpdateRequestAllowed } from "./zeno-updater.mjs";
 import { createUiControlServer } from "./ui-control-server.mjs";
+import { createZenoPersonalService } from './zeno-personal.mjs';
+import { createZenoPersonalToolsService } from './zeno-personal-tools.mjs';
+import { createZenoScheduler } from './zeno-scheduler.mjs';
 import { createApplicationMenu } from "./app-menu.mjs";
 import { nativeText, nativeTemplate, setNativeLanguage } from "./native-locale.mjs";
 import { createNativeContextMenus } from "./context-menu.mjs";
@@ -58,7 +61,7 @@ import { createDesktopTransferRegistry } from "./binary-transfer.mjs";
 import {
   createLinuxDesktopIntegration,
 } from "./linux-desktop-integration.mjs";
-import { automationRunnerDisabledReason, createComputerDescriber, createDesktopAutomationRunner, normalizeRunnerBaseUrl } from "./automation-runner.mjs";
+import { automationRunnerDisabledReason, collectDesktopInventory, createComputerDescriber, createDesktopAutomationRunner, normalizeRunnerBaseUrl } from "./automation-runner.mjs";
 import {
   desktopActivationRequired,
   enterprisePreactivationCommandAllowed,
@@ -185,6 +188,7 @@ const uiControlServer = createUiControlServer({
   appIdentifier: APP_IDENTIFIER,
   getWindow: () => createMainWindow(),
   browserTask: (args, options) => browserPanel?.browserTask(args, options) ?? { ok: false, code: "browser_unavailable" },
+  personalTask: args => zenoPersonalTools.execute(args),
   listWebMcpTools: (args, options) => browserPanel?.listWebMcpTools(args, options) ?? {
     ok: false,
     error: "The built-in browser is not ready.",
@@ -1411,6 +1415,69 @@ const wakeAutomationRunner = (wakeEvent) => {
 powerMonitor.on("resume", () => wakeAutomationRunner("resume"));
 powerMonitor.on("unlock-screen", () => wakeAutomationRunner("unlock-screen"));
 
+const zenoWindowOpen = () => Boolean(mainWindow && !mainWindow.isDestroyed() && mainWindow.isVisible());
+const zenoLocalRuntime = async () => {
+  const info = await runtimeManager.openworkServerInfo();
+  return { baseUrl: info.baseUrl, token: info.clientToken ?? info.ownerToken };
+};
+const zenoPersonal = createZenoPersonalService({
+  root: path.join(app.getPath('userData'), 'zeno-personal'),
+  origin: process.env.ZENO_API_ORIGIN,
+  safeStorage: require('electron').safeStorage,
+  platform: process.platform, name: os.hostname().slice(0, 100),
+  isWindowOpen: zenoWindowOpen,
+  openExternal: url => shell.openExternal(url),
+  onChanged: () => mainWindow?.webContents.send('zeno:account-changed'),
+});
+/** @type {ReturnType<typeof createZenoScheduler> | null} */
+let zenoScheduler = null;
+const zenoPersonalTools = createZenoPersonalToolsService({ service: zenoPersonal, isWindowOpen: zenoWindowOpen, executionModeForSession: id => zenoScheduler?.executionModeForSession(id) ?? 'interactive' });
+let zenoInventoryPromise = null, zenoInventorySnapshot = null, zenoInventoryAt = 0;
+async function zenoInventory() {
+  if (zenoInventorySnapshot && Date.now() - zenoInventoryAt < 30_000) return zenoInventorySnapshot;
+  if (zenoInventoryPromise) return zenoInventoryPromise;
+  zenoInventoryPromise = collectZenoInventory();
+  try { zenoInventorySnapshot = await zenoInventoryPromise; zenoInventoryAt = Date.now(); return zenoInventorySnapshot; }
+  finally { zenoInventoryPromise = null; }
+}
+async function collectZenoInventory() {
+  const inventory = await collectDesktopInventory({ getLocalRuntime: zenoLocalRuntime, describeComputer: async () => ({ label: '电脑', platform: process.platform, appVersion: resolveAppVersion(app) }) });
+  return {
+    workspaces: (inventory?.workspaces ?? []).map(item => ({ id: item.workspaceId, name: item.name })),
+    models: [...new Map((inventory?.workspaces ?? []).flatMap(item => item.models).map(model => [model.providerId + ':' + model.modelId, { providerId: model.providerId, modelId: model.modelId, label: model.name }])).values()],
+  };
+}
+function zenoNotify(title, body) {
+  const { Notification } = require('electron');
+  if (Notification.isSupported()) new Notification({ title: String(title).slice(0, 240), body: String(body ?? '').slice(0, 2000) }).show();
+}
+zenoScheduler = createZenoScheduler({ service: zenoPersonal, isWindowOpen: zenoWindowOpen, getLocalRuntime: zenoLocalRuntime, getInventory: zenoInventory, notify: zenoNotify });
+void app.whenReady().then(() => { if (NATIVE_ZENO_IDENTITY) void zenoScheduler.start()?.catch(() => {}); });
+powerMonitor.on('suspend', () => { if (NATIVE_ZENO_IDENTITY) void zenoScheduler.suspend().catch(() => {}); });
+powerMonitor.on('resume', () => { if (NATIVE_ZENO_IDENTITY) void zenoScheduler.wake().catch(() => {}); });
+powerMonitor.on('unlock-screen', () => { if (NATIVE_ZENO_IDENTITY) void zenoScheduler.tick().catch(() => {}); });
+ipcMain.handle('zeno:personal', async (event, command, ...args) => {
+  if (!NATIVE_ZENO_IDENTITY || !mainWindow || event.sender !== mainWindow.webContents || event.senderFrame !== mainWindow.webContents.mainFrame) throw new Error('此操作需要泽诺主窗口。');
+  if (command === 'connect') return zenoPersonal.connect();
+  if (command === 'disconnect') return zenoPersonal.disconnect();
+  if (command === 'getDevice') return zenoPersonal.getDevice();
+  if (command === 'request') return zenoPersonal.request(...args);
+  if (command === 'uploadMedia') return zenoPersonal.uploadMedia(args[0]);
+  if (command === 'readMedia') return zenoPersonal.readMedia(args[0], args[1]);
+  if (command === 'listWorkspaces') return (await zenoInventory()).workspaces;
+  if (command === 'listModels') return (await zenoInventory()).models;
+  if (command === 'notify') {
+    const title = String(args[0] ?? '').slice(0, 240), body = String(args[1] ?? '').slice(0, 2000);
+    zenoNotify(title, body);
+    return;
+  }
+  throw new Error('此操作不可用。');
+});
+app.on('will-quit', () => zenoPersonal.dispose());
+ipcMain.on('zeno:service-origin', (event) => {
+  event.returnValue = NATIVE_ZENO_IDENTITY && mainWindow && event.sender === mainWindow.webContents && event.senderFrame === mainWindow.webContents.mainFrame ? zenoPersonal.origin : null;
+});
+
 let runtimeDisposedForQuit = false;
 let runtimeDisposeInProgress = false;
 let runtimeBootstrapPromise = null;
@@ -1470,6 +1537,8 @@ const quitSequencer = createQuitSequencer({
   stop: async () => {
     showShutdownScreen();
     desktopAutomationRunner.stop();
+    await zenoScheduler?.suspend().catch(() => {});
+    await zenoScheduler?.dispose().catch(() => {});
     await Promise.all([
       disposeRuntimeBeforeQuit(),
       uiControlServer.stop(),
@@ -2551,6 +2620,7 @@ async function createMainWindow() {
   mainWindow.on("closed", () => {
     browserPanel.destroy();
     mainWindow = null;
+    if (NATIVE_ZENO_IDENTITY) void zenoScheduler.tick().catch(() => {});
   });
 
   const recoverRendererCrash = createRendererCrashRecovery({

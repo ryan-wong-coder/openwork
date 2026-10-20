@@ -1,6 +1,19 @@
 import assert from "node:assert/strict"
 import test from "node:test"
 import { FEATURES, LOCAL_GATEWAY_OPERATOR_FEATURES, localOperatorFeatureEnabled, resolveFeature } from "@openwork/features"
+import type { FeatureKey } from "@openwork/features"
+
+test("personal domains require the independent self-hosted operator rollout", () => {
+  const keys: FeatureKey[] = ["zenoAccounts", "personalCalendar", "fitnessTracking", "localScheduledTasks"]
+  for (const key of keys) {
+    assert.equal(FEATURES[key].default, false)
+    assert.equal(resolveFeature(key, { deployment: "self_hosted", locks: {}, overrides: {}, rollouts: {} }).enabled, false)
+    assert.equal(resolveFeature(key, { deployment: "cloud", locks: { [key]: true }, overrides: {}, rollouts: {} }).source, "unavailable")
+    assert.equal(localOperatorFeatureEnabled(key, true), true)
+    assert.equal(localOperatorFeatureEnabled(key, false), false)
+    assert.equal(resolveFeature(key, { deployment: "self_hosted", locks: LOCAL_GATEWAY_OPERATOR_FEATURES, overrides: {}, rollouts: { [key]: { enabled: true, killed: true } } }).enabled, false)
+  }
+})
 
 test("conversation canvas is off on fresh installs and unavailable on cloud", () => {
   assert.equal(FEATURES.conversationCanvas.default, false)

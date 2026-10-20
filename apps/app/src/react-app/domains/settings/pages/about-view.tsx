@@ -31,6 +31,14 @@ export function AboutView({ appVersion }: { appVersion?: string | null }) {
       </div>
       <div className="space-y-4 border-t border-border pt-5 text-xs text-muted-foreground">
         <p>{t("zeno.about.based_on")}</p>
+        <details className="group/fitness-license">
+          <summary className="flex w-fit cursor-pointer list-none items-center gap-2 py-2"><ChevronRight className="size-3.5 transition-transform group-open/fitness-license:rotate-90 motion-reduce:transition-none" strokeWidth={1.5} />健身功能与对应源码</summary>
+          <div className="space-y-3 pt-3 leading-relaxed">
+            <p>健身功能移植自 openGym v1.4.1，保留 GNU AGPL v3.0 与第三方声明。集成后的泽诺客户端按 GNU AGPL v3.0 分发，OpenWork 原有 MIT 声明保留。</p>
+            <p>动作目录使用中文文本和 SVG 图示，不包含受限的 Gym visual 动作图片或动画。</p>
+            <a className="underline underline-offset-4" href="https://github.com/ryan-wong-coder/openwork/tree/personal">查看完整源码、许可与构建说明</a>
+          </div>
+        </details>
         <details className="group/about-license">
           <summary className="flex w-fit cursor-pointer list-none items-center gap-2 py-2 text-xs text-muted-foreground"><ChevronRight className="size-3.5 transition-transform group-open/about-license:rotate-90 motion-reduce:transition-none" strokeWidth={1.5} />{t("zeno.about.core_license")}</summary>
           <div className="space-y-4 pt-3">

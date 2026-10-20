@@ -1,7 +1,7 @@
 {
   "name": "@openwork/desktop",
   "private": true,
-  "version": "1.0.5",
+  "version": "1.1.0",
   "desktopName": "com.differentai.openwork",
   "description": "OpenWork desktop shell",
   "author": {
@@ -28,6 +28,7 @@
     "prepare:sidecar": "node ./scripts/prepare-sidecar.mjs"
   },
   "dependencies": {
+    "@zeno/core": "workspace:*",
     "@modelcontextprotocol/client": "^2.2.0",
     "@modelcontextprotocol/sdk": "^1.31.0",
     "@opencode-ai/sdk": "^1.18.15",

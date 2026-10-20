@@ -185,7 +185,7 @@ const darkMode = matchMedia('(prefers-color-scheme: dark)');
 const syncPreviewLink = () => { document.querySelector('.product-preview').href = darkMode.matches ? '/assets/product-full-dark.webp' : '/assets/product-full-light.webp'; };
 darkMode.addEventListener('change', syncPreviewLink);
 syncPreviewLink();
-byId('previewNav').addEventListener('click', () => { byId('workspacePreview').open = true; });
+
 byId('installLink').addEventListener('click', () => {
   byId('installHelp').open = true;
   byId('installHelp').querySelector('summary').focus({ preventScroll: true });

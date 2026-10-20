@@ -267,6 +267,36 @@ test("native observation never uses the previous answer for a follow-up and neve
   assert.equal(page.historyScope, "full")
 })
 
+test("recovered personal observations remain pinned to their durable turn after later messages", async () => {
+  const native = nativeFixture()
+  const first = createDesktopSessionAdapter(native)
+  const signal = new AbortController().signal
+  const receipt = await first.create(command(), signal)
+  await first.send(receipt, { prompt: "scheduled request", messageId: "msg_scheduled", model: null }, signal)
+  native.messages.push({ id: "msg_scheduledreply", role: "assistant", text: "scheduled result" })
+  native.messages.push({ id: "msg_interactive", role: "user", text: "later request" }, { id: "msg_interactivereply", role: "assistant", text: "unrelated result" })
+  native.active = true
+  native.pendingPermission = true
+  const restarted = createDesktopSessionAdapter({ ...native, observationMessageId: () => "msg_scheduled" })
+  const progress = await restarted.observe(receipt, signal)
+  assert.equal(progress.status, "idle")
+  assert.equal(progress.finalText, "scheduled result")
+  assert.equal(progress.waitingFor, null)
+  native.messages.splice(1, 1)
+  const missingReply = await restarted.observe(receipt, signal)
+  assert.equal(missingReply.status, "error")
+  assert.equal(missingReply.error.code, "turn_superseded")
+  assert.equal(missingReply.finalText, undefined)
+  native.messages.splice(1)
+  const waiting = await restarted.observe(receipt, signal)
+  assert.equal(waiting.waitingFor, "permission")
+  native.messages.splice(0, 1)
+  native.messages.push({ id: "msg_other", role: "user", text: "other" }, { id: "msg_otherreply", role: "assistant", text: "never mine" })
+  const absent = await restarted.observe(receipt, signal)
+  assert.equal(absent.status, "running")
+  assert.equal(absent.finalText, undefined)
+})
+
 test("native stop compares the current turn; restart probes the original owning engine", async () => {
   const native = nativeFixture()
   const adapter = createDesktopSessionAdapter(native)

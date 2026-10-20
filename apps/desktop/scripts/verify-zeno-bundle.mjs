@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import asar from "@electron/asar";
 import YAML from "yaml";
 import { verifyCanvasPackaging } from "./verify-canvas-packaging.mjs";
+import { verifyPersonalPackaging, personalRuntimeSmokeSource } from "./verify-personal-packaging.mjs";
 
 const desktop = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const [platform, arch] = process.argv.slice(2);
@@ -29,6 +30,7 @@ for (const name of ["local-client-profile", "session-activity", "gateway-image-t
 }
 for (const name of ["opencode", "opencode2", "versions.json"]) readFileSync(join(resources, "sidecars", `${name}${platform === "win32" && name !== "versions.json" ? ".exe" : ""}`));
 const canvas = verifyCanvasPackaging({ archive, resources });
+const personal = verifyPersonalPackaging({ archive });
 const nativeTarget = platform === process.platform && arch === process.arch;
 if (nativeTarget) {
   const temporary = mkdtempSync(join(tmpdir(), "zeno-packaged-server-"));
@@ -53,7 +55,7 @@ try {
   const host=await fetch(server.url+'/gateway/config',{headers:{'X-OpenWork-Host-Token':'zeno-fixture-host'}}); assert.equal(host.status,200);
   console.log(JSON.stringify({packagedServer:true,nativeModules:true,clientStatus:true,hostBoundary:true}));
 } finally {await server.stop();}
-`);
+` + personalRuntimeSmokeSource);
   const executable = platform === "darwin" ? join(app, "MacOS", "泽诺 Zeno") : join(app, platform === "win32" ? "泽诺 Zeno.exe" : "openwork");
   const inherited = { ...process.env };
   for (const key of Object.keys(inherited)) if (/^(?:OPENWORK_|OPENCODE_|DEN_|VITE_DEN_)/.test(key)) delete inherited[key];
@@ -62,6 +64,7 @@ try {
       timeout: 90_000,
       stdio: "inherit",
       env: { ...inherited, ELECTRON_RUN_AS_NODE: "1", NODE_OPTIONS: "", NODE_PATH: "", ZENO_SMOKE_ARCHIVE: archive,
+        ZENO_SMOKE_PERSONAL_ROOT: join(temporary, "synthetic-personal"),
         OPENWORK_CLIENT_PROFILE: "local-gateway", OPENWORK_SERVER_CONFIG: join(temporary, "openwork/server.json"),
         OPENWORK_RUNTIME_DB: join(temporary, "openwork/runtime.sqlite"), OPENWORK_ENV_STORE: join(temporary, "openwork/env.json"),
         OPENWORK_ENGINE_V2_PREVIEW: "0", OPENCODE_CONFIG_DIR: join(temporary, "opencode"), OPENCODE_DB: join(temporary, "opencode.sqlite"),
@@ -71,4 +74,4 @@ try {
     if (result.error || result.status !== 0) throw new Error("Packaged Electron Node server smoke failed.");
   } finally { rmSync(temporary, { recursive: true, force: true }); }
 }
-console.log(JSON.stringify({ version, platform, arch, brand: metadata.openworkBrand, signing: metadata.zenoReleaseSigning, updatesEnabled: metadata.zenoReleaseUpdatesEnabled, feed: feed.url, runtimeSmoke: nativeTarget ? "passed" : "cross-architecture-static-only", canvas }));
+console.log(JSON.stringify({ version, platform, arch, brand: metadata.openworkBrand, signing: metadata.zenoReleaseSigning, updatesEnabled: metadata.zenoReleaseUpdatesEnabled, feed: feed.url, runtimeSmoke: nativeTarget ? "passed" : "cross-architecture-static-only", canvas, personal }));

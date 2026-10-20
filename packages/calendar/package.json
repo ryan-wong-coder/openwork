@@ -5,6 +5,7 @@
   "type": "module",
   "description": "Calendar logic shared by the desktop app and Workbot: time and DST helpers, Google and Outlook adapters over Den's calendar routes, Automation blocks, layout and formatting, and TanStack Query hooks.",
   "exports": {
+    "./time": { "types": "./src/time.ts", "development": "./src/time.ts", "default": "./src/time.ts" },
     ".": {
       "types": "./src/index.ts",
       "development": "./src/index.ts",

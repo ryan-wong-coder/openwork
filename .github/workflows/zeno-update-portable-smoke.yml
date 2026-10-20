@@ -1,0 +1,153 @@
+name: Zeno real Windows and Linux update smoke
+
+# Dispatch only after the public website's target feeds have been activated.
+# Original NSIS/AppImage baseline -> actual updater -> automatic native restart.
+on:
+  workflow_dispatch:
+    inputs:
+      baseline_run_id:
+        description: Successful Release Zeno run containing the original 1.0.0 artifacts
+        type: string
+        required: true
+        default: "38883434626"
+      target_run_id:
+        description: Successful Release Zeno run matching the checked-out target version
+        type: string
+        required: true
+      platform:
+        description: Native x64 platform to validate
+        type: choice
+        default: both
+        options: [both, win32, linux]
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: zeno-real-portable-update-${{ github.ref }}-${{ inputs.platform || 'both' }}
+  cancel-in-progress: false
+
+jobs:
+  select-platforms:
+    if: github.ref == 'refs/heads/personal'
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.select.outputs.matrix }}
+    steps:
+      - name: Validate platform selection
+        id: select
+        env:
+          SMOKE_PLATFORM: ${{ inputs.platform || 'both' }}
+        run: |
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import {appendFileSync} from 'node:fs';
+          const selected=process.env.SMOKE_PLATFORM;
+          assert.ok(['both','win32','linux'].includes(selected));
+          const lanes=[{platform:'win32',runner:'windows-2025'},{platform:'linux',runner:'ubuntu-24.04'}];
+          appendFileSync(process.env.GITHUB_OUTPUT, `matrix=${JSON.stringify({include:lanes.filter(lane=>selected==='both'||lane.platform===selected)})}\n`);
+          JS
+
+  native-update:
+    needs: select-platforms
+    if: github.ref == 'refs/heads/personal'
+    name: Real update ${{ matrix.platform }}/x64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.select-platforms.outputs.matrix) }}
+    defaults:
+      run:
+        shell: bash
+    env:
+      PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.4.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Install existing validation libraries only
+        run: pnpm --filter @openwork/desktop... install --frozen-lockfile --ignore-scripts
+      - name: Check native isolation and metadata without launching an application
+        run: node --test apps/desktop/test/zeno-update-portable-smoke.test.mjs
+      - name: Validate explicit release runs and require the target publicly deployed
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          BASELINE_RUN_ID: ${{ inputs.baseline_run_id }}
+          TARGET_RUN_ID: ${{ inputs.target_run_id }}
+          EXPECTED_PLATFORM: ${{ matrix.platform }}
+          HISTORICAL_DIRECTORY: ${{ runner.temp }}/zeno-baseline-metadata
+        run: |
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import {readFileSync,mkdirSync} from 'node:fs';
+          import {execFileSync} from 'node:child_process';
+          assert.equal(process.arch,'x64'); assert.equal(process.platform,process.env.EXPECTED_PLATFORM);
+          const target=JSON.parse(readFileSync('apps/desktop/package.json','utf8')).version;
+          assert.match(target,/^\d+\.\d+\.\d+$/);
+          const parts=target.split('.').map(Number); assert.ok(parts[0]>1||parts[0]===1&&(parts[1]>0||parts[2]>0));
+          for(const id of [process.env.BASELINE_RUN_ID,process.env.TARGET_RUN_ID]){
+            assert.match(id,/^[1-9]\d*$/);
+            const run=JSON.parse(execFileSync('gh',['api',`repos/${process.env.GH_REPO}/actions/runs/${id}`],{encoding:'utf8'}));
+            assert.equal(run.name,'Release Zeno'); assert.equal(run.status,'completed'); assert.equal(run.conclusion,'success');
+          }
+          assert.notEqual(process.env.BASELINE_RUN_ID,process.env.TARGET_RUN_ID);
+          const historical=JSON.parse(execFileSync('gh',['release','view','zeno-v1.0.0','--json','isDraft,tagName'],{encoding:'utf8'}));
+          assert.equal(historical.isDraft,false); assert.equal(historical.tagName,'zeno-v1.0.0');
+          mkdirSync(process.env.HISTORICAL_DIRECTORY);
+          execFileSync('gh',['release','download','zeno-v1.0.0','--pattern','zeno-release.json','--dir',process.env.HISTORICAL_DIRECTORY],{stdio:'inherit'});
+          const response=await fetch('https://www.zeno.ryan-wong.cn/api/releases/latest.json',{redirect:'error',cache:'no-store',signal:AbortSignal.timeout(10000)});
+          assert.equal(response.status,200); const release=await response.json(); assert.equal(release.version,target); assert.equal(release.artifacts?.length,10);
+          JS
+      - name: Download original historical baseline build
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.baseline_run_id }}
+          name: zeno-${{ matrix.platform }}-x64
+          path: ${{ runner.temp }}/zeno-release-baseline
+      - name: Download target only for frozen code and installer integrity reference
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.target_run_id }}
+          name: zeno-${{ matrix.platform }}-x64
+          path: ${{ runner.temp }}/zeno-release-target
+      - name: Prepare hosted Linux virtual display and standard user namespace sandbox
+        if: matrix.platform == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends xvfb xauth libgtk-3-0t64 libnss3 libasound2t64
+          # Ubuntu's hosted AppArmor setting otherwise blocks Electron's userns
+          # sandbox in an unchanged AppImage. This modifies only the disposable VM.
+          if test -e /proc/sys/kernel/apparmor_restrict_unprivileged_userns; then sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0; fi
+      - name: Run original NSIS update on hosted Windows
+        if: matrix.platform == 'win32'
+        env:
+          ZENO_UPDATE_BASELINE_DIR: ${{ runner.temp }}/zeno-release-baseline
+          ZENO_UPDATE_BASELINE_METADATA: ${{ runner.temp }}/zeno-baseline-metadata/zeno-release.json
+          ZENO_UPDATE_TARGET_DIR: ${{ runner.temp }}/zeno-release-target
+        run: node apps/desktop/scripts/zeno-update-portable-smoke.mjs
+      - name: Run original AppImage update on hosted Linux under Xvfb
+        if: matrix.platform == 'linux'
+        env:
+          ZENO_UPDATE_BASELINE_DIR: ${{ runner.temp }}/zeno-release-baseline
+          ZENO_UPDATE_BASELINE_METADATA: ${{ runner.temp }}/zeno-baseline-metadata/zeno-release.json
+          ZENO_UPDATE_TARGET_DIR: ${{ runner.temp }}/zeno-release-target
+        run: xvfb-run --auto-servernum --server-args="-screen 0 1440x1000x24 -nolisten tcp" node apps/desktop/scripts/zeno-update-portable-smoke.mjs
+      - name: Retain sanitized evidence only, never app state, credentials or raw logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zeno-real-update-${{ matrix.platform }}-x64
+          path: |
+            ${{ runner.temp }}/zeno-portable-update-evidence/report.json
+            ${{ runner.temp }}/zeno-portable-update-evidence/updated-app.png
+          if-no-files-found: warn
+          retention-days: 14

@@ -158,6 +158,22 @@ try {
 }
 
 contextBridge.exposeInMainWorld("__OPENWORK_ELECTRON__", {
+  zenoPersonal: {
+    serviceOrigin: ipcRenderer.sendSync('zeno:service-origin'),
+    request: (method, path, body, expectedUserId) => ipcRenderer.invoke('zeno:personal', 'request', method, path, body, expectedUserId),
+    connect: () => ipcRenderer.invoke('zeno:personal', 'connect'),
+    disconnect: () => ipcRenderer.invoke('zeno:personal', 'disconnect'),
+    getDevice: () => ipcRenderer.invoke('zeno:personal', 'getDevice'),
+    listWorkspaces: () => ipcRenderer.invoke('zeno:personal', 'listWorkspaces'),
+    listModels: () => ipcRenderer.invoke('zeno:personal', 'listModels'),
+    notify: (title, body) => ipcRenderer.invoke('zeno:personal', 'notify', title, body),
+    uploadMedia: (file) => ipcRenderer.invoke('zeno:personal', 'uploadMedia', file),
+    readMedia: (id, expectedUserId) => ipcRenderer.invoke('zeno:personal', 'readMedia', id, expectedUserId),
+    onAccountChanged(callback) {
+      const listener = () => callback(); ipcRenderer.on('zeno:account-changed', listener);
+      return () => ipcRenderer.removeListener('zeno:account-changed', listener);
+    },
+  },
   ...(conversationCanvas ? { conversationCanvas } : {}),
   invokeDesktop(command, ...args) {
     return ipcRenderer.invoke("openwork:desktop", command, ...args);

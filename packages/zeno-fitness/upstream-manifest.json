@@ -1,0 +1,419 @@
+{
+  "repository": "https://github.com/DuarteSantos8/openGym",
+  "commit": "464355ef43d4c8f8a4e0bb6db9c2af7f240593b5",
+  "files": [
+    {
+      "path": "frontend/src/exercise-names/zh.js",
+      "upstreamSha256": "11e9efef76ba19659bb0822ca561ac21e3f1ef7f1f4b13c294338a2e2426d69c",
+      "localSha256": "11e9efef76ba19659bb0822ca561ac21e3f1ef7f1f4b13c294338a2e2426d69c",
+      "bytes": 185224,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/instr/zh.js",
+      "upstreamSha256": "c854f63d289ee2039c690882f126c2c3d5c608215cdbd6ceff4dd11779763b6a",
+      "localSha256": "c854f63d289ee2039c690882f126c2c3d5c608215cdbd6ceff4dd11779763b6a",
+      "bytes": 481585,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/accent.js",
+      "upstreamSha256": "638e1d7b643fef56fbac0a7893b904b7fbbfc9ed9a8b38e09497e6644fea491f",
+      "localSha256": "638e1d7b643fef56fbac0a7893b904b7fbbfc9ed9a8b38e09497e6644fea491f",
+      "bytes": 9981,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/active-exercise-swap.js",
+      "upstreamSha256": "7249bc351998e6838693b8dcd129aab2cb57135deac0c33cd0acbd89ce4fa276",
+      "localSha256": "7249bc351998e6838693b8dcd129aab2cb57135deac0c33cd0acbd89ce4fa276",
+      "bytes": 2028,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/active-workout-order.js",
+      "upstreamSha256": "02344c557a43272bbedf17b5e754537bd703d6a3fc72f370823795bb6e3b9c27",
+      "localSha256": "02344c557a43272bbedf17b5e754537bd703d6a3fc72f370823795bb6e3b9c27",
+      "bytes": 4202,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/backfill.js",
+      "upstreamSha256": "0648c5656ecc5b3756ce461c20bd5b2ce04b0cde0b3b54c3f59ed2d88bb058ed",
+      "localSha256": "0648c5656ecc5b3756ce461c20bd5b2ce04b0cde0b3b54c3f59ed2d88bb058ed",
+      "bytes": 6028,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/backoff.js",
+      "upstreamSha256": "eb793b832e3793842d01cdbfb844532d2828b69a4632e40cdb1a4d4802a49af9",
+      "localSha256": "eb793b832e3793842d01cdbfb844532d2828b69a4632e40cdb1a4d4802a49af9",
+      "bytes": 3606,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/bar.js",
+      "upstreamSha256": "626848cf64c89ad144eab0e456411c105c6085efd76f435c733126e320b28a6b",
+      "localSha256": "626848cf64c89ad144eab0e456411c105c6085efd76f435c733126e320b28a6b",
+      "bytes": 3770,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/body-paths.js",
+      "upstreamSha256": "6b30b4c4bbb69ce64d871c97f97d0fd4f2ac8863770b739afacb6fc7527a8642",
+      "localSha256": "6b30b4c4bbb69ce64d871c97f97d0fd4f2ac8863770b739afacb6fc7527a8642",
+      "bytes": 94285,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/catalogue-langs.js",
+      "upstreamSha256": "fce2da3715b823917442812a6549abe7ea4add54f2561475a36ea3f9482bd604",
+      "localSha256": "fce2da3715b823917442812a6549abe7ea4add54f2561475a36ea3f9482bd604",
+      "bytes": 309,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/catalogue-v13-ids.json",
+      "upstreamSha256": "a3b95330c04d90cdfde0da689c3aa25f643e5d1d0e8f60ff66a7d809c92f3571",
+      "localSha256": "a3b95330c04d90cdfde0da689c3aa25f643e5d1d0e8f60ff66a7d809c92f3571",
+      "bytes": 9270,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/day-notes.js",
+      "upstreamSha256": "aedb9f883b80df678be99aa2ce9530a78e87ad901574765cb8df5af5c76b06e9",
+      "localSha256": "aedb9f883b80df678be99aa2ce9530a78e87ad901574765cb8df5af5c76b06e9",
+      "bytes": 3324,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/dumbbells.js",
+      "upstreamSha256": "4553dae582cff4c66a7b8e41db125cfd500fbf81fbdf5fd8c8f04fe066d82162",
+      "localSha256": "4553dae582cff4c66a7b8e41db125cfd500fbf81fbdf5fd8c8f04fe066d82162",
+      "bytes": 12502,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/effort.js",
+      "upstreamSha256": "4c671fb91a15af4ad3b4ba105a0bf13597fd294adcf447792fec5dfd4e224750",
+      "localSha256": "4c671fb91a15af4ad3b4ba105a0bf13597fd294adcf447792fec5dfd4e224750",
+      "bytes": 10074,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/equipment.js",
+      "upstreamSha256": "4446d975a0a85c6c8a58bd51d7d77981bd265ddc079b5e1f12111ec688052c83",
+      "localSha256": "4446d975a0a85c6c8a58bd51d7d77981bd265ddc079b5e1f12111ec688052c83",
+      "bytes": 3817,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/exercise-muscle-map.json",
+      "upstreamSha256": "7462af233f3590c5826bf60239dc333ff4e1c327bad2ec0a9941b8c8f0ed32d7",
+      "localSha256": "7462af233f3590c5826bf60239dc333ff4e1c327bad2ec0a9941b8c8f0ed32d7",
+      "bytes": 40398,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/exercises-data.js",
+      "upstreamSha256": "c95191c9fc41ed5937d5bf0d8a25c0ccb5cd5ab8519f32cb6e283c4f6e5bfb10",
+      "localSha256": "c37212700b91672e79d7d078837bc17bb398b801d6c8673626baf447f29c221e",
+      "bytes": 974498,
+      "modified": true
+    },
+    {
+      "path": "frontend/src/lib/exercises.js",
+      "upstreamSha256": "499c3ea9afef08640cc47d77cd7baa401f47db7c6d15f712fb2db0d045b0a2fa",
+      "localSha256": "499c3ea9afef08640cc47d77cd7baa401f47db7c6d15f712fb2db0d045b0a2fa",
+      "bytes": 33395,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/finish-workout.js",
+      "upstreamSha256": "7bd47665d31328fa7fcf270620b22f36944ed8fc5a8397690d4d165c266cf0bb",
+      "localSha256": "7bd47665d31328fa7fcf270620b22f36944ed8fc5a8397690d4d165c266cf0bb",
+      "bytes": 6973,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/fit-export.js",
+      "upstreamSha256": "5910b099b05ad9e00aaf1a7e3864b0b96ef127f34909cdc024dd9d816e52970f",
+      "localSha256": "5910b099b05ad9e00aaf1a7e3864b0b96ef127f34909cdc024dd9d816e52970f",
+      "bytes": 20410,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/format.js",
+      "upstreamSha256": "e810c9147a2943d929d8b03b0b43b092af7eaec6817d04f62b55e6d18f6fb53d",
+      "localSha256": "e810c9147a2943d929d8b03b0b43b092af7eaec6817d04f62b55e6d18f6fb53d",
+      "bytes": 9778,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/health-connect.js",
+      "upstreamSha256": "94d7004bc372389e95a8b2435de9539a848ac2e15bbcfb0d7990616629863403",
+      "localSha256": "94d7004bc372389e95a8b2435de9539a848ac2e15bbcfb0d7990616629863403",
+      "bytes": 6785,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/hevy-id-map.js",
+      "upstreamSha256": "3538f2ccf6eac8a68ea9cb61bb55747a4450e568e9052a529bb773558bfcfbc0",
+      "localSha256": "3538f2ccf6eac8a68ea9cb61bb55747a4450e568e9052a529bb773558bfcfbc0",
+      "bytes": 16392,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/history.js",
+      "upstreamSha256": "208544fb7fd185e97c4f4269e8e26ee4c31b97edcdabf7ac01b6748c806b8df8",
+      "localSha256": "208544fb7fd185e97c4f4269e8e26ee4c31b97edcdabf7ac01b6748c806b8df8",
+      "bytes": 67950,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/i18n-core.js",
+      "upstreamSha256": "b0a0585328d2a710908e6434b7763195b1af1966354f7eb565e87451260f67be",
+      "localSha256": "b0a0585328d2a710908e6434b7763195b1af1966354f7eb565e87451260f67be",
+      "bytes": 14500,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/import-csv.js",
+      "upstreamSha256": "40c91d55e32a03f8ed16005915d1f510233a2cc0db25f3599f5054d80226e5eb",
+      "localSha256": "40c91d55e32a03f8ed16005915d1f510233a2cc0db25f3599f5054d80226e5eb",
+      "bytes": 44737,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/import-hevy.js",
+      "upstreamSha256": "f64e894fbda25747c4df13fb8ef153ddb9d6242f1e4be854a8643acaff5733f0",
+      "localSha256": "f64e894fbda25747c4df13fb8ef153ddb9d6242f1e4be854a8643acaff5733f0",
+      "bytes": 19821,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/incline.js",
+      "upstreamSha256": "4720bf496917d79108d2f7bf4b0b9b4503a4d506b1f9da05d71c10add30bf433",
+      "localSha256": "4720bf496917d79108d2f7bf4b0b9b4503a4d506b1f9da05d71c10add30bf433",
+      "bytes": 2723,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/measurements.js",
+      "upstreamSha256": "fffcdafb3dc8839ccd38060ad335e69c98989278772954a0129e5633497550f8",
+      "localSha256": "fffcdafb3dc8839ccd38060ad335e69c98989278772954a0129e5633497550f8",
+      "bytes": 7720,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/media-refs.js",
+      "upstreamSha256": "6079e0b86047838a8173bd9408fd3bc6a67e26aff6a4805acf33c2516e3f85ab",
+      "localSha256": "6079e0b86047838a8173bd9408fd3bc6a67e26aff6a4805acf33c2516e3f85ab",
+      "bytes": 11460,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/muscles.js",
+      "upstreamSha256": "28b51b39e15129fe3c736a1557da3bbd008b2639975585d3409c67bdc10ddf13",
+      "localSha256": "28b51b39e15129fe3c736a1557da3bbd008b2639975585d3409c67bdc10ddf13",
+      "bytes": 16082,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/onerm.js",
+      "upstreamSha256": "e644f0dbf491107d2259f248d137365889ce6e38dee82b4648642c6902629d17",
+      "localSha256": "e644f0dbf491107d2259f248d137365889ce6e38dee82b4648642c6902629d17",
+      "bytes": 10717,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/plan-share.js",
+      "upstreamSha256": "c0a60462a26f9c9324cf29b3fa0d2f6f53dc5002f3ab570eed083f0c9001e135",
+      "localSha256": "c0a60462a26f9c9324cf29b3fa0d2f6f53dc5002f3ab570eed083f0c9001e135",
+      "bytes": 26170,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/plates.js",
+      "upstreamSha256": "b03cfb975bd0cef49040c04c63f938ecb4268f7b998dfe623e43570a9bab75cb",
+      "localSha256": "b03cfb975bd0cef49040c04c63f938ecb4268f7b998dfe623e43570a9bab75cb",
+      "bytes": 12432,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/progression.js",
+      "upstreamSha256": "bd04a97d275325afcc368a7b48dea2131682d085976236d1c9b15064c78007d1",
+      "localSha256": "3fdd7382a5de03363a739cd04149619f7652e20141af6e6885a4cc8d476a2733",
+      "bytes": 47710,
+      "modified": true
+    },
+    {
+      "path": "frontend/src/lib/pyramid.js",
+      "upstreamSha256": "c90dff0ccf994fe196f5df7fe01183e7943a980a9faa3dd7fd7fc544a36cb969",
+      "localSha256": "c90dff0ccf994fe196f5df7fe01183e7943a980a9faa3dd7fd7fc544a36cb969",
+      "bytes": 5519,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/queue.js",
+      "upstreamSha256": "f148de72c2d03c10654d366589d435105b286e8a6f153b677825a650c27117b4",
+      "localSha256": "f148de72c2d03c10654d366589d435105b286e8a6f153b677825a650c27117b4",
+      "bytes": 12084,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/recovery.js",
+      "upstreamSha256": "3207c4bb00755bf3bb4322dab83189a1287ffad6e9634249285be25179b89f0d",
+      "localSha256": "3207c4bb00755bf3bb4322dab83189a1287ffad6e9634249285be25179b89f0d",
+      "bytes": 26189,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/rep-range.js",
+      "upstreamSha256": "6f4b36330c28427d4cc459b8e25fc5f5fb56b000c7e131471a996933e5db332c",
+      "localSha256": "6f4b36330c28427d4cc459b8e25fc5f5fb56b000c7e131471a996933e5db332c",
+      "bytes": 747,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/rotation.js",
+      "upstreamSha256": "52dc91dc4e31f8646344fd7132a40eaf90e3db55a2b613b81b01c4583f2ebf71",
+      "localSha256": "52dc91dc4e31f8646344fd7132a40eaf90e3db55a2b613b81b01c4583f2ebf71",
+      "bytes": 12301,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/routines.js",
+      "upstreamSha256": "43342babc69c316b0cb9aece7c1e80ddd45afd6c3ecc7110ce3927797f1adb28",
+      "localSha256": "43342babc69c316b0cb9aece7c1e80ddd45afd6c3ecc7110ce3927797f1adb28",
+      "bytes": 12107,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/session-edit.js",
+      "upstreamSha256": "e117ba2daddded99314caf0064f5914e058f5f295ab0542eca9a56e0e2e2322f",
+      "localSha256": "e117ba2daddded99314caf0064f5914e058f5f295ab0542eca9a56e0e2e2322f",
+      "bytes": 12881,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/session-merge.js",
+      "upstreamSha256": "e012b8b23e47585a90f185329056963ab289c32ec3e7da51ce597c1a86a00f46",
+      "localSha256": "e012b8b23e47585a90f185329056963ab289c32ec3e7da51ce597c1a86a00f46",
+      "bytes": 2212,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/session-noprog.js",
+      "upstreamSha256": "015fec1bdab771160a1e4cf7866b994dab8d54b7ea924231d4455d0a1dd35556",
+      "localSha256": "015fec1bdab771160a1e4cf7866b994dab8d54b7ea924231d4455d0a1dd35556",
+      "bytes": 2636,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/session-repeat.js",
+      "upstreamSha256": "bca2aae992f52e38949c1b5f9d5aa2ec4496420f2177e8a63bdd1f8d4e73a466",
+      "localSha256": "bca2aae992f52e38949c1b5f9d5aa2ec4496420f2177e8a63bdd1f8d4e73a466",
+      "bytes": 3229,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/session-routines.js",
+      "upstreamSha256": "24982cf8b0a87ee53d16ee3d05f0598bc3dd2351103b8493a2bf33bf3465dc7a",
+      "localSha256": "24982cf8b0a87ee53d16ee3d05f0598bc3dd2351103b8493a2bf33bf3465dc7a",
+      "bytes": 7236,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/session-start.js",
+      "upstreamSha256": "5f8199c6037eeedbacee02802f3f662a530efc910c163196c00700835f898a94",
+      "localSha256": "5f8199c6037eeedbacee02802f3f662a530efc910c163196c00700835f898a94",
+      "bytes": 8298,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/speed.js",
+      "upstreamSha256": "7e527a0ec35eed1d5e949696927d281ece0c30be0867e7341f5c7d496769b3a8",
+      "localSha256": "7e527a0ec35eed1d5e949696927d281ece0c30be0867e7341f5c7d496769b3a8",
+      "bytes": 2355,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/starter.js",
+      "upstreamSha256": "62f2fa464863cd01f60eea7d11c18325dcba172aedcd95fe20034f3ffd173acd",
+      "localSha256": "62f2fa464863cd01f60eea7d11c18325dcba172aedcd95fe20034f3ffd173acd",
+      "bytes": 8088,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/structuralBalance.js",
+      "upstreamSha256": "da582e4d71263473f19928679af12fadf81545dba954ac890a4d178cf7d08d84",
+      "localSha256": "da582e4d71263473f19928679af12fadf81545dba954ac890a4d178cf7d08d84",
+      "bytes": 16437,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/structuralBalanceTemplates.js",
+      "upstreamSha256": "5c15d88cc05d8d540e1283e2032b0072e661852b04d40af1f4cc0aa3be3eb336",
+      "localSha256": "5c15d88cc05d8d540e1283e2032b0072e661852b04d40af1f4cc0aa3be3eb336",
+      "bytes": 8124,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/superset-meta.js",
+      "upstreamSha256": "4adf843ed6190c70b0abb690aac3c2f94cf803f22e69cf4c498e7ac3e78fecc6",
+      "localSha256": "4adf843ed6190c70b0abb690aac3c2f94cf803f22e69cf4c498e7ac3e78fecc6",
+      "bytes": 2007,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/supersetFlow.js",
+      "upstreamSha256": "e252a377e2e1a69a61593cea567209750e29035a921cacf57d13bc7bf8d45a71",
+      "localSha256": "e252a377e2e1a69a61593cea567209750e29035a921cacf57d13bc7bf8d45a71",
+      "bytes": 7215,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/sync-merge.js",
+      "upstreamSha256": "6c8ff11a144d3aca9c38e83b41a7bf7150a08f751574f1e8c166d24e2ff14681",
+      "localSha256": "6c8ff11a144d3aca9c38e83b41a7bf7150a08f751574f1e8c166d24e2ff14681",
+      "bytes": 61014,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/units.js",
+      "upstreamSha256": "106399d2749dc990e4f2786724fa417f2dc55c64bcc02d7c3a84d40354ea7466",
+      "localSha256": "106399d2749dc990e4f2786724fa417f2dc55c64bcc02d7c3a84d40354ea7466",
+      "bytes": 6194,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/workout-date.js",
+      "upstreamSha256": "db3826c0d89bedd30f3ecdf09994e985c0701bc80a94cc8206181ed275425e55",
+      "localSha256": "db3826c0d89bedd30f3ecdf09994e985c0701bc80a94cc8206181ed275425e55",
+      "bytes": 7640,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/workout-model.js",
+      "upstreamSha256": "80aacd2d26796ff4bde0b2e7b7e1ac0019192aa76bb143927d091b33db0b0114",
+      "localSha256": "80aacd2d26796ff4bde0b2e7b7e1ac0019192aa76bb143927d091b33db0b0114",
+      "bytes": 18866,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/workout-text.js",
+      "upstreamSha256": "03b9260a6e1cf890c255367cdd582cc8879ed4d729d75e5f8623b01bb16780cf",
+      "localSha256": "03b9260a6e1cf890c255367cdd582cc8879ed4d729d75e5f8623b01bb16780cf",
+      "bytes": 2746,
+      "modified": false
+    },
+    {
+      "path": "frontend/src/lib/zip.js",
+      "upstreamSha256": "956debb330d1797f2ac5c68294aaf548130735a99107980e3cc87aafc4f64735",
+      "localSha256": "956debb330d1797f2ac5c68294aaf548130735a99107980e3cc87aafc4f64735",
+      "bytes": 7956,
+      "modified": false
+    }
+  ]
+}

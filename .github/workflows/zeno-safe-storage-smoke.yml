@@ -1,0 +1,96 @@
+name: Zeno real OS safeStorage smoke
+
+# Current-source service + genuine OS safeStorage, with synthetic accounts only.
+# No production app install, BrowserWindow, real login or model request.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: zeno-real-safe-storage-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  os-storage:
+    if: github.ref == 'refs/heads/personal'
+    name: OS safeStorage ${{ matrix.platform }}/${{ matrix.arch }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15-intel
+            platform: darwin
+            arch: x64
+          - runner: macos-15
+            platform: darwin
+            arch: arm64
+          - runner: windows-2025
+            platform: win32
+            arch: x64
+          - runner: ubuntu-24.04
+            platform: linux
+            arch: x64
+    defaults:
+      run:
+        shell: bash
+    env:
+      PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.4.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Install pinned dependencies without running unrelated native rebuilds
+        run: pnpm --filter @openwork/desktop... install --frozen-lockfile --ignore-scripts
+      - name: Install the lockfile's exact Electron runtime and compile shared JS
+        run: |
+          node apps/desktop/node_modules/electron/install.js
+          pnpm --filter @openwork/types build
+          pnpm --filter @zeno/core build
+      - name: Verify guarded entry, report redaction and unavailable-backend rejection
+        run: node --test apps/desktop/test/zeno-safe-storage-probe.test.mjs
+      - name: Validate native runner CPU and platform
+        env:
+          EXPECTED_PLATFORM: ${{ matrix.platform }}
+          EXPECTED_ARCH: ${{ matrix.arch }}
+        run: node -e 'if(process.platform!==process.env.EXPECTED_PLATFORM||process.arch!==process.env.EXPECTED_ARCH)throw Error("Native runner mismatch")'
+      - name: Exercise system Keychain or DPAPI without creating a window
+        if: matrix.platform != 'linux'
+        run: node apps/desktop/scripts/zeno-safe-storage-probe.mjs
+      - name: Install hosted Linux Secret Service and virtual display dependencies
+        if: matrix.platform == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends dbus-x11 gnome-keyring libsecret-1-0 xvfb xauth libgtk-3-0t64 libnss3 libasound2t64
+          if test -e /proc/sys/kernel/apparmor_restrict_unprivileged_userns; then sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0; fi
+      - name: Exercise actual libsecret in a private hosted D-Bus session
+        if: matrix.platform == 'linux'
+        run: |
+          probe_keyring_root="$(mktemp -d "$RUNNER_TEMP/zeno-keyring-XXXXXX")"
+          trap 'rm -rf -- "$probe_keyring_root"' EXIT
+          export XDG_CONFIG_HOME="$probe_keyring_root/config"
+          export XDG_DATA_HOME="$probe_keyring_root/data"
+          export XDG_RUNTIME_DIR="$probe_keyring_root/runtime"
+          mkdir -p "$XDG_CONFIG_HOME" "$XDG_DATA_HOME" "$XDG_RUNTIME_DIR"
+          chmod 700 "$probe_keyring_root" "$XDG_CONFIG_HOME" "$XDG_DATA_HOME" "$XDG_RUNTIME_DIR"
+          dbus-run-session -- xvfb-run --auto-servernum --server-args="-screen 0 1280x800x24 -nolisten tcp" bash -euo pipefail -c '
+            # A public synthetic password unlocks only this private CI keyring.
+            # It is never used for a real account or a pre-existing user keyring.
+            printf "%s" "zeno-synthetic-ci-keyring" | gnome-keyring-daemon --unlock --components=secrets >/dev/null
+            node apps/desktop/scripts/zeno-safe-storage-probe.mjs
+          '
+      - name: Retain sanitized booleans, backend and runtime versions only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zeno-os-safe-storage-${{ matrix.platform }}-${{ matrix.arch }}
+          path: ${{ runner.temp }}/zeno-safe-storage-evidence/report.json
+          if-no-files-found: warn
+          retention-days: 14

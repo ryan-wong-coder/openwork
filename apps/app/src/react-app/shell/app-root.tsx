@@ -521,6 +521,7 @@ export function AppRoot() {
                   </DevProfiler>
                 }
               />
+              <Route path="/personal/:section" element={<DevProfiler id="ZenoPersonalRoute"><SessionRoute /></DevProfiler>} />
               <Route path="/calendar" element={<DevProfiler id="CalendarRoute"><SessionRoute /></DevProfiler>} />
               <Route path="/activity" element={<DevProfiler id="ActivityRoute"><SessionRoute /></DevProfiler>} />
               <Route path="/apps" element={<DevProfiler id="AppsRoute"><SessionRoute /></DevProfiler>} />

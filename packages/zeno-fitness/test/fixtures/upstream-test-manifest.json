@@ -1,0 +1,32 @@
+{
+  "commit": "464355ef43d4c8f8a4e0bb6db9c2af7f240593b5",
+  "files": [
+    {
+      "path": "frontend/src/lib/onerm.test.js",
+      "upstreamSha256": "79e319039c4755b9653447b3727915110ce8afd05cc5589718cfd48295491424",
+      "localSha256": "388662ad6a2bbc892e332933d3866f607f6e140b7695f057ffdd25c7e1a5b150",
+      "modifications": [
+        "test runner import",
+        "relative import paths"
+      ]
+    },
+    {
+      "path": "frontend/src/lib/progression.test.js",
+      "upstreamSha256": "151b23b38688561ab78ff1bde6f785cd0bb9f2bfa1847096610003b52d0a00a9",
+      "localSha256": "da6a6885702c264b27f712b654e80c7d7333f9e32dd43a7803211406b1e49886",
+      "modifications": [
+        "test runner import",
+        "relative import paths"
+      ]
+    },
+    {
+      "path": "frontend/src/lib/import-csv.test.js",
+      "upstreamSha256": "f765243b1b9c839450b07b3a0f9c91454bc4e7b4d1d97bc2fc7a4de0b5b5a76f",
+      "localSha256": "fdc10a0da2c34d92493778cae1d6119368bd2a035e3977206235beb6d073e2b9",
+      "modifications": [
+        "test runner import",
+        "relative import paths"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "scope": "credential-free fitness-domain source and integration regressions",
+  "upstream": {
+    "repository": "https://github.com/DuarteSantos8/openGym",
+    "commit": "464355ef43d4c8f8a4e0bb6db9c2af7f240593b5",
+    "sourceFiles": 59,
+    "sourceBytes": 2474737,
+    "manifestSha256": "145efe964129be8f729719a6be14f7f2b61f32cf30e2b1e0d4ab7601bc88fb31"
+  },
+  "catalogue": {
+    "canonicalExercises": 5632,
+    "drawingAliases": 922,
+    "chineseNames": 5632,
+    "chineseStepInstructions": 1324,
+    "restrictedMediaFiles": 0
+  },
+  "verification": {
+    "strictSourceTypecheck": "passed",
+    "strictTestTypecheck": "passed",
+    "tests": 240,
+    "passed": 240,
+    "failed": 0,
+    "assertions": 2605,
+    "testFiles": 4,
+    "upstreamRegressionFiles": 3,
+    "guiLaunched": false,
+    "modelCalls": 0,
+    "networkCallsInTests": 0
+  },
+  "commands": [
+    "PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false pnpm exec tsc -p packages/zeno-fitness/tsconfig.json --noEmit",
+    "PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false pnpm exec tsc -p packages/zeno-fitness/tsconfig.test.json --noEmit",
+    "PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false pnpm exec bun test packages/zeno-fitness/test",
+    "node --test apps/desktop/test/zeno-personal.test.mjs apps/desktop/test/zeno-personal-tools.test.mjs"
+  ],
+  "nativeServiceAndTools": {
+    "scope": "actual native modules with synthetic fetch, private temporary directories and AES-256-GCM safeStorage mock",
+    "tests": 30,
+    "passed": 30,
+    "failed": 0,
+    "guiLaunched": false,
+    "realCredentials": false,
+    "modelCalls": 0,
+    "networkCalls": 0,
+    "osKeychainVerified": false,
+    "packagedAppVerified": false
+  }
+}

@@ -26,6 +26,10 @@ config:
   #   "false" off for everyone; /admin shows "Set by deployment config"
   # The /admin kill switch still turns a feature off, even when locked on.
   features:
+    zenoAccounts: ""               # default off · Use independent invitation-only Zeno accounts to synchronize personal data and pair devices without an upstream account or server-side AI execution.
+    personalCalendar: ""           # default off · Manage personal events, recurring plans, reminders and training schedules through the same validated interface used by people and local agents.
+    fitnessTracking: ""            # default off · Plan and log workouts, track body measurements and progress, and review local AI coaching proposals in the independent Zeno interface.
+    localScheduledTasks: ""        # default off · Run explicitly scheduled tasks on a selected local computer while its Zeno window is open, preserving run receipts and requiring manual recovery for missed tasks.
     conversationCanvas: ""         # default off · Render interactive HTML, SVG, Canvas and Ant Design Charts boards inside assistant Markdown, with stable streaming previews and isolated execution.
     zenoReleaseUpdates: ""         # default off · Check the independent Zeno release service, offer a new version, and install the downloaded desktop update without using an upstream release feed.
     zenoWebsite: ""                # default off · Serve the independently operated Zeno website and verified release downloads for each supported platform and architecture.

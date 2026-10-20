@@ -82,6 +82,7 @@ declare global {
       select: (id: string) => Promise<unknown>;
     };
     __OPENWORK_ELECTRON__?: {
+      zenoPersonal?: import('@zeno/core').ZenoDesktopBridge;
       conversationCanvas?: {
         shellUrl: string;
         networkPolicy: "connection-allowlist";

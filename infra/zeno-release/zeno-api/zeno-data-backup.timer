@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily private Zeno data snapshot
+
+[Timer]
+OnCalendar=*-*-* 04:00:00
+RandomizedDelaySec=15m
+Persistent=true
+Unit=zeno-data-backup.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": [
+      "ES2024",
+      "DOM"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": false,
+    "paths": {
+      "@zeno/core/schema": [
+        "../zeno-core/src/schema.ts"
+      ],
+      "@zeno/core/media": [
+        "../zeno-core/src/media.ts"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "upstream/**/*"
+  ],
+  "exclude": [
+    "test"
+  ]
+}

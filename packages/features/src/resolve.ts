@@ -144,6 +144,10 @@ export const LOCAL_GATEWAY_OPERATOR_FEATURES: FeatureOverrides = {
   gatewayImageGeneration: true,
   visualConfiguration: true,
   conversationCanvas: true,
+  zenoAccounts: true,
+  personalCalendar: true,
+  fitnessTracking: true,
+  localScheduledTasks: true,
 }
 
 export function localOperatorFeatureEnabled(key: FeatureKey, localGateway: boolean, connectedEnabled = false): boolean {

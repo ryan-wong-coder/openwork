@@ -1,0 +1,20 @@
+import { expect, test } from 'bun:test';
+import { personalRecordSchema, routineDataSchema, trainingScheduleDataSchema, workoutDataSchema } from '../src/schema.js';
+import { projectTrainingSchedule, trainingOccurrenceId } from '../src/training-calendar.js';
+const base = { userId: 'synthetic-user', version: 1, cursor: 1, createdAt: Date.parse('2026-10-19T00:00Z'), updatedAt: Date.parse('2026-10-19T00:00Z'), deletedAt: null };
+test('training projection keeps schedule, override and real completion separate', () => {
+  const plan = personalRecordSchema.parse({ ...base, kind: 'trainingSchedule', id: 'weekly', data: trainingScheduleDataSchema.parse({ title: '计划', mode: 'weekly', timeZone: 'UTC', week: { '1': 'push' }, time: '18:00' }) });
+  const routine = personalRecordSchema.parse({ ...base, kind: 'routine', id: 'push', data: routineDataSchema.parse({ title: '推日', exercises: [] }) });
+  if (plan.kind !== 'trainingSchedule' || routine.kind !== 'routine') throw new Error('fixture');
+  const start = Date.parse('2026-10-19T00:00Z'), end = start + 86400000;
+  const projected = projectTrainingSchedule(plan, [routine], start, end); expect(projected).toHaveLength(1); expect(projected[0].data.status).toBe('planned');
+  const override = personalRecordSchema.parse({ ...base, kind: 'event', id: projected[0].id, data: { ...projected[0].data, startAt: end + 3600000, endAt: end + 7200000 } });
+  if (override.kind !== 'event') throw new Error('fixture');
+  expect(projectTrainingSchedule(plan, [routine], start, end, { overrides: [override] })).toHaveLength(0);
+  const workout = personalRecordSchema.parse({ ...base, kind: 'workout', id: 'actual', data: workoutDataSchema.parse({ title: '已完成推日', eventId: projected[0].id, routineId: 'push', startedAt: start + 17 * 3600000, finishedAt: start + 18 * 3600000, exercises: [] }) });
+  if (workout.kind !== 'workout') throw new Error('fixture');
+  const before = JSON.stringify(workout);
+  const completed = projectTrainingSchedule(plan, [routine], start, end, { workouts: [workout] }); expect(completed[0].data.status).toBe('completed'); expect(completed[0].data.startAt).toBe(workout.data.startedAt);
+  const changedPlan = { ...plan, data: { ...plan.data, time: '23:00' } }; expect(projectTrainingSchedule(changedPlan, [routine], start, end, { workouts: [workout] })[0].data.startAt).toBe(workout.data.startedAt); expect(JSON.stringify(workout)).toBe(before);
+  expect(trainingOccurrenceId('x'.repeat(127) + 'a', '2026-10-19')).not.toBe(trainingOccurrenceId('x'.repeat(127) + 'b', '2026-10-19'));
+});

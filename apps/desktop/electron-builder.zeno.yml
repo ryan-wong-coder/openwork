@@ -4,6 +4,7 @@ extends: ./electron-builder.yml
 appId: com.differentai.openwork
 productName: 泽诺 Zeno
 extraMetadata:
+  license: AGPL-3.0-only
   openworkDistribution: public
   openworkBrand: zeno
   homepage: https://www.zeno.ryan-wong.cn
@@ -12,6 +13,16 @@ extraMetadata:
     name: Zeno
     email: null
 files:
+  - from: ../../packages/zeno-fitness/LICENSE
+    to: licenses/openGym-AGPL-3.0.txt
+  - from: ../../packages/zeno-fitness/UPSTREAM-NOTICE.md
+    to: licenses/openGym-NOTICE.md
+  - from: ../../packages/zeno-fitness/upstream-manifest.json
+    to: licenses/openGym-source-manifest.json
+  - from: ../../LICENSE
+    to: licenses/OpenWork-MIT.txt
+  - from: ../app/THIRD_PARTY_NOTICES.md
+    to: licenses/Zeno-NOTICE.md
   - from: resources/icons/zeno
     to: resources/icons/zeno
   # Host bridges import these modules; the shared build also ships a separate

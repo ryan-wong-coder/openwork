@@ -1,0 +1,8 @@
+{
+  "repository": "https://github.com/DuarteSantos8/openGym",
+  "commit": "464355ef43d4c8f8a4e0bb6db9c2af7f240593b5",
+  "sources": ["frontend/src/lib/onerm.test.js", "frontend/src/lib/progression.test.js", "frontend/src/lib/import-csv.test.js", "frontend/src/lib/recovery.test.js"],
+  "oneRm": [{"weight":100,"reps":1,"expected":100},{"weight":100,"reps":5,"expected":116.7},{"weight":100,"reps":10,"expected":133.3},{"weight":80,"reps":8,"expected":101.3},{"weight":60,"reps":3,"expected":66},{"weight":101.25,"reps":7,"expected":124.9}],
+  "warmupCsv": "Date,Exercise,Weight,Reps,Set Type\n2026-08-08,Bench Press,100,5,Warm-up\n2026.08.08,Bench Press,80,5,Working\n8 Aug 2026,Bench Press,80,5,Working\n2026/08/08,Bench Press,85,3,Working",
+  "gravlCsv": "Date,Start Date,Workout,Source,Workout Duration (min),Energy,Exercise,Superset,Set,Set Type,Reps,Weight (kg),Distance (km),Set Duration (sec),Incline,Steps,Effort,Workout Notes\n2026/01/01,1:11 PM,Push Day,,11,11,Chin Up,No,1,Normal,11,11,0,,,,Ideal,felt strong\n2026/01/22,2:22 PM,External Something,APP,21,22,Walking,No,0,Normal,0,0,0,22,,,,"
+}

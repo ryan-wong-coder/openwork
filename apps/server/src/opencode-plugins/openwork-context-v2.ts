@@ -2,6 +2,9 @@ import { z } from "zod";
 import { registerCloudSkillDiscovery, type CloudSkillContext } from "./openwork-cloud-skills-v2.js";
 import { server as browserTools } from "./openwork-chrome-devtools.js";
 import { createGatewayImageTools, GATEWAY_IMAGE_INSTRUCTION } from "./gateway-image-tools.js";
+import { createZenoPersonalTools } from './zeno-personal-tools.js';
+import { uiBridgeRequest } from './openwork-ui-bridge.js';
+import { isStandaloneAgentProfile } from './local-client-profile.js';
 
 const browserResult = z.object({
   content: z.array(z.union([z.object({ type: z.literal("text"), text: z.string() }),
@@ -43,7 +46,14 @@ export default {
       return payload;
     }) : undefined;
     const browserDefinitions = browser ? await browserTools() : undefined;
+    const personalDefinition = isStandaloneAgentProfile() ? createZenoPersonalTools((input, call) => uiBridgeRequest('/personal', {
+      method: 'POST', body: { input, sessionId: call.sessionID }, signal: call.signal, timeoutMs: 60_000,
+    })).zeno_personal : undefined;
     const registration = await context.tool.transform(editor => {
+      if (personalDefinition) editor.add({ name: 'zeno_personal', description: personalDefinition.description,
+        input: z.toJSONSchema(z.object(personalDefinition.args).strict()), options: { codemode: false },
+        async execute(input, call) { return { content: [{ type: 'text', text: await personalDefinition.execute(input, call) }] }; },
+      });
       for (const name of ["openwork_context", "openwork_query"]) {
         editor.add({
           name,

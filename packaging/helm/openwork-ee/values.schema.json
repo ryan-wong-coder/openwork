@@ -18,6 +18,46 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
+            "zenoAccounts": {
+              "enum": [
+                "",
+                "true",
+                "false",
+                true,
+                false
+              ],
+              "description": "Zeno accounts and sync: Use independent invitation-only Zeno accounts to synchronize personal data and pair devices without an upstream account or server-side AI execution. Renders DEN_FEATURE_ZENO_ACCOUNTS."
+            },
+            "personalCalendar": {
+              "enum": [
+                "",
+                "true",
+                "false",
+                true,
+                false
+              ],
+              "description": "Personal calendar: Manage personal events, recurring plans, reminders and training schedules through the same validated interface used by people and local agents. Renders DEN_FEATURE_PERSONAL_CALENDAR."
+            },
+            "fitnessTracking": {
+              "enum": [
+                "",
+                "true",
+                "false",
+                true,
+                false
+              ],
+              "description": "Fitness plans and records: Plan and log workouts, track body measurements and progress, and review local AI coaching proposals in the independent Zeno interface. Renders DEN_FEATURE_FITNESS_TRACKING."
+            },
+            "localScheduledTasks": {
+              "enum": [
+                "",
+                "true",
+                "false",
+                true,
+                false
+              ],
+              "description": "Local scheduled tasks: Run explicitly scheduled tasks on a selected local computer while its Zeno window is open, preserving run receipts and requiring manual recovery for missed tasks. Renders DEN_FEATURE_LOCAL_SCHEDULED_TASKS."
+            },
             "conversationCanvas": {
               "enum": [
                 "",

@@ -15,6 +15,7 @@ out/
 dist/
 packages/*/dist/
 apps/*/dist/
+apps/app/dist-personal/
 ee/apps/*/dist/
 ee/packages/*/dist/
 ee/apps/gateway/models-site/models/api.json

@@ -16,6 +16,7 @@ export function createUiControlServer({
   listWebMcpTools,
   executeWebMcpTool,
   browserTask = undefined,
+  personalTask = undefined,
 }) {
   let uiControlServer = null;
   let uiControlDiscoveryPath = null;
@@ -165,6 +166,12 @@ export function createUiControlServer({
           const controller = new AbortController();
           response.once("close", () => { if (!response.writableEnded) controller.abort(); });
           sendJsonResponse(response, 200, await browserTask(await readJsonRequestBody(request), { signal: controller.signal }));
+          return;
+        }
+        if (request.method === 'POST' && url.pathname === '/personal') {
+          if (typeof personalTask !== 'function') { sendJsonResponse(response, 503, { ok: false, code: 'personal_unavailable' }); return; }
+          try { sendJsonResponse(response, 200, await personalTask(await readJsonRequestBody(request))); }
+          catch { sendJsonResponse(response, 400, { ok: false, code: 'invalid_personal_operation', error: '操作未完成，请重新读取数据并检查字段。' }); }
           return;
         }
         if (request.method === "POST" && url.pathname === "/webmcp/tools") {

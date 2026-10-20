@@ -5,6 +5,7 @@ import { randomUUID } from "node:crypto";
 import { realpath } from "node:fs/promises";
 import { ApiError } from "../errors.js";
 import { uiBridgeRequest } from "./openwork-ui-bridge.js";
+import { createZenoPersonalTools, ZENO_PERSONAL_INSTRUCTION } from './zeno-personal-tools.js';
 import { createDriveFileTools, DRIVE_FILE_ACTIONS } from "./drive-file-tools.js";
 import { createGmailAttachmentFulfillment, type GmailAttachmentDependencies } from "./gmail-attachment-fulfillment.js";
 import { z } from "zod";
@@ -1389,9 +1390,14 @@ export const OpenWorkExtensionsPreview = async (factoryInput?: unknown, _options
       createInstructionSection("routing", standalone ? STANDALONE_DISCOVERY_INSTRUCTION : OPENWORK_EXTENSION_DISCOVERY_INSTRUCTION),
       createInstructionSection("discovery", standalone ? STANDALONE_SKILL_INSTRUCTION : OPENWORK_ON_DEMAND_DISCOVERY_INSTRUCTION),
       createInstructionSection("gateway-images", GATEWAY_IMAGE_INSTRUCTION),
+      ...(standalone ? [createInstructionSection('zeno-personal', ZENO_PERSONAL_INSTRUCTION)] : []),
     );
   },
   tool: {
+    ...createZenoPersonalTools((input, context) => {
+      if (!standalone) throw new Error('此工具需要独立的泽诺客户端。');
+      return uiBridgeRequest('/personal', { method: 'POST', body: { input, sessionId: context.sessionID }, signal: context.abort ?? context.signal, timeoutMs: 60_000 });
+    }),
     ...createGatewayImageTools((input, context: OpenCodeContext) => postJson("/gateway/images", {
       ...input,
       context: contextPayload({ ...factoryContext, ...normalizeOpenCodeContext(context) }),

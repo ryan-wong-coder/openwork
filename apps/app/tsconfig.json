@@ -13,6 +13,8 @@
     },
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "allowJs": true,
+    "checkJs": false,
     "noEmit": true,
     "strict": true,
     "skipLibCheck": true,
@@ -21,6 +23,7 @@
   "include": [
     "globals.d.ts",
     "src/index.react.tsx",
+    "src/personal.tsx",
     "src/components/**/*",
     "src/i18n/**/*",
     "src/lib/**/*",
@@ -33,6 +36,7 @@
     "src/app/types.ts",
     "src/app/theme.ts",
     "src/app/mcp.ts",
-    "vite.config.ts"
+    "vite.config.ts",
+    "vite.personal.config.ts"
   ]
 }

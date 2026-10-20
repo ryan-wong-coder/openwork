@@ -3,3 +3,6 @@ packages/docs/openapi.json linguist-generated=true
 .githooks/* text eol=lf
 # 0097 has a reviewed byte-level compatibility pin in the local migration runner.
 /ee/packages/den-db/drizzle/0097_gateway_access_matrix.sql text eol=lf
+# Preserve pinned third-party bytes, including original comment whitespace.
+/packages/zeno-fitness/upstream/** whitespace=-blank-at-eol,-blank-at-eof
+/packages/zeno-fitness/test/upstream/** whitespace=-blank-at-eol,-blank-at-eof

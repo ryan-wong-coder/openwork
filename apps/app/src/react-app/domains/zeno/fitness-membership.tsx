@@ -1,0 +1,27 @@
+import { useEffect, useRef, useState } from "react";
+import QRCode from "qrcode";
+import { Plus } from "lucide-react";
+import { membershipExpired, membershipQrPayload } from "@zeno/fitness";
+import { membershipDataSchema, recordsOfKind, type KindRecord, type MembershipData } from "@zeno/core";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Field, InlineError, localDateInput, OptionSelect, PersonalDialog, SaveButton, shortDate, useAction } from "./ui";
+import type { PersonalStore } from "./use-zeno-sync";
+
+function MembershipCode({ card }: { card: MembershipData }) {
+  const [qr, setQr] = useState(""); const [error, setError] = useState<string | null>(null); const svg = useRef<SVGSVGElement>(null);
+  useEffect(() => { let stopped = false; if (card.format === "qr") void QRCode.toDataURL(membershipQrPayload(card), { margin: 2, width: 360, errorCorrectionLevel: "M" }).then(value => { if (!stopped) setQr(value); }).catch(() => setError("二维码暂时无法生成，可使用原码。")); else void import("jsbarcode").then(module => { if (stopped || !svg.current) return; if (card.code.length > 128) throw new Error("条码内容过长，请改用二维码。"); module.default(svg.current, card.code, { format: "CODE128", displayValue: false, margin: 12, height: 100 }); }).catch(() => setError("条码无法生成，可使用原码或改为二维码。")); return () => { stopped = true; }; }, [card.code, card.format]);
+  return <div className="grid place-items-center gap-4"><div className="max-w-full rounded-lg bg-white p-4" /* Scanner surface stays white to preserve QR/barcode contrast. */>{card.format === "qr" ? qr ? <img src={qr} alt={card.name + "二维码"} className="aspect-square w-64 max-w-full" /> : null : <svg ref={svg} role="img" aria-label={card.name + "条码"} className="h-36 max-w-full" />}</div><InlineError message={error} /><code className="max-w-full break-all text-center text-sm">{card.code}</code></div>;
+}
+
+export function MembershipCards({ store, readOnly = false }: { store: PersonalStore; readOnly?: boolean }) {
+  const cards = recordsOfKind(store.records, "membership"); const [selected, setSelected] = useState<KindRecord<"membership"> | null>(null);
+  const [editing, setEditing] = useState<KindRecord<"membership"> | "new" | null>(null);
+  const [draft, setDraft] = useState<MembershipData>({ name: "", code: "", format: "qr", expiresAt: null, notes: "" }); const action = useAction();
+  const edit = (record?: KindRecord<"membership">) => { setDraft(record?.data ?? { name: "", code: "", format: "qr", expiresAt: null, notes: "" }); setEditing(record ?? "new"); };
+  return <section className="border-t border-border py-6"><div className="mb-3 flex items-center justify-between"><h2 className="text-sm font-medium">会员码</h2><Button variant="outline" size="sm" disabled={readOnly} onClick={() => edit()}><Plus strokeWidth={1.5} />添加</Button></div><ul className="divide-y divide-border">{cards.map(card => <li key={card.id}><button className="flex min-h-12 w-full items-center justify-between gap-3 text-left text-sm" onClick={() => setSelected(card)}><span className="truncate">{card.data.name}</span><span className="text-xs text-muted-foreground">{membershipExpired(card.data) ? "已到期" : card.data.expiresAt ? `有效至 ${shortDate(card.data.expiresAt)}` : "展示会员码"}</span></button></li>)}</ul>
+    <PersonalDialog title={selected?.data.name ?? "会员码"} open={selected !== null} onClose={() => setSelected(null)}>{selected ? <><MembershipCode card={selected.data} />{selected.data.notes ? <p className="text-sm text-muted-foreground">{selected.data.notes}</p> : null}<Button variant="outline" disabled={readOnly} onClick={() => { edit(selected); setSelected(null); }}>编辑</Button></> : null}</PersonalDialog>
+    <PersonalDialog title={editing === "new" ? "添加会员码" : "编辑会员码"} open={editing !== null && !readOnly} onClose={() => setEditing(null)}><form className="grid gap-4" onSubmit={event => { event.preventDefault(); void action.run(async () => { await store.save("membership", membershipDataSchema.parse(draft), editing === "new" || !editing ? undefined : editing); setEditing(null); }); }}><Field label="名称"><Input required value={draft.name} onChange={event => setDraft(current => ({ ...current, name: event.currentTarget.value }))} /></Field><Field label="会员码"><Input required value={draft.code} onChange={event => setDraft(current => ({ ...current, code: event.currentTarget.value }))} /></Field><Field label="格式"><OptionSelect label="格式" value={draft.format} options={[{ value: "qr", label: "二维码" }, { value: "barcode", label: "条码" }]} onChange={format => { if (format === "qr" || format === "barcode") setDraft(current => ({ ...current, format })); }} /></Field><Field label="到期日期（可选）"><Input type="date" value={draft.expiresAt ? localDateInput(draft.expiresAt) : ""} onChange={event => setDraft(current => ({ ...current, expiresAt: event.currentTarget.value ? new Date(event.currentTarget.value + "T23:59:59").getTime() : null }))} /></Field><Field label="备注"><Textarea value={draft.notes} onChange={event => setDraft(current => ({ ...current, notes: event.currentTarget.value }))} /></Field><InlineError message={action.error} /><div className="flex gap-2">{editing && editing !== "new" ? <Button type="button" variant="destructive" onClick={() => void action.run(async () => { await store.remove(editing); setEditing(null); })}>删除</Button> : null}<div className="flex-1" /><SaveButton busy={action.busy} /></div></form></PersonalDialog>
+  </section>;
+}

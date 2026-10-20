@@ -13,6 +13,8 @@ import { acknowledgePendingSession, beginPendingConversation, bindPendingConvers
 import { PendingConversationView } from "@/react-app/domains/session/chat/pending-conversation";
 import { assignNewSessionGroup } from "@/react-app/domains/session/sidebar/session-management-store";
 import {
+  lazy,
+  Suspense,
   useCallback,
   useEffect,
   useMemo,
@@ -117,6 +119,7 @@ import type { ActivityResource } from "@/react-app/kernel/activity-types";
 import { encodeConnectSkillToken } from "@/react-app/domains/session/surface/composer/connect-skill-token";
 import { AutomationsPage } from "@/react-app/domains/automations/automations-page";
 import { automationProviderCatalog } from "@/react-app/domains/automations/automation-model-options";
+import { Skeleton } from "@/components/ui/skeleton";
 import { CalendarPage } from "@/react-app/domains/calendar/calendar-page";
 import { useCalendarFeature } from "@/react-app/domains/calendar/use-calendar-data";
 import { useBackgroundShellTasksFeature } from "@/react-app/domains/session/status/use-background-shell-tasks-feature";
@@ -305,6 +308,8 @@ import {
   useProviderListQuery,
 } from "@/react-app/infra/provider-list-query";
 
+const ZenoPersonalPage = lazy(() => import("@/react-app/domains/zeno/personal-page").then(module => ({ default: module.ZenoPersonalPage })));
+
 /**
  * Serialize an SDK error value into a string that parseSessionError can parse.
  * Preserves the original shape (name, data, message) as JSON when possible,
@@ -416,6 +421,10 @@ export function SessionRoute() {
   const dashboardRouteRequested = /^\/dashboard(?:\/|$)/.test(location.pathname);
   const calendarRouteRequested = /^\/calendar(?:\/|$)/.test(location.pathname);
   const activityRouteRequested = location.pathname === "/activity";
+  const personalRouteRequested = /^\/personal(?:\/|$)/.test(location.pathname);
+  const personalRouteActive = isLocalGatewayClient() && personalRouteRequested;
+  const personalSection = location.pathname.endsWith('/fitness') ? 'fitness' : location.pathname.endsWith('/tasks') ? 'tasks' : location.pathname.endsWith('/account') ? 'account' : 'calendar';
+  const personalNavigationEnabled = localClientFeatureEnabled('zenoAccounts');
   const {
     enabled: mcpAppsDashboardEnabled,
     loading: dashboardAvailabilityLoading,
@@ -3746,7 +3755,7 @@ export function SessionRoute() {
     pending: Boolean(gatewaySetupPendingFor && gatewaySetupPendingFor === localGatewayClient),
     skipped: gatewaySetupSkippedFor === localGatewayClient,
     conversation: Boolean(selectedSessionId || pendingConversation),
-    otherSurface: activityRouteActive || appsRouteActive || automationsRouteActive || calendarRouteActive || dashboardRouteActive || extensionsMainOpen,
+    otherSurface: personalRouteActive || activityRouteActive || appsRouteActive || automationsRouteActive || calendarRouteActive || dashboardRouteActive || extensionsMainOpen,
   });
   useEffect(() => {
     if (showGatewayFirstRun && localGatewayClient) setGatewaySetupPendingFor(localGatewayClient);
@@ -3898,11 +3907,11 @@ export function SessionRoute() {
         />
       }
       // Page titles match their sidebar labels.
-      primaryTitle={activityRouteActive ? t("activity.title") : appsRouteActive ? t("interface.dashboard") : automationsRouteActive ? t("interface.automations") : calendarRouteActive ? t("interface.calendar") : dashboardRouteActive ? t("interface.dashboard") : undefined}
+      primaryTitle={personalRouteActive ? ({calendar:'日历',fitness:'健身',tasks:'任务',account:'账号'})[personalSection] : activityRouteActive ? t("activity.title") : appsRouteActive ? t("interface.dashboard") : automationsRouteActive ? t("interface.automations") : calendarRouteActive ? t("interface.calendar") : dashboardRouteActive ? t("interface.dashboard") : undefined}
       // Dashboard, Automations and Library share one flat page surface.
-      primarySurface={showGatewayFirstRun || activityRouteActive || dashboardRouteActive || automationsRouteActive || calendarRouteActive || extensionsMainOpen ? "flat" : undefined}
+      primarySurface={personalRouteActive || showGatewayFirstRun || activityRouteActive || dashboardRouteActive || automationsRouteActive || calendarRouteActive || extensionsMainOpen ? "flat" : undefined}
       primarySlotIsConversation={!activityRouteActive && Boolean(pendingConversation)}
-      primarySlot={activityRouteActive ? <ActivityPage onTrySkill={trySkillInNewSession} /> : pendingConversation ? <PendingConversationView conversation={pendingConversation} composer={newTaskComposerContext} /> : appsRouteActive ? (
+      primarySlot={personalRouteActive ? <Suspense fallback={<div className="grid flex-1 gap-4 p-6"><Skeleton className="h-9 w-40" /><Skeleton className="h-64 w-full" /></div>}><ZenoPersonalPage initialSection={personalSection} desktopBridge={window.__OPENWORK_ELECTRON__?.zenoPersonal} apiBaseUrl={window.__OPENWORK_ELECTRON__?.zenoPersonal?.serviceOrigin ?? ''} embedded /></Suspense> : activityRouteActive ? <ActivityPage onTrySkill={trySkillInNewSession} /> : pendingConversation ? <PendingConversationView conversation={pendingConversation} composer={newTaskComposerContext} /> : appsRouteActive ? (
         <WorkspaceProvider
           client={opencodeClient}
           opencodeBaseUrl={opencodeBaseUrl}
@@ -3975,8 +3984,14 @@ export function SessionRoute() {
               navigate(automationsRoute());
             }
           : undefined,
-        calendarActive: calendarRouteActive,
-        onOpenCalendar: calendarSurfaceAvailable
+        calendarActive: calendarRouteActive || (personalRouteActive && personalSection === 'calendar'),
+        fitnessActive: personalRouteActive && personalSection === 'fitness',
+        tasksActive: personalRouteActive && personalSection === 'tasks',
+        personalAccountActive: personalRouteActive && personalSection === 'account',
+        onOpenFitness: personalNavigationEnabled ? () => navigate('/personal/fitness') : undefined,
+        onOpenPersonalTasks: personalNavigationEnabled ? () => navigate('/personal/tasks') : undefined,
+        onOpenPersonalAccount: personalNavigationEnabled ? () => navigate('/personal/account') : undefined,
+        onOpenCalendar: personalNavigationEnabled ? () => navigate('/personal/calendar') : calendarSurfaceAvailable
           ? () => {
               navigate(calendarRoute());
             }

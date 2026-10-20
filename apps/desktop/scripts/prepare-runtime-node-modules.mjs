@@ -1,4 +1,4 @@
-import { cpSync, mkdirSync, readFileSync, rmSync } from "node:fs";
+import { cpSync, mkdirSync, readFileSync, realpathSync, rmSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -6,6 +6,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const dirnameHere = dirname(fileURLToPath(import.meta.url));
 const desktopRoot = resolve(dirnameHere, "..");
 const requiredRoots = [{
+  name: "@zeno/core",
+}, {
   name: "@modelcontextprotocol/sdk",
   resolveTarget: "@modelcontextprotocol/sdk/validation/ajv",
 }, {
@@ -20,12 +22,16 @@ function packageRoot(name, fromPackageJson, resolveTarget = name) {
   try {
     current = dirname(requireFromPackage.resolve(resolveTarget));
   } catch (error) {
-    const linkedPackageRoot = resolve(dirname(dirname(fromPackageJson)), name);
-    try {
-      const linkedPackageJson = JSON.parse(readFileSync(join(linkedPackageRoot, "package.json"), "utf8"));
-      if (linkedPackageJson.name === name) return { root: linkedPackageRoot, packageJson: linkedPackageJson };
-    } catch {
-      // Preserve the original module-resolution error below.
+    // Metadata-only packages and ESM-only exports need not expose a CommonJS
+    // main. Follow Node's actual search roots, including pnpm's sibling links.
+    for (const moduleRoot of requireFromPackage.resolve.paths(name) ?? []) {
+      const linkedPackageRoot = resolve(moduleRoot, name);
+      try {
+        const linkedPackageJson = JSON.parse(readFileSync(join(linkedPackageRoot, "package.json"), "utf8"));
+        if (linkedPackageJson.name === name) return { root: realpathSync(linkedPackageRoot), packageJson: linkedPackageJson };
+      } catch {
+        // Preserve the original module-resolution error if no package matches.
+      }
     }
     throw error;
   }

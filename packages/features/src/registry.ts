@@ -53,6 +53,34 @@ function defineFeatures<const T extends Record<string, FeatureDefinition>>(featu
 const everywhere = ["cloud", "self_hosted"] as const
 
 export const FEATURES = defineFeatures({
+  zenoAccounts: {
+    label: "Zeno accounts and sync",
+    description: "Use independent invitation-only Zeno accounts to synchronize personal data and pair devices without an upstream account or server-side AI execution.",
+    since: "2026-10",
+    deployments: ["self_hosted"],
+    default: false,
+  },
+  personalCalendar: {
+    label: "Personal calendar",
+    description: "Manage personal events, recurring plans, reminders and training schedules through the same validated interface used by people and local agents.",
+    since: "2026-10",
+    deployments: ["self_hosted"],
+    default: false,
+  },
+  fitnessTracking: {
+    label: "Fitness plans and records",
+    description: "Plan and log workouts, track body measurements and progress, and review local AI coaching proposals in the independent Zeno interface.",
+    since: "2026-10",
+    deployments: ["self_hosted"],
+    default: false,
+  },
+  localScheduledTasks: {
+    label: "Local scheduled tasks",
+    description: "Run explicitly scheduled tasks on a selected local computer while its Zeno window is open, preserving run receipts and requiring manual recovery for missed tasks.",
+    since: "2026-10",
+    deployments: ["self_hosted"],
+    default: false,
+  },
   conversationCanvas: {
     label: "Conversation canvas",
     description: "Render interactive HTML, SVG, Canvas and Ant Design Charts boards inside assistant Markdown, with stable streaming previews and isolated execution.",

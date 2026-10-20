@@ -66,8 +66,56 @@ jobs:
           for (const [key, value] of Object.entries({ version, release_tag: process.env.RELEASE_TAG, macos_signing: process.env.MACOS_SIGNING, windows_signing: process.env.WINDOWS_SIGNING, publish_release: process.env.PUBLISH_RELEASE })) appendFileSync(process.env.GITHUB_OUTPUT, `${key}=${value}\n`);
           JS
 
-  build:
+  preflight:
     needs: validate
+    name: Verify personal data and local execution
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN: "false"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.validate.outputs.release_tag }}
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.4.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+      - name: Install shared contract, application and local task dependencies
+        run: pnpm --filter @zeno/api... --filter @openwork/app... --filter @openwork/sdk... --filter @openwork/desktop... install --frozen-lockfile
+      - name: Build the exact shared contracts and native thread adapters
+        run: |
+          pnpm --filter @openwork/types build
+          pnpm --filter @zeno/core build
+          pnpm --filter @openwork/remote-sessions build
+          pnpm --filter @openwork/headless-threads build
+      - name: Verify accounts, synchronization, calendar and fitness semantics
+        run: |
+          pnpm --filter @zeno/core contract:check
+          pnpm --filter @zeno/core typecheck
+          pnpm --filter @zeno/core test
+          pnpm --filter @openwork/features exec bun test src
+          pnpm --filter @zeno/fitness typecheck
+          pnpm --filter @zeno/fitness test
+          pnpm --filter @zeno/api typecheck
+          pnpm --filter @zeno/api test
+          pnpm --filter @zeno/api build
+          python3 infra/zeno-release/zeno-api/backup.test.py
+      - name: Verify local execution recovery and desktop account boundaries
+        run: node --test apps/desktop/test/zeno-personal.test.mjs apps/desktop/test/zeno-personal-tools.test.mjs apps/desktop/test/zeno-scheduler.test.mjs apps/desktop/test/session-runner.test.mjs apps/desktop/test/zeno-update-portable-smoke.test.mjs
+      - name: Build the desktop UI and independent mobile application
+        run: |
+          pnpm --filter @openwork/app typecheck
+          pnpm --filter @openwork/app exec bun test tests/zeno-personal-data.test.ts
+          pnpm --filter @openwork/app build:personal
+
+  build:
+    needs: [validate, preflight]
     name: Build ${{ matrix.platform }}/${{ matrix.arch }}
     timeout-minutes: 120
     strategy:
