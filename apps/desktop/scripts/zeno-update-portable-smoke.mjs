@@ -29,6 +29,54 @@ const lane = platform => {
     : { os: 'linux', suffix: 'AppImage', manifest: 'latest-linux.yml', signing: 'none' };
 };
 
+const ACTIVE_CHECKS = new Set(['initialization', 'release-metadata', 'artifact-copy', 'target-reference', 'private-directories',
+  'windows-pristine-installation', 'windows-relaunch-environment', 'baseline-nsis-install', 'baseline-resource-verification',
+  'baseline-appimage-install', 'baseline-app-launch', 'attach-page-list', 'attach-page-cdp', 'attach-domains',
+  'attach-browser-version', 'attach-browser-cdp', 'attach-browser-pid', 'attach-profile-identity', 'attach-windows-executable',
+  'attach-updater-bridge', 'baseline-build-info', 'baseline-updater-channel', 'baseline-workspace-create',
+  'baseline-workspace-identity', 'runtime-engine-start', 'runtime-server-info', 'runtime-server-health',
+  'baseline-session-create', 'baseline-message-create', 'baseline-message-read', 'baseline-profile-marker',
+  'update-check', 'update-download', 'update-idle', 'update-install', 'update-process-exit', 'target-code-verification',
+  'target-build-info', 'target-profile-marker', 'target-workspace-file', 'target-workspace-identity',
+  'target-session-read', 'target-message-read', 'target-renderer', 'target-screenshot', 'target-navigation']);
+const ERROR_KINDS = new Set(['Error', 'AssertionError', 'TypeError', 'RangeError', 'SyntaxError', 'AbortError', 'TimeoutError']);
+const ERROR_CODES = new Set(['ERR_ASSERTION', 'ENOENT', 'EACCES', 'EPERM', 'EINVAL', 'ENOTDIR', 'EISDIR', 'ETIMEDOUT',
+  'ECONNREFUSED', 'ECONNRESET', 'ERR_INVALID_ARG_TYPE', 'ERR_INVALID_ARG_VALUE', 'ABORT_ERR',
+  'UND_ERR_CONNECT_TIMEOUT', 'UND_ERR_HEADERS_TIMEOUT', 'UND_ERR_SOCKET']);
+
+export function portableErrorMetadata(error) {
+  const value = error && typeof error === 'object' ? error : {};
+  return { errorKind: ERROR_KINDS.has(value.name) ? value.name : 'UnknownError',
+    ...(ERROR_CODES.has(value.code) ? { code: value.code } : {}) };
+}
+
+export function portableDiagnosticState() {
+  let activeCheck = 'initialization'; let lastReadError;
+  return {
+    enter(check) { assert.ok(ACTIVE_CHECKS.has(check), 'Unknown native diagnostic checkpoint.'); activeCheck = check; lastReadError = undefined; },
+    readError(error) { lastReadError = portableErrorMetadata(error); },
+    snapshot(error) { return { activeCheck, ...portableErrorMetadata(error), ...(lastReadError ? { lastReadError } : {}) }; },
+  };
+}
+
+export function windowsProcessPathCommand(pid) {
+  assert.ok(Number.isSafeInteger(pid) && pid > 1, 'Invalid owned browser PID.');
+  // The transport is ASCII Base64. Classic PowerShell's console code page
+  // therefore cannot replace the Chinese executable name before Node decodes it.
+  return `$ErrorActionPreference='Stop'; $p=(Get-Process -Id ${pid} -ErrorAction Stop).Path; [Console]::Write([Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($p)))`;
+}
+
+export function decodeWindowsProcessPath(value) {
+  try {
+    assert.ok(typeof value === 'string' && value.length > 0 && value.length <= 262144);
+    assert.ok(/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(value));
+    const bytes = Buffer.from(value, 'base64'); assert.ok(bytes.toString('base64') === value);
+    const path = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+    assert.ok(win32.isAbsolute(path) && !/[\0\r\n]/.test(path));
+    return path;
+  } catch { throw new Error('Invalid encoded owned Windows executable path.'); }
+}
+
 export function assertPortableHostedRunner(env, platform, arch) {
   lane(platform);
   assert.equal(arch, 'x64', 'Only native x64 runners are supported.');
@@ -171,9 +219,9 @@ function verifyResources(resources, version, feed, platform) {
   return { archiveSha256: hash(readFileSync(archive)), updaterCacheDirName: config.updaterCacheDirName };
 }
 
-async function until(read, accept, timeout, label) {
+export async function until(read, accept, timeout, label, diagnostics) {
   const end = Date.now() + timeout;
-  while (Date.now() < end) { try { const value = await read(); if (accept(value)) return value; } catch {} await pause(250); }
+  while (Date.now() < end) { try { const value = await read(); if (accept(value)) return value; } catch (error) { diagnostics?.readError(error); } await pause(250); }
   throw new Error(`Timed out: ${label}.`);
 }
 
@@ -217,40 +265,51 @@ function pageResources(target, platform, installation, root) {
   } catch { return null; }
 }
 
-async function attach(port, platform, installation, root, profile, exceptions, origins) {
+async function attach(port, platform, installation, root, profile, exceptions, origins, diagnostics) {
+  diagnostics?.enter('attach-page-list');
   const target = await until(async () => {
     const targets = await (await fetch(`http://127.0.0.1:${port}/json/list`, { signal: AbortSignal.timeout(1000) })).json();
     return targets.find(item => pageResources(item, platform, installation, root));
-  }, Boolean, 180_000, 'owned installed main renderer');
+  }, Boolean, 180_000, 'owned installed main renderer', diagnostics);
+  diagnostics?.enter('attach-page-cdp');
   const client = await connect(target.webSocketDebuggerUrl, event => {
     if (event.method === 'Runtime.exceptionThrown') exceptions.push('renderer-exception');
     if (event.method === 'Network.requestWillBeSent') try { const url = new URL(event.params.request.url); if (['http:', 'https:'].includes(url.protocol)) origins.add(url.origin); } catch {}
   });
+  diagnostics?.enter('attach-domains');
   await client.send('Runtime.enable'); await client.send('Network.enable');
   const evaluate = async (expression, timeout = 30_000) => {
     const result = await client.send('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true }, timeout);
     assert.ok(!result.exceptionDetails, 'Owned renderer operation failed.'); return result.result.value;
   };
+  diagnostics?.enter('attach-browser-version');
   const browserInfo = await (await fetch(`http://127.0.0.1:${port}/json/version`, { signal: AbortSignal.timeout(1000) })).json();
+  diagnostics?.enter('attach-browser-cdp');
   const browser = await connect(browserInfo.webSocketDebuggerUrl);
+  diagnostics?.enter('attach-browser-pid');
   const processes = await browser.send('SystemInfo.getProcessInfo'); const pid = processes.processInfo.find(item => item.type === 'browser')?.id;
   assert.ok(Number.isSafeInteger(pid) && pid > 1 && pid !== process.pid, 'Missing actual browser PID.');
   const resources = pageResources(target, platform, installation, root);
+  diagnostics?.enter('attach-profile-identity');
   if (platform === 'linux') {
     const environment = readFileSync(`/proc/${pid}/environ`, 'utf8').split('\0');
     assert.ok(environment.includes(`OPENWORK_ELECTRON_USERDATA=${profile}`), 'CDP process does not own the isolated profile.');
     assert.equal(realpathSync(`/proc/${pid}/exe`), join(dirname(resources), 'openwork'), 'CDP process is outside its original AppImage runtime.');
   } else {
-    const executable = command('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', `[Console]::Write((Get-Process -Id ${pid} -ErrorAction Stop).Path)`]);
-    assert.equal(resolve(executable).toLowerCase(), resolve(installation, PRODUCT + '.exe').toLowerCase(), 'CDP process is outside its private NSIS installation.');
+    diagnostics?.enter('attach-windows-executable');
+    const executable = decodeWindowsProcessPath(command('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', windowsProcessPathCommand(pid)]));
+    assert.ok(resolve(executable).toLowerCase() === resolve(installation, PRODUCT + '.exe').toLowerCase(), 'CDP process is outside its private NSIS installation.');
   }
-  await until(() => evaluate('Boolean(window.__OPENWORK_ELECTRON__?.updater)'), Boolean, 30_000, 'native updater bridge');
+  diagnostics?.enter('attach-updater-bridge');
+  await until(() => evaluate('Boolean(window.__OPENWORK_ELECTRON__?.updater)'), Boolean, 30_000, 'native updater bridge', diagnostics);
   return { ...client, browser, pid, resources, evaluate, invoke: (name, ...args) => evaluate(`window.__OPENWORK_ELECTRON__.invokeDesktop(${JSON.stringify(name)},...${JSON.stringify(args)})`, 120_000) };
 }
 
-async function runtime(client, workspace) {
+async function runtime(client, workspace, diagnostics) {
+  diagnostics?.enter('runtime-engine-start');
   await client.invoke('engineStart', workspace, { workspacePaths: [workspace] });
   return until(async () => {
+    diagnostics?.enter('runtime-server-info');
     const info = await client.invoke('openworkServerInfo'); assert.equal(info.running, true);
     const url = new URL(info.baseUrl); assert.equal(url.protocol, 'http:'); assert.ok(['127.0.0.1', 'localhost', '[::1]'].includes(url.hostname));
     assert.ok(!url.username && !url.password); const token = info.clientToken || info.ownerToken; assert.ok(token);
@@ -258,8 +317,9 @@ async function runtime(client, workspace) {
       const response = await fetch(url.href.replace(/\/$/, '') + path, { ...options, redirect: 'error', signal: AbortSignal.timeout(30_000), headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' } });
       assert.equal(response.status, 200, 'Owned embedded runtime request failed.'); return response.json();
     };
+    diagnostics?.enter('runtime-server-health');
     assert.equal((await request('/health')).ok, true); return { request };
-  }, Boolean, 120_000, 'installed embedded server');
+  }, Boolean, 120_000, 'installed embedded server', diagnostics);
 }
 
 function isolatedEnvironment(root, port) {
@@ -310,7 +370,9 @@ async function main() {
   const phase = (name, values = {}) => { report.phases.push({ name, at: new Date().toISOString(), ...values }); console.log(`[zeno-portable-update] ${name}`); };
   let client; let child; let oldPid; let cleanupAllowed = false; let failure = false; let restoreEnvironment;
   const exceptions = []; const origins = new Set();
+  const diagnostics = portableDiagnosticState();
   try {
+    diagnostics.enter('release-metadata');
     const historicalFile = assertPrivatePath(runner, resolve(process.env.ZENO_UPDATE_BASELINE_METADATA));
     assert.ok(lstatSync(historicalFile).isFile());
     const baseline = validatePortableHistorical(JSON.parse(readFileSync(historicalFile, 'utf8')), platform);
@@ -319,13 +381,16 @@ async function main() {
     const selected = validatePortableTarget(index, YAML.parse(await (await publicResponse(feed + spec.manifest)).text()), platform);
     report.scope.realPublicFeed = true;
     const baselineFile = join(root, baseline.name); const targetFile = join(root, selected.installer.name);
+    diagnostics.enter('artifact-copy');
     for (const directory of [process.env.ZENO_UPDATE_BASELINE_DIR, process.env.ZENO_UPDATE_TARGET_DIR]) assertPrivatePath(runner, resolve(directory));
     await copyVerifiedArtifact(process.env.ZENO_UPDATE_BASELINE_DIR, runner, baseline, baselineFile);
     await copyVerifiedArtifact(process.env.ZENO_UPDATE_TARGET_DIR, runner, selected.installer, targetFile);
     report.scope.originalBaseline = true; report.scope.originalTarget = true;
     phase('original-installers-verified', { baselineSha256: baseline.sha256, targetSha256: selected.installer.sha256, baselineBytes: baseline.size, targetBytes: selected.installer.size });
+    diagnostics.enter('target-reference');
     const reference = referenceResources(targetFile, join(root, 'reference-only'), platform);
     const targetCode = verifyResources(reference, TARGET, feed, platform); rmSync(join(root, 'reference-only'), { recursive: true, force: true });
+    diagnostics.enter('private-directories');
     for (const name of ['installation', 'profile', 'workspace', 'state', 'data', 'config', 'cache', 'logs', 'tmp']) mkdirSync(join(root, name));
     const installation = join(root, 'installation'); const profile = join(root, 'profile'); const workspace = join(root, 'workspace'); const port = await freePort();
     const environment = isolatedEnvironment(root, port);
@@ -333,69 +398,99 @@ async function main() {
     const marker = 'zeno-update-fixture-' + randomBytes(16).toString('hex'); writeFileSync(join(workspace, 'update-smoke-marker.txt'), marker);
     let executable;
     if (platform === 'win32') {
+      diagnostics.enter('windows-pristine-installation');
       windowsPristineInstallation();
+      diagnostics.enter('windows-relaunch-environment');
       restoreEnvironment = publishWindowsRelaunchEnvironment(environment, root);
+      diagnostics.enter('baseline-nsis-install');
       command(baselineFile, ['/S', `/D=${installation}`], { env: environment });
       executable = join(installation, PRODUCT + '.exe'); assert.ok(existsSync(executable), 'NSIS did not install into its private directory.');
+      diagnostics.enter('baseline-resource-verification');
       const installed = verifyResources(join(installation, 'resources'), BASELINE, feed, platform);
       assert.equal(installed.updaterCacheDirName, targetCode.updaterCacheDirName);
       phase('original-nsis-installed', { privateDirectory: true, noResigning: true });
     } else {
+      diagnostics.enter('baseline-appimage-install');
       executable = join(installation, 'Zeno.AppImage');
       // A versionless filename is a supported AppImageUpdater installation;
       // native replacement retains this exact user-chosen executable path.
       await copyVerifiedArtifact(process.env.ZENO_UPDATE_BASELINE_DIR, runner, baseline, executable); chmodSync(executable, 0o755);
       phase('original-appimage-installed', { privateDirectory: true, unchangedExecutableBytes: hash(readFileSync(executable)) === baseline.sha256 });
     }
+    diagnostics.enter('baseline-app-launch');
     const output = openSync(join(root, 'logs/electron.log'), 'a', 0o600); const errors = openSync(join(root, 'logs/electron-error.log'), 'a', 0o600);
     child = spawn(executable, [], { env: environment, cwd: workspace, stdio: ['ignore', output, errors], detached: true });
     child.on('error', () => {}); closeSync(output); closeSync(errors);
-    client = await attach(port, platform, installation, root, profile, exceptions, origins); oldPid = client.pid;
+    client = await attach(port, platform, installation, root, profile, exceptions, origins, diagnostics); oldPid = client.pid;
+    diagnostics.enter('baseline-resource-verification');
     const baselineCode = verifyResources(client.resources, BASELINE, feed, platform); assert.equal(baselineCode.updaterCacheDirName, targetCode.updaterCacheDirName);
+    diagnostics.enter('baseline-build-info');
     assert.equal((await client.invoke('appBuildInfo')).version, BASELINE);
+    diagnostics.enter('baseline-updater-channel');
     const channel = await client.evaluate('window.__OPENWORK_ELECTRON__.updater.getChannel()');
     assert.equal(channel.supported, true); assert.equal(channel.product, 'zeno'); assert.equal(channel.feedUrl, feed); assert.equal(channel.currentVersion, BASELINE);
+    diagnostics.enter('baseline-workspace-create');
     const created = await client.invoke('workspaceCreate', { folderPath: workspace, name: 'Zeno update fixture' });
+    diagnostics.enter('baseline-workspace-identity');
     const workspaceRecord = created.workspaces.find(item => item.path === workspace); assert.ok(workspaceRecord?.id);
-    const before = await runtime(client, workspace); const mount = `/workspace/${encodeURIComponent(workspaceRecord.id)}/opencode`;
+    const before = await runtime(client, workspace, diagnostics); const mount = `/workspace/${encodeURIComponent(workspaceRecord.id)}/opencode`;
+    diagnostics.enter('baseline-session-create');
     const session = await before.request(mount + '/session', { method: 'POST', body: JSON.stringify({ title: marker }) }); assert.ok(session.id);
+    diagnostics.enter('baseline-message-create');
     await before.request(`${mount}/session/${encodeURIComponent(session.id)}/message`, { method: 'POST', body: JSON.stringify({ noReply: true, parts: [{ type: 'text', text: marker }] }) });
     const hasMarker = messages => messages.some(message => message.parts?.some(part => part.type === 'text' && part.text === marker));
+    diagnostics.enter('baseline-message-read');
     assert.ok(hasMarker(await before.request(`${mount}/session/${encodeURIComponent(session.id)}/message`)));
+    diagnostics.enter('baseline-profile-marker');
     await client.evaluate(`localStorage.setItem('zeno.update.smoke',${JSON.stringify(marker)})`);
     phase('baseline-native-history-created', { installedVersion: BASELINE, workspace: true, storedSession: true, storedMessage: true, noModelCall: true });
+    diagnostics.enter('update-check');
     const checked = await client.evaluate("window.__OPENWORK_ELECTRON__.updater.check('stable')", 120_000);
     assert.equal(checked.available, true); assert.equal(checked.latestVersion, TARGET); assert.equal(checked.feedUrl, feed); assert.equal(checked.totalBytes, selected.installer.size);
     try { report.downloadProgress = { subscriptionSupported: await client.evaluate(`(()=>{window.__zenoSmokeDownloadProgress={};const updater=window.__OPENWORK_ELECTRON__.updater;if(typeof updater.onDownloadProgress!=='function')return false;const numeric=${numericDownloadProgress.toString()};updater.onDownloadProgress(value=>window.__zenoSmokeDownloadProgress={...window.__zenoSmokeDownloadProgress,...numeric(value)});return true})()`, 2000) === true }; } catch { report.downloadProgress = { subscriptionSupported: false }; }
     phase('native-public-download-started', { bytes: selected.installer.size, installer: spec.suffix });
+    diagnostics.enter('update-download');
     const downloaded = await client.evaluate('window.__OPENWORK_ELECTRON__.updater.download()', 1_800_000);
     assert.equal(downloaded.ok, true, 'Real public native download failed.'); assert.equal(downloaded.version, TARGET);
     phase('native-public-download-completed', { version: TARGET });
-    await until(() => before.request('/experimental/engine-v2-preview/activity'), value => value.v1?.verdict === 'idle' && value.v1.busySessions === 0 && value.v1.waitingRequests === 0 && (value.v2 === null || value.v2?.verdict === 'idle'), 30_000, 'idle historical engine');
+    diagnostics.enter('update-idle');
+    await until(() => before.request('/experimental/engine-v2-preview/activity'), value => value.v1?.verdict === 'idle' && value.v1.busySessions === 0 && value.v1.waitingRequests === 0 && (value.v2 === null || value.v2?.verdict === 'idle'), 30_000, 'idle historical engine', diagnostics);
+    diagnostics.enter('update-install');
     await client.evaluate('(()=>{window.__zenoInstallResult=null;window.__OPENWORK_ELECTRON__.updater.installAndRestart().then(value=>{window.__zenoInstallResult=value});return true})()');
-    await until(() => child.exitCode ?? child.signalCode, value => value !== null, 120_000, 'baseline process exits naturally');
+    diagnostics.enter('update-process-exit');
+    await until(() => child.exitCode ?? child.signalCode, value => value !== null, 120_000, 'baseline process exits naturally', diagnostics);
     client.socket.close(); client.browser.socket.close(); client = null;
     // No spawn, installer command, Browser.close or kill is permitted between
     // admission above and these actual target/restart/preservation assertions.
-    client = await attach(port, platform, installation, root, profile, exceptions, origins);
+    client = await attach(port, platform, installation, root, profile, exceptions, origins, diagnostics);
     assert.notEqual(client.pid, oldPid, 'The target was not automatically relaunched in a new native process.');
+    diagnostics.enter('target-code-verification');
     const afterCode = verifyResources(client.resources, TARGET, feed, platform); assert.equal(afterCode.archiveSha256, targetCode.archiveSha256, 'Installed ASAR differs from the frozen published target.');
     if (platform === 'linux') assert.equal(hash(readFileSync(executable)), selected.installer.sha256, 'Native AppImage replacement differs from the original published installer.');
+    diagnostics.enter('target-build-info');
     assert.equal((await client.invoke('appBuildInfo')).version, TARGET);
     report.nativeUpdateExecuted = true; Object.assign(report.scope, { installedUpgrade: true, automaticRelaunch: true });
     phase('original-target-installed-and-automatically-relaunched', { installedVersion: TARGET, publishedAsar: true, actualProcessChanged: true });
+    diagnostics.enter('target-profile-marker');
     assert.equal(await client.evaluate("localStorage.getItem('zeno.update.smoke')"), marker, 'Chromium state was lost.');
+    diagnostics.enter('target-workspace-file');
     assert.equal(readFileSync(join(workspace, 'update-smoke-marker.txt'), 'utf8'), marker, 'Workspace contents were lost.');
+    diagnostics.enter('target-workspace-identity');
     const retained = await client.invoke('workspaceBootstrap'); assert.ok(retained.workspaces.some(item => item.id === workspaceRecord.id && item.path === workspace), 'Workspace identity was lost.');
-    const after = await runtime(client, workspace);
+    const after = await runtime(client, workspace, diagnostics);
+    diagnostics.enter('target-session-read');
     assert.equal((await after.request(`${mount}/session/${encodeURIComponent(session.id)}`)).title, marker);
+    diagnostics.enter('target-message-read');
     assert.ok(hasMarker(await after.request(`${mount}/session/${encodeURIComponent(session.id)}/message`)), 'Historical native conversation was lost.');
+    diagnostics.enter('target-renderer');
     assert.equal(exceptions.length, 0, 'An installed renderer exception occurred.');
     assert.ok([...origins].every(origin => !/openworklabs\.com|github\.com/.test(origin)), 'Unexpected upstream renderer connection.');
+    diagnostics.enter('target-screenshot');
     const image = await client.send('Page.captureScreenshot', { format: 'png' }); writeFileSync(join(evidence, 'updated-app.png'), Buffer.from(image.data, 'base64'));
     report.scope.historicalChatPreservation = true;
     phase('real-native-upgrade-and-preservation-verified', { installedVersion: TARGET, publishedAsar: true, actualProcessChanged: true, chromiumProfile: true, workspaceIdentity: true, workspaceFile: true, historicalSession: true, historicalMessage: true, embeddedServer: true });
     if (compareStableVersions(TARGET, '1.1.1') >= 0) {
+      diagnostics.enter('target-navigation');
       const previousSessions = workspaceSessionIdentitySnapshot(await after.request(`${mount}/session`));
       const navigation = await verifyPackagedNavigation({ client, resources: client.resources });
       report.navigation = navigation.report;
@@ -409,7 +504,7 @@ async function main() {
     cleanupAllowed = true; report.passed = true;
   } catch (error) {
     if (error.navigationReport) report.navigation = error.navigationReport;
-    failure = true; report.failure = { classification: 'native-update-validation-failed', lastPhase: report.phases.at(-1)?.name ?? 'initialization' };
+    failure = true; report.failure = { classification: 'native-update-validation-failed', lastPhase: report.phases.at(-1)?.name ?? 'initialization', ...diagnostics.snapshot(error) };
     try { if (client) report.downloadProgress = { ...report.downloadProgress, ...numericDownloadProgress(await client.evaluate('window.__zenoSmokeDownloadProgress', 2000)) }; } catch {}
     report.failureDiagnostics = privateUpdateFailureDiagnostics(root);
     // Never publish assertion values, private paths, runtime tokens or raw logs.

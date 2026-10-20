@@ -5,7 +5,8 @@ import { mkdtempSync, realpathSync, mkdirSync, readFileSync, writeFileSync, syml
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import YAML from 'yaml';
-import { assertPortableHostedRunner, assertPrivatePath, validatePortableHistorical, validatePortableTarget, nsisPayloadPath } from '../scripts/zeno-update-portable-smoke.mjs';
+import { assertPortableHostedRunner, assertPrivatePath, validatePortableHistorical, validatePortableTarget, nsisPayloadPath,
+  portableErrorMetadata, portableDiagnosticState, windowsProcessPathCommand, decodeWindowsProcessPath, until } from '../scripts/zeno-update-portable-smoke.mjs';
 import { numericDownloadProgress, safeUpdateFailureSignals } from '../scripts/zeno-update-smoke.mjs';
 
 const origin = 'https://www.zeno.ryan-wong.cn';
@@ -106,4 +107,57 @@ test('NSIS resource reference selects one exact x64 payload without traversal or
   assert.equal(nsisPayloadPath('Path = installer.exe\r\nPath = $PLUGINSDIR\\app-64.7z\r\nPath = $PLUGINSDIR\\other.dll\r\n'), '$PLUGINSDIR\\app-64.7z');
   assert.equal(nsisPayloadPath('Path = app-64.zip\n'), 'app-64.zip');
   for (const listing of ['Path = app-arm64.7z\n', 'Path = ../app-64.7z\n', 'Path = C:\\app-64.7z\n', 'Path = $PLUGINSDIR\\app-64.7z\nPath = app-64.zip\n']) assert.throws(() => nsisPayloadPath(listing));
+});
+
+test('owned Windows executable path preserves Chinese and spaces over an ASCII Base64 UTF-8 wire', () => {
+  for (const path of ['D:\\runner\\private fixture\\泽诺 Zeno.exe', 'C:\\临时目录\\测试 🧪\\泽诺 Zeno.exe']) {
+    const wire = Buffer.from(path, 'utf8').toString('base64');
+    assert.match(wire, /^[\x00-\x7f]+$/);
+    assert.equal(decodeWindowsProcessPath(wire), path);
+  }
+  const script = windowsProcessPathCommand(123);
+  assert.match(script, /Get-Process -Id 123/); assert.match(script, /ToBase64String\(\[Text.Encoding\]::UTF8.GetBytes\(\$p\)\)/);
+  assert.match(script, /^[\x00-\x7f]+$/);
+  for (const pid of [0, 1, -3, 1.5, '123;exit']) assert.throws(() => windowsProcessPathCommand(pid));
+  for (const value of ['', 'not-base64?', 'YQ==', Buffer.from([255]).toString('base64'), Buffer.from('C:\\private\nfixture.exe').toString('base64')]) {
+    assert.throws(() => decodeWindowsProcessPath(value), { message: 'Invalid encoded owned Windows executable path.' });
+  }
+});
+
+test('Windows PowerShell executes the same ASCII encoder with a synthetic Chinese path', { skip: process.platform !== 'win32' }, () => {
+  const path = 'D:\\synthetic 测试\\泽诺 Zeno.exe';
+  const wire = Buffer.from(path, 'utf8').toString('base64');
+  const script = windowsProcessPathCommand(123).replace('(Get-Process -Id 123 -ErrorAction Stop).Path',
+    `[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('${wire}'))`);
+  const result = spawnSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', script], { encoding: 'utf8' });
+  assert.equal(result.status, 0);
+  assert.equal(decodeWindowsProcessPath(result.stdout.trim()), path);
+});
+
+test('checkpoint diagnostics allowlist names/codes and never access private error fields', () => {
+  const privateMarker = 'never-publish-private-fixture';
+  const error = { name: 'AssertionError', code: 'ERR_ASSERTION' };
+  for (const key of ['message', 'actual', 'expected', 'path', 'token', 'stack']) Object.defineProperty(error, key, { get() { throw Error(privateMarker); } });
+  assert.deepEqual(portableErrorMetadata(error), { errorKind: 'AssertionError', code: 'ERR_ASSERTION' });
+  assert.deepEqual(portableErrorMetadata({ name: privateMarker, code: privateMarker, message: privateMarker }), { errorKind: 'UnknownError' });
+  const diagnostics = portableDiagnosticState(); diagnostics.enter('attach-windows-executable'); diagnostics.readError(error);
+  const safe = diagnostics.snapshot({ name: 'Error', code: privateMarker, message: privateMarker });
+  assert.deepEqual(safe, { activeCheck: 'attach-windows-executable', errorKind: 'Error', lastReadError: { errorKind: 'AssertionError', code: 'ERR_ASSERTION' } });
+  assert.equal(JSON.stringify(safe).includes(privateMarker), false);
+  assert.throws(() => diagnostics.enter(privateMarker), { message: 'Unknown native diagnostic checkpoint.' });
+  diagnostics.enter('baseline-workspace-identity');
+  assert.deepEqual(diagnostics.snapshot(error), { activeCheck: 'baseline-workspace-identity', errorKind: 'AssertionError', code: 'ERR_ASSERTION' });
+});
+
+test('polling retains only fixed last-read error metadata without changing its failure gate', async () => {
+  const diagnostics = portableDiagnosticState(); diagnostics.enter('attach-page-list');
+  const error = Object.assign(new TypeError('private URL/path/token must never be emitted'), { code: 'ECONNREFUSED' });
+  let attempts = 0;
+  await assert.rejects(until(async () => { attempts++; throw error; }, Boolean, 1, 'owned installed main renderer', diagnostics), timeout => {
+    assert.equal(timeout.message, 'Timed out: owned installed main renderer.');
+    assert.deepEqual(diagnostics.snapshot(timeout), { activeCheck: 'attach-page-list', errorKind: 'Error', lastReadError: { errorKind: 'TypeError', code: 'ECONNREFUSED' } });
+    assert.equal(JSON.stringify(diagnostics.snapshot(timeout)).includes('private'), false);
+    return true;
+  });
+  assert.equal(attempts, 1);
 });
