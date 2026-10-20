@@ -241,7 +241,7 @@ try {
   foreach($pair in @(@('APPDATA','roaming'),@('LOCALAPPDATA','local'),@('ProgramData','programData'))){
    $result=New-NativePrerequisite 'known-folder-environment';$result['scope']=$scope.ToLowerInvariant();$result['variable']=$pair[0].ToLowerInvariant()
    $configured=[Environment]::GetEnvironmentVariable($pair[0],$scope)
-   if($configured){$expanded=[Environment]::ExpandEnvironmentVariables($configured);if($expanded -notmatch '^[A-Za-z]:[\\/]' -or -not [string]::Equals([IO.Path]::GetFullPath($expanded),$v.roots.($pair[1]),[StringComparison]::OrdinalIgnoreCase)){$result['reason']='known-folder-mismatch';throw 'Prerequisite rejected'}}
+   if($configured){$expanded=[Environment]::ExpandEnvironmentVariables($configured);if($expanded -notmatch '^[A-Za-z]:[\\\\/]' -or -not [string]::Equals([IO.Path]::GetFullPath($expanded),$v.roots.($pair[1]),[StringComparison]::OrdinalIgnoreCase)){$result['reason']='known-folder-mismatch';throw 'Prerequisite rejected'}}
   }
  }
  $groups=@([pscustomobject]@{check='owned-leaf';paths=@($v.leaves)},[pscustomobject]@{check='shortcut';paths=@($v.shortcuts)},[pscustomobject]@{check='check-only';paths=@($v.checkOnlyLeaves)})

@@ -270,6 +270,53 @@ test('native V1 history uses one real settings mutation before history and targe
   await assert.rejects(verifyNativeV1HistorySetting(request, () => ({ enabled: true, chatRouting: false }), wait));
 });
 
+function generatedKnownFolderCondition() {
+  const matches = [...windowsNativePristineScript().matchAll(/;if\((\$expanded -notmatch '[^']+' -or -not \[string\]::Equals[^\r\n]+?)\)\{\$result\['reason'\]='known-folder-mismatch';/g)];
+  assert.equal(matches.length, 1, 'Expected one actual generated known-folder predicate.');
+  return matches[0][1];
+}
+
+test('the emitted native folder drive guard accepts Windows separators and rejects non-absolute paths', () => {
+  const condition = generatedKnownFolderCondition();
+  const pattern = /^\$expanded -notmatch '([^']+)' -or/.exec(condition)?.[1];
+  assert.equal(typeof pattern, 'string');
+  const drive = new RegExp(pattern);
+  for (const value of ['C:\\Users\\synthetic\\AppData\\Roaming', 'C:/Users/synthetic/AppData/Roaming', 'D:\\用户 空格\\AppData\\Roaming']) {
+    assert.equal(drive.test(value), true);
+  }
+  for (const value of ['relative', 'C:relative', '\\Users\\synthetic', '\\\\synthetic\\share', '/tmp/synthetic']) {
+    assert.equal(drive.test(value), false);
+  }
+});
+
+test('the actual emitted PowerShell folder predicate accepts native paths and rejects redirected or relative roots', { skip: process.platform !== 'win32' }, () => {
+  const root = 'C:\\Users\\用户 空格\\AppData\\Roaming';
+  const cases = [
+    { configured: root, expected: root, rejected: false },
+    { configured: root.toUpperCase(), expected: root, rejected: false },
+    { configured: root.replaceAll('\\', '/'), expected: root, rejected: false },
+    { configured: root + '\\..\\Roaming', expected: root, rejected: false },
+    { configured: 'D:\\Users\\用户 空格\\AppData\\Roaming', expected: root, rejected: true },
+    { configured: 'C:\\Users\\用户 空格\\OneDrive\\Roaming', expected: root, rejected: true },
+    { configured: root, expected: 'C:\\Users\\other\\AppData\\Roaming', rejected: true },
+    ...['relative', 'C:relative', '\\Users\\synthetic', '\\\\synthetic\\share', '/tmp/synthetic']
+      .map(configured => ({ configured, expected: root, rejected: true })),
+  ];
+  const input = Buffer.from(JSON.stringify(cases), 'utf8').toString('base64');
+  const script = String.raw`$ErrorActionPreference='Stop'
+$cases=ConvertFrom-Json ([Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('${input}')))
+$checks=@(foreach($case in $cases){
+ $expanded=[Environment]::ExpandEnvironmentVariables($case.configured)
+ $pair=@('APPDATA','roaming');$v=[pscustomobject]@{roots=[pscustomobject]@{roaming=$case.expected}}
+ [bool](${generatedKnownFolderCondition()})
+})
+$json=ConvertTo-Json -InputObject $checks -Compress
+[Console]::Write([Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($json)))`;
+  const result = spawnSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', script], { encoding: 'utf8', timeout: 15_000 });
+  assert.equal(result.status, 0, 'The synthetic native-folder predicate must execute successfully.');
+  assert.deepEqual(decodeNativeWindowsWire(result.stdout.trim()), cases.map(value => value.rejected));
+});
+
 test('native Windows prerequisite scripts parse without executing a fixture or exposing Unicode over the console', { skip: process.platform !== 'win32' }, () => {
   for (const source of [windowsNativeRootsScript(), windowsNativePristineScript(), windowsNativeInstallationScript()]) {
     const encoded = Buffer.from(source, 'utf8').toString('base64');

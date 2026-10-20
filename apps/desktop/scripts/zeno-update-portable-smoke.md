@@ -141,6 +141,15 @@ closed. None of these classifications ignore a prerequisite or clean state.
 The original native-defaults attempt 05 had no such classified receipt and
 cannot be attributed retrospectively to one of these categories.
 
+Known-folder regression coverage reads the predicate from the generated
+PowerShell, rather than testing a second handwritten expression. It accepts
+native drive paths with backslashes as well as forward slashes; the Windows
+test executes that actual predicate with synthetic Unicode paths, case and
+dot-segment normalization, and rejects different roots, relative paths,
+drive-relative paths and UNC paths. The template escapes both JavaScript and
+the emitted regular expression. No live environment value is printed or
+changed by these tests.
+
 An opted-in retry uses the original 1.0.0 UI bridge's existing `download` action
 in the same verified baseline process, Chromium profile and historical session.
 It does not run `check` again, restart the baseline, seed the updater cache,
