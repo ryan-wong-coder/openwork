@@ -224,5 +224,28 @@
     "cacheSeedOrManualTargetLaunch": false,
     "outcome": "Windows-specific preflight 46/46 passed and original hashes verified, then pristine-state prerequisite failed before NSIS/app/V1/history/download; no exact precondition cause recorded.",
     "nativeReceipt": "attempt05-native-defaults-win32-x64.json"
+  },
+  "windowsNativeDefaultsPrerequisiteClassification": {
+    "workflowId": 390119143,
+    "runId": 39459065876,
+    "jobId": 118753503116,
+    "ref": "personal",
+    "checkoutCommit": "28dc7536567aeeef544c8990954d937964fbe423",
+    "checkoutDesktopVersion": "1.1.2",
+    "platform": "win32",
+    "windows_profile_mode": "native-defaults",
+    "windows_download_retries": "2",
+    "attempt": 6,
+    "createdAt": "2026-10-20T16:37:23Z",
+    "operatorExplicitlyApproved": true,
+    "sameFrozenBaselineAndTarget": true,
+    "reason": "Add fixed enum/index prerequisite classification while retaining every strict predicate, to obtain the cause not recorded in attempt 5. No state is removed and no earlier failure is reattributed.",
+    "priorNativeDefaultsReceipt": "attempt05-native-defaults-win32-x64.json",
+    "newEvidenceFilenamePrefix": "attempt06-native-defaults-",
+    "runCheckoutExactShaVerified": true,
+    "productBytesAndNativeGatesUnchanged": true,
+    "cacheSeedOrManualTargetLaunch": false,
+    "outcome": "Windows tests50/50 and Node pristine checks passed, then process APPDATA/KnownFolder PowerShell comparison rejected before NSIS/app/V1/history/download. No values collected; underlying mismatch cause unknown and attempt 5 not reattributed.",
+    "nativeReceipt": "attempt06-native-defaults-win32-x64.json"
   }
 }

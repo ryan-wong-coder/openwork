@@ -1,0 +1,4 @@
+Real update win32/x64	UNKNOWN STEP	2026-10-20T16:19:31.7137754Z Image: windows-2025-vs2026
+Real update win32/x64	UNKNOWN STEP	2026-10-20T16:19:31.7138890Z Version: 20261018.275.1
+Real update win32/x64	UNKNOWN STEP	2026-10-20T16:19:31.7141946Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20261018.275/images/windows/Windows2025-VS2026-Readme.md
+Real update win32/x64	UNKNOWN STEP	2026-10-20T16:19:31.7145059Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20261018.275

@@ -1,0 +1,25 @@
+{
+  "scope": "Four exact public runner-image metadata lines from the original Set up job log; no user configuration or environment values.",
+  "runId": 39456398540,
+  "jobId": 118744354280,
+  "workflowRunnerLabel": "windows-2025",
+  "observedImage": "windows-2025-vs2026",
+  "observedImageVersion": "20261018.275.1",
+  "includedSoftwareUrl": "https://github.com/actions/runner-images/blob/win25-vs2026/20261018.275/images/windows/Windows2025-VS2026-Readme.md",
+  "imageReleaseUrl": "https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20261018.275",
+  "sourceLogLines": [
+    17,
+    18,
+    19,
+    20
+  ],
+  "sourcePrivateWorkflowLogSha256": "020323587df9591f77d04707d07ee6cb03c5dbc7ccdaede6f2d08d8450a6a94e",
+  "exactMetadataSnippet": {
+    "file": "attempt05-native-defaults-runner-image.txt",
+    "bytes": 539,
+    "sha256": "457baa8d5c743d7b84c6b05665c5589e80b7cd6173fdee4c6937e4c624500526"
+  },
+  "prerequisiteFailureCauseEstablished": false,
+  "nodePathValueCollected": false,
+  "interpretation": "This identifies the actual machine image for source research only. It does not establish which native-defaults prerequisite failed. Runner Image Provisioner version 20261015.610 is a different component."
+}

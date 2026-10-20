@@ -1,0 +1,63 @@
+{
+  "scope": "Strict fixed-category native-defaults prerequisite result from attempt 6 only; original receipt unchanged and attempt 5 is not reattributed.",
+  "runId": 39459065876,
+  "jobId": 118753503116,
+  "lane": "win32-x64",
+  "workflowAttempt": 6,
+  "windowsProfileMode": "native-defaults",
+  "checkoutCommit": "28dc7536567aeeef544c8990954d937964fbe423",
+  "nativeReceipt": {
+    "file": "attempt06-native-defaults-win32-x64.json",
+    "sha256": "502a608b6a21162ca0fe0338bfa822ab8e4614d005c7e3b14adc2a4fdeba4ece"
+  },
+  "actualWindowsPreflightTests": {
+    "tests": 50,
+    "pass": 50,
+    "fail": 0,
+    "skipped": 0,
+    "source": "Original workflow summary at lines311/313/314/316; API preflight conclusion success"
+  },
+  "nativeDefaultsPrerequisites": {
+    "node": {
+      "engine": "node",
+      "passed": true,
+      "check": "complete",
+      "reason": "clear",
+      "nativeLeavesChecked": 17,
+      "shortcutsChecked": 8,
+      "checkOnlyLeavesChecked": 29,
+      "pristine": true
+    },
+    "powershell": {
+      "engine": "powershell",
+      "passed": false,
+      "check": "known-folder-environment",
+      "reason": "known-folder-mismatch",
+      "scope": "process",
+      "variable": "appdata"
+    }
+  },
+  "actualWholeFileDownloadCount": 0,
+  "additionalRetriesActuallyStarted": 0,
+  "originalPackagesVerified": true,
+  "baselineNsisInstalled": false,
+  "appLaunched": false,
+  "originalSettingsApiSavedV1Reached": false,
+  "historicalV1SessionCreated": false,
+  "failure": {
+    "classification": "native-update-validation-failed",
+    "lastPhase": "original-installers-verified",
+    "activeCheck": "windows-native-pristine",
+    "errorKind": "AssertionError",
+    "code": "ERR_ASSERTION"
+  },
+  "environmentValuesCollected": false,
+  "underlyingKnownFolderMismatchCause": "unknown; only the fixed failed comparison category is recorded",
+  "attempt05CauseBackfilled": false,
+  "rawWorkflowFailedStepLog": {
+    "bytes": 57127,
+    "sha256": "16d053359a83a8801b041d74b028b3ac4827267064d8488a22de5cad432b8fcd",
+    "retainedInPublicTree": false
+  },
+  "interpretation": "The Node pristine checks passed for 17 native leaves, 8 shortcuts and 29 check-only leaves. PowerShell then rejected its process APPDATA/KnownFolder comparison before registry acceptance, NSIS installation or app/V1/history/download. This is the observed attempt 6 guard; it is not evidence that NODE_PATH caused the earlier failure or that product installation failed."
+}

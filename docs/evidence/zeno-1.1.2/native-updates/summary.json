@@ -31,23 +31,30 @@
       ],
       "nsisInstallOrTargetRelaunchFailureEstablished": false,
       "latestAttempt": {
-        "attempt": 5,
-        "runId": 39456398540,
-        "jobId": 118744354280,
+        "attempt": 6,
+        "runId": 39459065876,
+        "jobId": 118753503116,
         "windowsProfileMode": "native-defaults",
         "additionalWholeFileRetriesAllowed": 2,
-        "historicalEngineScope": "saved V1 via original settings API; default V2 history not tested",
-        "status": "completed-pristine-precondition-failure",
+        "historicalEngineScope": "Intended saved V1 via original settings; not yet observed in this run",
+        "status": "completed-process-appdata-known-folder-comparison-rejected",
         "nativeVerdict": "not-executed-prerequisite-failed",
-        "receipt": "attempt05-native-defaults-win32-x64.json",
-        "trajectoryReceipt": "attempt05-native-defaults-trajectory.json",
+        "receipt": "attempt06-native-defaults-win32-x64.json",
+        "trajectoryReceipt": "attempt06-native-defaults-trajectory.json",
         "actualWholeFileDownloadCount": 0,
-        "additionalRetriesActuallyStarted": 0,
         "historicalV1SettingOrHistoryReached": false,
         "originalNsisInstalled": false,
-        "actualWindowsPreflightTestsPassed": 46
+        "actualWindowsPreflightTestsPassed": 50,
+        "nodePristinePassed": true,
+        "powershellFailedComparison": {
+          "check": "known-folder-environment",
+          "reason": "known-folder-mismatch",
+          "scope": "process",
+          "variable": "appdata"
+        },
+        "underlyingMismatchCause": "unknown"
       },
-      "completedFailedWorkflowAttempts": 5,
+      "completedFailedWorkflowAttempts": 6,
       "priorIsolatedReceipts": [
         "win32-x64.json",
         "attempt02-win32-x64.json",
@@ -81,8 +88,8 @@
     }
   },
   "integrityChecks": {
-    "downloadedArtifactZipDigestsMatchedGitHub": 9,
-    "extractedOriginalFilesRehashed": 20,
+    "downloadedArtifactZipDigestsMatchedGitHub": 10,
+    "extractedOriginalFilesRehashed": 21,
     "originalCapacityAnnotationResponsesRehashed": 2,
     "actualScreenshotsReviewed": 10,
     "screenshotsWithReadableChinese": 8,

@@ -19,7 +19,7 @@ workflow is rerun without explicit approval. This directory is separate from the
 | Lane | Actual result | Evidence boundary |
 | --- | --- | --- |
 | Linux x64 | Native functional and Chinese screenshot pass in attempt 2 | Both original AppImage runs passed actual upgrade and history/registry/sidebar gates. Original screenshots retain missing-glyph boxes; attempt 2 added explicit CJK host prerequisites and its two actually viewed screenshots have readable Chinese. |
-| Windows x64 | Attempt 5 stopped at the native-defaults pristine precondition | All 46 Windows preflight tests and original installer hashes passed. The required pristine-state gate then failed before original NSIS installation, application launch or V1 settings/history. It made no updater download and produced no target image. Isolated attempt 4's verified on-disk target and unaccepted browser/profile remain unchanged. |
+| Windows x64 | Attempt 6 stopped at the process APPDATA/KnownFolder prerequisite | All 50 Windows tests, original hashes and Node pristine checks passed. PowerShell then rejected its process APPDATA/KnownFolder comparison before original NSIS, app launch or V1/history. No environment value, updater download or image was collected. Earlier isolated and native-defaults receipts remain unchanged. |
 | macOS x64 | Native functional and screenshot pass | Real ZIP download and Squirrel install/automatic restart, original signatures and published ASAR, isolated profile, both registries, history, native Canvas/SVG/Ant Design Charts, and four actual sidebar clicks passed. All three screenshots were actually viewed and Chinese is readable. |
 | macOS arm64 | Native functional and screenshot pass in attempt 4 | On `xcode-27`, the original package and signatures, real 444,118,404-byte public download, Squirrel installation, automatic restart, both registries, profile/history, native canvas and four actual sidebar clicks passed. All three screenshots were actually viewed with readable Chinese and no clipping. Earlier capacity cancellations and the stale preflight failure remain unchanged. |
 
@@ -35,8 +35,8 @@ separately. Attempt 3's raw workflow log is privately retained; its SHA and the
 fixed selector mismatch are recorded in `attempt03-macos-arm64-preflight.json`.
 It produced zero artifacts and no native report or PNG is fabricated. All
 dispatched runs have ended. Mac both architectures and Linux have passing native
-receipts; four-lane acceptance remains incomplete. Native-defaults attempt 5 did
-not reach its intended V1 history setup. The original default V2 history and
+receipts; four-lane acceptance remains incomplete. Native-defaults attempts 5 and
+6 did not reach their intended V1 history setup. The original default V2 history and
 isolated attempts are separate acceptance boundaries.
 
 Windows attempt 3 keeps the same original packages, process, profile, workspace
@@ -68,6 +68,13 @@ registry condition was not recorded, so no cause is inferred and no existing
 state is erased. Its 46/46 Windows tests include the five cases skipped on the
 earlier macOS developer machine. The failed precondition is not evidence of a
 product installation failure.
+
+Attempt 6's fixed diagnostics establish a more precise result on its own
+machine: Node accepted 17 native leaves, 8 shortcuts and 29 check-only leaves;
+PowerShell rejected `known-folder-environment` with `known-folder-mismatch`,
+`scope: process`, `variable: appdata`. The underlying mismatch cause and actual
+values were not recorded. This does not prove a NODE_PATH issue or explain
+attempt 5 retrospectively. Its 50 Windows tests all ran and passed without skips.
 
 Windows' failed checkpoint in the first two attempts is `update-download`. Its baseline process
 remained running and the target was absent from disk; the effective baseline
