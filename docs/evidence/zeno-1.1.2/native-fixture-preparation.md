@@ -21,6 +21,37 @@ old engine lacks the route. The list read proves the workspace's actual business
 read contract rather than relying on global host health. It keeps the same
 120-second readiness window. Session and message writes are still single-shot.
 
+## Server workspace registry
+
+Source review of the same original `1.0.0` commit confirms two separate state
+surfaces. `workspaceCreate` in `apps/desktop/electron/main.mjs:1825` calls only
+the Electron workspace store. `engineStart` can return an already running server
+at `apps/desktop/electron/runtime.mjs:2117`; when starting a server with an
+existing config, `seedWorkspacePathsForEmbeddedServer` omits the legacy list.
+Creating the Electron entry therefore does not prove that the runtime registry
+contains it. This is a concrete fixture risk; the old 404 receipts do not contain
+enough private response detail to attribute their failures conclusively.
+
+The fixture now follows the original app's own server API flow. It reads
+`GET /workspaces`, requires exactly one matching absolute local folder and uses
+that record's actual ID to build the engine mount. Only the baseline may register
+a missing folder, using exactly one `POST /workspaces/local` with the real host
+credential and requiring HTTP 201, `persisted: true` and a successful readback.
+That mutation is outside every retry loop. A failed or unknown registration is
+never retried. The overall preparation still shares one 120-second deadline.
+
+After automatic upgrade, registration is prohibited: the registry must retain
+the same server ID/path, alongside the existing Electron legacy ID/path and all
+conversation/file markers. A missing record fails rather than being repaired.
+No server database or config file is edited by the harness. Registry bodies can
+contain engine credentials, so only private ID/path pairs are retained in memory;
+evidence contains fixed status categories and successful-check booleans.
+
+The original source implements this API in
+`apps/server/src/routes/core.ts` and `apps/server/src/routes/workspaces.ts`.
+`apps/app/src/app/lib/openwork-server.ts` forwards both client and host credentials
+for its own `createLocalWorkspace` operation.
+
 ## Effective native profile
 
 The original `1.0.0` main source has `getOpenworkUiMcpEnvironment` at line 1908,
@@ -47,12 +78,15 @@ and relaunched by the updater, without a target launch from the harness.
 
 ## Local checks
 
-`node --test apps/desktop/test/zeno-update-portable-smoke.test.mjs` passed 18 tests;
+`node --test apps/desktop/test/zeno-update-portable-smoke.test.mjs` passed 21 tests;
 the two real Windows PowerShell cases were correctly skipped on macOS. The
 readiness fixture covers a failed read, a malformed successful response, a real
 empty list, zero `/session/status` requests and exactly one failed POST. The
 profile fixture rejects wrong filenames, another directory, environment-only
-claims, missing/malformed results and an unavailable bridge. Syntax and
+claims, missing/malformed results and an unavailable bridge. Registry checks cover
+baseline creation/readback, unchanged target identity, lost target records,
+duplicate paths, a failed or unpersisted single registration, and missing host
+credentials. Target validation cannot enable baseline registration. Syntax and
 `git diff --check` passed. No desktop window was opened.
 
 The next native acceptance must use the built and published `1.1.2` target.

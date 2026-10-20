@@ -35,7 +35,8 @@ const ACTIVE_CHECKS = new Set(['initialization', 'release-metadata', 'artifact-c
   'attach-browser-version', 'attach-browser-cdp', 'attach-browser-pid', 'attach-profile-identity', 'attach-private-executable', 'attach-profile-environment', 'attach-windows-executable', 'attach-effective-profile',
   'attach-updater-bridge', 'baseline-build-info', 'baseline-updater-channel', 'baseline-workspace-create',
   'baseline-workspace-identity', 'runtime-engine-start', 'runtime-server-info', 'runtime-server-health',
-  'runtime-workspace-ready', 'baseline-session-create', 'baseline-session-identity', 'baseline-message-create', 'baseline-message-read', 'baseline-profile-marker',
+  'runtime-workspace-registry', 'runtime-workspace-register', 'runtime-workspace-registry-identity', 'runtime-workspace-ready',
+  'baseline-session-create', 'baseline-session-identity', 'baseline-message-create', 'baseline-message-read', 'baseline-profile-marker',
   'update-check', 'update-download', 'update-idle', 'update-install', 'update-process-exit', 'target-code-verification',
   'target-build-info', 'target-profile-marker', 'target-workspace-file', 'target-workspace-identity',
   'target-session-read', 'target-message-read', 'target-renderer', 'target-screenshot', 'target-navigation']);
@@ -43,11 +44,13 @@ const ERROR_KINDS = new Set(['Error', 'AssertionError', 'TypeError', 'RangeError
 const ERROR_CODES = new Set(['ERR_ASSERTION', 'ENOENT', 'EACCES', 'EPERM', 'EINVAL', 'ENOTDIR', 'EISDIR', 'ETIMEDOUT',
   'ECONNREFUSED', 'ECONNRESET', 'ERR_INVALID_ARG_TYPE', 'ERR_INVALID_ARG_VALUE', 'ABORT_ERR',
   'UND_ERR_CONNECT_TIMEOUT', 'UND_ERR_HEADERS_TIMEOUT', 'UND_ERR_SOCKET']);
-const HTTP_ENDPOINTS = new Set(['server-health', 'workspace-session-status', 'workspace-session-create', 'workspace-session-list',
+const HTTP_ENDPOINTS = new Set(['server-health', 'workspace-registry-read', 'workspace-registry-create', 'workspace-session-status', 'workspace-session-create', 'workspace-session-list',
   'workspace-session-read', 'workspace-message-read', 'workspace-message-write', 'engine-activity', 'unknown']);
 
 export function portableHttpEndpoint(path, method = 'GET') {
   if (path === '/health') return 'server-health';
+  if (path === '/workspaces' && method === 'GET') return 'workspace-registry-read';
+  if (path === '/workspaces/local' && method === 'POST') return 'workspace-registry-create';
   if (path === '/experimental/engine-v2-preview/activity') return 'engine-activity';
   if (/^\/workspace\/[^/]+\/opencode\/session\/status$/.test(path)) return 'workspace-session-status';
   if (/^\/workspace\/[^/]+\/opencode\/session$/.test(path)) return method === 'POST' ? 'workspace-session-create' : 'workspace-session-list';
@@ -59,6 +62,20 @@ export function portableHttpEndpoint(path, method = 'GET') {
 export function validWorkspaceSessionList(value) {
   return Array.isArray(value) && value.every(session => session !== null && typeof session === 'object'
     && !Array.isArray(session) && typeof session.id === 'string' && session.id.trim().length > 0);
+}
+
+export function portableServerWorkspace(value, workspace) {
+  assert.ok(value && typeof value === 'object' && !Array.isArray(value) && Array.isArray(value.workspaces), 'Owned server registry must contain a workspace list.');
+  const matches = value.workspaces.filter(item => item && typeof item === 'object' && !Array.isArray(item)
+    && typeof item.path === 'string' && resolve(item.path) === resolve(workspace));
+  assert.ok(matches.length <= 1, 'Owned server registry contains an ambiguous workspace path.');
+  const matched = matches[0];
+  if (!matched) return null;
+  assert.ok(typeof matched.id === 'string' && matched.id.trim().length > 0 && isAbsolute(matched.path)
+    && matched.workspaceType === 'local', 'Owned server registry workspace identity is invalid.');
+  // Keep only the identity. Registry responses can contain engine credentials;
+  // neither the full response nor this private path is serialized as evidence.
+  return { id: matched.id, path: matched.path };
 }
 
 export async function effectivePortableProfileMatches(invoke, profile) {
@@ -452,29 +469,64 @@ async function attach(port, platform, installation, root, profile, exceptions, o
   return { ...client, browser, pid, resources, evaluate, invoke };
 }
 
-export async function runtime(client, workspace, mount, diagnostics) {
+export async function runtime(client, workspace, options = {}, diagnostics) {
+  assert.ok(options && typeof options === 'object' && !Array.isArray(options), 'Missing native workspace preparation options.');
+  assert.ok(!(options.registerWorkspace === true && options.expectedWorkspaceId !== undefined), 'Historical workspace validation cannot register a replacement.');
   diagnostics?.enter('runtime-engine-start');
   await client.invoke('engineStart', workspace, { workspacePaths: [workspace] });
-  return until(async () => {
+  const deadline = Date.now() + 120_000;
+  const remaining = () => Math.max(1, deadline - Date.now());
+  const connection = await until(async () => {
     diagnostics?.enter('runtime-server-info');
     const info = await client.invoke('openworkServerInfo'); assert.equal(info.running, true);
     const url = new URL(info.baseUrl); assert.equal(url.protocol, 'http:'); assert.ok(['127.0.0.1', 'localhost', '[::1]'].includes(url.hostname));
     assert.ok(!url.username && !url.password); const token = info.clientToken || info.ownerToken; assert.ok(token);
     const request = async (path, options = {}) => {
-      const endpoint = portableHttpEndpoint(path, options.method ?? 'GET'); diagnostics?.http(endpoint);
-      const response = await fetch(url.href.replace(/\/$/, '') + path, { ...options, redirect: 'error', signal: AbortSignal.timeout(30_000), headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' } });
+      const { expectedStatus = 200, host = false, ...init } = options;
+      const headers = { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' };
+      if (host || expectedStatus !== 200) {
+        assert.equal(path, '/workspaces/local'); assert.equal(init.method, 'POST'); assert.equal(expectedStatus, 201); assert.equal(host, true);
+        assert.ok(typeof info.hostToken === 'string' && info.hostToken.trim().length > 0, 'Owned server host credential is required.');
+        headers['X-OpenWork-Host-Token'] = info.hostToken;
+      }
+      const endpoint = portableHttpEndpoint(path, init.method ?? 'GET'); diagnostics?.http(endpoint);
+      const response = await fetch(url.href.replace(/\/$/, '') + path, { ...init, redirect: 'error', signal: init.signal ?? AbortSignal.timeout(30_000), headers });
       diagnostics?.http(endpoint, response.status);
-      assert.equal(response.status, 200, 'Owned embedded runtime request failed.'); return response.json();
+      assert.equal(response.status, expectedStatus, 'Owned embedded runtime request failed.'); return response.json();
     };
     diagnostics?.enter('runtime-server-health');
-    assert.equal((await request('/health')).ok, true);
+    assert.equal((await request('/health', { signal: AbortSignal.timeout(Math.min(30_000, remaining())) })).ok, true);
+    diagnostics?.enter('runtime-workspace-registry');
+    const registered = portableServerWorkspace(await request('/workspaces', { signal: AbortSignal.timeout(Math.min(30_000, remaining())) }), workspace);
+    return { request, registered };
+  }, Boolean, remaining(), 'installed embedded server and registry', diagnostics);
+  let registered = connection.registered;
+  if (!registered) {
+    assert.equal(options.registerWorkspace, true, 'Historical server workspace registry entry was lost.');
+    assert.ok(Date.now() < deadline, 'Owned server workspace registration deadline expired.');
+    diagnostics?.enter('runtime-workspace-register');
+    // Exactly one real host-authorized API mutation, outside all retry loops.
+    // Electron's legacy workspaceCreate/engineStart does not prove this server
+    // registry contains the folder when a server was already booted by the UI.
+    const created = await connection.request('/workspaces/local', { method: 'POST', expectedStatus: 201, host: true,
+      signal: AbortSignal.timeout(Math.min(30_000, remaining())), body: JSON.stringify({ folderPath: workspace, name: 'Zeno update fixture', preset: 'starter' }) });
+    assert.equal(created.persisted, true, 'Owned server workspace registry was not persisted.');
+    registered = portableServerWorkspace(created, workspace);
+    assert.ok(registered, 'Owned server registration did not return the expected workspace.');
+  }
+  if (options.expectedWorkspaceId !== undefined) assert.equal(registered.id, options.expectedWorkspaceId, 'Historical server workspace identity was lost.');
+  const mount = `/workspace/${encodeURIComponent(registered.id)}/opencode`;
+  return until(async () => {
+    diagnostics?.enter('runtime-workspace-registry-identity');
+    const current = portableServerWorkspace(await connection.request('/workspaces', { signal: AbortSignal.timeout(Math.min(30_000, remaining())) }), workspace);
+    assert.deepEqual(current, registered, 'Owned server workspace registry changed during readiness.');
     // A healthy host does not prove that this workspace's separate OpenCode
-    // engine accepts requests yet. Only this read is retried, in the same
+    // engine accepts requests yet. Only reads are retried, in the same
     // original 120-second window; session/message mutations remain single-shot.
     diagnostics?.enter('runtime-workspace-ready');
-    assert.ok(validWorkspaceSessionList(await request(mount + '/session')), 'Owned workspace engine session list must be an array of session identities.');
-    return { request };
-  }, Boolean, 120_000, 'installed embedded server', diagnostics);
+    assert.ok(validWorkspaceSessionList(await connection.request(mount + '/session', { signal: AbortSignal.timeout(Math.min(30_000, remaining())) })), 'Owned workspace engine session list must be an array of session identities.');
+    return { request: connection.request, mount, workspace: registered };
+  }, Boolean, remaining(), 'installed workspace engine', diagnostics);
 }
 
 function isolatedEnvironment(root, port) {
@@ -590,8 +642,8 @@ async function main() {
     const created = await client.invoke('workspaceCreate', { folderPath: workspace, name: 'Zeno update fixture' });
     diagnostics.enter('baseline-workspace-identity');
     const workspaceRecord = created.workspaces.find(item => item.path === workspace); assert.ok(workspaceRecord?.id);
-    const mount = `/workspace/${encodeURIComponent(workspaceRecord.id)}/opencode`;
-    const before = await runtime(client, workspace, mount, diagnostics);
+    const before = await runtime(client, workspace, { registerWorkspace: true }, diagnostics);
+    const mount = before.mount; const serverWorkspaceRecord = before.workspace;
     diagnostics.enter('baseline-session-create');
     const session = await before.request(mount + '/session', { method: 'POST', body: JSON.stringify({ title: marker }) });
     diagnostics.enter('baseline-session-identity'); assert.ok(session.id);
@@ -602,7 +654,7 @@ async function main() {
     assert.ok(hasMarker(await before.request(`${mount}/session/${encodeURIComponent(session.id)}/message`)));
     diagnostics.enter('baseline-profile-marker');
     await client.evaluate(`localStorage.setItem('zeno.update.smoke',${JSON.stringify(marker)})`);
-    phase('baseline-native-history-created', { installedVersion: BASELINE, workspace: true, storedSession: true, storedMessage: true, noModelCall: true });
+    phase('baseline-native-history-created', { installedVersion: BASELINE, workspace: true, serverRegistryIdentity: true, storedSession: true, storedMessage: true, noModelCall: true });
     diagnostics.enter('update-check');
     const checked = await client.evaluate("window.__OPENWORK_ELECTRON__.updater.check('stable')", 120_000);
     assert.equal(checked.available, true); assert.equal(checked.latestVersion, TARGET); assert.equal(checked.feedUrl, feed); assert.equal(checked.totalBytes, selected.installer.size);
@@ -636,7 +688,9 @@ async function main() {
     assert.equal(readFileSync(join(workspace, 'update-smoke-marker.txt'), 'utf8'), marker, 'Workspace contents were lost.');
     diagnostics.enter('target-workspace-identity');
     const retained = await client.invoke('workspaceBootstrap'); assert.ok(retained.workspaces.some(item => item.id === workspaceRecord.id && item.path === workspace), 'Workspace identity was lost.');
-    const after = await runtime(client, workspace, mount, diagnostics);
+    const after = await runtime(client, workspace, { expectedWorkspaceId: serverWorkspaceRecord.id }, diagnostics);
+    assert.deepEqual(after.workspace, serverWorkspaceRecord, 'Historical server workspace registry was lost.');
+    assert.equal(after.mount, mount, 'Historical server workspace mount changed.');
     diagnostics.enter('target-session-read');
     assert.equal((await after.request(`${mount}/session/${encodeURIComponent(session.id)}`)).title, marker);
     diagnostics.enter('target-message-read');
@@ -647,7 +701,7 @@ async function main() {
     diagnostics.enter('target-screenshot');
     const image = await client.send('Page.captureScreenshot', { format: 'png' }); writeFileSync(join(evidence, 'updated-app.png'), Buffer.from(image.data, 'base64'));
     report.scope.historicalChatPreservation = true;
-    phase('real-native-upgrade-and-preservation-verified', { installedVersion: TARGET, publishedAsar: true, actualProcessChanged: true, chromiumProfile: true, workspaceIdentity: true, workspaceFile: true, historicalSession: true, historicalMessage: true, embeddedServer: true });
+    phase('real-native-upgrade-and-preservation-verified', { installedVersion: TARGET, publishedAsar: true, actualProcessChanged: true, chromiumProfile: true, workspaceIdentity: true, serverRegistryIdentity: true, workspaceFile: true, historicalSession: true, historicalMessage: true, embeddedServer: true });
     if (compareStableVersions(TARGET, '1.1.1') >= 0) {
       diagnostics.enter('target-navigation');
       const previousSessions = workspaceSessionIdentitySnapshot(await after.request(`${mount}/session`));
