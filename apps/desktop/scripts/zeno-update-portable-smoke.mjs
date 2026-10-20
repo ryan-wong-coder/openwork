@@ -60,6 +60,11 @@ export function validWorkspaceSessionStatus(value) {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
 }
 
+export function finishPortableRun(passed, exit) {
+  assert.equal(typeof passed, 'boolean', 'Missing completed native verification verdict.');
+  if (!passed) exit(1);
+}
+
 export function portableErrorMetadata(error) {
   const value = error && typeof error === 'object' ? error : {};
   return { errorKind: ERROR_KINDS.has(value.name) ? value.name : 'UnknownError',
@@ -553,9 +558,14 @@ async function main() {
     console.log(`[zeno-portable-update] ${report.passed ? 'passed' : 'failed'}; sanitized report written.`);
     if (failure) process.exitCode = 1;
   }
+  return report.passed;
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   assert.equal(process.argv.length, 2, 'No native execution or feed overrides are accepted.');
-  await main();
+  // main() returns only after all finally work, environment restoration and
+  // synchronous report writes. A failed owned child/socket must not keep the
+  // hosted verifier alive until its 75-minute job limit. The VM disposes of
+  // private failed app processes; success still exits through the normal path.
+  finishPortableRun(await main(), code => process.exit(code));
 }

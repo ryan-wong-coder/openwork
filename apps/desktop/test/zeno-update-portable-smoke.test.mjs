@@ -4,11 +4,12 @@ import { spawnSync } from 'node:child_process';
 import { mkdtempSync, realpathSync, mkdirSync, readFileSync, writeFileSync, symlinkSync, existsSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { createServer as createHttpServer } from 'node:http';
 import YAML from 'yaml';
 import { assertPortableHostedRunner, assertPrivatePath, validatePortableHistorical, validatePortableTarget, nsisPayloadPath,
   portableErrorMetadata, portableDiagnosticState, windowsProcessPathCommand, decodeWindowsProcessPath, until,
-  portableHttpEndpoint, validWorkspaceSessionStatus, runtime } from '../scripts/zeno-update-portable-smoke.mjs';
+  portableHttpEndpoint, validWorkspaceSessionStatus, runtime, finishPortableRun } from '../scripts/zeno-update-portable-smoke.mjs';
 import { numericDownloadProgress, safeUpdateFailureSignals } from '../scripts/zeno-update-smoke.mjs';
 
 const origin = 'https://www.zeno.ryan-wong.cn';
@@ -221,4 +222,30 @@ test('global health alone cannot admit a workspace, and no failed POST is retrie
   } finally {
     server.closeAllConnections(); await new Promise(done => server.close(done));
   }
+});
+
+test('only a completed failed verdict requests explicit exit; success remains natural', () => {
+  const exits = [];
+  finishPortableRun(true, code => exits.push(code)); assert.deepEqual(exits, []);
+  finishPortableRun(false, code => exits.push(code)); assert.deepEqual(exits, [1]);
+  assert.throws(() => finishPortableRun(undefined, code => exits.push(code)));
+});
+
+test('failed verifier exits despite a pending child-process handle after synchronous evidence is written', () => {
+  const moduleUrl = new URL('../scripts/zeno-update-portable-smoke.mjs', import.meta.url).href;
+  const source = `import {spawn} from 'node:child_process';import {writeSync} from 'node:fs';import {finishPortableRun} from ${JSON.stringify(moduleUrl)};
+    const child=spawn(process.execPath,['-e','setTimeout(()=>{},10000)'],{stdio:'ignore',detached:true,windowsHide:true});
+    writeSync(1,'synthetic evidence written synchronously');finishPortableRun(false,code=>process.exit(code));`;
+  const result = spawnSync(process.execPath, ['--input-type=module'], { input: source, encoding: 'utf8', timeout: 5000 });
+  assert.equal(result.error, undefined); assert.equal(result.status, 1);
+  assert.equal(result.stdout, 'synthetic evidence written synchronously');
+});
+
+test('real native entry refuses a developer invocation before any installation or app launch', () => {
+  const result = spawnSync(process.execPath, [fileURLToPath(new URL('../scripts/zeno-update-portable-smoke.mjs', import.meta.url))], {
+    encoding: 'utf8', timeout: 5000,
+    env: { ...process.env, CI: '', GITHUB_ACTIONS: '', RUNNER_ENVIRONMENT: 'developer' },
+  });
+  assert.equal(result.error, undefined); assert.equal(result.status, 1);
+  assert.match(result.stderr, /Unsupported native platform|CI-only native validation/);
 });
