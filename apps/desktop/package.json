@@ -1,7 +1,7 @@
 {
   "name": "@openwork/desktop",
   "private": true,
-  "version": "1.1.1",
+  "version": "1.1.2",
   "desktopName": "com.differentai.openwork",
   "description": "OpenWork desktop shell",
   "author": {

@@ -111,12 +111,12 @@ jobs:
           pnpm --filter @zeno/api build
           python3 infra/zeno-release/zeno-api/backup.test.py
       - name: Verify local execution recovery and desktop account boundaries
-        run: timeout --kill-after=5s 90s node --test --test-reporter=spec apps/desktop/test/zeno-personal.test.mjs apps/desktop/test/zeno-personal-tools.test.mjs apps/desktop/test/zeno-scheduler.test.mjs apps/desktop/test/session-runner.test.mjs apps/desktop/test/zeno-update-portable-smoke.test.mjs apps/desktop/test/zeno-license-packaging.test.mjs
+        run: timeout --kill-after=5s 90s node --test --test-reporter=spec apps/desktop/test/zeno-personal.test.mjs apps/desktop/test/zeno-personal-tools.test.mjs apps/desktop/test/zeno-scheduler.test.mjs apps/desktop/test/session-runner.test.mjs apps/desktop/test/zeno-update-portable-smoke.test.mjs apps/desktop/test/zeno-license-packaging.test.mjs apps/desktop/test/zeno-fitness-packaging.test.mjs
       - name: Build the desktop UI and independent mobile application
         run: |
           pnpm --filter @openwork/app typecheck
           pnpm --filter @openwork/app exec bun test tests/use-workspace-route-state.test.tsx
-          pnpm --filter @openwork/app exec bun test tests/zeno-personal-data.test.ts tests/zeno-account-boundary.test.tsx tests/zeno-event-lifetime.test.ts tests/zeno-form-input.test.tsx
+          pnpm --filter @openwork/app exec bun test tests/zeno-personal-data.test.ts tests/zeno-account-boundary.test.tsx tests/zeno-event-lifetime.test.ts tests/zeno-form-input.test.tsx tests/zeno-exercise-visual.test.ts
           pnpm --filter @openwork/app build:personal
 
   build:
