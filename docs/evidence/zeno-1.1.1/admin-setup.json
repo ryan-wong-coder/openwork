@@ -1,0 +1,9 @@
+{
+  "checkedAt": "2026-10-20T08:11:25.398143+00:00",
+  "administratorInitialized": true,
+  "oneTimePasswordSetupIssued": true,
+  "ttlSeconds": 3600,
+  "initialPlaintextDeleted": true,
+  "accountOrTokenIncluded": false,
+  "scope": "Private one-time password setup link delivered only in the user conversation; does not attest to user completion or public desktop pairing"
+}

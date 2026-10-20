@@ -17,12 +17,13 @@ while retaining the active workspace and existing chat inventory.
   recommending the affected 1.1.0 candidate while this patch is verified.
   No versioned files or user data were removed, and no client was downgraded.
 - [Six target build audit](build-native-audit.json): all six matching CPU
-  packaged runtime and license checks passed, including the 74 native and
-  27 route tests. [Metadata audit](release-metadata-audit.json) independently
+  packaged runtime and license checks passed. The separate preflight passed
+  74 native and 27 route tests. [Metadata audit](release-metadata-audit.json) independently
   downloaded eight small documents; it does not replace installer byte checks.
 - [Headless-client attempt](headless-client-incomplete/README.md): incomplete.
-  The fresh fixture's engine was healthy, but its workspace proxy returned 502
-  and remained loading. No personal entry assertion or screenshot ran. The
+  The fresh fixture's global health endpoint returned HTTP 200, but workspace
+  reads returned 502 and the renderer remained loading. No personal entry
+  assertion or screenshot ran. The
   candidate proof is archived outside automatic CI; actual installed desktop
   navigation remains the acceptance gate.
 - [Distribution integrity](distribution-integrity.json): all 24 release files,
@@ -41,6 +42,10 @@ while retaining the active workspace and existing chat inventory.
   release transfer directories were removed after confirming public download
   files resolve independently. Account data, backups, installed profiles and
   signing keys were preserved.
+- [Administrator setup](admin-setup.json): a private one-time password setup
+  link was issued to the operator and the bootstrap plaintext was deleted.
+  No account identifier or token is included in this evidence, and user
+  completion is not claimed.
 
 Calendar, fitness, account isolation, synchronization, local AI tools and real
 OS secure storage retain the exact scopes recorded in the
