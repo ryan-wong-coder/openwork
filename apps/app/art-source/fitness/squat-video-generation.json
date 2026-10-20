@@ -1,0 +1,12 @@
+{
+  "nodeId": "c66b2768-ff62-48e3-8f53-fdb3bd92eece",
+  "taskId": "20261020164503463828518",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Keep the exact original otter from {{Node 700e1102-f1b9-457e-84b1-c6b38c4ff064}} and the first frame. One slow BODYWEIGHT SQUAT repetition, not a loaded squat. Fixed tripod camera, full body visible and unchanged light ivory studio. Both paws remain extended forward at shoulder height for balance. Starting tall, lower hips down and back slowly during seconds 1 to 3, bending knees and hips together. Reach a comfortable squat with thighs approximately horizontal at second 3, heels firmly on the floor and knees following toes. Pause briefly. Rise slowly by extending knees and hips during seconds 4 to 7. Finish in exactly the original standing pose and hold to 8 seconds so the clip loops calmly. Maintain neutral spine, level gaze and feet fixed shoulder width apart. Tail rests behind without bearing weight. Preserve teal fur, cream belly, lime Z strap, paws and proportions. No weight, equipment, new limbs, distortions, text, cuts, camera motion or audio. Clear mascot movement illustration, not human anatomical instruction.",
+  "settings": {
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  }
+}

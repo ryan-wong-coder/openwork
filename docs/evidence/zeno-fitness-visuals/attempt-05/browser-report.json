@@ -1,0 +1,102 @@
+{
+  "verdict": "Failed",
+  "dialogState": {
+    "dialogs": [],
+    "searchInputs": []
+  },
+  "stage": "workout-entry",
+  "reason": "assertion_or_fixture_failure",
+  "startedAt": "2026-10-20T08:58:02.286Z",
+  "finishedAt": "2026-10-20T08:58:17.932Z",
+  "productionIndexSha256": "f4af6a64ef7666dbfe2d58800344ccaea376f0bd791d78bb5fe9221d75311834",
+  "checks": [
+    {
+      "name": "real-local-api-login-production-pwa",
+      "passed": true
+    },
+    {
+      "name": "catalogue-specific-figure-and-primary-secondary-front-back-map",
+      "passed": true
+    },
+    {
+      "name": "static-default-play-pause-keyboard-scrub",
+      "passed": true
+    },
+    {
+      "name": "real-tab-visibility-pauses-svg-without-auto-resume",
+      "passed": true
+    },
+    {
+      "name": "reduced-motion-stops-and-disables-svg-playback",
+      "passed": true
+    },
+    {
+      "name": "mobile-dark-detail-no-horizontal-overflow",
+      "passed": true
+    },
+    {
+      "name": "uncovered-variant-never-receives-generic-animation",
+      "passed": true
+    },
+    {
+      "name": "exact-mascot-video-decodes-and-switches-0294",
+      "passed": true
+    },
+    {
+      "name": "exact-mascot-video-decodes-and-switches-1197",
+      "passed": true
+    },
+    {
+      "name": "exact-mascot-video-decodes-and-switches-0405",
+      "passed": true
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "screenshots/desktop-catalogue-bench-light.png",
+      "bytes": 97002,
+      "sha256": "daac4f57f5ee676609f346f59d32f943dd335c7ef26f4fe0b35dc69391c0dd15"
+    },
+    {
+      "file": "screenshots/desktop-bench-dark-reduced-motion.png",
+      "bytes": 97779,
+      "sha256": "6d7ad07452ba22e61d4afd3b3e7adc2f5f5dfe1e7d8aac06c5b25b599d0add08"
+    },
+    {
+      "file": "screenshots/mobile-bench-dark-reduced-motion.png",
+      "bytes": 35878,
+      "sha256": "d757a3244a520267af281329f6dc6fd88c2b8f094b22131c9a191e08071f306a"
+    },
+    {
+      "file": "screenshots/mobile-uncovered-exercise.png",
+      "bytes": 37776,
+      "sha256": "3153c3f0c1a7bbe8e9235448b1831c6beb682afbd75df1d73d1cb7b9fc1a9e03"
+    },
+    {
+      "file": "screenshots/mobile-mascot-curl.png",
+      "bytes": 72210,
+      "sha256": "3359ea3981ee06bfa7842f7723b19d936c5bce95c4448bb96fd8b8ad25493439"
+    },
+    {
+      "file": "screenshots/mobile-mascot-squat.png",
+      "bytes": 78629,
+      "sha256": "73d431af68797a22363c03bae8b83714554ad8fc674cd4a390b94b4062b3beaf"
+    },
+    {
+      "file": "screenshots/mobile-mascot-shoulder-press.png",
+      "bytes": 82560,
+      "sha256": "f6dde645e254fe755232a9cf0436151d7668d4f17686acd46f8504545d968308"
+    },
+    {
+      "file": "screenshots/failure-workout-entry.png",
+      "bytes": 59767,
+      "sha256": "90a12ef3b69e1c2a94de7cd18a80dfef5f55ebea9a91173c424d7fe8be0d6f1a"
+    }
+  ],
+  "rendererExceptions": 0,
+  "rendererConsoleErrors": 0,
+  "policyViolations": [],
+  "externalOrigins": 0,
+  "modelCalls": 0,
+  "visibleWindows": 0
+}

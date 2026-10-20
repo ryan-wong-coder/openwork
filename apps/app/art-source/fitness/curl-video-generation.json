@@ -1,0 +1,12 @@
+{
+  "nodeId": "a95e5545-d770-4da9-a225-35e4a8285198",
+  "taskId": "20261020164003944358518",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Use the original illustrated otter in {{Node 7c60320b-9437-43a1-b1e0-3598fade7571}} as the exact first frame and preserve its identity, proportions, teal fur, cream belly, lime shoulder strap, two paws gripping two fixed charcoal dumbbells, feet, tail and warm ivory seamless background. Fixed tripod camera, full body always visible, no cuts or zooms. Demonstrate exactly one slow simultaneous standing dumbbell BICEPS CURL: start with both arms down; over the first three seconds bend both elbows to lift the dumbbells toward the shoulders; pause briefly; over the next three seconds lower them back to the exact starting position; hold the starting position for the final second for a calm seamless loop. Palms stay facing forward/up in a supinated curl, not a hammer curl. Upper arms and elbows stay against the sides of the torso, shoulders stay down, wrists remain straight, torso remains upright without swinging. Both paws maintain firm contact with their respective handles throughout. Only the forearms rotate at the elbows; no overhead pressing, no lateral raising, no bouncing. Natural tiny blink is fine. No new objects, no text, no morphing, no extra limbs, no disappearing dumbbells, no moving camera, no sound. Calm refined stylized product animation; a readable mascot movement illustration rather than realistic human anatomy.",
+  "settings": {
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  }
+}

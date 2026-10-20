@@ -1,0 +1,164 @@
+{
+  "createdAt": "2026-10-20",
+  "tools": [
+    "built-in image_gen.imagegen",
+    "official libtv CLI",
+    "ffmpeg for encoding, clip selection and contact sheets"
+  ],
+  "restrictedUpstreamMediaUsed": false,
+  "sourceReference": {
+    "file": "apps/zeno-site/public/assets/mascot.webp",
+    "bytes": 53334,
+    "sha256": "ef3ee149e48c6804a9992c9abf48233fb3120d18b9579c48ef5a2261410b6910"
+  },
+  "scope": {
+    "catalogueCanonicalCount": 5632,
+    "originalVectorDemonstrations": 11,
+    "originalMascotVideos": 3,
+    "uncoveredDemonstrations": 5621,
+    "humanTechniqueOrClinicalValidation": false
+  },
+  "assets": [
+    {
+      "name": "curl",
+      "canonicalExerciseId": "0294",
+      "chineseName": "哑铃二头弯举",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/curl.mp4",
+        "bytes": 172313,
+        "sha256": "6ae62c9fedd4cd8f2df21c620a1b437808963b78a8c5fc67fac4a30c32677cf8"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/curl-poster.webp",
+        "bytes": 18782,
+        "sha256": "059b8d7b33ea805fafb7c110b2bd59c201a76bcb63a2faaa005bbde8f6476fb5"
+      },
+      "originalGeneratedVideo": {
+        "file": "apps/app/art-source/fitness/Curl mascot loop.mp4",
+        "bytes": 3342315,
+        "sha256": "5f66736bebaa271d8e6d7d32b5fb7ab8e102751382eaf14aaeacfa2067236b6c",
+        "retained": false
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/curl-reference.png",
+        "bytes": 1754026,
+        "sha256": "bbdd6fd4a013f0f2c7f3e168393d0e7da5f3f27a6b267bf3aee5f1019cd4b453"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "172313"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/curl-contact.jpg"
+      },
+      "processing": "H.264 CRF26 1024px, audio removed, faststart; original full 8.04-second single repetition."
+    },
+    {
+      "name": "squat",
+      "canonicalExerciseId": "1197",
+      "chineseName": "深蹲",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/squat.mp4",
+        "bytes": 212931,
+        "sha256": "0c6bee9d3ae7158b5e2e98f606043029b1aaed84349480899cbbedb72f6e1693"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/squat-poster.webp",
+        "bytes": 17112,
+        "sha256": "9bd7ac0969be0d9f87abb8556c001493acac3da9acc8f0560114b215a5cdbc04"
+      },
+      "originalGeneratedVideo": {
+        "file": "apps/app/art-source/fitness/Squat mascot loop.mp4",
+        "bytes": 3433914,
+        "sha256": "d40d05e2af110fdd53fa3f786b765c79a8cafb2f7dfe5cd5ce40f02d07d88584",
+        "retained": false
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/squat-reference.png",
+        "bytes": 1771874,
+        "sha256": "3c5e56d54e9c261f67740943853bfd118dec09df6ac47001ca3b1769d5ae60df"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "212931"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/squat-contact.jpg"
+      },
+      "processing": "H.264 CRF26 1024px, audio removed, faststart; original full 8.04-second single repetition."
+    },
+    {
+      "name": "shoulder-press",
+      "canonicalExerciseId": "0405",
+      "chineseName": "哑铃坐姿肩部推举",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/shoulder-press.mp4",
+        "bytes": 178474,
+        "sha256": "ba27d9ecff1cdc2e635264dfc80f6e3a859a4fe290f017eff35bb76b093859f3"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/shoulder-press-poster.webp",
+        "bytes": 19898,
+        "sha256": "368bab89da2d80e37e681136e605906e8d67730a29f445b04818439df802b15f"
+      },
+      "originalGeneratedVideo": {
+        "file": "apps/app/art-source/fitness/Shoulder press mascot loop.mp4",
+        "bytes": 2197945,
+        "sha256": "b9f926617d7bc9c2a29fda1eba4b7f1908129b82fe435d956bc77ff12ecc7906",
+        "retained": false
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/shoulder-press-reference.png",
+        "bytes": 1800466,
+        "sha256": "c5d3d34029ae8cff366d6a9fd1d4b35787228d4968a00308d77ce91813dc67fe"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "7.958008",
+          "size": "178474"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/shoulder-press-selected-contact.jpg"
+      },
+      "processing": "Original first 4 seconds only, slowed 2x to one complete 7.96-second repetition; H.264 CRF26 1024px, audio removed, faststart."
+    }
+  ]
+}

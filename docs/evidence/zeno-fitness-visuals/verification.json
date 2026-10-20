@@ -1,0 +1,94 @@
+{
+  "sourceFrozenAt": "2026-10-20T09:00:10.575Z",
+  "scope": "Owned fitness visual implementation and assets; no version, tag, account or deployment change",
+  "checks": {
+    "typecheck": {
+      "command": "PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false pnpm --filter @openwork/app typecheck",
+      "exitCode": 0
+    },
+    "productionPwaBuild": {
+      "command": "PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false pnpm --filter @openwork/app build:personal",
+      "exitCode": 0,
+      "warning": "Existing >500 kB chunk advisory"
+    },
+    "pureAndExistingPersonalTests": {
+      "command": "PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false pnpm exec bun test apps/app/tests/zeno-personal-data.test.ts apps/app/tests/zeno-exercise-visual.test.ts",
+      "passedTests": 19,
+      "assertions": 24842,
+      "failures": 0
+    },
+    "browser": {
+      "report": "accepted/browser-report.json",
+      "sha256": "45e22763178a3215d31539a6165142a5c84f2d2b37637967c1dae1d203474fce",
+      "checks": 12,
+      "screenshots": 8,
+      "headless": true,
+      "visibleWindows": 0,
+      "syntheticAccountsOnly": true
+    }
+  },
+  "manualReview": {
+    "acceptedScreenshotsViewed": 8,
+    "vectorKeyframeGalleryViewed": true,
+    "generationPostersViewed": 3,
+    "videoContactSheetsViewed": 3,
+    "shoulderSelectionSheetViewed": true
+  },
+  "files": [
+    {
+      "file": "apps/app/src/react-app/domains/zeno/exercise-detail.tsx",
+      "sha256": "cb54f94806e9ee2251cbfda9b63b9e80588c23439626e0c9ac60649cb79a3313",
+      "bytes": 1497
+    },
+    {
+      "file": "apps/app/src/react-app/domains/zeno/exercise-visual.tsx",
+      "sha256": "99b031b4c39af73956b24a1cd7d13bcc948855f5996c20a79166e7f900f4799c",
+      "bytes": 9557
+    },
+    {
+      "file": "apps/app/src/react-app/domains/zeno/movement-scenes.ts",
+      "sha256": "64d20904b7f188fcd1b3596dbac13853de395b10a6dce11f2715685fde91b3d4",
+      "bytes": 10524
+    },
+    {
+      "file": "apps/app/src/react-app/domains/zeno/exercise-picker.tsx",
+      "sha256": "008c07baffedab832815dc9abcba5361854a0c1aca8d347d22215ad509f0c647",
+      "bytes": 5029
+    },
+    {
+      "file": "apps/app/src/react-app/domains/zeno/fitness-workout.tsx",
+      "sha256": "ed8aa2ff4dfda770bd61cb140585b86db2af0e8c046b2b690431b09f421910c5",
+      "bytes": 15916
+    },
+    {
+      "file": "apps/app/public/zeno/fitness/curl-poster.webp",
+      "sha256": "059b8d7b33ea805fafb7c110b2bd59c201a76bcb63a2faaa005bbde8f6476fb5",
+      "bytes": 18782
+    },
+    {
+      "file": "apps/app/public/zeno/fitness/curl.mp4",
+      "sha256": "6ae62c9fedd4cd8f2df21c620a1b437808963b78a8c5fc67fac4a30c32677cf8",
+      "bytes": 172313
+    },
+    {
+      "file": "apps/app/public/zeno/fitness/shoulder-press-poster.webp",
+      "sha256": "368bab89da2d80e37e681136e605906e8d67730a29f445b04818439df802b15f",
+      "bytes": 19898
+    },
+    {
+      "file": "apps/app/public/zeno/fitness/shoulder-press.mp4",
+      "sha256": "ba27d9ecff1cdc2e635264dfc80f6e3a859a4fe290f017eff35bb76b093859f3",
+      "bytes": 178474
+    },
+    {
+      "file": "apps/app/public/zeno/fitness/squat-poster.webp",
+      "sha256": "9bd7ac0969be0d9f87abb8556c001493acac3da9acc8f0560114b215a5cdbc04",
+      "bytes": 17112
+    },
+    {
+      "file": "apps/app/public/zeno/fitness/squat.mp4",
+      "sha256": "0c6bee9d3ae7158b5e2e98f606043029b1aaed84349480899cbbedb72f6e1693",
+      "bytes": 212931
+    }
+  ]
+}

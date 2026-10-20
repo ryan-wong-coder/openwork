@@ -1,0 +1,57 @@
+{
+  "verdict": "Failed",
+  "stage": "motion-controls",
+  "reason": "field unavailable:搜索动作",
+  "startedAt": "2026-10-20T08:53:55.678Z",
+  "finishedAt": "2026-10-20T08:54:02.771Z",
+  "productionIndexSha256": "f4af6a64ef7666dbfe2d58800344ccaea376f0bd791d78bb5fe9221d75311834",
+  "checks": [
+    {
+      "name": "real-local-api-login-production-pwa",
+      "passed": true
+    },
+    {
+      "name": "catalogue-specific-figure-and-primary-secondary-front-back-map",
+      "passed": true
+    },
+    {
+      "name": "static-default-play-pause-keyboard-scrub",
+      "passed": true
+    },
+    {
+      "name": "real-tab-visibility-pauses-svg-without-auto-resume",
+      "passed": true
+    },
+    {
+      "name": "reduced-motion-stops-and-disables-svg-playback",
+      "passed": true
+    },
+    {
+      "name": "mobile-dark-detail-no-horizontal-overflow",
+      "passed": true
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "screenshots/desktop-catalogue-bench-light.png",
+      "bytes": 97002,
+      "sha256": "daac4f57f5ee676609f346f59d32f943dd335c7ef26f4fe0b35dc69391c0dd15"
+    },
+    {
+      "file": "screenshots/desktop-bench-dark-reduced-motion.png",
+      "bytes": 97779,
+      "sha256": "6d7ad07452ba22e61d4afd3b3e7adc2f5f5dfe1e7d8aac06c5b25b599d0add08"
+    },
+    {
+      "file": "screenshots/mobile-bench-dark-reduced-motion.png",
+      "bytes": 35878,
+      "sha256": "d757a3244a520267af281329f6dc6fd88c2b8f094b22131c9a191e08071f306a"
+    }
+  ],
+  "rendererExceptions": 0,
+  "rendererConsoleErrors": 0,
+  "policyViolations": [],
+  "externalOrigins": 0,
+  "modelCalls": 0,
+  "visibleWindows": 0
+}

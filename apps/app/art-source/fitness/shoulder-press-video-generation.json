@@ -1,0 +1,12 @@
+{
+  "nodeId": "6488909b-2867-4413-9f5d-97c04270965b",
+  "taskId": "20261020164503262218518",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Keep the exact original seated otter and bench from {{Node b1725c20-e07c-4062-8eb7-b679cf29347e}} as the first frame. One slow SEATED DUMBBELL SHOULDER PRESS repetition with exactly two unchanged small charcoal dumbbells held firmly in its paws. Fixed tripod camera, unchanged full body frame and ivory studio. Feet remain planted, back stays upright against the bench and hips stay on the seat. Begin with elbows bent and both dumbbells at shoulder height, forearms vertical. During seconds 1 to 3 press both dumbbells upward in a smooth controlled arc until the arms extend overhead without hyperextension; pause briefly. During seconds 4 to 7 lower both dumbbells to the original shoulder-height pose, elbows returning to about 90 degrees. Hold the original pose through second 8 for a calm loop. Shoulders stay down, wrists straight and paws continuously grip the handles. No squatting, standing, alternating arms, biceps curls, torso swinging, weights passing through the head, equipment morphing, extra limbs, camera motion, cuts, text or audio. Keep teal fur, cream belly and lime Z strap identical. Clear stylized mascot movement illustration.",
+  "settings": {
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  }
+}

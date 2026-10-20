@@ -7,6 +7,7 @@ import asar from "@electron/asar";
 import YAML from "yaml";
 import { verifyCanvasPackaging } from "./verify-canvas-packaging.mjs";
 import { verifyPersonalPackaging, personalRuntimeSmokeSource } from "./verify-personal-packaging.mjs";
+import { verifyFitnessVisualPackaging } from "./verify-fitness-packaging.mjs";
 
 const desktop = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const [platform, arch] = process.argv.slice(2);
@@ -31,6 +32,7 @@ for (const name of ["local-client-profile", "session-activity", "gateway-image-t
 for (const name of ["opencode", "opencode2", "versions.json"]) readFileSync(join(resources, "sidecars", `${name}${platform === "win32" && name !== "versions.json" ? ".exe" : ""}`));
 const canvas = verifyCanvasPackaging({ archive, resources });
 const personal = verifyPersonalPackaging({ archive });
+const fitnessVisuals = verifyFitnessVisualPackaging({ resources });
 const nativeTarget = platform === process.platform && arch === process.arch;
 if (nativeTarget) {
   const temporary = mkdtempSync(join(tmpdir(), "zeno-packaged-server-"));
@@ -74,4 +76,4 @@ try {
     if (result.error || result.status !== 0) throw new Error("Packaged Electron Node server smoke failed.");
   } finally { rmSync(temporary, { recursive: true, force: true }); }
 }
-console.log(JSON.stringify({ version, platform, arch, brand: metadata.openworkBrand, signing: metadata.zenoReleaseSigning, updatesEnabled: metadata.zenoReleaseUpdatesEnabled, feed: feed.url, runtimeSmoke: nativeTarget ? "passed" : "cross-architecture-static-only", canvas, personal }));
+console.log(JSON.stringify({ version, platform, arch, brand: metadata.openworkBrand, signing: metadata.zenoReleaseSigning, updatesEnabled: metadata.zenoReleaseUpdatesEnabled, feed: feed.url, runtimeSmoke: nativeTarget ? "passed" : "cross-architecture-static-only", canvas, personal, fitnessVisuals }));

@@ -1,0 +1,21 @@
+{
+  "verdict": "Failed",
+  "stage": "catalogue",
+  "reason": "deadline:bench-detail:read_failed",
+  "startedAt": "2026-10-20T08:52:13.431Z",
+  "finishedAt": "2026-10-20T08:53:04.414Z",
+  "productionIndexSha256": "65d1e19e8ef698ada8a32c8d8e9aea92cdaa76390f3241b43354877186220a0e",
+  "checks": [
+    {
+      "name": "real-local-api-login-production-pwa",
+      "passed": true
+    }
+  ],
+  "screenshots": [],
+  "rendererExceptions": 0,
+  "rendererConsoleErrors": 0,
+  "policyViolations": [],
+  "externalOrigins": 0,
+  "modelCalls": 0,
+  "visibleWindows": 0
+}
