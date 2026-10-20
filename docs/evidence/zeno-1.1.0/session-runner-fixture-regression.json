@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "scope": "Post-tag test-fixture maintenance only; no product runtime, installation package, release tag, or model behavior was changed.",
+  "product": {
+    "version": "1.1.0",
+    "tag": "zeno-v1.1.0-build.3",
+    "commit": "c6d0f3f4a7bfba3617a0bcae754756c31731849d",
+    "packagesUnchanged": true
+  },
+  "testFile": "apps/desktop/test/session-runner.test.mjs",
+  "runtime": {
+    "node": "24.20.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "archive": {
+      "filename": "node-v24.20.0-darwin-arm64.tar.xz",
+      "bytes": 27358644,
+      "sha256": "b7bf7707070b950ba1ec5f1af3bb6de0f2b1962c5033973d94068ab021ef3014",
+      "source": "https://nodejs.org/dist/v24.20.0/node-v24.20.0-darwin-arm64.tar.xz",
+      "checksumSource": "https://nodejs.org/dist/v24.20.0/SHASUMS256.txt",
+      "officialChecksumMatched": true
+    }
+  },
+  "conditions": {
+    "CI": "true",
+    "UV_THREADPOOL_SIZE": "1",
+    "normalElectronLaunched": false,
+    "liveAccountsUsed": false,
+    "modelRequests": 0
+  },
+  "before": {
+    "case": "failed completion stays in the shared journal outbox and restart never duplicates native creation",
+    "trials": 1,
+    "failed": 1,
+    "errorCode": "ENOTEMPTY",
+    "failurePhase": "Temporary journal directory teardown while a runner could still finish a journal write.",
+    "reportedCaseDurationMs": 75.516542,
+    "processExitedNaturally": false,
+    "parentDeadlineSeconds": 4,
+    "parentTerminatedProcessGroup": true,
+    "workerDiagnostic": "Promise resolution is still pending but the event loop has already resolved",
+    "businessAssertionFailureObserved": false,
+    "rootCause": "The directory-removal after hook was registered before runner-stop hooks, and the original runner in this case had no failure-safe stop hook. The completion-call counter was not a durable completion/teardown barrier."
+  },
+  "fix": {
+    "allDesktopRunnersTrackedPerPrivateDirectory": true,
+    "allTrackedRunnersStoppedBeforeDirectoryRemoval": true,
+    "assertionFailureAlsoStopsRunners": true,
+    "cleanupRetry": {
+      "operation": "fs.rm on the synthetic temporary fixture directory only",
+      "maxRetries": 20,
+      "retryDelayMs": 25,
+      "failureStillFailsTest": true
+    },
+    "outboxBarrier": "The synthetic 503 outage remains active until the original runner is stopped. The test verifies a persisted completion with completionAcknowledged=false, then restarts and waits for persisted completionAcknowledged=true.",
+    "preservedAssertions": [
+      "native.created === 1",
+      "native prompt call count === 1"
+    ],
+    "businessAssertionsRetriedOrWeakened": false
+  },
+  "after": {
+    "focused": {
+      "trials": 20,
+      "passed": 20,
+      "failed": 0,
+      "timedOut": 0,
+      "allProcessesExitedNaturally": true,
+      "totalElapsedSeconds": 4.703,
+      "perProcessParentDeadlineSeconds": 6
+    },
+    "full": {
+      "files": [
+        "apps/desktop/test/zeno-personal.test.mjs",
+        "apps/desktop/test/zeno-personal-tools.test.mjs",
+        "apps/desktop/test/zeno-scheduler.test.mjs",
+        "apps/desktop/test/session-runner.test.mjs",
+        "apps/desktop/test/zeno-update-portable-smoke.test.mjs",
+        "apps/desktop/test/zeno-license-packaging.test.mjs"
+      ],
+      "tests": 74,
+      "passed": 74,
+      "failed": 0,
+      "skipped": 0,
+      "exitCode": 0,
+      "timedOut": false,
+      "parentDeadlineSeconds": 55,
+      "processElapsedSeconds": 3.455,
+      "testReporterDurationMs": 3353.487166
+    },
+    "syntaxCheckPassed": true,
+    "diffCheckPassed": true
+  },
+  "limitations": [
+    "This is a local macOS Node integration/fixture regression, not a new hosted CI result.",
+    "No product package was rebuilt for this test-only change.",
+    "No private temporary paths, raw logs, credentials, or real account data are included."
+  ]
+}

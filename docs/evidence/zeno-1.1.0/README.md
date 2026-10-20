@@ -53,6 +53,13 @@ raw model responses belong in this directory.
   A new regression uses the pinned builder's actual matcher, collector and
   `AsarPackager` in a separate Node process, then compares all five archived
   texts byte for byte. Missing/empty inputs fail before packaging.
+- [Third attempt](build-attempt-3.json): a session-runner fixture failed and
+  remained alive, so the run was cancelled before any installer build. The
+  separate [fixture regression](session-runner-fixture-regression.json) records
+  the reproduced temporary-directory cleanup race, stronger durable-outbox
+  checks and test-only repair. This maintenance does not change the frozen
+  `c6d0f3f4` installer source; the next run uses the full unchanged product
+  checks with a bounded CI preflight.
 - Real OS storage, six target installers, public website/PWA and original
   1.0.0 updates are separate release gates. Do not infer their result from the
   source checks above; their reports are added when those runs finish.

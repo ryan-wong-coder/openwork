@@ -29,6 +29,7 @@ const token = (capabilities, nonce = "first", selectedAccount = account) => `${B
 })).toString("base64url")}.signature`
 const legacyCapabilities = ["remote_session_v1", "remote_session_control_v1"]
 const recoveryCapabilities = [...legacyCapabilities, "remote_session_recovery_v1"]
+const directoryRunners = new Map()
 
 async function eventually(predicate, message = "condition was not reached") {
   const deadline = Date.now() + 3_000
@@ -41,7 +42,21 @@ async function eventually(predicate, message = "condition was not reached") {
 
 async function privateDirectory(t) {
   const root = await mkdtemp(join(tmpdir(), "openwork-session-runner-"))
-  t.after(() => rm(root, { recursive: true, force: true }))
+  const runners = new Set()
+  directoryRunners.set(root, runners)
+  t.after(async () => {
+    // after hooks run in registration order. Stop every runner before the
+    // first hook removes its journal, including when a test assertion throws.
+    for (const runner of runners) runner.stop()
+    try {
+      // stop() aborts new polls but an already-started fsync/rename can finish
+      // afterwards. Retry only this temporary-directory cleanup, bounded by
+      // fs.rm's retry count; business assertions and native effects never retry.
+      await rm(root, { recursive: true, force: true, maxRetries: 20, retryDelay: 25 })
+    } finally {
+      directoryRunners.delete(root)
+    }
+  })
   return root
 }
 
@@ -114,6 +129,7 @@ function runnerFixture(native, assignment = command()) {
   const calls = []
   let pending = true
   let failCompletion = false
+  let rejectedCompletions = 0
   let queuedRequest = null
   const fetchImpl = async (input, init = {}) => {
     const url = new URL(String(input))
@@ -130,21 +146,25 @@ function runnerFixture(native, assignment = command()) {
     }
     if (url.pathname.endsWith("/claim")) { pending = false; return respond({ assignment }) }
     if (url.pathname === "/v1/remote-session-requests/pending") return respond({ items: queuedRequest ? [{ kind: "remote_session_request", requestId: queuedRequest.requestId }] : [] })
-    if (url.pathname.endsWith("/complete") && failCompletion) { failCompletion = false; return respond({ message: "temporary outage" }, 503) }
+    if (url.pathname.endsWith("/complete") && failCompletion) { rejectedCompletions += 1; return respond({ message: "temporary outage" }, 503) }
     if (url.pathname.endsWith("/heartbeat")) return respond({ leaseValid: true, cancelRequested: false })
     return respond({ accepted: true })
   }
-  return { calls, fetchImpl, set failCompletion(value) { failCompletion = value }, set queuedRequest(value) { queuedRequest = value } }
+  return { calls, fetchImpl, get rejectedCompletions() { return rejectedCompletions }, set failCompletion(value) { failCompletion = value }, set queuedRequest(value) { queuedRequest = value } }
 }
 
 function desktopRunner(native, den, root) {
-  return createDesktopAutomationRunner({
+  const runners = directoryRunners.get(root)
+  assert.ok(runners, "Desktop fixtures must belong to a managed private directory")
+  const runner = createDesktopAutomationRunner({
     fetchImpl: den.fetchImpl, getLocalRuntime: native.getLocalRuntime, getJournalRoot: () => root,
     remoteSessionFirstTurnWindowMs: 0,
     remoteSessionWatch: { fastPollMs: 10, slowPollMs: 10 },
     remoteSessionRequestPoll: { pollMs: 10 },
     waitBeforeReconnect: (_ms, signal) => new Promise((resolve) => signal.addEventListener("abort", resolve, { once: true })),
   })
+  runners.add(runner)
+  return runner
 }
 
 function configure(runner, capabilities, nonce = "first", selectedAccount = account) {
@@ -364,12 +384,19 @@ test("failed completion stays in the shared journal outbox and restart never dup
   den.failCompletion = true
   const runner = desktopRunner(native, den, root)
   configure(runner, recoveryCapabilities)
-  await eventually(() => den.calls.some((call) => call.path.endsWith("/complete")))
+  await eventually(() => den.rejectedCompletions > 0)
+  const path = join(root, desktopSessionRunnerPartition(denBaseUrl, account), "journal.json")
+  const outbox = JSON.parse(await readFile(path, "utf8")).commands[0]
+  assert.equal(outbox.phase, "delivered")
+  assert.ok(outbox.completion)
+  assert.equal(outbox.completionAcknowledged, false)
   runner.stop()
+  den.failCompletion = false
   const restarted = desktopRunner(native, den, root)
   t.after(() => restarted.stop())
   configure(restarted, recoveryCapabilities, "restart")
-  await eventually(() => den.calls.filter((call) => call.path.endsWith("/complete")).length >= 2)
+  await eventually(async () => JSON.parse(await readFile(path, "utf8")).commands[0]?.completionAcknowledged)
+  assert.ok(den.calls.filter((call) => call.path.endsWith("/complete")).length >= 2)
   assert.equal(native.created, 1)
   assert.equal(native.calls.filter((call) => call.path.endsWith("/prompt")).length, 1)
 })
