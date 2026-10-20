@@ -48,7 +48,9 @@ jobs:
           import { appendFileSync } from 'node:fs';
           const selected = process.env.SMOKE_ARCHITECTURE ?? 'both';
           assert.ok(['both', 'x64', 'arm64'].includes(selected), 'Unsupported native architecture selection.');
-          const lanes = [{ runner: 'macos-15-intel', arch: 'x64' }, { runner: 'macos-15', arch: 'arm64' }];
+          // The macos-15 arm64 pool cancelled an unassigned job for capacity.
+          // macos-26 is GitHub's GA standard native arm64 pool; keep all gates.
+          const lanes = [{ runner: 'macos-15-intel', arch: 'x64' }, { runner: 'macos-26', arch: 'arm64' }];
           const include = selected === 'both' ? lanes : lanes.filter(lane => lane.arch === selected);
           appendFileSync(process.env.GITHUB_OUTPUT, `matrix=${JSON.stringify({ include })}\n`);
           JS
