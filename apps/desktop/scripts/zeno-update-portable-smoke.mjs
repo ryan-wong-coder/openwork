@@ -9,6 +9,7 @@ import asar from '@electron/asar';
 import YAML from 'yaml';
 import { copyVerifiedArtifact, numericDownloadProgress, privateUpdateFailureDiagnostics } from './zeno-update-smoke.mjs';
 import { compareStableVersions } from '../electron/recovery.mjs';
+import { verifyPackagedNavigation, workspaceSessionIdentitySnapshot, assertWorkspaceSessionsUnchanged } from './zeno-packaged-navigation-probe.mjs';
 
 // This entry point refuses developer machines and self-hosted runners. Linux
 // uses the hosted VM's Xvfb; Windows uses its disposable hosted desktop. Only
@@ -394,8 +395,20 @@ async function main() {
     const image = await client.send('Page.captureScreenshot', { format: 'png' }); writeFileSync(join(evidence, 'updated-app.png'), Buffer.from(image.data, 'base64'));
     report.scope.historicalChatPreservation = true;
     phase('real-native-upgrade-and-preservation-verified', { installedVersion: TARGET, publishedAsar: true, actualProcessChanged: true, chromiumProfile: true, workspaceIdentity: true, workspaceFile: true, historicalSession: true, historicalMessage: true, embeddedServer: true });
+    if (compareStableVersions(TARGET, '1.1.1') >= 0) {
+      const previousSessions = workspaceSessionIdentitySnapshot(await after.request(`${mount}/session`));
+      const navigation = await verifyPackagedNavigation({ client, resources: client.resources });
+      report.navigation = navigation.report;
+      writeFileSync(join(evidence, 'native-navigation.png'), navigation.screenshot);
+      assertWorkspaceSessionsUnchanged(workspaceSessionIdentitySnapshot(await after.request(`${mount}/session`)), previousSessions);
+      assert.ok(hasMarker(await after.request(`${mount}/session/${encodeURIComponent(session.id)}/message`)), 'Sidebar navigation changed historical native messages.');
+      assert.equal(exceptions.length, 0, 'A renderer exception occurred during sidebar navigation.');
+      Object.assign(report.navigation, { workspaceSessionSetUnchanged: true, historicalMessageRetained: true, rendererExceptions: 0 });
+      phase('installed-target-four-personal-sidebar-routes-verified', { realClicks: 4, stablePersonalRoutes: true, unpairedAccountGate: true, noNewChat: true, historicalMessageRetained: true });
+    }
     cleanupAllowed = true; report.passed = true;
-  } catch {
+  } catch (error) {
+    if (error.navigationReport) report.navigation = error.navigationReport;
     failure = true; report.failure = { classification: 'native-update-validation-failed', lastPhase: report.phases.at(-1)?.name ?? 'initialization' };
     try { if (client) report.downloadProgress = { ...report.downloadProgress, ...numericDownloadProgress(await client.evaluate('window.__zenoSmokeDownloadProgress', 2000)) }; } catch {}
     report.failureDiagnostics = privateUpdateFailureDiagnostics(root);

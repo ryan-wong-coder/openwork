@@ -93,7 +93,9 @@ jobs:
       - name: Install existing validation libraries only
         run: pnpm --filter @openwork/desktop... install --frozen-lockfile --ignore-scripts
       - name: Check historical hashes, target integrity and isolation logic
-        run: node apps/desktop/scripts/zeno-update-smoke.mjs --self-test
+        run: |
+          node apps/desktop/scripts/zeno-update-smoke.mjs --self-test
+          node --test apps/desktop/test/zeno-packaged-navigation-probe.test.mjs
       - name: Verify runner architecture
         env:
           EXPECTED_ARCH: ${{ matrix.arch }}
@@ -156,5 +158,6 @@ jobs:
             ${{ runner.temp }}/zeno-update-smoke-evidence/report.json
             ${{ runner.temp }}/zeno-update-smoke-evidence/updated-app.png
             ${{ runner.temp }}/zeno-update-smoke-evidence/native-canvas.png
+            ${{ runner.temp }}/zeno-update-smoke-evidence/native-navigation.png
           if-no-files-found: warn
           retention-days: 14

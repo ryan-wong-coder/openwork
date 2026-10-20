@@ -83,7 +83,7 @@ jobs:
       - name: Install existing validation libraries only
         run: pnpm --filter @openwork/desktop... install --frozen-lockfile --ignore-scripts
       - name: Check native isolation and metadata without launching an application
-        run: node --test apps/desktop/test/zeno-update-portable-smoke.test.mjs
+        run: node --test apps/desktop/test/zeno-update-portable-smoke.test.mjs apps/desktop/test/zeno-packaged-navigation-probe.test.mjs
       - name: Validate explicit release runs and require the target publicly deployed
         env:
           GH_TOKEN: ${{ github.token }}
@@ -158,5 +158,6 @@ jobs:
           path: |
             ${{ runner.temp }}/zeno-portable-update-evidence/report.json
             ${{ runner.temp }}/zeno-portable-update-evidence/updated-app.png
+            ${{ runner.temp }}/zeno-portable-update-evidence/native-navigation.png
           if-no-files-found: warn
           retention-days: 14

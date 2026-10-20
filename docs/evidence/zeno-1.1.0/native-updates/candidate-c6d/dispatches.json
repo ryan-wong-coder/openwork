@@ -1,0 +1,35 @@
+{
+  "scope": "Explicitly authorized real original-release updates on disposable GitHub-hosted runners; dispatch metadata alone is not a passing update",
+  "baseline": {
+    "version": "1.0.0",
+    "releaseRunId": 38883434626,
+    "productCommit": "92688046400df5d1e2807d63dce986431bc7623a"
+  },
+  "target": {
+    "version": "1.1.0",
+    "releaseRunId": 39373868155,
+    "productTag": "zeno-v1.1.0-build.3",
+    "productCommit": "c6d0f3f4a7bfba3617a0bcae754756c31731849d",
+    "releaseWorkflowCommit": "695a4114397395dd2e6bfcdf4e2ab1f12d617b92"
+  },
+  "publicActivation": {
+    "version": "1.1.0",
+    "publishedAt": "2026-10-20T06:41:28.703132+00:00",
+    "artifactCount": 10,
+    "independentPublicApiCheck": true,
+    "operatorExplicitlyConfirmedBeforeDispatch": true
+  },
+  "scheduling": "Dispatch macOS both first. Dispatch Windows/Linux both only after one macOS job succeeds and its actual update report is verified. No automatic workflow retry.",
+  "macos": {
+    "workflowId": 386584037,
+    "runId": 39382045939,
+    "ref": "personal",
+    "checkoutCommit": "aa62166338e9fbaf561b01a178298f3db98bcd90",
+    "architecture": "both",
+    "createdAt": "2026-10-20T06:43:27Z"
+  },
+  "portable": null,
+  "candidateStatus": "Withdrawn from final product acceptance: user-reported desktop sidebar navigation regression",
+  "portablePaused": true,
+  "meaning": "Running macOS jobs are retained as mechanism evidence only; success does not authorize portable dispatch or public release."
+}

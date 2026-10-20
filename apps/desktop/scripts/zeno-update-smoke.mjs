@@ -13,6 +13,7 @@ import asar from "@electron/asar";
 import YAML from "yaml";
 import { compareStableVersions } from "../electron/recovery.mjs";
 import { assertCanvasProbeTarget, canvasProbeDocument, verifyPackagedCanvas } from "./zeno-canvas-packaged-probe.mjs";
+import { verifyPackagedNavigation, workspaceSessionIdentitySnapshot, assertWorkspaceSessionsUnchanged } from "./zeno-packaged-navigation-probe.mjs";
 
 // This is deliberately NOT a local desktop test. Zeno preserves OpenWork's
 // bundle ID, hence Squirrel's native ShipIt domain. Only an ephemeral GitHub-
@@ -674,8 +675,21 @@ async function main() {
       report.canvas = { ...canvas.report, hostStatePreservedAfterCleanup: true, historyPreservedAfterCleanup: true, rendererExceptions: exceptions.length };
       phase("installed-target-native-canvas-verified", { nativePolicy: true, localInteraction: true, bundledAntCharts: true, hostStatePreserved: true });
     }
+    if (compareStableVersions(TARGET, "1.1.1") >= 0) {
+      const previousSessions = workspaceSessionIdentitySnapshot(await afterRuntime.request(`${mount}/session`));
+      const navigation = await verifyPackagedNavigation({ client, resources: join(privateBundle, "Contents/Resources") });
+      report.navigation = navigation.report;
+      writeFileSync(join(evidence, "native-navigation.png"), navigation.screenshot);
+      assertWorkspaceSessionsUnchanged(workspaceSessionIdentitySnapshot(await afterRuntime.request(`${mount}/session`)), previousSessions);
+      const retained = await afterRuntime.request(`${mount}/session/${encodeURIComponent(session.id)}/message`);
+      assert.ok(retained.some(message => message.parts?.some(part => part.type === "text" && part.text === marker)), "Native history changed after sidebar navigation.");
+      assert.equal(exceptions.length, 0, "A host renderer exception occurred during sidebar navigation.");
+      Object.assign(report.navigation, { workspaceSessionSetUnchanged: true, historicalMessageRetained: true, rendererExceptions: 0 });
+      phase("installed-target-four-personal-sidebar-routes-verified", { realClicks: 4, stablePersonalRoutes: true, unpairedAccountGate: true, noNewChat: true, historicalMessageRetained: true });
+    }
     report.passed = true;
   } catch (error) {
+    if (error.navigationReport) report.navigation = error.navigationReport;
     report.error = error.message;
     try {
       if (client) report.downloadProgress = { ...report.downloadProgress,
