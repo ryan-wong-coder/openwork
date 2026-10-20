@@ -20,6 +20,12 @@ on:
         required: false
         default: both
         options: [both, x64, arm64]
+      arm_image:
+        description: Standard native ARM64 image; label availability does not guarantee runner capacity
+        type: choice
+        required: false
+        default: macos-26
+        options: [macos-26, xcode-27]
 
 permissions:
   actions: read
@@ -42,15 +48,18 @@ jobs:
         id: select
         env:
           SMOKE_ARCHITECTURE: ${{ inputs.architecture || 'both' }}
+          SMOKE_ARM_IMAGE: ${{ inputs.arm_image || 'macos-26' }}
         run: |
           node --input-type=module <<'JS'
           import assert from 'node:assert/strict';
           import { appendFileSync } from 'node:fs';
           const selected = process.env.SMOKE_ARCHITECTURE ?? 'both';
           assert.ok(['both', 'x64', 'arm64'].includes(selected), 'Unsupported native architecture selection.');
-          // The macos-15 arm64 pool cancelled an unassigned job for capacity.
-          // macos-26 is GitHub's GA standard native arm64 pool; keep all gates.
-          const lanes = [{ runner: 'macos-15-intel', arch: 'x64' }, { runner: 'macos-26', arch: 'arm64' }];
+          const armImage = process.env.SMOKE_ARM_IMAGE ?? 'macos-26';
+          assert.ok(['macos-26', 'xcode-27'].includes(armImage), 'Unsupported standard ARM64 image.');
+          // Keep both earlier macos-15/macos-26 capacity failures as evidence.
+          // xcode-27 is GitHub's GA macOS 27 / ARM64 standard image, not a capacity guarantee.
+          const lanes = [{ runner: 'macos-15-intel', arch: 'x64' }, { runner: armImage, arch: 'arm64' }];
           const include = selected === 'both' ? lanes : lanes.filter(lane => lane.arch === selected);
           appendFileSync(process.env.GITHUB_OUTPUT, `matrix=${JSON.stringify({ include })}\n`);
           JS
