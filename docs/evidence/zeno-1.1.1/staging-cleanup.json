@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-10-20T08:04:40.247068+00:00",
+  "passed": true,
+  "removedPrivateStaging": [
+    {
+      "version": "1.1.0",
+      "files": 24,
+      "bytes": 3948721956
+    },
+    {
+      "version": "1.1.1",
+      "files": 24,
+      "bytes": 3948929703
+    }
+  ],
+  "publicSymlinksIndependentOfPrivateStaging": true,
+  "publicDownloadFilesRemoved": 0,
+  "sourceAndAuditMetadataRetained": true,
+  "scope": "Only two owned completed distribution staging asset directories; no account/media/database, installed profile, signing key or public versioned file removed"
+}

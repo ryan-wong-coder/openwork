@@ -16,6 +16,31 @@ while retaining the active workspace and existing chat inventory.
 - [Candidate feed rollback](candidate-feed-rollback.json): the website stopped
   recommending the affected 1.1.0 candidate while this patch is verified.
   No versioned files or user data were removed, and no client was downgraded.
+- [Six target build audit](build-native-audit.json): all six matching CPU
+  packaged runtime and license checks passed, including the 74 native and
+  27 route tests. [Metadata audit](release-metadata-audit.json) independently
+  downloaded eight small documents; it does not replace installer byte checks.
+- [Headless-client attempt](headless-client-incomplete/README.md): incomplete.
+  The fresh fixture's engine was healthy, but its workspace proxy returned 502
+  and remained loading. No personal entry assertion or screenshot ran. The
+  candidate proof is archived outside automatic CI; actual installed desktop
+  navigation remains the acceptance gate.
+- [Distribution integrity](distribution-integrity.json): all 24 release files,
+  totaling 3,948,929,703 bytes, were fully read and SHA-256 matched against
+  frozen GitHub asset digests on the server. This is separate from installation.
+- [Atomic website publication](publication-gate.json) and
+  [public release checks](live-release.json): ten installers and six native
+  feeds now advertise 1.1.1. Existing versioned downloads retain their metadata,
+  sampled first/last 64 KiB and public download paths; historical files were
+  not fully rehashed.
+- [Public website and mobile PWA](public-site-pwa/README.md): the strict
+  anonymous browser run passed, with four reviewed screenshots, exact PWA
+  assets and all architecture choices. Authenticated records and installed
+  desktop navigation are outside that check's scope.
+- [Staging cleanup](staging-cleanup.json): only the two completed private
+  release transfer directories were removed after confirming public download
+  files resolve independently. Account data, backups, installed profiles and
+  signing keys were preserved.
 
 Calendar, fitness, account isolation, synchronization, local AI tools and real
 OS secure storage retain the exact scopes recorded in the
@@ -24,6 +49,6 @@ cover the missing full-client navigation path. The affected 1.1.0 candidate
 remains unaccepted even though its domain checks and packaged update mechanism
 passed separately.
 
-Full-client screenshots, installed navigation, six target builds, public bytes
-and original-version upgrades remain separate gates. A draft release or a
-successful build is not final acceptance.
+Installed navigation and original-version upgrades remain separate pending
+gates. A draft release, website publication or successful build is not final
+acceptance.

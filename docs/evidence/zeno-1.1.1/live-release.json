@@ -1,0 +1,1 @@
+{"passed":true,"checkedAt":"2026-10-20T08:03:08.716Z","origin":"https://www.zeno.ryan-wong.cn","version":"1.1.1","installers":10,"nativeFeeds":6,"checks":["https","site-revalidation","download-head","range","native-file-headers","metadata-integrity-agreement","architecture-feed-files","cache-policy"]}

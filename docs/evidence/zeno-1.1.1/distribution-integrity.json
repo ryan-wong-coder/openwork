@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-20T08:01:40.969928+00:00",
+  "version": "1.1.1",
+  "releaseId": 418111617,
+  "releaseTag": "zeno-v1.1.1",
+  "productCommit": "afb3ca5b629c5b219fd6ed942fd32811ca671532",
+  "runId": 39383996080,
+  "files": 24,
+  "bytes": 3948929703,
+  "githubDigestSha256Matched": true,
+  "fullServerReadSha256": true,
+  "method": "Private local parallel HTTPS downloads with complete source SHA-256, rsync against detached copies of versioned prior packages, per-file server SHA-256, then a second complete server SHA-256 against the independently frozen GitHub asset metadata",
+  "scope": "All 24 current-release files fully read on the server; no historical full-file rehash or installed application implied"
+}
