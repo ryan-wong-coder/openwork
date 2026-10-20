@@ -298,5 +298,32 @@
     "authorizationBoundary": "One Windows attempt08 only; no further run authorized.",
     "outcome": "55/55 Windows tests, both pristine checks, original NSIS, saved V1 and baseline history passed. First whole-file public download completed without retry, target version/ASAR verified on disk, then expected target CDP connection refused; actual target browser/profile/history unverified.",
     "nativeReceipt": "attempt08-native-defaults-win32-x64.json"
+  },
+  "windowsNativeDefaultsOwnedTargetConnection": {
+    "workflowId": 390119143,
+    "runId": 39468437116,
+    "jobId": 118785918919,
+    "ref": "personal",
+    "checkoutCommit": "bc7e716dceead7a69a6c8cff7056f72ea9a6f944",
+    "checkoutDesktopVersion": "1.1.2",
+    "platform": "win32",
+    "windows_profile_mode": "native-defaults",
+    "windows_download_retries": "2",
+    "attempt": 9,
+    "createdAt": "2026-10-20T17:42:39Z",
+    "operatorExplicitlyApproved": true,
+    "sameFrozenBaselineAndTarget": true,
+    "reason": "Native-defaults target-only owned default CDP discovery requires a unique stable exact-executable PID/ticks and loopback listener in the source-defined allowed port range before HTTP, matching WebSocket host/port and actual browser PID, then OS ownership recheck. The original shared timeout and all identity/history/native gates remain required.",
+    "priorNativeDefaultsReceipt": "attempt08-native-defaults-win32-x64.json",
+    "priorAttachmentFailureCauseNotReattributed": true,
+    "newEvidenceFilenamePrefix": "attempt09-native-defaults-",
+    "workflowRegistrationActiveVerified": true,
+    "githubWorkflowBytesMatchExactSource": true,
+    "runCheckoutExactShaVerified": true,
+    "productBytesAndNativeGatesUnchanged": true,
+    "cacheSeedOrManualTargetLaunch": false,
+    "authorizationBoundary": "One Windows attempt09 only; no further run authorized.",
+    "outcome": "60/60 Windows tests, pristine checks and original default NSIS/baseline browser/profile/listener passed. Runtime workspace readiness then stopped with TimeoutError at workspace-session-list before V1/history/download. Target owned-port discovery was not reached.",
+    "nativeReceipt": "attempt09-native-defaults-win32-x64.json"
   }
 }

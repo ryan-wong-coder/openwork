@@ -1,0 +1,131 @@
+{
+  "passed": false,
+  "baseline": "1.0.0",
+  "target": "1.1.2",
+  "platform": "win32",
+  "arch": "x64",
+  "phases": [
+    {
+      "name": "original-installers-verified",
+      "at": "2026-10-20T17:44:57.716Z",
+      "baselineSha256": "2fd5184a2f5a41d50c11b63014add54518805816a68c67dbe72b6217d3139716",
+      "targetSha256": "0690872dad2d7ff57f3e7e308b6fca864528a8c059bfa1934bdb98ba7d4efba3",
+      "baselineBytes": 379417761,
+      "targetBytes": 390804422
+    },
+    {
+      "name": "original-nsis-installed",
+      "at": "2026-10-20T17:46:01.818Z",
+      "privateDirectory": false,
+      "pristineNativeDefaultDirectory": true,
+      "noResigning": true
+    }
+  ],
+  "nativeUpdateExecuted": false,
+  "downloadPolicy": {
+    "additionalRetries": 2,
+    "mode": "whole-file; same baseline session; no resume; reset-only retry"
+  },
+  "downloadAttempts": [],
+  "scope": {
+    "originalBaseline": true,
+    "originalTarget": true,
+    "realPublicFeed": true,
+    "installedUpgrade": false,
+    "automaticRelaunch": false,
+    "historicalChatPreservation": false,
+    "accountPairingTested": false,
+    "osCredentialStorageTested": false,
+    "aiRequested": false
+  },
+  "windowsProfileMode": "native-defaults",
+  "isolation": "ephemeral GitHub-hosted Windows account; pristine exact native leaves; no injected paths; VM disposal",
+  "publicOrigin": "https://www.zeno.ryan-wong.cn",
+  "nativeDefaultsPrerequisites": {
+    "node": {
+      "engine": "node",
+      "passed": true,
+      "check": "complete",
+      "reason": "clear",
+      "nativeLeavesChecked": 17,
+      "shortcutsChecked": 8,
+      "checkOnlyLeavesChecked": 29,
+      "pristine": true
+    },
+    "powershell": {
+      "engine": "powershell",
+      "passed": true,
+      "check": "complete",
+      "reason": "clear",
+      "nativeLeavesChecked": 17,
+      "shortcutsChecked": 8,
+      "checkOnlyLeavesChecked": 29,
+      "environmentScopesChecked": 3,
+      "registryViewsChecked": 4,
+      "pristine": true,
+      "nativeInstallationRegistered": true,
+      "exactDefaultInstallation": true
+    }
+  },
+  "nativeDefaults": {
+    "engine": "powershell",
+    "passed": true,
+    "check": "complete",
+    "reason": "clear",
+    "nativeLeavesChecked": 17,
+    "shortcutsChecked": 8,
+    "checkOnlyLeavesChecked": 29,
+    "environmentScopesChecked": 3,
+    "registryViewsChecked": 4,
+    "pristine": true,
+    "nativeInstallationRegistered": true,
+    "exactDefaultInstallation": true
+  },
+  "failure": {
+    "classification": "native-update-validation-failed",
+    "lastPhase": "original-nsis-installed",
+    "activeCheck": "runtime-workspace-ready",
+    "errorKind": "Error",
+    "lastReadError": {
+      "errorKind": "TimeoutError"
+    },
+    "lastHttp": {
+      "endpoint": "workspace-session-list"
+    }
+  },
+  "failureState": {
+    "collected": true,
+    "diskReadSucceeded": true,
+    "archiveHashReadSucceeded": true,
+    "archiveMetadataReadSucceeded": true,
+    "targetVersionOnDisk": false,
+    "publishedAsarOnDisk": false,
+    "oldPidKnown": true,
+    "oldBrowserPidAbsent": false,
+    "spawnedBaselineProcessExited": false,
+    "processScanCompleted": true,
+    "mainHasExpectedDebugArgument": false,
+    "mainHasExpectedProfileArgument": false,
+    "userDebugEnvironmentMatches": false,
+    "userProfileEnvironmentMatches": false,
+    "observedBrowserPidKnown": true,
+    "observedBrowserEffectiveProfileMatches": true,
+    "ownedMainListenerProbeSucceeded": true,
+    "ownedMainExpectedPortListening": true,
+    "samePrivateMainProcessCount": 1
+  },
+  "downloadProgress": {},
+  "failureDiagnostics": {
+    "collectedBeforeCleanup": true,
+    "filesScanned": 2,
+    "bytesScanned": 11253,
+    "readFailures": 0,
+    "signals": []
+  },
+  "cleanup": "native default leaves and private fixture retained for disposable hosted VM destruction",
+  "rendererNetworkScope": {
+    "observedOrigins": 1,
+    "upstreamObserved": false,
+    "monitoring": "renderer CDP only; not a system network audit"
+  }
+}

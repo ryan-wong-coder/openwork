@@ -153,6 +153,16 @@
       "targetScreenshotsAvailable": false,
       "reason": "Original saved V1 and baseline history passed. The first full download completed without retry and target version/ASAR were verified on disk. Target CDP attachment refused the connection, so no verified target UI image was produced.",
       "nativeReceiptAltered": false
+    },
+    "attempt09-native-defaults-win32-x64": {
+      "nativeFunctionalVerdict": "not-executed-baseline-runtime-readiness-failed",
+      "artifactDigestVerified": true,
+      "attempt": 9,
+      "windowsProfileMode": "native-defaults",
+      "actuallyViewed": [],
+      "targetScreenshotsAvailable": false,
+      "reason": "Original NSIS/baseline identity passed, then runtime workspace readiness stopped before historical session or updater download; target owned-port discovery and target UI were not reached.",
+      "nativeReceiptAltered": false
     }
   }
 }

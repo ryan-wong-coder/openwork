@@ -1,0 +1,94 @@
+{
+  "scope": "Strict baseline runtime-readiness failure from attempt 9 only; new target owned-port discovery was not reached and earlier failure causes are not reattributed.",
+  "runId": 39468437116,
+  "jobId": 118785918919,
+  "lane": "win32-x64",
+  "workflowAttempt": 9,
+  "windowsProfileMode": "native-defaults",
+  "checkoutCommit": "bc7e716dceead7a69a6c8cff7056f72ea9a6f944",
+  "nativeReceipt": {
+    "file": "attempt09-native-defaults-win32-x64.json",
+    "sha256": "e2b76555b9c9b90b1cbed22a52f0129ed835ed855b0a74720e22ebddd2e10999"
+  },
+  "actualWindowsPreflightTests": {
+    "tests": 60,
+    "pass": 60,
+    "fail": 0,
+    "skipped": 0,
+    "source": "Original job-log endpoint summary at lines309/311/312/314; API preflight conclusion success"
+  },
+  "nativeDefaultsPrerequisites": {
+    "node": {
+      "engine": "node",
+      "passed": true,
+      "check": "complete",
+      "reason": "clear",
+      "nativeLeavesChecked": 17,
+      "shortcutsChecked": 8,
+      "checkOnlyLeavesChecked": 29,
+      "pristine": true
+    },
+    "powershell": {
+      "engine": "powershell",
+      "passed": true,
+      "check": "complete",
+      "reason": "clear",
+      "nativeLeavesChecked": 17,
+      "shortcutsChecked": 8,
+      "checkOnlyLeavesChecked": 29,
+      "environmentScopesChecked": 3,
+      "registryViewsChecked": 4,
+      "pristine": true,
+      "nativeInstallationRegistered": true,
+      "exactDefaultInstallation": true
+    }
+  },
+  "nativeDefaultsInstallation": {
+    "engine": "powershell",
+    "passed": true,
+    "check": "complete",
+    "reason": "clear",
+    "nativeLeavesChecked": 17,
+    "shortcutsChecked": 8,
+    "checkOnlyLeavesChecked": 29,
+    "environmentScopesChecked": 3,
+    "registryViewsChecked": 4,
+    "pristine": true,
+    "nativeInstallationRegistered": true,
+    "exactDefaultInstallation": true
+  },
+  "baselineNsisInstalled": true,
+  "baselineNoResigning": true,
+  "observedBaselineBrowserPidKnown": true,
+  "observedBaselineEffectiveProfileMatches": true,
+  "ownedBaselineExpectedCdpPortListening": true,
+  "nativeV1SettingFactsProduced": false,
+  "nativeTargetConnectionFactsProduced": false,
+  "targetOwnedPortDiscoveryExercised": false,
+  "historicalV1SessionCreated": false,
+  "actualWholeFileDownloadCount": 0,
+  "additionalWholeFileRetriesAllowed": 2,
+  "additionalRetriesActuallyStarted": 0,
+  "nativeUpdateExecuted": false,
+  "failure": {
+    "classification": "native-update-validation-failed",
+    "lastPhase": "original-nsis-installed",
+    "activeCheck": "runtime-workspace-ready",
+    "errorKind": "Error",
+    "lastReadError": {
+      "errorKind": "TimeoutError"
+    },
+    "lastHttp": {
+      "endpoint": "workspace-session-list"
+    }
+  },
+  "originalReceiptDiagnosticSignals": [],
+  "rawWorkflowJobLog": {
+    "bytes": 41956,
+    "sha256": "65cf7bd454ada166946bf241207b7b55ec0457f342c338f451e6a738bc9b03d2",
+    "retainedInPublicTree": false,
+    "source": "One authorized job-log endpoint fetch after approximately four minutes of main execution; job had ended by subsequent status read"
+  },
+  "earlierAttemptCauseBackfilled": false,
+  "interpretation": "All 60 Windows preflight tests, Node/PowerShell pristine checks and the original NSIS installation/registration passed. The actual baseline browser, effective profile and owned expected listener were observed. The run then stopped at runtime-workspace-ready with lastReadError TimeoutError and lastHttp endpoint workspace-session-list, without a recorded status. No native V1-setting facts, verified historical session, updater download or target connection facts were produced. The new target-only owned-port discovery was not exercised and this failure cannot establish its success or failure, a target update problem, or the unknown attachment cause from attempt 8."
+}

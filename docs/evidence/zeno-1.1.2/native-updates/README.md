@@ -19,7 +19,7 @@ workflow is rerun without explicit approval. This directory is separate from the
 | Lane | Actual result | Evidence boundary |
 | --- | --- | --- |
 | Linux x64 | Native functional and Chinese screenshot pass in attempt 2 | Both original AppImage runs passed actual upgrade and history/registry/sidebar gates. Original screenshots retain missing-glyph boxes; attempt 2 added explicit CJK host prerequisites and its two actually viewed screenshots have readable Chinese. |
-| Windows x64 | Attempt 8 downloaded and verified the target on disk; target attachment failed | All 55 Windows tests, pristine checks, original default NSIS, saved V1 and baseline history passed. The first whole-file download completed without retry and frozen target version/ASAR were verified on disk. Expected target CDP refused the connection; actual target browser/profile/history and UI remain unverified. |
+| Windows x64 | Attempt 9 stopped at baseline runtime readiness; target connection change unexercised | All 60 Windows tests, pristine checks, original NSIS and baseline browser/profile/listener passed. Runtime readiness stopped with TimeoutError before setting facts/history/download. Attempt 8 retains its complete download and on-disk target verification, with target browser/profile/history unaccepted. |
 | macOS x64 | Native functional and screenshot pass | Real ZIP download and Squirrel install/automatic restart, original signatures and published ASAR, isolated profile, both registries, history, native Canvas/SVG/Ant Design Charts, and four actual sidebar clicks passed. All three screenshots were actually viewed and Chinese is readable. |
 | macOS arm64 | Native functional and screenshot pass in attempt 4 | On `xcode-27`, the original package and signatures, real 444,118,404-byte public download, Squirrel installation, automatic restart, both registries, profile/history, native canvas and four actual sidebar clicks passed. All three screenshots were actually viewed with readable Chinese and no clipping. Earlier capacity cancellations and the stale preflight failure remain unchanged. |
 
@@ -107,6 +107,20 @@ expected owned listener or identified actual target browser. Target profile,
 history and UI remain unverified. No screenshot was produced. These observations
 do not retrospectively explain attempt 7's unknown setting failure or establish
 target environment loss. See `attempt08-native-defaults-trajectory.json`.
+
+
+Attempt 9 adds target-only native-defaults CDP discovery from unique stable OS
+ownership in the source-defined allowed default range, while retaining the
+shared timeout and all original target identity/history gates. All 60 Windows
+preflight tests ran and passed, including the actual Windows-only cases. Both
+pristine checks, original default NSIS installation and observed baseline browser,
+effective profile and owned listener passed. The run then stopped earlier at
+`runtime-workspace-ready`, with `lastReadError: TimeoutError` and last HTTP endpoint
+`workspace-session-list` without a recorded status. No native V1-setting or target
+connection facts were produced. Historical session creation, download and the new
+target-only discovery were not reached, so this run cannot establish that
+change's outcome or explain attempt 8 retrospectively. No screenshot was produced.
+See `attempt09-native-defaults-trajectory.json`.
 
 Windows' failed checkpoint in the first two attempts is `update-download`. Its baseline process
 remained running and the target was absent from disk; the effective baseline

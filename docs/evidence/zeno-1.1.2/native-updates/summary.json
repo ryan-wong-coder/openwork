@@ -23,7 +23,7 @@
       "originalMissingGlyphScreenshotsRetained": true
     },
     "win32-x64": {
-      "functional": "native-defaults-target-attachment-not-accepted",
+      "functional": "native-defaults-baseline-runtime-readiness-not-accepted",
       "visual": "not-produced",
       "receipts": [
         "win32-x64.json",
@@ -31,34 +31,31 @@
       ],
       "nsisInstallOrTargetRelaunchFailureEstablished": false,
       "latestAttempt": {
-        "attempt": 8,
-        "runId": 39462867382,
-        "jobId": 118766623216,
+        "attempt": 9,
+        "runId": 39468437116,
+        "jobId": 118785918919,
         "windowsProfileMode": "native-defaults",
         "additionalWholeFileRetriesAllowed": 2,
-        "historicalEngineScope": "Original saved V1 and baseline history verified; updated target history not verified. Default V2 history not tested.",
-        "status": "failed-target-attach-page-list",
-        "nativeVerdict": "not-accepted-target-browser-profile-unverified",
-        "receipt": "attempt08-native-defaults-win32-x64.json",
-        "artifactReceipt": "attempt08-native-defaults-win32-x64-artifact.json",
+        "historicalEngineScope": "Intended original saved V1; runtime readiness failed before setting facts or verified historical session.",
+        "status": "failed-baseline-runtime-workspace-ready",
+        "nativeVerdict": "not-executed-baseline-runtime-readiness-failed",
+        "receipt": "attempt09-native-defaults-win32-x64.json",
+        "artifactReceipt": "attempt09-native-defaults-win32-x64-artifact.json",
         "actualWindowsPreflight": {
-          "tests": 55,
-          "pass": 55,
+          "tests": 60,
+          "pass": 60,
           "fail": 0,
           "skipped": 0
         },
         "bothNativePrerequisitesPassed": true,
         "originalBaselineNsisInstalled": true,
-        "baselineSavedV1AndHistoryVerified": true,
-        "actualWholeFileDownloadCount": 1,
-        "successfulWholeFileDownloadAttempt": 1,
-        "retryEverRequestedThisRun": false,
-        "frozenTargetVersionAndAsarVerifiedOnDisk": true,
-        "observedTargetBrowserPidKnown": false,
-        "targetProfileAndHistoryVerified": false,
-        "failureCauseCode": "ECONNREFUSED"
+        "observedBaselineBrowserAndEffectiveProfile": true,
+        "actualWholeFileDownloadCount": 0,
+        "targetOwnedPortDiscoveryExercised": false,
+        "lastReadErrorKind": "TimeoutError",
+        "lastHttpEndpoint": "workspace-session-list"
       },
-      "completedFailedWorkflowAttempts": 8,
+      "completedFailedWorkflowAttempts": 9,
       "priorIsolatedReceipts": [
         "win32-x64.json",
         "attempt02-win32-x64.json",
@@ -70,7 +67,8 @@
         "attempt05-native-defaults-win32-x64.json",
         "attempt06-native-defaults-win32-x64.json",
         "attempt07-native-defaults-win32-x64.json",
-        "attempt08-native-defaults-win32-x64.json"
+        "attempt08-native-defaults-win32-x64.json",
+        "attempt09-native-defaults-win32-x64.json"
       ]
     },
     "macos-arm64": {
@@ -98,8 +96,8 @@
     }
   },
   "integrityChecks": {
-    "downloadedArtifactZipDigestsMatchedGitHub": 12,
-    "extractedOriginalFilesRehashed": 23,
+    "downloadedArtifactZipDigestsMatchedGitHub": 13,
+    "extractedOriginalFilesRehashed": 24,
     "originalCapacityAnnotationResponsesRehashed": 2,
     "actualScreenshotsReviewed": 10,
     "screenshotsWithReadableChinese": 8,
