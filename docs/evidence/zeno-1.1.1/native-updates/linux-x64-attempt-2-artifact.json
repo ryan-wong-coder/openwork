@@ -1,0 +1,20 @@
+{
+  "lane": "linux-x64",
+  "attempt": 2,
+  "passed": false,
+  "runId": 39398559935,
+  "jobId": 118547327809,
+  "artifactId": 12254780648,
+  "artifactName": "zeno-real-update-linux-x64",
+  "artifactZipBytes": 1339,
+  "githubArtifactSize": 1339,
+  "githubDigest": "sha256:eb73f3fe602eeac83b1c2c6a80cddf61267ccb96a60ba103900ca0c3e12dba2c",
+  "independentlyVerifiedZipSha256": "eb73f3fe602eeac83b1c2c6a80cddf61267ccb96a60ba103900ca0c3e12dba2c",
+  "files": [
+    {
+      "file": "linux-x64-attempt-2.json",
+      "bytes": 2987,
+      "sha256": "f58271b5c4ba052e8659616291253be961b59a4e92cb7cbe5a2e6b1b07389e77"
+    }
+  ]
+}

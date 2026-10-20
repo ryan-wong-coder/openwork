@@ -1,0 +1,77 @@
+{
+  "passed": false,
+  "baseline": "1.0.0",
+  "target": "1.1.1",
+  "platform": "linux",
+  "arch": "x64",
+  "phases": [
+    {
+      "name": "original-installers-verified",
+      "at": "2026-10-20T08:19:21.792Z",
+      "baselineSha256": "c31e75122f9ffcd04d051a2f94e9788a723e752c171f0f54d4200911e6f18d70",
+      "targetSha256": "75d0be2ac3c3656e74de31aeb21fe11eed3edfcec40fa62a1965e2aec0ae3ec0",
+      "baselineBytes": 312187633,
+      "targetBytes": 317994145
+    },
+    {
+      "name": "original-appimage-installed",
+      "at": "2026-10-20T08:19:24.079Z",
+      "privateDirectory": true,
+      "unchangedExecutableBytes": true
+    },
+    {
+      "name": "baseline-native-history-created",
+      "at": "2026-10-20T08:19:37.012Z",
+      "installedVersion": "1.0.0",
+      "workspace": true,
+      "storedSession": true,
+      "storedMessage": true,
+      "noModelCall": true
+    },
+    {
+      "name": "native-public-download-started",
+      "at": "2026-10-20T08:19:37.596Z",
+      "bytes": 317994145,
+      "installer": "AppImage"
+    },
+    {
+      "name": "native-public-download-completed",
+      "at": "2026-10-20T08:25:37.181Z",
+      "version": "1.1.1"
+    }
+  ],
+  "nativeUpdateExecuted": false,
+  "scope": {
+    "originalBaseline": true,
+    "originalTarget": true,
+    "realPublicFeed": true,
+    "installedUpgrade": false,
+    "automaticRelaunch": false,
+    "historicalChatPreservation": false,
+    "accountPairingTested": false,
+    "osCredentialStorageTested": false,
+    "aiRequested": false
+  },
+  "isolation": "ephemeral GitHub-hosted VM; private installation, Electron profile, workspace, XDG data and temporary runtime",
+  "publicOrigin": "https://www.zeno.ryan-wong.cn",
+  "downloadProgress": {
+    "subscriptionSupported": true
+  },
+  "failure": {
+    "classification": "native-update-validation-failed",
+    "lastPhase": "native-public-download-completed"
+  },
+  "failureDiagnostics": {
+    "collectedBeforeCleanup": true,
+    "filesScanned": 2,
+    "bytesScanned": 20517,
+    "readFailures": 0,
+    "signals": []
+  },
+  "cleanup": "failed attempt private files retained for hosted runner disposal",
+  "rendererNetworkScope": {
+    "observedOrigins": 1,
+    "upstreamObserved": false,
+    "monitoring": "renderer CDP only; not a system network audit"
+  }
+}

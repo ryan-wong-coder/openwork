@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-20T13:37:26.936926+00:00",
+  "scope": "Independent 32-exercise static PWA publication; not a desktop installer or authenticated native pairing verdict",
+  "sourceCommit": "46e5e38a5d7c4a147b0888d3a50e4788f045385e",
+  "indexSha256": "4ccf4208b2fc463a518f553729f28338ec0d8aad7ae1045af5199aedbe267102",
+  "verifiedFiles": 167,
+  "selectedExercises": 32,
+  "mascotVideos": 30,
+  "diagramVideos": 2,
+  "posters": 32,
+  "retainedPriorHashedAssets": 10,
+  "atomicSwitch": true,
+  "priorPwaDirectoryRetained": true,
+  "apiCodeAndProcessUnchanged": true,
+  "downloadAndUpdateCurrentUnchanged": true,
+  "accountAndMediaPathsUntouched": true,
+  "sameStrictCsp": true
+}

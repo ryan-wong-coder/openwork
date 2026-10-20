@@ -1,0 +1,53 @@
+{
+  "scope": "Actual visual review of every PNG produced by completed passing lanes; no image editing",
+  "plannedSuccessfulLaneImageCount": 10,
+  "availableImageCount": 6,
+  "reviewedImageCount": 6,
+  "allAvailableReviewed": true,
+  "allPlannedProduced": false,
+  "missingReason": "Windows/Linux have not passed their installed target gates and produced no PNGs",
+  "images": [
+    {
+      "file": "macos-arm64.png",
+      "bytes": 38074,
+      "sha256": "9dc3aeae0befc61a1d4fc3905f342cccf614af057c83d70eee9acc243e39aa1e",
+      "actualViewCompleted": true,
+      "sourceArtifactId": 12249787857
+    },
+    {
+      "file": "macos-arm64-canvas.png",
+      "bytes": 30749,
+      "sha256": "565606ff02b67a09ff4ca4fc8860b6fe8944888d5f7736eeb5336d353c208775",
+      "actualViewCompleted": true,
+      "sourceArtifactId": 12249787857
+    },
+    {
+      "file": "macos-arm64-navigation.png",
+      "bytes": 32784,
+      "sha256": "9827a48422bdf7cb7b83e612962059e229e23fd8acccc557456d915240a4b96f",
+      "actualViewCompleted": true,
+      "sourceArtifactId": 12249787857
+    },
+    {
+      "file": "macos-x64.png",
+      "bytes": 41462,
+      "sha256": "4821c119d806572cf7a5415c0a6ffefabf499d9ad871c39f2a712a897dc065de",
+      "actualViewCompleted": true,
+      "sourceArtifactId": 12250374162
+    },
+    {
+      "file": "macos-x64-canvas.png",
+      "bytes": 39398,
+      "sha256": "e732a0ba6c3a4d92b0c139fd0a838743a9a1a388059d20ba6cb946bb55f27ef9",
+      "actualViewCompleted": true,
+      "sourceArtifactId": 12250374162
+    },
+    {
+      "file": "macos-x64-navigation.png",
+      "bytes": 36342,
+      "sha256": "d5d3b5bdc292b36c364556a1a8840140deb9c38384019ecbee63518ba65a020f",
+      "actualViewCompleted": true,
+      "sourceArtifactId": 12250374162
+    }
+  ]
+}

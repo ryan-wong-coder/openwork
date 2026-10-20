@@ -1,0 +1,104 @@
+{
+  "scope": "Explicitly authorized original-release updates on disposable GitHub-hosted native runners; dispatch is not a passing verdict",
+  "baseline": {
+    "version": "1.0.0",
+    "releaseRunId": 38883434626,
+    "productCommit": "92688046400df5d1e2807d63dce986431bc7623a"
+  },
+  "target": {
+    "version": "1.1.1",
+    "releaseRunId": 39383996080,
+    "productTag": "zeno-v1.1.1",
+    "productCommit": "afb3ca5b629c5b219fd6ed942fd32811ca671532"
+  },
+  "publicActivation": {
+    "version": "1.1.1",
+    "publishedAt": "2026-10-20T08:02:04.313882+00:00",
+    "artifactCount": 10,
+    "independentPublicApiCheck": true,
+    "operatorConfirmedFull24AndPublicationAndLiveGatesBeforeDispatch": true
+  },
+  "scheduling": "Mac both first; Windows/Linux both only after one actual Mac update and all four sidebar routes pass with independently verified small evidence. No automatic retries.",
+  "macos": {
+    "workflowId": 386584037,
+    "runId": 39390775189,
+    "ref": "personal",
+    "checkoutCommit": "3b6faba0166354042929d901181f007cf01f8896",
+    "architecture": "both",
+    "createdAt": "2026-10-20T08:04:19Z",
+    "jobs": {
+      "arm64": 118521515791,
+      "x64": 118521515858
+    }
+  },
+  "portable": {
+    "workflowId": 390119143,
+    "runId": 39392398870,
+    "ref": "personal",
+    "checkoutCommit": "705e44897d9b1483bb1fdc2529cb5b460ca67f5c",
+    "platform": "both",
+    "createdAt": "2026-10-20T08:18:03Z",
+    "jobs": {
+      "linux-x64": 118526859556,
+      "win32-x64": 118526859572
+    },
+    "entryGate": "ARM actual upgrade, all four sidebar routes, independent artifact digest and all three screenshots passed before dispatch",
+    "devProbeAndWorkflowUnchangedFromMacCheckout": true
+  },
+  "acceptanceBoundary": "Original updater download/install/automatic restart and personal AppSidebar clicks in an unpaired profile. Authenticated personal forms are covered separately by PWA evidence.",
+  "windowsRetry": {
+    "workflowId": 390119143,
+    "runId": 39394366327,
+    "ref": "personal",
+    "checkoutCommit": "4f25b4c5fc943e6a683e26b28826b85ce2447da7",
+    "platform": "win32",
+    "attempt": 2,
+    "createdAt": "2026-10-20T08:34:22Z",
+    "operatorExplicitlyApproved": true,
+    "sameFrozenBaselineAndTarget": true,
+    "reason": "Development-only allowlisted checkpoint diagnostics and ASCII Base64/UTF-8 Windows process-path transport; first attempt cause remains unknown",
+    "firstAttemptReport": "win32-x64-attempt-1.json"
+  },
+  "windowsReadinessRetry": {
+    "workflowId": 390119143,
+    "runId": 39395634492,
+    "jobId": 118537616884,
+    "ref": "personal",
+    "checkoutCommit": "d0d37f1bf4814065e7e3f3520075ee17f69a3442",
+    "platform": "win32",
+    "attempt": 3,
+    "createdAt": "2026-10-20T08:44:59Z",
+    "operatorExplicitlyApproved": true,
+    "sameFrozenBaselineAndTarget": true,
+    "reason": "Development-only workspace session/status readiness within original 120-second bound, numeric/allowlisted HTTP diagnostics and separate session identity checkpoint; no mutation retry",
+    "priorAttemptReports": [
+      "win32-x64-attempt-1.json",
+      "win32-x64-attempt-2.json"
+    ],
+    "priorAttemptHttpResult": "unknown; no retrospective 502 attribution"
+  },
+  "diagnosticBothRetry": {
+    "workflowId": 390119143,
+    "runId": 39398559935,
+    "ref": "personal",
+    "checkoutCommit": "8128c19b09d94d7ccee509fce01ef4305d15e843",
+    "checkoutDesktopVersion": "1.1.1",
+    "platform": "both",
+    "attempts": {
+      "win32-x64": 4,
+      "linux-x64": 2
+    },
+    "createdAt": "2026-10-20T09:08:58Z",
+    "jobs": {
+      "win32-x64": 118547327406,
+      "linux-x64": 118547327809
+    },
+    "operatorExplicitlyApproved": true,
+    "sameFrozenBaselineAndTarget": true,
+    "reason": "Fixed development-only failure lifecycle and allowlisted disk/main-process/environment diagnostics; never manually launch target",
+    "targetProductCommit": "afb3ca5b629c5b219fd6ed942fd32811ca671532",
+    "targetReleaseRunId": 39383996080,
+    "baselineReleaseRunId": 38883434626,
+    "newMacRun": false
+  }
+}

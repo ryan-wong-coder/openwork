@@ -1,0 +1,37 @@
+{
+  "requestedAt": "2026-10-20T08:56:32Z",
+  "operatorExplicitlyAuthorized": true,
+  "reason": "Unobservable long-running verifier; potential lifecycle risk, not a proved product failure",
+  "productVersion": "1.1.1",
+  "productCommit": "afb3ca5b629c5b219fd6ed942fd32811ca671532",
+  "baselineRunId": 38883434626,
+  "targetRunId": 39383996080,
+  "runs": [
+    {
+      "runId": 39392398870,
+      "affectedRemainingLane": "linux-x64",
+      "attempt": 1,
+      "jobId": 118526859556,
+      "terminalConclusion": "cancelled",
+      "artifactId": 12252306860,
+      "originalReport": "linux-x64-attempt-1.json",
+      "originalReportPassedValue": false,
+      "lastOriginalPhase": "native-public-download-completed"
+    },
+    {
+      "runId": 39395634492,
+      "affectedRemainingLane": "win32-x64",
+      "attempt": 3,
+      "jobId": 118537616884,
+      "terminalConclusion": "cancelled",
+      "artifactId": 12252051912,
+      "originalReport": "win32-x64-attempt-3.json",
+      "originalReportPassedValue": false,
+      "lastOriginalPhase": "native-public-download-completed",
+      "originalActiveCheck": "attach-page-list"
+    }
+  ],
+  "macosRunsTouched": false,
+  "newDispatchPerformed": false,
+  "artifactCollection": "Exactly one post-terminal small-artifact listing per run; matched ZIP digest and preserved original report bytes, no PNGs available"
+}

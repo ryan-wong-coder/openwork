@@ -1,0 +1,10 @@
+{
+  "runId": 39398559935,
+  "jobId": 118547327406,
+  "checkoutCommit": "8128c19b09d94d7ccee509fce01ef4305d15e843",
+  "scope": "Actual hosted Windows synthetic harness fixtures; not an installed-update verdict",
+  "actualPowerShellUnicodeWirePassed": true,
+  "actualCimPrivateExeFilterAndBooleanOnlyOutputPassed": true,
+  "rawLogSaved": false,
+  "nativeUpdateVerdict": "failed at original baseline workspace readiness; see win32-x64-attempt-4.json"
+}

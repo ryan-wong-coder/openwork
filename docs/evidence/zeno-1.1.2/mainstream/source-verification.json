@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-10-20T13:25:46Z",
+  "version": "1.1.2",
+  "frozenProductCommit": "46e5e38a5d7c4a147b0888d3a50e4788f045385e",
+  "selectedExercises": 32,
+  "mascotVideos": 30,
+  "diagramVideos": 2,
+  "posters": 32,
+  "completeRuntimeBytes": 7125941,
+  "mediaVerification": { "fullyReadSourceFiles": 64, "rendererBuildCopiedFiles": 64, "pwaBuildCopiedFiles": 64, "allSha256MatchFinalProvenance": true },
+  "productionBuilds": {
+    "renderer": { "exitCode": 0, "durationSeconds": 24.74, "buildLabelRevision": "cf211d5c8", "scope": "Local production build of product input bytes subsequently frozen in the tag; native release builds are separate" },
+    "pwa": { "exitCode": 0, "durationSeconds": 9.52, "files": 167, "indexSha256": "4ccf4208b2fc463a518f553729f28338ec0d8aad7ae1045af5199aedbe267102" }
+  },
+  "typechecks": { "app": 0, "fitnessPackage": 0 },
+  "regressions": { "relevantAppTests": 31, "relevantAppAssertions": 25438, "fitnessPackageTests": 43, "fitnessPackageAssertions": 2086, "mediaPackagingTests": 1 },
+  "featuresCheck": { "exitCode": 0, "dockerWorkspaceClosureAndOrderChecked": true, "actualCoreBuildExitCode": 0, "fullDockerImageBuilt": false, "helmRender": "skipped: helm unavailable" },
+  "contractsChanged": false,
+  "dataMigrationAdded": false,
+  "scope": "Source and actual local production builds; not a released-installer or native-upgrade verdict"
+}

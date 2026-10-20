@@ -1,35 +1,40 @@
 # Zeno 1.1.2 verification
 
-This patch adds exercise detail from both the catalogue and the active workout,
-front/back primary and secondary muscle maps, eleven exact-ID vector scenes,
-and three independently generated mascot videos. The remaining 5,621 exercises
-show their real muscle/instruction data without borrowing another movement's
-demonstration. Custom authenticated media takes priority.
+The current set covers 32 exact mainstream exercises with 32 posters and 32 videos:
+30 generated mascot demonstrations and two original SVG diagram videos labelled
+“动作图解”. Eleven original interactive vector scenes remain available. Custom
+media keeps priority, matching variants stay distinct, and active workouts open
+the same detail. Completed demonstrations appear first within matching results.
 
-- [Visual implementation and real browser acceptance](../zeno-fitness-visuals/README.md):
-  12 checks and eight reviewed screenshots on the production PWA with a real
-  isolated API. Playback, keyboard scrubbing, background/reduced-motion behavior,
-  exact variants, mobile themes and unchanged workout records are covered.
-- [Generation prompts and provenance](../../../apps/app/art-source/fitness/README.md):
-  built-in Image Gen, official LibTV CLI and our own mascot reference. All three
-  selected videos were reviewed as contact sheets and decoded in the browser.
-  No restricted upstream exercise media was used.
-- [Independent review](fitness-visuals/review.md): mapping, custom-media boundary,
-  base URLs and all six complete media hashes; no additional native claim.
-- [Source and renderer build](source-verification.json): production renderer
-  build and missing/corrupted packaged-media regression passed. Installer
-  packaging separately verifies all six actual media files against source.
-- [PWA deployment](fitness-visuals/deployment.json) and
-  [public media checks](fitness-visuals/public-media/README.md): independent static
-  deployment at `639285fed`, all 109 source files fully hashed, prior assets
-  retained, strict CSP and actual public MP4 decode/Range verified. The API,
-  account database, user media and installer feeds were unchanged.
-- [Device approval fix](../zeno-1.1.1/device-approval/README.md): second-tab
-  server authorization no longer depends on the local record-writer lease.
-  Its feature/owner checks and local record write protections remain. The
-  real public two-tab approval and PKCE/device binding passed before the
-  fitness static deployment; exact synthetic cleanup is recorded separately.
+- [Prompts and provenance](../../../apps/app/art-source/fitness/README.md) preserve
+  exact identities, equipment, all 64 hashes, actual generation records and rejected
+  attempts. No restricted upstream visual media was used.
+- [Browser acceptance](mainstream/browser/browser-report.json) passed 15 checks
+  against the actual production PWA and a disposable real local API. All 12
+  screenshots were viewed, covering desktop/mobile themes, video-only and diagram
+  details, playback, reduced motion, background pause and unchanged workout data.
+- [Independent review](mainstream/source-review.json) checked all 64 complete media
+  hashes, mapping/custom boundaries and ten other-batch final contact sheets.
+- [Source and build checks](mainstream/source-verification.json) cover type checks,
+  semantic regressions and all 64 media bytes in both actual production builds.
+  Installer packaging separately rejects missing, modified or unexpected media.
+- [Live deployment](mainstream/deployment.json) atomically published all 167 PWA
+  source files at `46e5e38a5`, retaining ten earlier hashed assets and the previous
+  directory. The API, account data, private media, landing page and native feeds
+  were untouched.
+- [Public media acceptance](mainstream/public-media/README.md) independently read
+  all 64 complete assets, checked 32 real Range responses, and actually decoded,
+  played and paused all 32 public videos in a fresh anonymous headless browser.
 
-All prior route corrections remain included. Six-target installers, publication
-and actual native upgrades are pending independent acceptance; source, web
-screenshots or a successful build alone do not establish those results.
+The second-tab device-approval correction is included; real public approval,
+PKCE/device binding and exact synthetic cleanup are recorded under
+[the approval evidence](../zeno-1.1.1/device-approval/README.md). The route fix also
+remains included. The earlier three-video phase under `fitness-visuals/` and
+`../zeno-fitness-visuals/` remains historical evidence, not current coverage.
+
+The immutable tag `zeno-v1.1.2` points to
+`46e5e38a5d7c4a147b0888d3a50e4788f045385e`; six-target build `39431901305`
+started from that source. Final installer publication and actual native upgrades
+remain separate pending gates. Historical 1.1.1 native reports, including failed
+Windows/Linux attempts, remain unchanged in
+[the prior native evidence](../zeno-1.1.1/native-updates/README.md).

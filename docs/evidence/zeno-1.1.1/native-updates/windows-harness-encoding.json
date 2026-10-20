@@ -1,0 +1,10 @@
+{
+  "runId": 39394366327,
+  "jobId": 118533346641,
+  "checkoutCommit": "4f25b4c5fc943e6a683e26b28826b85ce2447da7",
+  "scope": "Hosted Windows dev harness unit fixture, independent of native updater verdict",
+  "actualWindowsPowerShellUnicodeEncoderFixturePassed": true,
+  "syntheticPathOnly": true,
+  "rawLogSaved": false,
+  "firstAttemptCause": "unknown; no retroactive attribution to encoding"
+}

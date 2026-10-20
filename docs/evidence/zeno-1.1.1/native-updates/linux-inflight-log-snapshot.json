@@ -1,0 +1,9 @@
+{
+  "runId": 39392398870,
+  "jobId": 118526859556,
+  "checkedAt": "2026-10-20T08:51:55.595244+00:00",
+  "scope": "Single read-only in-flight job-log availability check; no raw log retained",
+  "available": false,
+  "httpStatus": 404,
+  "repeatedPolling": false
+}

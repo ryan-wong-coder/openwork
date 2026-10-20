@@ -1,0 +1,86 @@
+{
+  "passed": false,
+  "baseline": "1.0.0",
+  "target": "1.1.1",
+  "platform": "win32",
+  "arch": "x64",
+  "phases": [
+    {
+      "name": "original-installers-verified",
+      "at": "2026-10-20T08:47:02.635Z",
+      "baselineSha256": "2fd5184a2f5a41d50c11b63014add54518805816a68c67dbe72b6217d3139716",
+      "targetSha256": "f13c8eaff51e91d1748e528a3536ba9d734a27646156308b303204a149893599",
+      "baselineBytes": 379417761,
+      "targetBytes": 383746839
+    },
+    {
+      "name": "original-nsis-installed",
+      "at": "2026-10-20T08:47:39.070Z",
+      "privateDirectory": true,
+      "noResigning": true
+    },
+    {
+      "name": "baseline-native-history-created",
+      "at": "2026-10-20T08:48:03.808Z",
+      "installedVersion": "1.0.0",
+      "workspace": true,
+      "storedSession": true,
+      "storedMessage": true,
+      "noModelCall": true
+    },
+    {
+      "name": "native-public-download-started",
+      "at": "2026-10-20T08:48:04.510Z",
+      "bytes": 383746839,
+      "installer": "exe"
+    },
+    {
+      "name": "native-public-download-completed",
+      "at": "2026-10-20T08:53:29.759Z",
+      "version": "1.1.1"
+    }
+  ],
+  "nativeUpdateExecuted": false,
+  "scope": {
+    "originalBaseline": true,
+    "originalTarget": true,
+    "realPublicFeed": true,
+    "installedUpgrade": false,
+    "automaticRelaunch": false,
+    "historicalChatPreservation": false,
+    "accountPairingTested": false,
+    "osCredentialStorageTested": false,
+    "aiRequested": false
+  },
+  "isolation": "ephemeral GitHub-hosted VM; private installation, Electron profile, workspace, XDG data and temporary runtime",
+  "publicOrigin": "https://www.zeno.ryan-wong.cn",
+  "downloadProgress": {
+    "subscriptionSupported": true
+  },
+  "failure": {
+    "classification": "native-update-validation-failed",
+    "lastPhase": "native-public-download-completed",
+    "activeCheck": "attach-page-list",
+    "errorKind": "Error",
+    "lastReadError": {
+      "errorKind": "TypeError"
+    },
+    "lastHttp": {
+      "endpoint": "engine-activity",
+      "status": 200
+    }
+  },
+  "failureDiagnostics": {
+    "collectedBeforeCleanup": true,
+    "filesScanned": 2,
+    "bytesScanned": 19033,
+    "readFailures": 0,
+    "signals": []
+  },
+  "cleanup": "failed attempt private files retained for hosted runner disposal",
+  "rendererNetworkScope": {
+    "observedOrigins": 1,
+    "upstreamObserved": false,
+    "monitoring": "renderer CDP only; not a system network audit"
+  }
+}
