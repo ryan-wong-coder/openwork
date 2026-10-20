@@ -1,0 +1,123 @@
+{
+  "recordedAt": "2026-10-20T07:42:35.618Z",
+  "status": "incomplete",
+  "targetProductVersion": "1.1.1",
+  "targetProductTag": "zeno-v1.1.1",
+  "targetProductCommit": "afb3ca5b629c5b219fd6ed942fd32811ca671532",
+  "scope": "Fresh isolated full AppRoot browser world; not PWA-only and not an installed desktop GUI acceptance",
+  "productNavigationAssertionsExecuted": 0,
+  "fourDestinations": {
+    "calendar": "not-reached",
+    "fitness": "not-reached",
+    "tasks": "not-reached",
+    "account": "not-reached"
+  },
+  "screenshots": 0,
+  "finalDiagnostic": {
+    "engine": "OpenCode v1",
+    "expectedReleaseSidecarVersion": "1.18.30",
+    "architecture": "arm64",
+    "globalHealthHttpStatus": 200,
+    "workspaceReadHttpStatus": 502,
+    "workspaceReadCode": "opencode_unreachable",
+    "workspaceReadMessage": "No OpenCode engine is available",
+    "primaryAggregateReadTimeoutMs": 5000,
+    "workspaceLoading": true,
+    "workspaceReadinessDeadlineMs": 60000
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "runnerReport": "cli-run-1792480424325-10001.json",
+      "durationMs": 46369,
+      "stage": "world-startup",
+      "reason": "Headless web did not reach health readiness before the fixture deadline",
+      "runnerVerdict": "failed",
+      "productVerdict": "incomplete",
+      "personalNavigationAssertionsExecuted": 0
+    },
+    {
+      "attempt": 2,
+      "runnerReport": "cli-run-1792480792858-12442.json",
+      "durationMs": 67696,
+      "stage": "world-arrangement",
+      "reason": "Legacy interactive predicate did not recognize the translated ModelHelm first-run surface",
+      "runnerVerdict": "failed",
+      "productVerdict": "incomplete",
+      "personalNavigationAssertionsExecuted": 0
+    },
+    {
+      "attempt": 3,
+      "runnerReport": "cli-run-1792480972495-19373.json",
+      "durationMs": 74791,
+      "stage": "world-arrangement",
+      "reason": "Legacy interactive predicate did not recognize the translated composer; workspace loading had not completed",
+      "runnerVerdict": "failed",
+      "productVerdict": "incomplete",
+      "personalNavigationAssertionsExecuted": 0
+    },
+    {
+      "attempt": 4,
+      "runnerReport": "cli-run-1792481134572-26165.json",
+      "durationMs": 72104,
+      "stage": "workspace-readiness",
+      "reason": "Fresh workspace remained loading; session/status and event returned HTTP 502",
+      "runnerVerdict": "failed",
+      "productVerdict": "incomplete",
+      "personalNavigationAssertionsExecuted": 0
+    },
+    {
+      "attempt": 5,
+      "runnerReport": "cli-run-1792481331774-33259.json",
+      "durationMs": 72700,
+      "stage": "workspace-readiness",
+      "reason": "Pure initialization flags did not resolve the fresh workspace readiness failure",
+      "runnerVerdict": "failed",
+      "productVerdict": "incomplete",
+      "personalNavigationAssertionsExecuted": 0
+    },
+    {
+      "attempt": 6,
+      "runnerReport": "cli-run-1792481686565-40625.json",
+      "durationMs": 75377,
+      "stage": "workspace-readiness",
+      "reason": "Architecture-specific release sidecar and all pure initialization flags still did not complete workspace loading",
+      "runnerVerdict": "failed",
+      "productVerdict": "incomplete",
+      "personalNavigationAssertionsExecuted": 0
+    }
+  ],
+  "archives": [
+    {
+      "originalPath": "evals/proofs/zeno-personal-navigation.proof.test.ts",
+      "archivedPath": "docs/evidence/zeno-1.1.1/headless-client-incomplete/zeno-personal-navigation.proof.test.ts.txt",
+      "bytes": 4362,
+      "sha256": "87784fa26acb3d860c519201727de94d47c5d9d20c4ad063ad1d38191b78ad4e"
+    },
+    {
+      "originalPath": "evals/worlds/zeno-personal-navigation.ts",
+      "archivedPath": "docs/evidence/zeno-1.1.1/headless-client-incomplete/zeno-personal-navigation.ts.txt",
+      "bytes": 10575,
+      "sha256": "d62a76620494245410d147298ab1c10e7c37d1d870d425938078316649ae7059"
+    }
+  ],
+  "staticChecks": {
+    "specLint": {
+      "files": 14,
+      "errors": 0
+    },
+    "evalTypecheck": {
+      "files": 239,
+      "errors": 0
+    }
+  },
+  "cleanup": {
+    "defaultPersistentWorld": "closed; not used for a verdict",
+    "subsequentFreshWorlds": "stopped",
+    "ownedPersonalApiProcesses": "stopped",
+    "ownedHeadlessBrowsers": "stopped",
+    "identifiedFreshChromeProfilesRemoved": 5,
+    "temporaryAccountAndRuntimeState": "removed"
+  },
+  "remainingGate": "Four installed desktop GUI acceptance lanes must separately click the four sidebar destinations and prove no redirection or new session creation"
+}

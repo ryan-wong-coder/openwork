@@ -1,0 +1,422 @@
+{
+  "runId": 39383996080,
+  "expectedProductCommit": "afb3ca5b629c5b219fd6ed942fd32811ca671532",
+  "workflowCommit": "afb3ca5b629c5b219fd6ed942fd32811ca671532",
+  "lanes": {
+    "Build darwin/x64": {
+      "name": "Build darwin/x64",
+      "jobId": 118500149032,
+      "jobUrl": "https://github.com/ryan-wong-coder/openwork/actions/runs/39383996080/job/118500149032",
+      "conclusion": "success",
+      "startedAt": "2026-10-20T07:05:08Z",
+      "completedAt": "2026-10-20T07:24:02Z",
+      "durationSeconds": 1134.0,
+      "runnerLabels": [
+        "macos-15-intel"
+      ],
+      "actualCheckout": [
+        "afb3ca5b629c5b219fd6ed942fd32811ca671532"
+      ],
+      "checkoutMatches": true,
+      "heap6144Observed": true,
+      "packagedVerifierPassed": true,
+      "safeReports": [
+        {
+          "packagedServer": true,
+          "nativeModules": true,
+          "clientStatus": true,
+          "hostBoundary": true
+        },
+        {
+          "packagedPersonal": true,
+          "compiledCore": true,
+          "nativeRequestGuard": true,
+          "syntheticTools": true,
+          "syntheticScheduler": true,
+          "durableReceipt": true,
+          "restartNoReplay": true,
+          "safeStorageScope": "synthetic-only-not-os-validation"
+        },
+        {
+          "version": "1.1.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "brand": "zeno",
+          "signing": "self-signed",
+          "updatesEnabled": true,
+          "runtimeSmoke": "passed",
+          "canvas": {
+            "scope": "packaged-presence-and-wiring",
+            "shell": true,
+            "nativeBridge": true,
+            "promptV1V2": true,
+            "sharedFeature": true,
+            "offlineAntRuntime": {
+              "bytes": 2548222,
+              "sha256": "2f6e7eccdb30041e3d198f6881e690a0a255785c6951acee4a4e7c9a431f8cee"
+            }
+          },
+          "personal": {
+            "scope": "packaged-presence-and-wiring",
+            "modules": true,
+            "compiledCore": true,
+            "mainIpcBoundary": true,
+            "accountBinding": true,
+            "licensesAndNotices": true
+          }
+        }
+      ]
+    },
+    "Build win32/x64": {
+      "name": "Build win32/x64",
+      "jobId": 118500149046,
+      "jobUrl": "https://github.com/ryan-wong-coder/openwork/actions/runs/39383996080/job/118500149046",
+      "conclusion": "success",
+      "startedAt": "2026-10-20T07:05:06Z",
+      "completedAt": "2026-10-20T07:11:26Z",
+      "durationSeconds": 380.0,
+      "runnerLabels": [
+        "windows-2025"
+      ],
+      "actualCheckout": [
+        "afb3ca5b629c5b219fd6ed942fd32811ca671532"
+      ],
+      "checkoutMatches": true,
+      "heap6144Observed": true,
+      "packagedVerifierPassed": true,
+      "safeReports": [
+        {
+          "packagedServer": true,
+          "nativeModules": true,
+          "clientStatus": true,
+          "hostBoundary": true
+        },
+        {
+          "packagedPersonal": true,
+          "compiledCore": true,
+          "nativeRequestGuard": true,
+          "syntheticTools": true,
+          "syntheticScheduler": true,
+          "durableReceipt": true,
+          "restartNoReplay": true,
+          "safeStorageScope": "synthetic-only-not-os-validation"
+        },
+        {
+          "version": "1.1.1",
+          "platform": "win32",
+          "arch": "x64",
+          "brand": "zeno",
+          "signing": "unsigned",
+          "updatesEnabled": true,
+          "runtimeSmoke": "passed",
+          "canvas": {
+            "scope": "packaged-presence-and-wiring",
+            "shell": true,
+            "nativeBridge": true,
+            "promptV1V2": true,
+            "sharedFeature": true,
+            "offlineAntRuntime": {
+              "bytes": 2548222,
+              "sha256": "2f6e7eccdb30041e3d198f6881e690a0a255785c6951acee4a4e7c9a431f8cee"
+            }
+          },
+          "personal": {
+            "scope": "packaged-presence-and-wiring",
+            "modules": true,
+            "compiledCore": true,
+            "mainIpcBoundary": true,
+            "accountBinding": true,
+            "licensesAndNotices": true
+          }
+        }
+      ]
+    },
+    "Build linux/arm64": {
+      "name": "Build linux/arm64",
+      "jobId": 118500149109,
+      "jobUrl": "https://github.com/ryan-wong-coder/openwork/actions/runs/39383996080/job/118500149109",
+      "conclusion": "success",
+      "startedAt": "2026-10-20T07:05:08Z",
+      "completedAt": "2026-10-20T07:13:27Z",
+      "durationSeconds": 499.0,
+      "runnerLabels": [
+        "ubuntu-24.04-arm"
+      ],
+      "actualCheckout": [
+        "afb3ca5b629c5b219fd6ed942fd32811ca671532"
+      ],
+      "checkoutMatches": true,
+      "heap6144Observed": true,
+      "packagedVerifierPassed": true,
+      "safeReports": [
+        {
+          "packagedServer": true,
+          "nativeModules": true,
+          "clientStatus": true,
+          "hostBoundary": true
+        },
+        {
+          "packagedPersonal": true,
+          "compiledCore": true,
+          "nativeRequestGuard": true,
+          "syntheticTools": true,
+          "syntheticScheduler": true,
+          "durableReceipt": true,
+          "restartNoReplay": true,
+          "safeStorageScope": "synthetic-only-not-os-validation"
+        },
+        {
+          "version": "1.1.1",
+          "platform": "linux",
+          "arch": "arm64",
+          "brand": "zeno",
+          "signing": "none",
+          "updatesEnabled": true,
+          "runtimeSmoke": "passed",
+          "canvas": {
+            "scope": "packaged-presence-and-wiring",
+            "shell": true,
+            "nativeBridge": true,
+            "promptV1V2": true,
+            "sharedFeature": true,
+            "offlineAntRuntime": {
+              "bytes": 2548222,
+              "sha256": "2f6e7eccdb30041e3d198f6881e690a0a255785c6951acee4a4e7c9a431f8cee"
+            }
+          },
+          "personal": {
+            "scope": "packaged-presence-and-wiring",
+            "modules": true,
+            "compiledCore": true,
+            "mainIpcBoundary": true,
+            "accountBinding": true,
+            "licensesAndNotices": true
+          }
+        }
+      ]
+    },
+    "Build win32/arm64": {
+      "name": "Build win32/arm64",
+      "jobId": 118500149127,
+      "jobUrl": "https://github.com/ryan-wong-coder/openwork/actions/runs/39383996080/job/118500149127",
+      "conclusion": "success",
+      "startedAt": "2026-10-20T07:05:07Z",
+      "completedAt": "2026-10-20T07:18:34Z",
+      "durationSeconds": 807.0,
+      "runnerLabels": [
+        "windows-11-arm"
+      ],
+      "actualCheckout": [
+        "afb3ca5b629c5b219fd6ed942fd32811ca671532"
+      ],
+      "checkoutMatches": true,
+      "heap6144Observed": true,
+      "packagedVerifierPassed": true,
+      "safeReports": [
+        {
+          "packagedServer": true,
+          "nativeModules": true,
+          "clientStatus": true,
+          "hostBoundary": true
+        },
+        {
+          "packagedPersonal": true,
+          "compiledCore": true,
+          "nativeRequestGuard": true,
+          "syntheticTools": true,
+          "syntheticScheduler": true,
+          "durableReceipt": true,
+          "restartNoReplay": true,
+          "safeStorageScope": "synthetic-only-not-os-validation"
+        },
+        {
+          "version": "1.1.1",
+          "platform": "win32",
+          "arch": "arm64",
+          "brand": "zeno",
+          "signing": "unsigned",
+          "updatesEnabled": true,
+          "runtimeSmoke": "passed",
+          "canvas": {
+            "scope": "packaged-presence-and-wiring",
+            "shell": true,
+            "nativeBridge": true,
+            "promptV1V2": true,
+            "sharedFeature": true,
+            "offlineAntRuntime": {
+              "bytes": 2548222,
+              "sha256": "2f6e7eccdb30041e3d198f6881e690a0a255785c6951acee4a4e7c9a431f8cee"
+            }
+          },
+          "personal": {
+            "scope": "packaged-presence-and-wiring",
+            "modules": true,
+            "compiledCore": true,
+            "mainIpcBoundary": true,
+            "accountBinding": true,
+            "licensesAndNotices": true
+          }
+        }
+      ]
+    },
+    "Build darwin/arm64": {
+      "name": "Build darwin/arm64",
+      "jobId": 118500149163,
+      "jobUrl": "https://github.com/ryan-wong-coder/openwork/actions/runs/39383996080/job/118500149163",
+      "conclusion": "success",
+      "startedAt": "2026-10-20T07:05:12Z",
+      "completedAt": "2026-10-20T07:11:57Z",
+      "durationSeconds": 405.0,
+      "runnerLabels": [
+        "macos-15"
+      ],
+      "actualCheckout": [
+        "afb3ca5b629c5b219fd6ed942fd32811ca671532"
+      ],
+      "checkoutMatches": true,
+      "heap6144Observed": true,
+      "packagedVerifierPassed": true,
+      "safeReports": [
+        {
+          "packagedServer": true,
+          "nativeModules": true,
+          "clientStatus": true,
+          "hostBoundary": true
+        },
+        {
+          "packagedPersonal": true,
+          "compiledCore": true,
+          "nativeRequestGuard": true,
+          "syntheticTools": true,
+          "syntheticScheduler": true,
+          "durableReceipt": true,
+          "restartNoReplay": true,
+          "safeStorageScope": "synthetic-only-not-os-validation"
+        },
+        {
+          "version": "1.1.1",
+          "platform": "darwin",
+          "arch": "arm64",
+          "brand": "zeno",
+          "signing": "self-signed",
+          "updatesEnabled": true,
+          "runtimeSmoke": "passed",
+          "canvas": {
+            "scope": "packaged-presence-and-wiring",
+            "shell": true,
+            "nativeBridge": true,
+            "promptV1V2": true,
+            "sharedFeature": true,
+            "offlineAntRuntime": {
+              "bytes": 2548222,
+              "sha256": "2f6e7eccdb30041e3d198f6881e690a0a255785c6951acee4a4e7c9a431f8cee"
+            }
+          },
+          "personal": {
+            "scope": "packaged-presence-and-wiring",
+            "modules": true,
+            "compiledCore": true,
+            "mainIpcBoundary": true,
+            "accountBinding": true,
+            "licensesAndNotices": true
+          }
+        }
+      ]
+    },
+    "Build linux/x64": {
+      "name": "Build linux/x64",
+      "jobId": 118500149269,
+      "jobUrl": "https://github.com/ryan-wong-coder/openwork/actions/runs/39383996080/job/118500149269",
+      "conclusion": "success",
+      "startedAt": "2026-10-20T07:05:07Z",
+      "completedAt": "2026-10-20T07:12:26Z",
+      "durationSeconds": 439.0,
+      "runnerLabels": [
+        "ubuntu-24.04"
+      ],
+      "actualCheckout": [
+        "afb3ca5b629c5b219fd6ed942fd32811ca671532"
+      ],
+      "checkoutMatches": true,
+      "heap6144Observed": true,
+      "packagedVerifierPassed": true,
+      "safeReports": [
+        {
+          "packagedServer": true,
+          "nativeModules": true,
+          "clientStatus": true,
+          "hostBoundary": true
+        },
+        {
+          "packagedPersonal": true,
+          "compiledCore": true,
+          "nativeRequestGuard": true,
+          "syntheticTools": true,
+          "syntheticScheduler": true,
+          "durableReceipt": true,
+          "restartNoReplay": true,
+          "safeStorageScope": "synthetic-only-not-os-validation"
+        },
+        {
+          "version": "1.1.1",
+          "platform": "linux",
+          "arch": "x64",
+          "brand": "zeno",
+          "signing": "none",
+          "updatesEnabled": true,
+          "runtimeSmoke": "passed",
+          "canvas": {
+            "scope": "packaged-presence-and-wiring",
+            "shell": true,
+            "nativeBridge": true,
+            "promptV1V2": true,
+            "sharedFeature": true,
+            "offlineAntRuntime": {
+              "bytes": 2548222,
+              "sha256": "2f6e7eccdb30041e3d198f6881e690a0a255785c6951acee4a4e7c9a431f8cee"
+            }
+          },
+          "personal": {
+            "scope": "packaged-presence-and-wiring",
+            "modules": true,
+            "compiledCore": true,
+            "mainIpcBoundary": true,
+            "accountBinding": true,
+            "licensesAndNotices": true
+          }
+        }
+      ]
+    }
+  },
+  "preflight": {
+    "jobId": 118499457780,
+    "actualCheckout": "afb3ca5b629c5b219fd6ed942fd32811ca671532",
+    "nativeTests": 74,
+    "passed": 74,
+    "failed": 0,
+    "skipped": 0,
+    "nativeDurationMs": 2680.40973,
+    "boundedCommandObserved": true,
+    "workspaceRouteHookTestsPassed": 27
+  },
+  "conclusion": "success",
+  "releaseTag": "zeno-v1.1.1",
+  "publishJobId": 118506693169,
+  "checkedAt": "2026-10-20T07:27:06.532348+00:00",
+  "audit": {
+    "laneCount": 6,
+    "checkoutAndHeapAllVerified": true,
+    "nativeRuntimeAllPassed": true,
+    "personalRuntimeAllPassed": true,
+    "licenseAndNoticeAllPassed": true,
+    "canvasRuntimeHashIdentical": true,
+    "scope": "Actual packaged native Electron Node smoke with synthetic personal data and local server boundaries; no GUI, live AI, OS keychain validation or installed updater flow in this audit.",
+    "matchingNativeRunnerLabelsVerified": true
+  },
+  "officialTagProof": {
+    "provider": "GitHub REST git/ref and git/tags",
+    "tagObject": "7c1cea5c43f9ce9932c15a73de266cf38b8b3a7f",
+    "objectType": "annotated-tag",
+    "peeledCommit": "afb3ca5b629c5b219fd6ed942fd32811ca671532"
+  }
+}

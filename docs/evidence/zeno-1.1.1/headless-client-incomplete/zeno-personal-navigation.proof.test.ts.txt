@@ -1,0 +1,54 @@
+import { expect } from "vitest";
+import { spec } from "@openwork/testkit";
+import { zenoPersonalNavigation } from "../worlds/zeno-personal-navigation.ts";
+
+const test = spec.world(zenoPersonalNavigation, { timeout: 240000, resources: { surfaces: ["appWeb"], services: [] }, needs: { commands: ["bun"] } });
+
+test("all four personal sidebar destinations survive workspace loading, reload and browser back", async ({ world, user, probe, step, evidence }) => {
+  await user.resizeViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
+  await step("a real isolated workspace finishes loading in the complete client", async () => {
+    const route = new URL(await probe.url()).pathname;
+    expect(route).toBe(`/workspace/${world.workspace.workspaceId}/session`);
+    await user.see({ role: "button", label: "日历" });
+    evidence.recordAssertionEvidence("The complete AppRoot loaded a workspace before navigation", "Workspace session route with all personal sidebar destinations", route === `/workspace/${world.workspace.workspaceId}/session`);
+    await user.screenshot();
+  });
+
+  for (const [section, label, selector] of [
+    ["calendar", "日历", "[data-zeno-calendar]"],
+    ["fitness", "健身", "[data-zeno-fitness]"],
+    ["tasks", "任务", "[data-zeno-tasks]"],
+    ["account", "账号", "[data-zeno-account]"],
+  ]) {
+    await step(`the real sidebar opens ${label} and keeps it selected after settling and reload`, async () => {
+      await user.click({ role: "button", label });
+      await probe.eventually(() => probe.url(), { within: 15000, intervalMs: 100, label: `${label} route`, until: value => new URL(value).pathname === `/personal/${section}` });
+      await probe.eventually(() => probe.dom(selector), { within: 45000, intervalMs: 100, label: `${label} personal content`, until: value => value.elements.some(element => element.rect.height > 0) });
+      const active = await probe.dom(`button[aria-label="${label}"][aria-current="page"]`);
+      expect(active.elements).toHaveLength(1);
+      const settled = await world.observeRoute(`/personal/${section}`);
+      evidence.recordAssertionEvidence(`${label} stays on its own personal route`, `${settled.samples} route samples over 2.5 seconds after workspace loading`, settled.stable);
+      await user.screenshot();
+      await user.reload();
+      await probe.eventually(() => probe.dom(`button[aria-label="${label}"][aria-current="page"]`), { within: 45000, intervalMs: 100, label: `${label} active after refresh`, until: value => value.elements.length === 1 });
+      await probe.eventually(() => probe.dom(selector), { within: 45000, intervalMs: 100, label: `${label} content after refresh`, until: value => value.elements.some(element => element.rect.height > 0) });
+      const reloaded = await world.observeRoute(`/personal/${section}`);
+      evidence.recordAssertionEvidence(`${label} survives a full document reload`, `${reloaded.samples} stable route samples with its selected sidebar button`, reloaded.stable);
+    });
+  }
+
+  await step("browser Back restores the tasks page, then New task still opens the workspace composer", async () => {
+    await world.back();
+    await probe.eventually(() => probe.url(), { within: 15000, intervalMs: 100, label: "back to tasks", until: value => new URL(value).pathname === "/personal/tasks" });
+    expect((await probe.dom('button[aria-label="任务"][aria-current="page"]')).elements).toHaveLength(1);
+    const back = await world.observeRoute("/personal/tasks");
+    evidence.recordAssertionEvidence("Browser Back restores the previous personal section", `${back.samples} stable route samples after actual browser history navigation`, back.stable);
+    await user.screenshot();
+    await user.click({ role: "button", label: "新建任务" });
+    await probe.eventually(() => probe.url(), { within: 15000, intervalMs: 100, label: "intentional new task", until: value => new URL(value).pathname === `/workspace/${world.workspace.workspaceId}/session` });
+    const composers = (await probe.dom('[contenteditable="true"][data-lexical-editor="true"]')).elements;
+    expect(composers).toHaveLength(1);
+    evidence.recordAssertionEvidence("New task still deliberately opens the workspace composer", "The composer only returns after the explicit New task click", composers.length === 1);
+    await user.screenshot();
+  });
+});

@@ -1,0 +1,154 @@
+import { spawn } from "node:child_process";
+import { randomBytes } from "node:crypto";
+import { createServer, request } from "node:http";
+import { access, mkdir, mkdtemp, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { allocateFreePort, clickTarget, evaluateOnSurface } from "@openwork/cdp";
+import type { Seed } from "@openwork/env";
+import { chrome, localHost } from "@openwork/hosts";
+import { startLocalRuntime } from "../packages/env/src/app-web-runtime.ts";
+
+const repository = fileURLToPath(new URL("../..", import.meta.url));
+
+/** Real AppRoot and local engine; the personal service is a real, isolated Bun API. */
+export async function zenoPersonalNavigation(seed: Seed) {
+  const temporary = await mkdtemp(join(tmpdir(), "zeno-client-navigation-"));
+  const password = randomBytes(24).toString("base64url");
+  const executable: Record<string, string> = {};
+  for (const key of ["PATH", "PNPM_HOME", "TMPDIR", "SHELL"]) {
+    const value = process.env[key];
+    if (value) executable[key] = value;
+  }
+  const api = spawn("bun", ["apps/app/scripts/zeno-personal-browser-fixture.ts"], {
+    cwd: repository,
+    env: { ...executable, ZENO_QA_ROOT: temporary, ZENO_QA_DIST: join(repository, "apps/app/dist-personal"), ZENO_QA_PASSWORD: password, ZENO_QA_CONTROL: randomBytes(32).toString("hex") },
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  api.stderr.resume();
+  let proxy: ReturnType<typeof createServer> | undefined;
+  let stopBrowser = async () => {};
+  let stopRuntime = async () => {};
+  const stop = async () => {
+    await stopBrowser();
+    await new Promise<void>(resolve => { if (!proxy) return resolve(); proxy.close(() => resolve()); proxy.closeAllConnections(); });
+    await stopRuntime();
+    if (api.exitCode === null) {
+      const exited = new Promise<void>(resolve => api.once("exit", () => resolve()));
+      api.kill("SIGTERM");
+      const timer = setTimeout(() => api.kill("SIGKILL"), 5000);
+      await exited; clearTimeout(timer);
+    }
+    await rm(temporary, { recursive: true, force: true });
+  };
+  try {
+    const apiOrigin = await new Promise<string>((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error("Synthetic personal API did not become ready")), 30000);
+      let output = "";
+      api.once("error", () => { clearTimeout(timer); reject(new Error("Synthetic personal API could not launch")); });
+      api.once("exit", () => { clearTimeout(timer); reject(new Error("Synthetic personal API exited before readiness")); });
+      api.stdout.on("data", chunk => {
+        output += String(chunk);
+        for (const line of output.split("\n")) {
+          try { const ready: unknown = JSON.parse(line); if (typeof ready === "object" && ready !== null && "ready" in ready && ready.ready === true && "origin" in ready && typeof ready.origin === "string") { clearTimeout(timer); resolve(ready.origin); } } catch { /* Bun may emit startup notices before its JSON receipt. */ }
+        }
+      });
+    });
+    const openworkPort = await allocateFreePort();
+    let webOrigin = "";
+    // Same-origin routing is arrangement, not a renderer or API mock. All requests
+    // go to the actual Vite AppRoot or actual account/sync service respectively.
+    proxy = createServer((incoming, outgoing) => {
+      const path = incoming.url ?? "/";
+      const isOpenwork = path.startsWith("/api/openwork/");
+      const destination = path.startsWith("/api/zeno/v1/") ? apiOrigin : isOpenwork ? `http://127.0.0.1:${openworkPort}` : webOrigin;
+      if (!destination) { outgoing.writeHead(503); outgoing.end(); return; }
+      const target = new URL(isOpenwork ? path.slice("/api/openwork".length) : path, destination);
+      const forwarded = request(target, { method: incoming.method, headers: { ...incoming.headers, host: target.host } }, response => {
+        outgoing.writeHead(response.statusCode ?? 502, response.headers); response.pipe(outgoing);
+      });
+      forwarded.on("error", () => { outgoing.writeHead(502); outgoing.end(); }); incoming.pipe(forwarded);
+    });
+    await new Promise<void>(resolve => proxy?.listen(0, "127.0.0.1", resolve));
+    const address = proxy.address();
+    if (!address || typeof address === "string") throw new Error("Loopback proxy did not expose a port");
+    const origin = `http://127.0.0.1:${address.port}`;
+    const workspacePath = seed.tmpPath("personal-navigation-workspace");
+    await mkdir(workspacePath, { recursive: true });
+    const architecture = process.arch === "arm64" ? "aarch64" : "x86_64";
+    const sidecar = join(repository, `apps/desktop/resources/sidecars/opencode-${architecture}-apple-darwin`);
+    let engineBinary = "opencode";
+    if (process.platform === "darwin") { await access(sidecar); engineBinary = sidecar; }
+    const runtime = await startLocalRuntime(`zeno-personal-navigation-${process.pid}-${randomBytes(4).toString("hex")}`, workspacePath, { env: {
+      VITE_OPENWORK_CLIENT_PROFILE: "local-gateway", OPENWORK_CLIENT_PROFILE: "local-gateway",
+      OPENWORK_PORT: String(openworkPort), VITE_OPENWORK_URL: origin + "/api/openwork",
+      OPENWORK_OPENCODE_BIN: engineBinary,
+      OPENCODE_DISABLE_DEFAULT_PLUGINS: "1", OPENCODE_DISABLE_MODELS_FETCH: "1", OPENCODE_DISABLE_LSP_DOWNLOAD: "1",
+      OPENCODE_DISABLE_EXTERNAL_SKILLS: "1", OPENCODE_DISABLE_PROJECT_CONFIG: "1", OPENCODE_DISABLE_PRUNE: "1", OPENCODE_CONFIG_CONTENT: "{}",
+      npm_config_manage_package_manager_versions: "false", pnpm_config_pm_on_fail: "ignore",
+      PNPM_CONFIG_MANAGE_PACKAGE_MANAGER_VERSIONS: "false", PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN: "false",
+    } });
+    stopRuntime = async () => { await runtime.stop(); await rm(runtime.fixtureRoot, { recursive: true, force: true }); await rm(runtime.runtimeDirectory, { recursive: true, force: true }); };
+    webOrigin = runtime.webUrl;
+    // The generic seed.appWeb readiness predicate predates ModelHelm's first-run
+    // surface. Own this app-web world and use its real Skip button instead of
+    // weakening the shared predicate or arranging gateway/model credentials.
+    const host = localHost();
+    const app = await chrome({ name: "zeno-personal-navigation", host, headless: true, mouse: true, startUrl: "about:blank" });
+    stopBrowser = async () => { await app[Symbol.asyncDispose](); await host[Symbol.asyncDispose](); };
+    await app.client.send("Emulation.setFocusEmulationEnabled", { enabled: true });
+    await app.client.send("Page.bringToFront");
+    const login = await fetch(apiOrigin + "/api/zeno/v1/auth/sign-in/email", { method: "POST", headers: { Origin: apiOrigin, "Content-Type": "application/json" }, body: JSON.stringify({ email: "qa-a@example.test", password }) });
+    if (!login.ok) throw new Error("Synthetic account arrangement failed");
+    for (const cookie of login.headers.getSetCookie()) {
+      const pair = cookie.split(";")[0]; const separator = pair.indexOf("=");
+      await app.client.send("Network.setCookie", { name: pair.slice(0, separator), value: pair.slice(separator + 1), url: origin, path: "/", httpOnly: true, sameSite: "Lax" });
+    }
+    await app.client.send("Page.navigate", { url: origin });
+    await clickTarget(app, { role: "button", label: "稍后设置" }, { timeoutMs: 60000 });
+    // startLocalRuntime already registered the fresh workspace. The shared
+    // seed.workspace helper's legacy English composer predicate also rejects
+    // the translated composer, so observe the same workspace-loading state
+    // directly without changing product state or the framework readiness gate.
+    let workspaceId = "";
+    const readyDeadline = Date.now() + 60000;
+    while (!workspaceId && Date.now() < readyDeadline) {
+      const snapshot = await evaluateOnSurface(app, () => {
+        const id = location.pathname.match(/^\/workspace\/([^/]+)\/session$/)?.[1];
+        const workspace = window.__openwork?.slice?.("route")?.workspaces?.find(item => item.id === id);
+        return { id, loaded: workspace?.loading === false, composer: Boolean(document.querySelector('[contenteditable="true"][data-lexical-editor="true"]')) };
+      });
+      if (snapshot && typeof snapshot === "object" && "id" in snapshot && typeof snapshot.id === "string" && "loaded" in snapshot && snapshot.loaded === true && "composer" in snapshot && snapshot.composer === true) workspaceId = snapshot.id;
+      else await new Promise(resolve => setTimeout(resolve, 100));
+    }
+    if (!workspaceId) throw new Error("Fresh workspace did not complete its initial session load");
+    const workspace = { workspaceId };
+    return {
+      app, workspace, origin,
+      async back() {
+        const history: unknown = await app.client.send("Page.getNavigationHistory");
+        if (typeof history !== "object" || history === null || !("currentIndex" in history) || typeof history.currentIndex !== "number" || !("entries" in history) || !Array.isArray(history.entries)) throw new Error("Browser history unavailable");
+        const entry: unknown = history.entries[history.currentIndex - 1];
+        if (typeof entry !== "object" || entry === null || !("id" in entry) || typeof entry.id !== "number") throw new Error("Browser back entry unavailable");
+        await app.client.send("Page.navigateToHistoryEntry", { entryId: entry.id });
+      },
+      async observeRoute(expected: string, milliseconds = 2500) {
+        const routes: string[] = [];
+        const until = Date.now() + milliseconds;
+        do {
+          const history: unknown = await app.client.send("Page.getNavigationHistory");
+          if (typeof history !== "object" || history === null || !("currentIndex" in history) || typeof history.currentIndex !== "number" || !("entries" in history) || !Array.isArray(history.entries)) throw new Error("Browser history unavailable");
+          const current: unknown = history.entries[history.currentIndex];
+          if (typeof current !== "object" || current === null || !("url" in current) || typeof current.url !== "string") throw new Error("Current history entry unavailable");
+          const route = new URL(current.url).pathname;
+          routes.push(route);
+          if (route !== expected) throw new Error("Personal route changed to " + route);
+          await new Promise(resolve => setTimeout(resolve, 100));
+        } while (Date.now() < until);
+        return { expected, samples: routes.length, stable: true };
+      },
+      async [Symbol.asyncDispose]() { await stop(); },
+    };
+  } catch (error) { await stop(); throw error; }
+}
