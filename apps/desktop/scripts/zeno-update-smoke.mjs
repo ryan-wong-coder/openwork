@@ -11,6 +11,7 @@ import { Transform } from "node:stream";
 import { createWriteStream } from "node:fs";
 import asar from "@electron/asar";
 import YAML from "yaml";
+import { runtime } from "./zeno-update-runtime-fixture.mjs";
 import { compareStableVersions } from "../electron/recovery.mjs";
 import { assertCanvasProbeTarget, canvasProbeDocument, verifyPackagedCanvas } from "./zeno-canvas-packaged-probe.mjs";
 import { verifyPackagedNavigation, workspaceSessionIdentitySnapshot, assertWorkspaceSessionsUnchanged } from "./zeno-packaged-navigation-probe.mjs";
@@ -349,27 +350,6 @@ async function attach(port, bundle, exceptions, origins) {
   return { ...client, evaluate, invoke: (command, ...args) => evaluate(`window.__OPENWORK_ELECTRON__.invokeDesktop(${JSON.stringify(command)},...${JSON.stringify(args)})`, 120_000) };
 }
 
-function loopbackBase(value) {
-  const url = new URL(value);
-  assert.ok(url.protocol === "http:" && ["127.0.0.1", "localhost", "[::1]"].includes(url.hostname) && !url.username && !url.password, "Runtime must be private loopback.");
-  return url.href.replace(/\/$/, "");
-}
-
-async function runtime(client, workspace) {
-  await client.invoke("engineStart", workspace, { workspacePaths: [workspace] });
-  return until(async () => {
-    const info = await client.invoke("openworkServerInfo");
-    assert.equal(info.running, true); const base = loopbackBase(info.baseUrl); const token = info.clientToken || info.ownerToken;
-    assert.ok(token, "Missing private runtime authorization.");
-    const request = async (path, options = {}) => {
-      const response = await fetch(`${base}${path}`, { ...options, redirect: "error", signal: AbortSignal.timeout(30_000), headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json", ...options.headers } });
-      assert.equal(response.status, 200, "Private runtime request failed."); return response.json();
-    };
-    const health = await request("/health"); assert.equal(health.ok, true);
-    return { request };
-  }, Boolean, 120_000, "packaged embedded server health");
-}
-
 async function shipItIdle(timeout) {
   await until(() => quiet("/bin/ps", ["-axo", "pid=,command="]), lines => !lines.split("\n").some(line => line.includes(`${BUNDLE_ID}.ShipIt`)), timeout, "native ShipIt exit");
 }
@@ -526,6 +506,8 @@ async function selfTest() {
     assert.throws(() => assertInstalledArchive(wrongArchive, archiveHash), /target archive/);
     assert.throws(() => assertInstalledArchive(archive, ""), /archive hash/);
   } finally { asar.uncacheAll(); rmSync(root, { recursive: true, force: true }); }
+  const runtimeFixture = spawnSync(process.execPath, ["--test", join(REPO, "apps/desktop/test/zeno-update-runtime-fixture.test.mjs")], { encoding: "utf8", timeout: 15_000 });
+  assert.equal(runtimeFixture.status, 0, "Shared native workspace API contract fixture failed.");
   console.log("Zeno update smoke self-test passed (integrity, architecture selection and sanitized diagnostics; no native update was run).");
 }
 
@@ -615,15 +597,15 @@ async function main() {
     assert.equal(channel.product, "zeno"); assert.equal(channel.supported, true); assert.equal(channel.currentVersion, BASELINE); assert.equal(channel.feedUrl, feed);
     const workspaces = await client.invoke("workspaceCreate", { folderPath: workspace, name: "Zeno update CI" });
     const workspaceRecord = workspaces.workspaces.find(item => item.path === workspace); assert.ok(workspaceRecord?.id);
-    const beforeRuntime = await runtime(client, workspace);
-    const mount = `/workspace/${encodeURIComponent(workspaceRecord.id)}/opencode`;
+    const beforeRuntime = await runtime(client, workspace, { registerWorkspace: true });
+    const mount = beforeRuntime.mount; const serverWorkspaceRecord = beforeRuntime.workspace;
     const session = await beforeRuntime.request(`${mount}/session`, { method: "POST", body: JSON.stringify({ title: marker }) });
     assert.ok(session.id); assert.equal(session.title, marker);
     await beforeRuntime.request(`${mount}/session/${encodeURIComponent(session.id)}/message`, { method: "POST", body: JSON.stringify({ noReply: true, parts: [{ type: "text", text: marker }] }) });
     const messagesBefore = await beforeRuntime.request(`${mount}/session/${encodeURIComponent(session.id)}/message`);
     assert.ok(messagesBefore.some(message => message.parts?.some(part => part.type === "text" && part.text === marker)), "Native history marker was not stored.");
     await client.evaluate(`localStorage.setItem("zeno.update.smoke",${JSON.stringify(marker)})`);
-    phase("baseline-server-and-history-ready", { nativeVersion: build.version, storedSession: true, storedMessage: true });
+    phase("baseline-server-and-history-ready", { nativeVersion: build.version, serverRegistryIdentity: true, storedSession: true, storedMessage: true });
     const checked = await client.evaluate("window.__OPENWORK_ELECTRON__.updater.check('stable')", 120_000);
     assert.equal(checked.product, "zeno"); assert.equal(checked.available, true); assert.equal(checked.latestVersion, TARGET); assert.equal(checked.feedUrl, feed); assert.equal(checked.totalBytes, selected.zip.size);
     phase("native-check-real-public-feed", { latestVersion: checked.latestVersion, bytes: checked.totalBytes });
@@ -658,14 +640,16 @@ async function main() {
     assert.equal(readFileSync(join(workspace, "update-smoke-marker.txt"), "utf8"), marker, "Workspace file was lost.");
     const preserved = await client.invoke("workspaceBootstrap");
     assert.ok(preserved.workspaces.some(item => item.id === workspaceRecord.id && item.path === workspace), "Workspace registry identity was lost.");
-    const afterRuntime = await runtime(client, workspace);
+    const afterRuntime = await runtime(client, workspace, { expectedWorkspaceId: serverWorkspaceRecord.id });
+    assert.ok(afterRuntime.workspace.id === serverWorkspaceRecord.id && afterRuntime.workspace.path === serverWorkspaceRecord.path, "Historical server workspace registry was lost.");
+    assert.ok(afterRuntime.mount === mount, "Historical server workspace mount changed.");
     const sessionAfter = await afterRuntime.request(`${mount}/session/${encodeURIComponent(session.id)}`); assert.equal(sessionAfter.title, marker);
     const messagesAfter = await afterRuntime.request(`${mount}/session/${encodeURIComponent(session.id)}/message`);
     assert.ok(messagesAfter.some(message => message.parts?.some(part => part.type === "text" && part.text === marker)), "Native history message was lost.");
     assert.equal(exceptions.length, 0, "A renderer exception occurred.");
     assert.ok([...origins].every(origin => !/openworklabs\.com|github\.com/.test(origin)), "An official upstream request occurred.");
     const screenshot = await client.send("Page.captureScreenshot", { format: "png" }); writeFileSync(join(evidence, "updated-app.png"), Buffer.from(screenshot.data, "base64"));
-    phase("real-restart-target-server-and-preservation-verified", { nativeVersion: updatedBuild.version, diskVersion: bundleVersion(privateBundle), publishedCode: true, profile: true, workspace: true, history: true, embeddedServer: true, rendererExceptions: exceptions.length });
+    phase("real-restart-target-server-and-preservation-verified", { nativeVersion: updatedBuild.version, diskVersion: bundleVersion(privateBundle), publishedCode: true, profile: true, workspace: true, serverRegistryIdentity: true, history: true, embeddedServer: true, rendererExceptions: exceptions.length });
     if (compareStableVersions(TARGET, "1.0.5") >= 0) {
       const canvas = await verifyPackagedCanvas({ client, bundle: privateBundle });
       writeFileSync(join(evidence, "native-canvas.png"), canvas.screenshot);

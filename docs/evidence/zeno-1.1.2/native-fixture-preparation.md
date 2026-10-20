@@ -52,6 +52,24 @@ The original source implements this API in
 `apps/app/src/app/lib/openwork-server.ts` forwards both client and host credentials
 for its own `createLocalWorkspace` operation.
 
+## Shared Mac and portable preparation
+
+Both launchers now import `zeno-update-runtime-fixture.mjs`, a standalone helper
+that uses only the Node standard library. It does not import either launcher or
+start a native process; the portable launcher's existing Mac utility imports do
+not create a circular dependency. The Mac baseline uses the same actual server
+registry read and one-time host registration, then the upgraded Mac app must
+retain that exact server ID/path and mount with no replacement registration.
+The legacy Electron workspace ID/path and all historical markers remain separate
+required checks. New registry assertions use fixed messages rather than
+serializing expected or actual private identity values.
+
+Mac signature verification, published installer and ASAR integrity, Squirrel
+installation, automatic restart, new process identity, existing isolated-profile
+guards, native canvas verification and four actual sidebar clicks are unchanged.
+The Mac workflow's existing `--self-test` also runs the four shared HTTP contract
+fixtures. It does not launch Electron or constitute native upgrade acceptance.
+
 ## Effective native profile
 
 The original `1.0.0` main source has `getOpenworkUiMcpEnvironment` at line 1908,
@@ -87,7 +105,8 @@ claims, missing/malformed results and an unavailable bridge. Registry checks cov
 baseline creation/readback, unchanged target identity, lost target records,
 duplicate paths, a failed or unpersisted single registration, and missing host
 credentials. Target validation cannot enable baseline registration. Syntax and
-`git diff --check` passed. No desktop window was opened.
+`git diff --check` passed. No desktop window was opened. The standalone shared
+HTTP contract suite passed all four tests, and the Mac smoke self-test passed.
 
 The next native acceptance must use the built and published `1.1.2` target.
 The current checkout version must not be used to test an older `1.1.1` target.
