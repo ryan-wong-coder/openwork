@@ -19,7 +19,8 @@ import { assertPortableHostedRunner, assertPrivatePath, validatePortableHistoric
 import { numericDownloadProgress, safeUpdateFailureSignals } from '../scripts/zeno-update-smoke.mjs';
 import { windowsProfileMode, windowsNativeLeaf, nativeWindowsPackageIdentity, windowsNativePlan, nativeDefaultsEnvironment,
   sameWindowsPath, windowsNativeRootsScript, windowsNativePristineScript, windowsNativeInstallationScript, decodeNativeWindowsWire,
-  assertNativePristineLeaves, assertNativeOwnedPath, assertNativeEffectiveProfile, assertNativeEnvironmentRoots } from '../scripts/zeno-windows-native-defaults.mjs';
+  assertNativePristineLeaves, assertNativeOwnedPath, assertNativeEffectiveProfile, assertNativeEnvironmentRoots,
+  inspectNativePristineLeaves, safeNativePrerequisite, verifyNativePrerequisites } from '../scripts/zeno-windows-native-defaults.mjs';
 
 const origin = 'https://www.zeno.ryan-wong.cn';
 const sha256 = 'a'.repeat(64); const sha512 = Buffer.alloc(64, 2).toString('base64');
@@ -178,6 +179,79 @@ test('native child environment retains original OS paths while stripping fixture
   const text = JSON.stringify({ path: 'C:\\用户\\中文 目录', count: 1 });
   assert.deepEqual(decodeNativeWindowsWire(Buffer.from(text).toString('base64')), JSON.parse(text));
   for (const text of ['not base64', Buffer.from([255]).toString('base64'), Buffer.from('{').toString('base64')]) assert.throws(() => decodeNativeWindowsWire(text));
+});
+
+test('native filesystem diagnostics identify exact safe group/index/depth and retain unknown API failures without private strings', () => {
+  const plan = { leaves: ['C:\\private-owned'], shortcuts: ['C:\\private-shortcut'], checkOnlyLeaves: ['C:\\private-config'] };
+  const absent = () => { throw Object.assign(new Error('never-publish-private-value'), { code: 'ENOENT' }); };
+  const clean = inspectNativePristineLeaves(plan, absent);
+  assert.equal(safeNativePrerequisite(clean, 'node', plan).passed, true);
+  for (const [check, path] of [['owned-leaf', plan.leaves[0]], ['shortcut', plan.shortcuts[0]], ['check-only', plan.checkOnlyLeaves[0]]]) {
+    const fact = inspectNativePristineLeaves(plan, value => value === path ? { isSymbolicLink: () => false } : absent());
+    assert.deepEqual(fact, { engine: 'node', passed: false, check, index: 0, ancestorDepth: 0, reason: 'existing-state' });
+    assert.equal(JSON.stringify(safeNativePrerequisite(fact, 'node', plan)).includes('private'), false);
+  }
+  const linked = inspectNativePristineLeaves(plan, value => value === 'C:\\' ? { isSymbolicLink: () => true } : absent());
+  assert.deepEqual(linked, { engine: 'node', passed: false, check: 'owned-leaf', index: 0, ancestorDepth: 1, reason: 'reparse' });
+  for (const code of ['EACCES', 'EPERM', 'private-api-code']) {
+    const fact = inspectNativePristineLeaves(plan, () => { throw Object.assign(new Error('private-api-message'), { code }); });
+    assert.equal(fact.reason, 'api-error'); assert.equal(fact.code, code === 'private-api-code' ? 'unknown' : code);
+    assert.equal(JSON.stringify(fact).includes('private'), false);
+  }
+  const getter = new Error('private'); Object.defineProperty(getter, 'code', { get() { throw Error('must-not-read-private-code'); } });
+  assert.equal(inspectNativePristineLeaves(plan, () => { throw getter; }).code, 'unknown');
+});
+
+test('native prerequisite serialization admits only fixed enums and bounded indices, and malformed success fails closed', () => {
+  const plan = windowsNativePlan(nativeRoots(), nativePackage());
+  const clear = { engine: 'powershell', passed: true, pristine: true, check: 'complete', reason: 'clear',
+    nativeLeavesChecked: plan.leaves.length, shortcutsChecked: plan.shortcuts.length, checkOnlyLeavesChecked: plan.checkOnlyLeaves.length,
+    environmentScopesChecked: 3, registryViewsChecked: 4 };
+  assert.deepEqual(safeNativePrerequisite(clear, 'powershell', plan), clear);
+  const negative = { engine: 'powershell', passed: false, check: 'environment', reason: 'scoped-environment', scope: 'machine', variable: 'node-path',
+    rawPath: 'C:\\private', rawValue: 'never-publish-private', privateUnknownKey: 'never-publish-private' };
+  assert.deepEqual(safeNativePrerequisite(negative, 'powershell', plan), { engine: 'powershell', passed: false, check: 'environment', reason: 'scoped-environment', scope: 'machine', variable: 'node-path' });
+  for (const fact of [{ ...negative, variable: 'PRIVATE_KEY_NAME' }, { ...negative, scope: 'PRIVATE_SCOPE' }, { ...negative, index: -1 },
+    { ...negative, ancestorDepth: 513 }, { ...negative, processCount: Infinity }, { ...clear, passed: 'true' }, { ...clear, registryViewsChecked: 3 },
+    { ...clear, nativeLeavesChecked: 1 }, { ...clear, rawValue: 'private' }, { ...clear, code: 'EPERM' },
+    { engine: 'node', passed: false, check: 'check-only', reason: 'existing-state', index: plan.checkOnlyLeaves.length }]) {
+    assert.deepEqual(safeNativePrerequisite(fact, fact.engine, plan), { engine: fact.engine, passed: false, check: 'invalid-response', reason: 'invalid-response' });
+  }
+  for (const fact of [
+    { engine: 'powershell', passed: false, check: 'registry', reason: 'existing-registration', hive: 'current-user', view: 'registry64', registryKind: 'protocol' },
+    { engine: 'powershell', passed: false, check: 'known-folder-environment', reason: 'api-error', scope: 'user', variable: 'appdata' },
+    { engine: 'powershell', passed: false, check: 'process', reason: 'existing-process', processCount: 512, countCapped: true },
+  ]) assert.deepEqual(safeNativePrerequisite(fact, 'powershell', plan), fact);
+});
+
+test('native guards retain sanitized diagnostics before asserting failure and cannot reach installation after an unknown prerequisite', () => {
+  const plan = windowsNativePlan(nativeRoots(), nativePackage()); const records = {}; let windowsReads = 0;
+  const nodeClear = inspectNativePristineLeaves(plan, () => { throw Object.assign(new Error('private'), { code: 'ENOENT' }); });
+  const nodeFailed = { engine: 'node', passed: false, check: 'owned-leaf', index: 2, ancestorDepth: 0, reason: 'existing-state' };
+  const record = (engine, value) => { records[engine] = value; };
+  assert.throws(() => verifyNativePrerequisites(plan, () => nodeFailed, () => { windowsReads++; }, record));
+  assert.deepEqual(records.node, nodeFailed); assert.equal(windowsReads, 0);
+  const windowsFailed = { engine: 'powershell', passed: false, check: 'environment', reason: 'scoped-environment', scope: 'machine', variable: 'node-path' };
+  assert.throws(() => verifyNativePrerequisites(plan, () => nodeClear, () => windowsFailed, record)); assert.deepEqual(records.powershell, windowsFailed);
+  assert.throws(() => verifyNativePrerequisites(plan, () => nodeClear, () => { throw Error('private path, environment or command'); }, record));
+  assert.deepEqual(records.powershell, { engine: 'powershell', passed: false, check: 'powershell-launch', reason: 'api-error' });
+  assert.equal(JSON.stringify(records).includes('private'), false);
+  assert.throws(() => verifyNativePrerequisites(plan, () => nodeClear, () => ({ passed: true, privateValue: 'private' }), record));
+  assert.equal(records.powershell.check, 'invalid-response');
+});
+
+test('Windows prerequisite API errors and variable classifications return fixed safe records without enumerating private environment', { skip: process.platform !== 'win32' }, () => {
+  const source = windowsNativePristineScript();
+  const malformed = Buffer.from('{never-publish-private-json').toString('base64');
+  const result = spawnSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', source], { input: malformed, encoding: 'utf8', timeout: 15_000 });
+  assert.equal(result.status, 0);
+  assert.deepEqual(decodeNativeWindowsWire(result.stdout.trim()), { engine: 'powershell', passed: false, check: 'input', reason: 'api-error' });
+  assert.equal((result.stdout + result.stderr).includes('never-publish-private'), false);
+  const start = source.indexOf("$result=New-NativePrerequisite 'input'"); assert.ok(start > 0);
+  const classify = source.slice(0, start) + "\n$result=@((Get-NativeVariableClass 'NODE_PATH'),(Get-NativeVariableClass 'OPENWORK_private_KEY'),(Get-NativeVariableClass 'OPENCODE_private_KEY'));[Console]::Write(($result|ConvertTo-Json -Compress))";
+  const classified = spawnSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', classify], { encoding: 'utf8', timeout: 15_000 });
+  assert.equal(classified.status, 0); assert.deepEqual(JSON.parse(classified.stdout.trim()), ['node-path', 'openwork-prefix', 'opencode-prefix']);
+  assert.equal((classified.stdout + classified.stderr).includes('private_KEY'), false);
 });
 
 test('native V1 history uses one real settings mutation before history and target only verifies the saved choice', async () => {

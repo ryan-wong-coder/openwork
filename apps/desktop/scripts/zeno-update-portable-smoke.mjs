@@ -14,7 +14,7 @@ import { copyVerifiedArtifact, numericDownloadProgress, privateUpdateFailureDiag
 import { compareStableVersions } from '../electron/recovery.mjs';
 import { verifyPackagedNavigation, workspaceSessionIdentitySnapshot, assertWorkspaceSessionsUnchanged } from './zeno-packaged-navigation-probe.mjs';
 import { windowsProfileMode, nativeWindowsPackageIdentity, windowsNativePlan, assertNativeOwnedPath,
-  assertNativePristineLeaves, nativeDefaultsEnvironment, windowsNativeRootsScript, windowsNativePristineScript,
+  inspectNativePristineLeaves, verifyNativePrerequisites, nativeDefaultsEnvironment, windowsNativeRootsScript, windowsNativePristineScript,
   windowsNativeInstallationScript, decodeNativeWindowsWire, assertNativeEffectiveProfile, sameWindowsPath, assertNativeEnvironmentRoots } from './zeno-windows-native-defaults.mjs';
 
 // This entry point refuses developer machines and self-hosted runners. Linux
@@ -739,8 +739,10 @@ async function main() {
       assertNativeEnvironmentRoots(roots, process.env);
       nativeDefaults = windowsNativePlan(roots, targetCode.nativeIdentity, join(root, 'workspace'));
       diagnostics.enter('windows-native-pristine');
-      assertNativePristineLeaves(nativeDefaults);
-      report.nativeDefaults = nativeWindowsRead(windowsNativePristineScript(), nativeDefaults);
+      report.nativeDefaultsPrerequisites = {};
+      report.nativeDefaults = verifyNativePrerequisites(nativeDefaults, () => inspectNativePristineLeaves(nativeDefaults),
+        () => nativeWindowsRead(windowsNativePristineScript(), nativeDefaults),
+        (engine, facts) => { report.nativeDefaultsPrerequisites[engine] = facts; });
       assert.equal(report.nativeDefaults.pristine, true);
     }
     diagnostics.enter('private-directories');

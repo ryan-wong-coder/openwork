@@ -120,6 +120,27 @@ installed target bytes do not establish the target process environment, its
 profile, when NSIS completed or the actual browser's startup age. This second
 scenario does not retroactively resolve those unknowns or extend a timeout.
 
+Native prerequisite diagnostics are recorded before either guard is asserted.
+`nativeDefaultsPrerequisites.node` and `.powershell` retain only fixed enums,
+booleans and bounded numeric indices/counts. A failed Node filesystem walk
+identifies `owned-leaf`, `shortcut` or `check-only`, a zero-based array index,
+ancestor depth, and `existing-state`, `reparse` or `api-error`. The original
+ordered ledgers above define those indices; no path is printed. ENOENT remains
+the only filesystem error that permits continuing.
+
+PowerShell additionally classifies scoped environment by process/user/machine
+and a fixed variable class (for example `node-path` or `openwork-prefix`), known
+folder mismatches, matching application-process counts, and registry hive/view
+plus a fixed key kind. Unknown API failures retain the current fixed check with
+`api-error`; a missing/invalid command response remains an unknown failed read.
+Private values, unknown variable names, paths, error text and registry contents
+are never retained. PowerShell transports a structured failed verdict instead
+of losing it in a command exception; the harness records it and then strictly
+asserts success. Incomplete, malformed or contradictory success records fail
+closed. None of these classifications ignore a prerequisite or clean state.
+The original native-defaults attempt 05 had no such classified receipt and
+cannot be attributed retrospectively to one of these categories.
+
 An opted-in retry uses the original 1.0.0 UI bridge's existing `download` action
 in the same verified baseline process, Chromium profile and historical session.
 It does not run `check` again, restart the baseline, seed the updater cache,
