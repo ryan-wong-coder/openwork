@@ -1,0 +1,181 @@
+{
+  "passed": true,
+  "target": "1.1.2",
+  "baseline": "1.0.0",
+  "platform": "darwin",
+  "arch": "arm64",
+  "publicOrigin": "https://www.zeno.ryan-wong.cn",
+  "phases": [
+    {
+      "version": "1.0.0",
+      "artifactName": "zeno-mac-arm64-1.0.0.zip",
+      "bytes": 431100608,
+      "sha256": "6fba1fc265830414b270d5b83a55a1b5c34287e22af563059f9294b899b64631",
+      "name": "verified-original-baseline-zip"
+    },
+    {
+      "version": "1.1.2",
+      "feed": "https://www.zeno.ryan-wong.cn/updates/darwin/arm64/",
+      "artifactName": "zeno-mac-arm64-1.1.2.zip",
+      "bytes": 444118404,
+      "sha256": "7c4094269511f904edbbee1abc9d11f7728172cfefd689771df3350aa66740ff",
+      "name": "verified-public-target-artifact"
+    },
+    {
+      "version": "1.0.0",
+      "originalSignature": true,
+      "codeChanges": "none",
+      "targetArchiveSha256": "777e9d8972afd94ce793a71606f78a8531b44b4df621805dec21d33cf25b85d5",
+      "name": "verified-unmodified-original-baseline-and-signing-continuity"
+    },
+    {
+      "nativeVersion": "1.0.0",
+      "serverRegistryIdentity": true,
+      "storedSession": true,
+      "storedMessage": true,
+      "name": "baseline-server-and-history-ready"
+    },
+    {
+      "latestVersion": "1.1.2",
+      "bytes": 444118404,
+      "name": "native-check-real-public-feed"
+    },
+    {
+      "name": "native-download-and-squirrel-staging-complete"
+    },
+    {
+      "nativeVersion": "1.1.2",
+      "diskVersion": "1.1.2",
+      "publishedCode": true,
+      "profile": true,
+      "workspace": true,
+      "serverRegistryIdentity": true,
+      "history": true,
+      "embeddedServer": true,
+      "rendererExceptions": 0,
+      "name": "real-restart-target-server-and-preservation-verified"
+    },
+    {
+      "nativePolicy": true,
+      "localInteraction": true,
+      "bundledAntCharts": true,
+      "hostStatePreserved": true,
+      "name": "installed-target-native-canvas-verified"
+    },
+    {
+      "realClicks": 4,
+      "stablePersonalRoutes": true,
+      "unpairedAccountGate": true,
+      "noNewChat": true,
+      "historicalMessageRetained": true,
+      "name": "installed-target-four-personal-sidebar-routes-verified"
+    }
+  ],
+  "isolation": "ephemeral github-hosted runner; no pre-existing native state; private bundle/profile/workspace",
+  "nativeUpdateExecuted": true,
+  "baselineSource": "original-historical-release-build-artifact",
+  "targetSource": "build-artifact-verified-against-live-api-and-feed",
+  "downloadProgress": {
+    "subscriptionSupported": true,
+    "transferred": 444118404,
+    "total": 444118404,
+    "percent": 100,
+    "bytesPerSecond": 790942
+  },
+  "canvas": {
+    "passed": true,
+    "scope": "actual installed target after native update/restart; synthetic board, no model calls",
+    "nativeBridge": true,
+    "policyResponse": {
+      "status": 200,
+      "allowlist": "()",
+      "contentType": "text/html; charset=utf-8"
+    },
+    "installedModule": {
+      "bytes": 2548222,
+      "sha256": "2f6e7eccdb30041e3d198f6881e690a0a255785c6951acee4a4e7c9a431f8cee"
+    },
+    "runtimeIIFE": {
+      "bytes": 2545359,
+      "sha256": "b56da4564d6421ff3e58c7fc2977ec2c55de020ed6e296780961a94e485c5ebe"
+    },
+    "installedShellSha256": "a8a690241a0e017681604a49500d00a61261cfb0977dc4f4d0aa9627d4063e2b",
+    "productionDocumentBuilder": "matching release checkout",
+    "checks": {
+      "canvasChanged": true,
+      "svgChanged": true,
+      "interactive": true,
+      "parentReadable": false,
+      "nativeBridgeReadable": false,
+      "nodeReadable": false,
+      "antLine": true,
+      "antFlow": true,
+      "antPixels": true
+    },
+    "spoofedMessagesRejected": 1,
+    "hostStatePreservedAfterCleanup": true,
+    "historyPreservedAfterCleanup": true,
+    "rendererExceptions": 0
+  },
+  "navigation": {
+    "passed": true,
+    "scope": "Actual installed AppSidebar clicks in the original upgraded, unpaired profile; account connection gate only, not authenticated personal forms",
+    "input": "CDP mouse press/release on visible sidebar buttons; no direct route mutation",
+    "noAccountPairing": true,
+    "noModelCalls": true,
+    "destinations": [
+      {
+        "section": "calendar",
+        "route": "/personal/calendar",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      },
+      {
+        "section": "fitness",
+        "route": "/personal/fitness",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      },
+      {
+        "section": "tasks",
+        "route": "/personal/tasks",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      },
+      {
+        "section": "account",
+        "route": "/personal/account",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      }
+    ],
+    "hostBridgeRootAndProfileMarkerRetained": true,
+    "workspaceSessionSetUnchanged": true,
+    "historicalMessageRetained": true,
+    "rendererExceptions": 0
+  },
+  "cleanup": "original app copy, profile and fresh-run caches removed after native processes exited",
+  "networkOrigins": [
+    "http://127.0.0.1:49235"
+  ]
+}

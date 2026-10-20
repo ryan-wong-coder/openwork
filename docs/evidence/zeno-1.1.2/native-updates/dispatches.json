@@ -18,7 +18,7 @@
     "independentPublicApiCheck": true,
     "operatorConfirmedFull24AndPublicationAndLiveGatesBeforeDispatch": true
   },
-  "scheduling": "Both workflows dispatched in parallel after explicit activation approval; no automatic retries.",
+  "scheduling": "Initial workflows dispatched together after explicit publication approval. Every later workflow run requires its own explicit approval; the Windows attempt 3 opt-in whole-file download retry policy is recorded separately.",
   "acceptanceBoundary": "Original updater download/install/automatic restart and personal AppSidebar clicks in an unpaired profile. Authenticated personal forms are covered separately by PWA evidence.",
   "macos": {
     "workflowId": 386584037,
@@ -46,9 +46,9 @@
   },
   "constraints": {
     "manualTargetLaunch": false,
-    "automaticRetry": false,
     "updaterProductChanges": false,
-    "oldEvidenceModified": false
+    "oldEvidenceModified": false,
+    "unapprovedWorkflowRedispatch": false
   },
   "windowsDownloadRetry": {
     "workflowId": 390119143,
@@ -101,5 +101,80 @@
     "priorCapacityReceipt": "macos-arm64-capacity.json",
     "newEvidenceFilenamePrefix": "attempt02-",
     "productBytesAndNativeGatesUnchanged": true
+  },
+  "macosArmFinalImageCandidate": {
+    "workflowId": 386584037,
+    "runId": 39445140586,
+    "jobId": 118705011054,
+    "ref": "personal",
+    "checkoutCommit": "33f09971537b598c21feebc49416396a3119244e",
+    "checkoutDesktopVersion": "1.1.2",
+    "architecture": "arm64",
+    "arm_image": "xcode-27",
+    "runnerLabel": "xcode-27",
+    "attempt": 3,
+    "createdAt": "2026-10-20T15:05:01Z",
+    "operatorExplicitlyApproved": true,
+    "sameFrozenBaselineAndTarget": true,
+    "reason": "One explicitly authorized final standard ARM64 image candidate after two unassigned hosted capacity cancellations; no independent-pool or capacity guarantee is claimed.",
+    "previousCapacityReceipts": [
+      "macos-arm64-capacity.json",
+      "attempt02-macos-arm64-capacity.json"
+    ],
+    "newEvidenceFilenamePrefix": "attempt03-",
+    "productBytesAndNativeGatesUnchanged": true,
+    "runnerAcquiredObserved": true,
+    "outcome": "Runner acquired; development selector self-test failed before package download or native app execution.",
+    "preflightReceipt": "attempt03-macos-arm64-preflight.json"
+  },
+  "windowsBoundedResetRetryAcceptance": {
+    "workflowId": 390119143,
+    "runId": 39446269135,
+    "jobId": 118708968065,
+    "ref": "personal",
+    "checkoutCommit": "01864d8027776775c36659d3492407a82284059e",
+    "checkoutDesktopVersion": "1.1.2",
+    "platform": "win32",
+    "windows_download_retries": "2",
+    "attempt": 3,
+    "createdAt": "2026-10-20T15:12:26Z",
+    "operatorExplicitlyApproved": true,
+    "sameFrozenBaselineAndTarget": true,
+    "reason": "Explicitly opt into at most two extra whole-file retries through the original baseline download bridge only after a newly observed, strictly classified connection reset. Default remains zero; same process/profile/history and all installation gates remain required.",
+    "retryIsWholeFileNotResume": true,
+    "cacheSeedOrManualTargetLaunch": false,
+    "priorAttemptReports": [
+      "win32-x64.json",
+      "attempt02-win32-x64.json"
+    ],
+    "newEvidenceFilenamePrefix": "attempt03-",
+    "productBytesAndNativeGatesUnchanged": true,
+    "outcome": "First whole-file download completed without any retry, then target CDP page attachment failed; target disk verification unknown.",
+    "nativeReceipt": "attempt03-win32-x64.json"
+  },
+  "macosArmCorrectedPreflightAcceptance": {
+    "workflowId": 386584037,
+    "runId": 39446726661,
+    "jobId": 118710562617,
+    "ref": "personal",
+    "checkoutCommit": "f59041727e68ef95681f962c67149c24e35507ae",
+    "checkoutDesktopVersion": "1.1.2",
+    "architecture": "arm64",
+    "arm_image": "xcode-27",
+    "runnerLabel": "xcode-27",
+    "attempt": 4,
+    "createdAt": "2026-10-20T15:15:27Z",
+    "operatorExplicitlyApproved": true,
+    "sameFrozenBaselineAndTarget": true,
+    "reason": "Rerun once after correcting the concrete stale selector self-test expectation from attempt 3; native updater and product bytes are unchanged.",
+    "priorPreflightReceipt": "attempt03-macos-arm64-preflight.json",
+    "priorCapacityReceipts": [
+      "macos-arm64-capacity.json",
+      "attempt02-macos-arm64-capacity.json"
+    ],
+    "newEvidenceFilenamePrefix": "attempt04-",
+    "productBytesAndNativeGatesUnchanged": true,
+    "outcome": "Native PASS; original artifact digest verified and all three screenshots actually viewed.",
+    "nativeReceipt": "attempt04-macos-arm64.json"
   }
 }

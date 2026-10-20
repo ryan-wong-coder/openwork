@@ -1,0 +1,35 @@
+{
+  "lane": "macos-arm64",
+  "attempt": 4,
+  "passed": true,
+  "runId": 39446726661,
+  "jobId": 118710562617,
+  "artifactId": 12275934089,
+  "artifactName": "zeno-real-update-arm64",
+  "artifactZipBytes": 94416,
+  "githubArtifactSize": 94416,
+  "githubDigest": "sha256:b35c85618b16e60d85ddbafbccba4455b8fbd075cc6fc3a26e631063f482cafb",
+  "independentlyVerifiedZipSha256": "b35c85618b16e60d85ddbafbccba4455b8fbd075cc6fc3a26e631063f482cafb",
+  "files": [
+    {
+      "file": "attempt04-macos-arm64.png",
+      "bytes": 37775,
+      "sha256": "844eb2883a2be0a7d5faa21aa81f654e758288f8908263ad9f5e958ad5c7b55f"
+    },
+    {
+      "file": "attempt04-macos-arm64-navigation.png",
+      "bytes": 32590,
+      "sha256": "6326718d2ca5b0627d3eff333921fefcdce60047510b2334bfe9545b1f98f20d"
+    },
+    {
+      "file": "attempt04-macos-arm64-canvas.png",
+      "bytes": 30796,
+      "sha256": "6facc8e997556ca5309bf8c4668a072f3b780895018ed860f63b45123fcf7baa"
+    },
+    {
+      "file": "attempt04-macos-arm64.json",
+      "bytes": 5566,
+      "sha256": "62f5993d0afe76295ace25cea59247d40a7ecceaeaf2f5093c49c1c17153bbb0"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "lane": "win32-x64",
+  "attempt": 3,
+  "passed": false,
+  "runId": 39446269135,
+  "jobId": 118708968065,
+  "artifactId": 12276393121,
+  "artifactName": "zeno-real-update-win32-x64",
+  "artifactZipBytes": 1556,
+  "githubArtifactSize": 1556,
+  "githubDigest": "sha256:fbfd339aed713d70543c97e77b9c6ebb452c71bc9166adcea0e1abb7363d021a",
+  "independentlyVerifiedZipSha256": "fbfd339aed713d70543c97e77b9c6ebb452c71bc9166adcea0e1abb7363d021a",
+  "files": [
+    {
+      "file": "attempt03-win32-x64.json",
+      "bytes": 3588,
+      "sha256": "2590b03882794b57ad0d04f30787ee9f0bfc0422b549c8fc8b1693345ae6dc77"
+    }
+  ]
+}

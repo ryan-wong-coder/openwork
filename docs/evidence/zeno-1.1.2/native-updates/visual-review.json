@@ -70,16 +70,39 @@
       "nativeReceiptAltered": false
     },
     "macos-arm64": {
-      "nativeFunctionalVerdict": "not-executed",
-      "attempts": 2,
-      "runnerAssignedInEitherAttempt": false,
-      "actuallyViewed": [],
-      "targetScreenshotsAvailable": false,
-      "reason": "Both hosted pools cancelled the job before a runner was assigned; no app ran.",
+      "nativeFunctionalVerdict": "passed-on-attempt4",
+      "attempts": 4,
+      "actuallyViewed": [
+        "attempt04-macos-arm64.png",
+        "attempt04-macos-arm64-canvas.png",
+        "attempt04-macos-arm64-navigation.png"
+      ],
+      "targetScreenshotsAvailable": true,
       "sourceCapacityReceipts": [
         "macos-arm64-capacity.json",
         "attempt02-macos-arm64-capacity.json"
-      ]
+      ],
+      "runnerAssignedInCapacityAttempts": false,
+      "thirdAttemptRunnerAssigned": true,
+      "thirdAttemptPreflightReceipt": "attempt03-macos-arm64-preflight.json",
+      "fourthAttemptVerdict": "passed",
+      "nativeFunctionalReceiptPassed": true,
+      "artifactDigestVerified": true,
+      "chineseFontVisualAcceptance": true,
+      "nativeCanvasVisualAcceptance": true,
+      "layoutObservation": "The onboarding and account gate fit the native window with readable Chinese. The installed synthetic canvas shows the updated Canvas/SVG shapes, Ant Design line chart and flow graph without visible clipping.",
+      "nativeReceiptAltered": false,
+      "priorAttemptBoundary": "Attempts 1 and 2 never acquired runners; attempt 3 acquired one but stopped at a stale development selector self-test before native execution. Those receipts remain unchanged."
+    },
+    "attempt03-win32-x64": {
+      "nativeFunctionalReceiptPassed": false,
+      "artifactDigestVerified": true,
+      "attempt": 3,
+      "isRetry": true,
+      "actuallyViewed": [],
+      "targetScreenshotsAvailable": false,
+      "reason": "First whole-file download succeeded without retry; the following CDP attachment gate failed, so no verified target UI image was produced. Target installation state is unknown.",
+      "nativeReceiptAltered": false
     }
   }
 }

@@ -23,33 +23,60 @@
       "originalMissingGlyphScreenshotsRetained": true
     },
     "win32-x64": {
-      "functional": "failed-before-target-install",
+      "functional": "target-attachment-not-accepted",
       "visual": "not-produced",
-      "attempts": 2,
       "observedSignal": "connection-reset-in-original-receipts-sanitized-updater-log-scans",
       "receipts": [
         "win32-x64.json",
         "attempt02-win32-x64.json"
       ],
-      "nsisInstallOrTargetRelaunchFailureEstablished": false
+      "nsisInstallOrTargetRelaunchFailureEstablished": false,
+      "latestAttempt": {
+        "attempt": 3,
+        "runId": 39446269135,
+        "jobId": 118708968065,
+        "additionalWholeFileRetriesAllowed": 2,
+        "status": "completed-attach-page-list-failure",
+        "nativeVerdict": "not-accepted",
+        "receipt": "attempt03-win32-x64.json",
+        "trajectoryReceipt": "attempt03-download-trajectory.json",
+        "actualWholeFileDownloadCount": 1,
+        "successfulWholeFileDownloadAttempt": 1,
+        "additionalRetriesActuallyStarted": 0,
+        "installedTargetVersion": "unknown"
+      },
+      "completedFailedWorkflowAttempts": 3
     },
     "macos-arm64": {
-      "functional": "not-executed",
-      "visual": "not-produced",
+      "functional": "passed",
+      "visual": "passed",
       "hostedCapacityCancelledAttempts": 2,
-      "receipts": [
+      "productFailureEstablished": false,
+      "latestAttempt": {
+        "attempt": 4,
+        "runId": 39446726661,
+        "jobId": 118710562617,
+        "imageChoice": "xcode-27",
+        "status": "passed",
+        "nativeVerdict": "passed",
+        "receipt": "attempt04-macos-arm64.json"
+      },
+      "preflightFixtureFailureAttempts": 1,
+      "receipt": "attempt04-macos-arm64.json",
+      "artifactReceipt": "attempt04-macos-arm64-artifact.json",
+      "nativeCanvasPassed": true,
+      "priorCapacityReceipts": [
         "macos-arm64-capacity.json",
         "attempt02-macos-arm64-capacity.json"
-      ],
-      "productFailureEstablished": false
+      ]
     }
   },
   "integrityChecks": {
-    "downloadedArtifactZipDigestsMatchedGitHub": 5,
-    "extractedOriginalFilesRehashed": 13,
+    "downloadedArtifactZipDigestsMatchedGitHub": 7,
+    "extractedOriginalFilesRehashed": 18,
     "originalCapacityAnnotationResponsesRehashed": 2,
-    "actualScreenshotsReviewed": 7,
-    "screenshotsWithReadableChinese": 5,
+    "actualScreenshotsReviewed": 10,
+    "screenshotsWithReadableChinese": 8,
     "originalNativeReceiptsRewritten": false
   },
   "acceptanceLimits": [

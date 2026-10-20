@@ -10,7 +10,7 @@ fixture. See [dispatches.json](dispatches.json) for run and job identities.
 The two workflows were dispatched together only after explicit confirmation of
 the complete website publication and independent confirmation that the public
 release API served 1.1.2. No target application is launched by the harness and no
-automatic retries are performed. This directory is separate from the unchanged
+workflow is rerun without explicit approval. This directory is separate from the unchanged
 1.1.1 failed receipts.
 
 ## Observed results
@@ -18,19 +18,36 @@ automatic retries are performed. This directory is separate from the unchanged
 | Lane | Actual result | Evidence boundary |
 | --- | --- | --- |
 | Linux x64 | Native functional and Chinese screenshot pass in attempt 2 | Both original AppImage runs passed actual upgrade and history/registry/sidebar gates. Original screenshots retain missing-glyph boxes; attempt 2 added explicit CJK host prerequisites and its two actually viewed screenshots have readable Chinese. |
-| Windows x64 | Both attempts failed during real public download | Original NSIS and baseline history preparation passed. Downloads stopped at 217,137,098 bytes (55.56%) and 346,062,812 bytes (88.55%) of 390,804,422. Both sanitized updater-log scans contain `ERR_CONNECTION_RESET`. Neither attempt installed or relaunched the target; no target UI screenshot exists. |
+| Windows x64 | Attempt 3 downloaded fully, then failed target attachment | Attempts 1 and 2 stopped during public download with reset signals. In attempt 3, the first whole-file download completed all 390,804,422 bytes without retry; the old baseline then exited, but the fixed CDP page-list gate failed. Target disk metadata could not be read, so target installation/restart identity is unverified. No target screenshot exists. |
 | macOS x64 | Native functional and screenshot pass | Real ZIP download and Squirrel install/automatic restart, original signatures and published ASAR, isolated profile, both registries, history, native Canvas/SVG/Ant Design Charts, and four actual sidebar clicks passed. All three screenshots were actually viewed and Chinese is readable. |
-| macOS arm64 | Both hosted runner acquisition attempts cancelled before execution | GitHub reports hosted capacity constraints in the `macos-15` and `macos-26` pools; neither assigned a runner or ran any steps. No native update verdict exists. Both original annotation responses and their digests are retained separately. |
+| macOS arm64 | Native functional and screenshot pass in attempt 4 | On `xcode-27`, the original package and signatures, real 444,118,404-byte public download, Squirrel installation, automatic restart, both registries, profile/history, native canvas and four actual sidebar clicks passed. All three screenshots were actually viewed with readable Chinese and no clipping. Earlier capacity cancellations and the stale preflight failure remain unchanged. |
 
 The original Mac workflow's aggregate conclusion is failure because the ARM job
 was not acquired; its Intel job independently passed. The explicitly authorized
 ARM attempt 2 used the GA `macos-26` arm64 pool instead of `macos-15`. Linux
 attempt 2 adds only CJK host prerequisites and a new-runner font inventory. Both
 use the same immutable product builds and unchanged native acceptance gates.
-All dispatched runs have ended. The four-lane acceptance is incomplete because
-Windows has not reached target installation and ARM has not run on a native host.
+The final ARM image candidate runs only that architecture, with the same original
+builds and all native gates. Image qualification is not proof of an independent
+pool or available capacity; its observed runner acquisition is recorded
+separately. Attempt 3's raw workflow log is privately retained; its SHA and the
+fixed selector mismatch are recorded in `attempt03-macos-arm64-preflight.json`.
+It produced zero artifacts and no native report or PNG is fabricated. Four-lane
+All dispatched runs have ended. Mac both architectures and Linux have passing
+native receipts; four-lane acceptance remains incomplete because Windows target
+attachment has not passed.
 
-Windows' failed checkpoint in both attempts is `update-download`. Its baseline process
+Windows attempt 3 keeps the same original packages, process, profile, workspace
+and historical chat. Its explicitly selected retry limit is 2 (default 0), with
+fresh log windows admitting only a newly observed connection reset. Each retry
+uses the original UI download bridge and restarts the whole download; it is not
+range resume, cache seeding or a manual installation. The receipt records one
+actual whole-file download, successful attempt 1, 100 percent, and no retry
+request. Allowing retries did not exercise a retry in this run. See
+`attempt03-download-trajectory.json` for the observed process facts and the
+distinct unknown target-installation state.
+
+Windows' failed checkpoint in the first two attempts is `update-download`. Its baseline process
 remained running and the target was absent from disk; the effective baseline
 profile check passed. This failure does not establish an NSIS install/relaunch
 problem. No cause is inferred from missing command-line debug/profile arguments.

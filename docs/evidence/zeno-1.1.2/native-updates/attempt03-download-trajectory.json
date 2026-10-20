@@ -1,0 +1,75 @@
+{
+  "scope": "Exact successful whole-file download trajectory followed by an unaccepted target attachment; original receipt unchanged.",
+  "runId": 39446269135,
+  "jobId": 118708968065,
+  "lane": "win32-x64",
+  "workflowAttempt": 3,
+  "nativeReceipt": {
+    "file": "attempt03-win32-x64.json",
+    "sha256": "2590b03882794b57ad0d04f30787ee9f0bfc0422b549c8fc8b1693345ae6dc77"
+  },
+  "downloadPolicy": {
+    "additionalRetries": 2,
+    "mode": "whole-file; same baseline session; no resume; reset-only retry"
+  },
+  "actualWholeFileDownloadCount": 1,
+  "successfulWholeFileDownloadAttempt": 1,
+  "additionalRetriesActuallyStarted": 0,
+  "retryEverRequestedThisRun": false,
+  "downloadAttempts": [
+    {
+      "attempt": 1,
+      "startedAt": "2026-10-20T15:16:25.540Z",
+      "finishedAt": "2026-10-20T15:22:02.863Z",
+      "elapsedMs": 337323,
+      "outcome": "downloaded",
+      "reason": "download-completed",
+      "signal": "not-inspected",
+      "progress": {
+        "transferred": 390804422,
+        "total": 390804422,
+        "percent": 100,
+        "bytesPerSecond": 1160136
+      },
+      "retryRequested": false
+    }
+  ],
+  "downloadCompletedBytes": 390804422,
+  "resumeClaimed": false,
+  "failure": {
+    "classification": "native-update-validation-failed",
+    "lastPhase": "native-public-download-completed",
+    "activeCheck": "attach-page-list",
+    "errorKind": "Error",
+    "lastReadError": {
+      "errorKind": "TypeError"
+    },
+    "lastHttp": {
+      "endpoint": "engine-activity",
+      "status": 200
+    }
+  },
+  "observedProcessFacts": {
+    "oldBrowserPidAbsent": true,
+    "spawnedBaselineProcessExited": true,
+    "samePrivateMainProcessCount": 1,
+    "observedBrowserPidKnown": false,
+    "userDebugEnvironmentMatches": true,
+    "userProfileEnvironmentMatches": true,
+    "mainHasExpectedDebugArgument": false,
+    "mainHasExpectedProfileArgument": false
+  },
+  "targetDiskVerification": {
+    "diskReadSucceeded": false,
+    "installedVersion": "unknown",
+    "publishedAsar": "unknown",
+    "readFailureCause": "not recorded; no resource/permission/cache attribution established"
+  },
+  "observedSanitizedUpdaterLogSignals": [],
+  "rawWorkflowFailedStepLog": {
+    "bytes": 55868,
+    "sha256": "bcaabaabb90c455282cf6d585a9da2a2c63c761ed0741be12826d09c8a2406fe",
+    "retainedInPublicTree": false
+  },
+  "interpretation": "This run completed its first full download without retry. The old baseline exited, but the fixed CDP page-list gate failed and target disk metadata was unreadable to the diagnostic. Target installation, effective target profile and successful automatic restart were not verified. Command-line flags and User registry values do not establish the target process environment."
+}

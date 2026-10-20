@@ -1,0 +1,78 @@
+{
+  "runId": 39445140586,
+  "jobId": 118705011054,
+  "lane": "macos-arm64",
+  "attempt": 3,
+  "checkoutCommit": "33f09971537b598c21feebc49416396a3119244e",
+  "armImageChoice": "xcode-27",
+  "labels": [
+    "xcode-27"
+  ],
+  "runnerAssigned": true,
+  "jobStatus": "completed",
+  "jobConclusion": "failure",
+  "startedAt": "2026-10-20T15:05:18Z",
+  "completedAt": "2026-10-20T15:06:01Z",
+  "failedStep": "Check historical hashes, target integrity and isolation logic",
+  "failedSource": {
+    "file": "apps/desktop/scripts/zeno-update-smoke.mjs",
+    "line": 454,
+    "operation": "selfTest workflow selector default expectation",
+    "errorKind": "AssertionError",
+    "errorCode": "ERR_ASSERTION",
+    "actualDefaultArmRunner": "macos-26",
+    "expectedStaleDefaultArmRunner": "macos-15"
+  },
+  "rawFailedStepLog": {
+    "bytes": 6949,
+    "sha256": "f020fefe01864240de8ced206f4f558596f7bd6f00c872a8381bf9c917f0a27b",
+    "retainedInPublicTree": false
+  },
+  "artifactCount": 0,
+  "nativeReceiptProduced": false,
+  "nativeUpdateExecuted": false,
+  "nativeAcceptanceVerdict": "not-executed-preflight-failed",
+  "interpretation": "A runner was acquired. The development self-test still expected the old workflow ARM default, so the strong preflight gate stopped before package download or native app execution. This is neither a capacity cancellation nor a product native updater failure.",
+  "subsequentSteps": [
+    {
+      "name": "Verify runner architecture",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "Read the original public GitHub release metadata",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "Download the original 1.0.0 build for the private baseline",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "Download the target build only for published-code verification",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "Require the checked-out target to be deployed publicly",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "Verify both original packages and run the real public update",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "Keep only sanitized results, never profiles, logs or signing material",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Complete job",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ]
+}
