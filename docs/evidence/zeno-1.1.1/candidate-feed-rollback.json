@@ -1,0 +1,10 @@
+{
+  "checkedAt": "2026-10-20T06:58:47.616770+00:00",
+  "passed": true,
+  "reason": "Known personal navigation regression in 1.1.0 candidate; pause new automatic offers while 1.1.1 is verified",
+  "previousTarget": "1.1.0-c6d0f3f4a",
+  "currentTarget": "1.0.5-51310c020",
+  "publicLatestVersion": "1.0.5",
+  "deletedFiles": 0,
+  "installedClientsDowngraded": false
+}

@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-20T06:45:35.058576+00:00",
+  "status": 200,
+  "contentType": "application/manifest+json",
+  "cacheControl": "no-cache",
+  "sha256": "57033c0b3876ad77e87a0f2367bff242dba6c2361dfeeeacce9760db56ca97c4",
+  "deploymentConfigOnly": true,
+  "pwaIndexSha256": "29ed8c406a6635cb6e8fd832f5550dc4ce65a2a92ebd81de962c31f606f7d49c",
+  "sourceConfigurationSynchronization": {
+    "checkedAt": "2026-10-20T07:08:55.311979+00:00",
+    "sourceConfigSha256": "5b952b90fa3e4609cd84559e3ca74e9979626c0daa18258c9f5b333cf2e4b8f2",
+    "sourceConfigExactMatch": true,
+    "nginxConfigTestPassed": true,
+    "whitespaceOnly": true,
+    "reloadRequired": false
+  }
+}

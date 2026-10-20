@@ -4,6 +4,13 @@ This directory records the calendar, fitness, independent account/sync service,
 mobile PWA and computer-local AI implementation. A passing fixture is not
 evidence of an installed application, an OS keychain or a live deployment.
 
+The `c6d0f3f4` installer candidate has a confirmed desktop personal-navigation
+regression: workspace normalization sends all four personal entries back to
+the empty chat. Its public latest feed was rolled back to 1.0.5 on
+2026-10-20 at 06:58 UTC while 1.1.1 is verified. Versioned files remain intact;
+installed clients are not downgraded. The passing checks below retain their
+stated scope and do not constitute final acceptance of this candidate.
+
 ## Source verification
 
 The independent OpenAPI and generated `ZenoClient` match the actual route and
@@ -40,8 +47,10 @@ raw model responses belong in this directory.
 - [Live service deployment](live-service-deployment.json): actual unprivileged
   service, private SQLite/media backup restoration and a separately scoped
   matching-policy kernel network probe.
-- [Final deployed code](live-final-deployment.json): tag-matching API/PWA
-  hashes and a fresh private restoration after the final HTTPS acceptance.
+- [Final deployed code](live-final-deployment.json): API/PWA hashes from
+  `15a286a5` and a fresh private restoration after the final HTTPS acceptance.
+  The final `c6d0f3f4` installer tag changes packaging; its API, PWA, core and
+  feature inputs have an empty source diff against that deployed revision.
 - [Post-acceptance cleanup](server-post-acceptance-cleanup.json): only the
   owned synthetic accounts/media and disposable candidate service were removed;
   the production service, administrator and a fresh backup remain available.
@@ -58,11 +67,37 @@ raw model responses belong in this directory.
   separate [fixture regression](session-runner-fixture-regression.json) records
   the reproduced temporary-directory cleanup race, stronger durable-outbox
   checks and test-only repair. This maintenance does not change the frozen
-  `c6d0f3f4` installer source; the next run uses the full unchanged product
-  checks with a bounded CI preflight.
-- Real OS storage, six target installers, public website/PWA and original
-  1.0.0 updates are separate release gates. Do not infer their result from the
-  source checks above; their reports are added when those runs finish.
+  `c6d0f3f4` installer source. The successful final run uses the unchanged
+  product checks with a bounded CI preflight.
+- [Six native build lanes](build-native-audit.json): run `39373868155`
+  completed successfully, including the 74/74 native preflight. Each matching
+  CPU ran its packaged Electron Node smoke, loaded personal modules and
+  checked required archived license texts. This is separate from installed
+  GUI, genuine OS storage and automatic update evidence.
+- [Release metadata](release-metadata-audit.json): all 24 GitHub upload
+  names, sizes and SHA-256 digests agree with the frozen six-lane index.
+  This audit independently downloaded only eight small documents (14,530
+  bytes), checked six YAML feeds and compared release notes. Full installer
+  byte verification belongs to the separate distribution gate.
+- [Source provenance](release-source-provenance.json): the installer remains
+  frozen at `c6d0f3f4`; API/PWA business code and built bytes remain at `15a286a5`.
+  The later [manifest MIME correction](manifest-mime-fix.json) is an independent
+  Nginx deployment configuration change, with no PWA or installer byte change.
+- [Complete distribution integrity](distribution-integrity.json): all 24
+  assets (3,948,721,956 bytes) were transferred and fully hashed on the server
+  against the independently frozen GitHub asset metadata.
+- [Atomic website publication](publication-gate.json): all 22 indexed files
+  passed full SHA-256/SHA-512 verification before switching the release feed.
+  The 80 historical files retained their metadata and passed edge sampling
+  plus public HEAD/Range checks; this is not a full historical-file rehash.
+- [Live downloads and update feeds](live-release.json): all ten installer
+  choices and six native feeds advertise 1.1.0 with working public paths.
+- [Public website/PWA](public-site-pwa/README.md): actual anonymous HTTPS and
+  headless desktop/mobile browser checks, four screenshots, and zero observed
+  CSP, runtime or external-request failures. The first manifest MIME failure
+  and the successful unchanged strict recheck are both retained.
+- Original 1.0.0 installed GUI updates remain a separate release gate; the
+  final GitHub release remains a draft until those checks complete.
 
 UI review follows `DESIGN.md` P1/P2/P3/P5/P8/P10/P11 and S1/S2/S6: progressive
 disclosure, native controls, clear actual state, keyboard access, restrained

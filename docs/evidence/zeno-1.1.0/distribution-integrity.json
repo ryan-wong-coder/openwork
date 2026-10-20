@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-20T06:41:23.207587+00:00",
+  "version": "1.1.0",
+  "productCommit": "c6d0f3f4a7bfba3617a0bcae754756c31731849d",
+  "workflowCommit": "695a4114397395dd2e6bfcdf4e2ab1f12d617b92",
+  "runId": 39373868155,
+  "releaseId": 418039320,
+  "verifiedFiles": 24,
+  "verifiedBytes": 3948721956,
+  "actualServerSha256MatchesGitHubForEveryFile": true,
+  "nonRegularOrSymlinkInputs": 0,
+  "unpublishedPartialFilesRemoved": 4,
+  "historicalFilesUsedOnlyAsDetachedPrivateCopies": true,
+  "method": "Private local parallel HTTPS downloads with complete SHA-256 validation; SSH/rsync transfer into detached private staging, per-file server SHA-256, then a separate complete server pass against the frozen independent GitHub audit. Native feed SHA-512 verification and public promotion remain a separate gate."
+}

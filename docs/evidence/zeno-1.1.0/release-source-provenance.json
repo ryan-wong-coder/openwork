@@ -1,0 +1,36 @@
+{
+  "releaseTag": "zeno-v1.1.0-build.3",
+  "productCommit": "c6d0f3f4a7bfba3617a0bcae754756c31731849d",
+  "verifiedBusinessAndUiCommit": "15a286a5c5af258cee0c62817f8b8145df6d2e19",
+  "originalUnmodifiedTag": "zeno-v1.1.0",
+  "originalUnmodifiedTagCommit": "15a286a5c5af258cee0c62817f8b8145df6d2e19",
+  "businessAndUiInputsUnchanged": true,
+  "comparedDirectories": [
+    "apps/app",
+    "apps/zeno-api",
+    "apps/zeno-site",
+    "packages/zeno-core",
+    "packages/zeno-fitness",
+    "packages/features",
+    "apps/desktop/electron"
+  ],
+  "currentBuildRunId": 39373868155,
+  "workflowCommit": "695a4114397395dd2e6bfcdf4e2ab1f12d617b92",
+  "checkedAt": "2026-10-20T06:20:00Z",
+  "version": "1.1.0",
+  "deployedApiAndPwaRevision": "15a286a5c5af258cee0c62817f8b8145df6d2e19",
+  "deployedApiSha256": "ecd522a1d63522f242a8d2e92eb754ffa5091c2172bd661678a64208f5bd7701",
+  "deployedPwaIndexSha256": "29ed8c406a6635cb6e8fd832f5550dc4ce65a2a92ebd81de962c31f606f7d49c",
+  "testOnlyMaintenanceCommit": "c98800fec8909073e35740799d1e9816ccf8f292",
+  "maintenanceIncludedInFrozenInstaller": false,
+  "scope": "Read-only Git tag and source comparisons. Runtime inputs for the deployed API/PWA and installer are unchanged; packaging, CI, evidence and test maintenance have distinct revisions. Native builds, real OS storage, public website and original-version updates retain separate reports.",
+  "postTagDeploymentConfiguration": {
+    "component": "Nginx /app/personal.webmanifest",
+    "checkedAt": "2026-10-20T06:45:35.058576+00:00",
+    "change": "Explicit application/manifest+json response and no-cache headers",
+    "report": "manifest-mime-fix.json",
+    "installerBytesChanged": false,
+    "apiOrPwaBytesChanged": false,
+    "scope": "Operator configuration maintained after the frozen installer tag; not part of c6d0f3f4."
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-20",
+  "attempts": [
+    {
+      "workflow": "zeno-distribute.yml",
+      "runId": 39376736577,
+      "conclusion": "cancelled",
+      "result": "Insufficient throughput; no publication"
+    },
+    {
+      "workflow": "zeno-distribute-https.yml",
+      "runId": 39380665722,
+      "conclusion": "failure",
+      "result": "16 MiB transport probe did not complete within its 20-second bound; no installer transfer or publication"
+    }
+  ],
+  "completedTransport": "Private local parallel HTTPS downloads, full source SHA-256 verification, rsync against detached private copies, per-file server SHA-256 and a second complete server verification",
+  "cleanup": {
+    "temporarySshUploadUserRemoved": true,
+    "temporarySshReceiverRemoved": true,
+    "temporaryHttpsUploadRoutesRemoved": true,
+    "temporaryHttpsAuthenticationFilesRemoved": true,
+    "temporaryRepositoryUploadSecretsRemaining": 0
+  },
+  "scope": "Failed and cancelled relay attempts are not counted as distribution success. Historical published files were never used as writable or hard-linked delta bases."
+}

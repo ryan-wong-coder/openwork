@@ -1,0 +1,24 @@
+{
+  "testFile": "apps/app/tests/use-workspace-route-state.test.tsx",
+  "command": "PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false pnpm --filter @openwork/app exec bun test tests/use-workspace-route-state.test.tsx",
+  "before": {
+    "passed": 18,
+    "failed": 9,
+    "assertions": 359,
+    "exitCode": 1,
+    "observedRedirect": "/workspace/ws_1/session",
+    "expected": [
+      "/personal/calendar",
+      "/personal/fitness",
+      "/personal/tasks",
+      "/personal/account"
+    ]
+  },
+  "after": {
+    "passed": 27,
+    "failed": 0,
+    "assertions": 406,
+    "exitCode": 0
+  },
+  "scope": "Real React routing hook and MemoryRouter with disposable DOM; V1/V2 workspace bootstrap, refresh, section navigation and history; existing chat normalization and inventory tests remain passing. Full AppSidebar and packaged GUI acceptance are separate."
+}

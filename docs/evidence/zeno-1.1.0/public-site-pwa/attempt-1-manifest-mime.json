@@ -1,0 +1,15 @@
+{
+  "passed": false,
+  "scope": "Anonymous public GET; no browser, account, installer, or model request.",
+  "path": "/app/personal.webmanifest",
+  "status": 200,
+  "observedContentType": "application/octet-stream",
+  "requiredContentTypes": [
+    "application/manifest+json",
+    "application/json"
+  ],
+  "bytes": 381,
+  "sha256": "57033c0b3876ad77e87a0f2367bff242dba6c2361dfeeeacce9760db56ca97c4",
+  "matchesFinalBuild": true,
+  "codeChanged": false
+}
