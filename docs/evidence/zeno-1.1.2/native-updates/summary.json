@@ -23,7 +23,7 @@
       "originalMissingGlyphScreenshotsRetained": true
     },
     "win32-x64": {
-      "functional": "native-defaults-prerequisite-not-accepted",
+      "functional": "native-defaults-baseline-v1-setting-not-accepted",
       "visual": "not-produced",
       "receipts": [
         "win32-x64.json",
@@ -31,37 +31,41 @@
       ],
       "nsisInstallOrTargetRelaunchFailureEstablished": false,
       "latestAttempt": {
-        "attempt": 6,
-        "runId": 39459065876,
-        "jobId": 118753503116,
+        "attempt": 7,
+        "runId": 39460429086,
+        "jobId": 118758221250,
         "windowsProfileMode": "native-defaults",
         "additionalWholeFileRetriesAllowed": 2,
-        "historicalEngineScope": "Intended saved V1 via original settings; not yet observed in this run",
-        "status": "completed-process-appdata-known-folder-comparison-rejected",
-        "nativeVerdict": "not-executed-prerequisite-failed",
-        "receipt": "attempt06-native-defaults-win32-x64.json",
-        "trajectoryReceipt": "attempt06-native-defaults-trajectory.json",
-        "actualWholeFileDownloadCount": 0,
-        "historicalV1SettingOrHistoryReached": false,
-        "originalNsisInstalled": false,
-        "actualWindowsPreflightTestsPassed": 50,
-        "nodePristinePassed": true,
-        "powershellFailedComparison": {
-          "check": "known-folder-environment",
-          "reason": "known-folder-mismatch",
-          "scope": "process",
-          "variable": "appdata"
+        "historicalEngineScope": "Intended saved V1 through original settings; V1-setting preparation did not pass and history was not created.",
+        "status": "failed-baseline-native-v1-setting",
+        "nativeVerdict": "not-executed-v1-setting-preparation-failed",
+        "receipt": "attempt07-native-defaults-win32-x64.json",
+        "artifactReceipt": "attempt07-native-defaults-win32-x64-artifact.json",
+        "actualWindowsPreflight": {
+          "tests": 52,
+          "pass": 52,
+          "fail": 0,
+          "skipped": 0
         },
-        "underlyingMismatchCause": "unknown"
+        "bothNativePrerequisitesPassed": true,
+        "originalBaselineNsisInstalled": true,
+        "observedBaselineBrowserAndEffectiveProfile": true,
+        "actualWholeFileDownloadCount": 0,
+        "underlyingSettingFailureCauseRecorded": false
       },
-      "completedFailedWorkflowAttempts": 6,
+      "completedFailedWorkflowAttempts": 7,
       "priorIsolatedReceipts": [
         "win32-x64.json",
         "attempt02-win32-x64.json",
         "attempt03-win32-x64.json",
         "attempt04-win32-x64.json"
       ],
-      "firstTwoAttemptsObservedSignal": "connection-reset-in-original-receipts-sanitized-updater-log-scans"
+      "firstTwoAttemptsObservedSignal": "connection-reset-in-original-receipts-sanitized-updater-log-scans",
+      "nativeDefaultsReceipts": [
+        "attempt05-native-defaults-win32-x64.json",
+        "attempt06-native-defaults-win32-x64.json",
+        "attempt07-native-defaults-win32-x64.json"
+      ]
     },
     "macos-arm64": {
       "functional": "passed",
@@ -88,8 +92,8 @@
     }
   },
   "integrityChecks": {
-    "downloadedArtifactZipDigestsMatchedGitHub": 10,
-    "extractedOriginalFilesRehashed": 21,
+    "downloadedArtifactZipDigestsMatchedGitHub": 11,
+    "extractedOriginalFilesRehashed": 22,
     "originalCapacityAnnotationResponsesRehashed": 2,
     "actualScreenshotsReviewed": 10,
     "screenshotsWithReadableChinese": 8,

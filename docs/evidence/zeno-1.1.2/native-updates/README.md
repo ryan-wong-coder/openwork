@@ -19,7 +19,7 @@ workflow is rerun without explicit approval. This directory is separate from the
 | Lane | Actual result | Evidence boundary |
 | --- | --- | --- |
 | Linux x64 | Native functional and Chinese screenshot pass in attempt 2 | Both original AppImage runs passed actual upgrade and history/registry/sidebar gates. Original screenshots retain missing-glyph boxes; attempt 2 added explicit CJK host prerequisites and its two actually viewed screenshots have readable Chinese. |
-| Windows x64 | Attempt 6 stopped at the process APPDATA/KnownFolder prerequisite | All 50 Windows tests, original hashes and Node pristine checks passed. PowerShell then rejected its process APPDATA/KnownFolder comparison before original NSIS, app launch or V1/history. No environment value, updater download or image was collected. Earlier isolated and native-defaults receipts remain unchanged. |
+| Windows x64 | Attempt 7 stopped at original baseline V1-setting preparation | All 52 Windows tests and both pristine checks passed; original default NSIS installation/registration and actual baseline browser/profile/CDP were observed. V1-setting preparation then failed before historical chat, updater download or target UI. The underlying reason was not recorded. Earlier receipts remain unchanged. |
 | macOS x64 | Native functional and screenshot pass | Real ZIP download and Squirrel install/automatic restart, original signatures and published ASAR, isolated profile, both registries, history, native Canvas/SVG/Ant Design Charts, and four actual sidebar clicks passed. All three screenshots were actually viewed and Chinese is readable. |
 | macOS arm64 | Native functional and screenshot pass in attempt 4 | On `xcode-27`, the original package and signatures, real 444,118,404-byte public download, Squirrel installation, automatic restart, both registries, profile/history, native canvas and four actual sidebar clicks passed. All three screenshots were actually viewed with readable Chinese and no clipping. Earlier capacity cancellations and the stale preflight failure remain unchanged. |
 
@@ -35,8 +35,8 @@ separately. Attempt 3's raw workflow log is privately retained; its SHA and the
 fixed selector mismatch are recorded in `attempt03-macos-arm64-preflight.json`.
 It produced zero artifacts and no native report or PNG is fabricated. All
 dispatched runs have ended. Mac both architectures and Linux have passing native
-receipts; four-lane acceptance remains incomplete. Native-defaults attempts 5 and
-6 did not reach their intended V1 history setup. The original default V2 history and
+receipts; four-lane acceptance remains incomplete. Native-defaults attempts 5 through
+7 did not complete their intended V1 history setup. The original default V2 history and
 isolated attempts are separate acceptance boundaries.
 
 Windows attempt 3 keeps the same original packages, process, profile, workspace
@@ -75,6 +75,21 @@ PowerShell rejected `known-folder-environment` with `known-folder-mismatch`,
 `scope: process`, `variable: appdata`. The underlying mismatch cause and actual
 values were not recorded. This does not prove a NODE_PATH issue or explain
 attempt 5 retrospectively. Its 50 Windows tests all ran and passed without skips.
+
+
+Attempt 7 corrects the reproduced JS-to-PowerShell separator-regex escaping
+error while preserving the strict KnownFolder comparison and other guards.
+All 52 Windows tests ran and passed, followed by successful Node and PowerShell
+pristine checks. The original NSIS installed and registered in its exact native
+default location without re-signing. The baseline browser PID, exact effective
+profile and owned expected CDP listener were observed. Preparation then failed at
+`baseline-native-v1-setting` with `errorKind: Error`; the last recorded HTTP
+observation is `engine-activity: 200`. Neither the original receipt nor failed-step
+workflow log records the underlying settings error, request method or settings
+response. Saved V1 and historical chat were not verified. There was no updater
+download, retry, target installation or target screenshot. These facts do not
+establish an updater failure or retrospectively explain any earlier attempt.
+See `attempt07-native-defaults-trajectory.json`.
 
 Windows' failed checkpoint in the first two attempts is `update-download`. Its baseline process
 remained running and the target was absent from disk; the effective baseline

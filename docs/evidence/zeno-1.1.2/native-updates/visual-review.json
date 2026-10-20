@@ -133,6 +133,16 @@
       "targetScreenshotsAvailable": false,
       "reason": "Node pristine checks passed, then the process APPDATA/KnownFolder PowerShell gate rejected before NSIS/app/V1/history; no image was produced.",
       "nativeReceiptAltered": false
+    },
+    "attempt07-native-defaults-win32-x64": {
+      "nativeFunctionalVerdict": "not-executed-v1-setting-preparation-failed",
+      "artifactDigestVerified": true,
+      "attempt": 7,
+      "windowsProfileMode": "native-defaults",
+      "actuallyViewed": [],
+      "targetScreenshotsAvailable": false,
+      "reason": "Pristine checks and original default NSIS installation passed, then original baseline V1-setting preparation stopped before history or updater download; no target image was produced.",
+      "nativeReceiptAltered": false
     }
   }
 }

@@ -247,5 +247,29 @@
     "cacheSeedOrManualTargetLaunch": false,
     "outcome": "Windows tests50/50 and Node pristine checks passed, then process APPDATA/KnownFolder PowerShell comparison rejected before NSIS/app/V1/history/download. No values collected; underlying mismatch cause unknown and attempt 5 not reattributed.",
     "nativeReceipt": "attempt06-native-defaults-win32-x64.json"
+  },
+  "windowsNativeDefaultsCorrectedSeparatorRegex": {
+    "workflowId": 390119143,
+    "runId": 39460429086,
+    "jobId": 118758221250,
+    "ref": "personal",
+    "checkoutCommit": "84c7f5a80488b355ab679c128da8dcd1094859a4",
+    "checkoutDesktopVersion": "1.1.2",
+    "platform": "win32",
+    "windows_profile_mode": "native-defaults",
+    "windows_download_retries": "2",
+    "attempt": 7,
+    "createdAt": "2026-10-20T16:46:48Z",
+    "operatorExplicitlyApproved": true,
+    "sameFrozenBaselineAndTarget": true,
+    "reason": "Correct the reproduced JS-to-PowerShell separator-regex escaping defect; retain GetFullPath, KnownFolder equality and every other strict predicate. Existing attempt 6 diagnostic receipt remains unchanged.",
+    "priorNativeDefaultsReceipt": "attempt06-native-defaults-win32-x64.json",
+    "newEvidenceFilenamePrefix": "attempt07-native-defaults-",
+    "runCheckoutExactShaVerified": true,
+    "productBytesAndNativeGatesUnchanged": true,
+    "cacheSeedOrManualTargetLaunch": false,
+    "authorizationBoundary": "One Windows attempt07 only; no further run authorized.",
+    "outcome": "52/52 Windows tests and both pristine checks passed; original NSIS installed/registered in native defaults and actual baseline browser/profile/CDP were observed, then V1-setting preparation failed before history/download/update. Underlying reason not recorded.",
+    "nativeReceipt": "attempt07-native-defaults-win32-x64.json"
   }
 }

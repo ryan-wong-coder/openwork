@@ -1,0 +1,95 @@
+{
+  "scope": "Strict original baseline installation and failed V1-setting preparation from attempt 7 only; original receipts unchanged and earlier attempts not reattributed.",
+  "runId": 39460429086,
+  "jobId": 118758221250,
+  "lane": "win32-x64",
+  "workflowAttempt": 7,
+  "windowsProfileMode": "native-defaults",
+  "checkoutCommit": "84c7f5a80488b355ab679c128da8dcd1094859a4",
+  "nativeReceipt": {
+    "file": "attempt07-native-defaults-win32-x64.json",
+    "sha256": "8f75f706de1e55a80071fa2e61421d1cef03181a139c474e0359ea26a3a1f941"
+  },
+  "actualWindowsPreflightTests": {
+    "tests": 52,
+    "pass": 52,
+    "fail": 0,
+    "skipped": 0,
+    "source": "Original workflow summary at lines314/316/317/319; API preflight conclusion success"
+  },
+  "nativeDefaultsPrerequisites": {
+    "node": {
+      "engine": "node",
+      "passed": true,
+      "check": "complete",
+      "reason": "clear",
+      "nativeLeavesChecked": 17,
+      "shortcutsChecked": 8,
+      "checkOnlyLeavesChecked": 29,
+      "pristine": true
+    },
+    "powershell": {
+      "engine": "powershell",
+      "passed": true,
+      "check": "complete",
+      "reason": "clear",
+      "nativeLeavesChecked": 17,
+      "shortcutsChecked": 8,
+      "checkOnlyLeavesChecked": 29,
+      "environmentScopesChecked": 3,
+      "registryViewsChecked": 4,
+      "pristine": true,
+      "nativeInstallationRegistered": true,
+      "exactDefaultInstallation": true
+    }
+  },
+  "nativeDefaultsInstallation": {
+    "engine": "powershell",
+    "passed": true,
+    "check": "complete",
+    "reason": "clear",
+    "nativeLeavesChecked": 17,
+    "shortcutsChecked": 8,
+    "checkOnlyLeavesChecked": 29,
+    "environmentScopesChecked": 3,
+    "registryViewsChecked": 4,
+    "pristine": true,
+    "nativeInstallationRegistered": true,
+    "exactDefaultInstallation": true
+  },
+  "originalPackagesVerified": true,
+  "baselineNsisInstalled": true,
+  "baselineNoResigning": true,
+  "observedBaselineBrowserPidKnown": true,
+  "observedBaselineEffectiveProfileMatches": true,
+  "ownedBaselineExpectedCdpPortListening": true,
+  "v1SettingSetupCheckpointReached": true,
+  "savedV1SettingVerified": false,
+  "settingsWriteRequestIssued": "unknown; no request method or settings response recorded",
+  "historicalV1SessionCreated": false,
+  "actualWholeFileDownloadCount": 0,
+  "additionalWholeFileRetriesAllowed": 2,
+  "additionalRetriesActuallyStarted": 0,
+  "nativeUpdateExecuted": false,
+  "failure": {
+    "classification": "native-update-validation-failed",
+    "lastPhase": "original-nsis-installed",
+    "activeCheck": "baseline-native-v1-setting",
+    "errorKind": "Error",
+    "lastHttp": {
+      "endpoint": "engine-activity",
+      "status": 200
+    }
+  },
+  "originalReceiptDiagnosticSignals": [],
+  "underlyingSettingFailureCause": "unknown; neither the original report nor failed-step workflow log records the underlying reason, request error class or settings response",
+  "rawWorkflowFailedStepLog": {
+    "bytes": 57773,
+    "sha256": "2ebeb4d60e2cc84d2573a1dbf0b21e92372eb558798e92f36b05d7c0ff084cee",
+    "retainedInPublicTree": false,
+    "literalUnderlyingSettingErrorRecorded": false
+  },
+  "environmentValuesCollected": false,
+  "earlierAttemptCauseBackfilled": false,
+  "interpretation": "All 52 Windows preflight tests and both pristine checks passed. The original NSIS installed and registered in its exact native default location. The original baseline browser, effective profile and owned expected CDP listener were observed. Preparation then stopped at baseline-native-v1-setting before verified saved V1, historical chat, updater download or installation. This is not evidence of a product updater or target-installation failure. Missing injected profile/debug arguments and User environment matches are expected in this explicit native-defaults fixture and do not establish environment loss."
+}
