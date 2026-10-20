@@ -1,0 +1,176 @@
+name: Relay verified Zeno assets
+
+# Register on personal without accessing artifacts, credentials, or the server.
+# Transfer is an explicit operator dispatch and never rebuilds product code.
+on:
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: Successful Release Zeno workflow run containing all six lanes
+        required: true
+        default: "39373868155"
+        type: string
+      release_tag:
+        description: Existing frozen Zeno product tag
+        required: true
+        default: zeno-v1.1.0-build.3
+        type: string
+  push:
+    branches: [personal]
+    paths: [.github/workflows/zeno-distribute.yml]
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: zeno-distribute-${{ inputs.release_tag || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  register:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/personal'
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo "Registered the operator-only Zeno asset relay."
+
+  relay:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/personal'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash
+    env:
+      SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+      RELEASE_TAG: ${{ inputs.release_tag }}
+    steps:
+      - name: Reject malformed source identifiers before checkout
+        run: |
+          if ! [[ "$SOURCE_RUN_ID" =~ ^[1-9][0-9]{0,19}$ ]] || ! [[ "$RELEASE_TAG" =~ ^zeno-v[0-9]+\.[0-9]+\.[0-9]+(-build\.[1-9][0-9]*)?$ ]]; then
+            echo "::error::Expected an existing numeric release run and explicit Zeno tag."
+            exit 1
+          fi
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.release_tag }}
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Verify the frozen product version and successful original run
+        timeout-minutes: 3
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node --input-type=module <<'JS'
+          import { readFileSync } from 'node:fs';
+          try {
+            const version = JSON.parse(readFileSync('apps/desktop/package.json', 'utf8')).version;
+            const tag = process.env.RELEASE_TAG;
+            const base = `zeno-v${version}`;
+            if (!/^\d+\.\d+\.\d+$/.test(version) || !(tag === base || (tag.startsWith(base + '-build.') && /^[1-9]\d*$/.test(tag.slice((base + '-build.').length))))) throw Error();
+            const endpoint = `${process.env.GITHUB_API_URL}/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.SOURCE_RUN_ID}`;
+            const get = async url => {
+              const response = await fetch(url, { headers: { Authorization: `Bearer ${process.env.GH_TOKEN}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }, signal: AbortSignal.timeout(30000) });
+              if (!response.ok) throw Error();
+              return response.json();
+            };
+            const run = await get(endpoint);
+            if (String(run.id) !== process.env.SOURCE_RUN_ID || run.name !== 'Release Zeno' || run.path?.split('@')[0] !== '.github/workflows/zeno-release.yml' || run.status !== 'completed' || run.conclusion !== 'success' || run.head_repository?.full_name !== process.env.GITHUB_REPOSITORY) throw Error();
+            const expected = new Set(['darwin', 'win32', 'linux'].flatMap(platform => ['x64', 'arm64'].map(arch => `zeno-${platform}-${arch}`)));
+            const artifacts = await get(endpoint + '/artifacts?per_page=100');
+            if (artifacts.total_count !== 6 || artifacts.artifacts?.length !== 6) throw Error();
+            for (const artifact of artifacts.artifacts) {
+              if (!expected.delete(artifact.name) || artifact.expired || !Number.isSafeInteger(artifact.size_in_bytes) || artifact.size_in_bytes <= 0) throw Error();
+            }
+            if (expected.size) throw Error();
+            console.log('Verified the frozen version and all six successful native artifacts.');
+          } catch {
+            console.error('Release source validation failed; no transfer was attempted.');
+            process.exitCode = 1;
+          }
+          JS
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.source_run_id }}
+          pattern: zeno-*
+          path: downloaded
+          merge-multiple: false
+      - name: Reassemble original asset bytes with the frozen release assembler
+        timeout-minutes: 5
+        run: |
+          node apps/desktop/scripts/assemble-zeno-release.mjs downloaded assembled >/dev/null
+          node --input-type=module <<'JS'
+          import { lstatSync, readFileSync, readdirSync } from 'node:fs';
+          import { join } from 'node:path';
+          const version = JSON.parse(readFileSync('apps/desktop/package.json', 'utf8')).version;
+          const index = JSON.parse(readFileSync('assembled/zeno-release.json', 'utf8'));
+          const expected = new Set(['zeno-release.json', 'RELEASE-NOTES.md']);
+          const lanes = new Set(['darwin', 'win32', 'linux'].flatMap(platform => ['x64', 'arm64'].map(arch => `${platform}/${arch}`)));
+          if (index.version !== version || index.platforms?.length !== 6) throw Error('Assembled version or lane mismatch.');
+          for (const lane of index.platforms) {
+            if (!lanes.delete(`${lane.platform}/${lane.arch}`)) throw Error('Unexpected native lane.');
+            for (const file of lane.files) {
+              const name = file.name === lane.manifest ? lane.manifestAsset : file.name;
+              if (typeof name !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(name) || expected.has(name)) throw Error('Unexpected or duplicate asset name.');
+              expected.add(name);
+            }
+          }
+          const actual = readdirSync('assembled');
+          if (lanes.size || expected.size !== 24 || actual.length !== 24 || actual.some(name => !expected.has(name) || !lstatSync(join('assembled', name)).isFile())) throw Error('Expected exactly 24 regular release assets.');
+          if (actual.filter(name => /\.(dmg|zip|exe|AppImage|deb)$/.test(name)).length !== 10 || actual.filter(name => name.endsWith('.yml')).length !== 6) throw Error('Installer or feed count mismatch.');
+          console.log('Verified six lanes, ten installers, six feeds, and 24 complete private assets.');
+          JS
+      - name: Prepare the short-lived pinned SSH credential
+        env:
+          ZENO_UPLOAD_SSH_KEY: ${{ secrets.ZENO_UPLOAD_SSH_KEY }}
+          ZENO_UPLOAD_KNOWN_HOSTS: ${{ secrets.ZENO_UPLOAD_KNOWN_HOSTS }}
+          ZENO_UPLOAD_HOST: ${{ secrets.ZENO_UPLOAD_HOST }}
+        run: |
+          umask 077
+          node --input-type=module <<'JS'
+          import { appendFileSync, writeFileSync } from 'node:fs';
+          import { join } from 'node:path';
+          const { ZENO_UPLOAD_SSH_KEY: key, ZENO_UPLOAD_KNOWN_HOSTS: hosts, RUNNER_TEMP: directory } = process.env;
+          const host = process.env.ZENO_UPLOAD_HOST?.trim();
+          if (!key || !hosts || !host || !/^[A-Za-z0-9][A-Za-z0-9.-]{0,252}$/.test(host)) throw Error('Missing or invalid private relay credentials.');
+          process.stdout.write(`::add-mask::${host}\n`);
+          appendFileSync(process.env.GITHUB_ENV, `ZENO_RELAY_HOST=${host}\n`);
+          writeFileSync(join(directory, 'zeno-upload-key'), key.endsWith('\n') ? key : key + '\n', { mode: 0o600, flag: 'wx' });
+          writeFileSync(join(directory, 'zeno-upload-known-hosts'), hosts.endsWith('\n') ? hosts : hosts + '\n', { mode: 0o600, flag: 'wx' });
+          JS
+          if ! ssh-keygen -y -P '' -f "$RUNNER_TEMP/zeno-upload-key" >/dev/null 2>&1 || ! ssh-keygen -l -f "$RUNNER_TEMP/zeno-upload-known-hosts" >/dev/null 2>&1; then
+            echo "::error::Invalid private SSH key or pinned host entry."
+            exit 1
+          fi
+      - name: Stream only to the forced private digest receiver
+        timeout-minutes: 45
+        run: |
+          set -euo pipefail
+          umask 077
+          # No remote shell command: this identity must have a forced receiver.
+          # Keep SSH diagnostics private; never print endpoints or receiver logs.
+          # shellcheck disable=SC2016
+          if ! timeout --kill-after=15s 40m bash -euo pipefail -c '
+            tar --hard-dereference -C assembled -cf - . | ssh -F /dev/null -T \
+              -i "$RUNNER_TEMP/zeno-upload-key" \
+              -o BatchMode=yes -o IdentitiesOnly=yes \
+              -o StrictHostKeyChecking=yes \
+              -o UserKnownHostsFile="$RUNNER_TEMP/zeno-upload-known-hosts" \
+              -o GlobalKnownHostsFile=/dev/null -o ControlMaster=no \
+              -o ForwardAgent=no -o ClearAllForwardings=yes \
+              -o ConnectTimeout=20 -o ConnectionAttempts=1 \
+              -o ServerAliveInterval=15 -o ServerAliveCountMax=3 -o LogLevel=ERROR \
+              "zeno-release-upload@$ZENO_RELAY_HOST" \
+              >"$RUNNER_TEMP/zeno-upload-receiver-output" 2>"$RUNNER_TEMP/zeno-upload-ssh-error"
+          '; then
+            echo "::error::Private asset relay failed or timed out; publication remains an operator action."
+            exit 1
+          fi
+          echo "Transferred the verified asset stream to the private receiver."
+      - name: Remove the ephemeral key, host pin, and private diagnostics
+        if: always()
+        run: |
+          rm -f -- "$RUNNER_TEMP/zeno-upload-key" "$RUNNER_TEMP/zeno-upload-known-hosts" "$RUNNER_TEMP/zeno-upload-receiver-output" "$RUNNER_TEMP/zeno-upload-ssh-error"
