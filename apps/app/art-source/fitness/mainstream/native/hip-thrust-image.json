@@ -1,0 +1,11 @@
+{
+  "canonicalExerciseId": "1060",
+  "englishName": "barbell hip thrust",
+  "tool": "built-in image_gen.imagegen",
+  "prompt": "Use case: stylized-concept. Asset type: original Zeno fitness demonstration starting illustration, wide 16:9. Input image 1 is ONLY the established mascot identity reference, not pose or equipment. Preserve the friendly dark desaturated teal plush otter, cream muzzle and belly, black eyes, whiskers, lime diagonal strap with small Z buckle, rounded tail, refined 3D material and warm ivory seamless studio with pale sage floor. Exercise: BARBELL HIP THRUST with shoulder blades supported on a stable low pale sage flat workout bench. Show a clear full-body SIDE three-quarter view facing right. Otter is at the LOWERED position: upper back/shoulder blades lean against the near long edge of a low bench behind the shoulders, hips lowered near but not touching floor in front of bench, knees bent, two feet flat on floor in front of hips about shoulder width. A single horizontal charcoal straight barbell with equal small plates on both sides rests ACROSS THE FRONT OF THE HIP CREASE with a thick dark padded sleeve cushioning its middle. Both paws hold the bar steady over the hips, not lift with arms. Bar is perpendicular to torso, never across chest or knees. Back rests against bench edge, head naturally follows torso, visible tail extends sideways away from moving bar. The bench is behind shoulder blades only, not under hips. Entire mascot, bench, feet, both paws, bar and all plates in frame, enough space above hips to lift into a bridge with torso roughly horizontal and shins vertical. Soft studio light, clear readable grounded mechanics. No text, logos, watermark, other characters, extra limbs, human anatomy, gym clutter or cropped equipment.",
+  "reference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/native/hip-thrust-reference.png",
+  "referencePurpose": "original Zeno mascot identity only; no upstream exercise media used",
+  "selected": false,
+  "generatedReferenceRetainedInWorkspace": false
+}

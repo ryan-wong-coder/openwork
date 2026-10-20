@@ -1,0 +1,14 @@
+{
+  "nodeId": "3e7e2dec-2fbb-4e37-bd90-b36da310529c",
+  "taskId": "20261020204503003738518",
+  "referenceNodeId": "a5436029-cde9-4877-ad60-3038640e61d9",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Use {{Node a5436029-cde9-4877-ad60-3038640e61d9}} as the exact first frame. Preserve the same Zeno otter, bench, two footplates, a single straight short horizontal handle with its center attached to one taut cable running toward the same low pulley. Locked tripod camera with no cuts, no zoom or camera movement. Demonstrate exactly ONE slow SEATED CABLE ROW: with torso tall, shoulders down and feet fixed on plates, pull the handle smoothly from the extended-arm starting position toward the lower ribs/upper abdomen over three seconds, bending both elbows backward close to the torso and gently drawing shoulder blades together. Pause briefly with handle near abdomen, then extend both elbows under control over three seconds returning to exactly the starting hand position. Hold the final second. Keep neutral upright torso with no backward rocking, spine rounding, leg pushing or standing. Both paws remain fixed on the same handle, cable remains taut and attached. The handle never passes through the belly or changes into dumbbells. Four limbs only, stable machine geometry, no text or audio. Calm readable stylized mascot movement.",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  }
+}

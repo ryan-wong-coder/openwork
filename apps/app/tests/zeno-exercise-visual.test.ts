@@ -2,6 +2,12 @@ import { expect, test } from "bun:test";
 import { exerciseAliases, findExercise, fitnessExercises } from "@zeno/fitness";
 import { exerciseForWorkoutEntry, exerciseMuscleValues, interpolatePose, mascotDemoForExercise, movementForExercise, movementProgress, movementScenes } from "../src/react-app/domains/zeno/movement-scenes";
 import { routineExerciseSchema } from "@zeno/core";
+import { createHash } from "node:crypto";
+import { readFileSync, readdirSync } from "node:fs";
+import mascotDemos from "../src/react-app/domains/zeno/mascot-demos.json";
+import selection from "../art-source/fitness/mainstream/selection.json";
+import provenance from "../art-source/fitness/provenance.json";
+import { searchExercisesForPicker } from "../src/react-app/domains/zeno/exercise-search";
 
 test("all eleven original scenes match exactly one real canonical catalogue entry", () => {
   expect(movementScenes).toHaveLength(11); expect(new Set(movementScenes.map(scene => scene.exerciseId)).size).toBe(11);
@@ -11,11 +17,53 @@ test("all eleven original scenes match exactly one real canonical catalogue entr
   }
   expect(fitnessExercises.filter(exercise => movementForExercise(exercise))).toHaveLength(11);
 });
-test("three mascot clips apply only to their exact matching exercise and equipment", () => {
-  expect(fitnessExercises.filter(exercise => mascotDemoForExercise(exercise)).map(exercise => exercise.id).sort()).toEqual(["0294", "0405", "1197"]);
-  const loadedSquat = findExercise("3593"); if (!loadedSquat) throw new Error("Missing exercise");
-  expect(mascotDemoForExercise(loadedSquat)).toBeUndefined();
-  expect(new Set(fitnessExercises.flatMap(exercise => mascotDemoForExercise(exercise)?.video ?? []))).toHaveProperty("size", 3);
+test("all 32 selected videos retain exact canonical identity, equipment and honest illustration type", () => {
+  expect(mascotDemos).toHaveLength(32);
+  expect(mascotDemos.map(item => item.exerciseId).sort()).toEqual(selection.exercises.map(item => item.exerciseId).sort());
+  expect(fitnessExercises.filter(exercise => mascotDemoForExercise(exercise)).map(exercise => exercise.id).sort()).toEqual(mascotDemos.map(item => item.exerciseId).sort());
+  expect(mascotDemos.filter(item => item.kind === "mascot")).toHaveLength(30);
+  expect(mascotDemos.filter(item => item.kind === "diagram").map(item => item.exerciseId).sort()).toEqual(["0612", "3094"]);
+  for (const item of mascotDemos) {
+    const exercise = findExercise(item.exerciseId); if (!exercise) throw new Error("Missing exercise");
+    expect(exercise.englishName).toBe(item.englishName);
+    expect(exercise.equipmentId).toBe(selection.exercises.find(selected => selected.exerciseId === item.exerciseId)?.equipment);
+    expect(mascotDemoForExercise(exercise)).toEqual({ video: `zeno/fitness/${item.stem}.mp4`, poster: `zeno/fitness/${item.stem}-poster.webp`, kind: item.kind });
+    expect(mascotDemoForExercise({ ...exercise, bodyPartId: "custom" })).toBeUndefined();
+    expect(mascotDemoForExercise({ ...exercise, englishName: item.englishName + " different variant" })).toBeUndefined();
+  }
+  const narrowBench = findExercise("0030"); if (!narrowBench) throw new Error("Missing exercise");
+  expect(mascotDemoForExercise(narrowBench)).toBeUndefined();
+  expect(new Set(fitnessExercises.flatMap(exercise => mascotDemoForExercise(exercise)?.video ?? []))).toHaveProperty("size", 32);
+});
+test("all 64 selected local media files match their complete recorded provenance hashes", () => {
+  const folder = new URL("../public/zeno/fitness/", import.meta.url);
+  const expectedNames = mascotDemos.flatMap(item => [item.stem + ".mp4", item.stem + "-poster.webp"]).sort();
+  expect(readdirSync(folder).sort()).toEqual(expectedNames);
+  expect(provenance.assets).toHaveLength(32);
+  for (const item of mascotDemos) {
+    const asset = provenance.assets.find(candidate => candidate.canonicalExerciseId === item.exerciseId);
+    if (!asset) throw new Error("Missing provenance");
+    expect(asset.name).toBe(item.stem); expect(asset.kind).toBe(item.kind);
+    for (const part of [asset.video, asset.poster]) {
+      expect(part.file.startsWith("apps/app/public/zeno/fitness/")).toBe(true);
+      const name = part.file.slice("apps/app/public/zeno/fitness/".length);
+      expect(expectedNames).toContain(name);
+      const bytes = readFileSync(new URL(name, folder));
+      expect(bytes.length).toBe(part.bytes);
+      expect(createHash("sha256").update(bytes).digest("hex")).toBe(part.sha256);
+      expect(bytes.subarray(0, 32).toString("ascii")).toContain(name.endsWith(".mp4") ? "ftyp" : "WEBP");
+    }
+  }
+});
+test("picker exposes completed mainstream art while retaining query, equipment and custom exact matches", () => {
+  expect(searchExercisesForPicker().slice(0, 32).map(item => item.id).sort()).toEqual(mascotDemos.map(item => item.exerciseId).sort());
+  const dumbbells = searchExercisesForPicker({ query: "卧推", equipment: ["dumbbell"], muscles: ["chest"], limit: 100 });
+  expect(dumbbells.some(item => item.id === "0289")).toBe(true);
+  expect(dumbbells.every(item => item.equipmentId === "dumbbell" && [...item.primaryMuscleIds, ...item.secondaryMuscleIds].includes("chest"))).toBe(true);
+  expect(searchExercisesForPicker({ query: "不可能存在的动作" })).toHaveLength(0);
+  const bench = findExercise("0025"); if (!bench) throw new Error("Missing exercise");
+  const custom = { ...bench, id: "custom-bench", bodyPartId: "custom", name: "卧推自定义", englishName: "Custom bench" };
+  expect(searchExercisesForPicker({ query: "卧推", customExercises: [custom] })[0]?.id).toBe(custom.id);
 });
 test("workout detail resolves account-local media and retains deleted custom muscle snapshots", () => {
   const builtin = routineExerciseSchema.parse({ id: "entry", exerciseId: "0025", name: "杠铃卧推", sets: [] });

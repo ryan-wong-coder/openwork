@@ -1,0 +1,230 @@
+{
+  "selectedCanonicalCount": 32,
+  "scope": "Mainstream exact exercises selected for original mascot artwork and videos; selection is not completed-media coverage.",
+  "exercises": [
+    {
+      "exerciseId": "0025",
+      "englishName": "barbell bench press",
+      "equipment": "barbell",
+      "stem": "bench-press",
+      "batch": "root"
+    },
+    {
+      "exerciseId": "0289",
+      "englishName": "dumbbell bench press",
+      "equipment": "dumbbell",
+      "stem": "dumbbell-bench-press",
+      "batch": "fitness"
+    },
+    {
+      "exerciseId": "0314",
+      "englishName": "dumbbell incline bench press",
+      "equipment": "dumbbell",
+      "stem": "incline-dumbbell-press",
+      "batch": "fitness"
+    },
+    {
+      "exerciseId": "0308",
+      "englishName": "dumbbell fly",
+      "equipment": "dumbbell",
+      "stem": "dumbbell-fly",
+      "batch": "fitness"
+    },
+    {
+      "exerciseId": "0662",
+      "englishName": "push-up",
+      "equipment": "body weight",
+      "stem": "push-up",
+      "batch": "root"
+    },
+    {
+      "exerciseId": "0652",
+      "englishName": "pull-up",
+      "equipment": "body weight",
+      "stem": "pull-up",
+      "batch": "B"
+    },
+    {
+      "exerciseId": "2330",
+      "englishName": "cable lat pulldown full range of motion",
+      "equipment": "cable",
+      "stem": "lat-pulldown",
+      "batch": "B"
+    },
+    {
+      "exerciseId": "0861",
+      "englishName": "cable seated row",
+      "equipment": "cable",
+      "stem": "seated-row",
+      "batch": "B"
+    },
+    {
+      "exerciseId": "0027",
+      "englishName": "barbell bent over row",
+      "equipment": "barbell",
+      "stem": "bent-over-row",
+      "batch": "root"
+    },
+    {
+      "exerciseId": "3593",
+      "englishName": "barbell squat",
+      "equipment": "barbell",
+      "stem": "barbell-squat",
+      "batch": "root"
+    },
+    {
+      "exerciseId": "1197",
+      "englishName": "squat",
+      "equipment": "body weight",
+      "stem": "squat",
+      "batch": "existing"
+    },
+    {
+      "exerciseId": "0032",
+      "englishName": "barbell deadlift",
+      "equipment": "barbell",
+      "stem": "deadlift",
+      "batch": "root"
+    },
+    {
+      "exerciseId": "0085",
+      "englishName": "barbell romanian deadlift",
+      "equipment": "barbell",
+      "stem": "romanian-deadlift",
+      "batch": "root"
+    },
+    {
+      "exerciseId": "1760",
+      "englishName": "dumbbell goblet squat",
+      "equipment": "dumbbell",
+      "stem": "goblet-squat",
+      "batch": "root"
+    },
+    {
+      "exerciseId": "0612",
+      "englishName": "lunge",
+      "equipment": "body weight",
+      "stem": "lunge",
+      "batch": "native"
+    },
+    {
+      "exerciseId": "0585",
+      "englishName": "lever leg extension",
+      "equipment": "leverage machine",
+      "stem": "leg-extension",
+      "batch": "B"
+    },
+    {
+      "exerciseId": "0586",
+      "englishName": "lever lying leg curl",
+      "equipment": "leverage machine",
+      "stem": "lying-leg-curl",
+      "batch": "B"
+    },
+    {
+      "exerciseId": "0417",
+      "englishName": "dumbbell standing calf raise",
+      "equipment": "dumbbell",
+      "stem": "calf-raise",
+      "batch": "native"
+    },
+    {
+      "exerciseId": "1060",
+      "englishName": "barbell hip thrust",
+      "equipment": "barbell",
+      "stem": "hip-thrust",
+      "batch": "native"
+    },
+    {
+      "exerciseId": "0334",
+      "englishName": "dumbbell lateral raise",
+      "equipment": "dumbbell",
+      "stem": "lateral-raise",
+      "batch": "fitness"
+    },
+    {
+      "exerciseId": "0405",
+      "englishName": "dumbbell seated shoulder press",
+      "equipment": "dumbbell",
+      "stem": "shoulder-press",
+      "batch": "existing"
+    },
+    {
+      "exerciseId": "2487",
+      "englishName": "dumbbell rear delt fly",
+      "equipment": "dumbbell",
+      "stem": "rear-delt-fly",
+      "batch": "fitness"
+    },
+    {
+      "exerciseId": "0294",
+      "englishName": "dumbbell biceps curl",
+      "equipment": "dumbbell",
+      "stem": "curl",
+      "batch": "existing"
+    },
+    {
+      "exerciseId": "0313",
+      "englishName": "dumbbell hammer curl",
+      "equipment": "dumbbell",
+      "stem": "hammer-curl",
+      "batch": "fitness"
+    },
+    {
+      "exerciseId": "0200",
+      "englishName": "cable pushdown (with rope attachment)",
+      "equipment": "cable",
+      "stem": "triceps-pushdown",
+      "batch": "B"
+    },
+    {
+      "exerciseId": "0463",
+      "englishName": "front plank",
+      "equipment": "body weight",
+      "stem": "plank",
+      "batch": "fitness"
+    },
+    {
+      "exerciseId": "0274",
+      "englishName": "crunch floor",
+      "equipment": "body weight",
+      "stem": "crunch",
+      "batch": "fitness"
+    },
+    {
+      "exerciseId": "1163",
+      "englishName": "lying leg raise",
+      "equipment": "body weight",
+      "stem": "leg-raise",
+      "batch": "fitness"
+    },
+    {
+      "exerciseId": "0687",
+      "englishName": "russian twist",
+      "equipment": "body weight",
+      "stem": "russian-twist",
+      "batch": "fitness"
+    },
+    {
+      "exerciseId": "0685",
+      "englishName": "run",
+      "equipment": "body weight",
+      "stem": "run",
+      "batch": "B"
+    },
+    {
+      "exerciseId": "3094",
+      "englishName": "jumping jack",
+      "equipment": "body weight",
+      "stem": "jumping-jack",
+      "batch": "B"
+    },
+    {
+      "exerciseId": "2138",
+      "englishName": "stationary bike run v. 3",
+      "equipment": "stationary bike",
+      "stem": "stationary-bike",
+      "batch": "B"
+    }
+  ]
+}

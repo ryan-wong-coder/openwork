@@ -1,0 +1,318 @@
+{
+  "checkedAt": "2026-10-20T13:26:52.785Z",
+  "passed": true,
+  "scope": "Independent source and other-worker final contact-sheet review. Not a browser, deployed-client, biomechanical or clinical validation verdict.",
+  "manifest": {
+    "file": "apps/app/src/react-app/domains/zeno/mascot-demos.json",
+    "sha256": "574d57968a0b3a3c49a7475c609769f670cd1435bddd517a6926f11cc1e8c47d",
+    "canonicalExercises": 32,
+    "mascotVideos": 30,
+    "originalDiagramVideos": 2,
+    "uniqueMediaStems": 32
+  },
+  "fullMediaIntegrity": {
+    "files": 64,
+    "bytes": 7125941,
+    "allRecordedBytesAndSha256Match": true,
+    "provenanceSha256": "b8a27a8b366f3ba0bb62ede61635fe99f992a5721015fa23f58da160f9f27da3"
+  },
+  "actuallyViewedOtherWorkerContacts": [
+    {
+      "file": "apps/app/art-source/fitness/mainstream/root/bench-press-contact.jpg",
+      "sha256": "797dff36f0394739fa7135853d79abf60b22e53cbf1bc2f5c9c62aa1b9971382",
+      "actuallyViewed": true,
+      "frames": 8
+    },
+    {
+      "file": "apps/app/art-source/fitness/mainstream/root/push-up-contact.jpg",
+      "sha256": "c1ca4c4fa9995b0e519302dea2afb7de05562d11b248b4bebff59d1e332c99e2",
+      "actuallyViewed": true,
+      "frames": 8
+    },
+    {
+      "file": "apps/app/art-source/fitness/mainstream/root/bent-over-row-contact.jpg",
+      "sha256": "ce764e31a855d73f1a4a432d9be4a9dc470321893cee01a88a8eb327e53a3f69",
+      "actuallyViewed": true,
+      "frames": 8
+    },
+    {
+      "file": "apps/app/art-source/fitness/mainstream/root/barbell-squat-contact.jpg",
+      "sha256": "044e892326dfc7f70707466a61662c1c853f93a9ac1b000bd266c63ec1ec72fe",
+      "actuallyViewed": true,
+      "frames": 8
+    },
+    {
+      "file": "apps/app/art-source/fitness/mainstream/root/goblet-squat-contact.jpg",
+      "sha256": "fd6205216fe7d82eca0562af3e0c391168fafe3d3b2b148d54ff3160ba6c4dd3",
+      "actuallyViewed": true,
+      "frames": 8
+    },
+    {
+      "file": "apps/app/art-source/fitness/mainstream/root/deadlift-contact.jpg",
+      "sha256": "3dfce5cb0df4005f1a828d8ed812872bfc9aaedf3cdd6f9b759e12708ca95ec2",
+      "actuallyViewed": true,
+      "frames": 8
+    },
+    {
+      "file": "apps/app/art-source/fitness/mainstream/root/romanian-deadlift-contact.jpg",
+      "sha256": "9737c5e3859349d43991d8f7856369bcbc1f26e3dd75526209d51aee90e81fbb",
+      "actuallyViewed": true,
+      "frames": 8
+    },
+    {
+      "file": "apps/app/art-source/fitness/mainstream/native/calf-raise-v2-contact.jpg",
+      "sha256": "591ab2476be3875ab63a1b231a9d8fd8c81e0eca81be771e6f0d3837374278fb",
+      "actuallyViewed": true,
+      "frames": 8
+    },
+    {
+      "file": "apps/app/art-source/fitness/mainstream/native/hip-thrust-v2-contact.jpg",
+      "sha256": "4714859e6a6e1d6f67144707fe4e42e6f82e42e47747b866a17901df28ddb131",
+      "actuallyViewed": true,
+      "frames": 8
+    },
+    {
+      "file": "apps/app/art-source/fitness/mainstream/native/lunge-diagram-contact.jpg",
+      "sha256": "5216a779758aaa1247ce5ee311067eff6c3fba3a320dcedab4df68b44b9f4cbb",
+      "actuallyViewed": true,
+      "frames": 8
+    }
+  ],
+  "sourceBoundaryReview": {
+    "sourceFiles": [
+      {
+        "file": "apps/app/src/react-app/domains/zeno/movement-scenes.ts",
+        "sha256": "0107548b26398c107808f250d1d9ce119866f3933dae59af00138812ecbd1ac9"
+      },
+      {
+        "file": "apps/app/src/react-app/domains/zeno/exercise-visual.tsx",
+        "sha256": "5d54eadc7c2f8295ae75a90fa814581406493af4a92ec10a974da2e8aaee6169"
+      },
+      {
+        "file": "apps/app/src/react-app/domains/zeno/exercise-detail.tsx",
+        "sha256": "cb54f94806e9ee2251cbfda9b63b9e80588c23439626e0c9ac60649cb79a3313"
+      },
+      {
+        "file": "apps/app/src/react-app/domains/zeno/exercise-picker.tsx",
+        "sha256": "f9d0f78d7b4a256862dd41d4cfd7529e6566ed8c6b31b4c964f15fb0f51401d1"
+      }
+    ],
+    "exactCanonicalIdAndEnglishNameRequired": true,
+    "customExercisesExcludedFromBuiltInArt": true,
+    "customAuthenticatedMediaTakesPriority": true,
+    "deletedCustomMuscleSnapshotsRetained": true,
+    "videoOnlyStaticViewUsesItsOwnPoster": true,
+    "diagramButtonLabel": "动作图解",
+    "diagramVideoAriaLabel": "原创动作图解视频",
+    "mascotButtonLabel": "泽诺演示",
+    "manualPlaybackAndBackgroundPauseRetained": true,
+    "userMediaOrAccountStorageChanged": false,
+    "clinicalTechniqueValidation": false
+  },
+  "targetedObservations": {
+    "deadlift": "Conventional floor start, stable grip/bar, hip/knee extension to standing and controlled return.",
+    "romanianDeadlift": "Standing start and hip hinge with soft knees, distinct from the conventional floor-start movement.",
+    "hipThrust": "Upper back/shoulder bench support and grounded feet retained while hip and bar move together.",
+    "lunge": "Original diagram includes a lifted forward step, split stance, lowering and return; planted rear-toe contact retained."
+  },
+  "ownBatchPosterCorrection": {
+    "exerciseId": "3094",
+    "issue": "Video-only static control is labelled initial pose; the original selected diagram poster showed the open pose.",
+    "resolution": "Changed only the new unpublished poster to actual initial closed stance, viewed the final WebP, and updated original render source plus full hashes.",
+    "independentlyAuthored": false
+  },
+  "assets": [
+    {
+      "exerciseId": "0025",
+      "englishName": "barbell bench press",
+      "stem": "bench-press",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0289",
+      "englishName": "dumbbell bench press",
+      "stem": "dumbbell-bench-press",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0314",
+      "englishName": "dumbbell incline bench press",
+      "stem": "incline-dumbbell-press",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0308",
+      "englishName": "dumbbell fly",
+      "stem": "dumbbell-fly",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0662",
+      "englishName": "push-up",
+      "stem": "push-up",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0652",
+      "englishName": "pull-up",
+      "stem": "pull-up",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "2330",
+      "englishName": "cable lat pulldown full range of motion",
+      "stem": "lat-pulldown",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0861",
+      "englishName": "cable seated row",
+      "stem": "seated-row",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0027",
+      "englishName": "barbell bent over row",
+      "stem": "bent-over-row",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "3593",
+      "englishName": "barbell squat",
+      "stem": "barbell-squat",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "1197",
+      "englishName": "squat",
+      "stem": "squat",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0032",
+      "englishName": "barbell deadlift",
+      "stem": "deadlift",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0085",
+      "englishName": "barbell romanian deadlift",
+      "stem": "romanian-deadlift",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "1760",
+      "englishName": "dumbbell goblet squat",
+      "stem": "goblet-squat",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0612",
+      "englishName": "lunge",
+      "stem": "lunge",
+      "kind": "diagram"
+    },
+    {
+      "exerciseId": "0585",
+      "englishName": "lever leg extension",
+      "stem": "leg-extension",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0586",
+      "englishName": "lever lying leg curl",
+      "stem": "lying-leg-curl",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0417",
+      "englishName": "dumbbell standing calf raise",
+      "stem": "calf-raise",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "1060",
+      "englishName": "barbell hip thrust",
+      "stem": "hip-thrust",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0334",
+      "englishName": "dumbbell lateral raise",
+      "stem": "lateral-raise",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0405",
+      "englishName": "dumbbell seated shoulder press",
+      "stem": "shoulder-press",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "2487",
+      "englishName": "dumbbell rear delt fly",
+      "stem": "rear-delt-fly",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0294",
+      "englishName": "dumbbell biceps curl",
+      "stem": "curl",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0313",
+      "englishName": "dumbbell hammer curl",
+      "stem": "hammer-curl",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0200",
+      "englishName": "cable pushdown (with rope attachment)",
+      "stem": "triceps-pushdown",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0463",
+      "englishName": "front plank",
+      "stem": "plank",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0274",
+      "englishName": "crunch floor",
+      "stem": "crunch",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "1163",
+      "englishName": "lying leg raise",
+      "stem": "leg-raise",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0687",
+      "englishName": "russian twist",
+      "stem": "russian-twist",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "0685",
+      "englishName": "run",
+      "stem": "run",
+      "kind": "mascot"
+    },
+    {
+      "exerciseId": "3094",
+      "englishName": "jumping jack",
+      "stem": "jumping-jack",
+      "kind": "diagram"
+    },
+    {
+      "exerciseId": "2138",
+      "englishName": "stationary bike run v. 3",
+      "stem": "stationary-bike",
+      "kind": "mascot"
+    }
+  ]
+}

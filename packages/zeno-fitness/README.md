@@ -15,6 +15,11 @@ Text sources are fixed to openGym **v1.4.1**, commit
 - 5,632 canonical exercises and 922 drawing aliases; all canonical names have Chinese text.
 - Exactly 1,324 exercises have upstream Chinese step instructions. Other `instructions` are
   empty and must not be presented as complete translated coaching instructions.
+- One exact-ID correction, `0313` dumbbell hammer curl, keeps a neutral grip throughout
+  instead of the upstream steps' conflicting palm rotation. The original Chinese correction
+  is in `src/instruction-corrections.ts`, checked against
+  [ACE's Hammer Curl steps 1–3](https://www.acefitness.org/resources/everyone/exercise-library/10/hammer-curl/)
+  on 2026-10-20. The frozen upstream files are unchanged; no source imagery was used.
 - No Gym visual still, animation, video or other exercise artwork is included. Generated
   exercise metadata has its image/clip filenames removed. The preserved internal media helper
   functions are not public library APIs and must not be used to fetch upstream artwork.

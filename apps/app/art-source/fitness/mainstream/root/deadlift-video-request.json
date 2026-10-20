@@ -1,0 +1,8 @@
+{
+  "canonicalExerciseId": "0032",
+  "englishName": "barbell deadlift",
+  "prompt": "Use {{Node REFERENCE_NODE}} as exact starting frame and preserve original otter, all four limbs, rigid barbell with fixed symmetric plates and warm ivory scene. Fixed side three-quarter camera. Perform ONE slow conventional barbell deadlift: from bar resting over mid-foot close to shins, over three seconds extend knees and hips together to stand tall with bar against upper thighs; arms stay straight throughout, neutral spine, chest gently lifted, no leaning back. Pause standing briefly; hinge hips back and then bend knees to return the bar smoothly to floor along the same close-to-shins path for three seconds; hold original start. Feet remain flat and fixed hip width; paws remain attached at the same grip points outside legs. Hips and shoulders rise together. Not a deep squat, row, curl or sumo. No rounding, bouncing, extra limbs, shifting feet, changing weights, disappearing equipment, camera movement, text or audio. CRITICAL: keep the exact wide distant framing from reference for every frame. The otter and full barbell must stay small in frame, with abundant empty space above the head at the standing top position. Never zoom or crop closer. Do not track or move camera. All of the head including ears must remain below top frame edge by a clear margin even fully upright.",
+  "attempt": 2,
+  "retryReason": "First video clipped head when standing; second original first frame reserves empty overhead space.",
+  "referenceNodeId": "7306a4ca-5748-4a8b-81f7-2bf35b53bf74"
+}

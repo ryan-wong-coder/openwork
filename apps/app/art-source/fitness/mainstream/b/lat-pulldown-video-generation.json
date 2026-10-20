@@ -1,0 +1,14 @@
+{
+  "nodeId": "dba790d7-f424-462d-b4d1-5f021705d67f",
+  "taskId": "20261020204403898138518",
+  "referenceNodeId": "2cf682e5-581c-42b9-a596-7723e702b42f",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Use {{Node 2cf682e5-581c-42b9-a596-7723e702b42f}} as the exact first frame, retaining the original Zeno mascot, single connected pulldown bar and overhead cable/pulley, thigh pads, seat, grounded feet and studio. Fixed tripod camera, no cuts or zooms. Perform exactly one slow seated CABLE LAT PULLDOWN: start with arms fully extended overhead; pull the bar down IN FRONT of face to upper chest over three seconds, bending both elbows down beside the ribs while gently drawing shoulder blades together. Pause briefly near collarbone, then let arms extend overhead under control over three seconds to the original start. Hold final second. Torso keeps its slight backward lean and never rocks, seat and thigh pads stay fixed. Both paws hold the same wide overhand grip; the bar stays horizontal and attached at center to one taut cable that runs over the same pulley. Never pull behind the neck, stand up or let the cable detach. Maintain four limbs, coherent equipment, no text or sound. Calm stylized instructional mascot movement.",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  }
+}

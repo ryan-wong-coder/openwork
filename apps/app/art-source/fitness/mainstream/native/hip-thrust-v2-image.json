@@ -1,0 +1,10 @@
+{
+  "canonicalExerciseId": "1060",
+  "englishName": "barbell hip thrust",
+  "tool": "built-in image_gen.imagegen",
+  "prompt": "Use case: stylized-concept. Asset type: original Zeno fitness demo first frame, 16:9. Image 1 is only the existing dark teal plush otter identity with cream muzzle/belly, black eyes, whiskers, lime diagonal Z strap and round tail. New original illustration of the TOP of a BARBELL HIP THRUST, EXACT SIDE VIEW from the otter's left, face points right. The otter's SHOULDER BLADES rest on the right-hand edge of a low sage flat bench at image LEFT. Its torso lies almost HORIZONTAL from shoulders at left to HIPS at centre-right. Its two thighs continue HORIZONTAL from hips to bent knees at right; the two SHINS drop VERTICALLY from knees to two flat feet on floor. Body forms a clear shoulder–hip–knee horizontal bridge line, not a sitting pose and not a standing backbend. The head looks forward/right with chin softly tucked, upper back anchored to bench. One charcoal barbell with small symmetric round plates and a thick padded centre sleeve lies directly ON TOP OF THE HIPS AT THE CREASE BETWEEN BELLY AND THIGHS, close to knees and FAR AWAY FROM CHEST. Paws reach along belly to steady bar at the hips, elbows relaxed, no arm lift. The horizontal bar is perpendicular to torso, so its near circular plate/end is seen at the HIP POINT in the side view, not in front of shoulders. Clearly visible gap under lifted hips, bench only supports shoulders, hips never rest on bench. Tail hangs to the side away from feet. Entire mascot, head, bench, legs, feet, both paws and all bar plates visible, generous empty space around. Warm ivory seamless studio, pale sage floor, soft studio lighting, calm sophisticated 3D product illustration. No text, labels, watermark, other figures, human anatomy, extra limbs, floating equipment or clutter.",
+  "reference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/native/hip-thrust-v2-reference.png",
+  "referencePurpose": "original Zeno mascot identity only; no upstream exercise media used",
+  "attempt": 2
+}

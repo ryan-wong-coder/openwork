@@ -1,0 +1,39 @@
+{
+  "canonicalExerciseId": "0662",
+  "englishName": "push-up",
+  "prompt": "Use {{Node 3bb27c4e-6a0b-4150-9720-2a95c8e6daac}} as the exact starting frame. Keep this same otter, paws, four limbs, tail and ivory background, fixed side camera. Demonstrate ONE slow standard push-up: start in straight-arm plank; slowly bend both elbows backward about 45 degrees from torso, lowering chest and hips together toward floor for three seconds; pause above floor; press through front paws for three seconds to return to identical straight-arm plank; hold. Keep a straight head-shoulders-hips-ankles line, core firm, knees off floor and feet planted. Both front paws stay exactly in place, elbows flex visibly and the torso moves as one unit. Tail never supports body. No downward dog, no kneeling, no hopping, no equipment, no extra limbs or body morphing. No text, watermark, sound or camera motion.",
+  "referenceNodeId": "3bb27c4e-6a0b-4150-9720-2a95c8e6daac",
+  "nodeId": "6bce1d45-a93b-485b-ae7d-90d71e802058",
+  "taskId": "20261020204203607638518",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "285500"
+    }
+  },
+  "originalSha256": "8046ba94770baa7f1d49332b9ace8aafc1343410493c73ab1b054f9a413df490",
+  "originalBytes": 4450190,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "frames": 8,
+    "intervalSeconds": 1,
+    "reviewed": true
+  }
+}

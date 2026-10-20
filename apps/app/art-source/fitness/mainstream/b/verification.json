@@ -1,0 +1,288 @@
+{
+  "checkedAt": "2026-10-20T13:21:26.205418+00:00",
+  "passed": true,
+  "acceptedAssets": 9,
+  "mascotVideos": 8,
+  "originalVectorDiagramVideos": 1,
+  "allCompleteHashesMatch": true,
+  "records": [
+    {
+      "canonicalExerciseId": "2330",
+      "name": "lat-pulldown",
+      "kind": "mascot",
+      "files": [
+        {
+          "kind": "video",
+          "file": "apps/app/public/zeno/fitness/lat-pulldown.mp4",
+          "bytes": 163435,
+          "sha256": "f68b5c8aeee8a507203810c1dcbb049922bd0e8b1048f3f66a5abee177e1a6e4"
+        },
+        {
+          "kind": "poster",
+          "file": "apps/app/public/zeno/fitness/lat-pulldown-poster.webp",
+          "bytes": 20164,
+          "sha256": "baf333af382587ac2253089c407616571c41196621874dbe02fee7a406299b38"
+        },
+        {
+          "kind": "originalGeneratedReference",
+          "file": "apps/app/art-source/fitness/mainstream/b/lat-pulldown-reference.png",
+          "bytes": 1732401,
+          "sha256": "d006658ac86e1c79adcebb540263ec2aed4c1841fb0a485592b8cac8ebdf89e5"
+        }
+      ],
+      "fullVideoDecode": true,
+      "manuallyViewedContactFrames": 8,
+      "noAudio": true
+    },
+    {
+      "canonicalExerciseId": "0861",
+      "name": "seated-row",
+      "kind": "mascot",
+      "files": [
+        {
+          "kind": "video",
+          "file": "apps/app/public/zeno/fitness/seated-row.mp4",
+          "bytes": 223195,
+          "sha256": "57b73dfc4f74e4df622bbd07dcea12962e496e051ee7d271799256708beb0693"
+        },
+        {
+          "kind": "poster",
+          "file": "apps/app/public/zeno/fitness/seated-row-poster.webp",
+          "bytes": 29104,
+          "sha256": "5cb58d202513b0ed8c8fb7b6a3e485a02e1239251b761373b6b4981bfafd52b6"
+        },
+        {
+          "kind": "originalGeneratedReference",
+          "file": "apps/app/art-source/fitness/mainstream/b/seated-row-reference.png",
+          "bytes": 1828277,
+          "sha256": "906fefcf932d65fd6d32b4b858654c31cb43a5cdeaee3fb1e607a1eb9b387a70"
+        }
+      ],
+      "fullVideoDecode": true,
+      "manuallyViewedContactFrames": 8,
+      "noAudio": true
+    },
+    {
+      "canonicalExerciseId": "0585",
+      "name": "leg-extension",
+      "kind": "mascot",
+      "files": [
+        {
+          "kind": "video",
+          "file": "apps/app/public/zeno/fitness/leg-extension.mp4",
+          "bytes": 235919,
+          "sha256": "bb4e3224491ce77fda6a162b798a71e381798d3ab7b77d6768f4ebcd25e7de41"
+        },
+        {
+          "kind": "poster",
+          "file": "apps/app/public/zeno/fitness/leg-extension-poster.webp",
+          "bytes": 22178,
+          "sha256": "0184cb787c400f61826b960ce53045a5702391ae85432bb998d7d6b600709cdf"
+        },
+        {
+          "kind": "originalGeneratedReference",
+          "file": "apps/app/art-source/fitness/mainstream/b/leg-extension-reference.png",
+          "bytes": 1813450,
+          "sha256": "1e90a2780b9ab05f7735c0ea40c9f0ff7b3b22277067815fa0b3200bbbfd3dd8"
+        }
+      ],
+      "fullVideoDecode": true,
+      "manuallyViewedContactFrames": 8,
+      "noAudio": true
+    },
+    {
+      "canonicalExerciseId": "0586",
+      "name": "lying-leg-curl",
+      "kind": "mascot",
+      "files": [
+        {
+          "kind": "video",
+          "file": "apps/app/public/zeno/fitness/lying-leg-curl.mp4",
+          "bytes": 202306,
+          "sha256": "89180366e066189296ae72e2002c365ae356f29b01b01fbb77d2a97fca6b5141"
+        },
+        {
+          "kind": "poster",
+          "file": "apps/app/public/zeno/fitness/lying-leg-curl-poster.webp",
+          "bytes": 29360,
+          "sha256": "813eb2755862db735abdade6e31f1d7f75b2a89fa7f36cf4c6f5b85924ebd26c"
+        },
+        {
+          "kind": "originalGeneratedReference",
+          "file": "apps/app/art-source/fitness/mainstream/b/lying-leg-curl-reference.png",
+          "bytes": 1920660,
+          "sha256": "c7b61c5d2db928e3569de3c9d293c5434a7c78afaf158efbdf53a7ab93615523"
+        }
+      ],
+      "fullVideoDecode": true,
+      "manuallyViewedContactFrames": 8,
+      "noAudio": true
+    },
+    {
+      "canonicalExerciseId": "0200",
+      "name": "triceps-pushdown",
+      "kind": "mascot",
+      "files": [
+        {
+          "kind": "video",
+          "file": "apps/app/public/zeno/fitness/triceps-pushdown.mp4",
+          "bytes": 150875,
+          "sha256": "bd625cc05d687d891cafa23fe0e46221e9085394ccaf01305d9034b13bad6ef5"
+        },
+        {
+          "kind": "poster",
+          "file": "apps/app/public/zeno/fitness/triceps-pushdown-poster.webp",
+          "bytes": 22242,
+          "sha256": "d73f3f6d40f42b8c9446f7b4a2e23995d639ecd5cbf98fc1dc781e4c0d18ecb6"
+        },
+        {
+          "kind": "originalGeneratedReference",
+          "file": "apps/app/art-source/fitness/mainstream/b/triceps-pushdown-reference.png",
+          "bytes": 1709542,
+          "sha256": "3206b489ca99dee3ef0f7d80a7731217dfc50a8a0b247dd9b534907f7b8bc34e"
+        }
+      ],
+      "fullVideoDecode": true,
+      "manuallyViewedContactFrames": 8,
+      "noAudio": true
+    },
+    {
+      "canonicalExerciseId": "0685",
+      "name": "run",
+      "kind": "mascot",
+      "files": [
+        {
+          "kind": "video",
+          "file": "apps/app/public/zeno/fitness/run.mp4",
+          "bytes": 462948,
+          "sha256": "83de7d2a53c843707f80170ec6cb9645b3b966996e78d695a4a06997c965b08c"
+        },
+        {
+          "kind": "poster",
+          "file": "apps/app/public/zeno/fitness/run-poster.webp",
+          "bytes": 17774,
+          "sha256": "8d85573f8cac8857ff22909cb10f70e934a45caf8669ea94ab35c08892a1568e"
+        },
+        {
+          "kind": "originalGeneratedReference",
+          "file": "apps/app/art-source/fitness/mainstream/b/run-reference.png",
+          "bytes": 1743393,
+          "sha256": "f57b56175fc58a2c2ac61a2addfce64a1cbd3f836cde711bd5776c4da31c9cb5"
+        }
+      ],
+      "fullVideoDecode": true,
+      "manuallyViewedContactFrames": 8,
+      "noAudio": true
+    },
+    {
+      "canonicalExerciseId": "2138",
+      "name": "stationary-bike",
+      "kind": "mascot",
+      "files": [
+        {
+          "kind": "video",
+          "file": "apps/app/public/zeno/fitness/stationary-bike.mp4",
+          "bytes": 276756,
+          "sha256": "d1c115ec0f7f584327b788767e1b292e1dc4485484d85d944a2c95393252e820"
+        },
+        {
+          "kind": "poster",
+          "file": "apps/app/public/zeno/fitness/stationary-bike-poster.webp",
+          "bytes": 20754,
+          "sha256": "3761414fa90ee9c18fbe7ac7304310f1ee60d683b583c6942dd672ad2c7bfdea"
+        },
+        {
+          "kind": "originalGeneratedReference",
+          "file": "apps/app/art-source/fitness/mainstream/b/stationary-bike-reference.png",
+          "bytes": 1733539,
+          "sha256": "f4bda46a41fb3ea466dcda15e3aa1b06769662f734a6451a340d47458c758ebe"
+        }
+      ],
+      "fullVideoDecode": true,
+      "manuallyViewedContactFrames": 8,
+      "noAudio": true
+    },
+    {
+      "canonicalExerciseId": "0652",
+      "name": "pull-up",
+      "kind": "mascot",
+      "files": [
+        {
+          "kind": "video",
+          "file": "apps/app/public/zeno/fitness/pull-up.mp4",
+          "bytes": 113057,
+          "sha256": "9d13787b6e6007ee165a5ee697b8e9717cb30bfc50a2265418a896a9dffebd1f"
+        },
+        {
+          "kind": "poster",
+          "file": "apps/app/public/zeno/fitness/pull-up-poster.webp",
+          "bytes": 9678,
+          "sha256": "ea3a139098bc4b1494ee6831458abe56709fedd8d4f380974e9d4cb7346189b2"
+        },
+        {
+          "kind": "originalGeneratedReference",
+          "file": "apps/app/art-source/fitness/mainstream/b/pull-up-retry-reference.png",
+          "bytes": 1545797,
+          "sha256": "655b6854bc03fce564906330e275e47d0517d65209706805631ce14370b3242f"
+        }
+      ],
+      "fullVideoDecode": true,
+      "manuallyViewedContactFrames": 8,
+      "noAudio": true
+    },
+    {
+      "canonicalExerciseId": "3094",
+      "name": "jumping-jack",
+      "kind": "diagram",
+      "files": [
+        {
+          "kind": "video",
+          "file": "apps/app/public/zeno/fitness/jumping-jack.mp4",
+          "bytes": 194535,
+          "sha256": "cd89ee731f90a4b95236ca429845c64ed928c4da2ff7acbe85783cb6fae6b54a"
+        },
+        {
+          "kind": "poster",
+          "file": "apps/app/public/zeno/fitness/jumping-jack-poster.webp",
+          "bytes": 8318,
+          "sha256": "816466a9012bc580dc867dc5c5a3a48acbc8563b82e13b1ccb94ddd2513d72cf"
+        },
+        {
+          "kind": "originalVectorSource",
+          "file": "apps/app/art-source/fitness/mainstream/b/jumping-jack-diagram.mjs",
+          "bytes": 5458,
+          "sha256": "b637b1d2d2209fb5da02f0a7419e860a528cc801689536f53b56dab2dfb9d300"
+        },
+        {
+          "kind": "originalVectorSource",
+          "file": "apps/app/art-source/fitness/mainstream/b/render-jumping-jack.mjs",
+          "bytes": 2430,
+          "sha256": "2f31b6f3d10eb18baca0f41d9bffa611d5dc61cb340fefd1426b8adad55a39a5"
+        },
+        {
+          "kind": "originalVectorSource",
+          "file": "apps/app/art-source/fitness/mainstream/b/jumping-jack-diagram-open.svg",
+          "bytes": 2783,
+          "sha256": "fa0cee5f2370a101e27aecbb2183a37759910f38adc76429d3240af71cfa217c"
+        },
+        {
+          "kind": "originalVectorSource",
+          "file": "apps/app/art-source/fitness/mainstream/b/jumping-jack-diagram-closed.svg",
+          "bytes": 2782,
+          "sha256": "d037a440c8b320a9f72ecc4015e47fa0794fcffcdf8572574e995de7b1a71616"
+        }
+      ],
+      "fullVideoDecode": true,
+      "manuallyViewedContactFrames": 8,
+      "noAudio": true,
+      "posterMatchesActualInitialFrame": true
+    }
+  ],
+  "pendingExercises": [],
+  "localPostprocessingCorrections": {
+    "libtvDownloadStdout": "Plain text paths, not NDJSON; finished video tasks reused without extra model calls.",
+    "posterEncoding": "System FFmpeg lacks libwebp; cwebp used.",
+    "svgRasterization": "MSVG test omitted strokes and was rejected; final 192-frame rendering uses Sharp/libvips."
+  },
+  "scope": "Local actual generated/original asset byte/codec/full-decode and human frame review only; no browser, deployment, native UI or clinical technique claim."
+}

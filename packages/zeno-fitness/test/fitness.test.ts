@@ -47,6 +47,14 @@ describe("fixed text-only Chinese catalogue", () => {
     expect(searchExercises({ query: "barbell bench press", limit: 100 }).some(row => row.id === "0025")).toBe(true);
     expect(searchExercises({ query: "不可能存在的动作" })).toHaveLength(0);
   });
+  test("hammer curl retains neutral grip instead of inheriting the upstream supination instruction", () => {
+    const hammer = findExercise("0313");
+    expect(hammer?.englishName).toBe("dumbbell hammer curl");
+    expect(hammer?.instructions.join(" ")).toContain("全程保持中立握法");
+    expect(hammer?.instructions.join(" ")).not.toContain("直到手掌朝前");
+    expect(findExercise("2239")?.instructions).toEqual(hammer?.instructions);
+    expect(findExercise("0294")?.instructions.join(" ")).not.toContain("全程保持中立握法");
+  });
 });
 describe("upstream numerical regressions and own-data lifecycle", () => {
   test("documented formula fixtures and high-rep refusal", () => {

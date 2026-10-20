@@ -1,0 +1,14 @@
+{
+  "nodeId": "91f2fbad-be11-4c35-9f9d-238f9aaaa776",
+  "taskId": "20261020205703631638518",
+  "referenceNodeId": "e5ba3f5b-f287-4349-93c1-a35f72d80f9b",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Use {{Node e5ba3f5b-f287-4349-93c1-a35f72d80f9b}} as the exact starting frame. Keep same Zeno otter seated on saddle, front paws on fixed handlebar, pale sage stationary bike, central crank, TWO opposed pedals, straps and studio. Fixed side-view tripod camera, no cuts, zooms or camera motion. Demonstrate eight seconds of relaxed steady SEATED STATIONARY CYCLING: both rear feet stay secured on their respective pedals as the connected crankset rotates FORWARD smoothly through several complete circles. Two crank arms and pedals always remain exactly 180 degrees opposed around ONE fixed axis; knees alternately flex and extend following the pedals, not pumping vertically. Hips stay on saddle, upper body quiet with gentle forward lean, both front paws continuously hold handlebars. Bike frame and floor stabilizers remain perfectly fixed; flywheel may spin, no road travel. Keep tail clear of cranks and all limbs recognizable, no extra pedals or limbs, no feet detaching or morphing geometry, no text or sound. Calm readable stylized indoor cycling illustration.",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  }
+}

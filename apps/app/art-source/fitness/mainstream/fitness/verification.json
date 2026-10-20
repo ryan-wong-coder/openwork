@@ -1,0 +1,46 @@
+{
+  "checkedAt": "2026-10-20T13:26:43.075Z",
+  "batch": {
+    "completedExercises": 10,
+    "mascotVideos": 10,
+    "posters": 10,
+    "actualReviewedFramesPerVideo": 8,
+    "restrictedUpstreamMediaUsed": false,
+    "clinicalValidationClaimed": false
+  },
+  "aggregate": {
+    "selectedExactExercises": 32,
+    "mascotVideos": 30,
+    "diagramVideos": 2,
+    "completeLocalMediaFiles": 64,
+    "allCompleteSourceHashesMatched": true,
+    "mainstreamRuntimeMappingMatchesSelection": true
+  },
+  "checks": [
+    {
+      "command": "PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false pnpm --filter @openwork/app typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false pnpm --filter @zeno/fitness typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false pnpm --filter @zeno/fitness exec bun test test/fitness.test.ts",
+      "exitCode": 0,
+      "passed": 43,
+      "assertions": 2086
+    },
+    {
+      "command": "PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false pnpm --filter @openwork/app exec bun test tests/zeno-personal-data.test.ts tests/zeno-account-boundary.test.tsx tests/zeno-event-lifetime.test.ts tests/zeno-form-input.test.tsx tests/zeno-exercise-visual.test.ts",
+      "exitCode": 0,
+      "passed": 31,
+      "assertions": 25438
+    },
+    {
+      "command": "node --check apps/app/scripts/zeno-fitness-visual-browser-qa.mjs",
+      "exitCode": 0
+    }
+  ],
+  "scope": "Source and actual reviewed batch media only. Production browser UI, remote PWA deployment, packaged native updates and release acceptance are verified separately."
+}

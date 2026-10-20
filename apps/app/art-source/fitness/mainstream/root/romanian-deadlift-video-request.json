@@ -1,0 +1,8 @@
+{
+  "canonicalExerciseId": "0085",
+  "englishName": "barbell romanian deadlift",
+  "prompt": "Use {{Node REFERENCE_NODE}} as the exact starting frame. This starts at the BOTTOM HIP-HINGE of a barbell ROMANIAN DEADLIFT with knees almost straight and bar suspended at mid shin. Preserve this original teal otter, lime strap, rigid barbell, contact, floor, framing. Demonstrate ONE controlled hip-hinge cycle from bottom to upright and back: over first three seconds extend ONLY hips to stand tall, bar staying very close to legs and arms straight; pause upright; over next three seconds push hips BACK and tip neutral torso FORWARD to the exact horizontal-torso starting pose, knees staying softly bent by only 10\u201315 degrees throughout. Return bar to mid shins suspended ABOVE floor and hold. Legs must remain nearly straight, shins vertical and knees MUST NOT bend into a squat. No floor contact with bar, no biceps curl or row, no knees-forward sitting, no rounding back. Paws stay attached to rigid horizontal bar and feet stay planted. Keep camera fixed and far away with ALL head, ears, feet and weights fully visible even standing; do not zoom, crop, pan or reframe. No new limbs, objects, morphing, text, watermark or audio.",
+  "attempt": 2,
+  "retryReason": "First version did not make the near-straight-leg hip hinge clear enough; second starts in an explicit side-on hinge.",
+  "referenceNodeId": "8296b82a-a51d-422f-9f87-60de40bef8a6"
+}

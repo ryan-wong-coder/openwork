@@ -1,0 +1,348 @@
+{
+  "createdAt": "2026-10-20",
+  "tools": [
+    "built-in image_gen.imagegen",
+    "official libtv CLI",
+    "ffmpeg encoding and contact sheets",
+    "cwebp format encoding"
+  ],
+  "restrictedUpstreamMediaUsed": false,
+  "assets": [
+    {
+      "name": "bench-press",
+      "canonicalExerciseId": "0025",
+      "englishName": "barbell bench press",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/bench-press.mp4",
+        "bytes": 201460,
+        "sha256": "bd56c120ed0818d2b49c184069762f79296743c5871f4d8a7c533da38b16d70c"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/bench-press-poster.webp",
+        "bytes": 25778,
+        "sha256": "58cc9caf32624ce7fb51e8ca11ca8f3be392bd2dc4dbaf5df4933409a83d5590"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/mainstream/root/bench-press-reference.png",
+        "bytes": 1853992,
+        "sha256": "a0db81ae0e553040137ddafc6658c5f986020c69c8bd593e76ded934f33638f2"
+      },
+      "originalGeneratedVideo": {
+        "bytes": 4414048,
+        "sha256": "f28225663d6d2ac247be783ec293939c58f88781ec456064a8f05332b1ac554d",
+        "retained": true,
+        "location": "private generation staging; excluded from repository"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "201460"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/mainstream/root/bench-press-contact.jpg",
+        "reviewed": true
+      },
+      "processing": "Full original single repetition, H.264 CRF26 1024px yuv420p, no audio, faststart; WebP poster from original generated first frame."
+    },
+    {
+      "name": "push-up",
+      "canonicalExerciseId": "0662",
+      "englishName": "push-up",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/push-up.mp4",
+        "bytes": 285500,
+        "sha256": "53620da9b2333313b3532428a5ac90fbd1be278b773cf04a8017526dcaf1261a"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/push-up-poster.webp",
+        "bytes": 30628,
+        "sha256": "a30735cbb9291964dd340093fbb28db72a23297d6c63bd09cc9662240f2c089e"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/mainstream/root/push-up-reference.png",
+        "bytes": 1941687,
+        "sha256": "b3558b0282560641e8829304abf1af0de8063e8b99cd163d2c78a8af9470e7f1"
+      },
+      "originalGeneratedVideo": {
+        "bytes": 4450190,
+        "sha256": "8046ba94770baa7f1d49332b9ace8aafc1343410493c73ab1b054f9a413df490",
+        "retained": true,
+        "location": "private generation staging; excluded from repository"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "285500"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/mainstream/root/push-up-contact.jpg",
+        "reviewed": true
+      },
+      "processing": "Full original single repetition, H.264 CRF26 1024px yuv420p, no audio, faststart; WebP poster from original generated first frame."
+    },
+    {
+      "name": "bent-over-row",
+      "canonicalExerciseId": "0027",
+      "englishName": "barbell bent over row",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/bent-over-row.mp4",
+        "bytes": 225305,
+        "sha256": "51a461cbf5dbcd0c6d1240bff5dcee5f89645dc4975aa1e1f6ecd9d65059cda6"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/bent-over-row-poster.webp",
+        "bytes": 25088,
+        "sha256": "b8bc990eb7791d0213b54f18ff4a5ddc34360ad1c31468571a350f7686e1f720"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/mainstream/root/bent-over-row-reference.png",
+        "bytes": 1856481,
+        "sha256": "e203ebcce30f25cdbac11bc35f83d88616ec3a7692dca15ce560eb32ded719d8"
+      },
+      "originalGeneratedVideo": {
+        "bytes": 3573620,
+        "sha256": "f9238cc4dfe929df2eacf6199a8974e0b05076dccd75527481406fad57bb021a",
+        "retained": true,
+        "location": "private generation staging; excluded from repository"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "225305"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/mainstream/root/bent-over-row-contact.jpg",
+        "reviewed": true
+      },
+      "processing": "Full original single repetition, H.264 CRF26 1024px yuv420p, no audio, faststart; WebP poster from original generated first frame."
+    },
+    {
+      "name": "barbell-squat",
+      "canonicalExerciseId": "3593",
+      "englishName": "barbell squat",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/barbell-squat.mp4",
+        "bytes": 251867,
+        "sha256": "c915f5b91ff3163678ce1937214e696d9833da181a74fa13ec2ad2fd759b627b"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/barbell-squat-poster.webp",
+        "bytes": 22584,
+        "sha256": "a6732f5616e70603a94b8bb601e3d9789ef84e1549a2e4615273270499f99e43"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/mainstream/root/barbell-squat-reference.png",
+        "bytes": 1840134,
+        "sha256": "f787d6a16c96c16295a2de8a7038bdc114c91cf3e8b0da7252e15d51267ebfe8"
+      },
+      "originalGeneratedVideo": {
+        "bytes": 4103060,
+        "sha256": "1d35ee9f2761cd908de52b1516db11ce6bc889a1b85e6ce052824d0e923f4179",
+        "retained": true,
+        "location": "private generation staging; excluded from repository"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "251867"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/mainstream/root/barbell-squat-contact.jpg",
+        "reviewed": true
+      },
+      "processing": "Full original single repetition, H.264 CRF26 1024px yuv420p, no audio, faststart; WebP poster from original generated first frame."
+    },
+    {
+      "name": "goblet-squat",
+      "canonicalExerciseId": "1760",
+      "englishName": "dumbbell goblet squat",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/goblet-squat.mp4",
+        "bytes": 182341,
+        "sha256": "c77066cceb65c240ec86378c64aad5df3bde0d2f074dcdb6a9db3c66a7cefbae"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/goblet-squat-poster.webp",
+        "bytes": 16376,
+        "sha256": "568fa69967cef5aafa11cbfd8128535981f8014d69da3f2656d90b75fa4cc270"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/mainstream/root/goblet-squat-reference.png",
+        "bytes": 1720124,
+        "sha256": "4fb4063aea9bc2de2e29e3ee458319bab83ce7923a6ff3a18722c6ad651ac575"
+      },
+      "originalGeneratedVideo": {
+        "bytes": 3208922,
+        "sha256": "83fa28073a488c35c506b39afb1e3cd7ce0d8cc00057ec0beea654599176f8e0",
+        "retained": true,
+        "location": "private generation staging; excluded from repository"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "182341"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/mainstream/root/goblet-squat-contact.jpg",
+        "reviewed": true
+      },
+      "processing": "Full original single repetition, H.264 CRF26 1024px yuv420p, no audio, faststart; WebP poster from original generated first frame."
+    },
+    {
+      "name": "deadlift",
+      "canonicalExerciseId": "0032",
+      "englishName": "barbell deadlift",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/deadlift.mp4",
+        "bytes": 180718,
+        "sha256": "7754eff9f0524e3f2c5b6be0368b7cbde884eb52544c2b78f8d1ddc1323af10a"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/deadlift-poster.webp",
+        "bytes": 12648,
+        "sha256": "13611af7e4dc6166b9f859637d75bc71357022d09cf0955ada95c4aadd0c15ef"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/mainstream/root/deadlift-reference.png",
+        "bytes": 1630622,
+        "sha256": "6b8b8afabfdd6108e54d3b00934cc70174e25d433b580cba586e8bc66f86ad91"
+      },
+      "originalGeneratedVideo": {
+        "bytes": 2657262,
+        "sha256": "698f38fb7b23af55275cca0cb2ec6069c1569be63b43689626dd612f93ff81ff",
+        "retained": true,
+        "location": "private generation staging; excluded from repository"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "180718"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/mainstream/root/deadlift-contact.jpg",
+        "reviewed": true
+      },
+      "processing": "Full original single repetition, H.264 CRF26 1024px yuv420p, no audio, faststart; WebP poster from original generated first frame."
+    },
+    {
+      "name": "romanian-deadlift",
+      "canonicalExerciseId": "0085",
+      "englishName": "barbell romanian deadlift",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/romanian-deadlift.mp4",
+        "bytes": 186203,
+        "sha256": "5e44c0df6cde28adea4ebe14d3e03aab1f312576bdcdf279d8b04a5fe7b7a6fa"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/romanian-deadlift-poster.webp",
+        "bytes": 12292,
+        "sha256": "789c8a0af421db37595cfabb6a1226a9437595a6f09b710727aeee2f5654cdd8"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/mainstream/root/romanian-deadlift-reference.png",
+        "bytes": 1635679,
+        "sha256": "9ee26c4b4b46b6c93a6e6a2f30443c0a0d0a3159d6a848631a1ef1c9490455ec"
+      },
+      "originalGeneratedVideo": {
+        "bytes": 3115554,
+        "sha256": "885a9623d50424217825c8baf3b634fd146ced7d347302b0d98946ccb1d30f0a",
+        "retained": true,
+        "location": "private generation staging; excluded from repository"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.000000",
+          "size": "186203"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/mainstream/root/romanian-deadlift-contact.jpg",
+        "reviewed": true
+      },
+      "processing": "Second generation: selected source interval 1.5\u20137.5 seconds, slowed 4/3 to one complete upright-to-hinge-to-upright repetition; H.264 CRF26 1024px yuv420p, 24fps, no audio, faststart. Poster is the actual first selected frame."
+    }
+  ]
+}

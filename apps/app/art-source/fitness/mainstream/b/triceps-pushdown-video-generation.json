@@ -1,0 +1,14 @@
+{
+  "nodeId": "738aeaf2-e0c4-44d2-adc2-16ae7117439e",
+  "taskId": "20261020205103699218518",
+  "referenceNodeId": "69b4b47d-706c-4960-be01-51b502106e13",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Use {{Node 69b4b47d-706c-4960-be01-51b502106e13}} as the exact starting frame. Keep the same Zeno otter, fixed cable tower and high pulley, one taut diagonal cable connected to one two-ended braided rope attachment; paws grip the respective rope ends throughout. Locked tripod camera, no cuts, no zooms. Perform exactly ONE slow standing ROPE TRICEPS PUSHDOWN: elbows start bent about 90 degrees and upper arms stay tucked against ribs; extend both elbows over three seconds to press rope ends downward toward outer thighs, gently separating the two ends near bottom, until arms are nearly straight. Pause briefly, then bend elbows slowly over three seconds returning paws/rope to the original chest-height position. Hold final second. Elbows remain in same location, shoulders stay down and torso is still with grounded feet. Only forearms move about elbows, not the upper arms. Never pull elbows backward for a row, lift hands overhead, squat or swing. Cable and both rope ends remain connected and taut, no disappearing rope or geometry changes, no extra limbs, text or audio. Calm clear stylized mascot movement illustration.",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "canonicalExerciseId": "1760",
+  "englishName": "dumbbell goblet squat",
+  "prompt": "Use {{Node b4f25e70-bc33-45ba-aa7a-881279ee5252}} as the exact starting frame, preserve this original otter identity, teal fur, cream belly, lime strap, exactly four limbs, equipment and ivory studio. Fixed three-quarter side camera, full body and weights stay visible, no cuts or zooms. Perform ONE controlled DUMBBELL GOBLET SQUAT. Keep exactly one vertical dumbbell fixed against chest, both paws cupping beneath its upper head and elbows down. From tall standing, bend hips and knees for three seconds to squat until thighs about parallel with floor, torso upright, heels flat and knees tracking toes; pause; drive through both feet to stand for three seconds, then hold. Feet stay in place and one dumbbell stays near chest at all times. No curling, pressing overhead, second weight, heel lift, bent spine or tail support. Equipment remains rigid, weights stay symmetric, paws never lose contact. No morphing, duplicated equipment, extra limbs, text, watermark or audio. Calm readable stylized mascot movement.",
+  "project": "28d2746051df44e5bfc4a3fa68fa73a5",
+  "referenceNodeId": "b4f25e70-bc33-45ba-aa7a-881279ee5252",
+  "nodeId": "fd6e863d-6b7f-40dd-ba13-e98e20aaa89c",
+  "taskId": "20261020204903782588518",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "182341"
+    }
+  },
+  "originalSha256": "83fa28073a488c35c506b39afb1e3cd7ce0d8cc00057ec0beea654599176f8e0",
+  "originalBytes": 3208922,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "frames": 8,
+    "intervalSeconds": 1,
+    "reviewed": true
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "canonicalExerciseId": "0417",
+  "englishName": "dumbbell standing calf raise",
+  "project": "28d2746051df44e5bfc4a3fa68fa73a5",
+  "referenceNodeId": "ff6161a8-700b-41c7-9706-174cae62b994",
+  "name": "Mainstream 0417 calf raise native demonstration",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Use {{Node ff6161a8-700b-41c7-9706-174cae62b994}} as the exact starting frame. Preserve the original Zeno otter, dark teal plush fur, cream belly, lime Z strap, body proportions, one fixed charcoal dumbbell gripped in EACH paw, ivory studio and soft lighting. Static tripod side three-quarter camera, full body and BOTH HEELS always visible, no cuts or zooms. Demonstrate exactly ONE slow two-leg DUMBBELL STANDING CALF RAISE on level floor: start with both feet completely flat; over three seconds raise BOTH HEELS off the floor by plantar flexing the ankles while all toes/balls of feet stay firmly planted; the entire upright body rises a modest distance; hold the tiptoe position briefly with a visible gap below both heels; over three seconds smoothly lower both heels to the same floor positions; hold the original flat-foot pose for final second. Knees stay nearly straight without bending into a squat, hips and torso stay vertical, arms hang still, paws keep holding dumbbell handles. The dumbbells only travel upward with the body and NEVER curl, raise sideways or change shape. Feet never jump, slide, separate or step; tail stays behind and cannot support body weight. Do not simply move the whole feet upward: toes must stay on the floor while heels pivot up. No extra limbs, no bouncing, no text, logos, watermarks, sound or camera motion. Calm clear stylized mascot exercise illustration.",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  }
+}

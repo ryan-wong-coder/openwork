@@ -1,0 +1,14 @@
+{
+  "nodeId": "fc345c39-1108-4bc3-b409-2afce5a54bb6",
+  "taskId": "20261020204603174898518",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Use {{Node 79f3b466-8ed7-4307-8223-827b5bb21f04}} as the exact first frame and preserve the original Zeno otter's identity, teal plush fur, cream belly, lime diagonal Z strap, proportions, empty paws, tail, ivory studio and fixed lighting. Static tripod side three-quarter camera, no cuts or zoom. Exactly ONE slow BODYWEIGHT FORWARD LUNGE with the same leading leg: start upright, over one second step the nearer foot forward to the right about one comfortable stride; keep the leading foot FLAT and stationary; over two seconds bend both knees and lower hips vertically until the leading knee is near 90 degrees and stays aligned above its ankle, while rear knee bends toward the floor and rear heel rises; brief controlled hold without rear knee touching; over two seconds press through the planted front foot to rise; step that same foot back to the exact original standing stance; hold still for the final second. Torso stays upright and balanced, paws remain on hips. Legs articulate naturally without changing length, feet never slide or cross, tail stays off floor and does not support weight. Clearly show the two distinct knees and correct forward lunge movement. No weights, jumping, walking multiple steps, split-squat repetitions, backward lunge, disappearing limbs, text, logos, watermarks or sound. Calm readable stylized mascot exercise illustration.",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "status": 2
+}

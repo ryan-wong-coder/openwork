@@ -1,0 +1,8 @@
+{
+  "canonicalExerciseId": "0027",
+  "englishName": "barbell bent over row",
+  "tool": "built-in image_gen.imagegen",
+  "prompt": "Use case: stylized-concept. Asset type: original Zeno fitness first frame, 16:9. Reference is only mascot identity: friendly teal plush otter, cream muzzle and belly, black eyes, whiskers, lime diagonal Z strap and round tail. BARBELL BENT-OVER ROW start. Full body side three-quarter view facing right. Feet hip width planted, knees softly bent, hips pushed backward, torso hinged forward roughly 40 degrees above horizontal with a neutral flat back. One straight horizontal charcoal barbell with equal small plates hangs below the shoulders, held in both paws slightly wider than legs with double overhand grip, arms straight and bar below knees. Both paws clearly attached to the same bar. Room between bar and lower abdomen for rowing. Head follows neutral spine, eyes slightly down; tail extends behind and does not bear weight. Warm ivory seamless studio, pale sage floor, soft light and contact shadow, refined calm 3D illustration. All paws, feet, plates and tail visible. No upright stance, rounded hunch, curling elbows in starting frame, dumbbells, extra bars, rack, text, watermark, human skin, extra limbs or cropped equipment.",
+  "reference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/root/bent-over-row-reference.png"
+}

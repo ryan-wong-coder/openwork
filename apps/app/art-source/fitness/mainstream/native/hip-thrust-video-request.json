@@ -1,0 +1,16 @@
+{
+  "canonicalExerciseId": "1060",
+  "englishName": "barbell hip thrust",
+  "project": "28d2746051df44e5bfc4a3fa68fa73a5",
+  "referenceNodeId": "0cb8e8ab-6d83-465c-b0de-23ce3e5e2b0e",
+  "name": "Mainstream 1060 hip thrust native demonstration",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Use {{Node 0cb8e8ab-6d83-465c-b0de-23ce3e5e2b0e}} as the exact first frame. Preserve the original Zeno otter's identity, teal fur, cream belly, lime Z strap, proportions, stable pale sage bench, both feet planted flat, and ONE rigid charcoal barbell with a padded sleeve resting across the HIP CREASE below the abdomen. Fixed tripod full-body side three-quarter camera, no cuts, zooms or camera motion. Demonstrate exactly ONE slow BARBELL HIP THRUST: from the low-hip start, push through both grounded heels and smoothly extend the hips upward over three seconds, rotating the torso around the shoulder blades that stay against the SAME bench edge; at the top hips are lifted until shoulders, hips and knees form an approximately straight horizontal line, knees bent about 90 degrees and shins nearly vertical; pause briefly; over three seconds lower the hips under control back to the original low position without sitting on floor; hold still for final second. The upper back remains in contact with bench throughout, bench NEVER moves, feet never lift or slide, chin stays gently tucked and lower back never hyperextends. Both paws only steady the bar; the bar and plates travel WITH the hips and stay horizontal, not pulled up by the arms, never rising to chest or knees. Tail remains out of the way. Do not perform a sit-up, squat, bench press or floor glute bridge. No sliding under bench, clipping through mascot, floating equipment, extra limbs, text, logos, watermarks or sound. Calm readable stylized mascot movement illustration.",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "assets": [
+    {
+      "name": "pull-up",
+      "canonicalExerciseId": "0652",
+      "englishName": "pull-up",
+      "chineseName": "引体向上",
+      "video": {
+        "file": "pull-up.mp4",
+        "bytes": 151446,
+        "sha256": "785319f130332000116c4a91c5378074014b23653fc81db59e2bbb3ac235bcae",
+        "retained": false
+      },
+      "poster": {
+        "file": "pull-up-poster.webp",
+        "bytes": 15752,
+        "sha256": "b8d4e64616690dc719bb4625aee2d078dc1ec1e13928ca0c7b5deab07fa63e7f",
+        "retained": false
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/mainstream/b/pull-up-reference.png",
+        "bytes": 1685239,
+        "sha256": "2788292d42187f84af21e776f89758c48259cc004413c102b1815acbefd6a2fd"
+      },
+      "originalGeneratedVideo": {
+        "file": "Mainstream B 0652 pull-up.mp4",
+        "bytes": 3015640,
+        "sha256": "30d80835477d38ddca206ef386ac304bf795b34666c4818a7c3095f921c00035",
+        "retained": false
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "151446"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/mainstream/b/pull-up-contact.jpg",
+        "reviewed": true,
+        "verdict": "rejected",
+        "reason": "Head top cropped when chin cleared bar."
+      },
+      "processing": "Original full 8-second clip; H.264 CRF26 1024px/yuv420p, silent, faststart.",
+      "restrictedUpstreamMediaUsed": false,
+      "semanticSources": [
+        "https://www.nasm.org/resource-center/exercise-library/pull-up"
+      ],
+      "publiclyPromoted": false
+    },
+    {
+      "name": "jumping-jack",
+      "canonicalExerciseId": "3094",
+      "englishName": "jumping jack",
+      "chineseName": "开合跳",
+      "video": {
+        "file": "jumping-jack.mp4",
+        "bytes": 320596,
+        "sha256": "c61f5df757c194e42400cba6f2d06259975d7153ce23165c18071c0c4510cdbe",
+        "retained": false
+      },
+      "poster": {
+        "file": "jumping-jack-poster.webp",
+        "bytes": 10232,
+        "sha256": "d5afce45dc167b3d3bb93c2e57b8cddc1e07bb7b8e9a9af954a196a2639937bf",
+        "retained": false
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/mainstream/b/jumping-jack-reference.png",
+        "bytes": 1595880,
+        "sha256": "20ac8c17bba156660bdfde6b53b804dde286b558807d86a4e1ce22794a5cf691"
+      },
+      "originalGeneratedVideo": {
+        "file": "Mainstream B 3094 jumping-jack.mp4",
+        "bytes": 3448998,
+        "sha256": "7efcf013d0430baf277dd3c5f0e2a1c4ac35168ec025ca9d3cd5a6ffa8e45192",
+        "retained": false
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "320596"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/mainstream/b/jumping-jack-contact.jpg",
+        "reviewed": true,
+        "verdict": "rejected",
+        "reason": "Incomplete overhead arm extension; paws stop near sides of head."
+      },
+      "processing": "Original full 8-second clip; H.264 CRF26 1024px/yuv420p, silent, faststart.",
+      "restrictedUpstreamMediaUsed": false,
+      "semanticSources": [
+        "https://www.nasm.org/resource-center/exercise-library/jumping-jacks"
+      ],
+      "publiclyPromoted": false
+    },
+    {
+      "name": "jumping-jack-retry",
+      "canonicalExerciseId": "3094",
+      "englishName": "jumping jack",
+      "chineseName": "开合跳",
+      "video": {
+        "file": "jumping-jack-retry.mp4",
+        "bytes": 161290,
+        "sha256": "75e493ab256f407b3b2c73cf982a630acb06e0e304ea3a49a3b5d1ae7dbe2f8d",
+        "retained": false
+      },
+      "poster": {
+        "file": "jumping-jack-retry-poster.webp",
+        "bytes": 10232,
+        "sha256": "d5afce45dc167b3d3bb93c2e57b8cddc1e07bb7b8e9a9af954a196a2639937bf",
+        "retained": false
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/mainstream/b/jumping-jack-reference.png",
+        "bytes": 1595880,
+        "sha256": "20ac8c17bba156660bdfde6b53b804dde286b558807d86a4e1ce22794a5cf691"
+      },
+      "originalGeneratedVideo": {
+        "file": "Mainstream B 3094 jumping-jack-retry.mp4",
+        "bytes": 2749141,
+        "sha256": "3659542a41c7fe6cda75e0ee89756fbe2447feb69025f0c05176b7e3cb567ab4",
+        "retained": false
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "161290"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/mainstream/b/jumping-jack-retry-contact.jpg",
+        "reviewed": true,
+        "verdict": "rejected",
+        "reason": "Second attempt still keeps elbows flexed and paws beside crown/ears, rather than fully extended overhead; confirmed at full-resolution frames at 1.7 and 2.2 seconds."
+      },
+      "processing": "Original full 8-second clip; H.264 CRF26 1024px/yuv420p, silent, faststart.",
+      "restrictedUpstreamMediaUsed": false,
+      "semanticSources": [
+        "https://www.nasm.org/resource-center/exercise-library/jumping-jacks"
+      ],
+      "publiclyPromoted": false
+    }
+  ],
+  "additionalPaidRetryLimitPerExercise": 1
+}

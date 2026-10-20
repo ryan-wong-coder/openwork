@@ -1,0 +1,14 @@
+{
+  "nodeId": "b1c3e9f9-44a9-4a66-858d-0935f2256a63",
+  "taskId": "20261020210203381958518",
+  "referenceNodeId": "7b57977e-ba9b-43f5-9dc0-1e24631c01c6",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Use {{Node 7b57977e-ba9b-43f5-9dc0-1e24631c01c6}} as exact first frame. Fixed wide camera, preserve generous blank space above the same original Zeno otter, no zoom or cuts. Make ONE anatomically readable FULL JUMPING JACK cycle in eight seconds, NOT a wave: from feet together and paws down, over first three seconds sweep BOTH STRAIGHT ARMS fully out sideways then HIGH OVERHEAD until BOTH PAWS are visibly ABOVE the top of the head and nearly touch each other, while lightly hopping BOTH FEET outward to shoulder width. HOLD this fully OPEN star-like posture for a whole second: arms STRAIGHT UP next to ears, paws clearly higher than head, feet wide and grounded with soft knees. Over next three seconds gently hop feet back together and lower both straight arms through wide side arcs to thighs. Final second hold original neutral standing. Full range overhead arm extension is the key required motion: do NOT stop at shoulder height, keep elbows bent, wave paws, or flap short arms beside face. Preserve two arms and two legs, stable mascot identity and strap, all paws/feet/head fully visible, no added limbs, props, text or sound. Calm deliberate stylized movement illustration.",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  }
+}

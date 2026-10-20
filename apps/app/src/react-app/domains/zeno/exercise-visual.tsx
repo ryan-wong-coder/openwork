@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
 import { muscleMapSvg, type FitnessExercise } from "@zeno/fitness";
 import { Button } from "@/components/ui/button";
-import { exerciseMuscleValues, interpolatePose, mascotDemoForExercise, movementForExercise, movementProgress, type MovementScene, type Point } from "./movement-scenes";
+import { exerciseMuscleValues, interpolatePose, mascotDemoForExercise, movementForExercise, movementProgress, type ExerciseDemo, type MovementScene, type Point } from "./movement-scenes";
 
 const points = (...values: Point[]) => values.map(point => point.join(",")).join(" ");
 
@@ -69,7 +69,7 @@ export function ExerciseMovement({ scene }: { scene: MovementScene }) {
   </div>;
 }
 
-function MascotMovement({ demo }: { demo: { video: string; poster: string } }) {
+function MascotMovement({ demo, hasPose }: { demo: ExerciseDemo; hasPose: boolean }) {
   const video = useRef<HTMLVideoElement>(null);
   const [failed, setFailed] = useState(false);
   useEffect(() => {
@@ -80,14 +80,14 @@ function MascotMovement({ demo }: { demo: { video: string; poster: string } }) {
     return () => { element?.pause(); preference.removeEventListener("change", pause); document.removeEventListener("visibilitychange", pause); };
   }, []);
   const base = import.meta.env.BASE_URL;
-  return <div className="overflow-hidden rounded-xl bg-muted/35"><video ref={video} src={base + demo.video} poster={base + demo.poster} aria-label="泽诺吉祥物动作演示" controls muted playsInline preload="none" className="aspect-video w-full object-contain" onError={() => setFailed(true)} />{failed ? <p className="px-3 py-2 text-xs text-muted-foreground">视频暂不可用，可切换到姿态示意。</p> : null}</div>;
+  return <div className="overflow-hidden rounded-xl bg-muted/35"><video ref={video} src={base + demo.video} poster={base + demo.poster} aria-label={demo.kind === "diagram" ? "原创动作图解视频" : "泽诺吉祥物动作演示"} controls muted playsInline preload="none" className="aspect-video w-full object-contain" onError={() => setFailed(true)} />{failed ? <p className="px-3 py-2 text-xs text-muted-foreground">视频暂不可用，可切换到{hasPose ? "姿态示意" : "起始姿态"}。</p> : null}</div>;
 }
 
 export function ExerciseVisual({ exercise }: { exercise: FitnessExercise }) {
   const scene = movementForExercise(exercise);
   const demo = mascotDemoForExercise(exercise);
   const [view, setView] = useState(demo ? "mascot" : "pose");
-  return <section className="grid gap-3" aria-label="动作示意">{demo ? <div className="flex gap-1" role="group" aria-label="演示形式"><Button type="button" variant={view === "mascot" ? "secondary" : "ghost"} size="xs" aria-pressed={view === "mascot"} onClick={() => setView("mascot")}>泽诺演示</Button><Button type="button" variant={view === "pose" ? "secondary" : "ghost"} size="xs" aria-pressed={view === "pose"} onClick={() => setView("pose")}>姿态示意</Button></div> : null}{demo && view === "mascot" ? <MascotMovement demo={demo} /> : scene ? <ExerciseMovement key={scene.exerciseId} scene={scene} /> : <p className="py-3 text-xs text-muted-foreground">暂无动作演示</p>}</section>;
+  return <section className="grid gap-3" aria-label="动作示意">{demo ? <div className="flex gap-1" role="group" aria-label="演示形式"><Button type="button" variant={view === "mascot" ? "secondary" : "ghost"} size="xs" aria-pressed={view === "mascot"} onClick={() => setView("mascot")}>{demo.kind === "diagram" ? "动作图解" : "泽诺演示"}</Button><Button type="button" variant={view === "pose" ? "secondary" : "ghost"} size="xs" aria-pressed={view === "pose"} onClick={() => setView("pose")}>{scene ? "姿态示意" : "起始姿态"}</Button></div> : null}{demo && view === "mascot" ? <MascotMovement demo={demo} hasPose={Boolean(scene)} /> : scene ? <ExerciseMovement key={scene.exerciseId} scene={scene} /> : demo ? <img src={import.meta.env.BASE_URL + demo.poster} alt={`${exercise.name}起始姿态`} className="aspect-video w-full rounded-xl bg-muted/35 object-contain" /> : <p className="py-3 text-xs text-muted-foreground">暂无动作演示</p>}</section>;
 }
 
 export function ExerciseMuscleMap({ exercise }: { exercise: FitnessExercise }) {

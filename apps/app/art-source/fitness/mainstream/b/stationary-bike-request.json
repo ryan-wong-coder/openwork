@@ -1,0 +1,24 @@
+{
+  "canonicalExerciseId": "2138",
+  "englishName": "stationary bike run v. 3",
+  "chineseName": "固定自行车骑行 v. 3",
+  "name": "stationary-bike",
+  "imagePrompt": "Use case: stylized-concept. Asset type: original Zeno exercise video first frame, wide 16:9. Reference provides ONLY Zeno mascot identity: dark teal plush otter, cream muzzle and belly, black eyes, whiskers, lime diagonal Z strap and rounded tail. Create a new original UPRIGHT STATIONARY EXERCISE BIKE setup in a clean strict SIDE view facing right. Full-body otter SITS on the adjustable saddle of a simple pale sage stationary spin bike with charcoal flywheel cover and two wide floor stabilizers. Torso gently inclined forward, both front paws lightly rest on the fixed handlebar. Two rear feet are visibly secured onto TWO opposing pedals connected by a SINGLE crankset at the center of bike; near pedal is forward/down, far pedal back/up, crank arms precisely 180 degrees opposed. Feet and bent knees line up with the pedals, seated hips remain on saddle, lower legs clearly visible. Tail hangs off saddle to far side, never touches pedals. Bike remains fixed to floor; no road wheels or moving background. Entire otter, handlebars, saddle, both pedals and machine fit within generous frame. Warm ivory seamless studio, sage floor, soft light, refined calm 3D product illustration. No extra feet or arms, disconnected pedals, impossible crank geometry, clothing, text, logos, watermarks or other characters. It is seated indoor cycling, not running on a treadmill.",
+  "videoPrompt": "Use {{REFERENCE}} as the exact starting frame. Keep same Zeno otter seated on saddle, front paws on fixed handlebar, pale sage stationary bike, central crank, TWO opposed pedals, straps and studio. Fixed side-view tripod camera, no cuts, zooms or camera motion. Demonstrate eight seconds of relaxed steady SEATED STATIONARY CYCLING: both rear feet stay secured on their respective pedals as the connected crankset rotates FORWARD smoothly through several complete circles. Two crank arms and pedals always remain exactly 180 degrees opposed around ONE fixed axis; knees alternately flex and extend following the pedals, not pumping vertically. Hips stay on saddle, upper body quiet with gentle forward lean, both front paws continuously hold handlebars. Bike frame and floor stabilizers remain perfectly fixed; flywheel may spin, no road travel. Keep tail clear of cranks and all limbs recognizable, no extra pedals or limbs, no feet detaching or morphing geometry, no text or sound. Calm readable stylized indoor cycling illustration.",
+  "sourceReference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/b/stationary-bike-reference.png",
+  "project": "28d2746051df44e5bfc4a3fa68fa73a5",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "semanticSources": [
+    "https://www.nasm.org/workout-exercise-guidance",
+    "https://www.acefitness.org/continuing-education/certified/july-2018/7028/branch-out-with-cardio-equipment/"
+  ],
+  "restrictedUpstreamMediaUsed": false
+}

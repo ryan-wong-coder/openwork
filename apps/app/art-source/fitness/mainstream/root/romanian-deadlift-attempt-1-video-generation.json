@@ -1,0 +1,37 @@
+{
+  "canonicalExerciseId": "0085",
+  "englishName": "barbell romanian deadlift",
+  "prompt": "Use {{Node c40ee543-14d1-448c-aa9f-8c9b9c313d16}} as the exact starting frame, preserve this original otter identity, teal fur, cream belly, lime strap, exactly four limbs, equipment and ivory studio. Fixed three-quarter side camera, full body and weights stay visible, no cuts or zooms. Perform ONE slow ROMANIAN DEADLIFT. From upright standing with bar against thighs, keep both knees softly bent at nearly constant angle and both arms straight. Hinge hips far backward for three seconds, tip neutral torso forward while bar slides close down thighs to mid-shin WITHOUT touching floor. Pause with flat back and chest aligned; extend hips for three seconds to return upright, bar at upper thighs; hold. Feet and heels remain fixed flat, paws keep overhand grip, head follows spine. Emphasize hip hinge with little additional knee flexion, never deep squat. No curl, row, floor deadlift, backward leaning or rounded back. Equipment remains rigid, weights stay symmetric, paws never lose contact. No morphing, duplicated equipment, extra limbs, text, watermark or audio. Calm readable stylized mascot movement.",
+  "project": "28d2746051df44e5bfc4a3fa68fa73a5",
+  "referenceNodeId": "c40ee543-14d1-448c-aa9f-8c9b9c313d16",
+  "nodeId": "9ceee0a5-f11f-4ee0-88b0-fe26b96381d2",
+  "taskId": "20261020204903845648518",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "217523"
+    }
+  },
+  "originalSha256": "6fe8c1f7a2cae45cb5120e09bf024e073557ac9b2390888b1a018bf7fcec1baf",
+  "originalBytes": 2055970,
+  "manualReviewPending": false,
+  "manualReviewVerdict": "rejected",
+  "rejectionReason": "Hip hinge is not clear enough compared to conventional deadlift; a more side-on start at the hinge is required."
+}

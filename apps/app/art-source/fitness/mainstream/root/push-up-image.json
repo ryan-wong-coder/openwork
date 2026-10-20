@@ -1,0 +1,8 @@
+{
+  "canonicalExerciseId": "0662",
+  "englishName": "push-up",
+  "tool": "built-in image_gen.imagegen",
+  "prompt": "Use case: stylized-concept. Asset type: Zeno fitness demonstration first frame, wide 16:9. Reference image 1 supplies ONLY the existing Zeno otter identity, not pose or dumbbells. Preserve teal plush fur, cream muzzle and belly, black eyes, whiskers, lime diagonal strap with small Z buckle and rounded tail. Create a new original standard BODYWEIGHT PUSH-UP starting pose. Side view facing left, entire otter clearly visible with two FRONT paws flat on the floor under the shoulders, front legs straight, two rear feet/toes on the floor well behind the hips. Body forms one long diagonal line from head through shoulders and hips to rear heels, abdomen lifted well clear of the floor, neck neutral, looking down. There are exactly four limbs; the rounded tail extends behind the hips and floats above the floor without supporting the body. No knees touching the floor, no dumbbells, no bench, no yoga downward dog. Camera at a low side three-quarter angle to show both supporting paws and body line. Warm ivory seamless background, subtle sage floor and gentle contact shadow, soft studio light, refined calm 3D product illustration matching reference. Leave clean space around all paws and torso for one subsequent push-up repetition. No text, logos, watermark, other characters, extra limbs or cropping.",
+  "reference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/root/push-up-reference.png"
+}

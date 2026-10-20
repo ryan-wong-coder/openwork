@@ -1,0 +1,23 @@
+{
+  "canonicalExerciseId": "0685",
+  "englishName": "run",
+  "chineseName": "跑步",
+  "name": "run",
+  "imagePrompt": "Use case: stylized-concept. Asset type: original Zeno fitness demonstration starting frame, wide 16:9. Reference image is Zeno identity only: friendly dark desaturated teal plush otter, cream muzzle/belly, black eyes, whiskers, lime diagonal Z strap, rounded tail. New original gentle RUNNING IN PLACE illustration, clear full-body SIDE three-quarter view facing right. Otter upright with small natural forward lean from ankles, gaze forward, relaxed shoulders. Both front arms bent about 90 degrees at sides, left arm forward/right arm back; left rear leg lifted slightly forward with bent knee while right foot makes light forefoot contact under the hip, plausible mid-jog stance. Distinct exactly two arms and two rear legs; show both paws, both feet and tail, no extra limbs. Tail behind body without ground support. Generous empty ivory space around head and feet for an in-place jogging cycle. Warm ivory seamless studio, subtle sage floor, soft light and gentle contact shadow, refined calm 3D product illustration. No treadmill, shoes, sports clothing, weights, scenery, sweat, text, logos, watermark or other characters. Not a high-knee march, sprint or leap; the same friendly mascot in a relaxed natural jog pose.",
+  "videoPrompt": "Use {{REFERENCE}} as the exact first frame and retain original Zeno otter identity, four limbs, lime strap, studio and lighting. Fixed side three-quarter camera, no cuts or zoom, otter remains centered without translating across floor. Demonstrate a calm readable RUNNING IN PLACE cycle for eight seconds: alternate left and right legs in a light continuous jog with soft forefoot landings under hips, modest knee lift and each heel lifting naturally behind. The opposite arm swings forward as the other leg comes forward; both elbows stay comfortably bent and shoulders relaxed. Torso stays upright with slight natural lean, no exaggerated bouncing, sprinting or high-knee march. Both feet briefly leave floor naturally between alternating steps, but no floating or sliding. Tail moves only slightly for balance without acting as a leg. Keep all paws, feet and head visible throughout, identity stable, exactly two arms and two legs, no text or sound. A friendly stylized running movement illustration, not human anatomy coaching.",
+  "sourceReference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/b/run-reference.png",
+  "project": "28d2746051df44e5bfc4a3fa68fa73a5",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "semanticSources": [
+    "https://www.nasm.org/workout-exercise-guidance"
+  ],
+  "restrictedUpstreamMediaUsed": false
+}

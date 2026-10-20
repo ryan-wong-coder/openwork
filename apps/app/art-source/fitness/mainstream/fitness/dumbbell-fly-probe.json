@@ -1,0 +1,15 @@
+{
+  "programs": [],
+  "stream_groups": [],
+  "streams": [
+    {
+      "codec_name": "h264",
+      "width": 1024,
+      "height": 576
+    }
+  ],
+  "format": {
+    "duration": "8.041667",
+    "size": "193891"
+  }
+}

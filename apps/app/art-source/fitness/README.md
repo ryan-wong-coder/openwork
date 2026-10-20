@@ -1,8 +1,33 @@
 # Zeno original fitness visuals
 
-This set contains three newly generated mascot illustrations and three distinct local
-exercise clips. The identity reference is Zeno's existing otter mascot; no openGym/Gym
-visual exercise image, animation, video, screenshot or prompt reference was used.
+This set covers **32 mainstream exact catalogue exercises** with 32 original posters
+and 32 local videos: **30 mascot demonstrations and two original diagram videos**.
+The identity reference is Zeno's established otter mascot; no openGym/Gym visual exercise
+image, animation, video, screenshot or prompt reference was used.
+
+`mainstream/selection.json` records every exact canonical ID, English name, equipment and
+asset stem. The runtime `mascot-demos.json` contains only completed, reviewed media.
+Different equipment or variants never borrow a technique. The catalogue places these
+completed demonstrations first within matching search results, keeping exact-name matches,
+equipment/muscle filters and custom exercises available.
+
+The four batch folders under `mainstream/` contain the complete final built-in Image Gen
+prompts, official LibTV CLI task/model/prompt records, eight-frame contact sheets, rejected
+attempt records and encoding provenance. All 64 final app files are fully hashed in
+`provenance.json`. Accepted mascot clips use local silent H.264/yuv420p with fast-start
+metadata, and the matching posters are local WebP. No generation runs in the product.
+
+`0612` lunge and `3094` jumping jack use original SVG/Canvas poses recorded to MP4 after
+the bounded generated-video attempts failed review. Their UI is labelled “动作图解”; they
+are not presented as mascot animation. The corresponding generators, pose sources and
+recording verification are in `mainstream/native/` and `mainstream/b/`. The other 30
+videos are independently generated mascot scenes. Each selected eight-frame contact sheet
+was actually viewed; professional human technique or clinical validation is not claimed.
+
+## Original three-asset batch
+
+The initial batch below remains part of the 32 completed movements. Its generation records,
+original references and selected contacts retain their original provenance.
 
 | Exact canonical exercise | Poster and video stem |
 | --- | --- |
@@ -28,14 +53,14 @@ build bases. Generation is not needed at runtime.
 
 ## Coverage and attribution
 
-`movement-scenes.ts` supplies **11** original vector keyframe demonstrations, of which
-**3** also have these mascot videos. The remaining **5,621** canonical exercises do not
+`movement-scenes.ts` supplies **11** original vector keyframe demonstrations, all included
+in the 32 selected movements. The remaining **5,600** canonical exercises do not
 have a demonstration: their detail reports that state rather than displaying another
 technique. Their own primary/secondary muscle data still powers the front/back muscle map.
 Custom exercise pictures/GIF/video use the existing authenticated media store and take
 priority over built-in art. Historical custom muscle snapshots remain readable.
 
-The vector coordinates are original Zeno work. Anatomy outlines come from the existing
+The vector coordinates and two recorded diagram sources are original Zeno work. Anatomy outlines come from the existing
 MIT MuscleMap-derived geometry in `@zeno/fitness`; the retained MIT and AGPL notices are in
 `packages/zeno-fitness/{NOTICE,UPSTREAM-NOTICE}.md` and its corresponding source remains
 in the repository. These files do not expand the upstream Gym visual media permission.
@@ -54,7 +79,9 @@ no photographs or diagrams from these pages were used as image/video input or co
 - NASM, [Standing calf raise movement](https://www.nasm.org/resource-center/blog/training/calf-training-how-to-program-this-stubborn-muscle-group-for-clients).
 
 The detail uses existing Base UI dialogs/buttons, semantic color tokens, progressive
-step disclosure and static-by-default motion. SVG playback supports pause, keyboard
+step disclosure and static-by-default motion. Completed video-only movements also offer
+their real starting poster; the original eleven retain the scrub-able vector view.
+SVG playback supports pause, keyboard
 scrubbing, system reduced motion and actual tab visibility changes. Video playback is
 explicit through native controls; tab hiding and changes to reduced-motion preference
 pause it. No animation automatically resumes after returning to the tab.

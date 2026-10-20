@@ -1,0 +1,103 @@
+{
+  "checkedAt": "2026-10-20T13:28:49.120963+00:00",
+  "passed": true,
+  "browserReportSha256": "015a3f8ae5f85b5a0e8276d22191a94a90c7036cb73d402567b11b16206ee92b",
+  "productionIndexSha256": "4ccf4208b2fc463a518f553729f28338ec0d8aad7ae1045af5199aedbe267102",
+  "checks": 15,
+  "actualScreenshotsViewed": 12,
+  "screenshots": [
+    {
+      "file": "screenshots/desktop-mainstream-catalogue.png",
+      "bytes": 81425,
+      "sha256": "b1a5eb3569b791d5aa22c0245c15324204332ec3904f56f6db06d8164d28a703",
+      "actuallyViewed": true,
+      "reviewedAt": "2026-10-20T13:28:49.118214+00:00"
+    },
+    {
+      "file": "screenshots/desktop-catalogue-bench-light.png",
+      "bytes": 100292,
+      "sha256": "608e42703d8a01cc29cc71acac9b331eda0d9e4a2d2cf2af7de21cfc51a1b7e1",
+      "actuallyViewed": true,
+      "reviewedAt": "2026-10-20T13:28:49.118616+00:00"
+    },
+    {
+      "file": "screenshots/desktop-bench-dark-reduced-motion.png",
+      "bytes": 100959,
+      "sha256": "43702d996ba8db90bb69964e05da440158122a708b6e207159b51346840ac223",
+      "actuallyViewed": true,
+      "reviewedAt": "2026-10-20T13:28:49.118855+00:00"
+    },
+    {
+      "file": "screenshots/mobile-bench-dark-reduced-motion.png",
+      "bytes": 36351,
+      "sha256": "0863de6d7568581b43ab7cc257afc059c02e0a9c25b445e7b84ec2108054d8b2",
+      "actuallyViewed": true,
+      "reviewedAt": "2026-10-20T13:28:49.119056+00:00"
+    },
+    {
+      "file": "screenshots/mobile-uncovered-exercise.png",
+      "bytes": 38501,
+      "sha256": "3334b16d54527802388a25006550bfc51146687b7697beb95eb65c3601b60508",
+      "actuallyViewed": true,
+      "reviewedAt": "2026-10-20T13:28:49.119265+00:00"
+    },
+    {
+      "file": "screenshots/mobile-mascot-curl.png",
+      "bytes": 72758,
+      "sha256": "307b0f0bcc96adc17e4e5c517417c2f796b88960c8faa57f7a59e4310e2e9fb4",
+      "actuallyViewed": true,
+      "reviewedAt": "2026-10-20T13:28:49.119492+00:00"
+    },
+    {
+      "file": "screenshots/mobile-mascot-squat.png",
+      "bytes": 78591,
+      "sha256": "029446e6c3aad18f3ab70e0120002cabde5a79b6a9da124d73db8c5f8b85ef59",
+      "actuallyViewed": true,
+      "reviewedAt": "2026-10-20T13:28:49.119736+00:00"
+    },
+    {
+      "file": "screenshots/mobile-mascot-shoulder-press.png",
+      "bytes": 82483,
+      "sha256": "880d177af845120a9edfd009ace0860d48f2ed6237028f0d166b31fcc7adb281",
+      "actuallyViewed": true,
+      "reviewedAt": "2026-10-20T13:28:49.119963+00:00"
+    },
+    {
+      "file": "screenshots/mobile-mascot-dumbbell-bench-press.png",
+      "bytes": 85758,
+      "sha256": "a2efefc7f873d219264cdec469adae92773f570cef19b439cfd155d1aafdaa58",
+      "actuallyViewed": true,
+      "reviewedAt": "2026-10-20T13:28:49.120191+00:00"
+    },
+    {
+      "file": "screenshots/mobile-video-only-starting-pose-dark.png",
+      "bytes": 86038,
+      "sha256": "72c445217eb7e958286bb093a3f0790619c42c32f74f99434beb513f9854292f",
+      "actuallyViewed": true,
+      "reviewedAt": "2026-10-20T13:28:49.120459+00:00"
+    },
+    {
+      "file": "screenshots/mobile-mascot-jumping-jack.png",
+      "bytes": 45115,
+      "sha256": "023b10d72f496a5fe840962f40c365727e39e7d774bab951d6cc67c11bf4424c",
+      "actuallyViewed": true,
+      "reviewedAt": "2026-10-20T13:28:49.120646+00:00"
+    },
+    {
+      "file": "screenshots/desktop-workout-entry.png",
+      "bytes": 159157,
+      "sha256": "caf19bd9fc7063062f51b3aa776a0e63d3032e378ef85d903a31baa4fb4596ac",
+      "actuallyViewed": true,
+      "reviewedAt": "2026-10-20T13:28:49.120961+00:00"
+    }
+  ],
+  "observations": [
+    "Unfiltered catalogue leads with completed mainstream entries, query/filter controls remain visible.",
+    "Catalogue and active workout open the same shared detail with unchanged exercise history.",
+    "Desktop/mobile light/dark detail retains clear controls, close action and front/back muscle map without horizontal overflow.",
+    "Video-only dumbbell bench press has its own actual initial poster and a starting-pose control.",
+    "Jumping-jack diagram uses the explicit Chinese action-diagram label and correct closed initial frame.",
+    "Uncovered narrow-grip bench retains an honest unavailable-demonstration state instead of borrowing another variant."
+  ],
+  "scope": "All 12 saved screenshots actually viewed after the accepted real production-PWA/owned-loopback-API run. Five selected media were browser-decoded by that run; this does not assert browser playback of every catalogue video or native desktop acceptance."
+}

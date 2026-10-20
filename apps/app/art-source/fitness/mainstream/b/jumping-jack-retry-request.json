@@ -1,0 +1,25 @@
+{
+  "canonicalExerciseId": "3094",
+  "englishName": "jumping jack",
+  "chineseName": "开合跳",
+  "name": "jumping-jack-retry",
+  "imagePrompt": "Use case: stylized-concept. Asset type: original Zeno fitness video starting frame, wide 16:9. Image 1 provides identity only of Zeno: dark desaturated teal plush otter, cream muzzle and belly, black eyes, whiskers, lime diagonal Z strap and rounded tail. New original standard JUMPING JACK START: one otter stands facing front, feet together and flat, both front arms hanging relaxed beside body with empty paws, shoulders relaxed. Full body and tail visible, exactly four limbs. Crucial framing: the otter is small within the image, body occupies ONLY THE LOWER HALF of canvas; head near canvas center vertically and feet near 85% image height. Leave the entire upper third of image as blank warm ivory space, and broad blank space on both sides so both arms can later rise fully overhead and legs jump apart without cropping. Do not zoom in or fill frame. Pale sage floor and gentle shadow, warm ivory seamless studio, soft light, refined calm 3D product illustration. No weights, shoes, clothing changes, exercise machinery, text, logos, labels, watermark or other characters. Neutral starting pose with both paws down, not already jumping.",
+  "videoPrompt": "Use {{REFERENCE}} as exact first frame. Fixed wide camera, preserve generous blank space above the same original Zeno otter, no zoom or cuts. Make ONE anatomically readable FULL JUMPING JACK cycle in eight seconds, NOT a wave: from feet together and paws down, over first three seconds sweep BOTH STRAIGHT ARMS fully out sideways then HIGH OVERHEAD until BOTH PAWS are visibly ABOVE the top of the head and nearly touch each other, while lightly hopping BOTH FEET outward to shoulder width. HOLD this fully OPEN star-like posture for a whole second: arms STRAIGHT UP next to ears, paws clearly higher than head, feet wide and grounded with soft knees. Over next three seconds gently hop feet back together and lower both straight arms through wide side arcs to thighs. Final second hold original neutral standing. Full range overhead arm extension is the key required motion: do NOT stop at shoulder height, keep elbows bent, wave paws, or flap short arms beside face. Preserve two arms and two legs, stable mascot identity and strap, all paws/feet/head fully visible, no added limbs, props, text or sound. Calm deliberate stylized movement illustration.",
+  "sourceReference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/b/jumping-jack-reference.png",
+  "project": "28d2746051df44e5bfc4a3fa68fa73a5",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "semanticSources": [
+    "https://www.nasm.org/resource-center/exercise-library/jumping-jacks"
+  ],
+  "restrictedUpstreamMediaUsed": false,
+  "retryOf": "jumping-jack",
+  "retryReason": "First clip only raised paws near sides of head and lacked full overhead arm extension; not promoted."
+}

@@ -1,0 +1,25 @@
+{
+  "canonicalExerciseId": "0652",
+  "englishName": "pull-up",
+  "chineseName": "引体向上",
+  "name": "pull-up-retry",
+  "imagePrompt": "Use case: stylized-concept. Asset type: original Zeno fitness demonstration starting frame, wide 16:9. Reference image 1 supplies ONLY Zeno mascot identity, not the standing dumbbell pose. Preserve the friendly dark desaturated teal otter, cream muzzle and belly, black eyes, whiskers, lime diagonal strap with subtle Z buckle, plush short fur and round tail. New original standard OVERHAND PULL-UP setup: the full-body otter hangs freely from one fixed straight horizontal charcoal pull-up bar supported by a simple pale sage freestanding frame, both paws gripping overhand slightly wider than shoulders. Both arms extend fully upward, elbows relaxed, shoulders away from ears, torso vertical and braced. Feet are together and clearly off the floor, knees slightly bent with enough space above to pull chin over the bar. Front three-quarter view shows both paws and two elbows clearly. Exactly four limbs, single bar, tail hangs behind without touching frame. Warm ivory seamless studio, pale sage floor, soft light, gentle shadow. Refined calm 3D product illustration matching reference. No human skin, other characters, text, watermark, logos, dumbbells, resistance bands or assistance platform. Keep entire frame, otter and paws visible with clear overhead space for subsequent pull-up motion.",
+  "videoPrompt": "Use {{REFERENCE}} as the exact first frame. IMPORTANT: maintain the SAME WIDE framing and large clear headroom above the bar throughout; never zoom or move the camera. The entire head must remain fully visible well inside frame when chin rises above bar. and preserve the same original Zeno otter, proportions, fixed bar and support frame, ivory studio and lighting. A locked tripod camera; no cuts, panning or zooming. Show exactly one slow standard overhand PULL-UP: starting in a full free hang, smoothly bend both elbows and pull the body upward over three seconds until the chin just clears the bar. Pause briefly at the top, then lower under control over three seconds to the original fully extended arm hang. Hold for the last second. Hands remain fixed on the same two bar positions with palms facing away, elbows travel down toward the ribs. Keep torso braced, feet together and off the floor; do not swing, kip, step, jump or move the bar. Exactly two arms and two legs, no morphing, no disappearing equipment, no text or audio. A clear stylized movement illustration, not realistic human anatomy.",
+  "sourceReference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/b/pull-up-retry-reference.png",
+  "project": "28d2746051df44e5bfc4a3fa68fa73a5",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "semanticSources": [
+    "https://www.nasm.org/resource-center/exercise-library/pull-up"
+  ],
+  "restrictedUpstreamMediaUsed": false,
+  "retryOf": "pull-up",
+  "retryReason": "First generated clip cropped top of head when chin cleared bar; not promoted."
+}

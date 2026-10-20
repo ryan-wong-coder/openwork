@@ -1,0 +1,41 @@
+{
+  "canonicalExerciseId": "0032",
+  "englishName": "barbell deadlift",
+  "prompt": "Use {{Node d8350b96-4021-4fa2-baaa-acbe25c30fa1}} as exact starting frame and preserve original otter, all four limbs, rigid barbell with fixed symmetric plates and warm ivory scene. Fixed side three-quarter camera. Perform ONE slow conventional barbell deadlift: from bar resting over mid-foot close to shins, over three seconds extend knees and hips together to stand tall with bar against upper thighs; arms stay straight throughout, neutral spine, chest gently lifted, no leaning back. Pause standing briefly; hinge hips back and then bend knees to return the bar smoothly to floor along the same close-to-shins path for three seconds; hold original start. Feet remain flat and fixed hip width; paws remain attached at the same grip points outside legs. Hips and shoulders rise together. Not a deep squat, row, curl or sumo. No rounding, bouncing, extra limbs, shifting feet, changing weights, disappearing equipment, camera movement, text or audio.",
+  "nodeId": "855e126a-5443-4181-8c9f-6c4141f4f76e",
+  "taskId": "20261020204203555598518",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "291317"
+    }
+  },
+  "originalSha256": "3c1db9b8399f3ca083cb694c63c90e02a4a48d903bd18080f13e101ce3c3a146",
+  "originalBytes": 5148441,
+  "manualReviewPending": false,
+  "referenceNodeId": "d8350b96-4021-4fa2-baaa-acbe25c30fa1",
+  "manualFrameReview": {
+    "frames": 8,
+    "intervalSeconds": 1,
+    "reviewed": true
+  },
+  "manualReviewVerdict": "rejected",
+  "rejectionReason": "Standing top position clips the head. Initial small contact-sheet review missed the frame boundary; caught on second review before runtime mapping/public deployment."
+}

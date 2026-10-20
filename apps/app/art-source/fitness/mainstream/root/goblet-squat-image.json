@@ -1,0 +1,8 @@
+{
+  "canonicalExerciseId": "1760",
+  "englishName": "dumbbell goblet squat",
+  "tool": "built-in image_gen.imagegen",
+  "prompt": "Use case: stylized-concept. Asset type: original Zeno fitness first frame, wide16:9. Reference supplies mascot identity only, not two dumbbells: friendly teal plush otter, cream muzzle and belly, black eyes, whiskers, lime diagonal Z strap, round tail. Create a DUMBBELL GOBLET SQUAT starting pose: full body otter stands tall, feet slightly wider than hips flat on floor, toes gently outward. It holds exactly ONE small charcoal dumbbell VERTICALLY in front of chest, both paws cupping the underside of the upper weight head, the handle pointing downward along chest and lower weight head just above belly. Elbows point down and stay close to ribs, hands clearly grip one common dumbbell. Torso upright, neutral back, head level, knees relaxed. Side three-quarter view facing right so later squat shows hip/knee/ankle clearly, room below body to squat. Tail extends behind and never supports weight. Warm ivory seamless studio and sage floor, soft light and gentle contact shadow, refined 3D product illustration. All paws/feet, dumbbell and tail visible, no extra limbs or objects. No kettlebell, second dumbbell, barbell, bench, human skin, text, logo or watermark.",
+  "reference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/root/goblet-squat-reference.png"
+}

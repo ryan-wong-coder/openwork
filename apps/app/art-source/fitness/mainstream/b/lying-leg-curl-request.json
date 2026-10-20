@@ -1,0 +1,24 @@
+{
+  "canonicalExerciseId": "0586",
+  "englishName": "lever lying leg curl",
+  "chineseName": "杠杆俯卧腿弯举",
+  "name": "lying-leg-curl",
+  "imagePrompt": "Use case: stylized-concept. Asset type: original Zeno fitness demonstration first frame, wide 16:9. Reference is identity-only for the established dark teal plush otter, cream muzzle and belly, black eyes, whiskers, lime diagonal Z strap and rounded tail. Create an original LYING MACHINE LEG CURL setup. Clear SIDE three-quarter view facing left: otter lies FACE DOWN along a simple gently angled pale sage padded prone leg-curl bench, chest, belly, pelvis and thighs supported; head beyond front edge with neutral neck, both front paws hold two fixed handles near shoulders. Both knees sit just past the rear edge of pad; lower legs extend backward almost straight, feet visible. ONE padded horizontal charcoal roller rests on the BACK of both lower legs just above the heels/ankles. Roller is attached to a visible rigid side lever that pivots aligned beside knees, correct leg-curl machine. No roller on front of shins; legs will flex upward bringing heels toward rump. Tail tucked comfortably to far side, never under roller. Whole machine, four limbs, head, feet and roller unobstructed with space above feet for curl. Warm ivory seamless studio and sage floor, soft product light, calm refined 3D style. No sitting position, no lying face up, no leg extension or lifting hips, no text, logos, watermark, extra limbs or other characters.",
+  "videoPrompt": "Use {{REFERENCE}} as the exact first frame. Preserve original Zeno otter and the entire prone leg-curl bench with the same padded roller resting against the BACK of both ankles/lower calves. Fixed side three-quarter camera, no cuts or movement. Perform exactly ONE slow LYING MACHINE LEG CURL: keep chest, pelvis and thighs resting on pad and both front paws holding fixed handles. Over three seconds bend both knees to lift the lower legs, bringing heels upward toward the rump while the ankle roller follows in a controlled arc and stays pressed behind ankles. Pause near a comfortable 90-degree knee bend, then slowly extend knees over three seconds, lowering lower legs and roller to the exact original nearly straight position. Hold final second. Only knees flex; do not lift hips, extend the back, slide body or move front arms. The lever rotates around its existing knee-aligned pivot, roller remains attached and never goes through legs or tail. Four limbs only, no disappearing machinery, no text or audio. Calm precise stylized mascot exercise illustration.",
+  "sourceReference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/b/lying-leg-curl-reference.png",
+  "project": "28d2746051df44e5bfc4a3fa68fa73a5",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "semanticSources": [
+    "https://www.nasm.org/resource-center/exercise-library/lying-leg-curl",
+    "https://www.lifefitness.com.au/wp-content/uploads/2015/02/Optima_user_manual_for_all_strength_2_585_1371787541.pdf"
+  ],
+  "restrictedUpstreamMediaUsed": false
+}

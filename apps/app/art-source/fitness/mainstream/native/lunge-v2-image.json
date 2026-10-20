@@ -1,0 +1,12 @@
+{
+  "canonicalExerciseId": "0612",
+  "englishName": "lunge",
+  "tool": "built-in image_gen.imagegen",
+  "prompt": "Use case: stylized-concept. Asset type: original Zeno fitness demo first frame, wide 16:9. Reference image 1 provides ONLY the established otter identity: friendly dark desaturated teal plush fur, cream muzzle/belly, black eyes, whiskers, lime diagonal Z strap and round tail. Warm ivory seamless studio with pale sage floor, soft light, calm sophisticated 3D product style. One otter only, no human anatomy, no text, labels, watermark, logo, extra limbs or clutter. Exercise is a BODYWEIGHT FORWARD LUNGE. This is the BOTTOM of a correct single forward lunge as the first frame, strictly SIDE VIEW facing right so BOTH LEGS and BOTH KNEES are completely unobstructed and distinguishable. Front/near foot is one full stride forward to the right, sole FLAT on floor; front shin vertical, front knee bent about 90 degrees directly over ankle. Back/far leg extends clearly well BEHIND hips to the left, back knee bent about 90 degrees hovering just above floor, rear heel lifted and rear toes supporting behind the knee. Two feet are separated by a clear long stride, NOT tucked together under body. Torso upright, both empty paws on hips. Tail lifted diagonally behind to upper left so it does NOT cover or touch either leg or floor. Head, torso, two knees and both feet remain fully in frame; full otter occupies 60 percent of height with generous empty space above to rise. This pose must read unambiguously as a front knee/back knee lunge, NEVER sitting on tail, squatting or kneeling on back knee. No weights or equipment.",
+  "reference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/native/lunge-v2-reference.png",
+  "referencePurpose": "original Zeno mascot identity only; no upstream exercise media used",
+  "attempt": 2,
+  "selected": false,
+  "generatedReferenceRetainedInWorkspace": false
+}

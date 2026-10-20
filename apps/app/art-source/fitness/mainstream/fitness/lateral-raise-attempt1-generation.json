@@ -1,0 +1,21 @@
+{
+  "exerciseId": "0334",
+  "englishName": "dumbbell lateral raise",
+  "nodeId": "4b27b9b6-7b62-4360-a904-268c0c5492d3",
+  "referenceNodeId": "55d1a36c-1f60-4256-8e22-c32443211e22",
+  "taskId": "20261020204903878368518",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Use {{Node 55d1a36c-1f60-4256-8e22-c32443211e22}} as exact starting image. Keep Zeno mascot identity, two fixed charcoal dumbbells, feet and studio unchanged. Fixed front three-quarter tripod camera. One slow STANDING DUMBBELL LATERAL RAISE: over three seconds lift both arms OUTWARD to the SIDES in a wide arc until upper arms reach shoulder height, elbows softly bent and held slightly above wrists; hold briefly; lower both dumbbells smoothly back to thighs over three seconds; hold final second. Torso upright and motionless, neck relaxed, shoulders not shrugged, no swinging or knee bending. Paws maintain grip, elbows retain a slight constant bend, dumbbells never go in front of chest or overhead. No biceps curl, shoulder press, extra limbs, morphing, text, cuts, camera movement or sound. Calm readable stylized exercise illustration.",
+  "settings": {
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "originalVideo": {
+    "bytes": 3062145,
+    "sha256": "e6e5e05e03cd3e223548e6d07771f90dc9262477138d5cf64b6778caf7e4bd35",
+    "retained": false,
+    "scope": "Rejected generated video hashed and removed after actual frame review; never registered or published."
+  }
+}

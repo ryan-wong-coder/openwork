@@ -1,0 +1,8 @@
+{
+  "canonicalExerciseId": "0025",
+  "englishName": "barbell bench press",
+  "tool": "built-in image_gen.imagegen",
+  "prompt": "Use case: stylized-concept. Asset type: Zeno fitness demonstration first frame, wide 16:9. Input image 1 is an identity-only reference for the existing Zeno otter, NOT a pose reference. Preserve the friendly dark desaturated teal otter, cream muzzle and belly, black eyes, whiskers, lime diagonal strap and subtle Z buckle, plush short fur and rounded tail. Create an original full-body BARBELL BENCH PRESS illustration: the otter lies face up along a simple low pale sage flat workout bench, head and upper back supported, feet firmly on the floor. A straight matte charcoal barbell with equal small plates on both ends is gripped in both paws slightly wider than shoulders, with the bar held above the middle chest and elbows extended but relaxed, ready to lower. Clearly readable three-quarter SIDE view, enough space above the chest for the bar to move, the entire bench, bar, all paws and feet visible. Paws wrap around the two distinct positions of the same horizontal bar; coherent wrists and elbows. Tail rests to the side of bench. Warm ivory seamless background, gentle sage floor, soft studio light, calm refined 3D product illustration matching the reference. No human skin, no gym logos, no text, no labels, no watermark, no additional characters, no extra limbs, no dumbbells, no incline bench, no equipment clipping through mascot. A static first frame for a controlled single slow bench press repetition.",
+  "reference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/root/bench-press-reference.png"
+}

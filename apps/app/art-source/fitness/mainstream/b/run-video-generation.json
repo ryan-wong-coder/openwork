@@ -1,0 +1,14 @@
+{
+  "nodeId": "3aa9efbf-7442-4285-83c2-a5d7d1965849",
+  "taskId": "20261020205403064658518",
+  "referenceNodeId": "e7ff25d6-9727-4127-9490-a565c9fcab96",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Use {{Node e7ff25d6-9727-4127-9490-a565c9fcab96}} as the exact first frame and retain original Zeno otter identity, four limbs, lime strap, studio and lighting. Fixed side three-quarter camera, no cuts or zoom, otter remains centered without translating across floor. Demonstrate a calm readable RUNNING IN PLACE cycle for eight seconds: alternate left and right legs in a light continuous jog with soft forefoot landings under hips, modest knee lift and each heel lifting naturally behind. The opposite arm swings forward as the other leg comes forward; both elbows stay comfortably bent and shoulders relaxed. Torso stays upright with slight natural lean, no exaggerated bouncing, sprinting or high-knee march. Both feet briefly leave floor naturally between alternating steps, but no floating or sliding. Tail moves only slightly for balance without acting as a leg. Keep all paws, feet and head visible throughout, identity stable, exactly two arms and two legs, no text or sound. A friendly stylized running movement illustration, not human anatomy coaching.",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  }
+}

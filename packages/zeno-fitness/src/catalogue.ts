@@ -5,6 +5,7 @@ import chineseNames from "../upstream/exercise-names/zh.js";
 import chineseInstructions from "../upstream/instr/zh.js";
 import type { FitnessExercise, FitnessOption } from "./types.js";
 import { list, numberMap, record, stringList, text } from "./value.js";
+import { instructionCorrections } from "./instruction-corrections.js";
 
 export const muscleLabels: Readonly<Record<string, string>> = {
   trapezius: "斜方肌", deltoids: "三角肌", chest: "胸肌", "upper-back": "背部", serratus: "前锯肌",
@@ -32,7 +33,8 @@ export function exerciseFromUpstream(value: unknown): FitnessExercise {
   const bodyPartId = text(raw.bp);
   const equipmentId = text(raw.eq);
   const categoryId = text(raw.cat, "strength");
-  const steps = stringList(instructions[id]);
+  const correction = instructionCorrections[id];
+  const steps = correction?.englishName === text(raw.n) ? [...correction.steps] : stringList(instructions[id]);
   return {
     id, name: text(names[id], text(raw.n, "自定义动作")), englishName: text(raw.n),
     bodyPartId, bodyPart: bodyLabels[bodyPartId] ?? "其他", categoryId, category: categoryLabels[categoryId] ?? "其他",

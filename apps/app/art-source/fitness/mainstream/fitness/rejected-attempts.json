@@ -1,0 +1,38 @@
+{
+  "restrictedUpstreamMediaUsed": false,
+  "attempts": [
+    {
+      "exerciseId": "0334",
+      "attempt": 1,
+      "kind": "video",
+      "accepted": false,
+      "reason": "Bent elbows and weights near ears resembled a goalpost/press rather than a nearly straight-arm lateral raise.",
+      "generation": "lateral-raise-attempt1-generation.json",
+      "contact": "lateral-raise-attempt1-contact.jpg",
+      "runtimePublished": false,
+      "originalReference": {
+        "bytes": 1680149,
+        "sha256": "d6d3de94ba636fc12fa5098ef21afbf21ef0fc8b6eaea6d9e4522798b8d9fccb",
+        "retained": false
+      }
+    },
+    {
+      "exerciseId": "0313",
+      "attempt": 1,
+      "kind": "image",
+      "accepted": false,
+      "reason": "Dumbbell/wrist orientation did not clearly show neutral hammer grip; corrected by one focused built-in Image Gen edit before video generation.",
+      "finalRequestWithBothPrompts": "hammer-curl-request.json",
+      "runtimePublished": false
+    },
+    {
+      "exerciseId": "0274",
+      "attempt": 1,
+      "kind": "image",
+      "accepted": false,
+      "reason": "Arms were crossed on chest, a different catalogue variant. One focused built-in edit corrected paws to light support beside head before video generation.",
+      "finalRequestWithBothPrompts": "crunch-request.json",
+      "runtimePublished": false
+    }
+  ]
+}

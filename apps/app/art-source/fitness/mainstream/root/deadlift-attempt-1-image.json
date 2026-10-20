@@ -1,0 +1,8 @@
+{
+  "canonicalExerciseId": "0032",
+  "englishName": "barbell deadlift",
+  "tool": "built-in image_gen.imagegen",
+  "prompt": "Use case: stylized-concept. Asset type: Zeno fitness demonstration starting frame, 16:9. Reference image is only the established teal plush otter identity: cream muzzle and belly, black eyes, whiskers, lime diagonal Z strap and round tail. Create an original conventional BARBELL DEADLIFT setup, not the reference standing curl. One full-body otter in clear three-quarter SIDE view facing right, feet hip width flat on floor. A straight charcoal barbell with equal modest round plates rests on floor over mid-foot close to shins. Both paws grip bar just outside knees with double overhand grip. Hips hinge back, knees moderately bent, shoulders slightly ahead of bar, arms straight down, neutral flat back and chest gently lifted, head aligned with torso. Distinguish all four limbs, all paws/feet and plates visible. Tail extends behind, not weight bearing. Adequate room above to stand with bar. Do not make a deep squat, rounded back or sumo stance. Refined 3D mascot product illustration, warm ivory seamless studio, pale sage floor, soft light and contact shadow. No human skin, text, watermark, extra limbs, duplicate bars, dumbbells, rack, scenery or cropping. Correct stationary start for one conventional deadlift repetition.",
+  "reference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/root/deadlift-reference.png"
+}

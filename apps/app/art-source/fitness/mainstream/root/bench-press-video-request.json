@@ -1,0 +1,16 @@
+{
+  "canonicalExerciseId": "0025",
+  "englishName": "barbell bench press",
+  "project": "28d2746051df44e5bfc4a3fa68fa73a5",
+  "referenceNodeId": "9f720a36-00be-425f-9711-25d6a49ad243",
+  "name": "Mainstream 0025 bench press demonstration",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Use the original Zeno otter in {{Node 9f720a36-00be-425f-9711-25d6a49ad243}} as the exact starting frame. Preserve identity, proportions, bench, one rigid straight charcoal barbell with fixed symmetric plates, paws gripping the same two points, grounded feet, ivory studio and soft lighting. Fixed tripod side three-quarter view, no camera motion or cuts. Demonstrate exactly ONE slow flat BARBELL BENCH PRESS: start with bar directly above middle chest and arms extended; over three seconds smoothly bend both elbows to lower the bar toward the middle/lower chest, elbows about 45 degrees from torso; pause just above chest without bouncing or clipping fur; over three seconds press vertically upward to the exact starting position; hold for final second. Upper back, head and hips stay supported on the bench and feet remain on the floor. Both paws stay attached to the same bar with straight wrists. The bar stays horizontal, never goes behind the head, and never changes shape. No sit-up, no overhead press, no moving bench, no extra limbs, no disappearing plates, no text, logos, watermarks or audio. Calm readable stylized mascot illustration, not realistic human anatomy.",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  }
+}

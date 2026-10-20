@@ -1,0 +1,23 @@
+{
+  "canonicalExerciseId": "0861",
+  "englishName": "cable seated row",
+  "chineseName": "绳索坐姿划船",
+  "name": "seated-row",
+  "imagePrompt": "Use case: stylized-concept. Asset type: original Zeno fitness first frame, wide 16:9. Reference image supplies Zeno mascot identity only: dark desaturated teal plush otter, cream muzzle/belly, black eyes, whiskers, lime diagonal Z strap and rounded tail. Create a new full-body SEATED CABLE ROW setup on a simple pale sage low-pulley rowing bench. Clear side three-quarter view facing right. Otter sits tall with neutral back on a horizontal seat, both feet braced on two small angled footplates forward, knees slightly bent. Both paws grasp one short straight charcoal horizontal rowing handle overhand in front, arms extended forward but not locked. The handle's CENTER is attached to a single taut horizontal cable leading forward to a clearly visible LOW pulley at shin height on a compact machine tower. Torso upright, shoulders relaxed, space between handle and abdomen ready for rowing. Tail hangs to side, entire feet, paws, handle, bench and cable path visible. Physically coherent machine with one cable and one handle, no dangling unattached parts. Warm ivory seamless studio, subtle sage floor, soft light, refined calm 3D product illustration. No dumbbells, no high overhead pulley, no ocean boat or rowing oars, no human skin, text, watermark, logo, extra limbs or other characters.",
+  "videoPrompt": "Use {{REFERENCE}} as the exact first frame. Preserve the same Zeno otter, bench, two footplates, a single straight short horizontal handle with its center attached to one taut cable running toward the same low pulley. Locked tripod camera with no cuts, no zoom or camera movement. Demonstrate exactly ONE slow SEATED CABLE ROW: with torso tall, shoulders down and feet fixed on plates, pull the handle smoothly from the extended-arm starting position toward the lower ribs/upper abdomen over three seconds, bending both elbows backward close to the torso and gently drawing shoulder blades together. Pause briefly with handle near abdomen, then extend both elbows under control over three seconds returning to exactly the starting hand position. Hold the final second. Keep neutral upright torso with no backward rocking, spine rounding, leg pushing or standing. Both paws remain fixed on the same handle, cable remains taut and attached. The handle never passes through the belly or changes into dumbbells. Four limbs only, stable machine geometry, no text or audio. Calm readable stylized mascot movement.",
+  "sourceReference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/b/seated-row-reference.png",
+  "project": "28d2746051df44e5bfc4a3fa68fa73a5",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "semanticSources": [
+    "https://www.nasm.org/resource-center/exercise-library/seated-machine-row-close-grip"
+  ],
+  "restrictedUpstreamMediaUsed": false
+}

@@ -1,0 +1,39 @@
+{
+  "canonicalExerciseId": "0027",
+  "englishName": "barbell bent over row",
+  "prompt": "Use {{Node 0aab8202-c75f-40fc-9937-7bedd479ee83}} as the exact original otter and starting frame, same rigid charcoal barbell and two symmetric plates. Fixed side three-quarter camera and ivory studio. Demonstrate ONE controlled barbell bent-over row. Keep the hip hinge, neutral back, knee angle and planted feet completely still. With both paws firmly attached and wrists straight, over three seconds bend both elbows and draw them back close to the torso, pulling bar toward lower ribs/upper abdomen. Pause briefly below abdomen without clipping fur; over three seconds slowly extend elbows to return bar to starting hanging position below shoulders. Hold ending start pose. The torso stays inclined at the original angle and never stands up or sways. Bar remains rigid and horizontal. Shoulders stay down, no shrug, no biceps curl, no deadlift, no rounding. Exactly four limbs, no new objects, no disappearing plates, no text, watermark, sound, cuts or camera motion.",
+  "nodeId": "8aaa215a-d449-4217-87a8-5f913ef8a21f",
+  "taskId": "20261020204403606548518",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "225305"
+    }
+  },
+  "originalSha256": "f9238cc4dfe929df2eacf6199a8974e0b05076dccd75527481406fad57bb021a",
+  "originalBytes": 3573620,
+  "manualReviewPending": false,
+  "referenceNodeId": "0aab8202-c75f-40fc-9937-7bedd479ee83",
+  "manualFrameReview": {
+    "frames": 8,
+    "intervalSeconds": 1,
+    "reviewed": true
+  }
+}

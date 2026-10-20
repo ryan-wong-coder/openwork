@@ -1,0 +1,7 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "prompt": "Use case: precise-object-edit. Asset type: corrected original Zeno pull-up starting frame, wide 16:9. Edit only framing of supplied image. Keep the exact same teal otter identity, lime strap, pose, overhand paws fixed on the bar, fully extended arms, bent free-hanging legs, single pull-up bar and sage frame, ivory background and soft lighting. Zoom OUT substantially so entire existing apparatus and otter occupy only 60 percent of canvas height. Position the bar at 35 percent of image height with a VERY LARGE clear ivory empty space above bar: at least one full otter-head height plus margin. Keep floor and support feet visible at 90 percent image height. Do not put the bar near top edge. This extra headroom is essential because the otter's whole head will later rise above bar during pull-up; it must stay inside frame. Do not change apparatus proportions, character anatomy, pose, camera angle or colors; no new objects, extra limbs, text, logos or watermark. Spacious product composition with tiny apparatus/otter and clean space above, not a close-up.",
+  "reference": "apps/app/art-source/fitness/mainstream/b/pull-up-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/b/pull-up-retry-reference.png",
+  "change": "Only framing/headroom; previous generated identity and apparatus retained."
+}

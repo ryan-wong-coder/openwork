@@ -1,0 +1,14 @@
+{
+  "nodeId": "4a44bda6-5a50-4d88-a87b-bb28f50c5442",
+  "taskId": "20261020204703648698518",
+  "referenceNodeId": "484b0a3d-2423-4a75-aa3a-f6c13c66c1d0",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Use {{Node 484b0a3d-2423-4a75-aa3a-f6c13c66c1d0}} as the exact first frame. Preserve Zeno otter identity, supported upright torso and thighs, knee-pivot leg-extension machine, single padded roller in FRONT of the lower shins, rigid lever, both side grips and studio. A fixed side three-quarter camera without cuts or zooms. Show exactly ONE slow seated MACHINE LEG EXTENSION repetition: while hips, thighs and upper body remain still and paws keep holding side grips, extend BOTH knees smoothly over three seconds, swinging lower legs and the contacted front shin roller together forward/up until shins are almost horizontal and knees comfortably straight, never hyperextended. Pause briefly, then bend knees under control over three seconds to return lower legs and roller to the original down position; hold final second. The roller remains pressed against the FRONT of the shins and attached to the same lever pivot; it does not detach, migrate behind legs or pass through fur. Thighs never lift off the seat. No standing, no leg press, no seated leg curl, no extra limbs, changing machine, text or audio. Calm readable stylized instructional movement.",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  }
+}

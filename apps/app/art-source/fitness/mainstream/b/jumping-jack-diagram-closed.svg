@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="576" viewBox="0 0 1024 576" role="img" aria-labelledby="title description">
+<title id="title">开合跳：原创动作图解</title>
+<desc id="description">双臂由体侧经侧方伸直到头顶上方，同时双脚跳开；随后双臂下落、双脚合拢。图解循环，人物与地面始终完整可见。</desc>
+<rect width="1024" height="576" fill="#f7f3e9"/>
+<path d="M0 486H1024V576H0Z" fill="#e9eddf"/>
+<ellipse cx="512" cy="505" rx="100.000" ry="9" fill="#24464a" opacity="0.100"/>
+<g transform="translate(0 0.000)">
+<path d="M562 390C605 408 639 421 670 414C681 412 681 422 670 431C645 452 596 448 557 426Z" fill="#24464a"/>
+<g fill="none" stroke="#24464a" stroke-width="35" stroke-linecap="round" stroke-linejoin="round">
+<polyline points="486.000,389.000 484.000,437.500 486.000,486.000"/>
+<polyline points="538.000,389.000 540.000,437.500 538.000,486.000"/>
+</g>
+<ellipse cx="486.000" cy="492.000" rx="26" ry="15" fill="#24464a"/>
+<ellipse cx="538.000" cy="492.000" rx="26" ry="15" fill="#24464a"/>
+<g fill="none" stroke="#24464a" stroke-width="30" stroke-linecap="round" stroke-linejoin="round">
+<polyline points="460.000,276.000 445.414,358.724 430.827,441.448"/>
+<polyline points="564.000,276.000 578.586,358.724 593.173,441.448"/>
+</g>
+<ellipse cx="430.827" cy="441.448" rx="16" ry="18" fill="#24464a"/>
+<ellipse cx="593.173" cy="441.448" rx="16" ry="18" fill="#24464a"/>
+<ellipse cx="512" cy="350" rx="67" ry="93" fill="#24464a"/>
+<ellipse cx="512" cy="351" rx="43" ry="73" fill="#f4eadb"/>
+<path d="M463 286L560 388" stroke="#d1e66e" stroke-width="15" stroke-linecap="round"/>
+<g transform="translate(522 348) rotate(45)"><rect x="-13" y="-14" width="26" height="28" rx="5" fill="#d1e66e"/><path d="M-6-6H6L-6 6H6" fill="none" stroke="#24464a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<circle cx="466" cy="161" r="20" fill="#24464a"/><circle cx="558" cy="161" r="20" fill="#24464a"/>
+<circle cx="466" cy="161" r="11" fill="#18363b"/><circle cx="558" cy="161" r="11" fill="#18363b"/>
+<ellipse cx="512" cy="210" rx="62" ry="63" fill="#24464a"/>
+<ellipse cx="512" cy="236" rx="45" ry="29" fill="#f4eadb"/>
+<ellipse cx="489" cy="205" rx="6" ry="8" fill="#18363b"/><ellipse cx="535" cy="205" rx="6" ry="8" fill="#18363b"/>
+<circle cx="487" cy="202" r="2" fill="#f4eadb"/><circle cx="533" cy="202" r="2" fill="#f4eadb"/>
+<ellipse cx="512" cy="226" rx="11" ry="8" fill="#18363b"/>
+<path d="M512 233V239M512 239Q504 246 496 240M512 239Q520 246 528 240" fill="none" stroke="#18363b" stroke-width="2" stroke-linecap="round"/>
+<g stroke="#18363b" stroke-width="1.5" stroke-linecap="round"><path d="M476 233L450 226M476 239L447 240M548 233L574 226M548 239L577 240"/></g>
+</g></svg>

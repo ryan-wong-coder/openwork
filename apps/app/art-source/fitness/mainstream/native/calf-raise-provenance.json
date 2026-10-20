@@ -1,0 +1,72 @@
+{
+  "createdAt": "2026-10-20T13:06:29.896654+00:00",
+  "tools": [
+    "built-in image_gen.imagegen",
+    "official libtv CLI 1.1.1",
+    "ffmpeg",
+    "cwebp"
+  ],
+  "restrictedUpstreamMediaUsed": false,
+  "assets": [
+    {
+      "name": "calf-raise",
+      "canonicalExerciseId": "0417",
+      "chineseName": "哑铃站姿提踵",
+      "englishName": "dumbbell standing calf raise",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/calf-raise.mp4",
+        "bytes": 147287,
+        "sha256": "d4ea9d42bc3a9cd5eba0775a3e6710494386063dc96d0ab3edf27d68d6efe62f"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/calf-raise-poster.webp",
+        "bytes": 11642,
+        "sha256": "3f9a1b8b0f4de9e85e041d83c5bd5cb05af6200ee8b18f005724c7b32fb35c59"
+      },
+      "originalGeneratedVideo": {
+        "file": "Mainstream 0417 calf-raise native second demonstration.mp4",
+        "bytes": 3276758,
+        "sha256": "c6b637838728804b75af821ec858ec538ef88089955c657e379cfe60da1725bb",
+        "retained": false
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/mainstream/native/calf-raise-v2-reference.png",
+        "bytes": 1598175,
+        "sha256": "a70a7137c3de3a81c2c390c7bb03cf5481baceaeb5669e399c9e04450ae8a4d8"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "147287"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/mainstream/native/calf-raise-v2-contact.jpg",
+        "reviewed": true,
+        "reviewedAt": "2026-10-20T13:06:29.895013+00:00",
+        "result": "Both heels lift while toes stay planted; nearly straight knees; both dumbbells stable; head, ears and feet remain in frame for all eight inspected frames."
+      },
+      "processing": "Original full single 8-second repetition; H.264 CRF26 1024px yuv420p, audio removed, faststart; original reference poster via cwebp q86 1024px.",
+      "generation": {
+        "tool": "official libtv CLI",
+        "nodeId": "626e04b7-5890-4927-8f58-77ef9c4ab070",
+        "taskId": "20261020210103600738518",
+        "model": "Seedance 2.0 VIP",
+        "requestFile": "apps/app/art-source/fitness/mainstream/native/calf-raise-v2-video-request.json"
+      },
+      "restrictedUpstreamMediaUsed": false,
+      "acceptedAttempt": 2
+    }
+  ]
+}

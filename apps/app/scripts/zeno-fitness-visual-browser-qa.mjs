@@ -8,7 +8,7 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const repository = fileURLToPath(new URL('../../../', import.meta.url));
-const output = resolve(process.env.ZENO_FITNESS_QA_OUTPUT ?? resolve(repository, 'docs/evidence/zeno-fitness-visuals')); 
+const output = resolve(process.env.ZENO_FITNESS_QA_OUTPUT ?? resolve(repository, 'docs/evidence/zeno-fitness-mainstream'));
 const screenshots = resolve(output, 'screenshots');
 const dist = resolve(process.env.ZENO_PWA_QA_DIST ?? resolve(repository, 'apps/app/dist-personal'));
 const chromePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
@@ -97,11 +97,19 @@ try {
   await page.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'light' }, { name: 'prefers-reduced-motion', value: 'no-preference' }] });
   await page.send('Page.navigate', { url: origin + '/app/fitness' }); await waitText('欢迎回来'); await login('a'); await waitText('基础力量');
   check('real-local-api-login-production-pwa');
-  stage = 'catalogue'; await button('动作库'); await field('搜索动作', '杠铃卧推', 'input[aria-label=搜索动作]'); await button('杠铃卧推', { exact: false });
+  stage = 'catalogue'; await button('动作库');
+  const demonstrations = JSON.parse(await readFile(resolve(repository, 'apps/app/src/react-app/domains/zeno/mascot-demos.json'), 'utf8'));
+  assert.equal(demonstrations.length, 32);
+  const firstOptions = await evaluate('[...document.querySelectorAll("[data-exercise-option]")].slice(0,32).map(element=>element.dataset.exerciseOption)');
+  assert.deepEqual(firstOptions.sort(), demonstrations.map(item=>item.exerciseId).sort());
+  await screenshot('desktop-mainstream-catalogue'); check('all-thirty-two-completed-demonstrations-first-in-unfiltered-catalogue');
+  await field('搜索动作', '杠铃卧推', 'input[aria-label=搜索动作]'); await button('杠铃卧推', { exact: false });
   await until(() => evaluate(`document.querySelector('[data-exercise-detail="0025"]')!==null`), 'bench-detail');
   assert.equal(await evaluate('document.querySelectorAll("[aria-label=动作肌群] svg").length'), 2);
   assert.ok(await evaluate(`document.querySelector('[aria-label=动作肌群] path[opacity="0.4"]')!==null`));
-  assert.equal(await evaluate('document.querySelectorAll("[data-movement-figure]").length'), 1);
+  assert.equal(await evaluate('document.querySelectorAll("video").length'), 1);
+  assert.ok(await evaluate('document.querySelector("video").paused'));
+  await button('姿态示意'); assert.equal(await evaluate('document.querySelectorAll("[data-movement-figure]").length'), 1);
   await screenshot('desktop-catalogue-bench-light'); check('catalogue-specific-figure-and-primary-secondary-front-back-map');
   stage = 'motion-controls'; const before = await evaluate('document.querySelector("input[aria-label=动作进度]").value'); await pause(300);
   assert.equal(await evaluate('document.querySelector("input[aria-label=动作进度]").value'), before, 'no autoplay');
@@ -124,14 +132,15 @@ try {
   await screenshot('desktop-bench-dark-reduced-motion'); check('reduced-motion-stops-and-disables-svg-playback');
   await page.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
   await screenshot('mobile-bench-dark-reduced-motion'); check('mobile-dark-detail-no-horizontal-overflow');
-  await closeDialog(); await field('搜索动作', '哑铃卧推', 'input[aria-label=搜索动作]'); await button('哑铃卧推', { exact: false }); await waitText('暂无动作演示');
+  await closeDialog(); await field('搜索动作', '杠铃窄握卧推', 'input[aria-label=搜索动作]'); await button('杠铃窄握卧推'); await waitText('暂无动作演示');
   assert.equal(await evaluate('document.querySelectorAll("[data-movement-figure],video").length'), 0); await screenshot('mobile-uncovered-exercise'); check('uncovered-variant-never-receives-generic-animation');
   await closeDialog(); await page.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'light' }, { name: 'prefers-reduced-motion', value: 'no-preference' }] });
   stage = 'mascot-videos';
-  for (const [name, id, filename] of [['哑铃二头弯举', '0294', 'curl'], ['深蹲', '1197', 'squat'], ['哑铃坐姿肩部推举', '0405', 'shoulder-press']]) {
+  for (const [name, id, filename, kind, hasPose] of [['哑铃二头弯举', '0294', 'curl', 'mascot', true], ['深蹲', '1197', 'squat', 'mascot', true], ['哑铃坐姿肩部推举', '0405', 'shoulder-press', 'mascot', true], ['哑铃卧推', '0289', 'dumbbell-bench-press', 'mascot', false], ['开合跳', '3094', 'jumping-jack', 'diagram', false]]) {
     await field('搜索动作', name, 'input[aria-label=搜索动作]'); await button(name);
     await until(() => evaluate(`document.querySelector('[data-exercise-detail="${id}"] video')!==null`), 'mascot-' + id);
     assert.ok(await evaluate(`document.querySelector('[data-exercise-detail="${id}"] video').src.endsWith('/zeno/fitness/${filename}.mp4')`));
+    assert.equal(await evaluate('document.querySelector("video").getAttribute("aria-label")'), kind === 'diagram' ? '原创动作图解视频' : '泽诺吉祥物动作演示');
     assert.ok(await evaluate('document.querySelector("video").paused'));
     await evaluate('document.querySelector("video").play()'); await until(() => evaluate('document.querySelector("video").currentTime>.3&&document.querySelector("video").videoWidth>0'), 'video-decodes-' + id);
     if (id === '0294') {
@@ -145,8 +154,19 @@ try {
       check('native-video-controls-real-tab-and-reduced-motion-pause-without-auto-resume');
     }
     await evaluate('document.querySelector("video").pause()'); await screenshot('mobile-mascot-' + filename);
-    await button('姿态示意'); assert.ok(await evaluate(`document.querySelector('[data-exercise-movement="${id}"]')!==null`));
-    await button('泽诺演示'); assert.ok(await evaluate('document.querySelector("video").paused')); check('exact-mascot-video-decodes-and-switches-' + id);
+    await button(hasPose ? '姿态示意' : '起始姿态');
+    if (hasPose) assert.ok(await evaluate(`document.querySelector('[data-exercise-movement="${id}"]')!==null`));
+    else {
+      await until(() => evaluate(`(()=>{const image=document.querySelector('[data-exercise-detail="${id}"] img');return image?.complete&&image.naturalWidth>0})()`), 'poster-decodes-' + id);
+      assert.ok(await evaluate(`document.querySelector('[data-exercise-detail="${id}"] img').src.endsWith('/zeno/fitness/${filename}-poster.webp')`));
+      assert.equal(await evaluate('document.querySelectorAll("video,[data-movement-figure]").length'), 0);
+      if (id === '0289') {
+        await page.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'dark' }, { name: 'prefers-reduced-motion', value: 'no-preference' }] });
+        await screenshot('mobile-video-only-starting-pose-dark');
+        await page.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'light' }, { name: 'prefers-reduced-motion', value: 'no-preference' }] });
+      }
+    }
+    await button(kind === 'diagram' ? '动作图解' : '泽诺演示'); assert.ok(await evaluate('document.querySelector("video").paused')); check('exact-' + kind + '-video-decodes-and-switches-' + id);
     await closeDialog();
   }
   await closeDialog();

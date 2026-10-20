@@ -1,0 +1,17 @@
+{
+  "canonicalExerciseId": "1060",
+  "englishName": "barbell hip thrust",
+  "project": "28d2746051df44e5bfc4a3fa68fa73a5",
+  "referenceNodeId": "00b7b0f3-6e0d-447b-90a4-416e8729788a",
+  "name": "Mainstream 1060 hip-thrust native second demonstration",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Use {{Node 00b7b0f3-6e0d-447b-90a4-416e8729788a}} as the EXACT first frame. This is the TOP position of a BARBELL HIP THRUST. Preserve the original teal plush Zeno otter, low sage bench, feet planted flat and the one rigid barbell lying ON THE HIP CREASE BETWEEN BELLY AND THIGHS. This bar location is immutable relative to the HIP JOINT: it must remain far to the RIGHT of shoulders in this side view and NEVER slide toward the chest or be lifted by the arms. Static tripod side-view camera, entire body and all equipment visible, no cuts or zoom. Exactly ONE slow top-to-bottom-to-top hip-thrust cycle: hold top briefly; over three seconds flex the hips to lower the pelvis and attached barbell toward the floor, pivoting around the upper-back/shoulder-blade contact on the same unmoving bench edge; hips stay in front of bench and stop above floor; over three seconds push through the grounded heels to extend hips back to the exact original bridge height, bringing shoulders, hips and knees near one horizontal line; hold top for final second. Knees remain bent around 90 degrees, shins nearly vertical at top, feet stay flat and still. Upper back stays on bench. Paws only STEADY bar against hips, elbows never curl, bar and plates move DOWN AND UP WITH HIPS. Chin gently tucked, no neck throw or lower-back hyperextension. Tail is decorative only and never bears weight. No bar at chest, bench press, sit-up, squat, floor bridge, standing up, floating equipment, extra limbs, text, logos, watermarks or sound. Calm readable stylized exercise illustration.",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "attempt": 2
+}

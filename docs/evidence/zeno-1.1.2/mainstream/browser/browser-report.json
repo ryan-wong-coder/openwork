@@ -1,0 +1,138 @@
+{
+  "verdict": "Passed",
+  "scope": "Actual production PWA, real disposable loopback API, synthetic account; no native shell or remote account",
+  "startedAt": "2026-10-20T13:26:03.507Z",
+  "finishedAt": "2026-10-20T13:26:20.827Z",
+  "productionIndexSha256": "4ccf4208b2fc463a518f553729f28338ec0d8aad7ae1045af5199aedbe267102",
+  "browserVersion": "Chrome/155.0.8059.85",
+  "checks": [
+    {
+      "name": "real-local-api-login-production-pwa",
+      "passed": true
+    },
+    {
+      "name": "all-thirty-two-completed-demonstrations-first-in-unfiltered-catalogue",
+      "passed": true
+    },
+    {
+      "name": "catalogue-specific-figure-and-primary-secondary-front-back-map",
+      "passed": true
+    },
+    {
+      "name": "static-default-play-pause-keyboard-scrub",
+      "passed": true
+    },
+    {
+      "name": "real-tab-visibility-pauses-svg-without-auto-resume",
+      "passed": true
+    },
+    {
+      "name": "reduced-motion-stops-and-disables-svg-playback",
+      "passed": true
+    },
+    {
+      "name": "mobile-dark-detail-no-horizontal-overflow",
+      "passed": true
+    },
+    {
+      "name": "uncovered-variant-never-receives-generic-animation",
+      "passed": true
+    },
+    {
+      "name": "native-video-controls-real-tab-and-reduced-motion-pause-without-auto-resume",
+      "passed": true
+    },
+    {
+      "name": "exact-mascot-video-decodes-and-switches-0294",
+      "passed": true
+    },
+    {
+      "name": "exact-mascot-video-decodes-and-switches-1197",
+      "passed": true
+    },
+    {
+      "name": "exact-mascot-video-decodes-and-switches-0405",
+      "passed": true
+    },
+    {
+      "name": "exact-mascot-video-decodes-and-switches-0289",
+      "passed": true
+    },
+    {
+      "name": "exact-diagram-video-decodes-and-switches-3094",
+      "passed": true
+    },
+    {
+      "name": "workout-title-opens-detail-without-changing-record",
+      "passed": true
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "screenshots/desktop-mainstream-catalogue.png",
+      "bytes": 81425,
+      "sha256": "b1a5eb3569b791d5aa22c0245c15324204332ec3904f56f6db06d8164d28a703"
+    },
+    {
+      "file": "screenshots/desktop-catalogue-bench-light.png",
+      "bytes": 100292,
+      "sha256": "608e42703d8a01cc29cc71acac9b331eda0d9e4a2d2cf2af7de21cfc51a1b7e1"
+    },
+    {
+      "file": "screenshots/desktop-bench-dark-reduced-motion.png",
+      "bytes": 100959,
+      "sha256": "43702d996ba8db90bb69964e05da440158122a708b6e207159b51346840ac223"
+    },
+    {
+      "file": "screenshots/mobile-bench-dark-reduced-motion.png",
+      "bytes": 36351,
+      "sha256": "0863de6d7568581b43ab7cc257afc059c02e0a9c25b445e7b84ec2108054d8b2"
+    },
+    {
+      "file": "screenshots/mobile-uncovered-exercise.png",
+      "bytes": 38501,
+      "sha256": "3334b16d54527802388a25006550bfc51146687b7697beb95eb65c3601b60508"
+    },
+    {
+      "file": "screenshots/mobile-mascot-curl.png",
+      "bytes": 72758,
+      "sha256": "307b0f0bcc96adc17e4e5c517417c2f796b88960c8faa57f7a59e4310e2e9fb4"
+    },
+    {
+      "file": "screenshots/mobile-mascot-squat.png",
+      "bytes": 78591,
+      "sha256": "029446e6c3aad18f3ab70e0120002cabde5a79b6a9da124d73db8c5f8b85ef59"
+    },
+    {
+      "file": "screenshots/mobile-mascot-shoulder-press.png",
+      "bytes": 82483,
+      "sha256": "880d177af845120a9edfd009ace0860d48f2ed6237028f0d166b31fcc7adb281"
+    },
+    {
+      "file": "screenshots/mobile-mascot-dumbbell-bench-press.png",
+      "bytes": 85758,
+      "sha256": "a2efefc7f873d219264cdec469adae92773f570cef19b439cfd155d1aafdaa58"
+    },
+    {
+      "file": "screenshots/mobile-video-only-starting-pose-dark.png",
+      "bytes": 86038,
+      "sha256": "72c445217eb7e958286bb093a3f0790619c42c32f74f99434beb513f9854292f"
+    },
+    {
+      "file": "screenshots/mobile-mascot-jumping-jack.png",
+      "bytes": 45115,
+      "sha256": "023b10d72f496a5fe840962f40c365727e39e7d774bab951d6cc67c11bf4424c"
+    },
+    {
+      "file": "screenshots/desktop-workout-entry.png",
+      "bytes": 159157,
+      "sha256": "caf19bd9fc7063062f51b3aa776a0e63d3032e378ef85d903a31baa4fb4596ac"
+    }
+  ],
+  "rendererExceptions": 0,
+  "rendererConsoleErrors": 0,
+  "enforcedCspViolations": 0,
+  "externalOrigins": 0,
+  "modelCalls": 0,
+  "visibleWindows": 0
+}

@@ -1,0 +1,8 @@
+{
+  "canonicalExerciseId": "3593",
+  "englishName": "barbell squat",
+  "tool": "built-in image_gen.imagegen",
+  "prompt": "Use case: stylized-concept. Asset type: original Zeno fitness starting frame, wide 16:9. Reference image is identity only: teal plush otter, cream muzzle and belly, black eyes, whiskers, lime diagonal Z strap and rounded tail. One full-body mascot, warm ivory seamless studio, pale sage floor, soft light, gentle contact shadow, refined 3D product illustration. No text, watermark, extra characters, extra limbs, human skin or cropped equipment. Exercise: BARBELL BACK SQUAT. Clear side three-quarter view facing right. Otter stands tall with both feet flat shoulder width, toes gently out. One straight horizontal charcoal barbell with symmetric small plates rests across upper back/trapezius BEHIND the head, supported by both paws gripping outside shoulders, elbows down and back. Bar rests on muscular upper back, not neck or crown, and stays out of face. Knees straight but relaxed, torso upright with neutral spine, hips visible and enough room below to squat. Exactly two feet and two gripping paws. Tail extends behind without supporting the body. This is a high bar back squat, not front squat, overhead squat or bodyweight squat.",
+  "reference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/root/barbell-squat-reference.png"
+}

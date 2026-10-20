@@ -1,0 +1,14 @@
+{
+  "nodeId": "8872c13f-2dc1-4ea2-a4aa-7c0ac5bc5e2c",
+  "taskId": "20261020204903073838518",
+  "referenceNodeId": "45a5a951-baf1-4d89-8b96-e7efbab440e5",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Use {{Node 45a5a951-baf1-4d89-8b96-e7efbab440e5}} as the exact first frame. Preserve original Zeno otter and the entire prone leg-curl bench with the same padded roller resting against the BACK of both ankles/lower calves. Fixed side three-quarter camera, no cuts or movement. Perform exactly ONE slow LYING MACHINE LEG CURL: keep chest, pelvis and thighs resting on pad and both front paws holding fixed handles. Over three seconds bend both knees to lift the lower legs, bringing heels upward toward the rump while the ankle roller follows in a controlled arc and stays pressed behind ankles. Pause near a comfortable 90-degree knee bend, then slowly extend knees over three seconds, lowering lower legs and roller to the exact original nearly straight position. Hold final second. Only knees flex; do not lift hips, extend the back, slide body or move front arms. The lever rotates around its existing knee-aligned pivot, roller remains attached and never goes through legs or tail. Four limbs only, no disappearing machinery, no text or audio. Calm precise stylized mascot exercise illustration.",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  }
+}

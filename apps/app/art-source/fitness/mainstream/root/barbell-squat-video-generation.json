@@ -1,0 +1,40 @@
+{
+  "canonicalExerciseId": "3593",
+  "englishName": "barbell squat",
+  "prompt": "Use {{Node 974fd95e-b0e2-45fe-89af-6c30fa0d06f3}} as the exact starting frame, preserve this original otter identity, teal fur, cream belly, lime strap, exactly four limbs, equipment and ivory studio. Fixed three-quarter side camera, full body and weights stay visible, no cuts or zooms. Perform ONE slow high bar BACK SQUAT. From standing with straight horizontal bar resting on upper back behind head, bend hips and knees together for three seconds, sit hips back and down with chest controlled and neutral back, knees tracking over toes, heels planted. Stop around thighs parallel to floor, pause briefly; extend hips and knees for three seconds to return standing and hold. Bar remains on upper back, both paws remain attached, elbows point down/back, no bar drifting overhead or in front. Feet never step or pivot, heels never lift, tail is not support. Not front squat or overhead press. Equipment remains rigid, weights stay symmetric, paws never lose contact. No morphing, duplicated equipment, extra limbs, text, watermark or audio. Calm readable stylized mascot movement.",
+  "project": "28d2746051df44e5bfc4a3fa68fa73a5",
+  "referenceNodeId": "974fd95e-b0e2-45fe-89af-6c30fa0d06f3",
+  "nodeId": "0f1efaa0-25db-42c4-a2c0-a293656b9cec",
+  "taskId": "20261020204903252888518",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "251867"
+    }
+  },
+  "originalSha256": "1d35ee9f2761cd908de52b1516db11ce6bc889a1b85e6ce052824d0e923f4179",
+  "originalBytes": 4103060,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "frames": 8,
+    "intervalSeconds": 1,
+    "reviewed": true
+  }
+}

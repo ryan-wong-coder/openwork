@@ -1,0 +1,25 @@
+{
+  "canonicalExerciseId": "0585",
+  "englishName": "lever leg extension",
+  "chineseName": "杠杆腿屈伸",
+  "name": "leg-extension",
+  "imagePrompt": "Use case: stylized-concept. Asset type: original Zeno fitness demonstration first frame, wide 16:9. Reference image supplies ONLY Zeno otter identity: dark teal plush fur, cream muzzle/belly, black eyes, whiskers, lime diagonal Z strap, round tail. Create new original SEATED MACHINE LEG EXTENSION setup in a clean readable side three-quarter view facing right. Otter seated upright with back supported on a sage padded seat/backrest, hips and thighs fully supported, knees bent approximately 90 degrees over the seat edge. Both shins hang down; a SINGLE padded horizontal charcoal roller rests against the FRONT of both lower shins just above ankles. The roller connects on its near side to one rigid lever arm with a visible pivot near the knee joint and modest weight plate at the side; correct seated leg-extension machine geometry. Both paws hold the small side handles near hips. Feet are free to extend forward, not planted on floor or footplates. Tail rests alongside seat. Entire mascot, knee pivot, roller and lever fit in frame with clean space in front for shins to extend to almost horizontal. Warm ivory studio, subtle sage floor, gentle shadow, soft product light, polished calm 3D style. No lying position, no curling pad behind calves, no extra limbs, equipment clipping, text, logos, watermark, dumbbells or other characters.",
+  "videoPrompt": "Use {{REFERENCE}} as the exact first frame. Preserve Zeno otter identity, supported upright torso and thighs, knee-pivot leg-extension machine, single padded roller in FRONT of the lower shins, rigid lever, both side grips and studio. A fixed side three-quarter camera without cuts or zooms. Show exactly ONE slow seated MACHINE LEG EXTENSION repetition: while hips, thighs and upper body remain still and paws keep holding side grips, extend BOTH knees smoothly over three seconds, swinging lower legs and the contacted front shin roller together forward/up until shins are almost horizontal and knees comfortably straight, never hyperextended. Pause briefly, then bend knees under control over three seconds to return lower legs and roller to the original down position; hold final second. The roller remains pressed against the FRONT of the shins and attached to the same lever pivot; it does not detach, migrate behind legs or pass through fur. Thighs never lift off the seat. No standing, no leg press, no seated leg curl, no extra limbs, changing machine, text or audio. Calm readable stylized instructional movement.",
+  "sourceReference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/b/leg-extension-reference.png",
+  "project": "28d2746051df44e5bfc4a3fa68fa73a5",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "semanticSources": [
+    "https://humber.ca/student-life/swac/sites/default/files/Strength%203xweek%20with%20Machines%20-%20Weightroom%20_0.pdf",
+    "https://www.lifefitness.com/en-us/catalog/strength-training/plate-loaded/life-fitness-leg-extension",
+    "https://www.lifefitness.com.au/wp-content/uploads/2015/02/Optima_user_manual_for_all_strength_2_585_1371787541.pdf"
+  ],
+  "restrictedUpstreamMediaUsed": false
+}

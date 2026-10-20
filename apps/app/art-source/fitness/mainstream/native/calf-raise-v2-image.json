@@ -1,0 +1,10 @@
+{
+  "canonicalExerciseId": "0417",
+  "englishName": "dumbbell standing calf raise",
+  "tool": "built-in image_gen.imagegen",
+  "prompt": "Use case: stylized-concept. Asset type: original Zeno fitness demo first frame, wide 16:9. Reference image 1 provides ONLY the established otter identity: friendly dark desaturated teal plush fur, cream muzzle/belly, black eyes, whiskers, lime diagonal Z strap and round tail. Warm ivory seamless studio with pale sage floor, soft light, calm sophisticated 3D product style. One otter only, no human anatomy, no text, labels, watermark, logo, extra limbs or clutter. Exercise is two-leg DUMBBELL STANDING CALF RAISE on a LEVEL FLOOR. Fixed camera FARTHER AWAY, full mascot occupies only 60 percent of image height, leave at least 25 percent image height EMPTY IVORY SPACE ABOVE the ears for vertical rising during animation and 10 percent floor below feet. Clear side three-quarter view facing right. Both feet flat, hip width, both heels clearly visible, knees nearly straight, torso upright. One matte charcoal dumbbell in each paw with arms hanging still by sides, palms inward, paws grip each handle. Tail behind and off floor. No bench, steps or platform. This static starting pose will rise onto both toes; generous headroom is absolutely essential, do NOT fill the frame with character.",
+  "reference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/native/calf-raise-v2-reference.png",
+  "referencePurpose": "original Zeno mascot identity only; no upstream exercise media used",
+  "attempt": 2
+}

@@ -1,0 +1,217 @@
+{
+  "createdAt": "2026-10-20T13:15:59.115540+00:00",
+  "scope": "Three exact canonical exercises: one original diagram and two approved mascot videos; no other exercise inherits these media.",
+  "tools": [
+    "built-in image_gen.imagegen",
+    "official libtv CLI 1.1.1",
+    "original SVG",
+    "Sharp",
+    "ffmpeg",
+    "cwebp"
+  ],
+  "restrictedUpstreamMediaUsed": false,
+  "humanTechniqueOrClinicalValidation": false,
+  "assets": [
+    {
+      "name": "lunge",
+      "canonicalExerciseId": "0612",
+      "chineseName": "弓步",
+      "englishName": "lunge",
+      "kind": "diagram",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/lunge.mp4",
+        "bytes": 73686,
+        "sha256": "4f86ae0294db6ba6b7d82cd83cef736fc2669bc219388d5d38c25233f11a7d3d"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/lunge-poster.webp",
+        "bytes": 5492,
+        "sha256": "a942da30eb82a5e0986d48177c84609bbeeedc4f2de4966274d3182a4f0b3f2c"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/mainstream/native/lunge-diagram-start.svg",
+        "bytes": 912,
+        "sha256": "f0867ba0929493b0f157316ded18ea6d822be038d98eee9c03464922d34c01d8"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1"
+          }
+        ],
+        "format": {
+          "duration": "8.000000",
+          "size": "73686"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/mainstream/native/lunge-diagram-contact.jpg",
+        "reviewed": true,
+        "reviewedAt": "2026-10-20T13:15:59.115540+00:00",
+        "result": "Complete standing, leading-foot step, lowering, bottom hold, rise and return. Rear toe stays anchored, leading foot stays fixed through lowering/rising, separate knees and correct right-facing rear foot remain visible. No cropping or borrowed variant."
+      },
+      "processing": "192 original SVG frames rasterized with bundled Sharp at 1024x576, 24fps for exactly 8 seconds; H.264 CRF26 yuv420p, no audio, faststart; first frame encoded with cwebp q86.",
+      "generation": {
+        "tool": "original Zeno SVG keyframes and Sharp rasterization",
+        "generatorFile": "apps/app/art-source/fitness/mainstream/native/lunge-diagram.mjs",
+        "sourceExerciseId": "0612",
+        "renderedFrames": 192,
+        "framesPerSecond": 24,
+        "width": 1024,
+        "height": 576,
+        "durationSeconds": 8,
+        "loop": true,
+        "fullVideoDecoded": true
+      },
+      "restrictedUpstreamMediaUsed": false,
+      "runtimeValidation": {
+        "actualPublicSourceBytesMatched": true,
+        "fullVideoDecoded": true,
+        "audioStreamCount": 0,
+        "reviewedFinalPoster": true
+      }
+    },
+    {
+      "name": "calf-raise",
+      "canonicalExerciseId": "0417",
+      "chineseName": "哑铃站姿提踵",
+      "englishName": "dumbbell standing calf raise",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/calf-raise.mp4",
+        "bytes": 147287,
+        "sha256": "d4ea9d42bc3a9cd5eba0775a3e6710494386063dc96d0ab3edf27d68d6efe62f"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/calf-raise-poster.webp",
+        "bytes": 11642,
+        "sha256": "3f9a1b8b0f4de9e85e041d83c5bd5cb05af6200ee8b18f005724c7b32fb35c59"
+      },
+      "originalGeneratedVideo": {
+        "file": "Mainstream 0417 calf-raise native second demonstration.mp4",
+        "bytes": 3276758,
+        "sha256": "c6b637838728804b75af821ec858ec538ef88089955c657e379cfe60da1725bb",
+        "retained": false
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/mainstream/native/calf-raise-v2-reference.png",
+        "bytes": 1598175,
+        "sha256": "a70a7137c3de3a81c2c390c7bb03cf5481baceaeb5669e399c9e04450ae8a4d8"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "147287"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/mainstream/native/calf-raise-v2-contact.jpg",
+        "reviewed": true,
+        "reviewedAt": "2026-10-20T13:06:29.895013+00:00",
+        "result": "Both heels lift while toes stay planted; nearly straight knees; both dumbbells stable; head, ears and feet remain in frame for all eight inspected frames."
+      },
+      "processing": "Original full single 8-second repetition; H.264 CRF26 1024px yuv420p, audio removed, faststart; original reference poster via cwebp q86 1024px.",
+      "generation": {
+        "tool": "official libtv CLI",
+        "nodeId": "626e04b7-5890-4927-8f58-77ef9c4ab070",
+        "taskId": "20261020210103600738518",
+        "model": "Seedance 2.0 VIP",
+        "requestFile": "apps/app/art-source/fitness/mainstream/native/calf-raise-v2-video-request.json"
+      },
+      "restrictedUpstreamMediaUsed": false,
+      "acceptedAttempt": 2,
+      "kind": "mascot",
+      "runtimeValidation": {
+        "actualPublicSourceBytesMatched": true,
+        "fullVideoDecoded": true,
+        "audioStreamCount": 0,
+        "reviewedFinalPoster": true
+      }
+    },
+    {
+      "name": "hip-thrust",
+      "canonicalExerciseId": "1060",
+      "chineseName": "杠铃臀推",
+      "englishName": "barbell hip thrust",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/hip-thrust.mp4",
+        "bytes": 214045,
+        "sha256": "f06f5ed0dcc5e55fd823d8df1c1b1adbfebfc46402533d1a08293b2096cd7353"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/hip-thrust-poster.webp",
+        "bytes": 21042,
+        "sha256": "8a94d7c66a5a2a72f619672cef8b5b1d3b1e4409b7f67741c08cb6fc9f34983d"
+      },
+      "originalGeneratedVideo": {
+        "file": "Mainstream 1060 hip-thrust native second demonstration.mp4",
+        "bytes": 4806082,
+        "sha256": "de10fe112f3b8419e27072a59bc50b7df8b425e83ba118d053533044acb94185",
+        "retained": false
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/mainstream/native/hip-thrust-v2-reference.png",
+        "bytes": 1790709,
+        "sha256": "a80bfc2e08e05dfdd89c603f0a7b08c5f5ae240c8aca8faf9c0c356265f5e15c"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "214045"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/mainstream/native/hip-thrust-v2-contact.jpg",
+        "reviewed": true,
+        "reviewedAt": "2026-10-20T13:14:14.067389+00:00",
+        "result": "Full side view remains visible. Shoulder blades stay against the bench edge, feet remain planted, padded bar moves with the hip crease through lowering and extension rather than drifting toward chest."
+      },
+      "processing": "Original full single 8-second repetition; H.264 CRF26 1024px yuv420p, audio removed, faststart; original reference poster via cwebp q86 1024px.",
+      "generation": {
+        "tool": "official libtv CLI",
+        "nodeId": "a411e294-9850-46ce-bf56-31266f0a0ac6",
+        "taskId": "20261020210103479988518",
+        "model": "Seedance 2.0 VIP",
+        "requestFile": "apps/app/art-source/fitness/mainstream/native/hip-thrust-v2-video-request.json"
+      },
+      "restrictedUpstreamMediaUsed": false,
+      "acceptedAttempt": 2,
+      "kind": "mascot",
+      "runtimeValidation": {
+        "actualPublicSourceBytesMatched": true,
+        "fullVideoDecoded": true,
+        "audioStreamCount": 0,
+        "reviewedFinalPoster": true
+      }
+    }
+  ]
+}

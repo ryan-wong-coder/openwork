@@ -1,0 +1,72 @@
+{
+  "createdAt": "2026-10-20T13:14:14.069349+00:00",
+  "tools": [
+    "built-in image_gen.imagegen",
+    "official libtv CLI 1.1.1",
+    "ffmpeg",
+    "cwebp"
+  ],
+  "restrictedUpstreamMediaUsed": false,
+  "assets": [
+    {
+      "name": "hip-thrust",
+      "canonicalExerciseId": "1060",
+      "chineseName": "杠铃臀推",
+      "englishName": "barbell hip thrust",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/hip-thrust.mp4",
+        "bytes": 214045,
+        "sha256": "f06f5ed0dcc5e55fd823d8df1c1b1adbfebfc46402533d1a08293b2096cd7353"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/hip-thrust-poster.webp",
+        "bytes": 21042,
+        "sha256": "8a94d7c66a5a2a72f619672cef8b5b1d3b1e4409b7f67741c08cb6fc9f34983d"
+      },
+      "originalGeneratedVideo": {
+        "file": "Mainstream 1060 hip-thrust native second demonstration.mp4",
+        "bytes": 4806082,
+        "sha256": "de10fe112f3b8419e27072a59bc50b7df8b425e83ba118d053533044acb94185",
+        "retained": false
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/mainstream/native/hip-thrust-v2-reference.png",
+        "bytes": 1790709,
+        "sha256": "a80bfc2e08e05dfdd89c603f0a7b08c5f5ae240c8aca8faf9c0c356265f5e15c"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "214045"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/mainstream/native/hip-thrust-v2-contact.jpg",
+        "reviewed": true,
+        "reviewedAt": "2026-10-20T13:14:14.067389+00:00",
+        "result": "Full side view remains visible. Shoulder blades stay against the bench edge, feet remain planted, padded bar moves with the hip crease through lowering and extension rather than drifting toward chest."
+      },
+      "processing": "Original full single 8-second repetition; H.264 CRF26 1024px yuv420p, audio removed, faststart; original reference poster via cwebp q86 1024px.",
+      "generation": {
+        "tool": "official libtv CLI",
+        "nodeId": "a411e294-9850-46ce-bf56-31266f0a0ac6",
+        "taskId": "20261020210103479988518",
+        "model": "Seedance 2.0 VIP",
+        "requestFile": "apps/app/art-source/fitness/mainstream/native/hip-thrust-v2-video-request.json"
+      },
+      "restrictedUpstreamMediaUsed": false,
+      "acceptedAttempt": 2
+    }
+  ]
+}

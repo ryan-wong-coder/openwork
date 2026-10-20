@@ -1,0 +1,14 @@
+{
+  "nodeId": "587523c3-2b6a-468e-b200-54a1b1f46813",
+  "taskId": "20261020210103414868518",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Use {{Node 5abc265a-d660-4ae9-a2a8-221def05c9ff}} as the exact first frame and preserve the original Zeno otter, empty paws on hips, tail lifted behind, ivory studio and lighting. The first frame shows the BOTTOM of a correct BODYWEIGHT FORWARD LUNGE with front foot to the right and back toes well behind to the left. Animate exactly ONE slow continuous cycle on this SAME leading leg: hold this bottom lunge briefly; push through the FLAT FRONT FOOT to straighten the front knee and raise hips, then draw that front foot back into a normal upright standing stance; step that same foot FORWARD to the right by one clear full stride; keep front foot planted flat and rear toes far behind, bend BOTH knees to lower back into the exact starting 90-degree bottom lunge; hold the same bottom pose for the final second. Throughout, the rear knee remains behind the hips and hovers just above the floor when low; it must NEVER tuck directly under hips or disappear. Tail stays lifted and does not cover legs, touch floor or support body weight. Torso stays upright, both knees and both feet always distinct. Preserve a clean full-body side view: during the first rise make a very gentle continuous camera pullback so the head stays fully inside frame, then lock the view; no cuts, no abrupt zoom and no cropped head or feet. No squat, sitting, kneeling, bouncing, walking away, alternating legs, extra limbs, weights, text, logos, watermarks or sound. Calm readable stylized movement illustration.",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "status": 2
+}

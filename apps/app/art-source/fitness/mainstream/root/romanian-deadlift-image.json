@@ -1,0 +1,9 @@
+{
+  "canonicalExerciseId": "0085",
+  "englishName": "barbell romanian deadlift",
+  "tool": "built-in image_gen.imagegen",
+  "prompt": "Use case: stylized-concept. Asset type: original Zeno fitness ROMANIAN DEADLIFT illustration, wide16:9. Input is mascot identity only: recognizable friendly teal plush otter, cream muzzle/belly, black eyes, whiskers, lime diagonal Z strap and round tail. New exact pose: BOTTOM OF A HIP HINGE Romanian deadlift with one barbell, NOT a conventional floor deadlift or squat. TRUE SIDE VIEW facing right so hip and knee angles readable. BOTH LEGS NEARLY STRAIGHT, knees only about 10–15 degrees soft, shins almost VERTICAL. HIPS FAR BACK, pelvis above knees. Torso tipped forward ALMOST HORIZONTAL (about20degrees above horizontal) with flat neutral back; head in line with long torso, gaze down-forward, not raised neck. Both straight arms hang vertically from shoulders, paws grip a horizontal charcoal barbell just outside legs, bar hovering in front of MID SHINS above floor. The two modest equal plates do NOT rest on ground. Feet flat and hip-width, tail extends directly behind but is not a support. Distinct coherent hip hinge, not bending knees and sitting low. Entire body and bar occupy lower60% of frame, massive empty ivory space overhead for standing. Calm polished3D product style, warm ivory/sage studio, fixed far camera, all limbs/equipment fully visible. No text, watermark, other characters, human skin, extra limbs or props. Critical: do not substitute a knee-bending squat; hips must stay high and knees almost straight.",
+  "reference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/root/romanian-deadlift-reference.png",
+  "attempt": 2
+}

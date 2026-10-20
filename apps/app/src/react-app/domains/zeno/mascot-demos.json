@@ -1,0 +1,194 @@
+[
+  {
+    "exerciseId": "0025",
+    "englishName": "barbell bench press",
+    "stem": "bench-press",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0289",
+    "englishName": "dumbbell bench press",
+    "stem": "dumbbell-bench-press",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0314",
+    "englishName": "dumbbell incline bench press",
+    "stem": "incline-dumbbell-press",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0308",
+    "englishName": "dumbbell fly",
+    "stem": "dumbbell-fly",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0662",
+    "englishName": "push-up",
+    "stem": "push-up",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0652",
+    "englishName": "pull-up",
+    "stem": "pull-up",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "2330",
+    "englishName": "cable lat pulldown full range of motion",
+    "stem": "lat-pulldown",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0861",
+    "englishName": "cable seated row",
+    "stem": "seated-row",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0027",
+    "englishName": "barbell bent over row",
+    "stem": "bent-over-row",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "3593",
+    "englishName": "barbell squat",
+    "stem": "barbell-squat",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1197",
+    "englishName": "squat",
+    "stem": "squat",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0032",
+    "englishName": "barbell deadlift",
+    "stem": "deadlift",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0085",
+    "englishName": "barbell romanian deadlift",
+    "stem": "romanian-deadlift",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1760",
+    "englishName": "dumbbell goblet squat",
+    "stem": "goblet-squat",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0612",
+    "englishName": "lunge",
+    "stem": "lunge",
+    "kind": "diagram"
+  },
+  {
+    "exerciseId": "0585",
+    "englishName": "lever leg extension",
+    "stem": "leg-extension",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0586",
+    "englishName": "lever lying leg curl",
+    "stem": "lying-leg-curl",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0417",
+    "englishName": "dumbbell standing calf raise",
+    "stem": "calf-raise",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1060",
+    "englishName": "barbell hip thrust",
+    "stem": "hip-thrust",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0334",
+    "englishName": "dumbbell lateral raise",
+    "stem": "lateral-raise",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0405",
+    "englishName": "dumbbell seated shoulder press",
+    "stem": "shoulder-press",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "2487",
+    "englishName": "dumbbell rear delt fly",
+    "stem": "rear-delt-fly",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0294",
+    "englishName": "dumbbell biceps curl",
+    "stem": "curl",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0313",
+    "englishName": "dumbbell hammer curl",
+    "stem": "hammer-curl",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0200",
+    "englishName": "cable pushdown (with rope attachment)",
+    "stem": "triceps-pushdown",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0463",
+    "englishName": "front plank",
+    "stem": "plank",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0274",
+    "englishName": "crunch floor",
+    "stem": "crunch",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1163",
+    "englishName": "lying leg raise",
+    "stem": "leg-raise",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0687",
+    "englishName": "russian twist",
+    "stem": "russian-twist",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0685",
+    "englishName": "run",
+    "stem": "run",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "3094",
+    "englishName": "jumping jack",
+    "stem": "jumping-jack",
+    "kind": "diagram"
+  },
+  {
+    "exerciseId": "2138",
+    "englishName": "stationary bike run v. 3",
+    "stem": "stationary-bike",
+    "kind": "mascot"
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "canonicalExerciseId": "0085",
+  "englishName": "barbell romanian deadlift",
+  "tool": "built-in image_gen.imagegen",
+  "prompt": "Use case: stylized-concept. Asset type: original Zeno fitness starting frame, wide 16:9. Reference image is identity only: teal plush otter, cream muzzle and belly, black eyes, whiskers, lime diagonal Z strap and rounded tail. One full-body mascot, warm ivory seamless studio, pale sage floor, soft light, gentle contact shadow, refined 3D product illustration. No text, watermark, extra characters, extra limbs, human skin or cropped equipment. Exercise: BARBELL ROMANIAN DEADLIFT, start at the TOP. Clear three-quarter SIDE view facing right. Otter stands tall, feet hip width flat, knees just slightly soft, hips extended and back neutral, no leaning backward. One horizontal charcoal barbell with equal modest plates hangs in two straight arms against the front of upper thighs. Both paws grip bar just outside thighs with overhand grip, shoulders relaxed. All four limbs, bar and plates readable and visible. Leave space in front for subsequent hip hinge while knees remain slightly bent. Tail behind non-weight-bearing. Not a floor deadlift start, not a curl or deep squat.",
+  "reference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/root/romanian-deadlift-reference.png"
+}

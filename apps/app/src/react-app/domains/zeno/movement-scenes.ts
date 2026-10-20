@@ -1,6 +1,7 @@
 /** Original Zeno vector keyframes. No upstream exercise image, video or geometry is used. */
 import { canonicalExerciseId, findExercise, muscleLabels, type FitnessExercise } from "@zeno/fitness";
 import type { RoutineExercise } from "@zeno/core";
+import mascotDemos from "./mascot-demos.json";
 
 export type Point = readonly [number, number];
 export type Pose = { head: Point; shoulder: Point; hip: Point; elbow: Point; hand: Point; knee: Point; ankle: Point; toe: Point; farElbow: Point; farHand: Point; farKnee: Point; farAnkle: Point; farToe: Point };
@@ -48,10 +49,12 @@ export function movementForExercise(exercise: Pick<FitnessExercise, "id" | "engl
   return movementScenes.find(scene => scene.exerciseId === canonicalId && scene.englishName === exercise.englishName);
 }
 
-export function mascotDemoForExercise(exercise: Pick<FitnessExercise, "id" | "englishName" | "bodyPartId">): { video: string; poster: string } | undefined {
-  const scene = movementForExercise(exercise);
-  const name = scene?.exerciseId === "0294" ? "curl" : scene?.exerciseId === "1197" ? "squat" : scene?.exerciseId === "0405" ? "shoulder-press" : undefined;
-  return name ? { video: `zeno/fitness/${name}.mp4`, poster: `zeno/fitness/${name}-poster.webp` } : undefined;
+export type ExerciseDemo = { video: string; poster: string; kind: "mascot" | "diagram" };
+export function mascotDemoForExercise(exercise: Pick<FitnessExercise, "id" | "englishName" | "bodyPartId">): ExerciseDemo | undefined {
+  if (exercise.bodyPartId === "custom") return undefined;
+  const canonicalId = canonicalExerciseId(exercise.id);
+  const demo = mascotDemos.find(item => item.exerciseId === canonicalId && item.englishName === exercise.englishName);
+  return demo ? { video: `zeno/fitness/${demo.stem}.mp4`, poster: `zeno/fitness/${demo.stem}-poster.webp`, kind: demo.kind === "diagram" ? "diagram" : "mascot" } : undefined;
 }
 export function interpolatePose(scene: MovementScene, progress: number): Pose {
   const ratio = Math.min(1, Math.max(0, Number.isFinite(progress) ? progress : 0));

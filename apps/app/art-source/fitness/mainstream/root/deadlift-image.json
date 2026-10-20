@@ -1,0 +1,9 @@
+{
+  "canonicalExerciseId": "0032",
+  "englishName": "barbell deadlift",
+  "tool": "built-in image_gen.imagegen",
+  "prompt": "Use case: stylized-concept. Asset type: original Zeno barbell deadlift first frame, wide 16:9 with unusually WIDE CAMERA FRAMING for animation. Identity reference only: teal plush otter, cream muzzle and belly, black eyes, lime diagonal Z strap and round tail. Recreate conventional barbell DEADLIFT bottom setup: full otter and one charcoal barbell with equal round plates, feet hip width flat, bar on floor over mid-foot close to shins, paws grip outside knees, arms straight, hips pushed back, moderate knee bend, flat neutral back and chest lifted, side three-quarter view facing right. CRITICAL COMPOSITION: mascot in starting bent pose occupies only the LOWER HALF of the image; its head at roughly 45% of image height and feet at 88% of image height. The entire upper 40% is EMPTY warm ivory background reserved for head to rise when standing. Camera very far back; the complete standing position would still fit within frame with at least 10% top margin. The bar spans at most 60% of frame width, no cropped tail or weights. Soft ivory/sage studio, consistent refined 3D mascot, gentle shadow. Exactly four limbs, no additional characters, text, labels, watermark, dumbbells, human skin or frame. Prior version filled frame too much; this version must visibly have much more empty space above and around mascot.",
+  "reference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/root/deadlift-reference.png",
+  "attempt": 2
+}

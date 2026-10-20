@@ -1,0 +1,14 @@
+{
+  "nodeId": "9f291f8b-4a83-429a-8e44-07d284f80df7",
+  "taskId": "20261020205603117598518",
+  "referenceNodeId": "c25363d5-45bb-4cec-86be-db10fd01f1d5",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Use {{Node c25363d5-45bb-4cec-86be-db10fd01f1d5}} as the exact first frame, keeping Zeno small and centered with ALL the generous blank headroom and side margins. Fixed wide tripod camera for entire video, absolutely no zoom or reframing. Preserve original Zeno otter identity, studio, four limbs and empty paws. Demonstrate clear standard JUMPING JACKS at a calm steady rhythm: start feet together and arms by sides; gently jump feet apart while simultaneously sweeping both arms out sideways and fully overhead; land softly with knees slightly flexed. Jump feet back together while both arms sweep back down to sides. Complete two controlled full open-close cycles over eight seconds and finish in original standing pose. Legs spread only to comfortable shoulder width, arms extend overhead without touching frame edges, head/paws/feet stay fully visible. Torso upright, no twisting, squatting, running or hand weights. Tail stays behind and never becomes a support leg. No extra limbs, shape morphing, camera movement, text or audio. Calm readable stylized mascot movement illustration.",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  }
+}

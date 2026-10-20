@@ -1,0 +1,23 @@
+{
+  "canonicalExerciseId": "2330",
+  "englishName": "cable lat pulldown full range of motion",
+  "chineseName": "绳索全幅度高位下拉",
+  "name": "lat-pulldown",
+  "imagePrompt": "Use case: stylized-concept. Asset type: original Zeno exercise video first frame, wide 16:9. Reference image 1 provides only identity of Zeno, a friendly dark teal plush otter with cream muzzle/belly, black eyes, whiskers, lime diagonal Z strap and rounded tail. Create a new original full-range CABLE LAT PULLDOWN starting setup. Otter sits upright on a small pale sage lat-pulldown seat, feet flat on floor and thighs secured under two understated padded knee rollers. Both paws grip the ends of ONE wide charcoal pulldown bar overhand, slightly wider than shoulders, arms extended upward. The bar is attached at its CENTER to a taut vertical cable running up through a clearly visible fixed overhead pulley on a simple sage machine tower behind. Bar is above head ready to move down IN FRONT of face toward upper chest. Torso upright with only a slight lean back, shoulders relaxed. Three-quarter side view showing both arms, knees, seat, cable and pulley; entire mascot and machine fit in frame. The wide bar, cable and pulley must form one physically coherent assembly with no unattached wires. Warm ivory seamless studio and subtle sage floor, soft product lighting, calm polished 3D style. No dumbbells, no exercise labels, text, logos, watermarks, other characters, extra limbs, cable through face or behind-neck grip. Correct unassisted seated high-pulley exercise, not a pull-up.",
+  "videoPrompt": "Use {{REFERENCE}} as the exact first frame, retaining the original Zeno mascot, single connected pulldown bar and overhead cable/pulley, thigh pads, seat, grounded feet and studio. Fixed tripod camera, no cuts or zooms. Perform exactly one slow seated CABLE LAT PULLDOWN: start with arms fully extended overhead; pull the bar down IN FRONT of face to upper chest over three seconds, bending both elbows down beside the ribs while gently drawing shoulder blades together. Pause briefly near collarbone, then let arms extend overhead under control over three seconds to the original start. Hold final second. Torso keeps its slight backward lean and never rocks, seat and thigh pads stay fixed. Both paws hold the same wide overhand grip; the bar stays horizontal and attached at center to one taut cable that runs over the same pulley. Never pull behind the neck, stand up or let the cable detach. Maintain four limbs, coherent equipment, no text or sound. Calm stylized instructional mascot movement.",
+  "sourceReference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/b/lat-pulldown-reference.png",
+  "project": "28d2746051df44e5bfc4a3fa68fa73a5",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "semanticSources": [
+    "https://www.acefitness.org/resources/pros/expert-articles/8944/a-back-to-school-program-an-evidence-based-approach-to-training-the-back/"
+  ],
+  "restrictedUpstreamMediaUsed": false
+}

@@ -1,0 +1,17 @@
+{
+  "canonicalExerciseId": "0417",
+  "englishName": "dumbbell standing calf raise",
+  "project": "28d2746051df44e5bfc4a3fa68fa73a5",
+  "referenceNodeId": "fab39cc2-a70b-4d75-803f-aa42086521b7",
+  "name": "Mainstream 0417 calf-raise native second demonstration",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Use {{Node fab39cc2-a70b-4d75-803f-aa42086521b7}} as the exact first frame. Preserve the original Zeno otter, its two small charcoal dumbbells gripped at the same handles, body proportions, flat feet, lifted tail and ivory studio. The distant tripod camera is ABSOLUTELY FIXED and must preserve all of the generous empty headroom in the reference. Full head, ears, both dumbbells, knees, heels and toes always remain inside the frame. Exactly ONE slow two-leg DUMBBELL STANDING CALF RAISE on the LEVEL FLOOR: start flat-footed; over three seconds pivot BOTH HEELS UP while balls of feet and toes remain planted on the exact original spots; body rises only a small natural calf-raise distance; hold briefly with clearly visible gaps under both heels; over three seconds smoothly lower the heels until both feet are flat again; hold original pose for final second. Knees stay almost straight, torso upright, arms hang still beside body, dumbbells move upward only with the body. No squatting, jumping, foot sliding, arm curls, sideways raises, camera zoom or panning, extra limbs, disappearing equipment, text, logos, watermark or sound. Calm refined stylized mascot exercise illustration.",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "attempt": 2
+}

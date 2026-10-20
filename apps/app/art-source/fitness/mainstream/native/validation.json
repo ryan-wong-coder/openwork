@@ -1,0 +1,116 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-20T13:16:53.132326+00:00",
+  "scope": "Three owned final source pairs; ffprobe and full decode, manually viewed 8-frame contact sheets and final posters. No packaged desktop, web UI or live deployment claim.",
+  "restrictedUpstreamMediaUsed": false,
+  "checks": [
+    {
+      "canonicalExerciseId": "0612",
+      "kind": "diagram",
+      "files": {
+        "video": {
+          "file": "apps/app/public/zeno/fitness/lunge.mp4",
+          "bytes": 73686,
+          "sha256": "4f86ae0294db6ba6b7d82cd83cef736fc2669bc219388d5d38c25233f11a7d3d"
+        },
+        "poster": {
+          "file": "apps/app/public/zeno/fitness/lunge-poster.webp",
+          "bytes": 5492,
+          "sha256": "a942da30eb82a5e0986d48177c84609bbeeedc4f2de4966274d3182a4f0b3f2c"
+        }
+      },
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1"
+          }
+        ],
+        "format": {
+          "duration": "8.000000",
+          "size": "73686"
+        }
+      },
+      "fullDecoded": true,
+      "contactSheetActuallyViewed": true,
+      "finalPosterActuallyViewed": true
+    },
+    {
+      "canonicalExerciseId": "0417",
+      "kind": "mascot",
+      "files": {
+        "video": {
+          "file": "apps/app/public/zeno/fitness/calf-raise.mp4",
+          "bytes": 147287,
+          "sha256": "d4ea9d42bc3a9cd5eba0775a3e6710494386063dc96d0ab3edf27d68d6efe62f"
+        },
+        "poster": {
+          "file": "apps/app/public/zeno/fitness/calf-raise-poster.webp",
+          "bytes": 11642,
+          "sha256": "3f9a1b8b0f4de9e85e041d83c5bd5cb05af6200ee8b18f005724c7b32fb35c59"
+        }
+      },
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1"
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "147287"
+        }
+      },
+      "fullDecoded": true,
+      "contactSheetActuallyViewed": true,
+      "finalPosterActuallyViewed": true
+    },
+    {
+      "canonicalExerciseId": "1060",
+      "kind": "mascot",
+      "files": {
+        "video": {
+          "file": "apps/app/public/zeno/fitness/hip-thrust.mp4",
+          "bytes": 214045,
+          "sha256": "f06f5ed0dcc5e55fd823d8df1c1b1adbfebfc46402533d1a08293b2096cd7353"
+        },
+        "poster": {
+          "file": "apps/app/public/zeno/fitness/hip-thrust-poster.webp",
+          "bytes": 21042,
+          "sha256": "8a94d7c66a5a2a72f619672cef8b5b1d3b1e4409b7f67741c08cb6fc9f34983d"
+        }
+      },
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1"
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "214045"
+        }
+      },
+      "fullDecoded": true,
+      "contactSheetActuallyViewed": true,
+      "finalPosterActuallyViewed": true
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+[
+  {
+    "name": "lunge",
+    "canonicalExerciseId": "0612",
+    "attempt": 1,
+    "accepted": false,
+    "reason": "Rear knee/foot not clearly extended behind hips; lowered posture reads as sitting on tail, so technique is not accepted.",
+    "originalGeneratedVideo": {
+      "file": "Mainstream 0612 lunge native demonstration.mp4",
+      "bytes": 2212094,
+      "sha256": "af21b2539a5d9d4ee39cba8a81356c7bb2aac8057650e4a74b70902b725522ce",
+      "retained": false
+    },
+    "generatedReference": {
+      "file": "apps/app/art-source/fitness/mainstream/native/lunge-reference.png",
+      "bytes": 1716163,
+      "sha256": "f6da86d45096031ea73e9f75448eda37f0ccab0607c56a532446f9843f1c7288",
+      "retainedInWorkspace": false
+    },
+    "manualFrameReview": {
+      "frames": 8,
+      "intervalSeconds": 1,
+      "contactSheet": "apps/app/art-source/fitness/mainstream/native/lunge-contact.jpg",
+      "actuallyViewed": true
+    },
+    "generation": {
+      "tool": "official libtv CLI",
+      "nodeId": "fc345c39-1108-4bc3-b409-2afce5a54bb6",
+      "taskId": "20261020204603174898518",
+      "model": "Seedance 2.0 VIP",
+      "requestFile": "apps/app/art-source/fitness/mainstream/native/lunge-video-request.json"
+    },
+    "encodedCandidateSha256": "0406190a3531804e7147fa40273237e995338bf8398383f5d36fa49f796add67",
+    "encodedCandidateBytes": 218621
+  },
+  {
+    "name": "calf-raise",
+    "canonicalExerciseId": "0417",
+    "attempt": 1,
+    "accepted": false,
+    "reason": "Toe contact and heel movement are clear, but the head is cropped at peak height.",
+    "originalGeneratedVideo": {
+      "file": "Mainstream 0417 calf raise native demonstration.mp4",
+      "bytes": 3793104,
+      "sha256": "c3ccc1689594cd89a21c4b1dce1e5f388115b9114b6489d5648803dfeb2659d4",
+      "retained": false
+    },
+    "generatedReference": {
+      "file": "apps/app/art-source/fitness/mainstream/native/calf-raise-reference.png",
+      "bytes": 1735855,
+      "sha256": "2b46bac38b0521890f1d80202a73731f2a66e80fc16056f9b8c1a7901f4cbc10",
+      "retainedInWorkspace": false
+    },
+    "manualFrameReview": {
+      "frames": 8,
+      "intervalSeconds": 1,
+      "contactSheet": "apps/app/art-source/fitness/mainstream/native/calf-raise-contact.jpg",
+      "actuallyViewed": true
+    },
+    "generation": {
+      "tool": "official libtv CLI",
+      "nodeId": "ef2a4444-e59b-4283-833c-29976e463f0e",
+      "taskId": "20261020204803229988518",
+      "model": "Seedance 2.0 VIP",
+      "requestFile": "apps/app/art-source/fitness/mainstream/native/calf-raise-video-request.json"
+    },
+    "encodedCandidateSha256": "dda9689caa5c8ff606e6d6228fec034c5092e59e230a90739439518679ec6d36",
+    "encodedCandidateBytes": 163555
+  },
+  {
+    "name": "hip-thrust",
+    "canonicalExerciseId": "1060",
+    "attempt": 1,
+    "accepted": false,
+    "reason": "Barbell drifts toward chest at top rather than remaining attached to the hip crease.",
+    "originalGeneratedVideo": {
+      "file": "Mainstream 1060 hip thrust native demonstration.mp4",
+      "bytes": 3555716,
+      "sha256": "c26f28a81d59b5bbff94881ab0342bf8b60115cb9114aedf915b916e9ce6239a",
+      "retained": false
+    },
+    "generatedReference": {
+      "file": "apps/app/art-source/fitness/mainstream/native/hip-thrust-reference.png",
+      "bytes": 1903425,
+      "sha256": "6ec601bbe743d5f3a140d938b4d3eec686393ef5352cec9e02b26de3bdfffade",
+      "retainedInWorkspace": false
+    },
+    "manualFrameReview": {
+      "frames": 8,
+      "intervalSeconds": 1,
+      "contactSheet": "apps/app/art-source/fitness/mainstream/native/hip-thrust-contact.jpg",
+      "actuallyViewed": true
+    },
+    "generation": {
+      "tool": "official libtv CLI",
+      "nodeId": "925e1b14-79aa-4470-b0df-a6ed0b386324",
+      "taskId": "20261020204803737168518",
+      "model": "Seedance 2.0 VIP",
+      "requestFile": "apps/app/art-source/fitness/mainstream/native/hip-thrust-video-request.json"
+    },
+    "encodedCandidateSha256": "d9273e9710f42aba2eb4a92d0c41df39565a1a5d438ba0dc0ac16b0a296fae9f",
+    "encodedCandidateBytes": 247336
+  },
+  {
+    "name": "lunge",
+    "canonicalExerciseId": "0612",
+    "attempt": 2,
+    "accepted": false,
+    "reason": "Movement and rear-leg visibility improved, but the rising phase crops the top of the head; rejected in favour of the precise original SVG diagram.",
+    "originalGeneratedVideo": {
+      "file": "Mainstream 0612 lunge native second demonstration.mp4",
+      "bytes": 3254241,
+      "sha256": "c40d3ab72a0ef0d3064f0c4ef9c071730019b8dc6b17c33d827dac2db7ca914c",
+      "retained": false
+    },
+    "generatedReference": {
+      "file": "apps/app/art-source/fitness/mainstream/native/lunge-v2-reference.png",
+      "bytes": 1775543,
+      "sha256": "19060a7691c9da04583f50863d2cda61d694a45a24cd801ecd58d78cd00f89b0",
+      "retainedInWorkspace": false
+    },
+    "manualFrameReview": {
+      "frames": 8,
+      "intervalSeconds": 1,
+      "contactSheet": "apps/app/art-source/fitness/mainstream/native/lunge-v2-contact.jpg",
+      "actuallyViewed": true,
+      "additionalInspectedSeconds": [
+        3,
+        6
+      ]
+    },
+    "generation": {
+      "tool": "official libtv CLI",
+      "nodeId": "587523c3-2b6a-468e-b200-54a1b1f46813",
+      "taskId": "20261020210103414868518",
+      "model": "Seedance 2.0 VIP",
+      "requestFile": "apps/app/art-source/fitness/mainstream/native/lunge-v2-video-request.json"
+    },
+    "encodedCandidateSha256": "e09ff96b8f62b44ad4c503532929a2f569733c44ae3dac065eb8075ea112603d",
+    "encodedCandidateBytes": 254230
+  }
+]

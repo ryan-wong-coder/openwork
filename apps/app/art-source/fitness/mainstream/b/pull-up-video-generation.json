@@ -1,0 +1,14 @@
+{
+  "nodeId": "2f1dcf67-3dbc-40df-9fc0-8424bc4528c6",
+  "taskId": "20261020204303406558518",
+  "referenceNodeId": "0085fcdf-2f22-46de-ab2f-73fd756b323f",
+  "model": "Seedance 2.0 VIP",
+  "prompt": "Use {{Node 0085fcdf-2f22-46de-ab2f-73fd756b323f}} as the exact first frame and preserve the same original Zeno otter, proportions, fixed bar and support frame, ivory studio and lighting. A locked tripod camera; no cuts, panning or zooming. Show exactly one slow standard overhand PULL-UP: starting in a full free hang, smoothly bend both elbows and pull the body upward over three seconds until the chin just clears the bar. Pause briefly at the top, then lower under control over three seconds to the original fully extended arm hang. Hold for the last second. Hands remain fixed on the same two bar positions with palms facing away, elbows travel down toward the ribs. Keep torso braced, feet together and off the floor; do not swing, kip, step, jump or move the bar. Exactly two arms and two legs, no morphing, no disappearing equipment, no text or audio. A clear stylized movement illustration, not realistic human anatomy.",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  }
+}

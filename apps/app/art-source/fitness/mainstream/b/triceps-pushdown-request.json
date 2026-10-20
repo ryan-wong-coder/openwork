@@ -1,0 +1,23 @@
+{
+  "canonicalExerciseId": "0200",
+  "englishName": "cable pushdown (with rope attachment)",
+  "chineseName": "绳索下压(绳索把手)",
+  "name": "triceps-pushdown",
+  "imagePrompt": "Use case: stylized-concept. Asset type: original Zeno exercise starting frame, wide 16:9. Reference gives ONLY dark teal plush otter identity, cream muzzle/belly, black eyes, whiskers, lime diagonal Z strap and rounded tail. New original standing CABLE TRICEPS ROPE PUSHDOWN setup: full-body otter stands facing right toward a simple pale sage cable tower, feet hip-width and flat, knees soft, torso upright with tiny forward lean. The high pulley is clearly above head on the tower at frame right. One taut black cable runs diagonally down from pulley to a central ring that joins TWO short braided rope ends, each ending in a small black stopper. Both paws grasp one respective rope end in a neutral palms-facing grip near lower chest, elbows bent about 90 degrees. Upper arms stay beside torso and elbows tucked near ribs, forearms forward ready to press down toward thighs. There must be two distinguishable rope tails and no straight metal bar. Three-quarter side view shows elbows, paws, rope junction and high pulley, full otter and tower with generous space, single continuous connected cable. Warm ivory seamless studio, sage floor, soft light, refined calm 3D product illustration. No overhead arm extension, dumbbells, extra limbs, cables through body, text, labels, logos, watermark or other characters.",
+  "videoPrompt": "Use {{REFERENCE}} as the exact starting frame. Keep the same Zeno otter, fixed cable tower and high pulley, one taut diagonal cable connected to one two-ended braided rope attachment; paws grip the respective rope ends throughout. Locked tripod camera, no cuts, no zooms. Perform exactly ONE slow standing ROPE TRICEPS PUSHDOWN: elbows start bent about 90 degrees and upper arms stay tucked against ribs; extend both elbows over three seconds to press rope ends downward toward outer thighs, gently separating the two ends near bottom, until arms are nearly straight. Pause briefly, then bend elbows slowly over three seconds returning paws/rope to the original chest-height position. Hold final second. Elbows remain in same location, shoulders stay down and torso is still with grounded feet. Only forearms move about elbows, not the upper arms. Never pull elbows backward for a row, lift hands overhead, squat or swing. Cable and both rope ends remain connected and taut, no disappearing rope or geometry changes, no extra limbs, text or audio. Calm clear stylized mascot movement illustration.",
+  "sourceReference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/b/triceps-pushdown-reference.png",
+  "project": "28d2746051df44e5bfc4a3fa68fa73a5",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off"
+  },
+  "semanticSources": [
+    "https://blog.nasm.org/workout-plans/9-best-arm-exercises/"
+  ],
+  "restrictedUpstreamMediaUsed": false
+}

@@ -1,0 +1,11 @@
+{
+  "canonicalExerciseId": "0417",
+  "englishName": "dumbbell standing calf raise",
+  "tool": "built-in image_gen.imagegen",
+  "prompt": "Use case: stylized-concept. Asset type: original Zeno fitness demonstration starting illustration, wide 16:9. Input image 1 supplies ONLY the established mascot identity. Preserve the recognizable dark desaturated teal plush otter, cream muzzle and belly, black eyes, whiskers, lime diagonal strap with small Z buckle, round tail and calm refined 3D studio style. Exercise: DUMBBELL STANDING CALF RAISE, two legs, on level floor. Full body in clear side three-quarter view facing right. Otter stands upright with two feet hip-width and fully flat on a warm pale sage floor, both heels clearly visible resting on floor, knees nearly straight and relaxed. One small matte charcoal fixed-head dumbbell in EACH paw, arms hanging still beside the torso. Paws grip the middle handles. Feet/toes need to be large enough to show an upcoming small heel raise, with clear space beneath heels. Tail extends behind and stays off floor rather than being a third support. Head and spine upright. All dumbbells, paws, feet, heels and tail visible, clean ivory seamless background, soft studio lighting and gentle contact shadow. No bench, step, platform, barbell, human skin, text, labels, watermark, extra limbs or objects. This is the flat-heels starting pose for a controlled tiptoe raise; do not draw a squat, jump or biceps curl.",
+  "reference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/native/calf-raise-reference.png",
+  "referencePurpose": "original Zeno mascot identity only; no upstream exercise media used",
+  "selected": false,
+  "generatedReferenceRetainedInWorkspace": false
+}

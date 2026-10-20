@@ -1,0 +1,11 @@
+{
+  "canonicalExerciseId": "0612",
+  "englishName": "lunge",
+  "tool": "built-in image_gen.imagegen",
+  "prompt": "Use case: stylized-concept. Asset type: original Zeno fitness demonstration starting illustration, wide 16:9. Input image 1 is ONLY a character identity reference, not an exercise or equipment reference. Preserve the recognizable friendly plush dark desaturated teal otter, cream muzzle and belly, glossy black eyes, tiny whiskers, lime diagonal strap with subtle Z buckle, rounded tail and elegant material style. Scene: warm ivory seamless studio, subtle pale sage floor, soft diffuse studio lighting and contact shadow. Exercise: BODYWEIGHT FORWARD LUNGE. Show one full-body otter standing upright facing right in a clear side three-quarter view, feet hip width and flat on the floor, both empty paws resting lightly on hips. Head, shoulders, hips, knees, ankles and both feet are clearly distinguishable. Place the subject slightly left of centre with generous empty floor in front to the right for the next step, no cropping. Tail points behind the otter and never supports weight. This will be the starting frame for exactly one forward step, controlled lunge down, then return to standing. No weights, dumbbells, bars, benches, clothing changes, text, labels, watermarks, extra characters, extra limbs, human anatomy or clutter. Keep the original rounded mascot proportions while making its knee and ankle articulation readable.",
+  "reference": "apps/app/art-source/fitness/curl-reference.png",
+  "generatedReference": "apps/app/art-source/fitness/mainstream/native/lunge-reference.png",
+  "referencePurpose": "original Zeno mascot identity only; no upstream exercise media used",
+  "selected": false,
+  "generatedReferenceRetainedInWorkspace": false
+}
