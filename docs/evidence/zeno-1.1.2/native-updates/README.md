@@ -19,7 +19,7 @@ workflow is rerun without explicit approval. This directory is separate from the
 | Lane | Actual result | Evidence boundary |
 | --- | --- | --- |
 | Linux x64 | Native functional and Chinese screenshot pass in attempt 2 | Both original AppImage runs passed actual upgrade and history/registry/sidebar gates. Original screenshots retain missing-glyph boxes; attempt 2 added explicit CJK host prerequisites and its two actually viewed screenshots have readable Chinese. |
-| Windows x64 | Attempt 4 verified target bytes on disk; running target identity/profile unaccepted | Its first complete 390,804,422-byte download succeeded without retry. The original baseline exited; target 1.1.2 and the exact published ASAR were verified on disk. The expected CDP endpoint refused the connection, and the exact private main process did not own that listening port. Target UI identity, effective profile and historical state were not verified; no target screenshot exists. |
+| Windows x64 | Attempt 4 verified target bytes on disk; running target identity/profile unaccepted | Its first complete 390,804,422-byte download succeeded without retry. The original baseline exited; target 1.1.2 and the exact published ASAR were verified on disk. The expected CDP endpoint refused the connection, and no same-executable candidate owned that listening port. The one candidate does not identify an actual browser. Target UI identity, effective profile and historical state were not verified; no target screenshot exists. |
 | macOS x64 | Native functional and screenshot pass | Real ZIP download and Squirrel install/automatic restart, original signatures and published ASAR, isolated profile, both registries, history, native Canvas/SVG/Ant Design Charts, and four actual sidebar clicks passed. All three screenshots were actually viewed and Chinese is readable. |
 | macOS arm64 | Native functional and screenshot pass in attempt 4 | On `xcode-27`, the original package and signatures, real 444,118,404-byte public download, Squirrel installation, automatic restart, both registries, profile/history, native canvas and four actual sidebar clicks passed. All three screenshots were actually viewed with readable Chinese and no clipping. Earlier capacity cancellations and the stale preflight failure remain unchanged. |
 
@@ -52,6 +52,9 @@ Attempt 4 again succeeded on its first whole-file download without exercising a
 retry. It verified the frozen target version and ASAR on disk, while the fixed
 CDP port refused the connection (`ECONNREFUSED`, page-list shape still pending).
 The owned-process listener probe succeeded and found no expected listening port.
+Its same-executable count excludes only `--type` processes; a no-type
+`ELECTRON_RUN_AS_NODE` helper can remain, so the candidate count does not prove a
+new browser PID or target restart.
 These facts are recorded in `attempt04-download-trajectory.json`; they do not
 establish installation failure or loss of target process environment. The fixed
 ASAR reader improves this new run's disk evidence without retrospectively

@@ -46,7 +46,9 @@
         "verifiedOnDiskVersion": "1.1.2",
         "publishedAsarOnDiskVerified": true,
         "effectiveTargetProfile": "unknown",
-        "runningTargetIdentity": "unverified"
+        "runningTargetIdentity": "unverified",
+        "actualBrowserPidKnown": false,
+        "candidateProcessCountBoundary": "One same-executable no-type candidate does not prove an actual browser or target restart."
       },
       "completedFailedWorkflowAttempts": 4
     },

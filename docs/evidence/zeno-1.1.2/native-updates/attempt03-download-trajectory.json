@@ -71,5 +71,6 @@
     "sha256": "bcaabaabb90c455282cf6d585a9da2a2c63c761ed0741be12826d09c8a2406fe",
     "retainedInPublicTree": false
   },
-  "interpretation": "This run completed its first full download without retry. The old baseline exited, but the fixed CDP page-list gate failed and target disk metadata was unreadable to the diagnostic. Target installation, effective target profile and successful automatic restart were not verified. Command-line flags and User registry values do not establish the target process environment."
+  "interpretation": "This run completed its first full download without retry. The old baseline exited, but the fixed CDP page-list gate failed and target disk metadata was unreadable to the diagnostic. Target installation, effective target profile and successful automatic restart were not verified. Command-line flags and User registry values do not establish the target process environment.",
+  "candidateProcessCountBoundary": "The count filters the exact private executable path and excludes --type arguments only. A no-type ELECTRON_RUN_AS_NODE helper can be a candidate, so this count does not identify an actual browser or prove target restart."
 }

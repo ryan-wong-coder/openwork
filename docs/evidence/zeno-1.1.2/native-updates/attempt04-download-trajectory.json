@@ -81,5 +81,6 @@
     "sha256": "6c1f62ca51d3c3fa2691bfe2cacc027cfc2c2244fa6049491dd52ebd2d46d408",
     "retainedInPublicTree": false
   },
-  "interpretation": "The first full download completed without retry. The original baseline exited; the frozen 1.1.2 version and ASAR are independently verified on disk. The expected CDP endpoint refused the connection and the one exact private executable main process did not own the expected listening port. Effective target profile, target UI process identity and historical state were not verified. This is not a finding that product installation failed, and flags/User registry values do not establish target environment loss."
+  "interpretation": "The first full download completed without retry. The original baseline exited; the frozen 1.1.2 version and ASAR are independently verified on disk. The expected CDP endpoint refused the connection and none of the same-executable candidates owned the expected listening port. The one candidate can be a no-type helper; no actual browser/new browser PID was identified. Effective target profile and historical state were not verified. This does not establish product installation failure, and flags/User registry values do not establish target environment loss.",
+  "candidateProcessCountBoundary": "The count filters the exact private executable path and excludes --type arguments only. A no-type ELECTRON_RUN_AS_NODE helper can be a candidate, so this count does not identify an actual browser or prove target restart."
 }
