@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "1709",
+  "nodeId": "71550126-8b78-4f48-90fb-552d707e3b98",
+  "taskId": "20261021103803908008518",
+  "prompt": "Use {{Node a5924de7-a537-4e9d-b636-311e3749c5f4}} as exact starting frame. Preserve the original Zeno teal/cream otter, lime diagonal strap with exactly ONE original Z buckle, warm ivory studio, and this exact SUPINE FIGURE-FOUR GLUTE STRETCH. Fixed ground-level tripod camera at the SAME starting angle, no cuts, zoom or reframing; full body, both feet and both paws remain visible. Show an eight-second calm single-side held-pose illustration. The HEAD, SHOULDERS, BACK AND PELVIS REMAIN ON THE FLOOR in their exact starting contact positions. One ankle stays crossed across the opposite thigh just above its knee. Both paws continuously retain their secure gentle hold behind the SAME uncrossed thigh, lightly drawing it toward the torso; do not regrip the shin or crossed foot. Preserve the exact figure-four leg arrangement, comfortable hip angles and crossed ankle contact throughout. Only tiny natural breathing and occasional gentle blinking, no pose entry or exit. No head lift, shoulder lift, sit-up, lower-back lift, grip release, switching sides, leg crossing changes, swinging or rocking, forceful pulling, pressing on the knee, duplicate buckle, extra limbs, text, watermark or audio. Tail rests naturally on the floor beside the pelvis, not supporting it. This short clip is not the full twenty-to-thirty-second source hold.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "assisted lying glutes stretch",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "212370"
+    }
+  },
+  "originalSha256": "6491d1b0a60394c07133defd3e73b5ecbbdcf9d3fb2e1bf3715f7777e7af080d",
+  "originalBytes": 2801713,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1709-contact.jpg",
+    "contactSha256": "58f070c8556ea3ea7fea347e1314eb0c63bf598bceec6bd275dd830fd8c5d7db",
+    "reviewed": true,
+    "observation": "Root viewed full 8-frame contact sheet; supine figure four remains clear, crossed ankle stays above opposite thigh, both paws retain grasp behind uncrossed thigh, head/shoulders/lower back/pelvis floor supported. No crunch, sit-up, side change or release. Subtle breathing only; short excerpt, not a claimed full 20-30-second hold."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "9d742f4fbfa3bcf2df6d3930b1ded1e61fe7afe24f8d63980790b95a49c45f5c"
+}

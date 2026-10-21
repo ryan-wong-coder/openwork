@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "1494",
+  "nodeId": "ce0b45f2-55aa-48f1-971c-0ad6d3e2a1bb",
+  "taskId": "20261021093703000568518",
+  "prompt": "Use {{Node c4617aea-ee6b-4697-b410-7a5c559cdb5a}} as exact starting frame. Preserve the original Zeno teal/cream otter, lime strap and ivory studio. Fixed full-body tripod camera, no cuts, zoom or reframing. Show a gentle seated BUTTERFLY YOGA POSE as a short pose illustration. Both sit bones and hips remain supported on the floor throughout. Both soles stay touching EACH OTHER in front of the body, not crossed. Both paws remain gently holding the same feet or ankles, never the knees. Knees stay naturally open out to the sides at a comfortable height with space above the floor, never forced down. Maintain a naturally long spine and neutral head. Over the first two seconds hinge forward only a TINY comfortable amount from the hips, keeping back long and both hips on the floor. Calmly hold with subtle natural breathing for four seconds, then gently return that tiny hinge during the last two seconds. The soles remain together and the feet never leave the paws. No strong knee pressure, no knee flapping or bouncing, no crossed-leg or lotus pose, no rounded-back fold onto the feet, no hip lift, no tail support under the hips, no extra limbs, no text, watermark or audio. Whole body, both knees, paws and joined soles remain in frame; eight seconds is not a full professional hold duration.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "butterfly yoga pose",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "203644"
+    }
+  },
+  "originalSha256": "99a43db63c8a6333f98cb0856d93e4188a487f8b5108006c945b0b00d77dc50d",
+  "originalBytes": 4148842,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1494-contact.jpg",
+    "contactSha256": "9a606b3ec23e64ff5ab2c10cd5f096a0d47b4d055705e1db91a16e478202d7ac",
+    "reviewed": true,
+    "observation": "Eight actual one-second frames show the soles together in front, knees naturally open, hands lightly holding the feet and hips staying on the floor while the torso leans gently forward and returns. No forceful knee pressing, crossed-leg substitution or bouncing is shown. Full final H.264 decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "21d8a9e6070d2756ddf23273393f78281f3d5665839cf34b93a8fbcaf40e1b7b"
+}

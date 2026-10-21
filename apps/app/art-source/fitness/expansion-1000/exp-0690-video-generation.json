@@ -1,0 +1,154 @@
+{
+  "canonicalExerciseId": "0690",
+  "englishName": "seated lower back stretch",
+  "nodeId": "c9315d2f-066e-4e65-ab62-3ccebbd5fc57",
+  "taskId": "20261021103303775928518",
+  "prompt": "首帧为 {{Node 00919a75-1e72-43f4-8350-80b18af4a4c9}}，尾帧为 {{Node 192d3afc-7973-4c07-b3d5-e6b57a8000c3}}。保持同一原创Zeno青色毛绒水獭、奶油色脸腹、青柠斜肩带、同一张象牙色椅子、同一固定机位和摄影棚。4秒内只完成一次坐姿下背部拉伸的轻缓进入：从首帧坐直姿态开始，骨盆保持坐在椅面原处，双脚全脚掌在原处贴地，双爪始终轻放在各自大腿上，缓慢从髋关节向前小幅折叠到尾帧。背部从骨盆到头颈保持长而自然的直线和中立姿态，上身作为一个整体小幅前倾，不弓背、不卷腹、不低头缩颈、不猛弯到膝盖上。臀部全程不离开椅面，不站起、不蹲起、不向前滑坐；椅子、椅腿、双脚与尾巴的位置固定，不滑动不变形。双爪随各自大腿保持接触，不离腿挥动、不伸向地面、不抓脚。只从坐直缓慢前倾一次，到尾帧停住；生成中不要回正、不要二次点头或反复前后摇摆。全身、椅子、双脚和尾巴始终在画面内，镜头完全固定，不推近、缩放或裁边；身份和肢体数量稳定，无文字、水印或声音。此4秒仅演示进入姿态，不代替文字说明20至30秒保持时间。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0690-reference.png",
+      "bytes": 1688682,
+      "sha256": "98af71fa1d75eb7af0aac26e1111e1266e0b4db4da02c5c6cf0b473407648775",
+      "role": "start",
+      "nodeId": "00919a75-1e72-43f4-8350-80b18af4a4c9"
+    },
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0690-endpoint.png",
+      "bytes": 1702126,
+      "sha256": "5e2802afb89705137e67e4c7215f44e353f14c28bd76f4d3b124c87c4f596a92",
+      "role": "end",
+      "nodeId": "192d3afc-7973-4c07-b3d5-e6b57a8000c3"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "c9315d2f-066e-4e65-ab62-3ccebbd5fc57",
+    "expectedReferenceNodeIds": [
+      "00919a75-1e72-43f4-8350-80b18af4a4c9",
+      "192d3afc-7973-4c07-b3d5-e6b57a8000c3"
+    ],
+    "imageListOrder": [
+      "00919a75-1e72-43f4-8350-80b18af4a4c9",
+      "192d3afc-7973-4c07-b3d5-e6b57a8000c3"
+    ],
+    "imageListNodeIds": [
+      "00919a75-1e72-43f4-8350-80b18af4a4c9",
+      "192d3afc-7973-4c07-b3d5-e6b57a8000c3"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "8801a156a2074cd066649d28703b2c8b1e56f1e1ae605f529fa01b485a11edb7",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "183471"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2433176"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "93817"
+    }
+  },
+  "originalSha256": "3f4ad467c1c2ab57ef4507c10eed5a064d9d1c034e66d6f11c945cf27d116e79",
+  "originalBytes": 2433176,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "22b3207fc2c3401840a1f85c245923fcf91de58775db7af54bcd77508ae1878c",
+  "processing": "Seedance 2.5 generated one 4-second seated forward hip-hinge segment from ordered original start/end images (actual source 4.041667 seconds). After producer visual acceptance, the complete forward hip hinge was encoded forward and followed by the exact same frames in reverse to illustrate the controlled return to upright sitting, producing an 8.083333-second loop. The return phase is synthesized by reversal, not separately AI-generated; this is not an original 8-second continuous generation. Endpoint frames are retained at the turn and loop boundary. This brief pose-transition illustration does not replace the 20-30-second stretch hold in the written instructions. H.264 CRF26, 1024px width, yuv420p, silent, faststart. WebP poster uses the original start reference at quality86.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way seated forward hip-hinge segment",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0690-contact-8fps.jpg",
+    "contactSha256": "9ecc0e5e6608c6b51d4ac6b46fa12a75e40b8cc3d22f2c5628a1f28128de7a7b",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Actual 16 samples at 4fps over the generated seated hip hinge and 64 samples at 8fps over the composed loop show a small controlled forward incline from upright sitting, with the pelvis remaining seated and both paws maintaining thigh contact. Feet remain flat and in place, the back and neck remain long and neutral, and the chair, tail and camera stay stable. No standing, sliding off the seat, deep rounded fold, reaching toward the floor or repeated generated sway seen. Producer and root both actually viewed and accepted the 16-frame one-way and 64-frame final contact sheets. Root confirmed stationary chair/feet, continuous pelvis-to-seat and palm-to-thigh contacts, small hip hinge with long neutral back, and no standing or sliding off the seat. All frames of the one-way and final H.264 files decoded without errors. The short entry and reverse return do not replace the written 20-30-second hold.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0690-one-way-contact-4fps.jpg",
+      "contactSha256": "0b08fae9e65908f9899f62ce75a9244d544b079e56f607cbd21d78b3953d3352",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false
+    }
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "d8279e023a9fb3e242d45249c3e79408e15e59ac74e7658490e793ef2132bc1c",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true
+}

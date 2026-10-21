@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "0613",
+  "englishName": "lying (side) quads stretch",
+  "sourceDescriptorSha256": "f5fd6cbe5616574d41962081527dcd544bb465dba53e3c1316cde95cf6ea06df",
+  "sourceSteps": [
+    "侧躺，双腿伸直。",
+    "弯曲上面的那条腿，用手抓住脚踝或脚。",
+    "轻轻地将脚踝或脚拉向臀部，直到感觉到股四头肌有拉伸感。",
+    "保持拉伸 20-30 秒。",
+    "松开拉伸并在另一侧重复。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/app/src/assets/zeno/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "referencePoseReviewed": true,
+  "rootReferenceApproved": true,
+  "reviewObservation": "Selected second image is clearly side lying: bottom side/hip and bottom leg supported on the floor, bottom leg straight, upper hand holds the same upper ankle with foot free beyond grip, lower forearm supports neutral head.",
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "generationAttempts": [
+    {
+      "attempt": 1,
+      "selected": false,
+      "sha256": "7a513ebb28597534c885c0065a2f256e92129b61050331c12051d440c0e73ef8",
+      "nonSelectedReason": "side-lying geometry accepted but upper paw grips forefoot instead of requested ankle",
+      "retainedInRepository": false
+    },
+    {
+      "attempt": 2,
+      "selected": true,
+      "sha256": "215f169b86d40a127135657031bd67e7d162830a18065edd748e6ea4b28a7f7d",
+      "retainedInRepository": true
+    }
+  ],
+  "references": [
+    {
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-0613-reference.png",
+      "bytes": 1884323,
+      "sha256": "215f169b86d40a127135657031bd67e7d162830a18065edd748e6ea4b28a7f7d"
+    }
+  ]
+}

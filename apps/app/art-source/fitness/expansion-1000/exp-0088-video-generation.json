@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "0088",
+  "nodeId": "8e511701-e735-4aa6-91a3-7b9436a11dc3",
+  "taskId": "20261021083003515018518",
+  "prompt": "Use {{Node 3ee70120-2264-4fe0-bc3c-52db75846eae}} as exact starting frame. Preserve the original Zeno teal/cream otter, lime strap, fixed flat bench, stable wooden block and rigid padded barbell resting on the distal thighs just ABOVE the knees. Fixed side-three-quarter tripod camera, no cuts or zoom; full body, bench, barbell, toes and heels remain visible. Demonstrate exactly ONE slow SEATED BARBELL CALF RAISE. Both forefeet and balls of the feet stay firmly ANCHORED to the same block edge throughout, with heels beyond the edge in the low starting position. Over three seconds plantar-flex BOTH ankles to raise ONLY the heels, pivoting both feet around the anchored forefeet. Hold the raised heels one second. Lower heels slowly over three seconds back to the exact low starting position and hold. Both knees remain bent near 90 degrees, hips remain seated on the bench. The padded bar stays in continuous contact with the tops of the distal thighs just above the knees and moves only with the knees slightly upward and down. Hands secure the bar against rolling but never lift it. Toes maintain block contact at every moment. No whole-foot lift or jump, no standing, no knee extension, no arm curl, no hand lifting, no barbell floating or sliding, no sliding block, no extra limbs, no text, watermark or audio.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "barbell seated calf raise",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "159220"
+    }
+  },
+  "originalSha256": "4984d000eca2833d67731e51ff329b6d049a06dc6f61865ed96c4ee3e32fa17d",
+  "originalBytes": 3210857,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0088-contact.jpg",
+    "contactSha256": "1fc7cda496d3e4ddfda77dce33e6792ad760b743a2dfb08e5bebd0c3bb03bd09",
+    "reviewed": true,
+    "observation": "Eight actual one-second frames and a full-size top-position frame show one controlled seated calf raise and return. Both forefeet stay on the block as heels rise and lower, hips remain on the bench, knees remain bent and the padded bar remains on the thighs with the paws stabilizing it. No standing or hand lift is shown. Full final H.264 decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "d97bb977b627523dfbe5c3cd72245c320c65967a9201404cb9606b7cce2b95e7"
+}

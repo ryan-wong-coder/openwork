@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "0643",
+  "nodeId": "07ae2bf7-82ab-4723-a541-345f2439d98e",
+  "taskId": "20261021093703874718518",
+  "prompt": "Use {{Node 7cfb153d-8d54-4b0b-a0e8-d8457fe8591f}} as exact starting frame. Preserve the original Zeno teal/cream otter, lime strap and ivory studio. Fixed full-body tripod camera, no cuts or zoom; both feet, head, both elbows and the complete overhead arm stay inside the frame. Show a short OVERHEAD TRICEPS STRETCH of the SAME side, not repeated exercise. The right upper arm stays overhead beside the ear, right elbow remains clearly bent with the right forearm and paw down behind the head toward the upper back. The opposite left paw only GENTLY SUPPORTS THE RIGHT ELBOW at the same visible contact point throughout, never touching or pressing the head or neck. Calmly hold this exact pose for six seconds with only tiny natural breathing. During the final two seconds gently relax the support pressure while retaining the same overhead bent-elbow pose and both feet planted. Head and neck neutral, torso upright, no side bending. No arm lifting out of frame, no forced pulling, no head pressing, no switching to both hands behind head, no ear grabbing, no extra limbs, no text, watermark or audio. This eight-second video is a short pose illustration, not a full prescribed hold duration.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "overhead triceps stretch",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "162582"
+    }
+  },
+  "originalSha256": "086bb599f59d58fc9d81409456913135bac39cb0d2b73bf0a18ed34d9a418c2c",
+  "originalBytes": 3429778,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0643-contact.jpg",
+    "contactSha256": "280e70c311e56ff2f888572a31b4a516818b8a04296c4e7cfc32b345866faf77",
+    "reviewed": true,
+    "observation": "Eight actual one-second frames show a held overhead triceps stretch with the other paw supporting near the bent elbow for about the first six seconds. The supporting paw then releases and one arm relaxes during the final portion; no claim is made that elbow support continues throughout the full clip. Head, neck, feet and torso remain stable without pressing the head. Full final H.264 decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "c7e56139df05d4d6d094ac093138ecbb5b684c8ff166f0b741c79c9567fc78b1"
+}

@@ -1,0 +1,3 @@
+Start attempt1 rejected: anchor is near chest rather than source-required waist height, and two long parallel strands make a continuous anchor-to-common-handle path insufficiently clear. Retry only anchor height/band connection; maintain body/handle/camera.
+sha256=a19b365dece34670bc30a81a21dbfc0530692402a030ba84eac9e4e5777ceeba
+privateOriginalRetained=true

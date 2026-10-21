@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "kind": "unresolved-production-attempts",
+  "countsAsCompleted": false,
+  "attempts": [
+    {
+      "canonicalExerciseId": "3006",
+      "englishName": "resistance band seated hip abduction",
+      "status": "unknown-after-cli-writeback-error",
+      "generationAttempt": 1,
+      "nodeId": "4523a80d-80bd-424d-9a60-0827d2214f4e",
+      "taskId": "20261021091103160238518",
+      "model": "Seedance 2.0 VIP",
+      "settings": {
+        "modeType": "singleImage2video",
+        "ratio": "16:9",
+        "resolution": "720p",
+        "duration": 8,
+        "enableSound": "off",
+        "count": 1
+      },
+      "reference": {
+        "path": "apps/app/art-source/fitness/expansion-1000/exp-3006-reference.png",
+        "bytes": 1847890,
+        "sha256": "793014d40eadd980d018056b9db063de6048d45dc7ee34e9bbea9fc938eb0a72"
+      },
+      "cliGenerationTerminalKnown": false,
+      "error": {
+        "operation": "nodesBatch writeback",
+        "code": "UND_ERR_SOCKET",
+        "category": "fetch failed / other side closed",
+        "stderrSha256": "eefc38c6704bf11fa54499b8229c1c12df88685cba9932f5d266ba3812e2d1e5"
+      },
+      "lastOfficialStoredNodeRead": {
+        "readAtEpoch": 1792546253.374324,
+        "exitCode": 0,
+        "elapsedSecondsSincePriorRead": 404.34388422966003,
+        "scope": "stored canvas state only; no task recovery/new generation",
+        "nodeId": "4523a80d-80bd-424d-9a60-0827d2214f4e",
+        "taskId": "20261021091103160238518",
+        "status": 1,
+        "loading": true,
+        "progressPercent": 8,
+        "outputUrlCount": 0,
+        "outputPosterPresent": false
+      },
+      "newPaidRunAfterError": false,
+      "countsAsReady": false,
+      "quotaFailureObserved": false,
+      "retryPolicy": "Do not run again to recover. Existing paid task identity must be preserved; only official read-only recovery with an existing output is permitted. No invented URLs or taskInfo edits."
+    }
+  ]
+}

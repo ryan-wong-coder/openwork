@@ -1,0 +1,2 @@
+Start attempt1 rejected after actual image review: hands on outer EZ grips, approximately shoulder-width or wider, contradicting close-grip identity. No runtime use or video submission. Original PNG retained privately; excluded from public runtime and source assets.
+Rejected PNG SHA256: 5c7d9598419f4dc842ae4beb166a8ad6fcc15b2a7c599301b1661673059ba8cf

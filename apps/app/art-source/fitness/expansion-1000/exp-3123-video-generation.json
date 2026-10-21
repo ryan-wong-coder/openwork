@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "3123",
+  "nodeId": "8f6740d4-28e9-402b-9660-dea3292fb401",
+  "taskId": "20261021090403970188518",
+  "prompt": "Use {{Node 9680d11e-d1eb-4c40-b629-28de6537cff4}} as exact starting frame. Preserve the original Zeno teal/cream otter, lime strap, fixed flat bench and exactly ONE LONG continuous purple resistance band. The MIDDLE of this SAME band remains firmly PINNED UNDER BOTH PLANTED FEET throughout. Each paw securely holds ONE end of the band with an underhand palms-up grip; each side of the band runs from the same-side foot up to the same-side paw, never crosses. Fixed tripod camera, no cuts, zoom or reframing; whole body, bench and the complete band including its middle under the feet remain in frame. Exactly ONE slow SEATED BICEPS CURL, both hands synchronized. Begin seated upright with hands at the sides and elbows near extended. Over three seconds bend ONLY both elbows together to curl both paws toward the fronts of the shoulders. Hold one second. Lower both paws slowly over three seconds back to the starting position, then hold. Both elbows and upper arms stay close to the sides of the body, shoulders still. As hands rise the SAME band stretches visibly into TWO connected upright taut sections, and as hands lower it shortens under control. Both feet stay flat and press the middle anchor down; hips remain seated. No band coming out from under the feet, no extra band, no loose floating rope, no hand release, no foot lift, no hammer grip, no shoulder press, no rowing or arm swing, no torso leaning, no extra limbs, no text, watermark or audio.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "resistance band seated biceps curl",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "185002"
+    }
+  },
+  "originalSha256": "b91aa2cef558b859f2a7ecd65b5a8aed7876759be56d6882db748a3d38db84e6",
+  "originalBytes": 3488205,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3123-contact.jpg",
+    "contactSha256": "93bd345345a823c83757698e78a29a620f3a6e3a92f9b2ec816ddb81bb4175cc",
+    "reviewed": true,
+    "observation": "Eight actual one-second frames show one synchronized seated band curl and controlled lowering. The same long band remains pinned under both planted feet, its two upright sections stretch to the paws without disconnecting, and the hips remain seated. The upper arms move slightly outward near the peak; no overhead press, row or standing occurs. Full final H.264 decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "7d7c26339dc845bf41a30dbaa9341cbd5f34e9a9b0d55d40a1504f6225839c0b"
+}

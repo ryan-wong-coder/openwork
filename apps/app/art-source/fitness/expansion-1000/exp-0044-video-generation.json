@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "0044",
+  "nodeId": "47176c85-f5dd-4b26-818b-7e89a42212c2",
+  "taskId": "20261021080803623708518",
+  "prompt": "Use {{Node b27387ff-7580-4608-9810-0b38c55ed6ea}} as exact starting frame. Original Zeno otter, lime strap, single rigid light barbell securely resting across upper BACK below neck, paws maintain same grip and bar stays on upper back. Fixed side-three-quarter tripod, no cuts/zoom. Exactly ONE slow BARBELL GOOD MORNING hip hinge: begin upright with soft knees and planted feet; over three seconds push hips BACK while torso inclines forward from hips, maintaining long neutral back and only a small constant knee bend, until torso about 45 degrees from upright at comfortable range; pause one second; over three seconds extend hips to upright, final hold. Bar moves with torso and never leaves upper back. Keep shins nearly vertical, hips high; this is NOT a squat and hips must NOT drop toward heels. No back rounding/neck bending, no lifting bar overhead, no changing plates, no extra limbs, no sliding feet, no text/watermark/audio.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "barbell good morning",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "255383"
+    }
+  },
+  "originalSha256": "87f30e6d5fb0153497bb57243f644089d124fdcf2b34bf5fa83c506e164a3c4a",
+  "originalBytes": 3112845,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0044-contact.jpg",
+    "contactSha256": "c5f36792540a515cbea7e2b2485a9a8e91fcf29b996a89559d39d91d04e3c20c",
+    "reviewed": true,
+    "observation": "Eight actual one-second frames show a complete hip hinge and return with soft knees and hips moving backward. The light rigid barbell remains across the upper back and moves with the torso, paws keep grip, feet remain planted, and no deep squat or overhead movement is shown. Full final H.264 decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "9c6d4bce8af649f91b4d82ed747f495fe8ae076638df57d13fe65cad98025297"
+}

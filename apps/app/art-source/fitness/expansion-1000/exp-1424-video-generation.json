@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "1424",
+  "nodeId": "8a044001-4c84-45b9-8638-f8131b861015",
+  "taskId": "20261021103803849778518",
+  "prompt": "Use {{Node 414ac5b9-215d-453a-bead-f609c27c7bc6}} as exact starting frame. Preserve the original Zeno teal/cream otter, lime diagonal strap with one original badge, ivory studio and the exact SEATED FIGURE-FOUR GLUTE STRETCH. Fixed full-body tripod camera at the SAME starting angle, no cuts, zoom or reframing. Show an eight-second calm single-side held-pose illustration. Both hips remain seated on the floor, torso naturally upright. The SAME one leg remains straight along the floor with heel grounded. The other ankle stays crossed across the same opposite thigh, with that knee comfortably open. The SAME support paw stays flat on the floor behind the body at its exact contact point; the other paw stays resting gently on the SAME bent knee without forcing or pushing it. Only barely visible natural breathing and gentle blinking. Keep all leg, ankle, hip and hand contact positions unchanged. No hand release or regrip, no side change, no rocking or twisting, no knee bounce or forceful downward pressure, no leaning far forward, no tail lifting the pelvis, no extra limbs, no text, watermark or audio. Whole body, straight leg and foot, crossed ankle, rear support paw and knee-resting paw remain visible. Eight seconds is only a pose illustration, not the complete thirty-to-sixty-second source hold.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "seated glute stretch",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "141148"
+    }
+  },
+  "originalSha256": "f16e7162f5cbc89871699eca245cfdbb5fcee12ea78570263808b858d3f17775",
+  "originalBytes": 3439118,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1424-contact.jpg",
+    "contactSha256": "4e34e2a1cd9cd69a9bd0c046bfe0e2bd0cb70f6d90570c3a08f036f82ac0dc2f",
+    "reviewed": true,
+    "observation": "Root viewed full 8-frame contact sheet; seated figure four retained, one leg extended on floor, other ankle across thigh, supporting paw stays behind on floor and opposite paw lightly rests on bent knee. Upright torso, no forceful knee press, rocking, side change or leg substitution. Short held-stretch excerpt, not a claimed full 30-60-second hold."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "a0ec19be1f872ccacdce5bc228bb3737148386b7c07243ab192004a0086d5f2b"
+}

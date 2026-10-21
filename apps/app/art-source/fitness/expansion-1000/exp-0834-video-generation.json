@@ -1,0 +1,152 @@
+{
+  "canonicalExerciseId": "0834",
+  "englishName": "weighted front raise",
+  "nodeId": "72a9b623-3c2d-48c3-a07c-d985b1b68638",
+  "taskId": "20261021093103727008518",
+  "prompt": "首帧为 {{Node c36ff83f-b99e-4316-866b-00525592775b}}，尾帧为 {{Node a67a20cb-98f7-4461-971f-9e5a034b17df}}。严格保持同一原创Zeno水獭、青色毛绒身体、奶油色脸腹、青柠色斜肩带、两只深灰哑铃、固定侧面机位、双脚和象牙色摄影棚。4秒内仅做一次上举：由肩关节驱动两条接近伸直的手臂，从首帧大腿旁垂下的位置，连续缓慢向身体正前方抬起，到达尾帧与肩齐平的直臂姿态。整个过程中肘角接近伸直并保持不变，哑铃随整条长手臂以肩为中心画前上方圆弧。绝对不要先屈肘做二头弯举再伸臂，不能把哑铃举到脸旁，不能做侧平举或推举。肩膀下沉，不耸肩，躯干直立不后仰不摆动；两脚全程在原处贴地，不转身。只上举，到尾帧后停住；在生成中不要下放或重复。镜头固定、无缩放、无剪切，完整身体和两只哑铃始终在画面内。身份、器械数量和外形稳定，无额外手臂，无文字、水印和声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0834-reference.png",
+      "bytes": 1687683,
+      "sha256": "091283ff5155dbe574c5ae5dff3270b103b5050362902dc3062793a01d311ccb",
+      "role": "start",
+      "nodeId": "c36ff83f-b99e-4316-866b-00525592775b"
+    },
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0834-endpoint.png",
+      "bytes": 1714475,
+      "sha256": "f9105fc28b05ccf0826355135b5257c5cf245a1a86e0a0cc4649cad4fa3a4456",
+      "role": "end",
+      "nodeId": "a67a20cb-98f7-4461-971f-9e5a034b17df"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "72a9b623-3c2d-48c3-a07c-d985b1b68638",
+    "expectedReferenceNodeIds": [
+      "c36ff83f-b99e-4316-866b-00525592775b",
+      "a67a20cb-98f7-4461-971f-9e5a034b17df"
+    ],
+    "imageListOrder": [
+      "c36ff83f-b99e-4316-866b-00525592775b",
+      "a67a20cb-98f7-4461-971f-9e5a034b17df"
+    ],
+    "imageListNodeIds": [
+      "c36ff83f-b99e-4316-866b-00525592775b",
+      "a67a20cb-98f7-4461-971f-9e5a034b17df"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "7972307841410849195d8ff5d5a78fcbaed8cab7c85792b79e81eef54a2f45f8",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083008",
+      "size": "180920"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2445988"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "94498"
+    }
+  },
+  "originalSha256": "05ca415d8d1140c118825920541a7cbdeb87b0b7bd0e547514caa27e84c9c5ff",
+  "originalBytes": 2445988,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083008,
+  "oneWayEncodedSha256": "b87d5af504b78ae301653b7cc6713e135b10ab8f825b12b0c39a19012909e9ce",
+  "processing": "Seedance 2.5 generated one 4-second one-way raising segment from ordered original start/end images (actual source 4.041667 seconds). Only after visual acceptance, that complete raising segment was encoded forward and followed by the exact same frame sequence in reverse to illustrate lowering, producing an 8.083008-second loop. The lowering phase is synthesized by reversal, not separately AI-generated; this is not an original 8-second continuous generation. Endpoint frames are retained at the turn and loop boundary. H.264 CRF26, 1024px width, yuv420p, silent, faststart. WebP poster uses the original start reference at quality86.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "loweringPhaseSource": "exact reversed frame order of accepted one-way raising segment",
+    "noGeneratedLoweringClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0834-contact-8fps.jpg",
+    "contactSha256": "7ac1accad56e3fad398645c18cfab9b2911f6508e119919130434eaf293b6169",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "observation": "Actual 16 samples at 4fps over the generated raising segment show both nearly straight arms driven forward and upward by the shoulders from thigh level to shoulder height, with no preceding biceps curl or press. Feet, torso and camera remain stable and two dumbbells remain distinct. Actual 64 samples at 8fps over the composed loop show the same controlled trajectory in reverse for lowering and return to the start. Producer and root both viewed and accepted these contact sheets. All frames of the one-way and final H.264 files decoded without errors.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0834-one-way-contact-4fps.jpg",
+      "contactSha256": "6fa150a1c83580dd9454af7de61a1d870753f8b7711fade67b9955aab247c5d4",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true
+    }
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "8c43d84f4dce8edcb40ddee094a0875eaee015252540ea71827e6217df035562",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true
+}

@@ -1,0 +1,152 @@
+{
+  "canonicalExerciseId": "0276",
+  "englishName": "dead bug",
+  "nodeId": "79fea3e8-53fd-431c-9e49-9f3c51d6bf02",
+  "taskId": "20261021102303588858518",
+  "prompt": "首帧为 {{Node 695cf235-0486-490a-86d2-5c1d8ca5d04b}}，尾帧为 {{Node 0ce96b10-dd7a-4657-ab02-dd7b64e5b7f8}}。保持同一原创Zeno青色毛绒水獭、奶油色脸腹、青柠斜肩带、同一固定侧面机位、全身构图和象牙色地面。4秒内只完成一次死虫式对侧伸展：从首帧仰卧、双臂垂直伸向天花板、双髋双膝约90度桌面位开始，同时慢慢将靠近镜头的解剖学右臂向头的方向也就是画面左侧放低，并将远离镜头的解剖学左腿向脚的方向也就是画面右侧伸直并放低。右臂一直伸直，左腿逐渐伸直，两者均到达尾帧地板上方低位悬停。必须是近侧右臂配远侧左腿的对侧组合，不能改成同侧手脚。其余远侧左臂始终垂直朝天不动，其余近侧右腿始终保持髋膝90度桌面位不动。后脑、腰背、骨盆始终贴在原处地面，不抬头、不拱腰、不卷腹、不摇摆，尾巴自然放在地面不参与支撑。只做这一次对侧伸展，到尾帧停住；生成中不要回收、不要换另一侧、不要第二次动作。全程恰好两条手臂和两条腿，手脚不交叉、不融化、不增生。伸展的爪与脚必须留在画面内部，不要比尾帧伸得更远。相机严格锁定在首帧位置和大小，不推近、不缩放、不平移、不裁边；完整头、两手、两脚和尾巴全程可见。身份、比例稳定，无文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0276-reference.png",
+      "bytes": 1932794,
+      "sha256": "d0944afccc7df0e24b58d3a6cb97479fcf167cbf8a2b9dcbaf38bde97cd00ccd",
+      "role": "start",
+      "nodeId": "695cf235-0486-490a-86d2-5c1d8ca5d04b"
+    },
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0276-endpoint.png",
+      "bytes": 1834511,
+      "sha256": "3e19fec5e387872726c531170ef8ddd3244395e55944c03be86f985f04e5fc82",
+      "role": "end",
+      "nodeId": "0ce96b10-dd7a-4657-ab02-dd7b64e5b7f8"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "79fea3e8-53fd-431c-9e49-9f3c51d6bf02",
+    "expectedReferenceNodeIds": [
+      "695cf235-0486-490a-86d2-5c1d8ca5d04b",
+      "0ce96b10-dd7a-4657-ab02-dd7b64e5b7f8"
+    ],
+    "imageListOrder": [
+      "695cf235-0486-490a-86d2-5c1d8ca5d04b",
+      "0ce96b10-dd7a-4657-ab02-dd7b64e5b7f8"
+    ],
+    "imageListNodeIds": [
+      "695cf235-0486-490a-86d2-5c1d8ca5d04b",
+      "0ce96b10-dd7a-4657-ab02-dd7b64e5b7f8"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "9450baaa1af730e01b6a9f56d57a04485fe3366b5e9574075c954d1326cc09f6",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083008",
+      "size": "240336"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "3722402"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "121437"
+    }
+  },
+  "originalSha256": "eca5aac083d0cda2f8aae700c22d66e8441973a133d9e0940d62cb1d4b1308ce",
+  "originalBytes": 3722402,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083008,
+  "oneWayEncodedSha256": "732eb2facbdd3deabe07bb06395466f5c526e4d882fe5d9f61e5eb2b8ddfc6c6",
+  "processing": "Seedance2.5 generated one4-second one-way dead-bug contralateral extension from ordered original start/end images(actual source4.041667seconds). Near/anatomical-right arm reaches headward while far/anatomical-left leg straightens footward; only this single contralateral pair is illustrated, not both alternating sides. After visual acceptance, the complete extension was encoded forward and followed by the exact same frames in reverse to return to tabletop, producing an8.083008-second loop. The return phase is synthesized by reversal, not separately AI-generated; this is not an original8-second continuous generation. Endpoint frames retained at turn and loop boundary. H.264CRF26,1024px width,yuv420p,silent,faststart. WebP poster uses original start reference at quality86.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way right-arm/left-leg extension segment",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0276-contact-8fps.jpg",
+    "contactSha256": "ffc1c07085e57df0b54e0df2766929e8d6705768754fed6842b019097f796d1f",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "observation": "Actual16 samples at4fps over the generated extension and64 samples at8fps over the composed loop show the near/anatomical-right arm and far/anatomical-left leg extending together as a contralateral pair. The other far-left arm stays vertical and the near-right leg stays in tabletop. Head, lower back/waist and pelvis remain grounded, passive tail stays beside the body, and extending paw/foot stay inside the unchanged full camera frame. No extra limb, same-side substitute, camera push-in, cropping or generated side-switch seen. Only this single contralateral combination and its exact reversed return are illustrated; no claim of both alternating sides. Producer and root both actually viewed and accepted the16-frame one-way and64-frame final contact sheets. Root confirmed contralateral pairing, stationary opposite pair, grounded head/waist and uncropped body. All frames of one-way and final H.264 decoded without errors.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0276-one-way-contact-4fps.jpg",
+      "contactSha256": "580c10bfdeb65897bb4614664eb202ffc0559a3bb2b65c33a3c6ad8853202a1d",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true
+    }
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "6f2e2e9d777f5edbec72c58f36a2b7c36255f089b70e678561107c06c383fe45",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true
+}

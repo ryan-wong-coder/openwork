@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "kind": "two-keyframe-illustration-plan",
+  "exerciseId": "1422",
+  "englishName": "pelvic tilt into bridge",
+  "descriptorSha256": "b840e02e010c7115700129eb8f2ed4b385c1ca51e29ee8f25f491380aa5928d8",
+  "startImage": {
+    "file": "exp-1422-reference-v2.png",
+    "sha256": "4a157e018721b2b8a28e479bfd545d5d1a61a78001da31167bd9488c2f29cf2f",
+    "bytes": 1822351,
+    "width": 1672,
+    "height": 941
+  },
+  "endpointImage": {
+    "file": "exp-1422-endpoint.png",
+    "sha256": "e04c31f1585b50407248d66d3d368598bc49748aa7a4efe9b9cecdac6e1a1b84",
+    "bytes": 1810512,
+    "width": 1672,
+    "height": 941
+  },
+  "endpointPrompt": {
+    "file": "exp-1422-endpoint-prompt.txt",
+    "sha256": "44942bd157ad202643f4e3ea86c4e96743839a98f795c5927ce4d70e78e2c7b7"
+  },
+  "endpointTool": "built-in ImageGen edit",
+  "endpointEditAttempts": 1,
+  "fixedContactsAndScene": [
+    "head and shoulders on floor",
+    "both feet flat in original floor positions",
+    "arms and palms resting on floor",
+    "camera and studio composition"
+  ],
+  "motion": "Posterior pelvic tilt followed by hip extension from hips-down start into a moderate bridge: grounded shoulder to lifted hip to bent knee makes a natural near-straight diagonal. No lumbar over-arch or hand-assisted lifting.",
+  "review": {
+    "startAndEndpointActuallyViewed": true,
+    "endpointDecision": "accepted-reference-for-parent-review",
+    "notes": [
+      "Visible gap under pelvis confirms hips lift; near arm/hand and feet stay in place.",
+      "Far hand becomes visible after torso rises; it was naturally occluded in the start frame.",
+      "Tail is passive, never used as a support."
+    ],
+    "wholeVideoViewed": false,
+    "readyMedia": false
+  },
+  "plannedVideo": {
+    "inputMode": "native first-and-last-frame",
+    "oneWaySeconds": 4,
+    "direction": "start-to-end",
+    "returnPlan": "Reverse the accepted one-way clip and join for a nominal8second illustration, subject to actual video review.",
+    "assemblyPerformed": false,
+    "videoGeneratedByThisAgent": false,
+    "originalEightSecondGeneration": false,
+    "existingEightSecondAttemptReused": false
+  },
+  "constraints": [
+    "Do not claim endpoint acceptance proves any generated intermediate frame.",
+    "No upstream restricted photograph/animation used.",
+    "New keyframe plan does not rewrite frozen movementBriefs or register ready media."
+  ]
+}

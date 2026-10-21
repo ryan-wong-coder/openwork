@@ -1,0 +1,69 @@
+{
+  "canonicalExerciseId": "2612",
+  "nodeId": "560bfa6b-0c5b-4650-83ff-0033eac2bd5a",
+  "taskId": "20261021084403427208518",
+  "prompt": "Use {{Node d61fc4c5-a3dc-47c0-9348-44c5050db5c2}} as exact starting frame. Preserve the original Zeno teal/cream otter, lime strap, two handles and ONE continuously connected jump rope, ivory studio. Fixed wide tripod camera, no cuts, zoom or reframing. Entire body, both feet and the complete rope at its highest and lowest points remain in frame. Demonstrate one short continuous JUMP-ROPE sequence of exactly THREE slow readable rotations and low jumps in eight seconds, not a sprint. Both paws retain the same two handles near the hips, elbows close to the torso. Small wrist circles drive ONE rope continuously from behind the heels, over the head, down in front, under BOTH feet, and back behind. Knees and ankles make gentle small bounces just high enough to clear the rope; both feet jump together only when the rope reaches them and land softly on the balls of both feet after every pass. 0-1 seconds begin upright with rope behind heels; 1-3 seconds first full forward rotation with one low jump and landing; 3-5 seconds second full forward rotation with one low jump and landing; 5-7 seconds third full forward rotation with one low jump and landing; 7-8 seconds stop upright with rope behind heels. Tail stays to one rear side clear of the rope path, never supporting bodyweight. Head and torso stay upright. No double ropes, disconnected or disappearing lines, rope through belly or limbs, rope through the feet, floating feet, reversed physics, long single levitation, arm windmills, extra limbs, text, watermark or audio.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "jump rope",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "507438"
+    }
+  },
+  "originalSha256": "503050f4771dd6af7b1d0dd6c9a4ce57b4632a0d28fb70b1dee8657f2ac80a86",
+  "originalBytes": 4812097,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-2612-contact.jpg",
+    "contactSha256": "5d451938ad8484ba4964ce40c12f21b70c92279ebcc56cb8873e2c130c983c3c",
+    "reviewed": true,
+    "observation": "Eight actual one-second frames and four actual eight-fps contact sheets show a connected single rope held by the two handles, passing overhead and below the feet during repeated low two-foot hops and landings. The cadence is faster and includes more rotations than the three-rotation prompt; the written exercise calls for continuous skipping rather than a fixed count. All body and rope stay in frame. Full final H.264 decoded without errors.",
+    "denseReview": {
+      "fps": 8,
+      "frames": 64,
+      "contactSheets": [
+        {
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-2612-motion-0-2s-8fps.jpg",
+          "sha256": "817dcfb5a4e0f2986969a89cdf7884c42b39258238ebaee3c68cd24dcd71ede3"
+        },
+        {
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-2612-motion-2-4s-8fps.jpg",
+          "sha256": "d9ac0b94fdae44aba82f3fe116faf6876f619a8847329106fc4da93e8d3fbab6"
+        },
+        {
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-2612-motion-4-6s-8fps.jpg",
+          "sha256": "21f606f7b9ce2ce335f70aaea013f1fd2c7f2cbc78668655959ab24f6f6dfa92"
+        },
+        {
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-2612-motion-6-8s-8fps.jpg",
+          "sha256": "4b98e72c6d30bd98209289944e0d8ebde84e505e541c6c3db34e86df6a183a71"
+        }
+      ],
+      "allActuallyViewed": true
+    }
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "4a8ca7a48f2366a78f9a59ddbbad987e5c87d6694b5eab1b93536894709b1384"
+}

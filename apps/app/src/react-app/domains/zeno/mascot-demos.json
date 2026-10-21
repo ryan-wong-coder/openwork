@@ -190,5 +190,155 @@
     "englishName": "stationary bike run v. 3",
     "stem": "stationary-bike",
     "kind": "mascot"
+  },
+  {
+    "exerciseId": "0297",
+    "englishName": "dumbbell concentration curl",
+    "stem": "exp-0297",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0375",
+    "englishName": "dumbbell pullover",
+    "stem": "exp-0375",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0044",
+    "englishName": "barbell good morning",
+    "stem": "exp-0044",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0285",
+    "englishName": "dumbbell alternate biceps curl",
+    "stem": "exp-0285",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0669",
+    "englishName": "rear deltoid stretch",
+    "stem": "exp-0669",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0088",
+    "englishName": "barbell seated calf raise",
+    "stem": "exp-0088",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "2612",
+    "englishName": "jump rope",
+    "stem": "exp-2612",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "3123",
+    "englishName": "resistance band seated biceps curl",
+    "stem": "exp-3123",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1259",
+    "englishName": "behind head chest stretch",
+    "stem": "exp-1259",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0834",
+    "englishName": "weighted front raise",
+    "stem": "exp-0834",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0643",
+    "englishName": "overhead triceps stretch",
+    "stem": "exp-0643",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1494",
+    "englishName": "butterfly yoga pose",
+    "stem": "exp-1494",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0794",
+    "englishName": "standing lateral stretch",
+    "stem": "exp-0794",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1362",
+    "englishName": "sphinx",
+    "stem": "exp-1362",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1582",
+    "englishName": "reclining big toe pose with rope",
+    "stem": "exp-1582",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1422",
+    "englishName": "pelvic tilt into bridge",
+    "stem": "exp-1422",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0979",
+    "englishName": "band horizontal pallof press",
+    "stem": "exp-0979",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0613",
+    "englishName": "lying (side) quads stretch",
+    "stem": "exp-0613",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1713",
+    "englishName": "assisted prone lying quads stretch",
+    "stem": "exp-1713",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0276",
+    "englishName": "dead bug",
+    "stem": "exp-0276",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1346",
+    "englishName": "kneeling lat stretch",
+    "stem": "exp-1346",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0690",
+    "englishName": "seated lower back stretch",
+    "stem": "exp-0690",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1424",
+    "englishName": "seated glute stretch",
+    "stem": "exp-1424",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1709",
+    "englishName": "assisted lying glutes stretch",
+    "stem": "exp-1709",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0620",
+    "englishName": "lying leg raise flat bench",
+    "stem": "exp-0620",
+    "kind": "mascot"
   }
 ]

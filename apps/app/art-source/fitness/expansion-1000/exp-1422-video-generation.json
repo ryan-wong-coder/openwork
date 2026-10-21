@@ -1,0 +1,163 @@
+{
+  "canonicalExerciseId": "1422",
+  "englishName": "pelvic tilt into bridge",
+  "nodeId": "7c22ecea-7ef3-4ac5-a971-40bb83ccbe3f",
+  "taskId": "20261021100403033158518",
+  "prompt": "首帧为 {{Node 3f857646-15f9-492f-b5cb-ff9e5722decb}}，尾帧为 {{Node 02c8e7f0-317c-4e89-809e-7860347bb2de}}。保持同一原创Zeno青色毛绒水獭、奶油脸腹、青柠斜肩带、固定侧面机位、象牙色摄影棚。4秒内只完成一次从仰卧屈膝到臀桥的缓慢上抬：先轻柔地让骨盆后倾、收紧核心和臀部，接着臀部缓慢离开地面，连续升到尾帧，直到肩膀、髋部和膝盖形成自然斜直线。两肩和后脑始终在原处贴地，颈部自然不抬头；两脚在原处全脚掌贴地、不滑动、不抬脚、不跨步，膝盖保持同向不过度外张或合拢。双臂始终在身体两侧原处地面，手掌贴地，不屈臂托臀、不把手放到腰下。上背与臀部形成平顺自然线条，不塌腰、不反弓、不把腹部顶成过伸拱形。只由臀部和骨盆缓慢抬起，不能全身漂浮。水獭尾巴随骨盆侧伸，不能变成顶地支架、第三条腿、器械或额外肢体。头、肩、双手和两脚的支点位置始终不动。只上抬一次，在尾帧臀桥停住；生成中不要下放、不要重复上下起伏。完整身体与尾巴全程在画面内，身份、比例和肢体数量稳定；镜头固定，无缩放、剪切、文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1422-reference-v2.png",
+      "bytes": 1822351,
+      "sha256": "4a157e018721b2b8a28e479bfd545d5d1a61a78001da31167bd9488c2f29cf2f",
+      "role": "start",
+      "nodeId": "3f857646-15f9-492f-b5cb-ff9e5722decb"
+    },
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1422-endpoint.png",
+      "bytes": 1810512,
+      "sha256": "e04c31f1585b50407248d66d3d368598bc49748aa7a4efe9b9cecdac6e1a1b84",
+      "role": "end",
+      "nodeId": "02c8e7f0-317c-4e89-809e-7860347bb2de"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "7c22ecea-7ef3-4ac5-a971-40bb83ccbe3f",
+    "expectedReferenceNodeIds": [
+      "3f857646-15f9-492f-b5cb-ff9e5722decb",
+      "02c8e7f0-317c-4e89-809e-7860347bb2de"
+    ],
+    "imageListOrder": [
+      "3f857646-15f9-492f-b5cb-ff9e5722decb",
+      "02c8e7f0-317c-4e89-809e-7860347bb2de"
+    ],
+    "imageListNodeIds": [
+      "3f857646-15f9-492f-b5cb-ff9e5722decb",
+      "02c8e7f0-317c-4e89-809e-7860347bb2de"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "cb87a6d2148de2409a961e7de995cf53d26259fe3e01d5b30697453c9b04c775",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "190681"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2797701"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "99514"
+    }
+  },
+  "originalSha256": "c76721037832ab0265b29eb97b70563c9b02874e044c6f21e0d1ce08140afe67",
+  "originalBytes": 2797701,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "183deb1af3ade9f301904491d593810dddf2edd5b5e74931eb9d80c93eaa7b73",
+  "processing": "Seedance 2.5 generated one 4-second one-way pelvic-tilt-into-bridge hip-raising segment from ordered original start/end images (actual source 4.041667 seconds). Only after producer visual acceptance, that complete hip-raising segment was encoded forward and followed by the exact same frame sequence in reverse to illustrate controlled lowering to the floor, producing an8.083333-second loop. Lowering is synthesized by reversal, not separately AI-generated; this is not an original8-second continuous generation. Endpoint frames are retained at the turn and loop boundary. H.264 CRF26,1024px width,yuv420p,silent,faststart. WebP poster uses the independently generated original start-v2 reference at quality86.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "loweringPhaseSource": "exact reversed frame order of accepted one-way raising segment",
+    "noGeneratedLoweringClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1422-contact-8fps.jpg",
+    "contactSha256": "d7ae37a3b85bdcffd82604403280f8658f9f79af7e06b923d9e29afd3cfa0a36",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Actual16 samples at4fps over the generated bridge raise and a full1024px endpoint detail at3.75s show hips rising slowly from supine bent-knee start into a natural sloping shoulder-hip-knee bridge. Back of head, shoulders, arms/palms and both feet remain grounded in place. No hands supporting hips, foot slide, lifted head, excessive lumbar arch or whole-body floating seen; tail remains beside the pelvis without becoming a support or extra limb. Actual64 samples at8fps over the composed loop show the same trajectory in reverse to return hips to the floor. Producer and root both actually viewed and accepted the16-frame one-way contact sheet,64-frame final contact sheet and3.75-second endpoint detail. Root confirmed stable head, shoulders, palms and feet, natural sloping hip raise, and no hand-supported hips or lifted head. All frames of the one-way and final H.264 files decoded without errors.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1422-one-way-contact-4fps.jpg",
+      "contactSha256": "5494aa59fb4a53a81896f8cb1242ad52e5d1ae31575017c77a16bb4a748f07f4",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false
+    },
+    "endpointDetail": {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1422-bridge-end-detail.png",
+      "bytes": 250092,
+      "sha256": "3c23acbf5a431c53e273b4a0d2312e77021422871a0a488c0c49d53634127201",
+      "timestampSeconds": 3.75,
+      "reviewedByProducer": true,
+      "rootReviewPending": false,
+      "rootAccepted": true
+    }
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "b840e02e010c7115700129eb8f2ed4b385c1ca51e29ee8f25f491380aa5928d8",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true
+}

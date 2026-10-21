@@ -1,0 +1,3 @@
+Start attempt1 rejected: tail-like appendage drapes from head/shoulder end, not anatomically from pelvis. Flat bench/straight joined legs/head-back support otherwise correct. Retry only tail origin/placement.
+sha256=fdbd43d45dc2797cf12b519ec20bb8b6e1481914eb2056360573aa2039e2b44e
+privateOriginalRetained=true

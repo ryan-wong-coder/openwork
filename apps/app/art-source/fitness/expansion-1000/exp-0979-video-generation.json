@@ -1,0 +1,154 @@
+{
+  "canonicalExerciseId": "0979",
+  "englishName": "band horizontal pallof press",
+  "nodeId": "87a8a0d1-1785-4cf8-977f-71de7231d177",
+  "taskId": "20261021101603852518518",
+  "prompt": "首帧为 {{Node ba75b951-3cb7-429c-928e-e477e4d99844}}，尾帧为 {{Node 82119809-43ea-4609-85cf-021794009654}}。严格保持同一原创Zeno青色毛绒水獭、奶油色脸腹、青柠斜肩带、固定三分之四正面机位、象牙色摄影棚和左侧固定墙面锚点。4秒内仅做一次弹力带水平帕洛夫抗旋转推举：从首帧双手在胸前屈肘共同握住同一个黑色手柄开始，两手始终共同握住同一手柄，缓慢向胸口正前方推出手柄，同时双肘伸直，直到尾帧两臂在胸前向正前方延伸的姿态。全程抵抗左侧带子的拉力，胸口、头、肩膀和骨盆朝向始终不变，躯干竖直不旋转、不侧倾、不后仰，不转成朝向墙面。骨盆、双腿、两脚和尾巴固定在首帧位置，双脚全脚掌贴地，不滑动、不侧跨、不转脚。只有双臂从屈肘推到伸肘，手柄保持在胸前高度，不变成侧拉、划船、上举或推举到头顶。只有一条完整连续的紫色扁弹力带，始终连接左侧同一个腰高墙锚点和同一个双手手柄；墙和锚点完全不动，带子只随手柄向前延伸而拉长，不断裂、不分叉、不消失、不脱手、不变成两条带或长绳。两只手始终在原手柄上，不额外生成器械或手臂。只向前推出一次，到尾帧停住；生成中不要拉回胸前、不要重复，也不要让身体随带子扭转。全身、双手手柄、完整带子和墙锚点始终在画面内；镜头完全固定，无缩放、剪切、文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0979-reference.png",
+      "bytes": 1735782,
+      "sha256": "50e5e080bc565d1579d6bad933a583c619f550bb4c5ab439392b06e03ae0845a",
+      "role": "start",
+      "nodeId": "ba75b951-3cb7-429c-928e-e477e4d99844"
+    },
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0979-endpoint.png",
+      "bytes": 1680246,
+      "sha256": "74c89fff54d82b8b8372ffc510a61b4375a5138929f70e22db0e5460a50a62a6",
+      "role": "end",
+      "nodeId": "82119809-43ea-4609-85cf-021794009654"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "87a8a0d1-1785-4cf8-977f-71de7231d177",
+    "expectedReferenceNodeIds": [
+      "ba75b951-3cb7-429c-928e-e477e4d99844",
+      "82119809-43ea-4609-85cf-021794009654"
+    ],
+    "imageListOrder": [
+      "ba75b951-3cb7-429c-928e-e477e4d99844",
+      "82119809-43ea-4609-85cf-021794009654"
+    ],
+    "imageListNodeIds": [
+      "ba75b951-3cb7-429c-928e-e477e4d99844",
+      "82119809-43ea-4609-85cf-021794009654"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "e7189ec13f09ae3eb08cde416ff23876af27b55afb1b10b1a069fa260a58d2d5",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "171915"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2887791"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "85542"
+    }
+  },
+  "originalSha256": "8e1ae037505188cff4765c7e27cc06b913c80686b42227bcf2c1455995634896",
+  "originalBytes": 2887791,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "60d5b217647990a05a058382cd6f483595d65fb96367ee43b5c0f94244301517",
+  "processing": "Seedance2.5 generated one4-second one-way anti-rotation Pallof-press extension from ordered original start/end images(actual source4.041667seconds). After producer visual acceptance, that complete forward extension was encoded in forward order followed by the exact same frames in reverse to illustrate the controlled return of the handle to the chest, producing an8.083333-second loop. The return phase is synthesized by reversal, not separately AI-generated; this is not an original8-second continuous generation. Endpoint frames are retained at the turn and loop boundary. H.264CRF26,1024px width,yuv420p,silent,faststart. WebP poster uses the original start reference at quality86.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way Pallof-press extension segment",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0979-contact-8fps.jpg",
+    "contactSha256": "7e7d2ce4c7024e8c5e8705a550a2b9f15c817ae88feccc2a7674fe55b75d975e",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Actual16 samples at4fps over generated forward extension and64 samples at8fps over the final forward/reverse loop show both paws retaining one handle, elbows extending forward and returning to the chest. A single continuous purple band remains joined to the same fixed waist-high wall anchor and the same handle. Chest and pelvis retain their facing direction, torso remains upright, feet remain planted, and camera remains fixed. No trunk rotation, side step, row, overhead press, band split or handle release seen. Producer and root both actually viewed and accepted the16-frame one-way and64-frame final contact sheets. Root confirmed both paws retain one handle during the chest-to-forward press, one continuous band stays fixed to the same anchor, and torso, pelvis and feet retain direction and position. All frames of the one-way and final H.264 files decoded without errors.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0979-one-way-contact-4fps.jpg",
+      "contactSha256": "ea2b887c9cca73d9746e9459b59b6f3326b7ca30768d61df537d63f3d4481976",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false
+    }
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "40b8bd0a5b23b4970037f2d54cba255a20857b820fada2e9f14bf575921f6894",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true
+}

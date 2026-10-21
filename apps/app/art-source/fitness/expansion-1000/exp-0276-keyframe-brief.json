@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "kind": "two-keyframe-illustration-plan",
+  "exerciseId": "0276",
+  "englishName": "dead bug",
+  "descriptorSha256": "6f2e2e9d777f5edbec72c58f36a2b7c36255f089b70e678561107c06c383fe45",
+  "startImage": {
+    "file": "exp-0276-reference.png",
+    "sha256": "d0944afccc7df0e24b58d3a6cb97479fcf167cbf8a2b9dcbaf38bde97cd00ccd",
+    "bytes": 1932794,
+    "width": 1672,
+    "height": 941
+  },
+  "endpointImage": {
+    "file": "exp-0276-endpoint.png",
+    "sha256": "3e19fec5e387872726c531170ef8ddd3244395e55944c03be86f985f04e5fc82",
+    "bytes": 1834511,
+    "width": 1672,
+    "height": 941
+  },
+  "startPrompt": {
+    "file": "exp-0276-poster-prompt.txt",
+    "sha256": "8325b7cff147078647dc7dfa2f471e1e6a4356c9cda8a3005c2633bfb2884ff3",
+    "bytes": 1941
+  },
+  "endpointPrompt": {
+    "file": "exp-0276-endpoint-prompt.txt",
+    "sha256": "14be7cd631a6260f6aa90e26073d4e26d88b04b251a4bfebd070e5154d103b23",
+    "bytes": 1944
+  },
+  "startTool": "built-in ImageGen",
+  "startImageAttempts": 1,
+  "endpointTool": "built-in ImageGen edit of accepted start",
+  "endpointEditAttempts": 1,
+  "fixedContactsAndScene": [
+    "head, lower back/waist and pelvis on floor",
+    "far/anatomical-left arm vertical",
+    "near/anatomical-right hip and knee tabletop90degrees",
+    "passive tail beside pelvis and fixed camera"
+  ],
+  "motion": "Near/anatomical-right straight arm reaches headward low above floor simultaneously with far/anatomical-left leg straightening footward low above floor; opposite pair only. The other arm stays vertical and other leg stays tabletop.",
+  "review": {
+    "startAndEndpointActuallyViewed": true,
+    "endpointDecision": "accepted-reference-for-parent-review",
+    "notes": [
+      "Near side is anatomical right by camera setup; end moves near arm plus far leg, a contralateral pair.",
+      "Extended paw and foot remain inside canvas with modest margins; video must not zoom or increase reach."
+    ],
+    "wholeVideoViewed": false,
+    "readyMedia": false
+  },
+  "plannedVideo": {
+    "inputMode": "native first-and-last-frame",
+    "oneWaySeconds": 4,
+    "direction": "start-to-end",
+    "returnPlan": "Review generated4second transition, then reverse and join accepted one-way clip for nominal8second illustration.",
+    "assemblyPerformed": false,
+    "videoGeneratedByThisAgent": false,
+    "originalEightSecondGeneration": false,
+    "existingEightSecondAttemptReused": false
+  },
+  "constraints": [
+    "Keyframe acceptance does not prove intermediate video motion or all source techniques.",
+    "Only original Zeno identity and original generated artwork; no restricted upstream media.",
+    "No runtime ready registration or publication by this agent."
+  ]
+}

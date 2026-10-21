@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "0285",
+  "nodeId": "de1a253d-817c-437d-851a-2a4c3ced0111",
+  "taskId": "20261021081303830328518",
+  "prompt": "Use {{Node 3ff344db-0527-4c9d-b8b9-1385f5224ef9}} as exact starting frame. Preserve the original Zeno teal/cream otter, lime strap, ivory studio, two distinct rigid dumbbells and both planted feet. Fixed tripod camera, no cuts or zoom, whole body and both weights remain visible. Demonstrate exactly ONE slow alternating cycle of RIGHT then LEFT DUMBBELL CURLS. Stand upright with elbows close to the sides, upper arms still and both palms forward in supinated grips. Curl only the RIGHT dumbbell up over 1.5 seconds, hold 0.5 seconds and lower over 1.5 seconds while the left arm and dumbbell stay down. Then curl only the LEFT dumbbell up over 1.5 seconds, hold 0.5 seconds and lower over 1.5 seconds, followed by a final 1 second hold in the starting position. No simultaneous curls, no shoulder swing, no hammer grip, no torso leaning, no moving feet, no changing or merging weights, no extra limbs. No audio, text or watermark.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "dumbbell alternate biceps curl",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "193746"
+    }
+  },
+  "originalSha256": "4f33ffa1e144ceec7a21abb78102a15f9d8d7fd098570f6b4daadd8071f7bbc3",
+  "originalBytes": 2972391,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0285-contact.jpg",
+    "contactSha256": "342c4d52d8e1dba2dd29bda0d7bf407e16da6d434c655c03a52b19d5e58b749b",
+    "reviewed": true,
+    "observation": "Eight actual one-second frames show a complete right-arm curl and lowering followed by a complete left-arm curl and lowering. The opposite dumbbell stays lowered during each working curl; the upper arms stay near the torso, both feet remain planted and the two dumbbells retain their shapes and grips. Full final H.264 decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "3ddc0aac3e38c4e551a03b6fbdfaeba78382017f933ce5cd4db8a7392a997d91"
+}

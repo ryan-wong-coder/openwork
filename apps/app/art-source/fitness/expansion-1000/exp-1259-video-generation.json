@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "1259",
+  "nodeId": "7c87f442-7d84-46da-9b49-f2ab918c1c50",
+  "taskId": "20261021092203794558518",
+  "prompt": "Use {{Node d77d4fc5-4143-435d-bc0b-bf32f160804a}} as exact starting frame. Preserve the original Zeno teal/cream otter, lime strap and ivory studio. Fixed full-body tripod camera, no cuts, zoom or reframing. Demonstrate a gentle BEHIND-HEAD CHEST STRETCH, only a short pose illustration. Both paws remain loosely joined BEHIND the head throughout, with fingertips lightly linked and elbows open out to the sides. Feet stay planted and the head and neck remain neutral. During the first two seconds gently retract the shoulders a tiny amount and open the chest, with elbows moving only slightly outward and backward. Calmly hold for four seconds with subtle natural breathing. During the last two seconds relax the shoulders while keeping both hands behind the head. Keep ribs and pelvis stable, torso upright. No pressing or pulling the head, no grabbing ears, no neck tilt, no big back arch, no leaning backward, no elbows squeezing the face, no arms overhead, no changing hand position, no extra limbs or extra person, no text, watermark or audio. Whole body, both feet, head, elbows and the behind-head hand contour stay visible. This eight-second clip only illustrates the pose, not the full recommended hold duration.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "behind head chest stretch",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "145904"
+    }
+  },
+  "originalSha256": "3b5f909a7bb61952e1bae857d17ef65e4ba8358bcf594b2e2d95846708772f9a",
+  "originalBytes": 2908518,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1259-contact.jpg",
+    "contactSha256": "13fa3b6db872108371640d90dcc27c99f3c9ab0de6e833630e65a838bdbf7bd5",
+    "reviewed": true,
+    "observation": "Eight actual one-second frames show the hands resting behind the head, elbows opening gently outward and a small chest/shoulder relaxation while the head, neck, torso and feet remain stable. No pulling down on the head or neck stretch is shown. This short clip illustrates the held pose rather than the longer hold time in the written exercise. Full final H.264 decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "f618e8929731ecfec6b602f5f9289d1ef4ff3a6f790104a1eea7e3e062527418"
+}

@@ -1,0 +1,154 @@
+{
+  "canonicalExerciseId": "0794",
+  "englishName": "standing lateral stretch",
+  "nodeId": "36324f03-cef4-465f-9719-8f8eac916fdb",
+  "taskId": "20261021095103562128518",
+  "prompt": "首帧为 {{Node 035f6ddb-9a97-488e-bdb5-be393d4ba7c1}}，尾帧为 {{Node 0279398c-946e-4f81-bfe2-e23aff32c524}}。保持同一原创Zeno青色毛绒水獭、奶油色脸腹、青柠斜肩带、正面固定机位和象牙色摄影棚。4秒内仅做一次缓慢的站姿侧屈：从首帧双臂向两侧伸直的直立T形姿态，躯干缓慢向画面左侧倾斜，连续到达尾帧。只让腰以上的躯干、头、肩线和双臂作为一个整体一同倾斜；肩膀与两条伸直的手臂始终连成一条直线，随躯干倾斜一起转动，画面左手自然降低、右手自然升高，不能把双臂钉在世界水平线上。骨盆、双腿、两脚和尾巴的位置保持首帧不动；两脚始终贴地、不滑动、不侧跨、不抬脚。头与躯干同向倾斜，身体保持正面，不旋转、不后仰。双臂一直伸直在身体两侧，不变成单臂过顶拉伸，不屈肘、不挥手、不耸肩。只向画面左侧完成一次侧屈，到达尾帧后停住；生成中不要回位、不要左右两次摆动、不要转向另一侧。完整身体、两手、双脚和尾巴始终在画面内；身份、比例和肢体数量稳定；镜头固定，无缩放、剪切、文字、水印或声音。此4秒仅演示进入拉伸姿势，不替代文字说明的15至30秒保持时间。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0794-reference.png",
+      "bytes": 1776329,
+      "sha256": "ae1cf20256916de123e4b9af94e027c21c9baf203904db3f8a634902d02afd82",
+      "role": "start",
+      "nodeId": "035f6ddb-9a97-488e-bdb5-be393d4ba7c1"
+    },
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0794-endpoint.png",
+      "bytes": 1730531,
+      "sha256": "66bc6ab3f8f5b9baf80e6a85867cc798f51ec70f0fb0f40e50c3a5fcb9923311",
+      "role": "end",
+      "nodeId": "0279398c-946e-4f81-bfe2-e23aff32c524"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "36324f03-cef4-465f-9719-8f8eac916fdb",
+    "expectedReferenceNodeIds": [
+      "035f6ddb-9a97-488e-bdb5-be393d4ba7c1",
+      "0279398c-946e-4f81-bfe2-e23aff32c524"
+    ],
+    "imageListOrder": [
+      "035f6ddb-9a97-488e-bdb5-be393d4ba7c1",
+      "0279398c-946e-4f81-bfe2-e23aff32c524"
+    ],
+    "imageListNodeIds": [
+      "035f6ddb-9a97-488e-bdb5-be393d4ba7c1",
+      "0279398c-946e-4f81-bfe2-e23aff32c524"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "c62625f288df58b2f56454038ce1113c2c6c7d274e0dd44363cf156ef5066940",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "177775"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2556507"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "92297"
+    }
+  },
+  "originalSha256": "8e12d648a7fc85a83c639495118fcef9d8ff118aff83a03d0a3fd812e2c0f472",
+  "originalBytes": 2556507,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "78d4414b8ec509aad1bfe4210658c8c8183160e882e55e16d8f66b29f3f79c92",
+  "processing": "Seedance 2.5 generated one 4-second one-way standing lateral-bend segment from ordered original start/end images (actual source 4.041667 seconds). Only after producer visual acceptance, that complete lateral-bending segment was encoded forward and followed by the exact same frame sequence in reverse to illustrate the controlled return to upright, producing an 8.083333-second loop. The return phase is synthesized by reversal, not separately AI-generated; this is not an original 8-second continuous generation. Endpoint frames are retained at the turn and loop boundary. This brief pose-transition illustration does not replace the 15-30-second stretch hold in the written instructions. H.264 CRF26, 1024px width, yuv420p, silent, faststart. WebP poster uses the original start reference at quality86.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way lateral-bending segment",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0794-contact-8fps.jpg",
+    "contactSha256": "0d41a81e23e3199937bc4c16f5f55cd5035c61084531733dbbffca3b93f8b6d6",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Actual 16 samples at 4fps over the generated segment show one slow lateral bend from upright T pose toward screen-left. Both straight arms tilt with the shoulder line, head and upper torso tilt together, while pelvis, feet and tail remain anchored. No world-horizontal pinned arms, single overhead arm, twisting or side step seen. Actual64 samples at8fps over the composed loop show the same controlled trajectory in reverse for the return to upright. Producer and root both actually viewed and accepted the16-frame one-way and64-frame final contact sheets. Root confirmed the T-shaped arm line follows the torso through the lateral bend and return. All frames of the one-way and final H.264 files decoded without errors.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0794-one-way-contact-4fps.jpg",
+      "contactSha256": "a1332eb3106abaded8418b1c15aa6c53e3565d8f286cdfb92c37603353fbf84b",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false
+    }
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "640fa97f52c606c0fdac3ce621962597b837752ef55df1518d065d1e728dff06",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true
+}

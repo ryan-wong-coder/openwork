@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "kind": "two-keyframe-illustration-plan",
+  "exerciseId": "0794",
+  "englishName": "standing lateral stretch",
+  "descriptorSha256": "640fa97f52c606c0fdac3ce621962597b837752ef55df1518d065d1e728dff06",
+  "startImage": {
+    "file": "exp-0794-reference.png",
+    "sha256": "ae1cf20256916de123e4b9af94e027c21c9baf203904db3f8a634902d02afd82",
+    "bytes": 1776329,
+    "width": 1672,
+    "height": 941
+  },
+  "endpointImage": {
+    "file": "exp-0794-endpoint.png",
+    "sha256": "66bc6ab3f8f5b9baf80e6a85867cc798f51ec70f0fb0f40e50c3a5fcb9923311",
+    "bytes": 1730531,
+    "width": 1672,
+    "height": 941
+  },
+  "endpointPrompt": {
+    "file": "exp-0794-endpoint-prompt.txt",
+    "sha256": "cf7632af22afb79cae3606595200a683bf02d94aa8a060ee8d9d554e9e817d96"
+  },
+  "endpointTool": "built-in ImageGen edit",
+  "endpointEditAttempts": 1,
+  "fixedContactsAndScene": [
+    "pelvis position",
+    "both legs and planted feet",
+    "tail position",
+    "camera and studio composition"
+  ],
+  "motion": "Upper torso and neutral head side-bend about15–20degrees toward image-left; both extended arms remain a T with the shoulders and share their tilted line. No elbow curl or overhead arm substitution.",
+  "review": {
+    "startAndEndpointActuallyViewed": true,
+    "endpointDecision": "accepted-reference-for-parent-review",
+    "notes": [
+      "Image-left arm endpoint lowers, image-right arm endpoint rises with shoulder line.",
+      "Lower-body and scene stability were checked visually, not claimed pixel-identical."
+    ],
+    "wholeVideoViewed": false,
+    "readyMedia": false
+  },
+  "plannedVideo": {
+    "inputMode": "native first-and-last-frame",
+    "oneWaySeconds": 4,
+    "direction": "start-to-end",
+    "returnPlan": "Reverse the accepted one-way clip and join for a nominal8second illustration, subject to actual video review.",
+    "assemblyPerformed": false,
+    "videoGeneratedByThisAgent": false,
+    "originalEightSecondGeneration": false,
+    "existingEightSecondAttemptReused": false
+  },
+  "constraints": [
+    "Do not claim endpoint acceptance proves any generated intermediate frame.",
+    "No upstream restricted photograph/animation used.",
+    "New keyframe plan does not rewrite frozen movementBriefs or register ready media."
+  ]
+}

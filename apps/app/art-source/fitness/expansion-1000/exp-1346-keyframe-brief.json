@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "1346",
+  "englishName": "kneeling lat stretch",
+  "sourceDescriptorSha256": "e9b2375b8e37c00150e2d1aee1e862c4c80c168b39f3828a5782eb341d7ea64e",
+  "sourceSteps": [
+    "跪在地上，膝盖分开与臀部同宽，脚趾向后。",
+    "将双臂伸过头顶，手指交叉。",
+    "保持背部挺直，慢慢向右侧倾斜，感受左侧背阔肌的拉伸。",
+    "保持伸展动作 20-30 秒，然后回到起始位置。",
+    "在左侧重复该拉伸动作，向左侧倾斜，感受右侧背阔肌的拉伸。",
+    "继续交替进行所需的重复次数。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/zeno-site/public/assets/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "referencePoseReviewed": true,
+  "reviewObservation": "Tall kneeling, both shins and insteps grounded, arms overhead clasped with nearly straight elbows, gentle lateral torso stretch, tail relaxed to side.",
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "references": [
+    {
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-1346-reference.png",
+      "bytes": 1806133,
+      "sha256": "553a51d148af27c663d2470391ab5e298be1d611a65d4bfd22768b7d7e2788fd"
+    }
+  ]
+}

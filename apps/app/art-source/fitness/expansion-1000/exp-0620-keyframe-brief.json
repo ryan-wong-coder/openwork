@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "kind": "two-keyframe-illustration-plan",
+  "exerciseId": "0620",
+  "englishName": "lying leg raise flat bench",
+  "descriptorSha256": "712464fd9ef30a6544d505eda4d569d0c5a7e38fd78241fe8621c57d0f192086",
+  "startImage": {
+    "file": "exp-0620-reference.png",
+    "sha256": "9ad1092f921809232b42b8001400974a1f872c4a2acf982201ab903cd2816984",
+    "bytes": 1725871,
+    "width": 1672,
+    "height": 941
+  },
+  "endpointImage": {
+    "file": "exp-0620-endpoint.png",
+    "sha256": "a4b85405c0d3fe25ec7acb1d2da17519e386ad3f3c0abdb1944be0947a0dc393",
+    "bytes": 1746105,
+    "width": 1672,
+    "height": 941
+  },
+  "startPrompt": {
+    "file": "exp-0620-poster-prompt-v2.txt",
+    "sha256": "b742140ffbbc78c262f86f9637768a7e454b6a3f8ab1df7fd38736d00b9dbdca",
+    "bytes": 1213
+  },
+  "endpointPrompt": {
+    "file": "exp-0620-endpoint-prompt.txt",
+    "sha256": "6a4e533e172cabcfc1f6f7e5d905bb2c1fe0f6190a56c31351a4a79dde95c85c",
+    "bytes": 1591
+  },
+  "startTool": "built-in ImageGen",
+  "startImageAttempts": 2,
+  "endpointTool": "built-in ImageGen edit of accepted start",
+  "endpointEditAttempts": 1,
+  "fixedContactsAndScene": [
+    "horizontal flat bench and all bench feet",
+    "head, back and pelvis supported by bench",
+    "both hands under buttocks, far hand naturally occluded",
+    "fixed camera and ivory studio"
+  ],
+  "motion": "Both nearly straight parallel legs raise together from low bench-aligned position to an approximately55–65degree elevated endpoint; pelvis stays supported, without reverse-crunch lifting.",
+  "review": {
+    "startAndEndpointActuallyViewed": true,
+    "endpointDecision": "accepted-reference-for-parent-review",
+    "notes": [
+      "First candidate rejected for tail emerging near head; accepted second start repairs attachment, tail far-side occluded.",
+      "Endpoint is moderately elevated toward ceiling, not a claimed90degree pose.",
+      "Two paws under buttocks are partially occluded as expected; visible near arm reaches hips.",
+      "Upper foot margin is modest; video must not zoom or exceed the selected endpoint."
+    ],
+    "wholeVideoViewed": false,
+    "readyMedia": false
+  },
+  "plannedVideo": {
+    "inputMode": "native first-and-last-frame",
+    "oneWaySeconds": 4,
+    "direction": "start-to-end",
+    "returnPlan": "Review generated4second transition, then reverse and join accepted one-way clip for nominal8second illustration.",
+    "assemblyPerformed": false,
+    "videoGeneratedByThisAgent": false,
+    "originalEightSecondGeneration": false,
+    "existingEightSecondAttemptReused": false
+  },
+  "constraints": [
+    "Keyframe acceptance does not prove intermediate video motion or all source techniques.",
+    "Only original Zeno identity and original generated artwork; no restricted upstream media.",
+    "No runtime ready registration or publication by this agent."
+  ]
+}

@@ -1,7 +1,10 @@
 # Zeno original fitness visuals
 
-This set covers **32 mainstream exact catalogue exercises** with 32 original posters
-and 32 local videos: **30 mascot demonstrations and two original diagram videos**.
+The frozen 1.1.2 baseline covers **32 mainstream exact catalogue exercises** with
+32 original posters and 32 local videos: **30 mascot demonstrations and two original diagram videos**.
+Additional independently generated mascot posters and videos are recorded under
+`expansion-1000/`. Its `selection.json` is a 1,000-item production plan, while
+`progress.json` and the runtime/provenance manifests report only accepted media.
 The identity reference is Zeno's established otter mascot; no openGym/Gym visual exercise
 image, animation, video, screenshot or prompt reference was used.
 
@@ -13,7 +16,7 @@ equipment/muscle filters and custom exercises available.
 
 The four batch folders under `mainstream/` contain the complete final built-in Image Gen
 prompts, official LibTV CLI task/model/prompt records, eight-frame contact sheets, rejected
-attempt records and encoding provenance. All 64 final app files are fully hashed in
+attempt records and encoding provenance. All accepted final app files are fully hashed in
 `provenance.json`. Accepted mascot clips use local silent H.264/yuv420p with fast-start
 metadata, and the matching posters are local WebP. No generation runs in the product.
 
@@ -54,8 +57,9 @@ build bases. Generation is not needed at runtime.
 ## Coverage and attribution
 
 `movement-scenes.ts` supplies **11** original vector keyframe demonstrations, all included
-in the 32 selected movements. The remaining **5,600** canonical exercises do not
-have a demonstration: their detail reports that state rather than displaying another
+in the original 32 selected movements. At that baseline 5,600 canonical exercises
+lacked a demonstration; current coverage is recorded in `provenance.json`.
+Uncovered exercises report that state rather than displaying another
 technique. Their own primary/secondary muscle data still powers the front/back muscle map.
 Custom exercise pictures/GIF/video use the existing authenticated media store and take
 priority over built-in art. Historical custom muscle snapshots remain readable.

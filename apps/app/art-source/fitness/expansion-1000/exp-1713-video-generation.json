@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "1713",
+  "nodeId": "7fb0604e-ee03-406c-b6a0-e770e973a077",
+  "taskId": "20261021102203178828518",
+  "prompt": "Use {{Node ece96721-4076-4e2f-838f-859c8c8f9899}} as exact starting frame. Preserve this exact original Zeno teal/cream otter, lime strap, warm ivory studio and clearly PRONE belly-down pose. Fixed side-above tripod camera at the SAME starting angle, no cuts, zoom or reframing, full body and the complete hand-ankle grasp remain in frame. Show a short calm PRONE LYING QUADRICEPS STRETCH HOLD for eight seconds, only a pose illustration. Keep the belly, pelvis and both thighs against the floor, teal back facing up. The SAME bent knee remains at the same comfortable angle, and the SAME side paw continuously holds the SAME ANKLE just above its heel; foot and toes remain free beyond the grip. The other entire leg stays straight along the floor. The other forearm remains flat on the floor supporting the relaxed neutral head, with face down in the same profile. Only barely visible natural breathing and tiny relaxation of grasp pressure; keep the joint positions and all contact points unchanged. Never roll onto the side, never lift the head or torso to look at camera, no knee extension or extra pulling, no hip lift or back arch, no kneeling, no grasp release or sliding grip to toes, no switching arms or legs, no extra limbs, no text, watermark or audio. Tail remains naturally on the floor, not under the pelvis. Eight seconds illustrates the pose and is not the full prescribed twenty-to-thirty-second hold.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "assisted prone lying quads stretch",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "196068"
+    }
+  },
+  "originalSha256": "ae7674945464adcef35b8be6e629e9c5e6240e648e5a3b38de47fdf67634a101",
+  "originalBytes": 4181319,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1713-contact.jpg",
+    "contactSha256": "7325c64516c66165c0c1d96e360ebe8f25822a2dfb5e1532e65349afcbe716ad",
+    "reviewed": true,
+    "observation": "Root viewed full 8-frame contact sheet; clear prone posture with cream belly toward floor and back up, same-side paw continuously grasps ankle, other forearm/head and opposite extended leg remain grounded. Subtle breathing only; no roll, release or excessive arch. Short held-stretch excerpt, not a claimed full 20-30-second hold."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "db8d74c880a477c8c22514835e2ed4c042315f5f630b7dc676e110a3d6579bd7"
+}

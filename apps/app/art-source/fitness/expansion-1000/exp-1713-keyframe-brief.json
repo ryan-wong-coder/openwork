@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "1713",
+  "englishName": "assisted prone lying quads stretch",
+  "sourceDescriptorSha256": "db8d74c880a477c8c22514835e2ed4c042315f5f630b7dc676e110a3d6579bd7",
+  "sourceSteps": [
+    "脸朝下躺在地上，双腿伸直。",
+    "弯曲左膝，用左手向后抓住左脚或脚踝。",
+    "轻轻地将左脚拉向臀肌，感受左股四头肌的拉伸。",
+    "保持拉伸 20-30 秒，然后放松。",
+    "右腿重复上述动作。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/app/src/assets/zeno/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "referencePoseReviewed": true,
+  "rootReferenceApproved": true,
+  "reviewObservation": "Selected second image is clearly prone: teal back faces upward, abdomen/pelvis/thigh support is on the floor, same-side hand holds the bent-leg ankle, other leg is straight, other forearm supports the head. One side is illustrated; canonical source also instructs repeating the opposite side.",
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "generationAttempts": [
+    {
+      "attempt": 1,
+      "selected": false,
+      "sha256": "72e7a6743ee66e23a7f1e2bcbdcfc3226e934b783f62d815e2417d4b1ef92b4a",
+      "nonSelectedReason": "side-camera makes prone-vs-side orientation insufficiently explicit and paw grips upper foot rather than clear ankle",
+      "retainedInRepository": false
+    },
+    {
+      "attempt": 2,
+      "selected": true,
+      "sha256": "061b07490dbfb542d9019687993fe6aa4f4f1e44da032610a9d81e635647a262",
+      "retainedInRepository": true
+    }
+  ],
+  "references": [
+    {
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-1713-reference.png",
+      "bytes": 1962000,
+      "sha256": "061b07490dbfb542d9019687993fe6aa4f4f1e44da032610a9d81e635647a262"
+    }
+  ]
+}

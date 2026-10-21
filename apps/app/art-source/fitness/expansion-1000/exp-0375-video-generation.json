@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "0375",
+  "nodeId": "14ba5602-fe0f-49d8-bc2f-7b9f44831573",
+  "taskId": "20261021080603679748518",
+  "prompt": "Use {{Node ffcfafef-0280-47d7-94a8-8c8a631e1c69}} as exact starting frame. Preserve original Zeno teal/cream otter, lime strap, one rigid vertical dumbbell held with both paws cupping upper end, fixed flat bench, supported head/back/hips and both planted feet. Fixed tripod side-three-quarter camera, no cuts or zoom. Exactly ONE slow DUMBBELL PULLOVER. Start with arms extended over upper chest and elbows softly bent. Over three seconds rotate both arms backward as a single shoulder-driven arc, carrying the dumbbell just behind the crown of the head to a comfortable controlled range, elbows retain same slight bend throughout, dumbbell clears the face and bench with no collision. Pause one second then use the same shoulder arc to return dumbbell over upper chest over three seconds, final hold. Head and back stay on bench, ribs and hips remain stable, no bridge. No elbow extension exercise, no chest press, no curl, no sitting up, no losing dumbbell contact, no morphing dumbbell/extra paws, no text, watermark or sound. Full body and dumbbell remain in frame.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "dumbbell pullover",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "198896"
+    }
+  },
+  "originalSha256": "dbba3c4cc9fc41c997f00d9906c5863b1a3cdb0cb0e16fd7b5467e1afb987c00",
+  "originalBytes": 3026495,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0375-contact.jpg",
+    "contactSha256": "7a6e884824838d0df4666475e2b1448b3185313ee788e5fcf1d3279154abac66",
+    "reviewed": true,
+    "observation": "Eight actual one-second frames show a complete shoulder-driven dumbbell pullover behind the crown and return. Both paws retain the single dumbbell, the small elbow bend stays consistent, the head/back/hips stay supported and feet planted without a bridge. Equipment and mascot identity stay coherent; full final decode passed."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "93d8f28f551c5335a2e422d307a38fcd264a4a4457654ead23d5ee39b2b74a17"
+}

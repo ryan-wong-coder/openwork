@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "1362",
+  "nodeId": "538114af-a9f7-40c2-b57b-550ec3ffe835",
+  "taskId": "20261021094803088708518",
+  "prompt": "Use {{Node 557a38ab-ddd7-4d82-b956-137abfb69ad6}} as exact starting frame. Preserve the original Zeno teal/cream otter, lime strap and ivory studio. Fixed low side-three-quarter tripod camera, no cuts or zoom, full body including both forearms, elbows, pelvis, thighs, feet and tail stays visible. Show a gentle SPHINX pose as a short eight-second illustration. BOTH ELBOWS AND THE ENTIRE LENGTH OF BOTH FOREARMS STAY FLAT ON THE FLOOR throughout, elbows under shoulders and near a right angle. Both palms face down. The lower abdomen, pelvis and both thighs remain on the floor; legs extend behind naturally. Only the upper chest makes a tiny gentle upward lift and calm breathing during the first two seconds, then softly holds for four seconds and eases slightly lower during the final two seconds. Keep head and neck neutral, shoulders away from ears. The near-side elbow never lifts or slides. No push-up, no hip lift, no forearm plank, no straight-arm upward dog or cobra, no elbow extension, no neck hyperextension, no lifting abdomen or pelvis into suspension, no extra limbs, no text, watermark or audio. This is a short pose illustration, not a full prescribed hold duration.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "sphinx",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "222813"
+    }
+  },
+  "originalSha256": "68709b461ff8fdf8e3d8a5ae3c81c8cff40e48e5b64026f71d632f1ffd269470",
+  "originalBytes": 4353224,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1362-contact.jpg",
+    "contactSha256": "72847d224aa9926477f18210927fbdf6271283083e0ca6a2a2297b7c0c120a15",
+    "reviewed": true,
+    "observation": "Eight actual one-second frames and a full-size held-position frame show a prone-on-elbows sphinx pose: elbows and forearms remain supported on the floor while the chest lifts gently and relaxes, with pelvis and thighs remaining grounded. No straight-arm upward dog, hip-lifted plank or push-up is shown. Full final H.264 decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "855c77f3789729c3e7274f81a2a8d710d624a5e0b55868c3b5e0077d47810853"
+}

@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "kind": "two-keyframe-illustration-plan",
+  "exerciseId": "0979",
+  "englishName": "band horizontal pallof press",
+  "descriptorSha256": "40b8bd0a5b23b4970037f2d54cba255a20857b820fada2e9f14bf575921f6894",
+  "startImage": {
+    "file": "exp-0979-reference.png",
+    "sha256": "50e5e080bc565d1579d6bad933a583c619f550bb4c5ab439392b06e03ae0845a",
+    "bytes": 1735782,
+    "width": 1672,
+    "height": 941
+  },
+  "endpointImage": {
+    "file": "exp-0979-endpoint.png",
+    "sha256": "74c89fff54d82b8b8372ffc510a61b4375a5138929f70e22db0e5460a50a62a6",
+    "bytes": 1680246,
+    "width": 1672,
+    "height": 941
+  },
+  "startPrompt": {
+    "file": "exp-0979-poster-prompt-v2.txt",
+    "sha256": "8389eddacb28523fdaae3085173a489b51352c19ebb5f4943b2c3217713751dc",
+    "bytes": 1543
+  },
+  "endpointPrompt": {
+    "file": "exp-0979-endpoint-prompt.txt",
+    "sha256": "595f9dd851e274677ff0ce3a135162db36a2c0d63e5945f4c00eaed9203724ca",
+    "bytes": 1642
+  },
+  "startTool": "built-in ImageGen",
+  "startImageAttempts": 2,
+  "endpointTool": "built-in ImageGen edit of accepted start",
+  "endpointEditAttempts": 1,
+  "fixedContactsAndScene": [
+    "waist-height fixed wall eyelet",
+    "both planted feet and pelvis/chest facing",
+    "head orientation and passive tail",
+    "fixed camera and ivory studio"
+  ],
+  "motion": "Both elbows extend from common handle at sternum to full arm length directly forward, while resisting side pull without torso rotation. A single flat band remains continuously attached between fixed side eyelet and same common handle.",
+  "review": {
+    "startAndEndpointActuallyViewed": true,
+    "endpointDecision": "accepted-reference-for-parent-review",
+    "notes": [
+      "First start attempt rejected for chest-high anchor and unclear doubled band path; private PNG retained outside repository with hash/reason text.",
+      "Accepted start has waist-high eyelet and one continuous broad flat band; endpoint preserves anchor/body/feet positions visually."
+    ],
+    "wholeVideoViewed": false,
+    "readyMedia": false
+  },
+  "plannedVideo": {
+    "inputMode": "native first-and-last-frame",
+    "oneWaySeconds": 4,
+    "direction": "start-to-end",
+    "returnPlan": "Review generated4second transition, then reverse and join accepted one-way clip for nominal8second illustration.",
+    "assemblyPerformed": false,
+    "videoGeneratedByThisAgent": false,
+    "originalEightSecondGeneration": false,
+    "existingEightSecondAttemptReused": false
+  },
+  "constraints": [
+    "Keyframe acceptance does not prove intermediate video motion or all source techniques.",
+    "Only original Zeno identity and original generated artwork; no restricted upstream media.",
+    "No runtime ready registration or publication by this agent."
+  ]
+}

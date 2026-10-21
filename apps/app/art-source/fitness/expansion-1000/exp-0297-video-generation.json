@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "0297",
+  "nodeId": "a9bd4435-6ef0-47f6-815a-657d11920ca8",
+  "taskId": "20261021080403207648518",
+  "prompt": "Use {{Node 85b899cb-54f2-4d86-a8a9-ce6fcf1f4e57}} as exact starting frame. Preserve the original Zeno teal/cream otter, lime strap, one rigid dumbbell, fixed flat bench and both planted feet. Fixed tripod three-quarter front camera, no cuts/zoom. Demonstrate exactly ONE slow seated DUMBBELL CONCENTRATION CURL with the working right upper arm and elbow continuously braced against the inner right thigh. Start near full elbow extension with underhand/supinated paw holding one dumbbell between the legs. Over three seconds bend only the right elbow to curl the dumbbell toward the right shoulder, pause one second, then slowly lower for three seconds to the exact starting position and hold. Upper arm stays on thigh; torso stays still, left paw stays on left thigh, feet do not move. No standing, no swinging shoulder, no hammer curl, no second dumbbell, no extra paws, no moving bench, no text/watermarks/audio.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "dumbbell concentration curl",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "181641"
+    }
+  },
+  "originalSha256": "289227e289184a713fa491762dc433a6c7307fc1e41b2a7e0b854431a07a388f",
+  "originalBytes": 3230359,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0297-contact.jpg",
+    "contactSha256": "802bbac5549f6842694efde74b5cc4445cde70e42015ef89c8586e0524bbb456",
+    "reviewed": true,
+    "observation": "Eight actual one-second frames show a complete underhand curl and controlled return. The working upper arm remains braced near the inner thigh, the opposite paw stays on the other thigh, the bench and both feet remain planted, and the single dumbbell retains its shape and grip. Complete final H.264 decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "154bec7b857926d1b01172ef883724f4f682d3e2bf80b17d308fe8d1cf4a0ba5"
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "3420",
+  "englishName": "v-sit on floor",
+  "sourceDescriptorSha256": "a0acb2d8dbfa51b8263f6a2836b79184330918f499e46fd8003103902307fcd6",
+  "sourceSteps": [
+    "坐在地板上，双腿伸到身前。",
+    "稍微向后倾斜，将双腿抬离地面，保持伸直。",
+    "同时，将上半身抬离地面，并将手臂伸向腿部。",
+    "保持这个姿势几秒钟，然后慢慢降低上半身和双腿回到起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/app/src/assets/zeno/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "referencePoseReviewed": true,
+  "referenceApproval": "producer-self-review-authorized-by-root",
+  "reviewObservation": "Held V-sit with pelvis/sit bones on floor, long backward-leaning torso, both straight legs lifted together and both arms reaching forward without floor support. Full feet visible, readable open V, tail extends behind to one side without propping torso.",
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "generationAttempts": [
+    {
+      "attempt": 1,
+      "selected": true,
+      "sha256": "41b05939bb7f0c01d8453d61c235275714ce3d555a0eb1e4e04f00eb5535ce99",
+      "retainedInRepository": true
+    }
+  ],
+  "references": [
+    {
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-3420-reference.png",
+      "bytes": 1872263,
+      "sha256": "41b05939bb7f0c01d8453d61c235275714ce3d555a0eb1e4e04f00eb5535ce99"
+    }
+  ]
+}

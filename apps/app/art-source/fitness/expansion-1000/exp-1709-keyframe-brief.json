@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "1709",
+  "englishName": "assisted lying glutes stretch",
+  "sourceDescriptorSha256": "9d742f4fbfa3bcf2df6d3930b1ded1e61fe7afe24f8d63980790b95a49c45f5c",
+  "sourceSteps": [
+    "仰卧，双腿伸展。",
+    "弯曲右膝盖，将右脚踝放在左大腿上，就在膝盖上方。",
+    "用双手抓住左大腿，轻轻地将其拉向胸部。",
+    "保持拉伸 20-30 秒。",
+    "松开并在另一侧重复。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/zeno-site/public/assets/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "referencePoseReviewed": true,
+  "reviewObservation": "Supine figure four, head and shoulders floor, crossed ankle above opposite thigh, uncrossed thigh drawn toward torso, both paws reaching behind it, one Z buckle. Earlier duplicate-buckle/head-contact-ambiguous original rejected privately.",
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "references": [
+    {
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-1709-reference.png",
+      "bytes": 1866618,
+      "sha256": "7b6b443cacb3c5b0f7c331213b18d7fee63fb2d94b07cbddcfb075fd58a27b40"
+    }
+  ],
+  "attempts": 2,
+  "rejectedAttempt": {
+    "sha256": "0ca4dae2c23bd2618de81e806a539630c3f04ecaab1e8cc42b687f4008ec92ae",
+    "reason": "Duplicate Z buckle; head/shoulder floor contact ambiguous. Selected second edit resolves floor contact and buckle."
+  }
+}

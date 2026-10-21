@@ -1,0 +1,37 @@
+{
+  "scope": "Rejected reference originals are retained privately; only selected final source references are committed.",
+  "images": [
+    {
+      "sourceName": "exp-0088-reference-attempt1.png",
+      "originalBytes": 1838941,
+      "originalSha256": "f32e140bee89f60e20d7e96ffc3101959277b1956cb9010a186765b8b7f28e82",
+      "selected": false,
+      "reason": "Unclear toe/block versus heel overhang geometry; only the revised side-view reference was selected.",
+      "retained": "private production staging; not shipped"
+    },
+    {
+      "sourceName": "exp-0033-reference-attempt1.png",
+      "originalBytes": 1849579,
+      "originalSha256": "fd4b0ad2522191cd5f9283db9e55d9a45812692dee040beee093e99a04277192",
+      "selected": false,
+      "reason": "The V-shaped bench did not clearly preserve a true continuous decline support; the revised straight decline reference was selected.",
+      "retained": "private production staging; not shipped"
+    },
+    {
+      "sourceName": "exp-0041-reference.png",
+      "originalBytes": 1797207,
+      "originalSha256": "a756b02c551f414e9641da95ffc0f24fba6d6644e555ad3f22631de31365ebc4",
+      "selected": false,
+      "reason": "Superseded by the selected side-view v2 reference after the first video produced curls instead of front raises.",
+      "retained": "private production staging; not shipped"
+    },
+    {
+      "sourceName": "exp-0292-reference.png",
+      "originalBytes": 1799063,
+      "originalSha256": "db7fadcc96aa3773e87c77918e32418d8a468d7f403af7f513a3d752c7c15b9c",
+      "selected": false,
+      "reason": "Superseded by the selected v2 supported-row reference after the first video produced an elbow curl.",
+      "retained": "private production staging; not shipped"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "1582",
+  "nodeId": "e6e24bb9-43ea-45d3-b3b9-342a0cd4c056",
+  "taskId": "20261021095203518278518",
+  "prompt": "Use {{Node ce05af9e-83e2-467e-8a89-49f0afca7d95}} as exact starting frame. Preserve the original Zeno teal/cream otter, lime strap, ivory studio and ONE continuous soft nonelastic stretching rope. Fixed full-body ground-level side-three-quarter tripod camera, no cuts or zoom; both legs, high foot and toes, both hands and the full rope stay in frame. Show a gentle RECLINING BIG TOE POSE WITH ROPE as a short eight-second pose illustration. Lie on the same floor with head, shoulders, back and pelvis supported on the floor. The SAME ONE raised leg remains straight at the knee in its comfortable elevated starting position; the other whole leg stays straight along the floor with heel grounded. The middle of the rope stays in a U-shaped cradle around the FOREFOOT of the raised foot, while EACH HAND continuously holds ONE separate end. Calmly hold for six seconds with only tiny breathing and gentle controlled rope tension. During the final two seconds only ease the rope tension slightly while retaining the same leg position and near-straight knee. No large pulling of the leg, no bent raised knee, no raised foot behind the head, no lower-back or pelvis lift, no sitting up, no other leg lifting, no foot or extra-toe morphing, no rope becoming a closed ankle loop or slipping onto the ankle, no hand releasing an end, no crossing the rope at the neck, no extra limbs, no text, watermark or audio. Tail stays naturally on the floor, never props up the hips. This clip illustrates the pose, not a full prescribed hold duration.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "reclining big toe pose with rope",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "179241"
+    }
+  },
+  "originalSha256": "6ecd822633523dbf8913b58bdfc2aec4bcb7d4b9aeb73e666a1d4a0a3798af2e",
+  "originalBytes": 3687917,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1582-contact.jpg",
+    "contactSha256": "49bb2265e6b176ea1f448cdfcac8328b6dfdf249e9a4c40024bcc1cafe24fd49",
+    "reviewed": true,
+    "observation": "Eight actual one-second frames show one straight raised leg with a rope U supporting the forefoot and one rope end held by each paw. The other straight leg, head, shoulders and hips remain supported on the floor during small tension and breathing adjustments. No ankle-only rope loop, dropped end, bent-knee substitution or second raised leg is shown. Full final H.264 decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "479393390381ea95d188834ab8762a277bd35592dd3bd806c7d65e55723fcc22"
+}

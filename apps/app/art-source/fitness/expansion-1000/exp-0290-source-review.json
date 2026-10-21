@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "kind": "source-text-review",
+  "exerciseId": "0290",
+  "englishName": "dumbbell bench seated press",
+  "descriptorSha256": "9a7d8d3fb681dba8b3f185f87c6160a9085e5f1dcbe92ea5bcd294eb64558624",
+  "immutableSelectionChanged": false,
+  "oldBriefRowsChanged": false,
+  "rawSource": {
+    "repository": "DuarteSantos8/openGym",
+    "revision": "464355ef43d4c8f8a4e0bb6db9c2af7f240593b5",
+    "path": "catalogue/exercises/0290.json",
+    "url": "https://github.com/DuarteSantos8/openGym/blob/464355ef43d4c8f8a4e0bb6db9c2af7f240593b5/catalogue/exercises/0290.json",
+    "data": {
+      "bodyPart": "shoulders",
+      "equipment": "dumbbell",
+      "id": "0290",
+      "instructions": [
+        "Sit on a bench with a dumbbell in each hand, resting on your thighs.",
+        "Lean back and position the dumbbells to the sides of your chest, palms facing forward.",
+        "Press the dumbbells upward until your arms are fully extended.",
+        "Pause for a moment at the top, then slowly lower the dumbbells back to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "name": "dumbbell bench seated press",
+      "target": "delts",
+      "textSource": "exercisedb"
+    }
+  },
+  "translationIntroducedIssue": false,
+  "reviewStatus": "hold-source-identity-ambiguous",
+  "reviewedInterpretation": null,
+  "references": [],
+  "reviewNotes": [
+    "Pinned English step2 mixes lean-back/chest-side language into a seated exercise targeting delts.",
+    "The existing0405 seated shoulder press has the same equipment/bodyPart/target and explicitly shoulder-height-to-overhead action.",
+    "Neither original title nor steps establish a supported-versus-unsupported backrest distinction; assigning one would invent a variant.",
+    "No image generated for0290, and no alternative camera view is counted as an independent new action."
+  ],
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "existingExerciseComparison": {
+    "exerciseId": "0405",
+    "url": "https://github.com/DuarteSantos8/openGym/blob/464355ef43d4c8f8a4e0bb6db9c2af7f240593b5/catalogue/exercises/0405.json",
+    "data": {
+      "bodyPart": "shoulders",
+      "equipment": "dumbbell",
+      "id": "0405",
+      "instructions": [
+        "Sit on a bench with a dumbbell in each hand, resting on your thighs.",
+        "Raise the dumbbells to shoulder height, palms facing forward.",
+        "Press the dumbbells upward until your arms are fully extended overhead.",
+        "Pause for a moment at the top, then slowly lower the dumbbells back to shoulder height.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "name": "dumbbell seated shoulder press",
+      "target": "delts",
+      "textSource": "exercisedb"
+    }
+  }
+}

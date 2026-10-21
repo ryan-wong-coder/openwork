@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "1346",
+  "nodeId": "0051e79e-c67a-4ad1-bb51-31488b187e42",
+  "taskId": "20261021102903344538518",
+  "prompt": "Use {{Node 88938eae-3d97-4a00-98a8-fed98421db3f}} as exact starting frame. Preserve the original Zeno teal/cream otter, lime strap, ivory studio, same mat and exact TALL-KNEELING LAT STRETCH pose. Fixed full-body tripod camera at the SAME starting angle, no cuts, zoom, reframing or camera push-in. Keep the top clasped hands, head, both knees, shins, feet and tail fully within the frame at every moment; do not raise hands beyond their original height. Both knees remain hip-width on the mat, BOTH SHINS AND INSteps stay grounded with toes pointing behind. Hips remain above the knees in tall kneeling, never sit back onto the heels. Both paws remain clasped overhead, elbows nearly straight, preserving the same gentle lateral torso lean to the SAME side. Only tiny calm natural breathing and a barely visible easing of tension, with hands staying overhead and no change of side or support points. Head stays neutral in line with the torso, no neck folding. No arm lowering, no arm bending behind the head, no changing hand clasp, no side switch, no forward fold, no kneeling sit-back, no standing, no hip lift, no sliding knees or feet, no tail supporting the pelvis, no extra limbs, no text, watermark or audio. This eight-second clip illustrates the held pose, not the full source twenty-to-thirty-second training duration.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "kneeling lat stretch",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "152371"
+    }
+  },
+  "originalSha256": "eb3fe7454e47befc29380fb8f729c2b3bee53d3b73eb0734416e52f4f8a96428",
+  "originalBytes": 3318732,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1346-contact.jpg",
+    "contactSha256": "8f7e2fbdb8b244deb67d40514cd386c42e0780f842311cb6c36b2fb0bc30d8b3",
+    "reviewed": true,
+    "observation": "Root viewed full 8-frame contact sheet; both knees, shins and insteps stay grounded in tall kneeling, hands remain clasped overhead with nearly straight elbows, same gentle lateral lean maintained, hands fully visible. No forward bow, sitting onto heels, side change or arm drop. Short held-stretch excerpt, not a claimed full 20-30-second hold."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "e9b2375b8e37c00150e2d1aee1e862c4c80c168b39f3828a5782eb341d7ea64e"
+}

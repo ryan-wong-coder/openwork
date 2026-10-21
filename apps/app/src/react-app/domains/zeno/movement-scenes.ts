@@ -43,18 +43,22 @@ export const movementScenes: readonly MovementScene[] = [
     end: pose({ head: [162, 74], shoulder: [159, 99], hip: [151, 160], elbow: [177, 129], hand: [174, 159], knee: [205, 166], ankle: [206, 211], toe: [226, 213], farElbow: [147, 130], farHand: [143, 160], farKnee: [98, 203], farAnkle: [79, 188], farToe: [65, 213] }) },
 ];
 
+const movementScenesById = new Map<string, MovementScene>(movementScenes.map(scene => [scene.exerciseId, scene]));
+const mascotDemosById = new Map<string, (typeof mascotDemos)[number]>(mascotDemos.map(demo => [demo.exerciseId, demo]));
+
 export function movementForExercise(exercise: Pick<FitnessExercise, "id" | "englishName" | "bodyPartId">): MovementScene | undefined {
   if (exercise.bodyPartId === "custom") return undefined;
   const canonicalId = canonicalExerciseId(exercise.id);
-  return movementScenes.find(scene => scene.exerciseId === canonicalId && scene.englishName === exercise.englishName);
+  const scene = movementScenesById.get(canonicalId);
+  return scene?.englishName === exercise.englishName ? scene : undefined;
 }
 
 export type ExerciseDemo = { video: string; poster: string; kind: "mascot" | "diagram" };
 export function mascotDemoForExercise(exercise: Pick<FitnessExercise, "id" | "englishName" | "bodyPartId">): ExerciseDemo | undefined {
   if (exercise.bodyPartId === "custom") return undefined;
   const canonicalId = canonicalExerciseId(exercise.id);
-  const demo = mascotDemos.find(item => item.exerciseId === canonicalId && item.englishName === exercise.englishName);
-  return demo ? { video: `zeno/fitness/${demo.stem}.mp4`, poster: `zeno/fitness/${demo.stem}-poster.webp`, kind: demo.kind === "diagram" ? "diagram" : "mascot" } : undefined;
+  const demo = mascotDemosById.get(canonicalId);
+  return demo?.englishName === exercise.englishName ? { video: `zeno/fitness/${demo.stem}.mp4`, poster: `zeno/fitness/${demo.stem}-poster.webp`, kind: demo.kind === "diagram" ? "diagram" : "mascot" } : undefined;
 }
 export function interpolatePose(scene: MovementScene, progress: number): Pose {
   const ratio = Math.min(1, Math.max(0, Number.isFinite(progress) ? progress : 0));

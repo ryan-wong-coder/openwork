@@ -1,0 +1,19 @@
+{
+  "scope": "Production PWA built with the first nine accepted expansion media pairs (41 total ready), disposable loopback API and synthetic account. Not a live website deployment, native package or complete 1000-item acceptance.",
+  "readyExpansionCount": 9,
+  "readyTotal": 41,
+  "actualNewExerciseDetailsCovered": [
+    "0297",
+    "0375",
+    "0044"
+  ],
+  "visibleNewScreenshotsActuallyReviewed": [
+    "desktop-mainstream-catalogue.png",
+    "mobile-mascot-exp-0297.png",
+    "mobile-mascot-exp-0375.png",
+    "mobile-mascot-exp-0044.png"
+  ],
+  "original32MediaUnchanged": true,
+  "modelCalls": 0,
+  "visibleNativeWindows": 0
+}

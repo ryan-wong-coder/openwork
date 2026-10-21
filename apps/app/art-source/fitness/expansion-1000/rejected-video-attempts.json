@@ -1,0 +1,318 @@
+{
+  "scope": "Rejected attempts are never registered as ready demonstrations.",
+  "attempts": [
+    {
+      "canonicalExerciseId": "0041",
+      "nodeId": "8d01a0da-111f-4e0b-9adc-bdcbc37d243e",
+      "taskId": "20261021081303499908518",
+      "prompt": "Use {{Node ecc45fb1-354d-46b0-9ef7-4dc62a513105}} as exact starting frame. Preserve the original Zeno teal/cream otter, lime strap, one rigid light barbell held with both paws in an overhand grip, ivory studio and both planted feet. Fixed tripod camera, no cuts or zoom. Demonstrate exactly ONE slow BARBELL FRONT RAISE. Begin upright with arms near straight and bar before thighs. Over three seconds raise the bar in a shoulder-driven forward arc to shoulder height, keeping the slight elbow bend unchanged; hold one second, lower over three seconds to the exact starting position and hold. Both paws maintain the same fixed grip on the rigid bar. No elbow curl, no overhead raise, no torso swing or leaning, no squat, no sliding feet, no extra limbs, no changing plates. Whole body and bar remain visible. No audio, text or watermark.",
+      "model": "Seedance 2.0 VIP",
+      "settings": {
+        "modeType": "singleImage2video",
+        "ratio": "16:9",
+        "resolution": "720p",
+        "duration": 8,
+        "enableSound": "off",
+        "count": 1
+      },
+      "attempt": 1,
+      "accepted": false,
+      "reason": "The elbows bend to about ninety degrees and the bar rises near the chin: a curl rather than a nearly straight-arm front raise.",
+      "review": {
+        "contactSheetActuallyViewed": true,
+        "density": 1
+      },
+      "originalBytes": 3336565,
+      "originalSha256": "59bece23e7d11bdea932a55216c41657afab9fd4188d69d83ae2da80711925ad",
+      "candidateBytes": 262313,
+      "candidateSha256": "5b81529c6bef7ce16afbe5ceb9b9702756771afa3b0fbf17294fab606d45563d",
+      "fullDecodePassed": true,
+      "originalRetained": "private production staging; not shipped"
+    },
+    {
+      "canonicalExerciseId": "0041",
+      "nodeId": "f84b9e6e-1983-4969-b63c-5550f82f210b",
+      "taskId": "20261021082203213328518",
+      "prompt": "Use {{Node 15977c8f-8e4b-4d8e-8c3a-41d582dffa70}} as exact starting frame. Preserve this exact SIDE VIEW of the original Zeno teal/cream otter, lime strap, both planted feet and one rigid light barbell in both paws, ivory studio. Fixed side tripod camera, no cuts, zoom or reframing, full body and entire bar remain visible. Exactly ONE slow BARBELL FRONT RAISE. The movement is driven ONLY by the shoulders, with both elbow angles FIXED almost straight throughout. Shoulder-elbow-wrist form an almost straight line at every moment. BOTH WHOLE ARMS swing FORWARD as rigid LONG LEVERS from the shoulders. Start upright with the bar at the front of the thighs. Over three seconds raise the WHOLE near-straight arms forward together so that the bar travels FAR IN FRONT of the torso to shoulder height, about one full arm-length in front of the chest. BOTH ELBOWS MOVE FORWARD AND UP WITH THE WRISTS; elbows are never pinned to the ribs. Hold the far-forward shoulder-height position one second, then lower the same near-straight-arm arc over three seconds to the starting thigh position, final hold. The forearms stay in line with the upper arms, never vertical below the bar. No elbow curl or elbow bending, no bar at throat or close to the chest, no overhead raise, no torso leaning or swinging, no moving feet, no extra limbs, no changing plates, no text, watermark or audio.",
+      "model": "Seedance 2.0 VIP",
+      "settings": {
+        "modeType": "singleImage2video",
+        "ratio": "16:9",
+        "resolution": "720p",
+        "duration": 8,
+        "enableSound": "off",
+        "count": 1
+      },
+      "attempt": 2,
+      "accepted": false,
+      "reason": "The new side reference still produced a curl with vertical forearms and the bar at the chin. Two-video attempt limit reached.",
+      "review": {
+        "contactSheetActuallyViewed": true,
+        "density": 1
+      },
+      "originalBytes": 2011902,
+      "originalSha256": "954cf89ad2b644da036f37f4c7d7a2652bb8dff8c76ec652e7a840fd630a9f2a",
+      "candidateBytes": 202085,
+      "candidateSha256": "525ba41967db52bff0a33a7c1b538e19a20a9af2bc6648caa677ce1cc3f5c844",
+      "fullDecodePassed": true,
+      "originalRetained": "private production staging; not shipped"
+    },
+    {
+      "canonicalExerciseId": "1160",
+      "nodeId": "006557e7-50f2-4d19-810a-81f47193c20e",
+      "taskId": "20261021081803722168518",
+      "prompt": "Use {{Node fe1ddd1d-741a-48db-a63f-2649f282f7c6}} as exact starting frame. Preserve the original Zeno teal/cream otter, lime strap and ivory studio. Fixed wide tripod side-three-quarter camera, no cuts, zoom or reframing. Exactly ONE complete BURPEE WITH A FULL PUSH-UP, then return to the starting pose. Full body including both hands at the highest jump and both feet at the longest plank stays in frame. 0-1 seconds: squat and place both open paws securely on the floor. 1-2 seconds: with both paws fixed on the floor, jump BOTH feet backward into a straight high plank. 2-3 seconds: bend both elbows and lower the chest in one full controlled push-up, torso and hips moving as one unit. 3-4 seconds: straighten elbows to push back into high plank. 4-5 seconds: with both paws still on the floor, jump BOTH feet forward behind the hands into a squat. 5-6.5 seconds: stand and jump vertically, raising both arms above the head. 6.5-7.5 seconds: land softly with knees and hips bending. 7.5-8 seconds: stand upright in the exact starting pose. The backward foot jump, full elbow-bending push-up with return to straight arms, and forward foot jump must each be visibly separate, continuous transitions. No flying transformation from floor to standing, no omitted push-up, no crawling, no sagging back, no sliding planted paws, no extra limbs, no text, watermark or audio.",
+      "model": "Seedance 2.0 VIP",
+      "settings": {
+        "modeType": "singleImage2video",
+        "ratio": "16:9",
+        "resolution": "720p",
+        "duration": 8,
+        "enableSound": "off",
+        "count": 1
+      },
+      "attempt": 1,
+      "accepted": false,
+      "reason": "Four-fps inspection shows repeated low ground-phase bobbing and unclear extended high-plank transitions rather than one ordered burpee with one complete push-up.",
+      "review": {
+        "contactSheetActuallyViewed": true,
+        "density": 4
+      },
+      "originalBytes": 2149986,
+      "originalSha256": "3988ac3962cfa529a66bf0e92b13f02c366b8496afb3ea928f58e1dddf57ad1c",
+      "candidateBytes": 278775,
+      "candidateSha256": "e63f664479a8f13ec4fe98a587570197fd750ff99c7f8407476606309a206605",
+      "fullDecodePassed": true,
+      "originalRetained": "private production staging; not shipped"
+    },
+    {
+      "canonicalExerciseId": "0630",
+      "nodeId": "40e2d05f-bfd9-448b-ac41-b150bce9bb7e",
+      "taskId": "20261021081803328138518",
+      "prompt": "Use {{Node f990a509-25f8-4a68-9c5d-db952bcbaf28}} as exact starting frame. Preserve the original Zeno teal/cream otter, lime strap and ivory studio. Fixed side-front tripod camera, no cuts, zoom or reframing, whole body and all ground contacts stay visible. Demonstrate controlled MOUNTAIN CLIMBERS from high plank. Both open paws remain planted under the shoulders for the entire clip, elbows straight, head through hips stable. 0-1 seconds: hold the high plank with both legs extended behind. 1-3 seconds: drive the RIGHT knee forward under the body toward the chest, then extend the right leg back to the starting plank while the other foot supports. 3-4 seconds: stable transition. 4-6 seconds: drive the LEFT knee forward under the body toward the chest, then extend the left leg back while the other foot supports. 6-7 seconds: one small visible right-left alternation showing continuous running rhythm. 7-8 seconds: return to high plank with both legs extended. Knees travel straight forward beneath the body, never across the torso; hips remain low and stable, no twisting. No downward-dog hip lift, no push-up, no crawling, no kneeling or knee contact with floor, no simultaneous double-foot hop, no sliding hands, no extra limbs, no text, watermark or audio.",
+      "model": "Seedance 2.0 VIP",
+      "settings": {
+        "modeType": "singleImage2video",
+        "ratio": "16:9",
+        "resolution": "720p",
+        "duration": 8,
+        "enableSound": "off",
+        "count": 1
+      },
+      "attempt": 1,
+      "accepted": false,
+      "reason": "Four-fps inspection shows repeated high-hip bear-crawl poses and hopping rather than stable high-plank alternating knee drives.",
+      "review": {
+        "contactSheetActuallyViewed": true,
+        "density": 4
+      },
+      "originalBytes": 5089606,
+      "originalSha256": "b88db4bdc7a6727036d20dede0f9d6a18b4b5877f065e2c1795bde547fd00b0b",
+      "candidateBytes": 538761,
+      "candidateSha256": "c5f18bbfe8227a200ba00a3702f61262e3088830a9d05324cfd341822ccaac68",
+      "fullDecodePassed": true,
+      "originalRetained": "private production staging; not shipped"
+    },
+    {
+      "canonicalExerciseId": "0292",
+      "nodeId": "4da0836d-aec6-4575-8119-5f1bd9dd6b38",
+      "taskId": "20261021081603131758518",
+      "prompt": "Use {{Node 9e75ee22-5f81-404d-ab60-e53da05646cf}} as the exact first frame. Preserve the Zeno teal-and-cream otter, lime diagonal strap, one rigid dumbbell, standing hip-hinge posture with hips back, both feet fully grounded, and the other empty paw resting on its own thigh. The image is the STANDING one-arm bent-over row, without a bench. Animate ONE slow UNILATERAL BENT-OVER ROW with the reference's dumbbell-holding paw (the otter's RIGHT working paw), neutral inward-facing grip. First three seconds: bend ONLY the working elbow close to the ribs, pulling the dumbbell smoothly toward the lower chest without rotating the torso. Hold one second. Next three seconds: lower the dumbbell under control until the working arm is straight in the exact starting position. Hold this starting position for the last second. The hip hinge, neutral back, torso, supporting paw and both feet remain still throughout. Keep the head aligned with the neck with a relaxed gaze down and ahead. The dumbbell and its plates stay attached and rigid, the paw grips its handle throughout. Fixed tripod camera, full body/head/feet/entire dumbbell always inside frame, no zoom or cuts. No bench, kneeling, biceps curl, second dumbbell, swinging, shoulder shrug, spine rounding, torso twist, morphing equipment or anatomy, extra limbs, text, exercise labels, watermark or audio. This short video is a stylized motion illustration, not clinical technique validation.",
+      "model": "Seedance 2.0 VIP",
+      "settings": {
+        "modeType": "singleImage2video",
+        "ratio": "16:9",
+        "resolution": "720p",
+        "duration": 8,
+        "enableSound": "off",
+        "count": 1
+      },
+      "attempt": 1,
+      "accepted": false,
+      "reason": "The upper arm remains mostly vertical while the forearm curls forward; two curls occur instead of one shoulder-extension row.",
+      "review": {
+        "contactSheetActuallyViewed": true,
+        "density": 1
+      },
+      "originalBytes": 2471221,
+      "originalSha256": "c6c38c92661cf5f58f1966d144d2c24c114a7f35d902ae607bdca691760a2600",
+      "candidateBytes": 132249,
+      "candidateSha256": "23f313ca5923e1488a7f8b0dbf2c6f7602f0f6aae6a47e3d7ecfbad4ae682b48",
+      "fullDecodePassed": true,
+      "originalRetained": "private production staging; not shipped"
+    },
+    {
+      "canonicalExerciseId": "0292",
+      "nodeId": "1a00ff63-60b1-41b9-a39b-b93d90b301ac",
+      "taskId": "20261021083003347988518",
+      "prompt": "Use {{Node a5f57add-7d75-4a84-b21f-b2fa36749450}} as the EXACT first frame. Preserve the original Zeno teal-and-cream otter identity, lime strap, stronger standing hip hinge, low aligned head, both grounded feet, one rigid dumbbell and the free paw resting on its own thigh. The body faces LEFT in this near-profile frame. Camera remains absolutely fixed and full body/equipment stay visible.\nPerform exactly ONE STANDING SINGLE-ARM BENT-OVER ROW. The essential movement is SHOULDER EXTENSION: the working UPPER ARM SWEEPS BACK toward the tail, and its ELBOW TRAVELS BACK AND SLIGHTLY UP behind the lower ribs. Do not leave the upper arm hanging while rotating only the forearm. The reference's same dumbbell-holding arm alone moves. As its elbow travels backward, the dumbbell travels diagonally UP AND BACK beside the body toward the LOWER RIBS/WAIST beside the hip (toward the RIGHT in this frame), never toward the face at the LEFT. At the top the elbow is above the dumbbell and the FOREARM remains approximately VERTICAL, with the paw still gripping a neutral/inward-facing handle. The upper arm is now roughly in line with the hinged torso. This must read clearly as a ROW, not lifting the weight in front of the chest or face.\nTiming: from0to3seconds ONE slow smooth pull; from3to4seconds hold this row top; from4to7seconds smoothly extend the arm and return the dumbbell to its original low vertical hang under the shoulder; from7to8seconds hold the EXACT starting pose. Never begin a second pull or repetition. The upper back, hip hinge, head/neck alignment, free supporting paw, hips and both feet stay still throughout. No torso rotation, standing up, shrugging, swinging, supinating grip or biceps curl. Keep plates rigid and attached, paws gripping the same handle. No bench, kneeling, second dumbbell, extra limbs, text, labels, watermark, camera movement, cuts or sound. This is a short stylized movement illustration, not clinical validation.",
+      "model": "Seedance 2.0 VIP",
+      "settings": {
+        "modeType": "singleImage2video",
+        "ratio": "16:9",
+        "resolution": "720p",
+        "duration": 8,
+        "enableSound": "off",
+        "count": 1
+      },
+      "attempt": 2,
+      "accepted": false,
+      "reason": "The nearly straight working arm swings behind the back instead of a bent-elbow row to the lower ribs. Two-video attempt limit reached.",
+      "review": {
+        "contactSheetActuallyViewed": true,
+        "density": 1,
+        "fullSizeCriticalPositionViewed": true
+      },
+      "originalBytes": 2949980,
+      "originalSha256": "e246ad8badb578de342587206da68b729be80e73ee135c6788867ef55ccab4a2",
+      "candidateBytes": 168817,
+      "candidateSha256": "c06f1f79367d59ea86fdea5df09c01e19cada8dd3c0367cad1f872ae8fb0a1e2",
+      "fullDecodePassed": true,
+      "originalRetained": "private production staging; not shipped"
+    },
+    {
+      "canonicalExerciseId": "0082",
+      "nodeId": "fb77c216-e6ac-4e09-abd9-a00b7e415e09",
+      "taskId": "20261021083103363408518",
+      "prompt": "Use {{Node 5e14b450-6070-4b1b-9501-f8c67d6c2f8e}} as the EXACT first frame. Preserve the original Zeno teal-and-cream otter identity and proportions, lime diagonal strap, seated forward-leaning posture, bench, two grounded feet, both supported forearms, and exactly ONE short light rigid barbell with both paws gripping its same middle shaft in an OVERHAND PALMS-DOWN grip. Keep full head, feet, bench and both plates inside the frame.\nPerform exactly ONE slow BARBELL REVERSE WRIST CURL, a TINY wrist-only movement. BOTH ELBOWS AND BOTH ENTIRE FOREARMS MUST CONTINUOUSLY REST FLAT ON THE THIGHS/KNEES in the same contact as the reference. Shoulders, upper arms, elbows and forearms are FIXED and do not move. Only the wrists and paws protrude just beyond the knees. Palms continue facing DOWN; do not turn them up.\nFrom0to3seconds gently EXTEND ONLY THE WRISTS so the KNUCKLES ROTATE UP and the light bar rises only A FEW CENTIMETRES through a very small arc. The forearms remain completely motionless, stuck to the thigh tops. From3to4seconds pause with gently lifted knuckles. From4to7seconds lower ONLY the wrists and bar back to the original slightly-drooped wrist starting position. Hold still from7to8seconds; do not start another repetition. The bar always remains BELOW KNEE/LAP HEIGHT and never approaches the belly or chest. Both paws keep their grips on the SAME bar and both equal plates remain rigidly attached. Small controlled movement, no aggressive bending.\nFixed tripod camera, no zoom/pan/cut. Head, torso, hips and both feet remain stable. No forearm or elbow lifting off thighs, no shoulder motion, biceps curl, rowing, standing up, bar-to-chest lift, grip swap, equipment morphing, extra paws/limbs, text, labels, watermark or audio. This eight-second clip illustrates a tiny wrist movement, not a clinical timing or technique prescription.",
+      "model": "Seedance 2.0 VIP",
+      "settings": {
+        "modeType": "singleImage2video",
+        "ratio": "16:9",
+        "resolution": "720p",
+        "duration": 8,
+        "enableSound": "off",
+        "count": 1
+      },
+      "attempt": 1,
+      "accepted": false,
+      "reason": "The forearms lift from the thighs and curl the bar toward the chest rather than a wrist-only extension.",
+      "review": {
+        "contactSheetActuallyViewed": true,
+        "density": 1,
+        "fullSizeCriticalPositionViewed": true
+      },
+      "originalBytes": 1958336,
+      "originalSha256": "18f53a4b946d83a9efbf4e61d850203e8fda6b5e67946cee9d10130bc53d1bd4",
+      "candidateBytes": 194460,
+      "candidateSha256": "c834da12c56023cd1ba67a2a72fd9347ad6e4281be8c4629c23adb4e8da07ee2",
+      "fullDecodePassed": true,
+      "originalRetained": "private production staging; not shipped"
+    },
+    {
+      "canonicalExerciseId": "0033",
+      "nodeId": "e1b6de46-1407-43ab-b32f-cdcb10466860",
+      "taskId": "20261021083003097598518",
+      "prompt": "Use {{Node a8d16b16-6389-4797-a292-feea20b853e2}} as exact starting frame. Preserve the original Zeno teal/cream otter, lime strap, one rigid barbell, and the exact straight DECLINE bench whose head end is LOWER than its hip end. Both feet and ankles remain locked in the top pads; head, back and hips remain fully supported on the bench. Fixed side tripod camera, no cuts, zoom or reframing. Full body, bench, foot restraints, bar and both ends remain in frame. Exactly ONE slow DECLINE BARBELL BENCH PRESS. Begin with both arms extended and the bar above the lower/middle chest. Over three seconds bend both elbows to lower the bar slowly toward just ABOVE the lower chest, elbows about 45 degrees from the torso. Pause one second without bouncing. Press the bar vertically upward over three seconds to the exact extended-arm starting position, then hold. Both paws maintain the SAME secure overhand bar grip throughout. No bar behind the head or toward the neck, no fly, no sit-up, no overhead press, no bridge, no sliding body, no moving bench, no feet unhooking, no bar or plate morphing, no extra limbs, no text, watermark or audio.",
+      "model": "Seedance 2.0 VIP",
+      "settings": {
+        "modeType": "singleImage2video",
+        "ratio": "16:9",
+        "resolution": "720p",
+        "duration": 8,
+        "enableSound": "off",
+        "count": 1
+      },
+      "attempt": 1,
+      "accepted": false,
+      "reason": "The bar lowers near the chin and neck rather than the lower chest on the decline bench.",
+      "review": {
+        "contactSheetActuallyViewed": true,
+        "density": 1,
+        "fullSizeCriticalPositionViewed": true
+      },
+      "originalBytes": 1762541,
+      "originalSha256": "8dfe01caf4938109507dcf9c7b5f7c1418350178816bde69b006e2e521c9b748",
+      "candidateBytes": 161928,
+      "candidateSha256": "071810a69e160680162354af0281e60a84faff6433b8e290a2550a5a0a7b1f98",
+      "fullDecodePassed": true,
+      "originalRetained": "private production staging; not shipped"
+    },
+    {
+      "canonicalExerciseId": "0082",
+      "nodeId": "f081752e-6ae6-49e5-8073-a7ea4433a9f9",
+      "taskId": "20261021085803839508518",
+      "prompt": "以 {{Node 8bb9dcf9-1305-4caa-b855-103debbebfef}} 为精确首帧，保持同一只泽诺青绿色/奶油色水獭、浅绿斜肩带、坐姿、前倾躯干、长凳、双脚、同一根轻短杠铃及握法。画面完整包含头、双脚、双手、杠铃两端和凳子。镜头固定，无推拉摇移、无剪切。\n这是【杠铃反握腕弯举】，不是弯举手臂。双掌始终朝下，手背朝上，双手握住同一根杠铃。双肘和双前臂必须从头至尾连续、平整地贴在各自大腿顶面，如同前臂放在固定桌面上；这句话仅形容稳定支撑，不要添加桌子。肩膀、上臂、肘、整段前臂绝对静止，不能离开腿面。只有手腕和握杠的爪子略微伸出膝盖前缘。\n全片只做一次极小幅动作：第0到3秒，仅手腕轻轻伸展，让手背/指关节向上转约10到15度。杠铃仅沿小圆弧上升几厘米，始终低于膝盖/大腿顶面高度，不能向肚子或胸口移动。第3到4秒保持。第4到7秒仅手腕缓慢向下回到首帧微微下垂的位置。第7到8秒保持不动，不开始第二次。两只爪子持续握住同一根杠铃、杠杆和两端小杠片刚性保持形状。\n再次强调：前臂全程贴住大腿，不抬肘、不抬肩、不抬前臂，不做二头肌弯举，不把杠铃举向胸口，不划船、不起身、不旋转躯干、不换成掌心朝上。双脚落地、身体和头稳定。只有腕部细小转动，不需要很大动作。无多余肢体、器械变形、文字、水印或声音。8秒只用于动作示意，不是医学或临床时间建议。",
+      "model": "Seedance 2.5",
+      "settings": {
+        "modeType": "singleImage2video",
+        "ratio": "16:9",
+        "resolution": "720p",
+        "duration": 8,
+        "enableSound": "off",
+        "count": 1
+      },
+      "attempt": 2,
+      "accepted": false,
+      "reason": "The new-model clip still moves the whole forearm about the elbow and lifts the bar toward the abdomen rather than a wrist-only extension. Two visual generation attempts reached.",
+      "review": {
+        "contactSheetActuallyViewedByProducer": true,
+        "fullSizeCriticalPositionViewedByProducer": true
+      },
+      "originalBytes": 4119749,
+      "originalSha256": "ddd0d7093fe9a79498518fa79e833099e8c5467aae5fdb9c4ed1134d8a72286b",
+      "candidateBytes": 138759,
+      "candidateSha256": "e7eb6ee0d4c535867c68f68ac203d568fd934acea63fbb17aa41be13f86318b5",
+      "fullDecodePassed": true,
+      "originalRetained": "private production staging; not shipped"
+    },
+    {
+      "canonicalExerciseId": "0033",
+      "nodeId": "cd0fd122-dabe-4141-9d03-38ebdeb8c4b7",
+      "taskId": "20261021090203560798518",
+      "prompt": "Use {{Node ade110ba-2410-454c-8068-2f0445c6afb2}} as exact starting frame. 保持原版 Zeno 青绿色与奶油白水獭、荧光绿斜挎带、象牙白摄影棚。仰卧在同一张头低脚高的直线下斜凳上，肩、背、臀、头始终由凳支撑，双脚脚踝始终锁在高端护垫下，所有支撑点不动。固定侧面三脚架镜头，无切镜、无缩放、全身、完整凳子、脚踝固定装置和整根杠铃始终在画面内。只做一次完整的下斜杠铃卧推。开始时双臂在胸部上方伸展。用3秒屈肘，让杠朝脚端稍微前移，同时缓慢降低到胸骨下端、下胸、腹部上方。杠全程远离下巴和颈部，不往头端走，不落到上胸、喉咙或脸前。最低点小臂接近竖直，双肘外展约45度。用1秒停在下胸上方，不压胸、不反弹。随后用3秒推回胸上方的伸臂位，末1秒保持。只有一根刚性杠铃，杠片不变化，双爪始终固定正握同一位置。禁止桥背、坐起、身体下滑、脚踝脱离护垫、头后下放、飞鸟或推举过头，禁止器械或肢体变形、额外肢体。无音频、文字、水印。",
+      "model": "Seedance 2.5",
+      "modelKey": "star-video2.5",
+      "settings": {
+        "modeType": "singleImage2video",
+        "ratio": "16:9",
+        "resolution": "720p",
+        "duration": 8,
+        "enableSound": "off",
+        "count": 1
+      },
+      "localModelArgumentCorrected": true,
+      "attempt": 2,
+      "accepted": false,
+      "reason": "The new-model retry still places the lowered bar near the chin/neck instead of the lower chest. Two visual generation attempts reached.",
+      "review": {
+        "contactSheetActuallyViewedByProducer": true,
+        "fullSizeCriticalPositionViewedByProducer": true
+      },
+      "originalBytes": 2454256,
+      "originalSha256": "0b2cd910d0fd9d4dcf868ad842edcf28ca7bd37a1ee6766c5fe62741ae524ee5",
+      "candidateBytes": 105329,
+      "candidateSha256": "c08ba2deb4b228857f02728e4acf74a0f6193a53c3b05edad5179b3e4d56dc6f",
+      "fullDecodePassed": true,
+      "originalRetained": "private production staging; not shipped"
+    },
+    {
+      "canonicalExerciseId": "1377",
+      "nodeId": "3a6dd273-bae5-4dce-a09f-28985d8fb790",
+      "taskId": "20261021092203825868518",
+      "prompt": "Use {{Node be9c524b-cb2c-4bbc-94a8-3df82edcc759}} as exact starting frame. Preserve the original Zeno teal/cream otter, lime strap, one real VERTICAL wall and the same floor. Fixed full-body tripod camera, no cuts, zoom or reframing. Show a short CALF STRETCH WITH BOTH HANDS AGAINST THE WALL, not a workout repetition. BOTH PALMS stay flat against the same vertical wall at the same shoulder-height positions throughout. The front knee remains bent; the rear leg remains nearly straight and its HEEL remains firmly GROUNDED throughout. Maintain a long neutral back and neutral head. For the first six seconds calmly hold this exact stretch with barely visible natural breathing and only a tiny gentle forward hip weight shift toward the wall, without lifting the rear heel. During the last two seconds ease the weight slightly backward, while keeping BOTH HAND and BOTH FOOT POSITIONS unchanged. All palm contacts and both whole feet, including the grounded rear heel, remain in frame. No push-ups, bouncing, footsteps, leg switching, heel raise, rear-foot sliding, head tilt, lower-back arch, tail support, extra limbs, text, watermark or audio. This eight-second clip only illustrates the pose, not the full recommended hold duration.",
+      "model": "Seedance 2.0 VIP",
+      "settings": {
+        "modeType": "singleImage2video",
+        "ratio": "16:9",
+        "resolution": "720p",
+        "duration": 8,
+        "enableSound": "off",
+        "count": 1
+      },
+      "attempt": 1,
+      "accepted": false,
+      "reason": "The back knee bends toward a kneeling pose and the rear heel lifts, violating the intended straight rear leg and grounded heel wall stretch.",
+      "review": {
+        "contactSheetActuallyViewedByProducer": true,
+        "fullSizeCriticalPositionViewedByProducer": true
+      },
+      "originalBytes": 4140880,
+      "originalSha256": "4809161f3b68b61f9856a00043ba1a3eada9f4f002996fca10e457002c0d20e9",
+      "candidateBytes": 223673,
+      "candidateSha256": "27d8fbf7c14d4db4e9c0b35a014cd35e1ae459865270106a82cb08fe1e3c1c40",
+      "fullDecodePassed": true,
+      "originalRetained": "private production staging; not shipped"
+    }
+  ]
+}

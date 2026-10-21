@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "0613",
+  "nodeId": "13d4215e-03d2-43d5-9e3e-1e15c4edc485",
+  "taskId": "20261021102203616518518",
+  "prompt": "Use {{Node bb4d2c0e-f3ee-4de3-a776-838b929a7e1b}} as exact starting frame. Preserve this exact original Zeno teal/cream otter, lime strap, ivory studio and clear SIDE-LYING pose. Fixed side tripod camera at the SAME starting angle, no cuts, zoom or reframing, whole body and the upper paw-to-ankle contact stay visible. Show a short calm SIDE-LYING QUADRICEPS STRETCH HOLD for eight seconds, only a pose illustration. Keep the bottom side of the torso and hip supported on the floor, hips stacked in the same side-lying orientation. The bottom leg remains fully straight and extended on the floor. The upper knee stays bent backward at the same comfortable angle; the upper paw continuously and gently holds the SAME upper ANKLE just above the heel, with the foot and toes free beyond the grip. The bottom elbow and forearm stay on the floor, bottom hand supporting the neutral relaxed head. Only barely visible natural breathing and tiny easing of grip tension; all joint positions and contact points stay unchanged. No rolling belly-down or onto the back, no changing side, no upper knee straightening or leg lifting, no grasp release or sliding to toes, no hip lift, no back arch, no sitting or kneeling up, no extra limbs, no text, watermark or audio. Tail rests on the floor behind, away from the grasp. Eight seconds illustrates the pose and is not the full prescribed twenty-to-thirty-second hold.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "lying (side) quads stretch",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "182887"
+    }
+  },
+  "originalSha256": "b5cbcb9dddcf652402f6e5ef5d5008fdeb925a79b1f803fa243f61757a1bd5ba",
+  "originalBytes": 2298340,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0613-contact.jpg",
+    "contactSha256": "67b0c2ca04fa9338e7fa2e6ee3f657d4f802cd848548589bf5332fafbdc19c4e",
+    "reviewed": true,
+    "observation": "Root viewed full 8-frame contact sheet; clear side-lying position, bottom leg remains extended on floor, upper paw continuously grasps upper ankle, lower elbow supports head, only subtle breathing and blinking. No roll, side change or grip release. Short held-stretch excerpt, not a claimed full 20-30-second hold."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "f5fd6cbe5616574d41962081527dcd544bb465dba53e3c1316cde95cf6ea06df"
+}

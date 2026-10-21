@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "0669",
+  "nodeId": "3c0de7a0-e0d7-40e3-b515-bb6d88ea2086",
+  "taskId": "20261021081603151118518",
+  "prompt": "Use {{Node 60041e32-735d-4b3a-92f5-d4cf1fd267a7}} as the exact first frame. Preserve the original Zeno teal-and-cream otter, lime diagonal strap, the exact cross-body RIGHT-shoulder stretch with its RIGHT arm across its chest and LEFT paw gently supporting the RIGHT elbow, ivory studio, body proportions and full-body framing. For the first FIVE seconds calmly hold this exact cross-body shoulder stretch with only very small natural breathing. Shoulders stay relaxed and down, torso remains upright and still, both feet remain grounded. For the final THREE seconds gently release the left supporting paw first, then smoothly lower both arms to rest naturally at the sides. Do not twist the torso or pull the neck. Fixed tripod camera; full head, both paws, both arms, body, feet and tail remain inside the frame. No jerking, punching, bouncing, aggressive pulling, torso rotation, neck stretch, extra arms or limbs, disappearing paws, morphing anatomy, camera zoom, cuts, text, exercise labels, watermark or audio. The eight-second clip illustrates the pose and a gentle release; it is not a clinical stretch-hold timing prescription.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "rear deltoid stretch",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "179045"
+    }
+  },
+  "originalSha256": "a1c419ca10b502e2407073f58a5f23da314ccfeba390c3d9ae91831361d5cba0",
+  "originalBytes": 3713912,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0669-contact.jpg",
+    "contactSha256": "55a9a9df9a074675163126684b869abc0f6e684e193cf7d7367ee08018272231",
+    "reviewed": true,
+    "observation": "Eight actual one-second frames show a stable cross-body right shoulder stretch with the opposite paw supporting near the right elbow, then a gentle release and lowering of both arms. The torso and feet remain stable and both arms remain distinct. This eight-second illustration shows the pose and release rather than the longer hold duration in the written instructions. Full final H.264 decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "a9022848073d265910a79392d79a1bf4bd15d19a558faae7612e3a10da83fc88"
+}

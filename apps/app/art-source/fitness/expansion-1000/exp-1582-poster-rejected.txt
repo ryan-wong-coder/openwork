@@ -1,0 +1,3 @@
+Attempt1 not selected: raised foot appears in line with shin and rope resembles a circumferential cuff; forefoot sole contact and ankle dorsiflexion are not readable. Other supine/one-leg support and two hand-end geometry are retained for targeted retry.
+sha256=4cf72666ca7b7eeca7d640a21c9ef62568d60a5fc4fad0517ce70ff3f857d019
+privateOriginalRetained=true

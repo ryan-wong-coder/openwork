@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "kind": "two-keyframe-illustration-plan",
+  "exerciseId": "0446",
+  "englishName": "ez barbell close-grip curl",
+  "descriptorSha256": "b28ddab20b46a07e99ae9fd2d8fe6ef7645cc2d8c1ca9bd427e765c4f28f0e1e",
+  "sourceReview": "exp-0446-source-review.json",
+  "startImage": {
+    "file": "exp-0446-reference.png",
+    "sha256": "f9392fb9d68318465136fe20f3f1f5861e769ee23ce2622a7850faf8904e585f",
+    "bytes": 1708974,
+    "width": 1672,
+    "height": 941
+  },
+  "endpointImage": {
+    "file": "exp-0446-endpoint.png",
+    "sha256": "b891cadffa854c8d1069e9c094530fd89c063247137da6be6df512f26c3fefb4",
+    "bytes": 1652731,
+    "width": 1672,
+    "height": 941
+  },
+  "startPrompt": {
+    "file": "exp-0446-poster-prompt-v2.txt",
+    "sha256": "6c8e85e9b9be4c4c6b58c1cb476cc8b28ae53e4953d51bf915d2bbbf98a79ab0",
+    "bytes": 1424
+  },
+  "endpointPrompt": {
+    "file": "exp-0446-endpoint-prompt.txt",
+    "sha256": "d4ecd8028264d2545b1789c8b7805464b5fe200ba0a0dca3eb9d5cbca79c5bdc",
+    "bytes": 1539
+  },
+  "startTool": "built-in ImageGen",
+  "startImageAttempts": 2,
+  "endpointTool": "built-in ImageGen edit of accepted start",
+  "endpointEditAttempts": 1,
+  "fixedContactsAndScene": [
+    "feet flat, upright trunk and pelvis, passive tail",
+    "same EZ bar with identical plates/collars",
+    "both underhand paws remain on inner angled grips narrower than shoulders",
+    "upper arms remain down beside torso, fixed camera"
+  ],
+  "motion": "Elbows flex together to curl the same close-grip EZ bar from low upper-thigh/lower-belly position to shoulder-front below chin. Elbows remain down and torso does not swing. Return is same path in reverse.",
+  "review": {
+    "startAndEndpointActuallyViewed": true,
+    "endpointDecision": "accepted-reference-for-parent-review",
+    "notes": [
+      "First start rejected for wide hands; accepted second start physically places paws on distinct inner angled segments.",
+      "Grip title versus raw step conflict is recorded in exp-0446-source-review.json, clarified with primary-authored text only.",
+      "Plush proportions limit exact human joint-angle measurement; high keyframe shows bent elbows and low upper arms, not a straight-arm front raise."
+    ],
+    "wholeVideoViewed": false,
+    "readyMedia": false
+  },
+  "plannedVideo": {
+    "inputMode": "native first-and-last-frame",
+    "oneWaySeconds": 4,
+    "direction": "start-to-end",
+    "returnPlan": "Review generated4second transition, then reverse and join accepted one-way clip for nominal8second illustration.",
+    "assemblyPerformed": false,
+    "videoGeneratedByThisAgent": false,
+    "originalEightSecondGeneration": false,
+    "existingEightSecondAttemptReused": false
+  },
+  "constraints": [
+    "Keyframe acceptance does not prove intermediate video motion or all source techniques.",
+    "Only original Zeno identity and original generated artwork; no restricted upstream media.",
+    "No runtime ready registration or publication by this agent."
+  ]
+}

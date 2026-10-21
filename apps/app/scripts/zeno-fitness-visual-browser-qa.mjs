@@ -99,10 +99,13 @@ try {
   check('real-local-api-login-production-pwa');
   stage = 'catalogue'; await button('动作库');
   const demonstrations = JSON.parse(await readFile(resolve(repository, 'apps/app/src/react-app/domains/zeno/mascot-demos.json'), 'utf8'));
-  assert.equal(demonstrations.length, 32);
-  const firstOptions = await evaluate('[...document.querySelectorAll("[data-exercise-option]")].slice(0,32).map(element=>element.dataset.exerciseOption)');
-  assert.deepEqual(firstOptions.sort(), demonstrations.map(item=>item.exerciseId).sort());
-  await screenshot('desktop-mainstream-catalogue'); check('all-thirty-two-completed-demonstrations-first-in-unfiltered-catalogue');
+  assert.ok(demonstrations.length >= 32);
+  const visibleReadyCount = Math.min(100, demonstrations.length);
+  const firstOptions = await evaluate(`[...document.querySelectorAll("[data-exercise-option]")].slice(0,${visibleReadyCount}).map(element=>element.dataset.exerciseOption)`);
+  assert.equal(firstOptions.length, visibleReadyCount);
+  assert.ok(firstOptions.every(id => demonstrations.some(item => item.exerciseId === id)));
+  if (demonstrations.length <= 100) assert.deepEqual(firstOptions.sort(), demonstrations.map(item=>item.exerciseId).sort());
+  await screenshot('desktop-mainstream-catalogue'); check('completed-demonstrations-first-in-bounded-unfiltered-catalogue', { ready: demonstrations.length, visible: visibleReadyCount });
   await field('搜索动作', '杠铃卧推', 'input[aria-label=搜索动作]'); await button('杠铃卧推', { exact: false });
   await until(() => evaluate(`document.querySelector('[data-exercise-detail="0025"]')!==null`), 'bench-detail');
   assert.equal(await evaluate('document.querySelectorAll("[aria-label=动作肌群] svg").length'), 2);
@@ -136,7 +139,13 @@ try {
   assert.equal(await evaluate('document.querySelectorAll("[data-movement-figure],video").length'), 0); await screenshot('mobile-uncovered-exercise'); check('uncovered-variant-never-receives-generic-animation');
   await closeDialog(); await page.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'light' }, { name: 'prefers-reduced-motion', value: 'no-preference' }] });
   stage = 'mascot-videos';
-  for (const [name, id, filename, kind, hasPose] of [['哑铃二头弯举', '0294', 'curl', 'mascot', true], ['深蹲', '1197', 'squat', 'mascot', true], ['哑铃坐姿肩部推举', '0405', 'shoulder-press', 'mascot', true], ['哑铃卧推', '0289', 'dumbbell-bench-press', 'mascot', false], ['开合跳', '3094', 'jumping-jack', 'diagram', false]]) {
+  const expansion = JSON.parse(await readFile(resolve(repository, 'apps/app/art-source/fitness/expansion-1000/selection.json'), 'utf8'));
+  const expansionExamples = demonstrations.filter(item => item.stem.startsWith('exp-')).slice(0,3).map(item => {
+    const source = [...expansion.exercises, ...expansion.reserves].find(row => row.exerciseId === item.exerciseId);
+    assert.ok(source && source.englishName === item.englishName);
+    return [source.chineseName, item.exerciseId, item.stem, item.kind, false];
+  });
+  for (const [name, id, filename, kind, hasPose] of [['哑铃二头弯举', '0294', 'curl', 'mascot', true], ['深蹲', '1197', 'squat', 'mascot', true], ['哑铃坐姿肩部推举', '0405', 'shoulder-press', 'mascot', true], ['哑铃卧推', '0289', 'dumbbell-bench-press', 'mascot', false], ['开合跳', '3094', 'jumping-jack', 'diagram', false], ...expansionExamples]) {
     await field('搜索动作', name, 'input[aria-label=搜索动作]'); await button(name);
     await until(() => evaluate(`document.querySelector('[data-exercise-detail="${id}"] video')!==null`), 'mascot-' + id);
     assert.ok(await evaluate(`document.querySelector('[data-exercise-detail="${id}"] video').src.endsWith('/zeno/fitness/${filename}.mp4')`));

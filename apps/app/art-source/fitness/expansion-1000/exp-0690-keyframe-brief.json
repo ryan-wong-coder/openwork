@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "0690",
+  "englishName": "seated lower back stretch",
+  "sourceDescriptorSha256": "d8279e023a9fb3e242d45249c3e79408e15e59ac74e7658490e793ef2132bc1c",
+  "sourceSteps": [
+    "坐在椅子边缘，双脚平放在地面上。",
+    "将双手放在大腿上或椅子两侧以获得支撑。",
+    "从臀部开始慢慢向前倾斜，保持背部挺直。",
+    "感受下背部的拉伸并保持 20-30 秒。",
+    "慢慢回到起始位置并重复所需的重复次数。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/zeno-site/public/assets/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "referencePoseReviewed": true,
+  "reviewObservation": "Seated upright to small forward hip hinge; pelvis remains seated, feet flat, both paws contact thighs, long neutral spine. Original camera/chair/feet/tail visually preserved.",
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "references": [
+    {
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-0690-reference.png",
+      "bytes": 1688682,
+      "sha256": "98af71fa1d75eb7af0aac26e1111e1266e0b4db4da02c5c6cf0b473407648775"
+    },
+    {
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-0690-endpoint.png",
+      "bytes": 1702126,
+      "sha256": "5e2802afb89705137e67e4c7215f44e353f14c28bd76f4d3b124c87c4f596a92"
+    }
+  ]
+}

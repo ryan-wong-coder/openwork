@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "status": "producing",
+  "targetAdditional": 1000,
+  "acceptedAdditional": 25,
+  "baselineReady": 32,
+  "totalReady": 57,
+  "remainingTarget": 975,
+  "budgetScope": "Existing current-account credits only; no recharge or account switching. Paid dispatch stops on explicit insufficient-credit terminal output.",
+  "creditsRemaining": null,
+  "creditsRemainingKnown": false,
+  "plannedIsNotCompleted": true,
+  "accepted": [
+    {
+      "exerciseId": "0297",
+      "englishName": "dumbbell concentration curl",
+      "assetStem": "exp-0297"
+    },
+    {
+      "exerciseId": "0375",
+      "englishName": "dumbbell pullover",
+      "assetStem": "exp-0375"
+    },
+    {
+      "exerciseId": "0044",
+      "englishName": "barbell good morning",
+      "assetStem": "exp-0044"
+    },
+    {
+      "exerciseId": "0285",
+      "englishName": "dumbbell alternate biceps curl",
+      "assetStem": "exp-0285"
+    },
+    {
+      "exerciseId": "0669",
+      "englishName": "rear deltoid stretch",
+      "assetStem": "exp-0669"
+    },
+    {
+      "exerciseId": "0088",
+      "englishName": "barbell seated calf raise",
+      "assetStem": "exp-0088"
+    },
+    {
+      "exerciseId": "2612",
+      "englishName": "jump rope",
+      "assetStem": "exp-2612"
+    },
+    {
+      "exerciseId": "3123",
+      "englishName": "resistance band seated biceps curl",
+      "assetStem": "exp-3123"
+    },
+    {
+      "exerciseId": "1259",
+      "englishName": "behind head chest stretch",
+      "assetStem": "exp-1259"
+    },
+    {
+      "exerciseId": "0834",
+      "englishName": "weighted front raise",
+      "assetStem": "exp-0834"
+    },
+    {
+      "exerciseId": "0643",
+      "englishName": "overhead triceps stretch",
+      "assetStem": "exp-0643"
+    },
+    {
+      "exerciseId": "1494",
+      "englishName": "butterfly yoga pose",
+      "assetStem": "exp-1494"
+    },
+    {
+      "exerciseId": "0794",
+      "englishName": "standing lateral stretch",
+      "assetStem": "exp-0794"
+    },
+    {
+      "exerciseId": "1362",
+      "englishName": "sphinx",
+      "assetStem": "exp-1362"
+    },
+    {
+      "exerciseId": "1582",
+      "englishName": "reclining big toe pose with rope",
+      "assetStem": "exp-1582"
+    },
+    {
+      "exerciseId": "1422",
+      "englishName": "pelvic tilt into bridge",
+      "assetStem": "exp-1422"
+    },
+    {
+      "exerciseId": "0979",
+      "englishName": "band horizontal pallof press",
+      "assetStem": "exp-0979"
+    },
+    {
+      "exerciseId": "0613",
+      "englishName": "lying (side) quads stretch",
+      "assetStem": "exp-0613"
+    },
+    {
+      "exerciseId": "1713",
+      "englishName": "assisted prone lying quads stretch",
+      "assetStem": "exp-1713"
+    },
+    {
+      "exerciseId": "0276",
+      "englishName": "dead bug",
+      "assetStem": "exp-0276"
+    },
+    {
+      "exerciseId": "1346",
+      "englishName": "kneeling lat stretch",
+      "assetStem": "exp-1346"
+    },
+    {
+      "exerciseId": "0690",
+      "englishName": "seated lower back stretch",
+      "assetStem": "exp-0690"
+    },
+    {
+      "exerciseId": "1424",
+      "englishName": "seated glute stretch",
+      "assetStem": "exp-1424"
+    },
+    {
+      "exerciseId": "1709",
+      "englishName": "assisted lying glutes stretch",
+      "assetStem": "exp-1709"
+    },
+    {
+      "exerciseId": "0620",
+      "englishName": "lying leg raise flat bench",
+      "assetStem": "exp-0620"
+    }
+  ]
+}

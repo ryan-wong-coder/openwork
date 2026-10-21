@@ -1,0 +1,33 @@
+{
+  "exerciseId": "0834",
+  "englishName": "weighted front raise",
+  "chineseName": "负重前平举",
+  "descriptorSha256": "8c43d84f4dce8edcb40ddee094a0875eaee015252540ea71827e6217df035562",
+  "sourceSteps": [
+    "双脚分开与肩同宽站立，双手各握一个哑铃，手掌朝向大腿。",
+    "保持双臂伸直，呼气并将哑铃举至身前，直至与肩齐平。",
+    "在顶部停顿片刻，然后吸气，慢慢将哑铃放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "status": "two-keyframe-production-trial",
+  "equipmentInterpretation": "The canonical equipment label is weighted; its own four source steps explicitly specify one dumbbell in each hand. This asset follows those steps, without mapping another exercise ID.",
+  "startPose": "Side-profile upright standing, soft knees, both overhand-held dumbbells at thighs, elbows nearly straight.",
+  "endPose": "Both long nearly straight arms extend forward to shoulder height, elbow angle unchanged, paws and dumbbells remain a full arm-length ahead of torso.",
+  "support": "Both feet remain planted, torso and head upright and still.",
+  "criticalChecks": [
+    "Shoulder rotation drives the arc; no elbow curl or preceding curl-then-extension.",
+    "The two distinct dumbbells maintain paw contact and shape.",
+    "Feet, torso, head, framing and camera remain fixed."
+  ],
+  "generationProfile": {
+    "model": "Seedance 2.5",
+    "modeType": "frames2video",
+    "duration": 4,
+    "ratio": "16:9",
+    "resolution": "720p",
+    "enableSound": "off",
+    "count": 1
+  },
+  "plannedProcessing": "If the complete four-second upward phase passes actual frame review, concatenate the complete accepted forward phase and its reverse to illustrate one controlled raise and lowering. Record this explicitly; not an unedited eight-second generated repetition. This processing is unsuitable for directional walking, rope rotation or ballistic landings.",
+  "runtimeReady": false
+}

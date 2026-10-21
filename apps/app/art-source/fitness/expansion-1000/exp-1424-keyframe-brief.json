@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "1424",
+  "englishName": "seated glute stretch",
+  "sourceDescriptorSha256": "a0ec19be1f872ccacdce5bc228bb3737148386b7c07243ab192004a0086d5f2b",
+  "sourceSteps": [
+    "坐在地上，双腿在身前伸展。",
+    "弯曲右膝，将右脚踝交叉在左大腿上。",
+    "将右手放在身后的地面上以获得支撑。",
+    "用左手轻轻按下右膝盖以加深伸展。",
+    "保持拉伸 30 秒到 1 分钟。",
+    "换边并重复。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/zeno-site/public/assets/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "referencePoseReviewed": true,
+  "reviewObservation": "Seated figure four with one straight leg floor, opposite ankle across thigh, one paw behind on floor and the other on bent knee, torso upright, tail relaxed beside pelvis.",
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "references": [
+    {
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-1424-reference.png",
+      "bytes": 1807283,
+      "sha256": "0872c96c10afdbcec517d86bcbf67873922f3b15c2ccc40b6bf9cae7c0574ae2"
+    }
+  ],
+  "attempts": 1
+}

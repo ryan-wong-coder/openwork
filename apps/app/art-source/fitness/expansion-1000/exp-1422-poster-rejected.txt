@@ -1,0 +1,3 @@
+Attempt1 not selected: a tail-like shape appears behind/under the head instead of clearly attached beside the pelvis, and the far hand contact cannot be read. Preserve private PNG only; redo tail attachment/contact readability, retain all existing low-bridge pose geometry.
+sha256=b4326ceb247b425d7f996021c7ea151f14e6c166c6b9fbd84de8e203238d0ba1
+privateOriginalRetained=true

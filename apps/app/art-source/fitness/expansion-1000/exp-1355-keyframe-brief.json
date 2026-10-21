@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "1355",
+  "englishName": "one arm against wall",
+  "sourceDescriptorSha256": "5d714379c1613695c27f4ffd06d0f26a646915ccc39d3cc6f38caa4ba7b6a3f6",
+  "sourceSteps": [
+    "面向墙壁站立，双脚分开与肩同宽。",
+    "将一只手臂伸直到身前，将手掌靠在墙上。",
+    "启动你的核心，身体向前倾斜，保持手臂伸直，背部平坦。",
+    "用手掌慢慢推向墙壁，激活背阔肌。",
+    "保持该姿势几秒钟，然后松开并用另一只手臂重复该动作。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/app/src/assets/zeno/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "referencePoseReviewed": true,
+  "referenceApproval": "producer-self-review-authorized-by-root",
+  "reviewObservation": "Faces a vertical wall, one nearly straight working arm with palm flat at shoulder height; opposite arm relaxed down. Both soles planted with a small whole-body forward lean, neutral back, no bent-elbow wall push-up; full tail and feet visible.",
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "generationAttempts": [
+    {
+      "attempt": 1,
+      "selected": true,
+      "sha256": "211e295b7fec1938a29e5c6ce41e63ef295c22a44f019bef28e02d045191e6a1",
+      "retainedInRepository": true
+    }
+  ],
+  "references": [
+    {
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-1355-reference.png",
+      "bytes": 1743188,
+      "sha256": "211e295b7fec1938a29e5c6ce41e63ef295c22a44f019bef28e02d045191e6a1"
+    }
+  ]
+}

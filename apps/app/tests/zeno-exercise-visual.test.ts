@@ -9,6 +9,8 @@ import selection from "../art-source/fitness/mainstream/selection.json";
 import provenance from "../art-source/fitness/provenance.json";
 import { searchExercisesForPicker } from "../src/react-app/domains/zeno/exercise-search";
 
+const digest = (bytes: string | Uint8Array) => createHash("sha256").update(bytes).digest("hex");
+
 test("all eleven original scenes match exactly one real canonical catalogue entry", () => {
   expect(movementScenes).toHaveLength(11); expect(new Set(movementScenes.map(scene => scene.exerciseId)).size).toBe(11);
   for (const scene of movementScenes) {
@@ -17,29 +19,46 @@ test("all eleven original scenes match exactly one real canonical catalogue entr
   }
   expect(fitnessExercises.filter(exercise => movementForExercise(exercise))).toHaveLength(11);
 });
-test("all 32 selected videos retain exact canonical identity, equipment and honest illustration type", () => {
-  expect(mascotDemos).toHaveLength(32);
-  expect(mascotDemos.map(item => item.exerciseId).sort()).toEqual(selection.exercises.map(item => item.exerciseId).sort());
+test("ready demonstrations retain unique canonical identities and honest illustration types", () => {
+  expect(mascotDemos.length).toBeGreaterThan(0);
+  const readyIds = new Set(mascotDemos.map(item => item.exerciseId));
+  expect(readyIds.size).toBe(mascotDemos.length);
+  expect(new Set(mascotDemos.map(item => item.stem)).size).toBe(mascotDemos.length);
+  expect(mascotDemos.map(item => item.exerciseId).sort()).toEqual(provenance.assets.map(asset => asset.canonicalExerciseId).sort());
   expect(fitnessExercises.filter(exercise => mascotDemoForExercise(exercise)).map(exercise => exercise.id).sort()).toEqual(mascotDemos.map(item => item.exerciseId).sort());
-  expect(mascotDemos.filter(item => item.kind === "mascot")).toHaveLength(30);
-  expect(mascotDemos.filter(item => item.kind === "diagram").map(item => item.exerciseId).sort()).toEqual(["0612", "3094"]);
   for (const item of mascotDemos) {
     const exercise = findExercise(item.exerciseId); if (!exercise) throw new Error("Missing exercise");
+    expect(exercise.id).toBe(item.exerciseId);
     expect(exercise.englishName).toBe(item.englishName);
-    expect(exercise.equipmentId).toBe(selection.exercises.find(selected => selected.exerciseId === item.exerciseId)?.equipment);
+    expect(["mascot", "diagram"]).toContain(item.kind);
+    expect(item.stem).toMatch(/^[a-z\d][a-z\d-]*$/);
     expect(mascotDemoForExercise(exercise)).toEqual({ video: `zeno/fitness/${item.stem}.mp4`, poster: `zeno/fitness/${item.stem}-poster.webp`, kind: item.kind });
     expect(mascotDemoForExercise({ ...exercise, bodyPartId: "custom" })).toBeUndefined();
     expect(mascotDemoForExercise({ ...exercise, englishName: item.englishName + " different variant" })).toBeUndefined();
+    expect(mascotDemoForExercise({ ...exercise, englishName: item.englishName + " " })).toBeUndefined();
   }
-  const narrowBench = findExercise("0030"); if (!narrowBench) throw new Error("Missing exercise");
-  expect(mascotDemoForExercise(narrowBench)).toBeUndefined();
-  expect(new Set(fitnessExercises.flatMap(exercise => mascotDemoForExercise(exercise)?.video ?? []))).toHaveProperty("size", 32);
+  const uncovered = fitnessExercises.find(exercise => !readyIds.has(exercise.id));
+  if (uncovered) expect(mascotDemoForExercise(uncovered)).toBeUndefined();
+  expect(new Set(fitnessExercises.flatMap(exercise => mascotDemoForExercise(exercise)?.video ?? [])).size).toBe(mascotDemos.length);
 });
-test("all 64 selected local media files match their complete recorded provenance hashes", () => {
+test("the original mainstream baseline keeps its identities, equipment and frozen media bytes", () => {
+  // Frozen 1.1.2 baseline only: ready additions do not change either digest.
+  expect(digest(readFileSync(new URL("../art-source/fitness/mainstream/selection.json", import.meta.url)))).toBe("5dfb46e441f732b3d640c68d0cfabc55f18ca90a268c0039c0de749920adb078");
+  const baseline = selection.exercises.map(selected => {
+    const item = mascotDemos.find(item => item.exerciseId === selected.exerciseId);
+    const asset = provenance.assets.find(asset => asset.canonicalExerciseId === selected.exerciseId);
+    const exercise = findExercise(selected.exerciseId);
+    if (!item || !asset || !exercise) throw new Error("Missing original baseline");
+    expect(exercise.equipmentId).toBe(selected.equipment);
+    return [selected.exerciseId, item.englishName, item.stem, item.kind, asset.name, asset.kind, asset.video.file, asset.video.bytes, asset.video.sha256, asset.poster.file, asset.poster.bytes, asset.poster.sha256];
+  });
+  expect(digest(JSON.stringify(baseline))).toBe("279a1a561e8bdc19ce8e1d3fdae00c5655bccbcfd2d375c228e5744dd1c475ad");
+});
+test("every ready local media pair matches its complete recorded provenance hashes", () => {
   const folder = new URL("../public/zeno/fitness/", import.meta.url);
   const expectedNames = mascotDemos.flatMap(item => [item.stem + ".mp4", item.stem + "-poster.webp"]).sort();
   expect(readdirSync(folder).sort()).toEqual(expectedNames);
-  expect(provenance.assets).toHaveLength(32);
+  expect(provenance.assets).toHaveLength(mascotDemos.length);
   for (const item of mascotDemos) {
     const asset = provenance.assets.find(candidate => candidate.canonicalExerciseId === item.exerciseId);
     if (!asset) throw new Error("Missing provenance");
@@ -50,13 +69,13 @@ test("all 64 selected local media files match their complete recorded provenance
       expect(expectedNames).toContain(name);
       const bytes = readFileSync(new URL(name, folder));
       expect(bytes.length).toBe(part.bytes);
-      expect(createHash("sha256").update(bytes).digest("hex")).toBe(part.sha256);
+      expect(digest(bytes)).toBe(part.sha256);
       expect(bytes.subarray(0, 32).toString("ascii")).toContain(name.endsWith(".mp4") ? "ftyp" : "WEBP");
     }
   }
 });
 test("picker exposes completed mainstream art while retaining query, equipment and custom exact matches", () => {
-  expect(searchExercisesForPicker().slice(0, 32).map(item => item.id).sort()).toEqual(mascotDemos.map(item => item.exerciseId).sort());
+  expect(searchExercisesForPicker({ limit: mascotDemos.length }).map(item => item.id).sort()).toEqual(mascotDemos.map(item => item.exerciseId).sort());
   const dumbbells = searchExercisesForPicker({ query: "卧推", equipment: ["dumbbell"], muscles: ["chest"], limit: 100 });
   expect(dumbbells.some(item => item.id === "0289")).toBe(true);
   expect(dumbbells.every(item => item.equipmentId === "dumbbell" && [...item.primaryMuscleIds, ...item.secondaryMuscleIds].includes("chest"))).toBe(true);
@@ -79,8 +98,13 @@ test("variants, custom identities and name substitutions never receive another t
   expect(movementForExercise({ ...exercise, bodyPartId: "custom" })).toBeUndefined();
   expect(movementForExercise({ ...exercise, englishName: "incline bench press" })).toBeUndefined();
   expect(movementForExercise({ ...exercise, id: "not-a-canonical-id" })).toBeUndefined();
+  expect(mascotDemoForExercise({ ...exercise, id: "not-a-canonical-id" })).toBeUndefined();
   const alias = Object.entries(exerciseAliases).find(([, id]) => id === exercise.id);
-  if (alias) expect(movementForExercise({ ...exercise, id: alias[0] })).toBe(movementForExercise(exercise));
+  if (alias) {
+    expect(movementForExercise({ ...exercise, id: alias[0] })).toBe(movementForExercise(exercise));
+    expect(mascotDemoForExercise({ ...exercise, id: alias[0] })).toEqual(mascotDemoForExercise(exercise));
+    expect(mascotDemoForExercise({ ...exercise, id: alias[0], bodyPartId: "custom" })).toBeUndefined();
+  }
 });
 test("all original frames and interpolated joints remain finite and inside the viewbox", () => {
   for (const scene of movementScenes) for (const progress of [-1, 0, .25, .5, .75, 1, 2, Number.NaN]) {

@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "kind": "source-text-review",
+  "exerciseId": "0446",
+  "englishName": "ez barbell close-grip curl",
+  "descriptorSha256": "b28ddab20b46a07e99ae9fd2d8fe6ef7645cc2d8c1ca9bd427e765c4f28f0e1e",
+  "immutableSelectionChanged": false,
+  "oldBriefRowsChanged": false,
+  "rawSource": {
+    "repository": "DuarteSantos8/openGym",
+    "revision": "464355ef43d4c8f8a4e0bb6db9c2af7f240593b5",
+    "path": "catalogue/exercises/0446.json",
+    "url": "https://github.com/DuarteSantos8/openGym/blob/464355ef43d4c8f8a4e0bb6db9c2af7f240593b5/catalogue/exercises/0446.json",
+    "data": {
+      "bodyPart": "upper arms",
+      "equipment": "ez barbell",
+      "id": "0446",
+      "instructions": [
+        "Stand up straight with your feet shoulder-width apart and hold the ez barbell with an underhand grip, hands shoulder-width apart.",
+        "Keep your elbows close to your torso and your upper arms stationary throughout the movement.",
+        "Curl the barbell up towards your shoulders, contracting your biceps.",
+        "Pause for a moment at the top, then slowly lower the barbell back down to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "name": "ez barbell close-grip curl",
+      "target": "biceps",
+      "textSource": "exercisedb"
+    }
+  },
+  "translationIntroducedIssue": false,
+  "reviewStatus": "reviewed-correction-for-production-draft",
+  "reviewedInterpretation": "站姿EZ曲杆窄距反握弯举，双手握内侧倾斜握段，手间距明显窄于肩；肘贴体，上臂固定，只有前臂随肘屈抬杠至肩前，再受控回低位。",
+  "references": [
+    {
+      "url": "https://tigerfitness.com/blogs/exercise-database/close-grip-ez-curl-ez-bar-curl",
+      "publisher": "Team Tiger Fitness",
+      "kind": "primary-authored exercise instructions",
+      "usedTextOnly": true,
+      "clarification": "The publisher specifies a narrow hand spacing and fixed upper arms for its close-grip EZ curl. No external images or video were used."
+    }
+  ],
+  "reviewNotes": [
+    "Pinned English step1 says shoulder-width despite the close-grip title.",
+    "Interpret inner EZ grips as distinctly narrower than shoulders, avoiding arbitrary human centimetre scaling on the plush mascot.",
+    "Do not replace the curved EZ bar with a straight bar or dumbbells."
+  ],
+  "readyMedia": false,
+  "wholeVideoReviewed": false
+}
