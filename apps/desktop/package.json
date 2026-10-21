@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@zeno/core": "workspace:*",
+    "@zeno/fitness": "workspace:*",
     "@modelcontextprotocol/client": "^2.2.0",
     "@modelcontextprotocol/sdk": "^1.31.0",
     "@opencode-ai/sdk": "^1.18.15",

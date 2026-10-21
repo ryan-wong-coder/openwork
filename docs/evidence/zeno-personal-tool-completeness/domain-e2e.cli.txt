@@ -1,0 +1,16 @@
+$ PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false pnpm --filter @zeno/fitness build:catalogue
+$ node scripts/build-catalogue.mjs
+Build exit: 0
+
+$ PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false pnpm exec bun test apps/server/test/zeno-personal-domain-e2e.test.ts --timeout 30000
+bun test v1.3.14 (0d9b296a)
+
+apps/server/test/zeno-personal-domain-e2e.test.ts:
+(pass) registered V1 tool completes real PKCE, Chinese exercise search, routine/calendar persistence and tombstone undo [1324.01ms]
+(pass) real change-feed and read pagination preserve all records while catalogue isolates custom exercises and rejects false IDs [2487.44ms]
+(pass) registered bridge enforces fitness flag, synthetic session authority, pending proposals, closed window and disconnected account [1228.35ms]
+
+ 3 pass
+ 0 fail
+ 114 expect() calls
+Ran 3 tests across 1 file. [5.42s]

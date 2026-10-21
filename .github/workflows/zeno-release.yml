@@ -91,11 +91,12 @@ jobs:
         with:
           bun-version: 1.3.14
       - name: Install shared contract, application and local task dependencies
-        run: pnpm --filter @zeno/api... --filter @openwork/app... --filter @openwork/sdk... --filter @openwork/desktop... install --frozen-lockfile
+        run: pnpm --filter @zeno/api... --filter @openwork/app... --filter @openwork/sdk... --filter @openwork/desktop... --filter openwork-server... install --frozen-lockfile
       - name: Build the exact shared contracts and native thread adapters
         run: |
           pnpm --filter @openwork/types build
           pnpm --filter @zeno/core build
+          pnpm --filter @zeno/fitness build:catalogue
           pnpm --filter @openwork/remote-sessions build
           pnpm --filter @openwork/headless-threads build
       - name: Verify accounts, synchronization, calendar and fitness semantics
@@ -112,6 +113,17 @@ jobs:
           python3 infra/zeno-release/zeno-api/backup.test.py
       - name: Verify local execution recovery and desktop account boundaries
         run: timeout --kill-after=5s 90s node --test --test-reporter=spec apps/desktop/test/zeno-personal.test.mjs apps/desktop/test/zeno-personal-tools.test.mjs apps/desktop/test/zeno-scheduler.test.mjs apps/desktop/test/session-runner.test.mjs apps/desktop/test/zeno-update-portable-smoke.test.mjs apps/desktop/test/zeno-license-packaging.test.mjs apps/desktop/test/zeno-fitness-packaging.test.mjs
+      - name: Verify native personal tools, catalogue and V1/V2 discovery against disposable data
+        run: >-
+          pnpm exec bun test
+          apps/desktop/test/zeno-personal-tools-api.test.ts
+          apps/server/test/independent-agent-context.test.ts
+          apps/server/test/opencode-v2-image-bridge.test.ts
+          apps/server/test/zeno-workspace-access.test.ts
+          apps/server/test/zeno-workspace-read-only.test.ts
+          apps/server/test/zeno-personal-engine-wiring.test.ts
+          apps/server/test/zeno-personal-domain-e2e.test.ts
+          --timeout 30000
       - name: Build the desktop UI and independent mobile application
         run: |
           pnpm --filter @openwork/app typecheck

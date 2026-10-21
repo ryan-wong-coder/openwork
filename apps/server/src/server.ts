@@ -3150,7 +3150,7 @@ function createRoutes(
   });
 
   addRoute(routes, "GET", "/workspace/:id/authorized-folders", "client", async (ctx) => {
-    const workspace = await resolveWorkspace(config, ctx.params.id);
+    const workspace = await resolveWorkspaceForInspection(config, ctx.params.id);
     const opencode = mergeOpencodeConfigs(
       await readOpencodeConfig(workspace.path),
       // Global-first: authorized folders live in the ENGINE_GLOBAL row; the

@@ -140,6 +140,15 @@ function sessionContribution(): OpenworkFeatureContribution {
     provider,
     affordances: [
       affordance({
+        id: "workspace.read",
+        kind: "query",
+        title: "Read workspace path and file access",
+        description: "Read a workspace registered on the current connection and its effective authorized folders from the same backend used by file-access settings. Uses an exact workspaceId from app context; returns no credentials and changes no file permissions. Paths belong to that connection's execution host; unlisted permission rules still apply.",
+        provider,
+        arguments: [argument("workspaceId", "string", true, "Exact workspace id from openwork_context or session metadata.")],
+        effects: readEffects,
+      }),
+      affordance({
         id: "models.list",
         kind: "query",
         title: "List workspace models",
@@ -236,6 +245,26 @@ function automationContribution(): OpenworkFeatureContribution {
       }),
     ],
     guidance: [],
+  };
+}
+
+function personalContribution(): OpenworkFeatureContribution {
+  const provider: OpenworkProviderRef = { id: "zeno-personal", kind: "builtin" };
+  const actions = [
+    { action: "catalogue", kind: "query", title: "查找健身动作", description: "调用 zeno_personal，action=catalogue，搜索内置及自己的动作，或用 id 读取真实 exerciseId、器械、肌群、步骤与原创演示。创建训练计划前先查此目录，不能猜测动作 ID。" },
+    { action: "read", kind: "query", title: "查询日历、健身和本机任务", description: "调用 zeno_personal，action=read，按 kind、id、query 与 offset/limit 查询自己的真实记录和字段契约。例如 kind=routine 查询训练计划，kind=event 查询日历。" },
+    { action: "write", kind: "command", title: "执行用户要求的个人数据修改", description: "调用 zeno_personal，action=write。仅执行用户明确要求的修改；先读取字段契约与真实记录，用稳定 operationId、已有记录的 baseVersion 写入，并向用户提供返回的撤销入口。" },
+    { action: "propose", kind: "command", title: "提出待审核调整", description: "调用 zeno_personal，action=propose。主动建议或定时复盘仅生成待审核提案，不能直接改写日历或训练历史。data 使用工具返回的提案契约。" },
+    { action: "undo", kind: "command", title: "撤销个人数据修改", description: "调用 zeno_personal，action=undo，并传入先前修改返回的 undoId。必须遵守账号、功能开关和记录版本校验。" },
+  ] satisfies { action: string; kind: "query" | "command"; title: string; description: string }[];
+  return {
+    featureId: "zeno-personal", provider,
+    affordances: actions.map(item => affordance({
+      id: "personal." + item.action, kind: item.kind, title: item.title, description: item.description,
+      provider, tool: "zeno_personal", effects: item.kind === "query" ? readEffects : writeEffects,
+      arguments: [argument("action", "string", true, "Use the literal value " + item.action + " with the zeno_personal tool; do not send this descriptor id to openwork_query/openwork_execute.")],
+    })),
+    guidance: [{ ref: "zeno_personal", title: "个人日历、健身和本机任务", description: "先查目录与真实数据，再通过同一领域工具操作。未连接账号或功能停用时以工具返回的连接/权限状态为准，不宣称功能不存在。", provider, loading: "catalog" }],
   };
 }
 
@@ -342,6 +371,7 @@ export function buildOpenworkProviderContributions(
   const connect = connectContribution(skills, cloudMcp);
   return [
     sessionContribution(),
+    ...(standalone ? [personalContribution()] : []),
     ...(!standalone ? [automationContribution()] : []),
     extensionContribution(),
     ...mcps

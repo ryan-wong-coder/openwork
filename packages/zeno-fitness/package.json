@@ -6,14 +6,26 @@
   "license": "AGPL-3.0-or-later",
   "exports": {
     ".": "./src/index.ts",
-    "./geometry": "./src/geometry.ts"
+    "./geometry": "./src/geometry.ts",
+    "./catalogue": {
+      "types": "./types/catalogue.d.ts",
+      "development": "./src/catalogue.ts",
+      "default": "./dist/catalogue.js"
+    },
+    "./agent-catalogue": {
+      "types": "./types/agent-catalogue.d.ts",
+      "development": "./src/agent-catalogue.ts",
+      "default": "./dist/agent-catalogue.js"
+    }
   },
   "scripts": {
+    "build:catalogue": "node scripts/build-catalogue.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "bun test test"
   },
   "devDependencies": {
     "bun-types": "^1.3.6",
+    "esbuild": "0.25.12",
     "typescript": "^5.9.3"
   },
   "dependencies": {

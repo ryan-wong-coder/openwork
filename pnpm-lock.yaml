@@ -396,6 +396,9 @@ importers:
       '@zeno/core':
         specifier: workspace:*
         version: link:../../packages/zeno-core
+      '@zeno/fitness':
+        specifier: workspace:*
+        version: link:../../packages/zeno-fitness
       ajv:
         specifier: ^8.17.1
         version: 8.20.0
@@ -2030,6 +2033,9 @@ importers:
       bun-types:
         specifier: ^1.3.6
         version: 1.3.14
+      esbuild:
+        specifier: 0.25.12
+        version: 0.25.12
       typescript:
         specifier: ^5.9.3
         version: 5.9.3

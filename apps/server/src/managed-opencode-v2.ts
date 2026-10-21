@@ -53,7 +53,7 @@ export interface ManagedOpencodeV2ServerOptions {
   port?: number;
   env?: Record<string, string>;
   bootTimeoutMs?: number;
-  contextTools?: { url: string; token: string; browser?: { url: string; token: string }; image?: { url: string; token: string } };
+  contextTools?: { url: string; token: string; clientProfile?: "local-gateway" | "connected"; browser?: { url: string; token: string }; image?: { url: string; token: string } };
   permissions?: () => Promise<EnginePermissionRule[]>;
   /** Extra absolute skill directories registered before boot, so no later config write reloads the catalog. */
   skills?: string[];
@@ -212,7 +212,7 @@ export function renderOpencodeV2Config(input: {
   mcpResultsPluginDirectory?: string;
   mcpReadinessPluginDirectory?: string;
   contextPluginDirectory?: string;
-  contextTools?: { url: string; token: string; browser?: { url: string; token: string }; image?: { url: string; token: string } };
+  contextTools?: ManagedOpencodeV2ServerOptions["contextTools"];
   agentPermissionRules?: AgentPermissionRule[];
   organizationMcp?: OrganizationMcpServers;
   agentPermissionsPluginDirectory?: string;
@@ -347,6 +347,7 @@ export async function createManagedOpencodeV2Server(
     "PATH", "HOME", "USER", "LOGNAME", "SHELL", "TMPDIR", "TMP", "TEMP",
     "LANG", "LC_ALL", "LC_CTYPE", "TZ", "TERM", "CI",
     "OPENWORK_CLIENT_PROFILE",
+    "OPENWORK_UI_CONTROL_DISCOVERY",
     "XDG_CACHE_HOME", "XDG_CONFIG_HOME", "XDG_DATA_HOME", "XDG_STATE_HOME", "XDG_RUNTIME_DIR",
     "SystemRoot", "SYSTEMROOT", "WINDIR", "COMSPEC", "PATHEXT", "USERPROFILE", "APPDATA", "LOCALAPPDATA",
     "NODE_EXTRA_CA_CERTS", "SSL_CERT_FILE", "SSL_CERT_DIR",

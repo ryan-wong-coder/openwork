@@ -26,6 +26,8 @@ async function fixture(t, options = {}) {
     internalRequest: async (method, route, raw, expected = null) => {
       state.calls.push({ method, route, raw: structuredClone(raw), expected: expected ? { ...expected } : null });
       if (expected && !sameIdentity(expected, state.identity)) return { status: 409, body: { code: 'account_changed' } };
+      if (method === 'GET' && route === '/devices') return { status: 200, body: { devices: [] } };
+      if (method === 'GET' && route === '/features') return { status: 200, body: { zenoAccounts: true, personalCalendar: true, fitnessTracking: true, localScheduledTasks: true } };
       const mutation = recordMutationSchema.parse(raw);
       assert.equal(method, 'PUT'); assert.equal(route, `/records/${mutation.kind}/${mutation.id}`);
       const account = state.identity.userId; const key = `${account}:${mutation.kind}:${mutation.id}`; const operation = `${account}:${mutation.operationId}`;
@@ -202,4 +204,14 @@ test('queued calls retain their submitting account and cannot migrate into a new
   await new Promise(resolve => setImmediate(resolve)); value.state.identity = { userId: 'user-b', deviceId: 'device-b', generation: 2 }; release();
   const [a, b] = await Promise.all([first, queued]); assert.equal(a.code, 'account_changed'); assert.equal(b.ok, false); assert.equal(b.code, 'account_changed');
   assert.equal(value.state.history.length, 1); assert.equal(value.state.history[0].userId, 'user-a');
+});
+
+test('device context failures and account switches do not become successful empty reads', async t => {
+  const value = await fixture(t);
+  value.service.internalRequest = async () => ({ status: 403, body: { code: 'forbidden' } });
+  const forbidden = await value.execute({ action: 'read', kind: 'task' }); assert.equal(forbidden.ok, false); assert.equal(forbidden.code, 'forbidden'); assert.equal(forbidden.records, undefined);
+  value.service.internalRequest = async () => ({ status: 200, body: { devices: [{ id: 'device-a', accessToken: 'synthetic-unexpected-field' }] } });
+  await assert.rejects(value.execute({ action: 'read', kind: 'task' }));
+  value.service.internalRequest = async () => { value.state.identity = { userId: 'user-b', deviceId: 'device-b', generation: 2 }; return { status: 200, body: { devices: [] } }; };
+  const switched = await value.execute({ action: 'read' }); assert.equal(switched.code, 'account_changed'); assert.equal(switched.context, undefined); assert.equal(switched.records, undefined);
 });

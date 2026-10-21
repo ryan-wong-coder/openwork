@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "command": "PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false pnpm exec bun test apps/server/test/zeno-personal-domain-e2e.test.ts --timeout 30000",
+  "runtime": "bun 1.3.14",
+  "tests": 3,
+  "assertions": 114,
+  "failures": 0,
+  "reportedDurationSeconds": 5.42,
+  "boundary": "registered V1 zeno_personal -> private discovery -> real loopback UI /personal -> native personal tools -> native personal service -> real PKCE device grant -> loopback createApp -> private SQLite",
+  "syntheticDataOnly": true,
+  "externalAccountOrModelRequests": false,
+  "coverage": {
+    "chineseBuiltinSearch": "杠铃卧推; canonical exerciseId 0025",
+    "writes": [
+      "routine from returned canonical exerciseId",
+      "calendar event"
+    ],
+    "persistence": "tool read and actual API record read agree",
+    "undo": "version 2 tombstones persist in API; live list omits created routine/calendar; consumed undo rejected",
+    "pagination": {
+      "syntheticMemberships": 501,
+      "readPages": 3,
+      "recordsPerPageLimit": 200,
+      "actualSyncPagesPerRead": 2,
+      "uniqueReturnedRecords": 501
+    },
+    "isolation": "second real invited account cannot read or reference first account custom exercise, or see memberships",
+    "invalidReferences": [
+      "foreign custom ID",
+      "unknown ID",
+      "noncanonical alias 25"
+    ],
+    "featureOff": "catalogue and routine mutation reject; existing proposal remains readable",
+    "sessionAuthority": "exact synthetic interactive session allowlist; scheduled/unknown writes reject; scheduled proposal remains pending without creating routine",
+    "unavailable": "closed fixture window rejects; disconnected account returns account_required; rejected writes add no records"
+  },
+  "credentialStorage": "explicit ephemeral AES-256-GCM fixture adapter; credential file mode 0600; no OS Keychain claim",
+  "cleanup": "afterEach stops both servers, disposes services, restores discovery environment, deletes private root and asserts absence",
+  "notCovered": [
+    "OS Keychain/Electron safeStorage",
+    "real browser login UI",
+    "real desktop window/rendering",
+    "model behavior or inference",
+    "full OpenCode engine/model acceptance",
+    "packaged application or live deployment"
+  ]
+}

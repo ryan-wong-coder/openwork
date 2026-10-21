@@ -17,9 +17,11 @@ async function fixture(run) {
   const store = async (name, value) => { await mkdir(dirname(join(source, name)), { recursive: true }); await writeFile(join(source, name), value); };
   await store('package.json', JSON.stringify({ name: 'synthetic-zeno-package', type: 'module' }));
   for (const name of ['main', 'preload', 'zeno-personal', 'zeno-personal-tools', 'zeno-scheduler', 'session-runner-adapter', 'automation-runner']) await store(`electron/${name}.mjs`, await readFile(join(desktop, 'electron', name + '.mjs')));
-  const packageRoot = join(source, 'node_modules/@zeno/core'); await mkdir(packageRoot, { recursive: true });
-  await cp(join(repo, 'packages/zeno-core/dist'), join(packageRoot, 'dist'), { recursive: true });
-  await cp(join(repo, 'packages/zeno-core/package.json'), join(packageRoot, 'package.json'));
+  for (const [name, directory] of [['core', 'zeno-core'], ['fitness', 'zeno-fitness']]) {
+    const packageRoot = join(source, 'node_modules/@zeno', name); await mkdir(packageRoot, { recursive: true });
+    await cp(join(repo, 'packages', directory, 'dist'), join(packageRoot, 'dist'), { recursive: true });
+    await cp(join(repo, 'packages', directory, 'package.json'), join(packageRoot, 'package.json'));
+  }
   const notices = {
     'openGym-AGPL-3.0.txt': 'packages/zeno-fitness/LICENSE', 'openGym-NOTICE.md': 'packages/zeno-fitness/UPSTREAM-NOTICE.md',
     'openGym-source-manifest.json': 'packages/zeno-fitness/upstream-manifest.json', 'OpenWork-MIT.txt': 'LICENSE', 'Zeno-NOTICE.md': 'apps/app/THIRD_PARTY_NOTICES.md',
@@ -32,13 +34,16 @@ async function fixture(run) {
 }
 
 test('personal ASAR gate accepts actual modules, compiled core and upstream notices', async () => fixture(async ({ archive }) => {
-  assert.deepEqual(verifyPersonalPackaging({ archive }), { scope: 'packaged-presence-and-wiring', modules: true, compiledCore: true, mainIpcBoundary: true, accountBinding: true, licensesAndNotices: true });
+  assert.deepEqual(verifyPersonalPackaging({ archive }), { scope: 'packaged-presence-and-wiring', modules: true, compiledCore: true, compiledFitnessCatalogue: true, mainIpcBoundary: true, accountBinding: true, licensesAndNotices: true });
 }));
 
 test('personal ASAR gate rejects TS exports and missing account/IPC/license safeguards', async () => fixture(async ({ source, archive, repack, store }) => {
   const manifestPath = 'node_modules/@zeno/core/package.json'; const manifest = JSON.parse(await readFile(join(source, manifestPath), 'utf8'));
   await store(manifestPath, JSON.stringify({ ...manifest, exports: { ...manifest.exports, '.': './src/index.ts' } })); await repack();
   assert.throws(() => verifyPersonalPackaging({ archive }), /compiled JavaScript/); await store(manifestPath, JSON.stringify(manifest));
+  const fitnessPath = 'node_modules/@zeno/fitness/package.json', fitness = JSON.parse(await readFile(join(source, fitnessPath), 'utf8'));
+  await store(fitnessPath, JSON.stringify({ ...fitness, exports: { ...fitness.exports, './agent-catalogue': './src/agent-catalogue.ts' } })); await repack();
+  assert.throws(() => verifyPersonalPackaging({ archive }), /fitness must resolve compiled JavaScript/); await store(fitnessPath, JSON.stringify(fitness));
   for (const [name, marker] of [['electron/zeno-personal.mjs', 'X-Zeno-Account'], ['electron/main.mjs', 'event.senderFrame !== mainWindow.webContents.mainFrame'], ['licenses/openGym-AGPL-3.0.txt', 'GNU AFFERO GENERAL PUBLIC LICENSE']]) {
     const original = await readFile(join(source, name), 'utf8'); await store(name, original.replaceAll(marker, 'omitted-synthetic-marker')); await repack();
     assert.throws(() => verifyPersonalPackaging({ archive }), /missing or incomplete/); await store(name, original);

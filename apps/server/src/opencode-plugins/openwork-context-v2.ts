@@ -20,7 +20,7 @@ type Tool = {
   execute(input: unknown, context: { signal: AbortSignal; sessionID: string }): Promise<z.infer<typeof browserResult>>;
 };
 type Context = CloudSkillContext & {
-  options: { url: string; token: string; browser?: { url: string; token: string }; image?: { url: string; token: string } };
+  options: { url: string; token: string; clientProfile?: "local-gateway" | "connected"; browser?: { url: string; token: string }; image?: { url: string; token: string } };
   tool: { transform(callback: (editor: { add(tool: Tool): void }) => void): Promise<{ dispose(): Promise<void> }> };
 };
 
@@ -29,6 +29,7 @@ type Context = CloudSkillContext & {
 export default {
   id: "openwork.context",
   async setup(context: Context) {
+    const standalone = isStandaloneAgentProfile(context.options.clientProfile ?? process.env.OPENWORK_CLIENT_PROFILE);
     const browser = context.options.browser;
     const image = context.options.image;
     const imageDefinitions = image ? createGatewayImageTools(async (input, call: { signal: AbortSignal; sessionID: string }) => {
@@ -46,7 +47,7 @@ export default {
       return payload;
     }) : undefined;
     const browserDefinitions = browser ? await browserTools() : undefined;
-    const personalDefinition = isStandaloneAgentProfile() ? createZenoPersonalTools((input, call) => uiBridgeRequest('/personal', {
+    const personalDefinition = standalone ? createZenoPersonalTools((input, call) => uiBridgeRequest('/personal', {
       method: 'POST', body: { input, sessionId: call.sessionID }, signal: call.signal, timeoutMs: 60_000,
     })).zeno_personal : undefined;
     const registration = await context.tool.transform(editor => {
@@ -105,7 +106,7 @@ export default {
         });
       }
     });
-    const stopSkills = await registerCloudSkillDiscovery(context);
+    const stopSkills = standalone ? async () => {} : await registerCloudSkillDiscovery(context);
     return async () => { await stopSkills(); await registration.dispose(); };
   },
 };

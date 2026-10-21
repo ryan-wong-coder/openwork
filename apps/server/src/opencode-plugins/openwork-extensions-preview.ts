@@ -6,6 +6,7 @@ import { realpath } from "node:fs/promises";
 import { ApiError } from "../errors.js";
 import { uiBridgeRequest } from "./openwork-ui-bridge.js";
 import { createZenoPersonalTools, ZENO_PERSONAL_INSTRUCTION } from './zeno-personal-tools.js';
+import { readWorkspaceAccess } from './workspace-access.js';
 import { createDriveFileTools, DRIVE_FILE_ACTIONS } from "./drive-file-tools.js";
 import { createGmailAttachmentFulfillment, type GmailAttachmentDependencies } from "./gmail-attachment-fulfillment.js";
 import { z } from "zod";
@@ -417,6 +418,12 @@ async function readOpenworkAgentContext(
 
 async function queryOpenworkAffordance(rawArgs: unknown): Promise<unknown> {
   const request = openworkAffordanceRequestSchema.parse(rawArgs);
+  if (request.id.startsWith("personal.")) {
+    return unavailableAffordance(request.id, "Use the native zeno_personal tool with the action declared in openwork_context.");
+  }
+  if (request.id === "workspace.read") {
+    return affordanceResult(request.id, await readWorkspaceAccess(request.args ?? {}, serverGet), affordanceReadEffects);
+  }
   if (request.id === "session.search") {
     return affordanceResult(
       request.id,
@@ -457,6 +464,9 @@ async function executeOpenworkAffordance(
   context: OpenCodeContext,
 ): Promise<unknown> {
   const request = openworkAffordanceRequestSchema.parse(rawArgs);
+  if (request.id.startsWith("personal.")) {
+    return unavailableAffordance(request.id, "Use the native zeno_personal tool with the action declared in openwork_context.");
+  }
   if (request.id === "session.create") {
     return affordanceResult(
       request.id,
@@ -1350,7 +1360,8 @@ function contextPayload(context: OpenCodeContext) {
 }
 
 export const OpenWorkExtensionsPreview = async (factoryInput?: unknown, _options?: unknown, dependencies?: GmailAttachmentDependencies) => {
-  const standalone = isStandaloneAgentProfile() || isRecord(_options) && _options.clientProfile === "local-gateway";
+  const profile = isRecord(_options) && typeof _options.clientProfile === "string" ? _options.clientProfile : undefined;
+  const standalone = isStandaloneAgentProfile(profile ?? process.env.OPENWORK_CLIENT_PROFILE);
   const factoryContext = normalizeOpenCodeContext(factoryInput);
   const fulfillGmailAttachments = standalone ? undefined : createGmailAttachmentFulfillment(
     dependencies ?? { callExtension: (request, signal) => postJson("/experimental/extensions/call", request, AbortSignal.any([signal, AbortSignal.timeout(130_000)]), true) },
@@ -1423,7 +1434,7 @@ export const OpenWorkExtensionsPreview = async (factoryInput?: unknown, _options
           standalone ? Promise.resolve("") : resolveOpenWorkAutomationInstruction(),
         ]);
         return JSON.stringify(
-          { ...context, instructions: { routing, skills, automations } },
+          { ...context, instructions: { routing, skills, automations, ...(standalone ? { personal: ZENO_PERSONAL_INSTRUCTION } : {}) } },
           null,
           2,
         );

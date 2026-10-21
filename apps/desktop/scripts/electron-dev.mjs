@@ -228,6 +228,7 @@ if (process.env.OPENWORK_ELECTRON_SKIP_WORKSPACE_BUILD !== "1") {
   console.log("[electron-dev] Building Electron workspace dependencies...");
   runSync(pnpmCmd, ["--filter", "@openwork/headless-threads", "build"], { cwd: repoRoot });
   runSync(pnpmCmd, ["--filter", "@openwork/remote-sessions", "build"], { cwd: repoRoot });
+  runSync(pnpmCmd, ["--filter", "@zeno/fitness", "build:catalogue"], { cwd: repoRoot });
   runSync(pnpmCmd, ["--filter", "openwork-server", "build"], { cwd: repoRoot });
 }
 

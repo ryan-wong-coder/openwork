@@ -24,13 +24,21 @@ export function verifyPersonalPackaging({ archive }) {
     const source = archived('node_modules/@zeno/core/' + selected.slice(2));
     if (!source.trim() || /(?:from\s*|import\s*\()["'][^"']+\.tsx?["']/.test(source)) throw new Error('Packaged personal core contains a missing or TypeScript runtime entry.');
   }
+  const fitness = JSON.parse(archived('node_modules/@zeno/fitness/package.json'));
+  for (const key of ['./catalogue', './agent-catalogue']) {
+    const definition = fitness.exports?.[key], selected = typeof definition === 'string' ? definition : definition?.node ?? definition?.import ?? definition?.default;
+    if (typeof selected !== 'string' || !/^\.\/dist\/[A-Za-z0-9_.-]+\.js$/.test(selected)) throw new Error('Packaged personal fitness must resolve compiled JavaScript, never runtime TypeScript.');
+    const source = archived('node_modules/@zeno/fitness/' + selected.slice(2));
+    if (!source.trim() || /(?:from\s*|import\s*\()["'][^"']+\.tsx?["']/.test(source)) throw new Error('Packaged personal fitness contains a missing or TypeScript runtime entry.');
+    markers(source, key === './catalogue' ? ['findExercise', 'fitnessExercises', '0025'] : ['findAgentExercise', 'searchAgentExercises', 'bench-press', '0025'], 'fitness catalogue');
+  }
   markers(archived('licenses/openGym-AGPL-3.0.txt'), ['GNU AFFERO GENERAL PUBLIC LICENSE', 'Version 3'], 'AGPL license');
   markers(archived('licenses/openGym-NOTICE.md'), ['openGym', 'AGPL', 'MIT License'], 'upstream notices');
   markers(archived('licenses/OpenWork-MIT.txt'), ['MIT License', 'Permission is hereby granted'], 'OpenWork notice');
   markers(archived('licenses/Zeno-NOTICE.md'), ['openGym', 'GNU AGPL'], 'combined-work notices');
   const provenance = JSON.parse(archived('licenses/openGym-source-manifest.json'));
   if (!/^[a-f0-9]{40}$/.test(provenance.commit) || !Array.isArray(provenance.files) || !provenance.files.length || provenance.files.some(file => !/^[a-f0-9]{64}$/.test(file.localSha256))) throw new Error('Packaged personal upstream source manifest is invalid.');
-  return { scope: 'packaged-presence-and-wiring', modules: true, compiledCore: true, mainIpcBoundary: true, accountBinding: true, licensesAndNotices: true };
+  return { scope: 'packaged-presence-and-wiring', modules: true, compiledCore: true, compiledFitnessCatalogue: true, mainIpcBoundary: true, accountBinding: true, licensesAndNotices: true };
 }
 
 /** Appended to the existing packaged Electron Node smoke, after the server shuts down.
@@ -45,6 +53,11 @@ export const personalRuntimeSmokeSource = String.raw`
   const coreEntry = require.resolve('@zeno/core');
   assert.ok(coreEntry.split(path.sep).join('/').endsWith('/node_modules/@zeno/core/dist/index.js'));
   const core = await import(pathToFileURL(coreEntry));
+  const fitnessEntry = require.resolve('@zeno/fitness/agent-catalogue');
+  assert.ok(fitnessEntry.split(path.sep).join('/').endsWith('/node_modules/@zeno/fitness/dist/agent-catalogue.js'));
+  const fitness = await import(pathToFileURL(fitnessEntry));
+  assert.equal(fitness.findAgentExercise('0025').exerciseId,'0025');
+  assert.equal(fitness.findAgentExercise('0025').demo.video,'/app/zeno/fitness/bench-press.mp4');
   const {expandSchedule} = await import(pathToFileURL(archive+'/node_modules/@zeno/core/dist/calendar.js'));
   const {createZenoPersonalService} = await import(pathToFileURL(archive+'/electron/zeno-personal.mjs'));
   const {createZenoPersonalToolsService} = await import(pathToFileURL(archive+'/electron/zeno-personal-tools.mjs'));
@@ -59,6 +72,7 @@ export const personalRuntimeSmokeSource = String.raw`
     assert.equal(init.headers['X-Zeno-Account'],userId);
     if(route==='/me') return json({user:{id:userId,email:'fixture@example.invalid',name:'Fixture',role:'user'},deviceId});
     if(route==='/features') return json({zenoAccounts:true,personalCalendar:true,fitnessTracking:true,localScheduledTasks:true});
+    if(route==='/devices'&&init.method==='GET') return json({devices:[]});
     if(route==='/sync') {const values=records.filter(value=>value.cursor>Number(target.searchParams.get('cursor')));return json({records:values,cursor:values.at(-1)?.cursor??cursor,hasMore:false});}
     if(route==='/devices/heartbeat') {core.deviceInventorySchema.parse(data.inventory);return json({deviceId,lastSeenAt:at});}
     if(route==='/devices/'+deviceId&&init.method==='DELETE') return json({revoked:true});
@@ -90,6 +104,8 @@ export const personalRuntimeSmokeSource = String.raw`
     await assert.rejects(service.request('POST','/records/batch',{operationId:'forged-batch',mutations:[forbidden]},userId));
     assert.equal(calls,before);
     const tools=createZenoPersonalToolsService({service,isWindowOpen:()=>windowOpen,executionModeForSession:id=>id==='synthetic-scheduled'?'scheduled':'interactive'});
+    const catalogue=await tools.execute({sessionId:'synthetic-interactive',input:{action:'catalogue',query:'杠铃卧推',equipment:['杠铃']}});
+    assert.equal(catalogue.ok,true);assert.ok(catalogue.exercises.some(value=>value.exerciseId==='0025'));
     assert.equal((await tools.execute({sessionId:'synthetic-scheduled',input:{action:'write',kind:'membership',operationId:'blocked-write',data:{name:'Fixture',code:'1'}}})).code,'proposal_required');
     const written=await tools.execute({sessionId:'synthetic-interactive',input:{action:'write',kind:'membership',operationId:'synthetic-write',data:{name:'Fixture',code:'1'}}});
     assert.equal(written.ok,true); assert.equal(written.record.userId,userId); assert.ok(written.undo.id);
@@ -113,7 +129,7 @@ export const personalRuntimeSmokeSource = String.raw`
     windowOpen=false;await scheduler.tick();assert.equal(stops,1);assert.equal([...records].reverse().find(value=>value.kind==='run').data.status,'cancelled');
     await scheduler.dispose();scheduler=createZenoScheduler(options);windowOpen=true;await scheduler.tick();assert.equal(creates,1);assert.equal(sends,1);
     assert.equal(scheduler.executionModeForSession('synthetic-native-session'),'scheduled');
-    console.log(JSON.stringify({packagedPersonal:true,compiledCore:true,nativeRequestGuard:true,syntheticTools:true,syntheticScheduler:true,durableReceipt:true,restartNoReplay:true,safeStorageScope:'synthetic-only-not-os-validation'}));
+    console.log(JSON.stringify({packagedPersonal:true,compiledCore:true,compiledFitnessCatalogue:true,nativeRequestGuard:true,syntheticTools:true,syntheticScheduler:true,durableReceipt:true,restartNoReplay:true,safeStorageScope:'synthetic-only-not-os-validation'}));
   } finally {await scheduler?.dispose();service.dispose();globalThis.fetch=previousFetch;}
 }
 `;

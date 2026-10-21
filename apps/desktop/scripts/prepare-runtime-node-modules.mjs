@@ -8,6 +8,9 @@ const desktopRoot = resolve(dirnameHere, "..");
 const requiredRoots = [{
   name: "@zeno/core",
 }, {
+  name: "@zeno/fitness",
+  resolveTarget: "@zeno/fitness/agent-catalogue",
+}, {
   name: "@modelcontextprotocol/sdk",
   resolveTarget: "@modelcontextprotocol/sdk/validation/ajv",
 }, {
@@ -79,6 +82,7 @@ export function stageRuntimeNodeModules(outdir) {
         // The core's published entrypoints are dist (Node) and src (Bun/dev).
         // Do not ship checkout-only tests, tooling or incidental local links.
         if (name === "@openwork/remote-sessions") return ["dist", "src", "package.json"].includes(parts[0]);
+        if (name === "@zeno/fitness") return ["dist", "package.json", "LICENSE", "NOTICE.md", "UPSTREAM-NOTICE.md", "upstream-manifest.json"].includes(parts[0]);
         return true;
       },
     });
