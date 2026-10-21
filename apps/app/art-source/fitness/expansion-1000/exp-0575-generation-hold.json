@@ -1,0 +1,21 @@
+{
+  "exerciseId": "0575",
+  "englishName": "lever bicep curl",
+  "status": "hold-machine-lever-geometry",
+  "startAccepted": false,
+  "attempts": [
+    {
+      "attempt": 1,
+      "sha256": "33378712604083662e9e041d9be12275030ad921d88f020009c3be8ba6e0a7f5",
+      "reason": "Handles remain lap-height with unclear low extension; machine top lever hinge remains above elbow line and does not clearly represent fixed-elbow curl path. Grip clarified in second attempt, but mechanics not confidently acceptable."
+    },
+    {
+      "attempt": 2,
+      "sha256": "b8f272b154fb247e976bf01524b4b180e660aa3830951b7c07ac9622fadd328a",
+      "reason": "Handles remain lap-height with unclear low extension; machine top lever hinge remains above elbow line and does not clearly represent fixed-elbow curl path. Grip clarified in second attempt, but mechanics not confidently acceptable."
+    }
+  ],
+  "endpointGenerated": false,
+  "videoRun": false,
+  "readyMedia": false
+}

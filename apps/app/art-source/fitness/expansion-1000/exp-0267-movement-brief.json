@@ -1,0 +1,50 @@
+{
+  "order": 691,
+  "exerciseId": "0267",
+  "englishName": "crunch (hands overhead)",
+  "chineseName": "卷腹(双手过头)",
+  "equipmentId": "body weight",
+  "bodyPartId": "waist",
+  "muscles": {
+    "primaryIds": [
+      "abs"
+    ],
+    "primaryLabels": [
+      "腹肌"
+    ],
+    "secondaryIds": [
+      "hip-flexors"
+    ],
+    "secondaryLabels": [
+      "髋屈肌"
+    ]
+  },
+  "sourceSteps": [
+    "平躺，膝盖弯曲，双脚平放在地上。",
+    "将双臂伸直至头顶上方。",
+    "收紧腹肌，将上半身抬离地面，向前向膝盖弯曲。",
+    "在顶部停顿片刻，然后慢慢将上半身放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "descriptorSha256": "b54fd764391366c15944d8b723d37c744a0acdbf943cdcd627f940a0fc5874df",
+  "startPose": "仰卧屈膝双足落地，两臂近直伸向头顶后方的地面。",
+  "support": "初始头肩背髋地面，两足固定地面；两臂不压头。",
+  "grip": "无器械、双手可并拢但不抱颈。",
+  "jointMotion": "胸椎屈曲小幅卷起肩胛，两臂随上躯干保持耳旁过头，不变坐起。",
+  "path": "上身向膝方向短距离卷起，臀部足不移动。",
+  "camera": "固定低侧前30度，头画面左膝画面右，头后留直臂空间。",
+  "criticalChecks": [
+    "双手始终在头顶方向，不能改普通双手胸前卷腹。",
+    "肩胛离地即可，不做45度以上全坐起。",
+    "膝足固定，颈中立，不甩臂牵拉。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceStepsActuallyRead": true,
+  "sourceIssues": [],
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "oneWayGenerationSeconds": 4,
+    "return": "Only after actual one-way review, exact reversed frame order for return; not original8second continuous generation."
+  }
+}

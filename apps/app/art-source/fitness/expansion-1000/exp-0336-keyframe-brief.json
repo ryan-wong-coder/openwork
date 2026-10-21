@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "0336",
+  "englishName": "dumbbell lunge",
+  "sourceDescriptorSha256": "a3825ab819839e7acbea7f4437e02dfaf69e649e1413c707334bb55d8d98ce70",
+  "sourceSteps": [
+    "双脚分开与肩同宽站立，每只手各握一个哑铃。",
+    "右脚向前迈出一步，将身体降低至弓步位置。",
+    "降低身体时保持背部挺直、挺胸。",
+    "推动右脚跟回到起始位置。",
+    "左腿重复上述动作。",
+    "交替腿进行所需的重复次数。"
+  ],
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0336-reference.png",
+      "bytes": 1678452,
+      "sha256": "9879b781ff6ee78f48904a1eb047dc6a0b6a7f34fd7684f1aa1e5713390f2745"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0336-endpoint.png",
+      "bytes": 1687572,
+      "sha256": "81d1ef2e2534ab8b0d1182725226852dbe7553609b08b29e08e2bec9510917ce"
+    }
+  ],
+  "sourceTechniqueReviewedForProduction": true,
+  "clinicalCertification": false,
+  "producerActuallyViewedBothReferences": true,
+  "referenceTool": "built-in image_gen.imagegen",
+  "acceptedReferenceObservation": "Independent standing neutral-grip dumbbell start. Endpoint clearly steps one foot forward with its sole flat and bends both knees, rear heel raised and rear knee hovering, torso tall, both dumbbells remaining alongside hips. Both legs and all weights visible.",
+  "renderingAssumption": "One side of a controlled forward lunge is previewed, followed by the return. It does not claim to demonstrate the entire alternating-leg set or an exact measured knee angle.",
+  "selectedStartAttempt": 1,
+  "selectedEndAttempt": 1,
+  "videoAccepted": false,
+  "readyMedia": false
+}

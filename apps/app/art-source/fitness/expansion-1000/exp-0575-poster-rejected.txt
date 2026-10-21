@@ -1,0 +1,1 @@
+Start attempt1 rejected after actual view: Elbows/handles already too flexed at low start; hinges not aligned with elbow-level path, underhand grip not sufficiently explicit. sha256=33378712604083662e9e041d9be12275030ad921d88f020009c3be8ba6e0a7f5

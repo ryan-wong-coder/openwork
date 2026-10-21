@@ -1,0 +1,53 @@
+{
+  "order": 485,
+  "exerciseId": "0598",
+  "englishName": "lever seated hip adduction",
+  "chineseName": "杠杆坐姿髋内收",
+  "equipmentId": "leverage machine",
+  "bodyPartId": "upper legs",
+  "muscles": {
+    "primaryIds": [
+      "adductors"
+    ],
+    "primaryLabels": [
+      "内收肌"
+    ],
+    "secondaryIds": [
+      "gluteal",
+      "hamstring"
+    ],
+    "secondaryLabels": [
+      "臀肌",
+      "腘绳肌"
+    ]
+  },
+  "sourceSteps": [
+    "调整座椅高度并将自己放在机器上，背部靠在靠背上。",
+    "将脚放在脚踏板上并抓住手柄以保持稳定。",
+    "收紧内收肌，慢慢将双腿并拢，挤压大腿内侧。",
+    "在收缩高峰时暂停片刻，然后慢慢回到起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "descriptorSha256": "f1df17f9feede812f363411939ccaff41f0fdca13a0ffef1e06a43e240704c4e",
+  "startPose": "坐髋内收机，背靠垫、双髋中等外打开，内膝贴内侧护垫，双足踏板。",
+  "support": "臀背坐靠垫，双足各自踏板，双手抓固定侧柄。",
+  "grip": "手握侧柄稳定，非双手压膝。",
+  "jointMotion": "双髋内收把双腿向中线缓慢合拢，膝仍约90度。",
+  "path": "内膝挤内侧垫，左右杠杆绕座下轴向内回转。",
+  "camera": "固定前侧20度，看清两护垫在两腿之间的内侧。",
+  "criticalChecks": [
+    "内收护垫必须内膝接触，方向与0597相反。",
+    "两脚跟随各自踏板，脚不能突然落地/分离。",
+    "背髋贴垫，膝屈角稳定，无躯干摆动。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceStepsActuallyRead": true,
+  "sourceIssues": [],
+  "apparatusInterpretation": "Generic mechanically connected resistance apparatus, no brand-specific specification claimed.",
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "oneWayGenerationSeconds": 4,
+    "return": "Only after real one-way acceptance, exact reversed frames; not original8second continuous generation."
+  }
+}

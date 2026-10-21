@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "kind": "two-keyframe-illustration-plan",
+  "exerciseId": "0267",
+  "englishName": "crunch (hands overhead)",
+  "descriptorSha256": "b54fd764391366c15944d8b723d37c744a0acdbf943cdcd627f940a0fc5874df",
+  "movementBrief": "exp-0267-movement-brief.json",
+  "startImage": {
+    "file": "exp-0267-reference.png",
+    "sha256": "2fcf77eead475957ebd3e5be7519c636e899e541eab58410a42755fd3615ec5c",
+    "bytes": 1801918,
+    "width": 1672,
+    "height": 941
+  },
+  "endpointImage": {
+    "file": "exp-0267-endpoint.png",
+    "sha256": "2be7bb3e35075bf1d7899e8b97616fb8dde1aef6aeefe4a15f4667e254b8d964",
+    "bytes": 1762587,
+    "width": 1672,
+    "height": 941
+  },
+  "startPrompt": {
+    "file": "exp-0267-poster-prompt.txt",
+    "sha256": "dc33155de79a4c5dae5011534e9c4c4187e4a95a3cb50730ff4d7a0a78d45a06",
+    "bytes": 1169
+  },
+  "endpointPrompt": {
+    "file": "exp-0267-endpoint-prompt.txt",
+    "sha256": "04c649e847dc337d7270a348a2d88ef301c957b6e1e82e80ed9e14b563efb720",
+    "bytes": 677
+  },
+  "startTool": "built-in ImageGen",
+  "startImageAttempts": 1,
+  "endpointTool": "built-in ImageGen edit of accepted start",
+  "endpointEditAttempts": 1,
+  "fixedContactsAndScene": [
+    "初始头肩背髋地面，两足固定地面；两臂不压头。",
+    "无器械、双手可并拢但不抱颈。",
+    "fixed camera, ivory studio and original identity"
+  ],
+  "motion": "胸椎屈曲小幅卷起肩胛，两臂随上躯干保持耳旁过头，不变坐起。 上身向膝方向短距离卷起，臀部足不移动。",
+  "review": {
+    "startAndEndpointActuallyViewed": true,
+    "endpointDecision": "accepted-reference-for-parent-review",
+    "notes": [
+      "双手始终在头顶方向，不能改普通双手胸前卷腹。",
+      "肩胛离地即可，不做45度以上全坐起。",
+      "膝足固定，颈中立，不甩臂牵拉。"
+    ],
+    "wholeVideoViewed": false,
+    "readyMedia": false
+  },
+  "plannedVideo": {
+    "inputMode": "native first-and-last-frame",
+    "oneWaySeconds": 4,
+    "direction": "start-to-end",
+    "returnPlan": "Only after one-way actual visual acceptance, forward segment plus exact reversed frames for nominal8second illustration.",
+    "assemblyPerformed": false,
+    "videoGeneratedByThisAgent": false,
+    "originalEightSecondGeneration": false,
+    "existingEightSecondAttemptReused": false
+  }
+}

@@ -634,5 +634,29 @@
     "englishName": "dumbbell seated palms up wrist curl",
     "stem": "exp-0401",
     "kind": "mascot"
+  },
+  {
+    "exerciseId": "0659",
+    "englishName": "push-up (wall)",
+    "stem": "exp-0659",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0710",
+    "englishName": "side hip abduction",
+    "stem": "exp-0710",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0267",
+    "englishName": "crunch (hands overhead)",
+    "stem": "exp-0267",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0336",
+    "englishName": "dumbbell lunge",
+    "stem": "exp-0336",
+    "kind": "mascot"
   }
 ]

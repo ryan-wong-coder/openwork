@@ -1,0 +1,46 @@
+{
+  "order": 120,
+  "exerciseId": "0409",
+  "englishName": "dumbbell single leg calf raise",
+  "chineseName": "哑铃单腿提踵",
+  "equipmentId": "dumbbell",
+  "bodyPartId": "lower legs",
+  "muscles": {
+    "primaryIds": [
+      "calves"
+    ],
+    "primaryLabels": [
+      "小腿"
+    ],
+    "secondaryIds": [],
+    "secondaryLabels": []
+  },
+  "descriptorSha256": "761c4eb60d207f3304b36e112d6fbf819faab13b89c8bb3239b4afd0eabfd428",
+  "sourceSteps": [
+    "站在台阶或平台的边缘，脚后跟悬垂，脚趾放在台阶上。",
+    "一手握住哑铃，另一只手放在墙壁或栏杆上以获得支撑。",
+    "尽可能高地抬高脚跟，将身体抬起到脚趾上。",
+    "在顶部停顿片刻，然后慢慢将脚跟放回到台阶下方。",
+    "重复所需的重复次数，然后换另一条腿。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceStepsActuallyRead": true,
+  "sourceIssues": [],
+  "startPose": "站姿右单足前脚掌稳定木台阶边，右后跟低于台面，远足离地，单DB与墙扶。",
+  "support": "右前脚掌木台阶顶面；左掌墙面轻扶；非工作足悬空。",
+  "grip": "右手持一轻DB身侧自然下垂，左掌墙，无拉带。",
+  "jointMotion": "右踝跖屈抬跟，近直膝身体自然升高，再回低跟。",
+  "path": "前脚掌原地顶面固定，后跟在台阶边外上下弧。",
+  "camera": "固定侧前30度，近脚跟/台阶边/空中另一脚清楚。",
+  "criticalChecks": [
+    "只有一脚负重，不能双脚或把自由足踩上台。",
+    "必须真台阶且跟可低于顶面，不用地面版本替代。",
+    "DB自然随身体升，不能弯举/用手拉身体。"
+  ],
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "oneWayGenerationSeconds": 4,
+    "return": "Only after actual one-way review, use exact reversed frame order; not an original8second continuous generation."
+  }
+}

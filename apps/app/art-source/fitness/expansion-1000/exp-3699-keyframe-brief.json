@@ -1,0 +1,48 @@
+{
+  "canonicalExerciseId": "3699",
+  "englishName": "shoulder tap",
+  "sourceDescriptorSha256": "7fea8e18e32c2213eb2b48e479324b5d4a17e1b4d392f36c23716c5101ba8c59",
+  "sourceSteps": [
+    "从高平板支撑位置开始，双手直接放在肩膀下方，身体呈一条直线。",
+    "启动你的核心并将右手抬离地面，伸手拍打你的左肩。",
+    "将右手放回地面，然后用左手轻拍右肩，重复此操作。",
+    "继续交替轻拍肩膀，同时保持臀部和躯干稳定。",
+    "重复所需的重复次数。"
+  ],
+  "sourceStepsTechniqueReviewed": true,
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-3699-reference.png",
+      "bytes": 1813976,
+      "sha256": "a0d2ec52f8d183d681c0fd250a7cae3cd01e98dce3881358f44015315d4d5f17"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-3699-endpoint.png",
+      "bytes": 1762315,
+      "sha256": "2d547869c19b01d0e9f550bbd4da9af81fef2489f9ada0ac54d384f7f6162d48"
+    }
+  ],
+  "sourcePromptFiles": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-3699-poster-prompt.txt"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-3699-endpoint-prompt.txt"
+    }
+  ],
+  "posterTool": "built-in image_gen.imagegen",
+  "identityReference": {
+    "file": "apps/zeno-site/public/assets/mascot.webp",
+    "role": "identity only for start; endpoint edited accepted start"
+  },
+  "producerActuallyViewedStartAndEnd": true,
+  "observation": "Actually viewed both references: high plank from two palms to one far supporting straight arm and near bent arm crossing cream chest to opposite shoulder. Feet stay fixed, knees off mat and torso stable; only this side is depicted.",
+  "scope": "One contralateral shoulder tap only of the catalogue alternating exercise, not a full bilateral alternating round. Return synthesized by exact reversed reviewed forward frames.",
+  "restrictedUpstreamMediaUsed": false,
+  "readyMedia": false,
+  "notRegisteredByProducer": true
+}

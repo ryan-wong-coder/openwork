@@ -1,0 +1,53 @@
+{
+  "order": 357,
+  "exerciseId": "0592",
+  "englishName": "lever preacher curl",
+  "chineseName": "杠杆牧师凳弯举",
+  "equipmentId": "leverage machine",
+  "bodyPartId": "upper arms",
+  "muscles": {
+    "primaryIds": [
+      "biceps"
+    ],
+    "primaryLabels": [
+      "肱二头肌"
+    ],
+    "secondaryIds": [
+      "forearm"
+    ],
+    "secondaryLabels": [
+      "前臂"
+    ]
+  },
+  "sourceSteps": [
+    "调整座椅高度并将自己放在杠杆机上。",
+    "将上臂放在垫子上，并用反手握住手柄。",
+    "保持背部挺直，并将肘部放在垫子上。",
+    "呼气并将前臂向上臂弯曲，收缩二头肌。",
+    "在动作的最高点暂停片刻，挤压你的二头肌。",
+    "吸气并慢慢将手柄放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "descriptorSha256": "0597fbba6c0f7ce2a7155ce7519a339b62789fb09ba2235c76e403f25d2e6838",
+  "startPose": "坐牧师弯举机，双上臂与双肘完整靠斜垫，反握低位机器把手。",
+  "support": "臀坐垫、双足地面，上臂肘斜垫从腋下至肘连续支撑。",
+  "grip": "双掌向上握刚性机器把手，非DB或空手。",
+  "jointMotion": "保持上臂肘贴垫，仅屈肘使前臂向上臂靠近。",
+  "path": "机器把手绕肘线枢轴弧升，斜垫与座位不动。",
+  "camera": "固定前侧45度，可读上臂贴垫和前臂弧的完整范围。",
+  "criticalChecks": [
+    "真正上臂斜垫/肘固定，不是普通靠背curl。",
+    "机器把手与杠杆/转轴连续，不凭空断开。",
+    "头胸稳定，不能肘离垫抬整臂。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceStepsActuallyRead": true,
+  "sourceIssues": [],
+  "apparatusInterpretation": "Generic mechanically connected resistance apparatus, no brand-specific specification claimed.",
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "oneWayGenerationSeconds": 4,
+    "return": "Only after real one-way acceptance, exact reversed frames; not original8second continuous generation."
+  }
+}

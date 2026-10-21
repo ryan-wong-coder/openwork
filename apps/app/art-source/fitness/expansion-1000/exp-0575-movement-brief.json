@@ -1,0 +1,52 @@
+{
+  "order": 182,
+  "exerciseId": "0575",
+  "englishName": "lever bicep curl",
+  "chineseName": "杠杆二头弯举",
+  "equipmentId": "leverage machine",
+  "bodyPartId": "upper arms",
+  "muscles": {
+    "primaryIds": [
+      "biceps"
+    ],
+    "primaryLabels": [
+      "肱二头肌"
+    ],
+    "secondaryIds": [
+      "forearm"
+    ],
+    "secondaryLabels": [
+      "前臂"
+    ]
+  },
+  "sourceSteps": [
+    "调整座椅高度并将自己放在机器上，背部靠在垫子上。",
+    "反手握住手柄，手掌朝上，肘部靠近身体两侧。",
+    "呼气并向上弯曲手柄，收缩二头肌。",
+    "在动作的最高点暂停片刻，挤压你的二头肌。",
+    "吸气，慢慢将手柄放回起始位置，充分伸展双臂。",
+    "重复所需的重复次数。"
+  ],
+  "descriptorSha256": "cc46912baca8dc3cc5aba9aba1808bd992c177a74aada784cd6e90fde5060301",
+  "startPose": "机器坐姿靠背，双上臂贴体侧，反握两杠杆把手低位近伸肘。",
+  "support": "臀坐垫、背靠背垫、双足平地，机器底座着地。",
+  "grip": "双掌朝上反握各一连接杠杆的水平把手，非两个游离哑铃。",
+  "jointMotion": "双肘屈曲，把手向肩方向转上，上臂肘体侧位置不动。",
+  "path": "把手随两臂绕与肘对齐的机器侧枢轴弧升。",
+  "camera": "固定前侧30度，看清背垫、肘体侧与双侧真实杠杆连接。",
+  "criticalChecks": [
+    "普通靠背坐姿curl，不是牧师凳上臂靠前垫版本。",
+    "把手必须仍和机器杠杆连为一体，肘对准枢轴。",
+    "双足/背/上臂固定，不能耸肩拉机器或变自由DB。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceStepsActuallyRead": true,
+  "sourceIssues": [],
+  "apparatusInterpretation": "Generic mechanically connected resistance apparatus, no brand-specific specification claimed.",
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "oneWayGenerationSeconds": 4,
+    "return": "Only after real one-way acceptance, exact reversed frames; not original8second continuous generation."
+  }
+}

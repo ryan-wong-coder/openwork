@@ -11,6 +11,10 @@ describe an already covered technique; those labels improve catalogue coverage b
 do not receive a second target credit. `totalReady` includes the baseline and both
 types of accepted coverage. Every label still requires its own exact identity,
 independent files, full decoding and actual frame review.
+The current production run stopped after the official CLI reported
+`1200000136 算力不足`; `generation-stop.json` records the exact failure evidence
+without claiming a numeric balance. Accepted resources remain usable; incomplete
+artwork stays outside the runtime manifest and the remaining target is preserved.
 The planning inputs preserve their original text; reviewed instruction corrections in
 the app do not reshuffle that queue. `selection-history/` preserves the original
 selection bytes and the subsequent source-metadata revision.

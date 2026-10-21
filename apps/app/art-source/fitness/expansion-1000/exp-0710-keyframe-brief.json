@@ -1,0 +1,48 @@
+{
+  "canonicalExerciseId": "0710",
+  "englishName": "side hip abduction",
+  "sourceDescriptorSha256": "60ff30c030a780e551131a483318961e588ee294787a17235d2069786b1845d2",
+  "sourceSteps": [
+    "双脚分开与肩同宽站立，双手放在臀部。",
+    "将重心转移到一条腿上，并将另一条腿向一侧抬起，保持伸直。",
+    "在顶部暂停片刻，然后慢慢将腿放回起始位置。",
+    "在另一侧重复。",
+    "继续交替进行所需的重复次数。"
+  ],
+  "sourceStepsTechniqueReviewed": true,
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0710-reference.png",
+      "bytes": 1693674,
+      "sha256": "1011290f0a23cf3b8d80f8b38aad41f9d538abc0917c307d0ad66f8983e71258"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0710-endpoint.png",
+      "bytes": 1671436,
+      "sha256": "3a19ffdb3f6d354a20c1a67360c9af089de7276165b8d6f5f76cb9b647e44bf3"
+    }
+  ],
+  "sourcePromptFiles": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0710-poster-prompt.txt"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0710-endpoint-prompt.txt"
+    }
+  ],
+  "posterTool": "built-in image_gen.imagegen",
+  "identityReference": {
+    "file": "apps/zeno-site/public/assets/mascot.webp",
+    "role": "identity only for start; endpoint edited accepted start"
+  },
+  "producerActuallyViewedStartAndEnd": true,
+  "observation": "Actually viewed both references: frontal standing hands on hips, image-right support foot remains flat; image-left working leg extends sideways with near-straight knee, upright torso and level pelvis. No exact range-of-motion claim.",
+  "scope": "One side only of the catalogue alternating side hip abduction; opposite side is not demonstrated. Accepted forward raising followed by exact reversed-frame return.",
+  "restrictedUpstreamMediaUsed": false,
+  "readyMedia": false,
+  "notRegisteredByProducer": true
+}

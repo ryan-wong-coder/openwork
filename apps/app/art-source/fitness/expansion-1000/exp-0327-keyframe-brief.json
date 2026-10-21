@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "0327",
+  "englishName": "dumbbell incline row",
+  "sourceDescriptorSha256": "b111152806f2558f116bc3ce77e4f0a298a97a6a96c21b2acc02b58a6f90c47c",
+  "sourceSteps": [
+    "设置一个 45 度角的上斜凳。",
+    "双手各握一个哑铃，坐在长凳上，胸部靠在斜坡上。",
+    "充分伸展双臂，让哑铃从肩膀上垂直垂下。",
+    "将哑铃拉向胸部，将肩胛骨挤压在一起。",
+    "在最高点暂停片刻，然后慢慢将哑铃放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/app/src/assets/zeno/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "strategy": "paired start/end for one-way four-second generation, then only after actual visual approval forward/reverse composition",
+  "referencePoseReviewed": true,
+  "referenceApproval": "producer-self-review-authorized-by-root",
+  "reviewObservations": {
+    "start": "Front chest rests against inclined bench pad, hips on seat, both feet planted; two arms hang vertically with neutral-grip dumbbells.",
+    "end": "Both elbows are pulled backward behind ribs and dumbbells beside lower ribs; chest/hips/feet remain supported in the same pose."
+  },
+  "notes": [],
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "generationAttempts": [
+    {
+      "role": "start",
+      "attempt": 1,
+      "selected": true,
+      "sha256": "832452db7b07c31fc6ef2025b03f36185e18d46168adaba5053a4eacb4cfc575",
+      "retainedInRepository": true
+    },
+    {
+      "role": "end",
+      "attempt": 1,
+      "selected": true,
+      "sha256": "1326adab709c337c55e62710850d52880f89f01cca54893eab2ff8968cb1cf62",
+      "retainedInRepository": true
+    }
+  ],
+  "references": [
+    {
+      "role": "start",
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-0327-reference.png",
+      "bytes": 1787070,
+      "sha256": "832452db7b07c31fc6ef2025b03f36185e18d46168adaba5053a4eacb4cfc575"
+    },
+    {
+      "role": "end",
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-0327-endpoint.png",
+      "bytes": 1712363,
+      "sha256": "1326adab709c337c55e62710850d52880f89f01cca54893eab2ff8968cb1cf62"
+    }
+  ]
+}

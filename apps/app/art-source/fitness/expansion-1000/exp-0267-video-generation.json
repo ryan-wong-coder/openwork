@@ -1,0 +1,147 @@
+{
+  "canonicalExerciseId": "0267",
+  "englishName": "crunch (hands overhead)",
+  "nodeId": "98ef02b0-9788-4de0-9e56-2fbc19ed8b94",
+  "taskId": "20261021164403504398518",
+  "prompt": "首帧为 {{Node d5ffa4b7-0bd8-4bf2-979e-6bbf2201b7a2}}，尾帧为 {{Node 3fbc8c8d-b3c6-4206-9d53-13c9bdc01dd7}}。严格首尾帧4秒，固定镜头。泽诺仰卧屈膝双足始终落地，双臂伸直在耳旁过头方向。只缓慢收腹使头肩和肩胛小幅卷离地面，肋骨靠向骨盆，双臂作为上躯干整体随同抬起但保持耳旁过头，不甩臂到胸前。腰臀双脚不动，不做大幅坐起，不抬腿，不拉颈。保持原身份器械背景无变化，无字无声。\n",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0267-reference.png",
+      "sha256": "2fcf77eead475957ebd3e5be7519c636e899e541eab58410a42755fd3615ec5c",
+      "bytes": 1801918,
+      "nodeId": "d5ffa4b7-0bd8-4bf2-979e-6bbf2201b7a2"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0267-endpoint.png",
+      "sha256": "2be7bb3e35075bf1d7899e8b97616fb8dde1aef6aeefe4a15f4667e254b8d964",
+      "bytes": 1762587,
+      "nodeId": "3fbc8c8d-b3c6-4206-9d53-13c9bdc01dd7"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "Official CLI read-only node response after create without run and before the single paid run",
+    "nodeId": "98ef02b0-9788-4de0-9e56-2fbc19ed8b94",
+    "expectedReferenceNodeIds": [
+      "d5ffa4b7-0bd8-4bf2-979e-6bbf2201b7a2",
+      "3fbc8c8d-b3c6-4206-9d53-13c9bdc01dd7"
+    ],
+    "imageListOrder": [
+      "d5ffa4b7-0bd8-4bf2-979e-6bbf2201b7a2",
+      "3fbc8c8d-b3c6-4206-9d53-13c9bdc01dd7"
+    ],
+    "imageListNodeIds": [
+      "d5ffa4b7-0bd8-4bf2-979e-6bbf2201b7a2",
+      "3fbc8c8d-b3c6-4206-9d53-13c9bdc01dd7"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "b6958cd65adcca3307d40fe08512d435a5da79394e58d5f588ba1945e394b8a7",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083008",
+      "size": "193680"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2558568"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "95962"
+    }
+  },
+  "originalSha256": "1fed5d422d5b6becb1734e94b023df715ef621f0a67f8689c26766b1f69cf313",
+  "originalBytes": 2558568,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083008,
+  "oneWayEncodedSha256": "2707287c1285062b905f372f0efc622ed1907ccf670bd0bb58149e234b2fa26d",
+  "processing": "Seedance2.5 generated one ordered start/end4second one-way segment (actual 4.041667s). After actual16sample visual approval, encoded whole segment forward then exact reversed frame order to illustrate return, final 8.083008s. Return synthesized by reversal, not separately AI-generated; not an original8second continuous generation. H.264 CRF26,1024px,yuv420p,silent,faststart. WebP q86 poster extracted from actual first video frame.",
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0267-contact-8fps.jpg",
+    "contactSha256": "5b2a1f251c150f2463792ed5b2df9e2f4b362af667cbe4e2dd66fff6e6c18f4d",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "observation": "Root actually inspected the 16 forward and 64 final contact frames. The head and shoulder girdle curl a small distance from the floor while both arms remain extended alongside the ears and overhead rather than swinging forward. Lower back and hips stay grounded, bent knees and feet stay stable, and the torso does not rise into a sit-up. The return uses disclosed reversed forward footage.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0267-one-way-contact-4fps.jpg",
+      "contactSha256": "0f3d2308784f3c6e9a5cebe086bd70c1cb20e3d80461345f8d3e52bad2c3aa8f",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootReviewPending": false,
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually inspected the 16 forward and 64 final contact frames. The head and shoulder girdle curl a small distance from the floor while both arms remain extended alongside the ears and overhead rather than swinging forward. Lower back and hips stay grounded, bent knees and feet stay stable, and the torso does not rise into a sit-up. The return uses disclosed reversed forward footage.",
+    "producerObservationAtHandoff": "Actual16and64contacts reviewed. Overhead straight arms remain alongside ears throughout small shoulder-blade curl; head aligned with upper spine, lower back/hips/bent knees/feet stable. No arm swing toward knees, full sit-up or leg lift. Full final8.083333s decode passed."
+  },
+  "posterTool": "ffmpeg first generated video frame then cwebp q86; original ordered image references by built-in ImageGen",
+  "sourceDescriptorSha256": "b54fd764391366c15944d8b723d37c744a0acdbf943cdcd627f940a0fc5874df",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "parentAdmissionPending": true
+}

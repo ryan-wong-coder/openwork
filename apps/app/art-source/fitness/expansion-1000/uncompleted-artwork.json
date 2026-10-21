@@ -1,0 +1,258 @@
+{
+  "schemaVersion": 1,
+  "scope": "Preserved original source artwork without an accepted complete demonstration. Files are excluded from runtime; illustration selection, generated pose or paid task submission alone does not count as completed coverage. Per-exercise holds and briefs retain detailed findings.",
+  "generationStopped": true,
+  "stopEvidence": "generation-stop.json",
+  "files": [
+    {
+      "canonicalExerciseId": "0003",
+      "englishName": "air bike",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0003-reference.png",
+      "bytes": 2048711,
+      "sha256": "063a8ef75ca490a4780ba6aba986218496fa9a528a5fff454889f4a405a37a30",
+      "status": "reference-only-no-video-submitted",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "0006",
+      "englishName": "alternate heel touchers",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0006-endpoint.png",
+      "bytes": 1895847,
+      "sha256": "5cab15106f32ad2fab4ac6e0c79f0246ec6a94b3bd13f41bbbca87002a3fada6",
+      "status": "reference-pair-only-no-video-submitted",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "0006",
+      "englishName": "alternate heel touchers",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0006-reference.png",
+      "bytes": 1920419,
+      "sha256": "046b1bf822264dcd67b75b239f2b1c1a83ddf82a84c55dfa907fd89fe53f946d",
+      "status": "reference-pair-only-no-video-submitted",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "0033",
+      "englishName": "barbell decline bench press",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0033-reference-v2.png",
+      "bytes": 1819160,
+      "sha256": "e852614a988b9d35c6a8a6a48a94263f80f618d850fe3f09a356e4aebaac55c1",
+      "status": "held-source-artwork-no-accepted-video",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "0041",
+      "englishName": "barbell front raise",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0041-reference-v2.png",
+      "bytes": 1715897,
+      "sha256": "81a618a9779e4e162c2e585e3837250df5c8d70363cbc8ce249791be9cf506bd",
+      "status": "held-source-artwork-no-accepted-video",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "0082",
+      "englishName": "barbell reverse wrist curl",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0082-reference-v2.png",
+      "bytes": 1848055,
+      "sha256": "69e0f2b7d0ccacb03e4712e9033bb3d40b5abf3b858ca90815c2ccef7060aff9",
+      "status": "held-source-artwork-no-accepted-video",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "0262",
+      "englishName": "cross body crunch",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0262-reference.png",
+      "bytes": 1778211,
+      "sha256": "120d66a18ea4c4d84ad398f9c7112be0653f626bfc02543600a856790c29a984",
+      "status": "held-source-artwork-no-accepted-video",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "0292",
+      "englishName": "dumbbell one arm bent-over row",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0292-reference-v2.png",
+      "bytes": 1859366,
+      "sha256": "b3be1592f3a35ce36a814b00478d15224aea469edf8e3a9e146398485ead6699",
+      "status": "held-source-artwork-no-accepted-video",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "0300",
+      "englishName": "dumbbell deadlift",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0300-reference-v2.png",
+      "bytes": 1609861,
+      "sha256": "e4b4829195f9eb39095c9fffc3756611e8b8c39ad3403e8a7cacca2d24d4e16c",
+      "status": "reframed-start-only-no-video-submitted",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "0327",
+      "englishName": "dumbbell incline row",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0327-endpoint.png",
+      "bytes": 1712363,
+      "sha256": "1326adab709c337c55e62710850d52880f89f01cca54893eab2ff8968cb1cf62",
+      "status": "provider-safety-review-rejected-no-video-delivered",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "0327",
+      "englishName": "dumbbell incline row",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0327-reference.png",
+      "bytes": 1787070,
+      "sha256": "832452db7b07c31fc6ef2025b03f36185e18d46168adaba5053a4eacb4cfc575",
+      "status": "provider-safety-review-rejected-no-video-delivered",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "0345",
+      "englishName": "dumbbell lying one arm rear lateral raise",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0345-reference.png",
+      "bytes": 1866134,
+      "sha256": "594ecf1b52ea65b3e5be521e9ec712c6c0dc5dace694bd739cecd0122ab0a77f",
+      "status": "held-source-artwork-no-accepted-video",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "0363",
+      "englishName": "dumbbell one arm upright row",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0363-reference.png",
+      "bytes": 1769816,
+      "sha256": "3c1e1de3eb1a98e784f219934552515b6f8ba26cf09da5b335350b7c2f940179",
+      "status": "held-source-artwork-no-accepted-video",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "0534",
+      "englishName": "kettlebell goblet squat",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0534-endpoint.png",
+      "bytes": 1651408,
+      "sha256": "88e1bd88ca6bf3f409af9aea0b4384ead49c5c54e72e59dd344cc09246caab01",
+      "status": "reference-pair-node-created-without-paid-run",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "0534",
+      "englishName": "kettlebell goblet squat",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0534-reference.png",
+      "bytes": 1669031,
+      "sha256": "eb3832bdc28b4a0807100436ec2502edc1cdd5e71bcc2df0d1e72f271c076cee",
+      "status": "reference-pair-node-created-without-paid-run",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "0592",
+      "englishName": "lever preacher curl",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0592-reference.png",
+      "bytes": 1836622,
+      "sha256": "df05af7326b1ca25636ea1c1d5051219293416dc60249ad93b5f70b5c6652b6e",
+      "status": "accepted-start-endpoint-rejected-no-video-submitted",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "0597",
+      "englishName": "lever seated hip abduction",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0597-reference.png",
+      "bytes": 1871159,
+      "sha256": "17faf6f73416359d26bb5bd05d09c3b0299bf7dc6f66614b8e8222d246285809",
+      "status": "reference-only-no-video-submitted",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "0630",
+      "englishName": "mountain climber",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0630-reference.png",
+      "bytes": 1877287,
+      "sha256": "0eb7c0c9092503378a09f659101a1150312f290b0afb5704a46599dec3762415",
+      "status": "held-source-artwork-no-accepted-video",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "0871",
+      "englishName": "tuck crunch",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0871-endpoint.png",
+      "bytes": 1952037,
+      "sha256": "19fca4a24845cd248e82b4c3b6408c20f5c008647ad1470e6cc354bece16fec6",
+      "status": "official-insufficient-compute-no-task-id-observed",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "0871",
+      "englishName": "tuck crunch",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0871-reference.png",
+      "bytes": 2003954,
+      "sha256": "852ea9bb23030c9b58673d363d60f765a4cb50ad8f0c7a0029f96b3914c1018b",
+      "status": "official-insufficient-compute-no-task-id-observed",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "1160",
+      "englishName": "burpee",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1160-reference.png",
+      "bytes": 1582918,
+      "sha256": "b4641766bdc10321da786522cd395f3d92e3e46f1e1ca94911eb52ddabe1e535",
+      "status": "held-source-artwork-no-accepted-video",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "1377",
+      "englishName": "calf stretch with hands against wall",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1377-reference.png",
+      "bytes": 1888709,
+      "sha256": "9c9fe52353403525f113c4906eda5b92fc911c6000e33125b7639f6b67e60a76",
+      "status": "held-source-artwork-no-accepted-video",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "3006",
+      "englishName": "resistance band seated hip abduction",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-3006-reference.png",
+      "bytes": 1847890,
+      "sha256": "793014d40eadd980d018056b9db063de6048d45dc7ee34e9bbea9fc938eb0a72",
+      "status": "previous-paid-task-result-unknown-no-resubmission",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "3699",
+      "englishName": "shoulder tap",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-3699-endpoint.png",
+      "bytes": 1762315,
+      "sha256": "2d547869c19b01d0e9f550bbd4da9af81fef2489f9ada0ac54d384f7f6162d48",
+      "status": "official-insufficient-compute-no-task-id-observed",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    },
+    {
+      "canonicalExerciseId": "3699",
+      "englishName": "shoulder tap",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-3699-reference.png",
+      "bytes": 1813976,
+      "sha256": "a0d2ec52f8d183d681c0fd250a7cae3cd01e98dce3881358f44015315d4d5f17",
+      "status": "official-insufficient-compute-no-task-id-observed",
+      "readyMedia": false,
+      "creditedTowardTarget": false
+    }
+  ]
+}

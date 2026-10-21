@@ -1,0 +1,52 @@
+{
+  "order": 624,
+  "exerciseId": "0363",
+  "englishName": "dumbbell one arm upright row",
+  "chineseName": "哑铃单臂直立划船",
+  "equipmentId": "dumbbell",
+  "bodyPartId": "shoulders",
+  "muscles": {
+    "primaryIds": [
+      "deltoids"
+    ],
+    "primaryLabels": [
+      "三角肌"
+    ],
+    "secondaryIds": [
+      "trapezius",
+      "biceps"
+    ],
+    "secondaryLabels": [
+      "斜方肌",
+      "肱二头肌"
+    ]
+  },
+  "descriptorSha256": "a4e712e624b454fd49fcc9546c60c4906dec00d7819f46ffa97b0e45525c74ca",
+  "sourceSteps": [
+    "双脚分开与肩同宽站立，一只手握住哑铃，正握。",
+    "让哑铃悬挂在大腿前面，与手臂保持一定距离，手掌朝向身体。",
+    "保持背部挺直，核心收紧，呼气，将哑铃笔直向上举至下巴，用肘部引导。",
+    "在顶部停顿片刻，然后吸气，慢慢将哑铃放回起始位置。",
+    "重复所需的重复次数，然后换到另一只手臂。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceStepsActuallyRead": true,
+  "sourceIssues": [],
+  "startPose": "站姿一手正握DB在大腿前，另一手轻扶髋，躯干稳。",
+  "support": "双足全脚掌着地、骨盆躯干头稳定，空手髋无支撑器械。",
+  "grip": "右单手正握一DB，掌向躯干，腕自然对齐。",
+  "jointMotion": "负重侧肘引导向外上方抬，DB沿身体近前方竖直上提，不是二头弯举或直臂前举。",
+  "path": "DB从大腿前到下巴下方舒适上胸位，肘在手腕外上方。",
+  "camera": "固定正前轻15度，全身可看清负重肘引导与DB身体近前路径。",
+  "criticalChecks": [
+    "保持正握与单DB，不能旋后作弯举。",
+    "肘引导在手腕上方外侧，不直臂前平举。",
+    "不后仰/耸肩摆身，无换手或第二个重量。"
+  ],
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "oneWayGenerationSeconds": 4,
+    "return": "Only after actual one-way review, use exact reversed frame order; not an original8second continuous generation."
+  }
+}

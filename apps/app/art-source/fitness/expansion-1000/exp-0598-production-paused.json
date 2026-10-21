@@ -1,0 +1,19 @@
+{
+  "exerciseId": "0598",
+  "briefFile": "exp-0598-movement-brief.json",
+  "status": "stopped-account-quota",
+  "stopReason": "Shared explicit quota STOP; no further image or paid video submissions permitted.",
+  "readyMedia": false,
+  "videoRun": false,
+  "runtimeRegistration": false,
+  "startAttempts": 0,
+  "startActuallyViewed": false,
+  "endpointAttempts": 0,
+  "completePairAccepted": false,
+  "sourceStepsReadAndIndependentDraftBriefWritten": true,
+  "posterPrompt": {
+    "file": "exp-0598-poster-prompt.txt",
+    "sha256": "ebef66bee77e4bd8f1162f609ffb84d2675dcfdc2dfac2cc2e5fde6167f59efc",
+    "bytes": 1327
+  }
+}

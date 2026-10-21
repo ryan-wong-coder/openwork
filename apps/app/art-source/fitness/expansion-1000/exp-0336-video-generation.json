@@ -1,0 +1,167 @@
+{
+  "canonicalExerciseId": "0336",
+  "englishName": "dumbbell lunge",
+  "nodeId": "607492bc-a3c5-4450-9467-1ac800f3d409",
+  "taskId": "20261021165003906318518",
+  "prompt": "首帧是 {{Node a0408927-f9bf-4c9f-9c6a-d054edc0ffdb}}，尾帧是 {{Node 84d470e5-6292-4bf4-8110-1952cafe1cc0}}。保持原水獭、两只灰六角哑铃、握法、单青柠斜带、象牙背景、固定机位和尺度不变。4秒内只做一次朝画面左方的有控制前弓步下降：从双足站稳首帧开始，一条腿向前迈出一次短稳步并以全脚掌/脚跟着地，后足留在原地并提起后跟、前掌/脚趾贴地，随后同时弯曲前后膝，将髋部降低到尾帧。前膝跟脚尖方向一致、前小腿近竖直，后膝向地面降低但不跪地，绝不把后腿伸直变成拉伸。躯干和头直立不前趴，两臂自然直垂，哑铃不卷举、不碰地、不换手。只做这一侧一次前迈/下降并停在尾帧，不走路、不连续跨步、不换腿、不弹跳、不返回。全身体、双脚、尾和两哑铃持续完整入镜，无运镜、剪切、额外肢体、文字、水印或音频。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0336-reference.png",
+      "bytes": 1678452,
+      "sha256": "9879b781ff6ee78f48904a1eb047dc6a0b6a7f34fd7684f1aa1e5713390f2745",
+      "nodeId": "a0408927-f9bf-4c9f-9c6a-d054edc0ffdb"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0336-endpoint.png",
+      "bytes": 1687572,
+      "sha256": "81d1ef2e2534ab8b0d1182725226852dbe7553609b08b29e08e2bec9510917ce",
+      "nodeId": "84d470e5-6292-4bf4-8110-1952cafe1cc0"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "607492bc-a3c5-4450-9467-1ac800f3d409",
+    "expectedReferenceNodeIds": [
+      "a0408927-f9bf-4c9f-9c6a-d054edc0ffdb",
+      "84d470e5-6292-4bf4-8110-1952cafe1cc0"
+    ],
+    "imageListOrder": [
+      "a0408927-f9bf-4c9f-9c6a-d054edc0ffdb",
+      "84d470e5-6292-4bf4-8110-1952cafe1cc0"
+    ],
+    "imageListNodeIds": [
+      "a0408927-f9bf-4c9f-9c6a-d054edc0ffdb",
+      "84d470e5-6292-4bf4-8110-1952cafe1cc0"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "c9a2736a1d193acf2df848d30bb64aa25220f3d17a3187fbf90c05f27f766596",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true,
+    "actualReadOnlyPromptExactMatch": true,
+    "promptSha256": "3c2b8501d8df44aac65fbad067adf8b835528b01eec8020108f14681d730545b",
+    "promptReferenceNodeIdsInOrder": [
+      "a0408927-f9bf-4c9f-9c6a-d054edc0ffdb",
+      "84d470e5-6292-4bf4-8110-1952cafe1cc0"
+    ],
+    "unexpandedPlaceholders": false
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "276851"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "3104980"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "129546"
+    }
+  },
+  "originalSha256": "5e6f23b2da4e21ecb4cacd029d7dd26a7dc7a331912eb9bc010548997ce8694f",
+  "originalBytes": 3104980,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "8fd1c44582075c71d0d5eba785c658296940844939bd15ca485732849dc19d4d",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of dumbbell lunge from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, the complete forward frames were concatenated with the exact reversed frames, yielding 8.083333 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. Illustrates one controlled repetition, not a complete training set or prescribed training duration.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0336-contact-8fps.jpg",
+    "contactSha256": "e68051ada05d76135ea5b4067f5e1291f4471d2f3403c4261be028298b2b0714",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Root actually inspected the 16 forward and 64 final contact frames. Mascot steps one foot forward and plants the full sole, then lowers the rear knee while the rear heel rises and front knee bends. Torso stays upright and the two dumbbells remain hanging beside the body without curling. This is a single-side forward lunge entry and reversed return, not a complete alternating walking sequence; no exact knee angle is claimed.",
+    "producerDetailFramesReviewedSeconds": [],
+    "rootDetailFramesReviewedSeconds": [],
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0336-one-way-contact-4fps.jpg",
+      "contactSha256": "e01c3960ce6c361b5aad30820bda9a4b66942032dce79cc8eaaace3da08d83a2",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually inspected the 16 forward and 64 final contact frames. Mascot steps one foot forward and plants the full sole, then lowers the rear knee while the rear heel rises and front knee bends. Torso stays upright and the two dumbbells remain hanging beside the body without curling. This is a single-side forward lunge entry and reversed return, not a complete alternating walking sequence; no exact knee angle is claimed.",
+    "producerObservationAtHandoff": "Actually viewed16 forward and64 final samples: one controlled forward step plants the front sole, then both knees bend into forward/back lunge with rear heel raised and rear knee hovering.; Torso stays tall and both dumbbells hang neutrally at sides, with no weight curl, continuous walking, alternating-leg set or jump.; Final return is the exact reverse of the accepted controlled forward step/lunge segment; no independently generated return claim. Producer actually viewed 16 forward and 64 final samples; one-way and final full decodes passed."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "a3825ab819839e7acbea7f4437e02dfaf69e649e1413c707334bb55d8d98ce70",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true
+}

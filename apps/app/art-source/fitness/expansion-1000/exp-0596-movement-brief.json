@@ -1,0 +1,54 @@
+{
+  "order": 289,
+  "exerciseId": "0596",
+  "englishName": "lever seated fly",
+  "chineseName": "杠杆坐姿飞鸟",
+  "equipmentId": "leverage machine",
+  "bodyPartId": "chest",
+  "muscles": {
+    "primaryIds": [
+      "chest"
+    ],
+    "primaryLabels": [
+      "胸肌"
+    ],
+    "secondaryIds": [
+      "deltoids",
+      "serratus"
+    ],
+    "secondaryLabels": [
+      "三角肌",
+      "前锯肌"
+    ]
+  },
+  "sourceSteps": [
+    "调整座椅高度并将自己放在机器上，背部靠在垫子上。",
+    "旋前抓住手柄，并保持肘部稍微弯曲。",
+    "呼气并将手柄向前推，将它们放在胸前。",
+    "暂停片刻，挤压胸部肌肉。",
+    "吸气并慢慢回到起始位置，让胸部肌肉伸展。",
+    "重复所需的重复次数。"
+  ],
+  "descriptorSha256": "8c712eebbd771362bdcac074f22eacbf348300dbadd2b6798ccf2eaf1e0ff643",
+  "startPose": "坐胸飞鸟机背贴垫，双臂肩高向两侧打开微屈，旋前握水平柄。",
+  "support": "背臀贴靠垫、双足平地，座及主框架稳定。",
+  "grip": "两掌朝下正握两个水平机器柄，不改中立垂直柄。",
+  "jointMotion": "保持肘微屈角度，双肩水平内收把手柄向胸前合拢。",
+  "path": "左右刚性悬臂绕肩平面枢轴由开到前合，非伸肘胸推。",
+  "camera": "固定正前略侧30度，读背垫/开臂和胸前合拢，两手不完全遮挡。",
+  "criticalChecks": [
+    "背贴垫、外展开臂起始，区别0601胸贴垫反飞鸟。",
+    "肘角不大变，不能变machine chest press。",
+    "两水平柄都真实连接悬臂，不能变自由重量。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceStepsActuallyRead": true,
+  "sourceIssues": [],
+  "apparatusInterpretation": "Generic mechanically connected resistance apparatus, no brand-specific specification claimed.",
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "oneWayGenerationSeconds": 4,
+    "return": "Only after real one-way acceptance, exact reversed frames; not original8second continuous generation."
+  }
+}

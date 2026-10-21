@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "status": "producing",
+  "status": "stopped-provider-insufficient-compute",
   "targetAdditional": 1000,
-  "acceptedAdditional": 72,
+  "acceptedAdditional": 76,
   "baselineReady": 32,
-  "totalReady": 106,
-  "additionalCanonicalCoverage": 74,
+  "totalReady": 110,
+  "additionalCanonicalCoverage": 78,
   "supplementalCoverage": [
     {
       "exerciseId": "0817",
@@ -24,7 +24,7 @@
       "reason": "The complete source steps are identical and both demonstrations use two separate dumbbells raised forward together to shoulder height; the weighted versus dumbbell label does not create a different technique."
     }
   ],
-  "remainingTarget": 928,
+  "remainingTarget": 924,
   "budgetScope": "Existing current-account credits only; no recharge or account switching. Paid dispatch stops on explicit insufficient-credit terminal output.",
   "creditsRemaining": null,
   "creditsRemainingKnown": false,
@@ -389,6 +389,29 @@
       "exerciseId": "0401",
       "englishName": "dumbbell seated palms up wrist curl",
       "assetStem": "exp-0401"
+    },
+    {
+      "exerciseId": "0659",
+      "englishName": "push-up (wall)",
+      "assetStem": "exp-0659"
+    },
+    {
+      "exerciseId": "0710",
+      "englishName": "side hip abduction",
+      "assetStem": "exp-0710"
+    },
+    {
+      "exerciseId": "0267",
+      "englishName": "crunch (hands overhead)",
+      "assetStem": "exp-0267"
+    },
+    {
+      "exerciseId": "0336",
+      "englishName": "dumbbell lunge",
+      "assetStem": "exp-0336"
     }
-  ]
+  ],
+  "generationStopped": true,
+  "stopEvidence": "generation-stop.json",
+  "explicitInsufficientComputeObserved": true
 }

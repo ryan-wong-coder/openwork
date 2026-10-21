@@ -1,0 +1,49 @@
+{
+  "canonicalExerciseId": "0659",
+  "englishName": "push-up (wall)",
+  "sourceDescriptorSha256": "5bb6d49113adad4c16f8351f8c42a201d897ca0ff70b8024614273dbe0abac67",
+  "sourceSteps": [
+    "面向墙壁站立，距离大约一臂距离。",
+    "将双手放在墙上，与肩同高，距离略宽于肩宽。",
+    "后退几英尺，保持身体挺直，双脚分开与臀部同宽。",
+    "弯曲肘部，将胸部向墙壁降低，保持身体呈一条直线。",
+    "推回起始位置，伸直手臂。",
+    "重复所需的重复次数。"
+  ],
+  "sourceStepsTechniqueReviewed": true,
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0659-reference.png",
+      "bytes": 1689938,
+      "sha256": "ca85d766623a8a0af0928fdb98f8901703718498302c5c5608563d6b0c4ab719"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0659-endpoint.png",
+      "bytes": 1679840,
+      "sha256": "abab4f3c44c9620b2962cf632e2f5d93cc7820ca01fe76e3220767627db63052"
+    }
+  ],
+  "sourcePromptFiles": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0659-poster-prompt.txt"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0659-endpoint-prompt.txt"
+    }
+  ],
+  "posterTool": "built-in image_gen.imagegen",
+  "identityReference": {
+    "file": "apps/zeno-site/public/assets/mascot.webp",
+    "role": "identity only for start; endpoint edited accepted start"
+  },
+  "producerActuallyViewedStartAndEnd": true,
+  "observation": "Actually viewed accepted start and edited endpoint: both paws stay at wall, feet remain planted, elbows flex while the inclined torso and legs remain aligned. Short controlled lowering; no exact elbow-angle claim.",
+  "scope": "One reversible wall push-up lowering preview; return synthesized by exact reversed accepted forward frames after review.",
+  "restrictedUpstreamMediaUsed": false,
+  "readyMedia": false,
+  "notRegisteredByProducer": true
+}

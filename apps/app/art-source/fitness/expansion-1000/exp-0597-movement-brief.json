@@ -1,0 +1,48 @@
+{
+  "order": 410,
+  "exerciseId": "0597",
+  "englishName": "lever seated hip abduction",
+  "chineseName": "杠杆坐姿髋外展",
+  "equipmentId": "leverage machine",
+  "bodyPartId": "upper legs",
+  "muscles": {
+    "primaryIds": [
+      "gluteal"
+    ],
+    "primaryLabels": [
+      "臀肌"
+    ],
+    "secondaryIds": [],
+    "secondaryLabels": []
+  },
+  "sourceSteps": [
+    "调整座椅高度，使膝盖成 90 度角。",
+    "坐在机器上，背部靠在靠背上，双脚放在脚踏板上。",
+    "将手放在侧手柄上以保持稳定性。",
+    "启动外展肌并慢慢将双腿分开，远离身体中线。",
+    "动作结束时暂停片刻，然后慢慢将双腿放回到起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "descriptorSha256": "37ea9b11c8cfb0e603f212ecc17e6e009ca183d259eec97fb89c969ef34954ec",
+  "startPose": "坐髋外展机，背靠垫、髋膝约90度，双膝初始靠近髋宽、外膝贴外侧护垫。",
+  "support": "臀靠背座垫，双足各自踏板，手握座两侧固定柄。",
+  "grip": "双爪侧手柄稳定，不抓膝。",
+  "jointMotion": "双髋外展把膝向两侧打开，膝角维持约90度。",
+  "path": "外膝推动外侧垫和下方杠杆绕座下髋轴打开，脚随踏板移动。",
+  "camera": "固定正前略侧20度，能辨外膝垫接触与双脚踏板。",
+  "criticalChecks": [
+    "外展必须护垫在外膝，不是内膝向内夹。",
+    "双脚与同侧踏板始终接触，机器支架固定。",
+    "躯干背垫贴合，不能膝伸展或站起。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceStepsActuallyRead": true,
+  "sourceIssues": [],
+  "apparatusInterpretation": "Generic mechanically connected resistance apparatus, no brand-specific specification claimed.",
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "oneWayGenerationSeconds": 4,
+    "return": "Only after real one-way acceptance, exact reversed frames; not original8second continuous generation."
+  }
+}

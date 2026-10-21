@@ -1,0 +1,51 @@
+{
+  "order": 673,
+  "exerciseId": "0262",
+  "englishName": "cross body crunch",
+  "chineseName": "交叉卷腹",
+  "equipmentId": "body weight",
+  "bodyPartId": "waist",
+  "muscles": {
+    "primaryIds": [
+      "abs"
+    ],
+    "primaryLabels": [
+      "腹肌"
+    ],
+    "secondaryIds": [
+      "obliques"
+    ],
+    "secondaryLabels": [
+      "腹斜肌"
+    ]
+  },
+  "sourceSteps": [
+    "平躺，膝盖弯曲，双脚平放在地上。",
+    "将双手放在脑后，肘部朝外。",
+    "收紧腹肌，将上半身抬离地面，然后扭转，使右肘靠近左膝盖。",
+    "在顶部停顿片刻，然后慢慢将上半身放回起始位置。",
+    "在另一侧重复，将左肘靠近右膝盖。",
+    "重复所需的重复次数。"
+  ],
+  "descriptorSha256": "c40f3d4500bed8d7dcd245744e8c435922418d5c84deef1a8fad41f1c1d111be",
+  "startPose": "仰卧屈膝双足地，双手轻扶脑后、肘朝外。",
+  "support": "臀部与双足地面固定，起始肩头地面，颈无拉扯。",
+  "grip": "双手仅轻扶后脑，不紧扣牵拉。",
+  "jointMotion": "右肩小幅卷起并向左膝扭转，右肘靠近左膝但不强求接触，另一肩相对低。",
+  "path": "从仰卧到单侧斜向上胸部卷转，然后反向回原位；示范一侧，另一侧按文字重复。",
+  "camera": "固定稍高侧前45度，能看见胸部扭转和对侧膝，两足完整。",
+  "criticalChecks": [
+    "双足保持地面，不做交替蹬腿自行车。",
+    "肩躯干卷转而非仅夹肘或拉头。",
+    "骨盆不侧滚，颈中立，肘膝无需触碰。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceStepsActuallyRead": true,
+  "sourceIssues": [],
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "oneWayGenerationSeconds": 4,
+    "return": "Only after actual one-way review, exact reversed frame order for return; not original8second continuous generation."
+  }
+}

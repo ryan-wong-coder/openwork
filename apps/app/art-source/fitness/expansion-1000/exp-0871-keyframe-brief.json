@@ -1,0 +1,48 @@
+{
+  "canonicalExerciseId": "0871",
+  "englishName": "tuck crunch",
+  "sourceDescriptorSha256": "41c5fff554194f95c66937adf810aca87fc31b0e4fabb04c294f3222acf9e7ac",
+  "sourceSteps": [
+    "平躺，膝盖弯曲，双脚平放在地上。",
+    "将双手放在脑后，肘部朝外。",
+    "收紧腹肌，将肩胛骨抬离地面，将膝盖靠近胸部，同时将上半身卷向膝盖。",
+    "在顶部停顿片刻，然后慢慢降低肩胛骨并将双腿伸展回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "sourceStepsTechniqueReviewed": true,
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0871-reference.png",
+      "bytes": 2003954,
+      "sha256": "852ea9bb23030c9b58673d363d60f765a4cb50ad8f0c7a0029f96b3914c1018b"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0871-endpoint.png",
+      "bytes": 1952037,
+      "sha256": "19fca4a24845cd248e82b4c3b6408c20f5c008647ad1470e6cc354bece16fec6"
+    }
+  ],
+  "sourcePromptFiles": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0871-poster-prompt.txt"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0871-endpoint-prompt.txt"
+    }
+  ],
+  "posterTool": "built-in image_gen.imagegen",
+  "identityReference": {
+    "file": "apps/zeno-site/public/assets/mascot.webp",
+    "role": "identity only for start; endpoint edited accepted start"
+  },
+  "producerActuallyViewedStartAndEnd": true,
+  "observation": "Actually viewed start and endpoint: bent-knee feet-flat supine start transitions to both bent knees lifted toward chest and small shoulder curl, paws behind head and elbows open; low back and pelvis stay grounded, no sit-up or straight-leg raise.",
+  "scope": "One reversible tuck-crunch forward curling and bent-knee tuck preview, with return synthesized by exact reversed frames after review.",
+  "restrictedUpstreamMediaUsed": false,
+  "readyMedia": false,
+  "notRegisteredByProducer": true
+}

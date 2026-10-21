@@ -1,0 +1,27 @@
+{
+  "exerciseId": "0597",
+  "briefFile": "exp-0597-movement-brief.json",
+  "status": "stopped-account-quota",
+  "stopReason": "Shared explicit quota STOP; no further image or paid video submissions permitted.",
+  "readyMedia": false,
+  "videoRun": false,
+  "runtimeRegistration": false,
+  "startAttempts": 1,
+  "startActuallyViewed": true,
+  "startDecision": "accepted-reference-only",
+  "startImage": {
+    "file": "exp-0597-reference.png",
+    "sha256": "17faf6f73416359d26bb5bd05d09c3b0299bf7dc6f66614b8e8222d246285809",
+    "bytes": 1871159,
+    "width": 1672,
+    "height": 941
+  },
+  "startPrompt": {
+    "file": "exp-0597-poster-prompt.txt",
+    "sha256": "0c0d2ee430e0ebe1fe38ff177f113e2317c0205f9927a4ebde783b878c7df826",
+    "bytes": 1354
+  },
+  "startObservation": "Back/hips supported, knees90degrees, outer-knee resistance pads, both feet contact linked footplates, hands side grips; full machine/body visible.",
+  "endpointAttempts": 0,
+  "completePairAccepted": false
+}

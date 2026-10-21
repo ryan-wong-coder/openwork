@@ -1,0 +1,31 @@
+{
+  "canonicalExerciseId": "0534",
+  "englishName": "kettlebell goblet squat",
+  "sourceDescriptorSha256": "66af6537d875690ace1cac83672118a9fe3e76bcc06a361d24bd1085947ad753",
+  "sourceSteps": [
+    "双脚分开与肩同宽站立，双手握住壶铃靠近胸部。",
+    "保持胸部挺直，核心收紧，弯曲膝盖和臀部，将身体降低至蹲姿。",
+    "继续降低，直到大腿与地面平行，或者尽可能低。",
+    "在底部停顿片刻，然后推动脚后跟回到起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0534-reference.png",
+      "bytes": 1669031,
+      "sha256": "eb3832bdc28b4a0807100436ec2502edc1cdd5e71bcc2df0d1e72f271c076cee"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0534-endpoint.png",
+      "bytes": 1651408,
+      "sha256": "88e1bd88ca6bf3f409af9aea0b4384ead49c5c54e72e59dd344cc09246caab01"
+    }
+  ],
+  "referencesActuallyViewed": true,
+  "approvedPairObservations": "Root viewed both full images: a single handled kettlebell held at upper chest with two paws; same foot marks and frame. End shows bent hips and knees with both heels grounded; modest short-legged mascot squat depth without a numerical angle claim.",
+  "renderingAssumption": "Original stylized otter anatomy illustrates a comfortable knee and hip squat range; exact depth and human biomechanics are not measured.",
+  "timingDisclosure": "One requested four-second goblet-squat lowering phase followed, only after actual frame review, by the exact reversed return; no separately generated return, measured squat depth or load physics claim.",
+  "readyMedia": false
+}

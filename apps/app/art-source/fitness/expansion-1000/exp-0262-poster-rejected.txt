@@ -1,0 +1,2 @@
+Start1 rejected: upper body/head already curled up rather than shoulder-blades flat on floor at low start. sha256=9e4ec75dd924b7d15f3741cf2eff3afa36aa1afe4b98b977d30b8867b4b7fe8a
+Endpoint1 rejected: looks like symmetric plain crunch; required contralateral torso rotation not clearly visible. sha256=1e1e8f0ec087e86ecc65bb8b64ef532d1f9f459cd9116b887863a24ad5eaffa0

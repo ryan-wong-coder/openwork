@@ -1,0 +1,2 @@
+Start attempt1 rejected after actual view: Underhand palms not explicitly readable; lower-pad edge and elbow/forearm separation need clearer low extension. sha256=dc05322f84568d2c40f8a2d64521770a4ba47367ac38c5b043f4232d2c2827e7
+Endpoint1 rejected after actual view: both elbows moved from low preacher-pad edge to high pad, lifting/repositioning upper arms instead of fixed-elbow curl. sha256=8a1514cd9643b5242db8e20318ad50ab440e30255b9024f1f6ebd4887eeced5c

@@ -1,0 +1,158 @@
+{
+  "canonicalExerciseId": "0659",
+  "englishName": "push-up (wall)",
+  "nodeId": "6338fc1c-d38b-464e-80d0-8ade2725b5b0",
+  "taskId": "20261021165803237798518",
+  "prompt": "首帧为 {{Node 0bf3e12f-e2a5-4dd3-bb2d-caeaefb15940}}，尾帧为 {{Node 5612c5a3-0968-43b9-a731-f96dad97226c}}。4秒内只做一次靠墙俯卧撑下降：双爪留在墙面原始两个接触位置和肩高，双脚全脚掌留在原锚点，膝盖长直不弯。双肘逐渐弯曲，胸与头随整个直线身体靠近墙面到尾帧，臀部不屈折、不后坐，不变小腿拉伸或弓步。头肩髋踝持续同一直线，尾巴始终不撑地，不抬脚跟、不移动脚、无第二次重复；到尾帧暂停。 同一原创青色奶油水獭与青柠斜肩带、象牙摄影棚，镜头固定不推拉缩放裁边，全部身体与器械完整入镜，无文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0659-reference.png",
+      "bytes": 1689938,
+      "sha256": "ca85d766623a8a0af0928fdb98f8901703718498302c5c5608563d6b0c4ab719",
+      "nodeId": "0bf3e12f-e2a5-4dd3-bb2d-caeaefb15940"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0659-endpoint.png",
+      "bytes": 1679840,
+      "sha256": "abab4f3c44c9620b2962cf632e2f5d93cc7820ca01fe76e3220767627db63052",
+      "nodeId": "5612c5a3-0968-43b9-a731-f96dad97226c"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "6338fc1c-d38b-464e-80d0-8ade2725b5b0",
+    "expectedReferenceNodeIds": [
+      "0bf3e12f-e2a5-4dd3-bb2d-caeaefb15940",
+      "5612c5a3-0968-43b9-a731-f96dad97226c"
+    ],
+    "imageListOrder": [
+      "0bf3e12f-e2a5-4dd3-bb2d-caeaefb15940",
+      "5612c5a3-0968-43b9-a731-f96dad97226c"
+    ],
+    "imageListNodeIds": [
+      "0bf3e12f-e2a5-4dd3-bb2d-caeaefb15940",
+      "5612c5a3-0968-43b9-a731-f96dad97226c"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "7a6c853d6153f59cd19064784da826ba3f9160000631c7e10adcb3991a3827cd",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "159315"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2176189"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "80894"
+    }
+  },
+  "originalSha256": "fe9edcf195a93c13dd5ec43de4bcad5ca8541ceadcefa766e3a05d69494b1b63",
+  "originalBytes": 2176189,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "ba092b0d341adeff6d07c16c124063adf006b8b994e9b8cb398647d7943cf2c4",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of push-up (wall) from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083333 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. One reversible wall push-up lowering preview; return synthesized by exact reversed accepted forward frames after review.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0659-contact-8fps.jpg",
+    "contactSha256": "b462911b1913ccc1420b501b66b7366c2e739b58c51781b3cdb1360cc27d4fd5",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Root actually inspected the 16 forward and 64 final contact frames. Both paws stay anchored to the same wall points and both feet remain planted while the elbows bend and the body approaches the wall as a straight unit. There is no lunge, knee squat, hand stepping or foot slide replacing the wall push-up. The return is disclosed reversed forward footage.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0659-one-way-contact-4fps.jpg",
+      "contactSha256": "f1c26b8b6fcdbb4ba0f8a0740f30cac76c50e32a8f660fc8efd0e8b8514179ef",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually inspected the 16 forward and 64 final contact frames. Both paws stay anchored to the same wall points and both feet remain planted while the elbows bend and the body approaches the wall as a straight unit. There is no lunge, knee squat, hand stepping or foot slide replacing the wall push-up. The return is disclosed reversed forward footage.",
+    "producerObservationAtHandoff": "Actually inspected 16 one-way samples at 4 fps: both paws remain at wall, feet stay planted with no stepping; both elbows bend and chest approaches wall while inclined torso and legs stay aligned. No calf-stretch hip hinge, squat, split stance or tail support. Actually inspected all 64 final samples at 8 fps: accepted forward phase and exact reversed-frame return remain coherent, no additional limbs or prop discontinuity. Return was synthesized by reversal, not independently generated. Producer actually viewed 16 forward and 64 final samples. Root review pending. Full one-way and final frames decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "5bb6d49113adad4c16f8351f8c42a201d897ca0ff70b8024614273dbe0abac67",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true
+}

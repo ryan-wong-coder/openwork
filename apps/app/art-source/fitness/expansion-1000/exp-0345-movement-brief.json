@@ -1,0 +1,53 @@
+{
+  "order": 534,
+  "exerciseId": "0345",
+  "englishName": "dumbbell lying one arm rear lateral raise",
+  "chineseName": "哑铃仰卧单臂后侧平举",
+  "equipmentId": "dumbbell",
+  "bodyPartId": "shoulders",
+  "muscles": {
+    "primaryIds": [
+      "deltoids"
+    ],
+    "primaryLabels": [
+      "三角肌"
+    ],
+    "secondaryIds": [
+      "trapezius",
+      "upper-back"
+    ],
+    "secondaryLabels": [
+      "斜方肌",
+      "背部"
+    ]
+  },
+  "descriptorSha256": "cdc7041edb947278f657e1b561f5f246a5fa05b607d7685c8a94a7388985d683",
+  "sourceSteps": [
+    "脸朝下躺在平坦的长凳上，一只手拿着哑铃，垂向地板。",
+    "保持手臂伸直，将哑铃举到一侧，远离身体。",
+    "在顶部停顿片刻，然后慢慢将哑铃放回起始位置。",
+    "重复所需的重复次数，然后换到另一只手臂。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceStepsActuallyRead": true,
+  "sourceIssues": [
+    "Chinese display title says 仰卧 (supine), but explicit first sourceStep says 脸朝下 (prone); reviewed brief follows exact English lying rear lateral raise plus explicit face-down flat-bench setup. Runtime display title has not been changed by this producer."
+  ],
+  "startPose": "俯卧水平凳，胸腹髋支撑，右单臂下垂DB，左手轻扶凳缘。",
+  "support": "躯干骨盆由水平凳稳定受托，双腿伸后，足可稳地辅助；空手凳缘。",
+  "grip": "右掌握一轻DB下垂近中立，左空爪扶凳不负重。",
+  "jointMotion": "负重肩水平外展，把近直臂向躯干外侧抬到肩平面，上臂非肘弯举。",
+  "path": "单DB以肩为轴侧方弧到水平，身体不翻滚。",
+  "camera": "固定高一点的前侧45度，能读平凳头胸髋支撑及近侧肩的侧向全行程。",
+  "criticalChecks": [
+    "真平凳俯卧，不是站姿/上斜凳。",
+    "一臂近直侧向外展，不能肘弯举或后拉划船。",
+    "头颈中立，胸髋不离凳，无裁手/DB。"
+  ],
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "oneWayGenerationSeconds": 4,
+    "return": "Only after actual one-way review, use exact reversed frame order; not an original8second continuous generation."
+  }
+}

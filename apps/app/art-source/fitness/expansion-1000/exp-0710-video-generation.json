@@ -1,0 +1,158 @@
+{
+  "canonicalExerciseId": "0710",
+  "englishName": "side hip abduction",
+  "nodeId": "88344d31-ba1e-4f8c-90fa-3e833598d8b1",
+  "taskId": "20261021165803765868518",
+  "prompt": "首帧为 {{Node 1a3dae72-2e1c-43a0-911a-f6ee3c8498f7}}，尾帧为 {{Node e3404194-1242-4bd4-b4f0-cacb6e63feea}}。4秒内只做一次单侧髋外展：左腿在画面右侧原地支撑，全脚掌始终压地、膝盖长直。右腿在画面左侧保持近直膝，向正侧方徐徐抬起到尾帧，不前踢不后踢，不弯膝。双爪始终扶髋，躯干头部竖直、骨盆保持水平，不左右摇摆，不挪支撑脚，尾巴不着地、不变第三条腿。只抬这侧到尾帧停住，不切换腿不复位。 同一原创青色奶油水獭与青柠斜肩带、象牙摄影棚，镜头固定不推拉缩放裁边，全部身体与器械完整入镜，无文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0710-reference.png",
+      "bytes": 1693674,
+      "sha256": "1011290f0a23cf3b8d80f8b38aad41f9d538abc0917c307d0ad66f8983e71258",
+      "nodeId": "1a3dae72-2e1c-43a0-911a-f6ee3c8498f7"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0710-endpoint.png",
+      "bytes": 1671436,
+      "sha256": "3a19ffdb3f6d354a20c1a67360c9af089de7276165b8d6f5f76cb9b647e44bf3",
+      "nodeId": "e3404194-1242-4bd4-b4f0-cacb6e63feea"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "88344d31-ba1e-4f8c-90fa-3e833598d8b1",
+    "expectedReferenceNodeIds": [
+      "1a3dae72-2e1c-43a0-911a-f6ee3c8498f7",
+      "e3404194-1242-4bd4-b4f0-cacb6e63feea"
+    ],
+    "imageListOrder": [
+      "1a3dae72-2e1c-43a0-911a-f6ee3c8498f7",
+      "e3404194-1242-4bd4-b4f0-cacb6e63feea"
+    ],
+    "imageListNodeIds": [
+      "1a3dae72-2e1c-43a0-911a-f6ee3c8498f7",
+      "e3404194-1242-4bd4-b4f0-cacb6e63feea"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "11fb7e1616529b6331e96ce638867a2f4034fe6a63b0b7cb829166a692029e22",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "156567"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2745969"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "76559"
+    }
+  },
+  "originalSha256": "a552f6d05a575e3a38c7e9f8c2e0d5da50555582d9a6d1355fded2a30428434a",
+  "originalBytes": 2745969,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "0ab0d772f50c2b9cddfbe8e970512abcf00221b65668299877d4addac9438421",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of side hip abduction from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083333 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. One side only of the catalogue alternating side hip abduction; opposite side is not demonstrated. Accepted forward raising followed by exact reversed-frame return.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0710-contact-8fps.jpg",
+    "contactSha256": "9dae6bf82092a328bf39f9acf3643450df2521cb1cb9de7764edaaaee4c4b925",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Root actually inspected the 16 forward and 64 final contact frames. The mascot keeps both paws on its hips and the trunk upright while the screen-left leg lifts sideways; the other leg stays planted. The working leg remains approximately straight and does not swing forward into a march. This is one side only, not a complete alternating sequence; the return uses disclosed reversed forward footage.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0710-one-way-contact-4fps.jpg",
+      "contactSha256": "738bbd07641dc428086b3e5a96024db8ebfa9781af1e34acff8057bbe9b0db06",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually inspected the 16 forward and 64 final contact frames. The mascot keeps both paws on its hips and the trunk upright while the screen-left leg lifts sideways; the other leg stays planted. The working leg remains approximately straight and does not swing forward into a march. This is one side only, not a complete alternating sequence; the return uses disclosed reversed forward footage.",
+    "producerObservationAtHandoff": "Actually inspected 16 one-way samples at 4 fps: image-right leg supports with its foot planted, image-left leg lifts laterally with near-straight knee, both paws stay on hips and torso remains upright. Only this side is demonstrated, no claim of a complete alternating bilateral sequence. Actually inspected all 64 final samples at 8 fps: accepted forward phase and exact reversed-frame return remain coherent, no additional limbs or prop discontinuity. Return was synthesized by reversal, not independently generated. Producer actually viewed 16 forward and 64 final samples. Root review pending. Full one-way and final frames decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "60ff30c030a780e551131a483318961e588ee294787a17235d2069786b1845d2",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true
+}

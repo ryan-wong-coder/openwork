@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "0300",
+  "englishName": "dumbbell deadlift",
+  "sourceDescriptorSha256": "bb46d63505c32b0f3e7e43d6ae3b1f0da6126609c6a0ece5140d2ce44f45716c",
+  "sourceSteps": [
+    "双脚分开与肩同宽站立，脚趾指向前方。",
+    "双手各握一个哑铃，手掌朝向身体，手臂向下伸展。",
+    "弯曲臀部和膝盖，将哑铃向地面降低，同时保持背部挺直。",
+    "脚跟用力，伸展臀部和膝盖，将哑铃举回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "status": "partial-reference-only; generation stopped by shared budget marker",
+  "sharedStopMarkerObserved": true,
+  "sharedStopMarkerSha256": "fd2885cf9d8a5984d30affccd42a4e7f61091d69c761aba19f42f5ea7cdad4a0",
+  "sourcePreflightPassedBeforeLastImage": true,
+  "clinicalCertification": false,
+  "selectedReference": {
+    "role": "start",
+    "file": "apps/app/art-source/fitness/expansion-1000/exp-0300-reference-v2.png",
+    "bytes": 1609861,
+    "sha256": "e4b4829195f9eb39095c9fffc3756611e8b8c39ad3403e8a7cacca2d24d4e16c",
+    "tool": "built-in image_gen.imagegen",
+    "promptFile": "apps/app/art-source/fitness/expansion-1000/exp-0300-poster-prompt-v2.txt",
+    "attempt": 2,
+    "actuallyViewed": true,
+    "observation": "Wider bottom deadlift pose keeps knees moderately bent and hips hinged with long back, flat feet and both neutral-grip dumbbells at shin/ankle height. Large headroom remains for a future standing endpoint."
+  },
+  "referenceImageCalls": 2,
+  "endpointImageCalls": 0,
+  "endpointPromptPrepared": true,
+  "endpointPromptFile": "apps/app/art-source/fitness/expansion-1000/exp-0300-endpoint-prompt.txt",
+  "paidVideoRuns": 0,
+  "videoNodeCreated": false,
+  "readyMedia": false,
+  "partialDoesNotCountAsCompleted": true,
+  "resumeRequiresBudgetAndSourcePreflight": true
+}

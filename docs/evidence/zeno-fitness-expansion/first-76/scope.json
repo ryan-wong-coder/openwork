@@ -1,0 +1,22 @@
+{
+  "scope": "Final production PWA evidence for this credit-limited run: 76 distinct credited new techniques plus two independent supplemental duplicate-label pairs and 32 original entries. This is not 1000 completed movements.",
+  "acceptedAdditional": 76,
+  "supplementalCoverage": 2,
+  "additionalCanonicalCoverage": 78,
+  "totalReady": 110,
+  "remainingTarget": 924,
+  "browserChecks": 19,
+  "browserScreenshots": 16,
+  "productionPwaBuildPassed": true,
+  "unitTestsPassed": 64,
+  "unitTestsFailed": 0,
+  "nativeInstallerTestedHere": false,
+  "livePublished": false,
+  "complete1000": false,
+  "modelRequests": 0,
+  "desktopWindowsOpened": 0,
+  "generationStopped": true,
+  "generationStopEvidence": "apps/app/art-source/fitness/expansion-1000/generation-stop.json",
+  "creditsRemainingKnown": false,
+  "noRechargeOrAccountSwitching": true
+}

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "exerciseId": "0300",
+  "supersededReferenceSha256": "90dfd1de9b184b5460a0faf2c1dc9aed5fae273eb63fafeac99505964f76bc61",
+  "supersededReferenceBytes": 1767381,
+  "reason": "Bottom deadlift pose has insufficient headroom for a fixed-camera standing endpoint. Reframe before any paid generation.",
+  "privateOriginalRetained": true,
+  "paidRunFromThisReference": false
+}

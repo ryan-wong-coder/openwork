@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "status": "stopped-after-official-insufficient-compute",
+  "providerMessage": "算力不足",
+  "providerErrorCode": 1200000136,
+  "balanceZeroClaimed": false,
+  "stopNewImageAndPaidGeneration": true,
+  "noRechargeOrAccountSwitching": true,
+  "taskCreationFailures": [
+    {
+      "canonicalExerciseId": "0871",
+      "nodeId": "9beb347e-ef1e-4325-ab38-58552e2a7a8f",
+      "providerError": {
+        "code": 1200000136,
+        "message": "算力不足"
+      },
+      "commandExitCode": 1,
+      "receiptSha256": {
+        "stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr": "c04c4a1455fa56021ec47e868732f4afee6f0c4cf19c422418bdce2a3b62c1f7"
+      },
+      "taskIdObserved": false,
+      "terminalSuccessObserved": false,
+      "refundStatus": "unknown",
+      "rerunProhibited": true
+    },
+    {
+      "canonicalExerciseId": "3699",
+      "nodeId": "3e423919-a07c-4b68-abf5-dd58c6883976",
+      "providerError": {
+        "code": 1200000136,
+        "message": "算力不足"
+      },
+      "commandExitCode": 1,
+      "receiptSha256": {
+        "stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr": "5f91caadbdc42db4912e6591579995c3d89a42b6bcaa5d4647254709867cadb0"
+      },
+      "taskIdObserved": false,
+      "terminalSuccessObserved": false,
+      "refundStatus": "unknown",
+      "rerunProhibited": true
+    }
+  ],
+  "rawReceiptsRetainedPrivately": true,
+  "traceIdentifiersAndProviderUrlsExcluded": true,
+  "uncompletedArtworkExcludedFromRuntime": true
+}

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "0534",
+  "englishName": "kettlebell goblet squat",
+  "status": "references-approved-created-without-run",
+  "reason": "Shared stop after official CLI returned error 1200000136, 算力不足, for other assigned movements. This node was created and its reference order verified, but no paid run was invoked.",
+  "nodeId": "3829874d-d758-4d01-bd27-054fa21e6f8c",
+  "referenceNodeIdsInOrder": [
+    "c92467b7-24ef-4ef0-a4f9-7feebe3cc980",
+    "7ac0292e-bf03-4ec0-9d84-9b2e015ebe09"
+  ],
+  "rawOrderReceiptSha256": "4ddf3b217269d42d38a3d64400c86ccff2d129e5c60582d3ccd5f35edbf9b4e6",
+  "referencePairActuallyViewed": true,
+  "submitted": false,
+  "taskId": null,
+  "readyMedia": false,
+  "noNewGenerationAfterStop": true
+}

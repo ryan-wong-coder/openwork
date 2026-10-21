@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "scope": "Successor production handoff for eight already-claimed exercises; excludes the two earlier completed entries 0031 and0315 and does not assert global1000 completion.",
+  "stoppedOnSharedBudgetMarker": true,
+  "sharedStopMarkerSha256": "fd2885cf9d8a5984d30affccd42a4e7f61091d69c761aba19f42f5ea7cdad4a0",
+  "activePaidRuns": 0,
+  "newPaidRunsInvoked": 5,
+  "officialSuccesses": 4,
+  "providerSafetyRejections": 1,
+  "unknownOutcomesInThisBatch": 0,
+  "duplicatePaidSubmissions": 0,
+  "builtInImageGenCallsBySuccessor": 9,
+  "completedCandidates": [
+    "0293",
+    "0091",
+    "0030",
+    "0336"
+  ],
+  "providerHold": [
+    "0327"
+  ],
+  "partialReferenceOnly": [
+    "0300"
+  ],
+  "notStartedBySuccessor": [
+    "0400",
+    "0047"
+  ],
+  "noRechargeOrAccountSwitch": true,
+  "readyRegisteredByProducer": 0,
+  "rootOwnsFinalAdmission": true,
+  "records": [
+    {
+      "exerciseId": "0293",
+      "newPaidRunInvoked": true,
+      "officialTerminalStatus": 2,
+      "taskId": "20261021155203733798518",
+      "generationTerminalReceiptSha256": "3487dd2844e70723a528880f1c31f392c856434804a836cae942ee7927c45ae8",
+      "candidatePrepared": true,
+      "registeredByProducer": false
+    },
+    {
+      "exerciseId": "0327",
+      "newPaidRunInvoked": true,
+      "officialTerminalStatus": 3,
+      "taskId": "20261021155303165838518",
+      "generationTerminalReceiptSha256": "263e7c0d75b7e10ce63cf5faf73e7f65a30e005706ead95e99bde4d12b648350",
+      "candidatePrepared": false,
+      "registeredByProducer": false
+    },
+    {
+      "exerciseId": "0091",
+      "newPaidRunInvoked": true,
+      "officialTerminalStatus": 2,
+      "taskId": "20261021161503414288518",
+      "generationTerminalReceiptSha256": "521744071ecb036a87081e1a998ff5b1ca530c7940c36d708302e6e44df4e32f",
+      "candidatePrepared": true,
+      "registeredByProducer": false
+    },
+    {
+      "exerciseId": "0030",
+      "newPaidRunInvoked": true,
+      "officialTerminalStatus": 2,
+      "taskId": "20261021163703930928518",
+      "generationTerminalReceiptSha256": "6cf7626e90cb0ddd606f21a2d489c63759934d3b620d2e285d5127f3d6ea4056",
+      "candidatePrepared": true,
+      "registeredByProducer": false
+    },
+    {
+      "exerciseId": "0336",
+      "newPaidRunInvoked": true,
+      "officialTerminalStatus": 2,
+      "taskId": "20261021165003906318518",
+      "generationTerminalReceiptSha256": "d9a9fd5e93a20173e08c724e0b7750c39126b627ec955828e77a4a3b338832cc",
+      "candidatePrepared": true,
+      "registeredByProducer": false
+    },
+    {
+      "exerciseId": "0300",
+      "newPaidRunInvoked": false,
+      "candidatePrepared": false,
+      "partialReferenceOnly": true,
+      "notStartedBySuccessor": false
+    },
+    {
+      "exerciseId": "0400",
+      "newPaidRunInvoked": false,
+      "candidatePrepared": false,
+      "partialReferenceOnly": false,
+      "notStartedBySuccessor": true
+    },
+    {
+      "exerciseId": "0047",
+      "newPaidRunInvoked": false,
+      "candidatePrepared": false,
+      "partialReferenceOnly": false,
+      "notStartedBySuccessor": true
+    }
+  ]
+}

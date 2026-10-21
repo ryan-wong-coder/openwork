@@ -10,6 +10,7 @@ import provenance from "../art-source/fitness/provenance.json";
 import expansionProgress from "../art-source/fitness/expansion-1000/progress.json";
 import expansionSelection from "../art-source/fitness/expansion-1000/selection.json";
 import techniqueCredits from "../art-source/fitness/expansion-1000/technique-credits.json";
+import generationStop from "../art-source/fitness/expansion-1000/generation-stop.json";
 import { z } from "zod";
 import { searchExercisesForPicker } from "../src/react-app/domains/zeno/exercise-search";
 
@@ -118,6 +119,26 @@ test("every ready local media pair matches its complete recorded provenance hash
       expect(bytes.subarray(0, 32).toString("ascii")).toContain(name.endsWith(".mp4") ? "ftyp" : "WEBP");
     }
   }
+});
+test("the insufficient-compute stop preserves incomplete work without inflating accepted coverage", () => {
+  expect(expansionProgress.status).toBe("stopped-provider-insufficient-compute");
+  expect(expansionProgress.generationStopped).toBe(true);
+  expect(expansionProgress.remainingTarget).toBeGreaterThan(0);
+  expect(expansionProgress.creditsRemainingKnown).toBe(false);
+  expect(expansionProgress.creditsRemaining).toBeNull();
+  expect(generationStop.balanceZeroClaimed).toBe(false);
+  expect(generationStop.stopNewImageAndPaidGeneration).toBe(true);
+  expect(generationStop.noRechargeOrAccountSwitching).toBe(true);
+  for (const failure of generationStop.taskCreationFailures) {
+    expect(failure.providerError.code).toBe(1200000136);
+    expect(failure.providerError.message).toBe("算力不足");
+    expect(failure.taskIdObserved).toBe(false);
+    expect(failure.terminalSuccessObserved).toBe(false);
+    expect(failure.rerunProhibited).toBe(true);
+    expect(failure.receiptSha256.stderr).toMatch(/^[a-f0-9]{64}$/);
+    expect(mascotDemos.some(item => item.exerciseId === failure.canonicalExerciseId)).toBe(false);
+  }
+  for (const id of ["0534", "3006"]) expect(mascotDemos.some(item => item.exerciseId === id)).toBe(false);
 });
 test("picker exposes completed mainstream art while retaining query, equipment and custom exact matches", () => {
   expect(searchExercisesForPicker({ limit: mascotDemos.length }).map(item => item.id).sort()).toEqual(mascotDemos.map(item => item.exerciseId).sort());
