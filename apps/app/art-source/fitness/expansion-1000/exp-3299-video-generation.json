@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "3299",
+  "nodeId": "a837d23c-b89f-4c9d-b375-439ede20c322",
+  "taskId": "20261021124903166518518",
+  "prompt": "Use {{Node 8f902406-8008-4e85-b6fe-6feebadd2b46}} as exact starting frame. Preserve exact original Zeno teal/cream otter, lime strap/single Z buckle and warm ivory floor/studio. Fixed wide side-three-quarter tripod with full body/paws/feet/tail visible. Eight-second HELD STRAIGHT-ARM FULL PLANCHE: both palms remain flat on same floor spots, elbows STRAIGHT, shoulders forward of wrists. Face and cream belly remain facing DOWN. Torso/hips/two straight together legs remain ONE HORIZONTAL LINE parallel to floor. BOTH FEET remain clearly OFF FLOOR at hip height throughout; only two palms support body. Only tiny breathing/blinking, no pose entry/exit, feet/knee drop, elbow bend, push-up, tuck, pike, body rise/fall, head-floor touch, tail support, sliding palms, extra limbs, equipment, cuts, zoom, text, watermark or sound. Short held-pose illustration, not full training duration or safety instruction.\n",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "full planche",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "271823"
+    }
+  },
+  "originalSha256": "03bffc909f36605e523929f14e528a3ffc33dfb5530c181541ea53a637d4c757",
+  "originalBytes": 5401168,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3299-contact.jpg",
+    "contactSha256": "9d1f4bf47611d5da2d301ee90c2410bf366afba52ce7efb1298ee68958f20870",
+    "reviewed": true,
+    "observation": "Root viewed full 8-frame contact sheet; two palms support under forward shoulders, arms remain extended, trunk and straight legs held approximately horizontal with both feet off floor. Tail stays raised and does not support body; no floor-knee contact, push-up pumping or hand stepping. Short held full-planche excerpt."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "c19941ab569ab20f0f17f6c44a28e920851c8681ebf95b0bae06dbcb803dac41"
+}

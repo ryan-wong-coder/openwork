@@ -1,0 +1,162 @@
+{
+  "canonicalExerciseId": "1397",
+  "englishName": "standing calves",
+  "nodeId": "f87b1ed3-7bae-4d9b-8a99-1e3a46de0e69",
+  "taskId": "20261021140003053608518",
+  "prompt": "首帧为 {{Node 9cc2d8ee-6108-4d3a-8356-4ca7445d8cec}}，尾帧为 {{Node e62ec80a-726f-4a64-938a-e69036aec4bc}}。保持同一水獭、象牙背景和固定机位，4秒内只做一次自重站姿提踵：双前脚掌和脚趾在原地固定接触地面，双脚跟同时缓慢抬高到尾帧，小腿与身体自然向上升。膝几乎伸直不屈蹲，躯干直立，双爪自然在髋旁，尾巴不撑地。不能跳起、迈步、滑脚、把整只脚离地或扭脚，不能蹲下再站起。只抬高一次到尾帧停住，生成中不下放不重复。 镜头全程固定，无推拉缩放剪切，所有身体和器械始终完整入镜，背景不变，无额外肢体、文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1397-reference.png",
+      "bytes": 1674583,
+      "sha256": "add9095abb5d1571e52c5a39adebfe10ccac9ecc9a9047e216b0c69a6b31e7f6",
+      "nodeId": "9cc2d8ee-6108-4d3a-8356-4ca7445d8cec"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1397-endpoint.png",
+      "bytes": 1671788,
+      "sha256": "6343445339c26173b835e2158e87824a65a88199139cb744f7699f0f02d4c3c3",
+      "nodeId": "e62ec80a-726f-4a64-938a-e69036aec4bc"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "f87b1ed3-7bae-4d9b-8a99-1e3a46de0e69",
+    "expectedReferenceNodeIds": [
+      "9cc2d8ee-6108-4d3a-8356-4ca7445d8cec",
+      "e62ec80a-726f-4a64-938a-e69036aec4bc"
+    ],
+    "imageListOrder": [
+      "9cc2d8ee-6108-4d3a-8356-4ca7445d8cec",
+      "e62ec80a-726f-4a64-938a-e69036aec4bc"
+    ],
+    "imageListNodeIds": [
+      "9cc2d8ee-6108-4d3a-8356-4ca7445d8cec",
+      "e62ec80a-726f-4a64-938a-e69036aec4bc"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "f29d5cec8d2409f93e5c1112974d5205b45e99a166b7f8c7fc8e3d26732edf14",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "150087"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2387766"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "77064"
+    }
+  },
+  "originalSha256": "a1b38319a247f0d4d200c4790c1ce059b898df3914ec13bf72319c5e43a8191d",
+  "originalBytes": 2387766,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "49ccdcb70594198bb795b81457e8ff4004e442c23f0414603a878d146ddaa58e",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of standing calves from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083333 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. Generate only one forward movement over requested 4 seconds; any return is exact reversed accepted frames, not a separately AI-generated phase.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1397-contact-8fps.jpg",
+    "contactSha256": "1f19e5dc76243a8949a53cab282d7d4f4171e698003fc0d27c9d8357adb6d3fd",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Both heels rise from flat feet and return by exact reversed frames while the forefeet remain grounded. Knees stay nearly straight, upright torso follows the heel rise, free paws stay beside hips and tail is not a support; no wall, jump, squat or step. This is unsupported balance rather than the wall-assisted1373 variant. Producer actually viewed 16 forward and 64 final samples. Root review pending. Full one-way and final frames decoded without errors. Root actually viewed both16-sample forward and64-sample final contact sheets and accepted the observed movement; no extra endpoint-detail view is claimed.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1397-one-way-contact-4fps.jpg",
+      "contactSha256": "feec1fbfb7cdd306684234c47ece19f5e8c921aa79c6cb3b315345950ddcdcda",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewed": true
+    },
+    "rootActuallyViewed": true
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "644a7ac77c91520453cc247e1cc74a6d734c50a6698178a60124717c2a90cf20",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "semanticRelationship": {
+    "relatedCanonicalExerciseId": "1373",
+    "relationship": "Both are bilateral plantarflexion. This exact1397 source has no hand support: paws stay free at hips and balance is unsupported. Exact1373 explicitly uses hands against a wall for balance; its reviewed media retains fixed wall contacts. The distinction is supported versus unsupported balance, not a renamed view of the same wall-assisted clip.",
+    "differentBalanceRequirement": true,
+    "noWallOrEquipmentFor1397": true
+  }
+}

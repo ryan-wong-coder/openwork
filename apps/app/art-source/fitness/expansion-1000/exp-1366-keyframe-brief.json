@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "kind": "two-keyframe-illustration-plan",
+  "exerciseId": "1366",
+  "englishName": "upward facing dog",
+  "descriptorSha256": "2d87325baef42a84b92baddde2a64255b0677dd8138cf4f6c72fd3f4220d16cc",
+  "movementBrief": "exp-1366-movement-brief.json",
+  "startImage": {
+    "file": "exp-1366-reference.png",
+    "sha256": "5de8ee1d814f3b741236d72519395e1c253cfc0be8cd7a15e1059635e882fb0e",
+    "bytes": 1864044,
+    "width": 1672,
+    "height": 941
+  },
+  "endpointImage": {
+    "file": "exp-1366-endpoint.png",
+    "sha256": "e07a27ff883afe7b769ed6e4b8b371948ef17a56007d4882296f32f99ec61ecf",
+    "bytes": 1806804,
+    "width": 1672,
+    "height": 941
+  },
+  "startPrompt": {
+    "file": "exp-1366-poster-prompt.txt",
+    "sha256": "17d786efc2f26e3deeed7716a41466ccbbb894060500bc84f6f938bfd1321df8",
+    "bytes": 1423
+  },
+  "endpointPrompt": {
+    "file": "exp-1366-endpoint-prompt.txt",
+    "sha256": "221e86b5b9d451200aa85ef0a44969d221d502db54292e91a7e43e719e5e4afb",
+    "bytes": 1029
+  },
+  "startTool": "built-in ImageGen",
+  "startImageAttempts": 1,
+  "endpointTool": "built-in ImageGen edit of accepted start",
+  "endpointEditAttempts": 1,
+  "fixedContactsAndScene": [
+    "起点胸腹大腿地面；终点仅双掌和脚背承重，双膝大腿均离地。",
+    "双掌压地、指向前，位置在下肋旁；无器械。",
+    "fixed camera, ivory studio and original identity"
+  ],
+  "motion": "肘伸展与脊柱温和伸展打开胸部，髋腿抬离地面，不把肩耸到耳。 保持掌和脚背不滑，胸前上升，腿伸直被带离地面形成上犬。",
+  "review": {
+    "startAndEndpointActuallyViewed": true,
+    "endpointDecision": "accepted-reference-for-parent-review",
+    "notes": [
+      "和sphinx区别明确：终点直臂，膝大腿离地，不前臂撑地。",
+      "手掌和脚背是支持，尾巴不能垫腹代撑。",
+      "不把膝留地画成低眼镜蛇，不过度折颈。"
+    ],
+    "wholeVideoViewed": false,
+    "readyMedia": false
+  },
+  "plannedVideo": {
+    "inputMode": "native first-and-last-frame",
+    "oneWaySeconds": 4,
+    "direction": "start-to-end",
+    "returnPlan": "Only after one-way actual visual acceptance, forward segment plus exact reversed frames for nominal8second illustration.",
+    "assemblyPerformed": false,
+    "videoGeneratedByThisAgent": false,
+    "originalEightSecondGeneration": false,
+    "existingEightSecondAttemptReused": false
+  }
+}

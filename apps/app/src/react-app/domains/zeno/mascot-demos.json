@@ -340,5 +340,167 @@
     "englishName": "lying leg raise flat bench",
     "stem": "exp-0620",
     "kind": "mascot"
+  },
+  {
+    "exerciseId": "1355",
+    "englishName": "one arm against wall",
+    "stem": "exp-1355",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "3420",
+    "englishName": "v-sit on floor",
+    "stem": "exp-3420",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1373",
+    "englishName": "bodyweight standing calf raise",
+    "stem": "exp-1373",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1548",
+    "englishName": "chair leg extended stretch",
+    "stem": "exp-1548",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1297",
+    "englishName": "isometric chest squeeze",
+    "stem": "exp-1297",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0795",
+    "englishName": "standing single leg curl",
+    "stem": "exp-0795",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "3302",
+    "englishName": "handstand",
+    "stem": "exp-3302",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1585",
+    "englishName": "runners stretch",
+    "stem": "exp-1585",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "3419",
+    "englishName": "l-sit on floor",
+    "stem": "exp-3419",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "3299",
+    "englishName": "full planche",
+    "stem": "exp-3299",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0407",
+    "englishName": "dumbbell side bend",
+    "stem": "exp-0407",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0446",
+    "englishName": "ez barbell close-grip curl",
+    "stem": "exp-0446",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "3296",
+    "englishName": "front lever",
+    "stem": "exp-3296",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "3303",
+    "englishName": "flag",
+    "stem": "exp-3303",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0406",
+    "englishName": "dumbbell shrug",
+    "stem": "exp-0406",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0355",
+    "englishName": "dumbbell one arm lateral raise",
+    "stem": "exp-0355",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0380",
+    "englishName": "dumbbell rear lateral raise",
+    "stem": "exp-0380",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1587",
+    "englishName": "seated wide angle pose sequence",
+    "stem": "exp-1587",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0369",
+    "englishName": "dumbbell over bench wrist curl",
+    "stem": "exp-0369",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1366",
+    "englishName": "upward facing dog",
+    "stem": "exp-1366",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1397",
+    "englishName": "standing calves",
+    "stem": "exp-1397",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0333",
+    "englishName": "dumbbell kickback",
+    "stem": "exp-0333",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1387",
+    "englishName": "one leg floor calf raise",
+    "stem": "exp-1387",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0001",
+    "englishName": "3/4 sit-up",
+    "stem": "exp-0001",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1398",
+    "englishName": "standing calves calf stretch",
+    "stem": "exp-1398",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0356",
+    "englishName": "dumbbell one arm lateral raise with support",
+    "stem": "exp-0356",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0271",
+    "englishName": "crunch (on stability ball)",
+    "stem": "exp-0271",
+    "kind": "mascot"
   }
 ]

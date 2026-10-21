@@ -1,0 +1,25 @@
+{
+  "canonicalExerciseId": "0074",
+  "englishName": "barbell rack pull",
+  "sourceDescriptorSha256": "bcab868be6ebd5ec73ff4ba802847f5d7b3ea973b86fbedbc6b79c0de86e6bb4",
+  "status": "reference-hold",
+  "readyMedia": false,
+  "paidVideoRuns": 0,
+  "reason": "Both original references leave bar/supports near belly or upper thighs rather than at knee height. Hip hinge is also insufficiently clear; no video was submitted.",
+  "attempts": [
+    {
+      "attempt": 1,
+      "selected": false,
+      "bytes": 1794993,
+      "sha256": "2a93797798047725316fceb90974d40843a4a70904c1349e748fedde2f4b3605",
+      "originalRetainedPrivately": true
+    },
+    {
+      "attempt": 2,
+      "selected": false,
+      "bytes": 1747067,
+      "sha256": "b7db92c08454efd865c3db35af5aa34520ce1a8778850fd36cdfd4a4b43263f8",
+      "originalRetainedPrivately": true
+    }
+  ]
+}

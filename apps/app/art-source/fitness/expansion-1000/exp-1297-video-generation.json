@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "1297",
+  "nodeId": "89b0288e-24c7-4d7e-a87d-668107d2628b",
+  "taskId": "20261021114103685048518",
+  "prompt": "Use {{Node 5ef57b4b-ea0a-4296-a8fc-de5c8892f7a0}} as exact starting frame. 原版泽诺青色奶油色水獭、单条青柠斜挎带/单个Z扣、暖象牙摄影棚、固定侧面三分之四镜头/全身和手尾都可见。演示8秒完全稳定的直臂等长夹胸保持，不做进入或离开动作。最重要：双爪掌心从第0帧到最后一帧持续紧贴相抵，像同一个黏合面一样，不允许出现任何缝隙或分开。两只手、两条近乎完全伸直的手臂保持参考图位置：肩高、水平向身体前方伸出、离胸口一整臂长。只允许轻微呼吸与眨眼，手爪/肩肘腕的空间位置完全不变。双脚全掌落地不移动、躯干直立。禁止松手、张臂、拍手、双手下降、肘部弯曲、旋转前臂、左右摆动、换姿势、伸懒腰、祈祷屈肘、器械、额外肢体、文字、水印、音频或推拉镜头。Hold this exact single pose with BOTH PALMS FIRMLY PRESSED TOGETHER continuously for ALL eight seconds. Never separate the palms or open the arms. No pose change at the end.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "isometric chest squeeze",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "152448"
+    }
+  },
+  "originalSha256": "dba39c1edbd8405bebd658d59d821ae0ddd64753ff7b0cc6e6c5ccd25ab9735f",
+  "originalBytes": 3292798,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1297-contact.jpg",
+    "contactSha256": "97db905062489475c7fd4f5f39ce7c9c08d18fb03f234d65d81c86363d787887",
+    "reviewed": true,
+    "observation": "Root viewed full 8-frame contact sheet; both arms stay straight forward at shoulder height, palms remain pressed together throughout the held isometric squeeze, body and feet stable. No arm-opening fly, elbow curl or extra object. Short isometric hold with subtle breathing."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "cfef5ba23389a076f94da1fa76d737c28d806d1c78607b240db8054ff20c8c1d"
+}

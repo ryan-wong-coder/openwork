@@ -1,0 +1,156 @@
+{
+  "canonicalExerciseId": "0380",
+  "englishName": "dumbbell rear lateral raise",
+  "nodeId": "fcc5a826-2464-4834-a27f-5a901f4a894a",
+  "taskId": "20261021132603550948518",
+  "prompt": "首帧为 {{Node 39c1dfee-ba7e-4382-a355-6dfca73d2f1b}}，尾帧为 {{Node c6a76829-29a1-4167-aca6-803e1d4d55fe}}。保持同一原创Zeno青色毛绒水獭、奶油脸腹、青柠斜肩带、固定轻三分之四正面机位和象牙色摄影棚。4秒内只做一次俯身哑铃后束侧平举：身体始终保持首帧髋前屈、背部接近水平的中立直背姿态，双脚、骨盆、双膝位置和屈曲程度完全不变；头颈与背自然对齐，不抬头或站起来。起始双爪各握同一只哑铃从胸下自然垂下，双肘只有轻微柔和弯曲。由双肩带动整条长手臂同时向身体两侧展开，沿宽弧抬起到尾帧接近肩高、与地面平行的宽T形。全程双肘角保持同样轻微弯曲，不加深屈肘，不能划船把肘拉到肋旁，不能弯举把重量卷向脸，也不能直立前平举。躯干、髋、头、膝和脚始终保持原姿态，仅肩关节让双臂向左右侧打开。两只独立哑铃始终各在原来的握爪内，形状、两端头和短柄不变，不合并、不消失、不加第三只。尾巴自然保持不承重。只向两侧打开一次，到尾帧停住；生成中不下放、不重复，不摇身借力、不耸肩、不转体。镜头严格固定不推近缩放裁边，完整身体、双脚、两爪与两只哑铃全程在画面内，无文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0380-reference.png",
+      "bytes": 1801622,
+      "sha256": "3f107bf30e8c0917d1cfa9d8cf5e5fce8a5206571f6245c7277f6a6780825b13",
+      "role": "start",
+      "nodeId": "39c1dfee-ba7e-4382-a355-6dfca73d2f1b"
+    },
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0380-endpoint.png",
+      "bytes": 1762024,
+      "sha256": "a3b1655ccced3b11984595dc7239d970fd65bfab830efae1cc7e379624733b84",
+      "role": "end",
+      "nodeId": "c6a76829-29a1-4167-aca6-803e1d4d55fe"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "fcc5a826-2464-4834-a27f-5a901f4a894a",
+    "expectedReferenceNodeIds": [
+      "39c1dfee-ba7e-4382-a355-6dfca73d2f1b",
+      "c6a76829-29a1-4167-aca6-803e1d4d55fe"
+    ],
+    "imageListOrder": [
+      "39c1dfee-ba7e-4382-a355-6dfca73d2f1b",
+      "c6a76829-29a1-4167-aca6-803e1d4d55fe"
+    ],
+    "imageListNodeIds": [
+      "39c1dfee-ba7e-4382-a355-6dfca73d2f1b",
+      "c6a76829-29a1-4167-aca6-803e1d4d55fe"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "95044bfe356aa2e5e387ebd01078a31d1f4e6d77033cac73d9b7c86f9d122a99",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "220474"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2740878"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "114567"
+    }
+  },
+  "originalSha256": "a597bea1a429e0db3b9116546f606060cced269fb817ba719bc95036e9e34b4c",
+  "originalBytes": 2740878,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "fd3d2baf6cef6e77919062bc50e0f5fcd5632557f28e5f062eabbbf095125fd2",
+  "processing": "Seedance 2.5 generated one 4-second hip-hinged bilateral dumbbell rear lateral raise from ordered original start/end images (actual source 4.041667 seconds). After producer visual acceptance the forward lifting frames were concatenated with the exact reversed frames to illustrate lowering, making an 8.083333-second preview. Lowering is synthesized by reversal, not separately AI-generated or an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, silent, faststart; original-start WebP poster quality86.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0380-contact-8fps.jpg",
+    "contactSha256": "dfc02da8a0d922d5d20341129ee1f61b1da053a14bee12fc0176a5df2b26d88a",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Actual 16 one-way samples and all 64 loop samples viewed: both dumbbells open laterally into a wide near T while elbows remain softly bent, without a rowing/curling motion. Grounded feet, hip hinge, knees and fixed camera remain stable; return is exact reverse, not separately generated. Producer accepted; root review pending. All frames decoded without errors. Root actually viewed and accepted both contact sheets: stable hip hinge, knees and feet; two dumbbells open to near T, without curl, row or standing up; return remains consistent.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0380-one-way-contact-4fps.jpg",
+      "contactSha256": "71034439965747f89b8d9f5950e3fa9834ffb7188975c9510a6ebdd5597a3534",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewed": true
+    },
+    "rootActuallyViewed": true
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "6d874cf239e4f1696d6887147d34a01cc1b896f510f9c2385488a630c3dc26c5",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true
+}

@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "kind": "two-keyframe-illustration-plan",
+  "exerciseId": "0369",
+  "englishName": "dumbbell over bench wrist curl",
+  "descriptorSha256": "c460a970892e2886bb73d5b6e714294248dfcc7f900d02a51c598a5efaa13aef",
+  "movementBrief": "exp-0369-movement-brief.json",
+  "startImage": {
+    "file": "exp-0369-reference.png",
+    "sha256": "1889c83f62e8cefefec4f3bc026fa92e12599ece53fb143f3493666a62cefcaa",
+    "bytes": 1815584,
+    "width": 1672,
+    "height": 941
+  },
+  "endpointImage": {
+    "file": "exp-0369-endpoint.png",
+    "sha256": "5d3fd7f5f772aec46648d89721f173f1c99710aff97a34a2ead358b63a6d2785",
+    "bytes": 1745260,
+    "width": 1672,
+    "height": 941
+  },
+  "startPrompt": {
+    "file": "exp-0369-poster-prompt-v2.txt",
+    "sha256": "2225ecb1fd28c75783c14cddb589daec49f5a287cff387a84d18df224305e959",
+    "bytes": 1231
+  },
+  "endpointPrompt": {
+    "file": "exp-0369-endpoint-prompt-v2.txt",
+    "sha256": "7521c000ce59d39bb99a910065ecbf67dc21fd25c468bcf05015fcfc5365a189",
+    "bytes": 1156
+  },
+  "startTool": "built-in ImageGen",
+  "startImageAttempts": 2,
+  "endpointTool": "built-in ImageGen edit of accepted start",
+  "endpointEditAttempts": 2,
+  "fixedContactsAndScene": [
+    "臀与前臂由平凳支撑，双足地面；腕超过凳缘有自由活动间隙。",
+    "双手旋后握两DB，手腕独立屈曲；前臂掌面始终朝上。",
+    "fixed camera, ivory studio and original identity"
+  ],
+  "motion": "仅双腕屈曲，把拳与DB卷向前臂；肘/肩/躯干不抬。 两只小DB围绕腕轴走小弧；不能整条前臂举起或将握法改为掌朝下。",
+  "review": {
+    "startAndEndpointActuallyViewed": true,
+    "endpointDecision": "accepted-reference-for-parent-review",
+    "notes": [
+      "两前臂支撑平凳面，不替换大腿支撑。",
+      "双掌朝上，腕在凳边外，手中每只DB真实抓握。",
+      "肘与前臂不离凳，唯腕屈曲，不能肘弯举。",
+      "First setup had unclear seated hip support; second start shows bench-straddled seated contact. First endpoint forearm drift rejected; selected second endpoint has smaller distal hand/wrist-only arc. Video must still keep both forearms supported."
+    ],
+    "wholeVideoViewed": false,
+    "readyMedia": false
+  },
+  "plannedVideo": {
+    "inputMode": "native first-and-last-frame",
+    "oneWaySeconds": 4,
+    "direction": "start-to-end",
+    "returnPlan": "Only after one-way actual visual acceptance, forward segment plus exact reversed frames for nominal8second illustration.",
+    "assemblyPerformed": false,
+    "videoGeneratedByThisAgent": false,
+    "originalEightSecondGeneration": false,
+    "existingEightSecondAttemptReused": false
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "1585",
+  "nodeId": "a46cfd42-ab1f-4dad-8766-05151b570e60",
+  "taskId": "20261021122003074148518",
+  "prompt": "Use {{Node 4533e39a-d14c-4fad-96e6-b12f2bf386c7}} as exact starting frame. 原版Zeno青奶油毛绒水獭、青柠斜挎带/单个Z扣、暖象牙棚，固定真实侧面机位、全身两脚双手尾都在画内。演示8秒保持跑者前后分腿拉伸，不做进入或离开姿势。身体一直朝画面左：前脚/前膝/胸/骨盆/脸朝同一左方向。前脚全掌落地、前膝弯约90度位于脚踝上方；后腿向身后画面右伸直，后脚趾也朝左、后脚跟保持落地。两爪轻放前大腿，不压膝。保持参考图清楚的前后站姿及所有接触点，只微小呼吸和眨眼。禁止胸和骨盆转向镜头、横向侧弓步、向左右横跨、后膝跪地或弯曲、抬后跟、脚移动、扭头、松手、摇晃、镜头转动或推近、额外肢体、文字水印音频。Maintain the exact TRUE SIDE PROFILE forward-back SPLIT STANCE through final frame, never turn chest or pelvis toward camera. This short pose illustration is not the full twenty-to-thirty-second source hold.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "runners stretch",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "199487"
+    }
+  },
+  "originalSha256": "bce4fab11dd61291f0a85bc394a3895b162fd6d2d379f758f191a8d2bac2ca24",
+  "originalBytes": 5026176,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1585-contact.jpg",
+    "contactSha256": "4c5de60a893effc23444de459f5165de4500ab74c79f5592b14b16a9eecd1e42",
+    "reviewed": true,
+    "observation": "Root viewed full 8-frame contact sheet; corrected clear side-on forward/back split stance, front knee bent over forward foot, rear leg extends backward with rear foot grounded, both paws on front thigh, pelvis and torso aligned with forward leg. No lateral lunge, rocking or side change. Short held runner-stretch excerpt."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "9a9dffa4aec0034854738e2e52a63670fb2c524529d4513f768913c64c9d9bc2"
+}

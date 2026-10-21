@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "status": "producing",
   "targetAdditional": 1000,
-  "acceptedAdditional": 25,
+  "acceptedAdditional": 52,
   "baselineReady": 32,
-  "totalReady": 57,
-  "remainingTarget": 975,
+  "totalReady": 84,
+  "remainingTarget": 948,
   "budgetScope": "Existing current-account credits only; no recharge or account switching. Paid dispatch stops on explicit insufficient-credit terminal output.",
   "creditsRemaining": null,
   "creditsRemainingKnown": false,
@@ -135,6 +135,141 @@
       "exerciseId": "0620",
       "englishName": "lying leg raise flat bench",
       "assetStem": "exp-0620"
+    },
+    {
+      "exerciseId": "1355",
+      "englishName": "one arm against wall",
+      "assetStem": "exp-1355"
+    },
+    {
+      "exerciseId": "3420",
+      "englishName": "v-sit on floor",
+      "assetStem": "exp-3420"
+    },
+    {
+      "exerciseId": "1373",
+      "englishName": "bodyweight standing calf raise",
+      "assetStem": "exp-1373"
+    },
+    {
+      "exerciseId": "1548",
+      "englishName": "chair leg extended stretch",
+      "assetStem": "exp-1548"
+    },
+    {
+      "exerciseId": "1297",
+      "englishName": "isometric chest squeeze",
+      "assetStem": "exp-1297"
+    },
+    {
+      "exerciseId": "0795",
+      "englishName": "standing single leg curl",
+      "assetStem": "exp-0795"
+    },
+    {
+      "exerciseId": "3302",
+      "englishName": "handstand",
+      "assetStem": "exp-3302"
+    },
+    {
+      "exerciseId": "1585",
+      "englishName": "runners stretch",
+      "assetStem": "exp-1585"
+    },
+    {
+      "exerciseId": "3419",
+      "englishName": "l-sit on floor",
+      "assetStem": "exp-3419"
+    },
+    {
+      "exerciseId": "3299",
+      "englishName": "full planche",
+      "assetStem": "exp-3299"
+    },
+    {
+      "exerciseId": "0407",
+      "englishName": "dumbbell side bend",
+      "assetStem": "exp-0407"
+    },
+    {
+      "exerciseId": "0446",
+      "englishName": "ez barbell close-grip curl",
+      "assetStem": "exp-0446"
+    },
+    {
+      "exerciseId": "3296",
+      "englishName": "front lever",
+      "assetStem": "exp-3296"
+    },
+    {
+      "exerciseId": "3303",
+      "englishName": "flag",
+      "assetStem": "exp-3303"
+    },
+    {
+      "exerciseId": "0406",
+      "englishName": "dumbbell shrug",
+      "assetStem": "exp-0406"
+    },
+    {
+      "exerciseId": "0355",
+      "englishName": "dumbbell one arm lateral raise",
+      "assetStem": "exp-0355"
+    },
+    {
+      "exerciseId": "0380",
+      "englishName": "dumbbell rear lateral raise",
+      "assetStem": "exp-0380"
+    },
+    {
+      "exerciseId": "1587",
+      "englishName": "seated wide angle pose sequence",
+      "assetStem": "exp-1587"
+    },
+    {
+      "exerciseId": "0369",
+      "englishName": "dumbbell over bench wrist curl",
+      "assetStem": "exp-0369"
+    },
+    {
+      "exerciseId": "1366",
+      "englishName": "upward facing dog",
+      "assetStem": "exp-1366"
+    },
+    {
+      "exerciseId": "1397",
+      "englishName": "standing calves",
+      "assetStem": "exp-1397"
+    },
+    {
+      "exerciseId": "0333",
+      "englishName": "dumbbell kickback",
+      "assetStem": "exp-0333"
+    },
+    {
+      "exerciseId": "1387",
+      "englishName": "one leg floor calf raise",
+      "assetStem": "exp-1387"
+    },
+    {
+      "exerciseId": "0001",
+      "englishName": "3/4 sit-up",
+      "assetStem": "exp-0001"
+    },
+    {
+      "exerciseId": "1398",
+      "englishName": "standing calves calf stretch",
+      "assetStem": "exp-1398"
+    },
+    {
+      "exerciseId": "0356",
+      "englishName": "dumbbell one arm lateral raise with support",
+      "assetStem": "exp-0356"
+    },
+    {
+      "exerciseId": "0271",
+      "englishName": "crunch (on stability ball)",
+      "assetStem": "exp-0271"
     }
   ]
 }

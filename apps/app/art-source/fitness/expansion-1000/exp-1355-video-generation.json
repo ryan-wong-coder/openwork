@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "1355",
+  "nodeId": "82702c17-95db-41ae-b119-110b596a93fa",
+  "taskId": "20261021105803143188518",
+  "prompt": "Use {{Node 00cd310f-2f74-458b-b772-e5d49bee14e3}} as exact starting frame. Preserve this exact original Zeno teal and cream otter, one lime strap and single Z buckle, warm ivory vertical wall and floor. Fixed wide side-three-quarter tripod camera, no cuts, zoom or reframing; whole body, both feet, tail and palm-wall contact remain visible. Demonstrate an eight-second calm held ONE ARM AGAINST WALL isometric, on the same side throughout. The working arm stays almost straight at shoulder height and the entire working palm remains flat against the same spot on the vertical wall, fingers pointing upward. The other arm remains relaxed down beside the torso. Both whole soles remain planted shoulder-width apart. Keep the same small forward whole-body lean, neutral flat back and head, gently engaging the upper back without moving the feet. Only tiny breathing and occasional natural blinking, with a barely perceptible gentle wall pressure; maintain the held pose through the final frame. No wall push-up, elbow bending, sideways rotation, body sag, back arch, palm release, foot stepping, hand change, tail support, extra limbs, text, watermark or audio. This is a brief pose illustration, not the full prescribed hold or a side-switching sequence.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "one arm against wall",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "153587"
+    }
+  },
+  "originalSha256": "812b7c5d070fe9e682a1a601666096ce55e4799576820f1cdf877524a99bd65a",
+  "originalBytes": 5006165,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1355-contact.jpg",
+    "contactSha256": "cff7fe8b2f816f37327d8853834f982251215bdb107375c6d9b19a45269670c1",
+    "reviewed": true,
+    "observation": "Root viewed full 8-frame contact sheet; one palm stays against wall with almost straight elbow, opposite arm relaxed downward, feet grounded and body gently inclined as one line. No wall push-up, elbow pumping, hand switch or foot migration. Visible subtle breathing in held isometric excerpt."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "5d714379c1613695c27f4ffd06d0f26a646915ccc39d3cc6f38caa4ba7b6a3f6"
+}

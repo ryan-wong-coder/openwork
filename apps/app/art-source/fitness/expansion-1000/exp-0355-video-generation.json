@@ -1,0 +1,141 @@
+{
+  "canonicalExerciseId": "0355",
+  "englishName": "dumbbell one arm lateral raise",
+  "nodeId": "5ae7cb15-4652-4684-9099-d66b26c5cc92",
+  "taskId": "20261021124403145828518",
+  "prompt": "首帧为 {{Node 76b8028c-4705-4396-9195-a1ae0ad4e646}}，尾帧为 {{Node e89647c8-af12-480c-8631-3466341225ac}}。严格保持同一原创青色奶油色毛绒Zeno、青柠斜肩带、唯一一只哑铃、固定机位和象牙色摄影棚。4秒只做一次右侧单臂侧平举：画左的负重臂从大腿外侧低垂，以肩关节为轴沿身体外侧额状面缓慢上抬，近伸直肘角全程不变，到尾帧与肩同高、掌朝下的水平直臂位置。绝不先屈肘做弯举、不能前举或推举、不能过头。左/画右空爪始终扶髋，不能长出第二只哑铃。双肩放松，躯干头骨盆直立固定，不侧弯借力，不转身；双脚与尾巴在原地地面。只抬起后停住，不下放或再重复。全身和负重端全程入画，无镜头缩放、剪切、文字、水印或声音。\n",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0355-reference.png",
+      "sha256": "47cb8b8a934a544e27bfa9038ec118d96d86609b1334b5b392ddd9355f00bc01",
+      "bytes": 1746919,
+      "nodeId": "76b8028c-4705-4396-9195-a1ae0ad4e646"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0355-endpoint.png",
+      "sha256": "5bba4764c94532b1c598bc7bb0343359a2fc648943465a2d73f6d7885dde4530",
+      "bytes": 1688010,
+      "nodeId": "e89647c8-af12-480c-8631-3466341225ac"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "Official CLI read-only node response after create without run and before the single paid run",
+    "nodeId": "5ae7cb15-4652-4684-9099-d66b26c5cc92",
+    "expectedReferenceNodeIds": [
+      "76b8028c-4705-4396-9195-a1ae0ad4e646",
+      "e89647c8-af12-480c-8631-3466341225ac"
+    ],
+    "imageListOrder": [
+      "76b8028c-4705-4396-9195-a1ae0ad4e646",
+      "e89647c8-af12-480c-8631-3466341225ac"
+    ],
+    "imageListNodeIds": [
+      "76b8028c-4705-4396-9195-a1ae0ad4e646",
+      "e89647c8-af12-480c-8631-3466341225ac"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "3fcdf3cbeb7f3482a039494993bc7205cf73deacd13bcf7760edcd15f3b9ab36",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "149112"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "1996259"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "79637"
+    }
+  },
+  "originalSha256": "fcc90a5d4f16cc8b8c2b61918ce6505b2f8a7c6087f2e2bab6e07f83c91edda1",
+  "originalBytes": 1996259,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "a00cae381f680a338828b908bad927dd373f4150534c7ab9af695b691b09a7b8",
+  "processing": "Seedance2.5 generated one ordered start/end4second one-way segment (actual 4.041667s). After actual16sample visual approval, encoded whole segment forward then exact reversed frame order to illustrate return, final 8.083333s. Return synthesized by reversal, not separately AI-generated; not an original8second continuous generation. H.264 CRF26,1024px,yuv420p,silent,faststart. WebP q86 poster extracted from actual first video frame.",
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0355-contact-8fps.jpg",
+    "contactSha256": "24797c30d1051e7fa5d53d94b433b791c0a6e3cd9dae73eeeb8e51bf86b988eb",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "observation": "Actual16 one-way and64 composed samples show only the loaded right/near-straight arm abducting laterally to shoulder height and reversing the same path; no biceps curl, front raise or overhead press. One dumbbell only, empty hand on hip, feet/pelvis/head stable and full travel inside frame. All frames decode.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0355-one-way-contact-4fps.jpg",
+      "contactSha256": "0101f21986dfd47971f05d1603ddb5f0fea3b0fb550854268e581683d8b287cf",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true
+    }
+  },
+  "posterTool": "ffmpeg first generated video frame then cwebp q86; original ordered image references by built-in ImageGen",
+  "sourceDescriptorSha256": "df95350563154a8520ba8ffc6c2f2e731752ecee9586ecd41f1e71eb5e3afdc5",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "parentAdmissionPending": false
+}

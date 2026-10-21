@@ -1,0 +1,50 @@
+{
+  "canonicalExerciseId": "0356",
+  "englishName": "dumbbell one arm lateral raise with support",
+  "sourceDescriptorSha256": "e0e78d00caa5e0438dc2ea807c7c1d582034153e46cb4238bb4fc243b051f7c3",
+  "sourceSteps": [
+    "双脚分开与肩同宽站立，一手握住哑铃，手掌朝向身体。",
+    "将另一只手放在稳定的表面（例如长凳或墙壁）上以获得支撑。",
+    "保持背部挺直并启动核心肌群。",
+    "将哑铃向一侧举起，保持手臂伸直，手掌朝下。",
+    "继续抬起，直到手臂与地面平行。",
+    "在顶部停顿片刻，然后慢慢将哑铃放回起始位置。",
+    "重复所需的重复次数，然后换边。"
+  ],
+  "sourceStepsTechniqueReviewed": true,
+  "posterTool": "built-in image_gen.imagegen",
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0356-reference.png",
+      "bytes": 1682064,
+      "sha256": "a504f0beb61362afe660fcb85a9dcae0e7d646b276d4150e6122db0072dfac4d"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0356-endpoint.png",
+      "bytes": 1660360,
+      "sha256": "3ecd5adc72f8f63701695bc78e718133a87bd681de41bfe42b14203495077d23"
+    }
+  ],
+  "producerActuallyViewedStartAndEnd": true,
+  "observation": "Supported unilateral dumbbell lateral raise: support paw remains on wall, working long arm sweeps sideways to shoulder height, one dumbbell, fixed feet and torso.",
+  "scope": "One reversible movement preview; return will only be exact reversal after forward-phase review. Stretch timing and one-side examples do not claim a full prescribed hold or both sides.",
+  "readyMedia": false,
+  "notRegisteredByProducer": true,
+  "sourcePromptFiles": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0356-poster-prompt.txt"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0356-endpoint-prompt.txt"
+    }
+  ],
+  "identityReference": {
+    "file": "apps/zeno-site/public/assets/mascot.webp",
+    "role": "original identity only for start image; endpoint edited accepted start"
+  },
+  "restrictedUpstreamMediaUsed": false
+}

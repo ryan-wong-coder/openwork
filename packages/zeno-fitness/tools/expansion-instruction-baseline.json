@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "kind": "frozen-expansion-instruction-baseline",
+  "scope": "Original planning input only; later runtime corrections do not alter frozen sourceSteps or imply reviewed technique.",
+  "upstream": {
+    "revision": "464355ef43d4c8f8a4e0bb6db9c2af7f240593b5",
+    "path": "packages/zeno-fitness/upstream/instr/zh.js",
+    "sha256": "c854f63d289ee2039c690882f126c2c3d5c608215cdbd6ceff4dd11779763b6a"
+  },
+  "corrections": [
+    {
+      "exerciseId": "0313",
+      "englishName": "dumbbell hammer curl",
+      "equipmentId": "dumbbell",
+      "steps": [
+        "站稳，双手各握一个哑铃置于身体两侧，掌心始终朝向身体，手腕保持平直。",
+        "上臂贴近身体，保持躯干稳定，不借助摆动发力。",
+        "缓慢屈肘，将哑铃举向肩前；全程保持中立握法，不旋转成掌心向上的弯举。",
+        "短暂停顿后，控制哑铃缓慢下放，回到起始位置。",
+        "按计划重复，保持肩部放松和手腕对齐。"
+      ]
+    }
+  ]
+}

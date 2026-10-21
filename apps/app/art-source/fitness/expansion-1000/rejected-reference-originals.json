@@ -32,6 +32,22 @@
       "selected": false,
       "reason": "Superseded by the selected v2 supported-row reference after the first video produced an elbow curl.",
       "retained": "private production staging; not shipped"
+    },
+    {
+      "sourceName": "exp-1585-reference.png",
+      "originalBytes": 1824414,
+      "originalSha256": "23ad22d47b4a5315e09d9f72641043297a002afdfe75b59d518e47d9cb9bc39d",
+      "selected": false,
+      "reason": "Discarded first actual image showed an ambiguous lateral lunge instead of the selected forward/back runners stretch. Selected revised reference v2 was used for the accepted second video.",
+      "retained": "private production staging; not shipped"
+    },
+    {
+      "sourceName": "exp-0001-endpoint-attempt1.png",
+      "originalBytes": 1831455,
+      "originalSha256": "988e46ea84520cbadbaf57d15e7ac4367ba103f98001a732853cf18029ba98d6",
+      "selected": false,
+      "reason": "Endpoint showed only a shallow upper-back curl rather than the source partial sit-up. No video was run from it; revised endpoint lifts lower and upper back while keeping feet and pelvis planted.",
+      "retained": "private production staging; not shipped"
     }
   ]
 }

@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "3303",
+  "nodeId": "4f3ffb7d-dd25-458c-8149-b1f7c3f845e9",
+  "taskId": "20261021132403365088518",
+  "prompt": "Use {{Node db7cb8e0-db7d-490a-b42a-6bccaf81aac6}} as exact starting frame. Preserve original Zeno teal/cream otter, lime strap/single Z buckle, rigid vertical pole and ivory studio. Fixed wide camera, complete pole grips/body/feet/tail visible, no cuts/zoom/text/watermark/audio. Eight-second HELD HUMAN FLAG only. Both paws remain wrapped around SAME pole at SAME TWO DIFFERENT HEIGHTS, elbows fully straight, upper grip above head/lower grip below chest. Body extends sideways in one horizontal line, both legs straight together and feet off floor; hips do not sag, cream chest remains facing original direction. Only tiny breathing and blinking, no swinging, lifting/lowering body, grip release/change, elbow bending, foot contact, pole deformation, tail support, extra limbs or wires. Maintain original pose through final frame, no entry/exit. Brief pose illustration, not full exercise duration or safety instruction.\n",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "flag",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "189824"
+    }
+  },
+  "originalSha256": "cc9e59fb8694a403a07e67c1a3679b619e7e4d840f16bb169636164d1050ddb5",
+  "originalBytes": 3456551,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3303-contact.jpg",
+    "contactSha256": "24804f502e0d68f6d3b5299a6b9e7937f0dcb461d7d6650e2d2f03e95a4aa952",
+    "reviewed": true,
+    "observation": "Root viewed full 8-frame contact sheet; upper and lower paws hold the same vertical pole at separate fixed points, arms stay extended, trunk and straight joined legs project horizontally to the side with both feet clear of floor. No pole bending, grip slide, foot contact or support substitution. Short held human-flag excerpt."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "31d24b721bad4907ff6f326da3eb356417c3cf2a4881c956f4038a991d7b0042"
+}

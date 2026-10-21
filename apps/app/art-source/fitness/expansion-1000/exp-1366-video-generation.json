@@ -1,0 +1,141 @@
+{
+  "canonicalExerciseId": "1366",
+  "englishName": "upward facing dog",
+  "nodeId": "a3a4f75b-7a4a-4a81-aa51-b1b5e88b5fd8",
+  "taskId": "20261021134103649258518",
+  "prompt": "首帧为 {{Node af3c4540-443f-4119-9651-98e1dfd68704}}，尾帧为 {{Node 3c513270-3231-4b24-a44f-5680efa0df71}}。同一原创青色奶油色毛绒Zeno，青柠斜肩带，固定侧前机位和象牙色地面。4秒只从俯卧低位连续缓慢推到上犬式：双掌在原下肋旁地面位置用力，双肘逐渐伸直到近直，胸部向前上方打开，同时把腹部、骨盆、双侧大腿和膝都抬离地面。只双手掌和双脚背在地上承重，双足位置不滑不翻到脚尖，双腿近伸直。终点必须有大腿膝盖下方清楚空隙，不是膝/腹仍着地的眼镜蛇，不是肘前臂着地的sphinx。肩下沉后展，头随脊柱温和向上看，不用头先猛抬替代躯干推起。尾巴被动远侧不垫腹代支撑。全程无新肢体，头脚尾身体完整入画，镜头固定，不变焦剪切。仅推起一次并在尾帧停住，不回落不重复，无文字无声。\n",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1366-reference.png",
+      "sha256": "5de8ee1d814f3b741236d72519395e1c253cfc0be8cd7a15e1059635e882fb0e",
+      "bytes": 1864044,
+      "nodeId": "af3c4540-443f-4119-9651-98e1dfd68704"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1366-endpoint.png",
+      "sha256": "e07a27ff883afe7b769ed6e4b8b371948ef17a56007d4882296f32f99ec61ecf",
+      "bytes": 1806804,
+      "nodeId": "3c513270-3231-4b24-a44f-5680efa0df71"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "Official CLI read-only node response after create without run and before the single paid run",
+    "nodeId": "a3a4f75b-7a4a-4a81-aa51-b1b5e88b5fd8",
+    "expectedReferenceNodeIds": [
+      "af3c4540-443f-4119-9651-98e1dfd68704",
+      "3c513270-3231-4b24-a44f-5680efa0df71"
+    ],
+    "imageListOrder": [
+      "af3c4540-443f-4119-9651-98e1dfd68704",
+      "3c513270-3231-4b24-a44f-5680efa0df71"
+    ],
+    "imageListNodeIds": [
+      "af3c4540-443f-4119-9651-98e1dfd68704",
+      "3c513270-3231-4b24-a44f-5680efa0df71"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "b9ad19b6adcabfb184e66dfd46069ff5202155f2d80e8c63e9dae8957591b883",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "194872"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2789147"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "103443"
+    }
+  },
+  "originalSha256": "9504158f5f8a57f6a7b6cc2ce736113b439863ff6e75ca0d6cd763bb65b31662",
+  "originalBytes": 2789147,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "a265c350d3283ed1bc7916df87268411f155c37372dfe02a925308444c947283",
+  "processing": "Seedance2.5 generated one ordered start/end4second one-way segment (actual 4.041667s). After actual16sample visual approval, encoded whole segment forward then exact reversed frame order to illustrate return, final 8.083333s. Return synthesized by reversal, not separately AI-generated; not an original8second continuous generation. H.264 CRF26,1024px,yuv420p,silent,faststart. WebP q86 poster extracted from actual first video frame.",
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1366-contact-8fps.jpg",
+    "contactSha256": "4711e11c0c3c7d376d33cd6146212bf59a7479c5ae3c5869c42d0d9f5805c8ff",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "observation": "Actual16 and64 samples show a single prone-to-upward-dog press and exact reversed return. Palms stay fixed, both elbows extend, thighs/knees/belly visibly clear floor at high pose while foot tops stay down; not sphinx/forearm support or knees-down cobra. Full head/feet remain framed, no morph/extra limbs or camera cut, full decode passed.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1366-one-way-contact-4fps.jpg",
+      "contactSha256": "b3b85657ddca85e5b8d52fe2a53c2bbcc128ce9faf6119b920dc964ce184ad2a",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true
+    }
+  },
+  "posterTool": "ffmpeg first generated video frame then cwebp q86; original ordered image references by built-in ImageGen",
+  "sourceDescriptorSha256": "2d87325baef42a84b92baddde2a64255b0677dd8138cf4f6c72fd3f4220d16cc",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "parentAdmissionPending": false
+}

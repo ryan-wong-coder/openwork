@@ -1,0 +1,2 @@
+First START rejected: head nearly at frame edge, insufficient allowance for heel-rise head excursion. PNG private only. SHA256 7c7b046e76de858c5ad8563510c5a7b7cce62c2aebf2fabe6d1a81bb1a3fad2b
+Accepted second start widens camera to preserve complete movement margins.

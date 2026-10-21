@@ -1,0 +1,49 @@
+{
+  "canonicalExerciseId": "0333",
+  "englishName": "dumbbell kickback",
+  "sourceDescriptorSha256": "2f9bd56022c3074b1e230382216789bf472acbd005c6e9be1bea4c95f6adb4b2",
+  "sourceSteps": [
+    "双脚分开与肩同宽站立，每只手各握一个哑铃。",
+    "稍微弯曲膝盖，髋部向前转动，保持背部挺直。",
+    "将上臂靠近身体两侧，肘部弯曲成 90 度角。",
+    "将手臂向后伸直，在动作的最高点挤压三头肌。",
+    "暂停片刻，然后慢慢将哑铃放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "sourceStepsTechniqueReviewed": true,
+  "posterTool": "built-in image_gen.imagegen",
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0333-reference.png",
+      "bytes": 1790643,
+      "sha256": "21e5cb3db0b7fbd0254c91b2029d08b8643d12608d572d4dfaee41b83f90f324"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0333-endpoint.png",
+      "bytes": 1753695,
+      "sha256": "cd0f050c2efa6c4ca8f5d23059cab05d178464323f8bf9eb52c1a92452491bef"
+    }
+  ],
+  "producerActuallyViewedStartAndEnd": true,
+  "observation": "Bilateral triceps kickback: hinged torso, upper arms beside ribs; flexed elbows to extended forearms behind hips; two distinct dumbbells maintained.",
+  "scope": "One reversible movement preview; lowering will only be synthesized by exact reversal after forward-phase review.",
+  "readyMedia": false,
+  "notRegisteredByProducer": true,
+  "sourcePromptFiles": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0333-poster-prompt.txt"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0333-endpoint-prompt.txt"
+    }
+  ],
+  "identityReference": {
+    "file": "apps/zeno-site/public/assets/mascot.webp",
+    "role": "original identity only for start image; endpoint edited accepted start"
+  },
+  "restrictedUpstreamMediaUsed": false
+}

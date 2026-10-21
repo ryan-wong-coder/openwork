@@ -17,17 +17,17 @@
     "catalogueCanonicalCount": 5632,
     "mainstreamSelectedExercises": 32,
     "originalVectorDemonstrations": 11,
-    "originalMascotVideos": 55,
+    "originalMascotVideos": 82,
     "originalDiagramVideos": 2,
     "completedMainstreamPosters": 32,
     "completedMainstreamVideos": 32,
-    "uncoveredDemonstrations": 5575,
+    "uncoveredDemonstrations": 5548,
     "humanTechniqueOrClinicalValidation": false,
     "expansionSelectedExercises": 1000,
-    "completedExpansionPosters": 25,
-    "completedExpansionVideos": 25,
-    "completedPosters": 57,
-    "completedVideos": 57
+    "completedExpansionPosters": 52,
+    "completedExpansionVideos": 52,
+    "completedPosters": 84,
+    "completedVideos": 84
   },
   "assets": [
     {
@@ -3609,6 +3609,2490 @@
         ],
         "rootAcceptanceBasis": "Root subsequently actually viewed and accepted the final64-frame contact sheet in addition to the previously viewed one-way16frames and3.75second endpoint. All review scopes are now actually viewed by producer and root; prior16-only acceptance snapshot retained unchanged."
       }
+    },
+    {
+      "name": "exp-1355",
+      "canonicalExerciseId": "1355",
+      "englishName": "one arm against wall",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1355.mp4",
+        "bytes": 153587,
+        "sha256": "38801d88a5e0d2815a7f8a7b5566345decb11ee672c1c8d9685c47c8597f4952"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1355-poster.webp",
+        "bytes": 50548,
+        "sha256": "fd4f46966e0950e76797f14a8d3523bdff75bac801bc05ac288397d9696bfc96"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-1355-reference.png",
+        "bytes": 1743188,
+        "sha256": "211e295b7fec1938a29e5c6ce41e63ef295c22a44f019bef28e02d045191e6a1"
+      },
+      "originalGeneratedVideo": {
+        "bytes": 5006165,
+        "sha256": "812b7c5d070fe9e682a1a601666096ce55e4799576820f1cdf877524a99bd65a",
+        "retained": true,
+        "location": "private generation staging; excluded from repository"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "153587"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1355-contact.jpg",
+        "contactSha256": "cff7fe8b2f816f37327d8853834f982251215bdb107375c6d9b19a45269670c1",
+        "reviewed": true,
+        "observation": "Root viewed full 8-frame contact sheet; one palm stays against wall with almost straight elbow, opposite arm relaxed downward, feet grounded and body gently inclined as one line. No wall push-up, elbow pumping, hand switch or foot migration. Visible subtle breathing in held isometric excerpt."
+      },
+      "processing": "Complete original 8-second movement, H.264 CRF26 1024px yuv420p, silent, faststart; WebP poster from independently generated reference at quality86.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-3420",
+      "canonicalExerciseId": "3420",
+      "englishName": "v-sit on floor",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-3420.mp4",
+        "bytes": 214450,
+        "sha256": "0de9dcb3682a4ed5751956a2a9403d5533778cdcc48b243e5bc7adbea914817d"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-3420-poster.webp",
+        "bytes": 74298,
+        "sha256": "b3477270a610784b5ee7c30b9461a3032de73282f70a220dd986479cd1d86b81"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-3420-reference.png",
+        "bytes": 1872263,
+        "sha256": "41b05939bb7f0c01d8453d61c235275714ce3d555a0eb1e4e04f00eb5535ce99"
+      },
+      "originalGeneratedVideo": {
+        "bytes": 4834872,
+        "sha256": "8bf31aeefebf97a813b9f49ddcad9a5cdfb9bb00b0780544dbf557e9c9deb088",
+        "retained": true,
+        "location": "private generation staging; excluded from repository"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "214450"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3420-contact.jpg",
+        "contactSha256": "ee311ac9c7ae2609353f6d07bff8c95f0fad12731defb19a4075cb2d15cf5b2d",
+        "reviewed": true,
+        "observation": "Root viewed full 8-frame contact sheet; sitting-bone contact maintained with torso reclined and both straight legs hovering, arms reaching forward without hand support. Tail remains relaxed behind rather than a vertical support. No leg cycling, knee folding, hand bracing or posture collapse. Short held V-sit excerpt."
+      },
+      "processing": "Complete original 8-second movement, H.264 CRF26 1024px yuv420p, silent, faststart; WebP poster from independently generated reference at quality86.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-1373",
+      "canonicalExerciseId": "1373",
+      "englishName": "bodyweight standing calf raise",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1373.mp4",
+        "bytes": 172847,
+        "sha256": "a85358a58882f8362fcdad2242d4f4e79c2c94dd809c3ab6eb1eea66768f08cf"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1373-poster.webp",
+        "bytes": 19772,
+        "sha256": "672c4ff937251c507006e8722aa0e04e61477ade13da42ab3ee9533283beb5bc"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-1373-reference.png",
+        "bytes": 1731831,
+        "sha256": "6296c3899a3bcd486685b225bdd473d2a786bf65bd21742898c3b0a2aa7acb0c"
+      },
+      "originalGeneratedEndpoint": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-1373-endpoint.png",
+        "bytes": 1707382,
+        "sha256": "c79b7a3bb2e6d497de9225bb9f06352b108cb25af72059d750b789169ffae4ed"
+      },
+      "referenceFrames": [
+        {
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-1373-reference.png",
+          "bytes": 1731831,
+          "sha256": "6296c3899a3bcd486685b225bdd473d2a786bf65bd21742898c3b0a2aa7acb0c",
+          "role": "start",
+          "nodeId": "c0ab509c-5b3a-42cc-8044-2cd90a19a0ea"
+        },
+        {
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-1373-endpoint.png",
+          "bytes": 1707382,
+          "sha256": "c79b7a3bb2e6d497de9225bb9f06352b108cb25af72059d750b789169ffae4ed",
+          "role": "end",
+          "nodeId": "7a40b941-34fc-4d5c-bc79-c41a492b2705"
+        }
+      ],
+      "referenceOrderProof": {
+        "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+        "nodeId": "a6fa5d62-9a41-4dc4-8597-f3c545c90b37",
+        "expectedReferenceNodeIds": [
+          "c0ab509c-5b3a-42cc-8044-2cd90a19a0ea",
+          "7a40b941-34fc-4d5c-bc79-c41a492b2705"
+        ],
+        "imageListOrder": [
+          "c0ab509c-5b3a-42cc-8044-2cd90a19a0ea",
+          "7a40b941-34fc-4d5c-bc79-c41a492b2705"
+        ],
+        "imageListNodeIds": [
+          "c0ab509c-5b3a-42cc-8044-2cd90a19a0ea",
+          "7a40b941-34fc-4d5c-bc79-c41a492b2705"
+        ],
+        "orderExactMatch": true,
+        "createWithoutRun": true,
+        "taskInfoPresentBeforePaid": false,
+        "rawReadOnlyReceiptSha256": "99095511e4bfa7798191503e1a4196d931a5519b27ad49258054407a8e90d4c8",
+        "rawReceiptRetainedPrivately": true,
+        "noRawProviderUrlsPublished": true
+      },
+      "originalGeneratedVideo": {
+        "bytes": 2514183,
+        "sha256": "e163b25b07c532a64cffe55ff67cf0ff48b9a6a9f54886711c912d4087f305ca",
+        "retained": true,
+        "location": "private generation staging; excluded from repository",
+        "durationSeconds": 4.041667
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1",
+            "nb_frames": "194"
+          }
+        ],
+        "format": {
+          "duration": "8.083333",
+          "size": "172847"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 0.125,
+        "frames": 64,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1373-contact-8fps.jpg",
+        "contactSha256": "5b18c4be2d122e59db2e2f8d947af0c0528a31211c9ed57ad016535c22585939",
+        "reviewed": true,
+        "producerAccepted": true,
+        "rootAccepted": true,
+        "rootReviewPending": false,
+        "observation": "Actual 16 samples at 4fps over the generated heel raise, a full 1024px heel endpoint at 3.75s, and 64 samples at 8fps over the composed loop show both heels raising while forefoot pads retain the same floor contacts, then lowering in exact reverse. Both front paws maintain the same wall contacts. Knees stay nearly straight and the body rises modestly, without squat, jump or foot slide. Tail remains passive and does not bear weight; wall, camera, complete head and feet remain stable and in frame. Producer and root both actually viewed and accepted the 16-frame one-way, 3.75-second heel endpoint and 64-frame final contact images. Root confirmed the same wall contacts, fixed forefoot pads, both heels leaving the floor, no squat or jump, and no tail support. All frames of one-way and final H.264 files decoded without errors.",
+        "oneWay": {
+          "intervalSeconds": 0.25,
+          "frames": 16,
+          "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1373-one-way-contact-4fps.jpg",
+          "contactSha256": "ffb9bc527043f945b4e8973defd494abb6d66917c0c1344005161c78d496149a",
+          "reviewed": true,
+          "producerAccepted": true,
+          "rootAccepted": true,
+          "rootReviewPending": false
+        },
+        "endpointDetail": {
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-1373-heel-end-detail.png",
+          "bytes": 224783,
+          "sha256": "ab28ed7c9d8b3ee94fd23c60e0a96b329d3a4f40a8fed1b294f068ad744bc346",
+          "timestampSeconds": 3.75,
+          "reviewedByProducer": true,
+          "rootReviewPending": false,
+          "rootAccepted": true,
+          "rootActuallyViewed": true
+        }
+      },
+      "processing": "Seedance 2.5 generated one 4-second wall-supported bodyweight heel-raising segment from ordered original start/end images (actual source 4.041667 seconds). After producer visual acceptance, the complete raising segment was encoded forward and followed by the exact same frames in reverse to illustrate controlled heel lowering, producing an 8.083333-second loop. Lowering is synthesized by reversal, not separately AI-generated; this is not an original 8-second continuous generation. Endpoint frames retained at turn and loop boundary. H.264 CRF26, 1024px width, yuv420p, silent, faststart. WebP poster uses the original start reference at quality86.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-1548",
+      "canonicalExerciseId": "1548",
+      "englishName": "chair leg extended stretch",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1548.mp4",
+        "bytes": 169408,
+        "sha256": "70881635483dbda3d5fc23a23ad53b9d896b73726d052a1f333b10c5793ea97f"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1548-poster.webp",
+        "bytes": 62796,
+        "sha256": "6e4bd84804ef5f4d35b094f69641f93773d510a239d6f6e1e06be6174bceb071"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-1548-reference.png",
+        "bytes": 1799851,
+        "sha256": "3a56e88d2ccc813f34ff56eca4191fd7e062d77fe92f59b763f5a25905a0a3f2"
+      },
+      "originalGeneratedVideo": {
+        "bytes": 2997775,
+        "sha256": "1248c3fc8593d90f841c468edce490d87d1062da21ea5d7a93217061f5f12470",
+        "retained": true,
+        "location": "private generation staging; excluded from repository"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "169408"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1548-contact.jpg",
+        "contactSha256": "6dba1909fa8c13dc2aa4881cc2fb8af2fcff0dda8dc30aa7a2c64bf6d17a18d2",
+        "reviewed": true,
+        "observation": "Root viewed full 8-frame contact sheet; seated at chair front edge with one straight leg and grounded heel, toes raised, opposite foot flat, paws on thighs and gently forward torso held with a long back. Chair/pelvis/feet remain stable. Short held-position excerpt, not a claimed full 20-30-second hold or complete side switch."
+      },
+      "processing": "Complete original 8-second movement, H.264 CRF26 1024px yuv420p, silent, faststart; WebP poster from independently generated reference at quality86.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-1297",
+      "canonicalExerciseId": "1297",
+      "englishName": "isometric chest squeeze",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1297.mp4",
+        "bytes": 152448,
+        "sha256": "4a6fed120e993b7b05a4fd70a4972987c0f54128ddc2f86df01c65ca415d23fd"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1297-poster.webp",
+        "bytes": 51226,
+        "sha256": "d3bf89fcec6540c482a2f0fef9a4d0c144926b2c4c8cb6fa7da2b995ce61a20f"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-1297-reference.png",
+        "bytes": 1743942,
+        "sha256": "8235bc213f549746898df09140119a94d8fa98ed06f83e5227a5d4246972e747"
+      },
+      "originalGeneratedVideo": {
+        "bytes": 3292798,
+        "sha256": "dba39c1edbd8405bebd658d59d821ae0ddd64753ff7b0cc6e6c5ccd25ab9735f",
+        "retained": true,
+        "location": "private generation staging; excluded from repository"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "152448"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1297-contact.jpg",
+        "contactSha256": "97db905062489475c7fd4f5f39ce7c9c08d18fb03f234d65d81c86363d787887",
+        "reviewed": true,
+        "observation": "Root viewed full 8-frame contact sheet; both arms stay straight forward at shoulder height, palms remain pressed together throughout the held isometric squeeze, body and feet stable. No arm-opening fly, elbow curl or extra object. Short isometric hold with subtle breathing."
+      },
+      "processing": "Complete original 8-second movement, H.264 CRF26 1024px yuv420p, silent, faststart; WebP poster from independently generated reference at quality86.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-0795",
+      "canonicalExerciseId": "0795",
+      "englishName": "standing single leg curl",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0795.mp4",
+        "bytes": 143664,
+        "sha256": "bb5e8f8046823ad082102540fff5e2ab2bb9e86db4109e6c1cdbe94a15a04ee2"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0795-poster.webp",
+        "bytes": 17402,
+        "sha256": "21bd4a5bbf00d31f75501758877345a2765944b956d071273454435e57aa2b8d"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0795-reference-v2.png",
+        "bytes": 1672560,
+        "sha256": "2b413b2cd8d5ef183f6934e7f0d9a189a2c49a36f6eef5cc17c9124cc5468749"
+      },
+      "originalGeneratedEndpoint": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0795-endpoint-v2.png",
+        "bytes": 1648252,
+        "sha256": "669114c310c18509da59c8c2e96ef66d67ed7d73e043c042df37f9940d8ee1d0"
+      },
+      "referenceFrames": [
+        {
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0795-reference-v2.png",
+          "bytes": 1672560,
+          "sha256": "2b413b2cd8d5ef183f6934e7f0d9a189a2c49a36f6eef5cc17c9124cc5468749",
+          "role": "start",
+          "nodeId": "53956651-4344-473b-b1b3-28bbcc5cb40a"
+        },
+        {
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0795-endpoint-v2.png",
+          "bytes": 1648252,
+          "sha256": "669114c310c18509da59c8c2e96ef66d67ed7d73e043c042df37f9940d8ee1d0",
+          "role": "end",
+          "nodeId": "bd29be4d-17ba-4a8d-a5d7-aa1562f6c6f8"
+        }
+      ],
+      "referenceOrderProof": {
+        "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+        "nodeId": "7b4034e1-6059-4187-a6e3-ea33f437432e",
+        "expectedReferenceNodeIds": [
+          "53956651-4344-473b-b1b3-28bbcc5cb40a",
+          "bd29be4d-17ba-4a8d-a5d7-aa1562f6c6f8"
+        ],
+        "imageListOrder": [
+          "53956651-4344-473b-b1b3-28bbcc5cb40a",
+          "bd29be4d-17ba-4a8d-a5d7-aa1562f6c6f8"
+        ],
+        "imageListNodeIds": [
+          "53956651-4344-473b-b1b3-28bbcc5cb40a",
+          "bd29be4d-17ba-4a8d-a5d7-aa1562f6c6f8"
+        ],
+        "orderExactMatch": true,
+        "createWithoutRun": true,
+        "taskInfoPresentBeforePaid": false,
+        "rawReadOnlyReceiptSha256": "9024cfeb81bf10f80de62a0489b38e36574942f2f7f7643eb456faa891f1bbbb",
+        "rawReceiptRetainedPrivately": true,
+        "noRawProviderUrlsPublished": true
+      },
+      "originalGeneratedVideo": {
+        "bytes": 1858285,
+        "sha256": "46c2a3e47e497a4f3e6cbf52b1c9359053670cccdbe1e153e38a62d4f0be9cee",
+        "retained": true,
+        "location": "private generation staging; excluded from repository",
+        "durationSeconds": 4.041667
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1",
+            "nb_frames": "194"
+          }
+        ],
+        "format": {
+          "duration": "8.083333",
+          "size": "143664"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 0.125,
+        "frames": 64,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0795-contact-8fps.jpg",
+        "contactSha256": "fe04cc7f32156351c323557d15497f2eef54acfe8fe9f5808385d6e3e1341095",
+        "reviewed": true,
+        "producerAccepted": true,
+        "rootAccepted": true,
+        "rootReviewPending": false,
+        "observation": "Actual 16 samples at 4fps over the generated curl, a full 1024px endpoint at 3.75s, and 64 samples at 8fps over the composed loop show the near/right knee flexing backward to bring the heel toward the rear of the hip, while the far/left support foot stays planted. Both paws remain on hips and the torso remains upright. No high forward knee raise, forward kick, jumping side switch, squat or second generated repetition seen. Working calf and foot remain distinct in front of the passive tail; camera, identity and full framing stay stable. Only one right-leg example and its reversed return are shown. Producer actually viewed the 16-frame one-way, 3.75-second endpoint detail and 64-frame final images. Root actually viewed and accepted both the 16-frame one-way and 64-frame final contact sheets, confirming backward near/right-knee curl, heel moving toward the rear hip, stationary far/left support foot, stable hands/torso and no kick, side switch or squat/jump. Root did not personally view the endpoint detail; that detail was reviewed only by producer. All frames of one-way and final H.264 decoded without errors.",
+        "oneWay": {
+          "intervalSeconds": 0.25,
+          "frames": 16,
+          "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0795-one-way-contact-4fps.jpg",
+          "contactSha256": "6e0cd49b801bbd8a130d1010a68da5bd48125bc0492dc2be94d308887112510f",
+          "reviewed": true,
+          "producerAccepted": true,
+          "rootAccepted": true,
+          "rootReviewPending": false,
+          "rootActuallyViewed": true
+        },
+        "endpointDetail": {
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0795-curl-end-detail.png",
+          "bytes": 209258,
+          "sha256": "2c0fead284f87071f278083737ca7a1cac85634027ea9094e02fcb1e885c101c",
+          "timestampSeconds": 3.75,
+          "reviewedByProducer": true,
+          "rootReviewPending": false,
+          "rootAccepted": false,
+          "rootActuallyViewed": false,
+          "reviewedBy": "producer"
+        },
+        "rootActuallyViewed": true
+      },
+      "processing": "Seedance 2.5 generated one 4-second standing right-knee curl from ordered original start/end-v2 images (actual source 4.041667 seconds). Only one near/right-leg example is illustrated, not both alternating legs or an exact clinical knee-angle range. After producer visual acceptance, the complete backward curl was encoded forward and followed by the exact same frames in reverse to illustrate controlled knee extension to the low hover, producing an 8.083333-second loop. The return phase is synthesized by reversal, not separately AI-generated; this is not an original 8-second continuous generation. Endpoint frames retained at turn and loop boundary. H.264 CRF26, 1024px width, yuv420p, silent, faststart. WebP poster uses the original start-v2 reference at quality86.",
+      "kind": "mascot",
+      "rootAccepted": true,
+      "rootAcceptanceBasis": {
+        "rootActuallyViewed": [
+          "one-way16frames4fps",
+          "final64frames8fps"
+        ],
+        "rootDidNotPersonallyView": [
+          "endpoint-detail3.75seconds"
+        ],
+        "producerActuallyViewed": [
+          "one-way16frames4fps",
+          "endpoint-detail3.75seconds",
+          "final64frames8fps"
+        ],
+        "rootAcceptanceBasis": "Root accepted after personally viewing both contact sheets; endpoint detail was reviewed only by producer."
+      }
+    },
+    {
+      "name": "exp-3302",
+      "canonicalExerciseId": "3302",
+      "englishName": "handstand",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-3302.mp4",
+        "bytes": 132981,
+        "sha256": "6c14584268bdecd90236786dc2d1f8686c7c093941c202f7b45cc55f093095c8"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-3302-poster.webp",
+        "bytes": 39812,
+        "sha256": "973d90b49353e5bcc46037b40e76f8c362280ff9a1f0335b51ea0d36051ce649"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-3302-reference.png",
+        "bytes": 1700204,
+        "sha256": "425e3942dc936c3ce32f6f73c74a161abc27267849f08892b0917fe1721909b2"
+      },
+      "originalGeneratedVideo": {
+        "bytes": 3032152,
+        "sha256": "0710fba2aff937b96b5df2abaa56402a7f69704bab103c1fd025b9f5e7cfb59d",
+        "retained": true,
+        "location": "private generation staging; excluded from repository"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "132981"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3302-contact.jpg",
+        "contactSha256": "5ff1fe3e39b5868c8c594f5d2eadd6871ad093fcd31c393c375999fc4eae4b39",
+        "reviewed": true,
+        "observation": "Root viewed full 8-frame contact sheet; both palms support with straight arms and head remains visibly off floor, straight legs together lightly against wall, stable feet/wall contact without hand stepping or support collapse. Tail hangs behind, not acting as a head or hand support. Short wall-assisted handstand held-position excerpt."
+      },
+      "processing": "Complete original 8-second movement, H.264 CRF26 1024px yuv420p, silent, faststart; WebP poster from independently generated reference at quality86.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-1585",
+      "canonicalExerciseId": "1585",
+      "englishName": "runners stretch",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1585.mp4",
+        "bytes": 199487,
+        "sha256": "ed1e6947141a61f5e64f636af260bf7f7e153225ee75d10c06047996bf148d44"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1585-poster.webp",
+        "bytes": 67136,
+        "sha256": "a1b6fad196cd600bc570ec9ebace120f45da12565912d031765d8198fc98ccd5"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-1585-reference-v2.png",
+        "bytes": 1819470,
+        "sha256": "0ee8247e833caede012f7d14eedb318f60b7a9e64d3af49b56bd44eae2ba53ff"
+      },
+      "originalGeneratedVideo": {
+        "bytes": 5026176,
+        "sha256": "bce4fab11dd61291f0a85bc394a3895b162fd6d2d379f758f191a8d2bac2ca24",
+        "retained": true,
+        "location": "private generation staging; excluded from repository"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "199487"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1585-contact.jpg",
+        "contactSha256": "4c5de60a893effc23444de459f5165de4500ab74c79f5592b14b16a9eecd1e42",
+        "reviewed": true,
+        "observation": "Root viewed full 8-frame contact sheet; corrected clear side-on forward/back split stance, front knee bent over forward foot, rear leg extends backward with rear foot grounded, both paws on front thigh, pelvis and torso aligned with forward leg. No lateral lunge, rocking or side change. Short held runner-stretch excerpt."
+      },
+      "processing": "Complete original 8-second movement, H.264 CRF26 1024px yuv420p, silent, faststart; WebP poster from independently generated reference at quality86.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-3419",
+      "canonicalExerciseId": "3419",
+      "englishName": "l-sit on floor",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-3419.mp4",
+        "bytes": 201422,
+        "sha256": "87345820a1c3f0a910b1b0d4f350c61d2cbb2d5fa5788355976eb08f8d31fbd6"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-3419-poster.webp",
+        "bytes": 76630,
+        "sha256": "bd736cc1ba75696d3bc306bf398d7c60ce5ba9fba4e2c5f9886d05f3215f8626"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-3419-reference.png",
+        "bytes": 1873038,
+        "sha256": "8181d5d923d79eb19a72177b5e44a3a9fd058ea5eb6a75f4c29aba1bad1209b8"
+      },
+      "originalGeneratedVideo": {
+        "bytes": 4298345,
+        "sha256": "20d395ab765cea1c8ca52052acaa8773459afebf16073ae0aed0e599d94a8246",
+        "retained": true,
+        "location": "private generation staging; excluded from repository"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "201422"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3419-contact.jpg",
+        "contactSha256": "d7a2ce5e3cfab54fc3c28554399c9d806f74fd796c21f16b9ec96a3770dc0d15",
+        "reviewed": true,
+        "observation": "Root viewed full 8-frame contact sheet; upright torso and both straight legs held forward horizontally, both palms on floor beside hips with arms supporting lifted pelvis, toes clear of floor. No knee folding, alternating leg action, hand movement or support collapse. Short held L-sit excerpt."
+      },
+      "processing": "Complete original 8-second movement, H.264 CRF26 1024px yuv420p, silent, faststart; WebP poster from independently generated reference at quality86.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-3299",
+      "canonicalExerciseId": "3299",
+      "englishName": "full planche",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-3299.mp4",
+        "bytes": 271823,
+        "sha256": "826f7e411d38d1967e4e3a4380a242eed30f8074b561288e36e0f48d9cec444e"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-3299-poster.webp",
+        "bytes": 98106,
+        "sha256": "474e30b4c958291b7398119ea02ac89173dd666dbebd897f07b9b9890a0bacfd"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-3299-reference.png",
+        "bytes": 1974196,
+        "sha256": "43bb3a25cfab4d9483a668e0f57b046dc293157429c6edd1c18f31e72d0744bc"
+      },
+      "originalGeneratedVideo": {
+        "bytes": 5401168,
+        "sha256": "03bffc909f36605e523929f14e528a3ffc33dfb5530c181541ea53a637d4c757",
+        "retained": true,
+        "location": "private generation staging; excluded from repository"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "271823"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3299-contact.jpg",
+        "contactSha256": "9d1f4bf47611d5da2d301ee90c2410bf366afba52ce7efb1298ee68958f20870",
+        "reviewed": true,
+        "observation": "Root viewed full 8-frame contact sheet; two palms support under forward shoulders, arms remain extended, trunk and straight legs held approximately horizontal with both feet off floor. Tail stays raised and does not support body; no floor-knee contact, push-up pumping or hand stepping. Short held full-planche excerpt."
+      },
+      "processing": "Complete original 8-second movement, H.264 CRF26 1024px yuv420p, silent, faststart; WebP poster from independently generated reference at quality86.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-0407",
+      "canonicalExerciseId": "0407",
+      "englishName": "dumbbell side bend",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0407.mp4",
+        "bytes": 192480,
+        "sha256": "4564146f09a7bf768280548760a04b457c6f6cc27ffd7a27d609e632c6dba521"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0407-poster.webp",
+        "bytes": 18610,
+        "sha256": "c8a828f19723c534f1662dd8695ce8ec1773739394c91e30067ca3c949b76307"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0407-reference.png",
+        "bytes": 1755335,
+        "sha256": "70d4933920f9c27b6b1a0e0a41de5ad93d62ecb2252f7fc9f93b919046a1efb1"
+      },
+      "originalGeneratedEndpoint": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0407-endpoint.png",
+        "bytes": 1697298,
+        "sha256": "97a167784884c7aead35929c2f0d09a5633994f15f30d460dc5f7a68190526a4"
+      },
+      "referenceFrames": [
+        {
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0407-reference.png",
+          "bytes": 1755335,
+          "sha256": "70d4933920f9c27b6b1a0e0a41de5ad93d62ecb2252f7fc9f93b919046a1efb1",
+          "role": "start",
+          "nodeId": "3868b5bf-d050-4311-917c-12a4c1499f91"
+        },
+        {
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0407-endpoint.png",
+          "bytes": 1697298,
+          "sha256": "97a167784884c7aead35929c2f0d09a5633994f15f30d460dc5f7a68190526a4",
+          "role": "end",
+          "nodeId": "00d312a5-33d9-4f78-a589-3196a39fcda2"
+        }
+      ],
+      "referenceOrderProof": {
+        "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+        "nodeId": "3fb68998-98d4-445a-811a-a755a83de3f1",
+        "expectedReferenceNodeIds": [
+          "3868b5bf-d050-4311-917c-12a4c1499f91",
+          "00d312a5-33d9-4f78-a589-3196a39fcda2"
+        ],
+        "imageListOrder": [
+          "3868b5bf-d050-4311-917c-12a4c1499f91",
+          "00d312a5-33d9-4f78-a589-3196a39fcda2"
+        ],
+        "imageListNodeIds": [
+          "3868b5bf-d050-4311-917c-12a4c1499f91",
+          "00d312a5-33d9-4f78-a589-3196a39fcda2"
+        ],
+        "orderExactMatch": true,
+        "createWithoutRun": true,
+        "taskInfoPresentBeforePaid": false,
+        "rawReadOnlyReceiptSha256": "56a15ff71ed7267f60bec3f4ca0b566a48bfd2925379bb77161d645132d7988e",
+        "rawReceiptRetainedPrivately": true,
+        "noRawProviderUrlsPublished": true
+      },
+      "originalGeneratedVideo": {
+        "bytes": 2340690,
+        "sha256": "b987ab671b1b199f5b9dacb514250b57a000b5405080fa1ee707ce022cf75ad0",
+        "retained": true,
+        "location": "private generation staging; excluded from repository",
+        "durationSeconds": 4.041667
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1",
+            "nb_frames": "194"
+          }
+        ],
+        "format": {
+          "duration": "8.083333",
+          "size": "192480"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 0.125,
+        "frames": 64,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0407-contact-8fps.jpg",
+        "contactSha256": "35d9a2d6d912134b660f3aee11a07103538c0f5c7d211695e6aee18cec36bb19",
+        "reviewed": true,
+        "producerAccepted": true,
+        "rootAccepted": true,
+        "rootReviewPending": false,
+        "observation": "Actual 16 samples at 4fps over the generated segment and 64 samples at 8fps over the loop show the torso bending toward the same single dumbbell/loaded image-left side while the dumbbell lowers along that outer thigh. Feet and pelvis remain centered and planted, head follows trunk, free paw remains on hip, and loaded arm stays long without curl, shrug, twist or added weight. The same path reverses to upright. Producer actually viewed and accepted both contact sheets. Root actually viewed and accepted both the 16-frame one-way and 64-frame final contact sheets, confirming loaded-side lowering with stable feet/pelvis, free paw on hip and no rotation. All frames of both H.264 files decoded without errors.",
+        "oneWay": {
+          "intervalSeconds": 0.25,
+          "frames": 16,
+          "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0407-one-way-contact-4fps.jpg",
+          "contactSha256": "7c7b6dc766fb89633c86cf0cfe4d8f449b4827c1ee213072a26835754339fbfb",
+          "reviewed": true,
+          "producerAccepted": true,
+          "rootAccepted": true,
+          "rootReviewPending": false
+        }
+      },
+      "processing": "Seedance 2.5 generated one 4-second single-dumbbell loaded-side bending segment from ordered original start/end images (actual source 4.041667 seconds). This follows the named reviewed correction: bend toward the loaded side while lowering the dumbbell, rather than the contradictory original opposite-side wording. Only this one loaded side is illustrated. After producer visual acceptance, the whole movement was encoded forward then in exact reversed frame order to return upright, producing an 8.083333-second loop. Return is synthesized by reversal, not separately AI-generated or an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, silent, faststart; original-start WebP poster at quality86.",
+      "kind": "mascot",
+      "reviewedSourceClarification": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0407-source-review.json",
+        "sha256": "31b225e459823dff24b619e26f8fd7d410fe5b9e9746d5bb52c6826b989ab8b0",
+        "reviewedInterpretation": "单手单哑铃，站姿向持重侧温和侧屈，使哑铃沿同侧大腿下移，再回直立；足与骨盆稳定，无旋转/前后俯仰。",
+        "runtimeInstructionCorrectionFile": "packages/zeno-fitness/src/instruction-corrections.ts",
+        "runtimeInstructionCorrectionPresent": true,
+        "originalRawSourceRetained": true,
+        "scope": "Single loaded-side example only."
+      }
+    },
+    {
+      "name": "exp-0446",
+      "canonicalExerciseId": "0446",
+      "englishName": "ez barbell close-grip curl",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0446.mp4",
+        "bytes": 226346,
+        "sha256": "6d29cad3ab6c622c180db5c0ec34c3fb99bc87af3a5617ca2b25e1641bab7fa0"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0446-poster.webp",
+        "bytes": 20114,
+        "sha256": "3c641ae73835293447c92df1f939a7278c9f8be460f9ba1b4abab10f8d0ed600"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0446-reference.png",
+        "bytes": 1708974,
+        "sha256": "f9392fb9d68318465136fe20f3f1f5861e769ee23ce2622a7850faf8904e585f"
+      },
+      "originalGeneratedEndpoint": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0446-endpoint.png",
+        "bytes": 1652731,
+        "sha256": "b891cadffa854c8d1069e9c094530fd89c063247137da6be6df512f26c3fefb4"
+      },
+      "referenceFrames": [
+        {
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0446-reference.png",
+          "bytes": 1708974,
+          "sha256": "f9392fb9d68318465136fe20f3f1f5861e769ee23ce2622a7850faf8904e585f",
+          "role": "start",
+          "nodeId": "11b27f6b-a879-4642-a622-7c1b047db98e"
+        },
+        {
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0446-endpoint.png",
+          "bytes": 1652731,
+          "sha256": "b891cadffa854c8d1069e9c094530fd89c063247137da6be6df512f26c3fefb4",
+          "role": "end",
+          "nodeId": "432870bf-2449-4132-b78a-12ed2b90a05d"
+        }
+      ],
+      "referenceOrderProof": {
+        "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+        "nodeId": "13b9fb0f-482b-4d59-9a6e-036ce132f54e",
+        "expectedReferenceNodeIds": [
+          "11b27f6b-a879-4642-a622-7c1b047db98e",
+          "432870bf-2449-4132-b78a-12ed2b90a05d"
+        ],
+        "imageListOrder": [
+          "11b27f6b-a879-4642-a622-7c1b047db98e",
+          "432870bf-2449-4132-b78a-12ed2b90a05d"
+        ],
+        "imageListNodeIds": [
+          "11b27f6b-a879-4642-a622-7c1b047db98e",
+          "432870bf-2449-4132-b78a-12ed2b90a05d"
+        ],
+        "orderExactMatch": true,
+        "createWithoutRun": true,
+        "taskInfoPresentBeforePaid": false,
+        "rawReadOnlyReceiptSha256": "0ca71469035d225647fe4b9ffeb7c39959044a38c286e915d9a45349c3593f8d",
+        "rawReceiptRetainedPrivately": true,
+        "noRawProviderUrlsPublished": true
+      },
+      "originalGeneratedVideo": {
+        "bytes": 2661897,
+        "sha256": "098d293be8299a9f1b98751b46af29565fcaf07cc5710100c691d05ed04721ae",
+        "retained": true,
+        "location": "private generation staging; excluded from repository",
+        "durationSeconds": 4.041667
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1",
+            "nb_frames": "194"
+          }
+        ],
+        "format": {
+          "duration": "8.083333",
+          "size": "226346"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 0.125,
+        "frames": 64,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0446-contact-8fps.jpg",
+        "contactSha256": "1b2f934b0e029051c054026aed4c1f5f0b11feb6ec68e5dc4d8c2c9eeea2a608",
+        "reviewed": true,
+        "producerAccepted": true,
+        "rootAccepted": true,
+        "rootReviewPending": false,
+        "observation": "Actual 16 samples at 4fps over the generated curl and 64 samples at 8fps over the loop show both underhand paws retaining narrow inner angled EZ grips. Both elbows flex toward shoulder-front while upper arms stay low, then the same path reverses. Torso and feet remain stable, without front raise, overhead press, swing or back lean; curved bar, plates and collars retain their shape without grip slide or bar substitution. Producer actually viewed and accepted both contact sheets. Root actually viewed and accepted both the 16-frame one-way and 64-frame final contact sheets, confirming inner narrow underhand EZ grips, bilateral elbow flexion rather than front raise, stable torso/feet and unchanged bar/plate geometry. All frames of both H.264 files decoded without errors.",
+        "oneWay": {
+          "intervalSeconds": 0.25,
+          "frames": 16,
+          "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0446-one-way-contact-4fps.jpg",
+          "contactSha256": "26da0f635791f45b51aa1a4f860ba70a3296e0a76e50cff335c2804b3e7206ad",
+          "reviewed": true,
+          "producerAccepted": true,
+          "rootAccepted": true,
+          "rootReviewPending": false
+        }
+      },
+      "processing": "Seedance 2.5 generated one 4-second narrow-inner-underhand-grip EZ-bar curl from ordered original start/end images (actual source 4.041667 seconds). The named reviewed correction retains an inner grip narrower than the shoulders rather than contradictory original shoulder-width wording. After producer visual acceptance, the whole curl was encoded forward and in exact reversed frame order for controlled lowering, producing an 8.083333-second loop. Lowering is synthesized by reversal, not separately AI-generated or an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, silent, faststart; original-start WebP poster at quality86.",
+      "kind": "mascot",
+      "reviewedSourceClarification": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0446-source-review.json",
+        "sha256": "8d31066f2bc6b239bc1ed3727dee96f8055f2b29237e3a7a9ff4d35863704f05",
+        "reviewedInterpretation": "站姿EZ曲杆窄距反握弯举，双手握内侧倾斜握段，手间距明显窄于肩；肘贴体，上臂固定，只有前臂随肘屈抬杠至肩前，再受控回低位。",
+        "runtimeInstructionCorrectionFile": "packages/zeno-fitness/src/instruction-corrections.ts",
+        "runtimeInstructionCorrectionPresent": true,
+        "originalRawSourceRetained": true,
+        "scope": "Same narrow inner EZ grips and fixed upper arms throughout one curl."
+      }
+    },
+    {
+      "name": "exp-3296",
+      "canonicalExerciseId": "3296",
+      "englishName": "front lever",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-3296.mp4",
+        "bytes": 207454,
+        "sha256": "3e71634f1183d89ae0af617e77e89b0e70cc83dcce62ae038422710162e4b929"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-3296-poster.webp",
+        "bytes": 77120,
+        "sha256": "be0cfd2cf0a835cb8c5944aff69eedd8117b0f3a96198b44eb97d4b8261e3720"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-3296-reference.png",
+        "bytes": 1708467,
+        "sha256": "03dbe72c11a3b65ba1dab791487bee623b2e96c286e757573ddbfc142dea0024"
+      },
+      "originalGeneratedVideo": {
+        "bytes": 4670294,
+        "sha256": "69eaf7305d9d7b6c8fdbf8a260dc6836133020232b8dabe4020527b9dcf7f9b4",
+        "retained": true,
+        "location": "private generation staging; excluded from repository"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "207454"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3296-contact.jpg",
+        "contactSha256": "1fc9783287e4aa0587ff55d6e599123f2e3f2d0ff3caf8f75e63bfca7157a84a",
+        "reviewed": true,
+        "observation": "Root viewed full 8-frame contact sheet; two fixed overhand grips on the same horizontal bar, arms nearly straight, chest upward and trunk/straight legs held horizontally suspended with feet off floor. No pull-up, knee tuck, grip change or foot support. Short held front-lever excerpt."
+      },
+      "processing": "Complete original 8-second movement, H.264 CRF26 1024px yuv420p, silent, faststart; WebP poster from independently generated reference at quality86.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-3303",
+      "canonicalExerciseId": "3303",
+      "englishName": "flag",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-3303.mp4",
+        "bytes": 189824,
+        "sha256": "606ba2c52320d4510c94390ac1938731de219247bc6888ce60b1d441387ebb2b"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-3303-poster.webp",
+        "bytes": 68714,
+        "sha256": "25f42193e38b4776b7e4d67f5e1431ef28179d875b673eca25464093ed3f5173"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-3303-reference.png",
+        "bytes": 1783629,
+        "sha256": "e088d8be728bbb27ad34e531c506c54ecb5c06941cfd9f04dffd4b1b42e23fe7"
+      },
+      "originalGeneratedVideo": {
+        "bytes": 3456551,
+        "sha256": "cc9e59fb8694a403a07e67c1a3679b619e7e4d840f16bb169636164d1050ddb5",
+        "retained": true,
+        "location": "private generation staging; excluded from repository"
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576
+          }
+        ],
+        "format": {
+          "duration": "8.041667",
+          "size": "189824"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 1,
+        "frames": 8,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3303-contact.jpg",
+        "contactSha256": "24804f502e0d68f6d3b5299a6b9e7937f0dcb461d7d6650e2d2f03e95a4aa952",
+        "reviewed": true,
+        "observation": "Root viewed full 8-frame contact sheet; upper and lower paws hold the same vertical pole at separate fixed points, arms stay extended, trunk and straight joined legs project horizontally to the side with both feet clear of floor. No pole bending, grip slide, foot contact or support substitution. Short held human-flag excerpt."
+      },
+      "processing": "Complete original 8-second movement, H.264 CRF26 1024px yuv420p, silent, faststart; WebP poster from independently generated reference at quality86.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-0406",
+      "canonicalExerciseId": "0406",
+      "englishName": "dumbbell shrug",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0406.mp4",
+        "bytes": 145264,
+        "sha256": "35ac1a8c6f3d647338807dd29da5d0db5037ae7acd4780d8efc789024674aaf3"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0406-poster.webp",
+        "bytes": 14676,
+        "sha256": "c75ed9de73b82d4f9c70cf5e54fe1ede77900ab4014fc22bfa8e35542199c33b"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0406-reference.png",
+        "sha256": "7f1e17edf7419f55bfa4440fa0df206e022836a3531bb4fd339a062e1aa90adf",
+        "bytes": 1726875
+      },
+      "originalGeneratedEndpoint": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0406-endpoint.png",
+        "sha256": "c0f28a27a4689de35512a3c459ea06d8442e39d0fd6004f490f2a1719169ac2c",
+        "bytes": 1695741
+      },
+      "referenceFrames": [
+        {
+          "role": "start",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0406-reference.png",
+          "sha256": "7f1e17edf7419f55bfa4440fa0df206e022836a3531bb4fd339a062e1aa90adf",
+          "bytes": 1726875,
+          "nodeId": "d69c1bd2-2f98-49f8-96aa-1c1ae899e34d"
+        },
+        {
+          "role": "end",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0406-endpoint.png",
+          "sha256": "c0f28a27a4689de35512a3c459ea06d8442e39d0fd6004f490f2a1719169ac2c",
+          "bytes": 1695741,
+          "nodeId": "25ba9e4e-e39d-400f-b971-6114a0f760bc"
+        }
+      ],
+      "referenceOrderProof": {
+        "verificationMethod": "Official CLI read-only node response after create without run and before the single paid run",
+        "nodeId": "c2088f45-8e76-4e9b-a340-e9ba61793f9a",
+        "expectedReferenceNodeIds": [
+          "d69c1bd2-2f98-49f8-96aa-1c1ae899e34d",
+          "25ba9e4e-e39d-400f-b971-6114a0f760bc"
+        ],
+        "imageListOrder": [
+          "d69c1bd2-2f98-49f8-96aa-1c1ae899e34d",
+          "25ba9e4e-e39d-400f-b971-6114a0f760bc"
+        ],
+        "imageListNodeIds": [
+          "d69c1bd2-2f98-49f8-96aa-1c1ae899e34d",
+          "25ba9e4e-e39d-400f-b971-6114a0f760bc"
+        ],
+        "orderExactMatch": true,
+        "createWithoutRun": true,
+        "taskInfoPresentBeforePaid": false,
+        "rawReadOnlyReceiptSha256": "e2baf3186109fdbcbb4ed5bbb604ef59a21be8298590c3fa0a7acc8f1f7e8f15",
+        "rawReceiptRetainedPrivately": true,
+        "noRawProviderUrlsPublished": true
+      },
+      "originalGeneratedVideo": {
+        "bytes": 2053210,
+        "sha256": "521ff4a3fa14a51505f20a1322be9c534c99c13cd33432ee1e6543927d121faa",
+        "retained": true,
+        "location": "private generation staging; excluded from repository",
+        "durationSeconds": 4.041667
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1",
+            "nb_frames": "194"
+          }
+        ],
+        "format": {
+          "duration": "8.083333",
+          "size": "145264"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 0.125,
+        "frames": 64,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0406-contact-8fps.jpg",
+        "contactSha256": "53b4c87d6ef922210a502a1107c9d668bb90dc16046b7de7e4b76c8470950cfa",
+        "reviewed": true,
+        "producerAccepted": true,
+        "rootAccepted": true,
+        "observation": "Actual16 one-way and64 composed samples show a controlled shoulder-girdle shrug up and then reversed lowering, both arms nearly straight, no elbow curl/squat/heel rise. Full body and two weights remain distinct and within frame; feet, pelvis and head stable. All video frames fully decoded.",
+        "oneWay": {
+          "intervalSeconds": 0.25,
+          "frames": 16,
+          "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0406-one-way-contact-4fps.jpg",
+          "contactSha256": "c80828139c25c044832afcfdfe6e330a98ec8717def2600089340583b76d3b13",
+          "reviewed": true,
+          "producerAccepted": true,
+          "rootAccepted": true
+        }
+      },
+      "processing": "Seedance2.5 generated one ordered start/end4second one-way segment (actual 4.041667s). After actual16sample visual approval, encoded whole segment forward then exact reversed frame order to illustrate return, final 8.083333s. Return synthesized by reversal, not separately AI-generated; not an original8second continuous generation. H.264 CRF26,1024px,yuv420p,silent,faststart. WebP q86 poster extracted from actual first video frame.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-0355",
+      "canonicalExerciseId": "0355",
+      "englishName": "dumbbell one arm lateral raise",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0355.mp4",
+        "bytes": 149112,
+        "sha256": "49ebc20410116b8de253bf300854c023144888d17f8550fd414cc5de589c72be"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0355-poster.webp",
+        "bytes": 14314,
+        "sha256": "5d4c6386eb0f7a2fe9448de7bb22d2499003e1d633c9afcd57bc5be209c2fdc2"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0355-reference.png",
+        "sha256": "47cb8b8a934a544e27bfa9038ec118d96d86609b1334b5b392ddd9355f00bc01",
+        "bytes": 1746919
+      },
+      "originalGeneratedEndpoint": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0355-endpoint.png",
+        "sha256": "5bba4764c94532b1c598bc7bb0343359a2fc648943465a2d73f6d7885dde4530",
+        "bytes": 1688010
+      },
+      "referenceFrames": [
+        {
+          "role": "start",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0355-reference.png",
+          "sha256": "47cb8b8a934a544e27bfa9038ec118d96d86609b1334b5b392ddd9355f00bc01",
+          "bytes": 1746919,
+          "nodeId": "76b8028c-4705-4396-9195-a1ae0ad4e646"
+        },
+        {
+          "role": "end",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0355-endpoint.png",
+          "sha256": "5bba4764c94532b1c598bc7bb0343359a2fc648943465a2d73f6d7885dde4530",
+          "bytes": 1688010,
+          "nodeId": "e89647c8-af12-480c-8631-3466341225ac"
+        }
+      ],
+      "referenceOrderProof": {
+        "verificationMethod": "Official CLI read-only node response after create without run and before the single paid run",
+        "nodeId": "5ae7cb15-4652-4684-9099-d66b26c5cc92",
+        "expectedReferenceNodeIds": [
+          "76b8028c-4705-4396-9195-a1ae0ad4e646",
+          "e89647c8-af12-480c-8631-3466341225ac"
+        ],
+        "imageListOrder": [
+          "76b8028c-4705-4396-9195-a1ae0ad4e646",
+          "e89647c8-af12-480c-8631-3466341225ac"
+        ],
+        "imageListNodeIds": [
+          "76b8028c-4705-4396-9195-a1ae0ad4e646",
+          "e89647c8-af12-480c-8631-3466341225ac"
+        ],
+        "orderExactMatch": true,
+        "createWithoutRun": true,
+        "taskInfoPresentBeforePaid": false,
+        "rawReadOnlyReceiptSha256": "3fcdf3cbeb7f3482a039494993bc7205cf73deacd13bcf7760edcd15f3b9ab36",
+        "rawReceiptRetainedPrivately": true,
+        "noRawProviderUrlsPublished": true
+      },
+      "originalGeneratedVideo": {
+        "bytes": 1996259,
+        "sha256": "fcc90a5d4f16cc8b8c2b61918ce6505b2f8a7c6087f2e2bab6e07f83c91edda1",
+        "retained": true,
+        "location": "private generation staging; excluded from repository",
+        "durationSeconds": 4.041667
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1",
+            "nb_frames": "194"
+          }
+        ],
+        "format": {
+          "duration": "8.083333",
+          "size": "149112"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 0.125,
+        "frames": 64,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0355-contact-8fps.jpg",
+        "contactSha256": "24797c30d1051e7fa5d53d94b433b791c0a6e3cd9dae73eeeb8e51bf86b988eb",
+        "reviewed": true,
+        "producerAccepted": true,
+        "rootAccepted": true,
+        "observation": "Actual16 one-way and64 composed samples show only the loaded right/near-straight arm abducting laterally to shoulder height and reversing the same path; no biceps curl, front raise or overhead press. One dumbbell only, empty hand on hip, feet/pelvis/head stable and full travel inside frame. All frames decode.",
+        "oneWay": {
+          "intervalSeconds": 0.25,
+          "frames": 16,
+          "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0355-one-way-contact-4fps.jpg",
+          "contactSha256": "0101f21986dfd47971f05d1603ddb5f0fea3b0fb550854268e581683d8b287cf",
+          "reviewed": true,
+          "producerAccepted": true,
+          "rootAccepted": true
+        }
+      },
+      "processing": "Seedance2.5 generated one ordered start/end4second one-way segment (actual 4.041667s). After actual16sample visual approval, encoded whole segment forward then exact reversed frame order to illustrate return, final 8.083333s. Return synthesized by reversal, not separately AI-generated; not an original8second continuous generation. H.264 CRF26,1024px,yuv420p,silent,faststart. WebP q86 poster extracted from actual first video frame.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-0380",
+      "canonicalExerciseId": "0380",
+      "englishName": "dumbbell rear lateral raise",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0380.mp4",
+        "bytes": 220474,
+        "sha256": "2064e7a0683bb7a277229e37a479a616bad1b22d4f417bb4857ccaaead9e6fd6"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0380-poster.webp",
+        "bytes": 24762,
+        "sha256": "78b6b41c1baa255521d2c89f959b9fb401e396df98d05145d1a6997c940cd98c"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0380-reference.png",
+        "bytes": 1801622,
+        "sha256": "3f107bf30e8c0917d1cfa9d8cf5e5fce8a5206571f6245c7277f6a6780825b13"
+      },
+      "originalGeneratedEndpoint": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0380-endpoint.png",
+        "bytes": 1762024,
+        "sha256": "a3b1655ccced3b11984595dc7239d970fd65bfab830efae1cc7e379624733b84"
+      },
+      "referenceFrames": [
+        {
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0380-reference.png",
+          "bytes": 1801622,
+          "sha256": "3f107bf30e8c0917d1cfa9d8cf5e5fce8a5206571f6245c7277f6a6780825b13",
+          "role": "start",
+          "nodeId": "39c1dfee-ba7e-4382-a355-6dfca73d2f1b"
+        },
+        {
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0380-endpoint.png",
+          "bytes": 1762024,
+          "sha256": "a3b1655ccced3b11984595dc7239d970fd65bfab830efae1cc7e379624733b84",
+          "role": "end",
+          "nodeId": "c6a76829-29a1-4167-aca6-803e1d4d55fe"
+        }
+      ],
+      "referenceOrderProof": {
+        "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+        "nodeId": "fcc5a826-2464-4834-a27f-5a901f4a894a",
+        "expectedReferenceNodeIds": [
+          "39c1dfee-ba7e-4382-a355-6dfca73d2f1b",
+          "c6a76829-29a1-4167-aca6-803e1d4d55fe"
+        ],
+        "imageListOrder": [
+          "39c1dfee-ba7e-4382-a355-6dfca73d2f1b",
+          "c6a76829-29a1-4167-aca6-803e1d4d55fe"
+        ],
+        "imageListNodeIds": [
+          "39c1dfee-ba7e-4382-a355-6dfca73d2f1b",
+          "c6a76829-29a1-4167-aca6-803e1d4d55fe"
+        ],
+        "orderExactMatch": true,
+        "createWithoutRun": true,
+        "taskInfoPresentBeforePaid": false,
+        "rawReadOnlyReceiptSha256": "95044bfe356aa2e5e387ebd01078a31d1f4e6d77033cac73d9b7c86f9d122a99",
+        "rawReceiptRetainedPrivately": true,
+        "noRawProviderUrlsPublished": true
+      },
+      "originalGeneratedVideo": {
+        "bytes": 2740878,
+        "sha256": "a597bea1a429e0db3b9116546f606060cced269fb817ba719bc95036e9e34b4c",
+        "retained": true,
+        "location": "private generation staging; excluded from repository",
+        "durationSeconds": 4.041667
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1",
+            "nb_frames": "194"
+          }
+        ],
+        "format": {
+          "duration": "8.083333",
+          "size": "220474"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 0.125,
+        "frames": 64,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0380-contact-8fps.jpg",
+        "contactSha256": "dfc02da8a0d922d5d20341129ee1f61b1da053a14bee12fc0176a5df2b26d88a",
+        "reviewed": true,
+        "producerAccepted": true,
+        "rootAccepted": true,
+        "rootReviewPending": false,
+        "observation": "Actual 16 one-way samples and all 64 loop samples viewed: both dumbbells open laterally into a wide near T while elbows remain softly bent, without a rowing/curling motion. Grounded feet, hip hinge, knees and fixed camera remain stable; return is exact reverse, not separately generated. Producer accepted; root review pending. All frames decoded without errors. Root actually viewed and accepted both contact sheets: stable hip hinge, knees and feet; two dumbbells open to near T, without curl, row or standing up; return remains consistent.",
+        "oneWay": {
+          "intervalSeconds": 0.25,
+          "frames": 16,
+          "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0380-one-way-contact-4fps.jpg",
+          "contactSha256": "71034439965747f89b8d9f5950e3fa9834ffb7188975c9510a6ebdd5597a3534",
+          "reviewed": true,
+          "producerAccepted": true,
+          "rootAccepted": true,
+          "rootReviewPending": false,
+          "rootActuallyViewed": true
+        },
+        "rootActuallyViewed": true
+      },
+      "processing": "Seedance 2.5 generated one 4-second hip-hinged bilateral dumbbell rear lateral raise from ordered original start/end images (actual source 4.041667 seconds). After producer visual acceptance the forward lifting frames were concatenated with the exact reversed frames to illustrate lowering, making an 8.083333-second preview. Lowering is synthesized by reversal, not separately AI-generated or an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, silent, faststart; original-start WebP poster quality86.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-1587",
+      "canonicalExerciseId": "1587",
+      "englishName": "seated wide angle pose sequence",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1587.mp4",
+        "bytes": 196196,
+        "sha256": "971ff86df46a9ae035a3d3fb74efce6099413216ad2aec8736651888b753121e"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1587-poster.webp",
+        "bytes": 16788,
+        "sha256": "f60a2a8cae2ccdcea3c0986e19670f189a4f175445a70b2534ed0396d463577d"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-1587-reference.png",
+        "sha256": "9417e221ea4d9ae3cadd9ca65cbec4677975a4715243dbfd2ca54db9c1c1440a",
+        "bytes": 1889084
+      },
+      "originalGeneratedEndpoint": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-1587-endpoint.png",
+        "sha256": "f947408785d55b84419bd052b48a79cd20b7d561547e683cee66b2fdcc7fd141",
+        "bytes": 1823708
+      },
+      "referenceFrames": [
+        {
+          "role": "start",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-1587-reference.png",
+          "sha256": "9417e221ea4d9ae3cadd9ca65cbec4677975a4715243dbfd2ca54db9c1c1440a",
+          "bytes": 1889084,
+          "nodeId": "a8c5e64e-c9db-4f60-b58b-08d60ea6cacc"
+        },
+        {
+          "role": "end",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-1587-endpoint.png",
+          "sha256": "f947408785d55b84419bd052b48a79cd20b7d561547e683cee66b2fdcc7fd141",
+          "bytes": 1823708,
+          "nodeId": "bea4b5e2-9efd-45e4-8b5a-0cc950942734"
+        }
+      ],
+      "referenceOrderProof": {
+        "verificationMethod": "Official CLI read-only node response after create without run and before the single paid run",
+        "nodeId": "fff75160-2592-44a1-8ac0-c77d6e13c669",
+        "expectedReferenceNodeIds": [
+          "a8c5e64e-c9db-4f60-b58b-08d60ea6cacc",
+          "bea4b5e2-9efd-45e4-8b5a-0cc950942734"
+        ],
+        "imageListOrder": [
+          "a8c5e64e-c9db-4f60-b58b-08d60ea6cacc",
+          "bea4b5e2-9efd-45e4-8b5a-0cc950942734"
+        ],
+        "imageListNodeIds": [
+          "a8c5e64e-c9db-4f60-b58b-08d60ea6cacc",
+          "bea4b5e2-9efd-45e4-8b5a-0cc950942734"
+        ],
+        "orderExactMatch": true,
+        "createWithoutRun": true,
+        "taskInfoPresentBeforePaid": false,
+        "rawReadOnlyReceiptSha256": "795a803c96da6dae5e3cf5d615c57887bba31f8f6f3af12c08fd5b463835e41b",
+        "rawReceiptRetainedPrivately": true,
+        "noRawProviderUrlsPublished": true
+      },
+      "originalGeneratedVideo": {
+        "bytes": 2833540,
+        "sha256": "4d251d8b31aad010b0f5f882932b94d7444535f4c805a9f241a459edd5cba8df",
+        "retained": true,
+        "location": "private generation staging; excluded from repository",
+        "durationSeconds": 4.041667
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1",
+            "nb_frames": "194"
+          }
+        ],
+        "format": {
+          "duration": "8.083008",
+          "size": "196196"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 0.125,
+        "frames": 64,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1587-contact-8fps.jpg",
+        "contactSha256": "f27566772b56a403e967de0a4434ddfb2dcf738465ec3b7453d4327e52699e6b",
+        "reviewed": true,
+        "producerAccepted": true,
+        "rootAccepted": true,
+        "observation": "Actual16 and64 contacts show a shallow forward hip hinge and exact reversed return. Straight V-straddle knees and grounded heels remain apart, toes up, palms behind hips. This is a small comfortable movement, not a deep forward fold; no hands to feet, butterfly knees, twist or camera crop. All frames fully decode.",
+        "oneWay": {
+          "intervalSeconds": 0.25,
+          "frames": 16,
+          "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1587-one-way-contact-4fps.jpg",
+          "contactSha256": "91951bfec6cd09df218736b30e8c8eb3d1b49a219d1b094a57d9d63fb6f5baf5",
+          "reviewed": true,
+          "producerAccepted": true,
+          "rootAccepted": true
+        }
+      },
+      "processing": "Seedance2.5 generated one ordered start/end4second one-way segment (actual 4.041667s). After actual16sample visual approval, encoded whole segment forward then exact reversed frame order to illustrate return, final 8.083008s. Return synthesized by reversal, not separately AI-generated; not an original8second continuous generation. H.264 CRF26,1024px,yuv420p,silent,faststart. WebP q86 poster extracted from actual first video frame.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-0369",
+      "canonicalExerciseId": "0369",
+      "englishName": "dumbbell over bench wrist curl",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0369.mp4",
+        "bytes": 159081,
+        "sha256": "9f707c261ea560bbd1cf69ccf9843e62883aff8e8593711ec1cb43166aa1bcac"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0369-poster.webp",
+        "bytes": 18890,
+        "sha256": "d01616b07dd79ea6c768a33d256dfbbffab889048eb78b47967321ffbd1b4b47"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0369-reference.png",
+        "sha256": "1889c83f62e8cefefec4f3bc026fa92e12599ece53fb143f3493666a62cefcaa",
+        "bytes": 1815584
+      },
+      "originalGeneratedEndpoint": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0369-endpoint.png",
+        "sha256": "5d3fd7f5f772aec46648d89721f173f1c99710aff97a34a2ead358b63a6d2785",
+        "bytes": 1745260
+      },
+      "referenceFrames": [
+        {
+          "role": "start",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0369-reference.png",
+          "sha256": "1889c83f62e8cefefec4f3bc026fa92e12599ece53fb143f3493666a62cefcaa",
+          "bytes": 1815584,
+          "nodeId": "677aa663-f27d-4df7-abde-11155415e70a"
+        },
+        {
+          "role": "end",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0369-endpoint.png",
+          "sha256": "5d3fd7f5f772aec46648d89721f173f1c99710aff97a34a2ead358b63a6d2785",
+          "bytes": 1745260,
+          "nodeId": "a81fd701-9a70-4787-ae3a-9f6717a7ec44"
+        }
+      ],
+      "referenceOrderProof": {
+        "verificationMethod": "Official CLI read-only node response after create without run and before the single paid run",
+        "nodeId": "e2ed1625-6fb9-499e-872a-39e4c1aae187",
+        "expectedReferenceNodeIds": [
+          "677aa663-f27d-4df7-abde-11155415e70a",
+          "a81fd701-9a70-4787-ae3a-9f6717a7ec44"
+        ],
+        "imageListOrder": [
+          "677aa663-f27d-4df7-abde-11155415e70a",
+          "a81fd701-9a70-4787-ae3a-9f6717a7ec44"
+        ],
+        "imageListNodeIds": [
+          "677aa663-f27d-4df7-abde-11155415e70a",
+          "a81fd701-9a70-4787-ae3a-9f6717a7ec44"
+        ],
+        "orderExactMatch": true,
+        "createWithoutRun": true,
+        "taskInfoPresentBeforePaid": false,
+        "rawReadOnlyReceiptSha256": "86ef49275dae4cf24ecbe923a58b3d35a1404738a79d8d518b8bb7407417db7e",
+        "rawReceiptRetainedPrivately": true,
+        "noRawProviderUrlsPublished": true
+      },
+      "originalGeneratedVideo": {
+        "bytes": 2365656,
+        "sha256": "73b63ce0383f61c7beb1ad646413a7c358297bcf372c1fc8f253465900050ad1",
+        "retained": true,
+        "location": "private generation staging; excluded from repository",
+        "durationSeconds": 4.041667
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1",
+            "nb_frames": "194"
+          }
+        ],
+        "format": {
+          "duration": "8.083008",
+          "size": "159081"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 0.125,
+        "frames": 64,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0369-contact-8fps.jpg",
+        "contactSha256": "ea393ef86bdbd239d52d0ea70c84977814a28159d504e1a27c9cacc750f47d10",
+        "reviewed": true,
+        "producerAccepted": true,
+        "rootAccepted": true,
+        "observation": "Actual16 and64 samples show small simultaneous palm-up wrist flexion and reverse return with two weights, while elbows/forearms remain on same flat bench, hips seated and feet grounded. No lifting whole forearms into biceps curl, no pronation/reverse wrist curl, no weight release/bench collision. Full decode passed.",
+        "oneWay": {
+          "intervalSeconds": 0.25,
+          "frames": 16,
+          "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0369-one-way-contact-4fps.jpg",
+          "contactSha256": "e0cbc84ec653c09e234909718bf9cc219c04734e17b4c9549281327ba955bf01",
+          "reviewed": true,
+          "producerAccepted": true,
+          "rootAccepted": true
+        }
+      },
+      "processing": "Seedance2.5 generated one ordered start/end4second one-way segment (actual 4.041667s). After actual16sample visual approval, encoded whole segment forward then exact reversed frame order to illustrate return, final 8.083008s. Return synthesized by reversal, not separately AI-generated; not an original8second continuous generation. H.264 CRF26,1024px,yuv420p,silent,faststart. WebP q86 poster extracted from actual first video frame.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-1366",
+      "canonicalExerciseId": "1366",
+      "englishName": "upward facing dog",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1366.mp4",
+        "bytes": 194872,
+        "sha256": "4a453722bfd713ee4bd3718a27734271f5c0294d21d4b470dc15cce6804f1a02"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1366-poster.webp",
+        "bytes": 17334,
+        "sha256": "7123d4b46027a1daa393b306cffb7d34163221e9f932ca11e16904ced2082ca5"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-1366-reference.png",
+        "sha256": "5de8ee1d814f3b741236d72519395e1c253cfc0be8cd7a15e1059635e882fb0e",
+        "bytes": 1864044
+      },
+      "originalGeneratedEndpoint": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-1366-endpoint.png",
+        "sha256": "e07a27ff883afe7b769ed6e4b8b371948ef17a56007d4882296f32f99ec61ecf",
+        "bytes": 1806804
+      },
+      "referenceFrames": [
+        {
+          "role": "start",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-1366-reference.png",
+          "sha256": "5de8ee1d814f3b741236d72519395e1c253cfc0be8cd7a15e1059635e882fb0e",
+          "bytes": 1864044,
+          "nodeId": "af3c4540-443f-4119-9651-98e1dfd68704"
+        },
+        {
+          "role": "end",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-1366-endpoint.png",
+          "sha256": "e07a27ff883afe7b769ed6e4b8b371948ef17a56007d4882296f32f99ec61ecf",
+          "bytes": 1806804,
+          "nodeId": "3c513270-3231-4b24-a44f-5680efa0df71"
+        }
+      ],
+      "referenceOrderProof": {
+        "verificationMethod": "Official CLI read-only node response after create without run and before the single paid run",
+        "nodeId": "a3a4f75b-7a4a-4a81-aa51-b1b5e88b5fd8",
+        "expectedReferenceNodeIds": [
+          "af3c4540-443f-4119-9651-98e1dfd68704",
+          "3c513270-3231-4b24-a44f-5680efa0df71"
+        ],
+        "imageListOrder": [
+          "af3c4540-443f-4119-9651-98e1dfd68704",
+          "3c513270-3231-4b24-a44f-5680efa0df71"
+        ],
+        "imageListNodeIds": [
+          "af3c4540-443f-4119-9651-98e1dfd68704",
+          "3c513270-3231-4b24-a44f-5680efa0df71"
+        ],
+        "orderExactMatch": true,
+        "createWithoutRun": true,
+        "taskInfoPresentBeforePaid": false,
+        "rawReadOnlyReceiptSha256": "b9ad19b6adcabfb184e66dfd46069ff5202155f2d80e8c63e9dae8957591b883",
+        "rawReceiptRetainedPrivately": true,
+        "noRawProviderUrlsPublished": true
+      },
+      "originalGeneratedVideo": {
+        "bytes": 2789147,
+        "sha256": "9504158f5f8a57f6a7b6cc2ce736113b439863ff6e75ca0d6cd763bb65b31662",
+        "retained": true,
+        "location": "private generation staging; excluded from repository",
+        "durationSeconds": 4.041667
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1",
+            "nb_frames": "194"
+          }
+        ],
+        "format": {
+          "duration": "8.083333",
+          "size": "194872"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 0.125,
+        "frames": 64,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1366-contact-8fps.jpg",
+        "contactSha256": "4711e11c0c3c7d376d33cd6146212bf59a7479c5ae3c5869c42d0d9f5805c8ff",
+        "reviewed": true,
+        "producerAccepted": true,
+        "rootAccepted": true,
+        "observation": "Actual16 and64 samples show a single prone-to-upward-dog press and exact reversed return. Palms stay fixed, both elbows extend, thighs/knees/belly visibly clear floor at high pose while foot tops stay down; not sphinx/forearm support or knees-down cobra. Full head/feet remain framed, no morph/extra limbs or camera cut, full decode passed.",
+        "oneWay": {
+          "intervalSeconds": 0.25,
+          "frames": 16,
+          "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1366-one-way-contact-4fps.jpg",
+          "contactSha256": "b3b85657ddca85e5b8d52fe2a53c2bbcc128ce9faf6119b920dc964ce184ad2a",
+          "reviewed": true,
+          "producerAccepted": true,
+          "rootAccepted": true
+        }
+      },
+      "processing": "Seedance2.5 generated one ordered start/end4second one-way segment (actual 4.041667s). After actual16sample visual approval, encoded whole segment forward then exact reversed frame order to illustrate return, final 8.083333s. Return synthesized by reversal, not separately AI-generated; not an original8second continuous generation. H.264 CRF26,1024px,yuv420p,silent,faststart. WebP q86 poster extracted from actual first video frame.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-1397",
+      "canonicalExerciseId": "1397",
+      "englishName": "standing calves",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1397.mp4",
+        "bytes": 150087,
+        "sha256": "3b0e2f3a54f1b32fb78b51fb5f3417eb54532a2744ce87ecc976c7f5d6dbdfa2"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1397-poster.webp",
+        "bytes": 16790,
+        "sha256": "d27ef440ba87734c95260d81eb81c16877bf1177fc41133e5cf7d5c531bee46d"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-1397-reference.png",
+        "bytes": 1674583,
+        "sha256": "add9095abb5d1571e52c5a39adebfe10ccac9ecc9a9047e216b0c69a6b31e7f6"
+      },
+      "originalGeneratedEndpoint": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-1397-endpoint.png",
+        "bytes": 1671788,
+        "sha256": "6343445339c26173b835e2158e87824a65a88199139cb744f7699f0f02d4c3c3"
+      },
+      "referenceFrames": [
+        {
+          "role": "start",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-1397-reference.png",
+          "bytes": 1674583,
+          "sha256": "add9095abb5d1571e52c5a39adebfe10ccac9ecc9a9047e216b0c69a6b31e7f6",
+          "nodeId": "9cc2d8ee-6108-4d3a-8356-4ca7445d8cec"
+        },
+        {
+          "role": "end",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-1397-endpoint.png",
+          "bytes": 1671788,
+          "sha256": "6343445339c26173b835e2158e87824a65a88199139cb744f7699f0f02d4c3c3",
+          "nodeId": "e62ec80a-726f-4a64-938a-e69036aec4bc"
+        }
+      ],
+      "referenceOrderProof": {
+        "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+        "nodeId": "f87b1ed3-7bae-4d9b-8a99-1e3a46de0e69",
+        "expectedReferenceNodeIds": [
+          "9cc2d8ee-6108-4d3a-8356-4ca7445d8cec",
+          "e62ec80a-726f-4a64-938a-e69036aec4bc"
+        ],
+        "imageListOrder": [
+          "9cc2d8ee-6108-4d3a-8356-4ca7445d8cec",
+          "e62ec80a-726f-4a64-938a-e69036aec4bc"
+        ],
+        "imageListNodeIds": [
+          "9cc2d8ee-6108-4d3a-8356-4ca7445d8cec",
+          "e62ec80a-726f-4a64-938a-e69036aec4bc"
+        ],
+        "orderExactMatch": true,
+        "createWithoutRun": true,
+        "taskInfoPresentBeforePaid": false,
+        "rawReadOnlyReceiptSha256": "f29d5cec8d2409f93e5c1112974d5205b45e99a166b7f8c7fc8e3d26732edf14",
+        "rawReceiptRetainedPrivately": true,
+        "noRawProviderUrlsPublished": true
+      },
+      "originalGeneratedVideo": {
+        "bytes": 2387766,
+        "sha256": "a1b38319a247f0d4d200c4790c1ce059b898df3914ec13bf72319c5e43a8191d",
+        "retained": true,
+        "location": "private generation staging; excluded from repository",
+        "durationSeconds": 4.041667
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1",
+            "nb_frames": "194"
+          }
+        ],
+        "format": {
+          "duration": "8.083333",
+          "size": "150087"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 0.125,
+        "frames": 64,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1397-contact-8fps.jpg",
+        "contactSha256": "1f19e5dc76243a8949a53cab282d7d4f4171e698003fc0d27c9d8357adb6d3fd",
+        "reviewed": true,
+        "producerAccepted": true,
+        "rootAccepted": true,
+        "rootReviewPending": false,
+        "observation": "Both heels rise from flat feet and return by exact reversed frames while the forefeet remain grounded. Knees stay nearly straight, upright torso follows the heel rise, free paws stay beside hips and tail is not a support; no wall, jump, squat or step. This is unsupported balance rather than the wall-assisted1373 variant. Producer actually viewed 16 forward and 64 final samples. Root review pending. Full one-way and final frames decoded without errors. Root actually viewed both16-sample forward and64-sample final contact sheets and accepted the observed movement; no extra endpoint-detail view is claimed.",
+        "oneWay": {
+          "intervalSeconds": 0.25,
+          "frames": 16,
+          "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1397-one-way-contact-4fps.jpg",
+          "contactSha256": "feec1fbfb7cdd306684234c47ece19f5e8c921aa79c6cb3b315345950ddcdcda",
+          "reviewed": true,
+          "producerAccepted": true,
+          "rootAccepted": true,
+          "rootReviewPending": false,
+          "rootActuallyViewed": true
+        },
+        "rootActuallyViewed": true
+      },
+      "processing": "Seedance 2.5 generated one requested 4-second forward phase of standing calves from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083333 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. Generate only one forward movement over requested 4 seconds; any return is exact reversed accepted frames, not a separately AI-generated phase.",
+      "kind": "mascot",
+      "semanticRelationship": {
+        "relatedCanonicalExerciseId": "1373",
+        "relationship": "Both are bilateral plantarflexion. This exact1397 source has no hand support: paws stay free at hips and balance is unsupported. Exact1373 explicitly uses hands against a wall for balance; its reviewed media retains fixed wall contacts. The distinction is supported versus unsupported balance, not a renamed view of the same wall-assisted clip.",
+        "differentBalanceRequirement": true,
+        "noWallOrEquipmentFor1397": true
+      }
+    },
+    {
+      "name": "exp-0333",
+      "canonicalExerciseId": "0333",
+      "englishName": "dumbbell kickback",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0333.mp4",
+        "bytes": 145395,
+        "sha256": "c78b27988f1bc1dd1b1ce36e45e5179530d598f10689246d5f7e14569305364d"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0333-poster.webp",
+        "bytes": 21052,
+        "sha256": "edd3d428d1be2f48c24d15b00f2e693fca461ec99002d56ef39823dd29ed5683"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0333-reference.png",
+        "bytes": 1790643,
+        "sha256": "21e5cb3db0b7fbd0254c91b2029d08b8643d12608d572d4dfaee41b83f90f324"
+      },
+      "originalGeneratedEndpoint": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0333-endpoint.png",
+        "bytes": 1753695,
+        "sha256": "cd0f050c2efa6c4ca8f5d23059cab05d178464323f8bf9eb52c1a92452491bef"
+      },
+      "referenceFrames": [
+        {
+          "role": "start",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0333-reference.png",
+          "bytes": 1790643,
+          "sha256": "21e5cb3db0b7fbd0254c91b2029d08b8643d12608d572d4dfaee41b83f90f324",
+          "nodeId": "dcfaa0ea-7164-4501-a4d0-429e278c89d0"
+        },
+        {
+          "role": "end",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0333-endpoint.png",
+          "bytes": 1753695,
+          "sha256": "cd0f050c2efa6c4ca8f5d23059cab05d178464323f8bf9eb52c1a92452491bef",
+          "nodeId": "a5d8521f-5e2a-4972-a8e3-2d79210923eb"
+        }
+      ],
+      "referenceOrderProof": {
+        "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+        "nodeId": "0764845a-f132-4e06-8e48-18baa37ef304",
+        "expectedReferenceNodeIds": [
+          "dcfaa0ea-7164-4501-a4d0-429e278c89d0",
+          "a5d8521f-5e2a-4972-a8e3-2d79210923eb"
+        ],
+        "imageListOrder": [
+          "dcfaa0ea-7164-4501-a4d0-429e278c89d0",
+          "a5d8521f-5e2a-4972-a8e3-2d79210923eb"
+        ],
+        "imageListNodeIds": [
+          "dcfaa0ea-7164-4501-a4d0-429e278c89d0",
+          "a5d8521f-5e2a-4972-a8e3-2d79210923eb"
+        ],
+        "orderExactMatch": true,
+        "createWithoutRun": true,
+        "taskInfoPresentBeforePaid": false,
+        "rawReadOnlyReceiptSha256": "f7a9ef3708a57aaa2fbc2a3881816eae1c654fc5effe4f55ff2ea60512150353",
+        "rawReceiptRetainedPrivately": true,
+        "noRawProviderUrlsPublished": true
+      },
+      "originalGeneratedVideo": {
+        "bytes": 2077315,
+        "sha256": "c5b404f2533432501fae541f9216e5558e4e3db2ad34004549285671186410d3",
+        "retained": true,
+        "location": "private generation staging; excluded from repository",
+        "durationSeconds": 4.041667
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1",
+            "nb_frames": "194"
+          }
+        ],
+        "format": {
+          "duration": "8.083333",
+          "size": "145395"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 0.125,
+        "frames": 64,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0333-contact-8fps.jpg",
+        "contactSha256": "d39c34d32dde61fe7130e7e9c668162fc08f8f1599297d1359ee7ca36825f78e",
+        "reviewed": true,
+        "producerAccepted": true,
+        "rootAccepted": true,
+        "rootReviewPending": false,
+        "observation": "Both elbows extend from approximately90 degrees, moving two dumbbells behind the hips; upper arms stay near ribs, with the original hip hinge, soft knees and foot anchors. No curling toward chest, rowing, lateral opening or standing up. Reversed return follows same elbow path without extra repetition or apparatus change. Producer actually viewed 16 forward and 64 final samples. Root review pending. Full one-way and final frames decoded without errors. Root actually viewed both16-sample forward and64-sample final contact sheets and accepted the observed movement; no extra endpoint-detail view is claimed.",
+        "oneWay": {
+          "intervalSeconds": 0.25,
+          "frames": 16,
+          "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0333-one-way-contact-4fps.jpg",
+          "contactSha256": "dfde456a7a8709c09eed05f49d80acd3da6b1c9057c6b622e95ff432df311684",
+          "reviewed": true,
+          "producerAccepted": true,
+          "rootAccepted": true,
+          "rootReviewPending": false,
+          "rootActuallyViewed": true
+        },
+        "rootActuallyViewed": true
+      },
+      "processing": "Seedance 2.5 generated one requested 4-second forward phase of dumbbell kickback from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083333 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. Generate only one forward movement over requested 4 seconds; any return is exact reversed accepted frames, not a separately AI-generated phase.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-1387",
+      "canonicalExerciseId": "1387",
+      "englishName": "one leg floor calf raise",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1387.mp4",
+        "bytes": 166772,
+        "sha256": "ac5b063d4d09949b90b51304c8613489c4857f177d3f37eacf79dd07f62ae0f8"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1387-poster.webp",
+        "bytes": 10754,
+        "sha256": "1ac27a23030a009ed75c409e46fa9154d40f0c8cef4e71c253dbc87ede2b132e"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-1387-reference.png",
+        "sha256": "5b33adfc1748cf1ccb3e410eb0388560fcaadf08cc6a9f68816db03daa8fa251",
+        "bytes": 1622398
+      },
+      "originalGeneratedEndpoint": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-1387-endpoint.png",
+        "sha256": "88fe456fab88f7628cf11d9d2372457ad1c29ab81fa8d87e44e73b2a5fcf8085",
+        "bytes": 1599406
+      },
+      "referenceFrames": [
+        {
+          "role": "start",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-1387-reference.png",
+          "sha256": "5b33adfc1748cf1ccb3e410eb0388560fcaadf08cc6a9f68816db03daa8fa251",
+          "bytes": 1622398,
+          "nodeId": "c9c5b847-6299-4b4e-b16f-2129363499a4"
+        },
+        {
+          "role": "end",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-1387-endpoint.png",
+          "sha256": "88fe456fab88f7628cf11d9d2372457ad1c29ab81fa8d87e44e73b2a5fcf8085",
+          "bytes": 1599406,
+          "nodeId": "2880f12b-0645-471f-861c-11ff010d952d"
+        }
+      ],
+      "referenceOrderProof": {
+        "verificationMethod": "Official CLI read-only node response after create without run and before the single paid run",
+        "nodeId": "f597f583-f165-49af-9de2-e06f8130e582",
+        "expectedReferenceNodeIds": [
+          "c9c5b847-6299-4b4e-b16f-2129363499a4",
+          "2880f12b-0645-471f-861c-11ff010d952d"
+        ],
+        "imageListOrder": [
+          "c9c5b847-6299-4b4e-b16f-2129363499a4",
+          "2880f12b-0645-471f-861c-11ff010d952d"
+        ],
+        "imageListNodeIds": [
+          "c9c5b847-6299-4b4e-b16f-2129363499a4",
+          "2880f12b-0645-471f-861c-11ff010d952d"
+        ],
+        "orderExactMatch": true,
+        "createWithoutRun": true,
+        "taskInfoPresentBeforePaid": false,
+        "rawReadOnlyReceiptSha256": "0e1c8abfe4d8e7bcf8ab808233ee3c133091f136e88675dafe636f570382edfb",
+        "rawReceiptRetainedPrivately": true,
+        "noRawProviderUrlsPublished": true
+      },
+      "originalGeneratedVideo": {
+        "bytes": 2071096,
+        "sha256": "76ba576989bd6ef61331df10dc37fbebeebc272533f038e1106de713d7325d1b",
+        "retained": true,
+        "location": "private generation staging; excluded from repository",
+        "durationSeconds": 4.041667
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1",
+            "nb_frames": "194"
+          }
+        ],
+        "format": {
+          "duration": "8.083333",
+          "size": "166772"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 0.125,
+        "frames": 64,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1387-contact-8fps.jpg",
+        "contactSha256": "39ebb6de346bb2e9c20b5d6d9397145c400fc4beca9d7da3e769c0bbc626da26",
+        "reviewed": true,
+        "producerAccepted": true,
+        "rootAccepted": true,
+        "observation": "Actual16 and64 samples show single near-foot heel raise and exact reversed lowering, stable forefoot/toes in original floor spot, far foot remains suspended throughout. Both palms keep wall contact, upright body rises slightly with near ankle extension without squat or hand pull. All head/feet/tail framed and full decode passes.",
+        "oneWay": {
+          "intervalSeconds": 0.25,
+          "frames": 16,
+          "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1387-one-way-contact-4fps.jpg",
+          "contactSha256": "ba82008ecb731eaea40096dd073f2b444d3a0a85d59f82a53ee599dbbdca8eeb",
+          "reviewed": true,
+          "producerAccepted": true,
+          "rootAccepted": true
+        }
+      },
+      "processing": "Seedance2.5 generated one ordered start/end4second one-way segment (actual 4.041667s). After actual16sample visual approval, encoded whole segment forward then exact reversed frame order to illustrate return, final 8.083333s. Return synthesized by reversal, not separately AI-generated; not an original8second continuous generation. H.264 CRF26,1024px,yuv420p,silent,faststart. WebP q86 poster extracted from actual first video frame.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-0001",
+      "canonicalExerciseId": "0001",
+      "englishName": "3/4 sit-up",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0001.mp4",
+        "bytes": 165198,
+        "sha256": "dd88de2ff803e3950ae5f1b35b68b6bd50439a61149ae2cc3d533aa5235f0a6c"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0001-poster.webp",
+        "bytes": 23306,
+        "sha256": "d97b861822ea6994cbcb5f5987fb3c70b65ec5a52fbecb77994c32509e1a8710"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0001-reference.png",
+        "bytes": 1814298,
+        "sha256": "30724165f6aebac7d7e4b0cbfee3d6d888f6d61a628c25fe8c683fe8b6a800e7"
+      },
+      "originalGeneratedEndpoint": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0001-endpoint.png",
+        "bytes": 1858262,
+        "sha256": "6d66125450a35974beb8c17c3437a873bb25025b1f91d95b46737bd5245150e4"
+      },
+      "referenceFrames": [
+        {
+          "role": "start",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0001-reference.png",
+          "bytes": 1814298,
+          "sha256": "30724165f6aebac7d7e4b0cbfee3d6d888f6d61a628c25fe8c683fe8b6a800e7",
+          "nodeId": "d126d94f-b6b5-4c2d-aebc-25dc9758e3ef"
+        },
+        {
+          "role": "end",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0001-endpoint.png",
+          "bytes": 1858262,
+          "sha256": "6d66125450a35974beb8c17c3437a873bb25025b1f91d95b46737bd5245150e4",
+          "nodeId": "d765b98c-0887-42a5-b8a0-c4ec4671cdf7"
+        }
+      ],
+      "referenceOrderProof": {
+        "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+        "nodeId": "80e05fa6-166d-411b-bae7-c015f62d9d95",
+        "expectedReferenceNodeIds": [
+          "d126d94f-b6b5-4c2d-aebc-25dc9758e3ef",
+          "d765b98c-0887-42a5-b8a0-c4ec4671cdf7"
+        ],
+        "imageListOrder": [
+          "d126d94f-b6b5-4c2d-aebc-25dc9758e3ef",
+          "d765b98c-0887-42a5-b8a0-c4ec4671cdf7"
+        ],
+        "imageListNodeIds": [
+          "d126d94f-b6b5-4c2d-aebc-25dc9758e3ef",
+          "d765b98c-0887-42a5-b8a0-c4ec4671cdf7"
+        ],
+        "orderExactMatch": true,
+        "createWithoutRun": true,
+        "taskInfoPresentBeforePaid": false,
+        "rawReadOnlyReceiptSha256": "1f92e90df4e2fe8d8e832103f40916658636e490a86b3ff6f9c9a308661a73a6",
+        "rawReceiptRetainedPrivately": true,
+        "noRawProviderUrlsPublished": true
+      },
+      "originalGeneratedVideo": {
+        "bytes": 3302645,
+        "sha256": "413261ed4d086e228f199999e46c5cddbe9486681569284236f367edbae31a0c",
+        "retained": true,
+        "location": "private generation staging; excluded from repository",
+        "durationSeconds": 4.041667
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1",
+            "nb_frames": "194"
+          }
+        ],
+        "format": {
+          "duration": "8.083333",
+          "size": "165198"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 0.125,
+        "frames": 64,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0001-contact-8fps.jpg",
+        "contactSha256": "ed518e5e7be932697d1c8b4556147dab9bf0744ba880133228568f80720510b3",
+        "reviewed": true,
+        "producerAccepted": true,
+        "rootAccepted": true,
+        "rootReviewPending": false,
+        "observation": "Root actually viewed all 16 forward and 64 final contact samples. Both heels and feet remain fixed, knees stay bent and pelvis stays on mat. Upper and lower back progressively lift into a partial sit-up; paws stay beside head, with no leg raise, standing or extra limbs. Exact reversed lowering remains consistent. No exact measured torso angle is asserted. Producer actually viewed 16 forward and 64 final samples. Root actually viewed 16 forward and 64 final contact samples and accepted. Full one-way and final frames decoded without errors.",
+        "oneWay": {
+          "intervalSeconds": 0.25,
+          "frames": 16,
+          "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0001-one-way-contact-4fps.jpg",
+          "contactSha256": "7fe487b461fb254ad2cd378782eeab720f84f00c5241c5e0c5e8149ae7abd162",
+          "reviewed": true,
+          "producerAccepted": true,
+          "rootAccepted": true,
+          "rootReviewPending": false,
+          "rootActuallyViewedFrames": 16
+        },
+        "rootActuallyViewedFrames": 64
+      },
+      "processing": "Seedance 2.5 generated one requested 4-second forward phase of 3/4 sit-up from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083333 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. A requested four-second partial sit-up forward phase is reviewed before an exact reversed lowering return preview is added; no claim of a separately generated return or exact measured torso angle.",
+      "kind": "mascot",
+      "renderingAssumption": "Only one controlled partial sit-up is previewed. Knees stay bent and both feet remain fixed; no leg raise or standing.",
+      "manualReviewPending": false
+    },
+    {
+      "name": "exp-1398",
+      "canonicalExerciseId": "1398",
+      "englishName": "standing calves calf stretch",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1398.mp4",
+        "bytes": 166862,
+        "sha256": "bbf2bbcafd5fbd2626ab73de4e01f03e631da268affcd06eb5b5f24f805e786f"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1398-poster.webp",
+        "bytes": 18930,
+        "sha256": "07b9d2d8ce24a1c4991ff8bd4d6291b8a6d9decbf188db46f5079b23a000a4a0"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-1398-reference.png",
+        "bytes": 1764101,
+        "sha256": "0a2cb5c53d80b99483b9c115085d1a2c46671d18318c37fccbd40ba2542b2436"
+      },
+      "originalGeneratedEndpoint": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-1398-endpoint.png",
+        "bytes": 1722147,
+        "sha256": "446c4efe18347b4e5f3155ebb8ae7c98d3ca2005d69596022db06b94f578b8ad"
+      },
+      "referenceFrames": [
+        {
+          "role": "start",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-1398-reference.png",
+          "bytes": 1764101,
+          "sha256": "0a2cb5c53d80b99483b9c115085d1a2c46671d18318c37fccbd40ba2542b2436",
+          "nodeId": "65d50f97-cfd2-44e1-9e5e-2b2a5f38b357"
+        },
+        {
+          "role": "end",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-1398-endpoint.png",
+          "bytes": 1722147,
+          "sha256": "446c4efe18347b4e5f3155ebb8ae7c98d3ca2005d69596022db06b94f578b8ad",
+          "nodeId": "6b9a252b-6e43-4a5a-9dc4-06b12a148c35"
+        }
+      ],
+      "referenceOrderProof": {
+        "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+        "nodeId": "12fac178-6ef3-430f-881a-216741452994",
+        "expectedReferenceNodeIds": [
+          "65d50f97-cfd2-44e1-9e5e-2b2a5f38b357",
+          "6b9a252b-6e43-4a5a-9dc4-06b12a148c35"
+        ],
+        "imageListOrder": [
+          "65d50f97-cfd2-44e1-9e5e-2b2a5f38b357",
+          "6b9a252b-6e43-4a5a-9dc4-06b12a148c35"
+        ],
+        "imageListNodeIds": [
+          "65d50f97-cfd2-44e1-9e5e-2b2a5f38b357",
+          "6b9a252b-6e43-4a5a-9dc4-06b12a148c35"
+        ],
+        "orderExactMatch": true,
+        "createWithoutRun": true,
+        "taskInfoPresentBeforePaid": false,
+        "rawReadOnlyReceiptSha256": "dcba998f666eb8e821a5bd3235facf5ebb59d0a475670cf5c66ac81d84a0f64d",
+        "rawReceiptRetainedPrivately": true,
+        "noRawProviderUrlsPublished": true
+      },
+      "originalGeneratedVideo": {
+        "bytes": 2429381,
+        "sha256": "b61144c428f21336148af71bf51d4a6bfb187487bcaef2a7cbc482bfd67414c7",
+        "retained": true,
+        "location": "private generation staging; excluded from repository",
+        "durationSeconds": 4.041667
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1",
+            "nb_frames": "194"
+          }
+        ],
+        "format": {
+          "duration": "8.083008",
+          "size": "166862"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 0.125,
+        "frames": 64,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1398-contact-8fps.jpg",
+        "contactSha256": "e740b4bbad419c6dd17df805e5bb8a2a15215cbf232fa4e28417f569e90bfdda",
+        "reviewed": true,
+        "producerAccepted": true,
+        "rootAccepted": true,
+        "rootReviewPending": false,
+        "observation": "Small forward lean and gentle front-knee bend enter the wall calf stretch while the rear heel and long rear knee remain down and two fixed paws contact wall. Both foot placements persist; no stepping, toe rise, push-up or turn. Return is exact reverse of a single-side short entry, not a prescribed20-30s hold, and this overlaps1377 technique so cannot be counted twice. Producer actually viewed 16 forward and 64 final samples. Root review pending. Full one-way and final frames decoded without errors. Root actually viewed both16-sample forward and64-sample final contact sheets and accepted the observed movement; no extra endpoint-detail view is claimed.",
+        "oneWay": {
+          "intervalSeconds": 0.25,
+          "frames": 16,
+          "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1398-one-way-contact-4fps.jpg",
+          "contactSha256": "09eb5605791160583b5d045e4623dfb1170d69ec239328d3e1a0655c13496fce",
+          "reviewed": true,
+          "producerAccepted": true,
+          "rootAccepted": true,
+          "rootReviewPending": false,
+          "rootActuallyViewed": true
+        },
+        "rootActuallyViewed": true
+      },
+      "processing": "Seedance 2.5 generated one requested 4-second forward phase of standing calves calf stretch from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083008 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. One reversible movement preview; return will only be exact reversal after forward-phase review. Stretch timing and one-side examples do not claim a full prescribed hold or both sides.",
+      "kind": "mascot",
+      "semanticRelationship": {
+        "relatedCanonicalExerciseId": "1377",
+        "relationship": "Same hands-on-wall rear-calf stretch technique; this candidate must not be counted alongside a second equivalent ready1377 as another distinct new movement.",
+        "noDoubleCounting": true,
+        "currentRelatedReady": false,
+        "relatedSourceDescriptorSha256": "6932a65c0059d01165650d49b707f3aebedcdb523b9ea428f22cfa5806248caa",
+        "relatedSourceStepsActuallyRead": true
+      }
+    },
+    {
+      "name": "exp-0356",
+      "canonicalExerciseId": "0356",
+      "englishName": "dumbbell one arm lateral raise with support",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0356.mp4",
+        "bytes": 165174,
+        "sha256": "a68b21fe5a8e9fd206091e2b0f99450f08a933bc4cfc106d25c64f251dabe406"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0356-poster.webp",
+        "bytes": 15906,
+        "sha256": "9952fc6022001cff0b2bc0550bc14f74027ee69093cc20e70c7677797d104c1c"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0356-reference.png",
+        "bytes": 1682064,
+        "sha256": "a504f0beb61362afe660fcb85a9dcae0e7d646b276d4150e6122db0072dfac4d"
+      },
+      "originalGeneratedEndpoint": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0356-endpoint.png",
+        "bytes": 1660360,
+        "sha256": "3ecd5adc72f8f63701695bc78e718133a87bd681de41bfe42b14203495077d23"
+      },
+      "referenceFrames": [
+        {
+          "role": "start",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0356-reference.png",
+          "bytes": 1682064,
+          "sha256": "a504f0beb61362afe660fcb85a9dcae0e7d646b276d4150e6122db0072dfac4d",
+          "nodeId": "d55b2828-d643-4584-9a48-8ebd82850953"
+        },
+        {
+          "role": "end",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0356-endpoint.png",
+          "bytes": 1660360,
+          "sha256": "3ecd5adc72f8f63701695bc78e718133a87bd681de41bfe42b14203495077d23",
+          "nodeId": "db8b1d21-610b-4a9d-bc84-d9ed6afdf0a0"
+        }
+      ],
+      "referenceOrderProof": {
+        "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+        "nodeId": "bf6c075a-e143-4614-b0b7-54c2b122c84b",
+        "expectedReferenceNodeIds": [
+          "d55b2828-d643-4584-9a48-8ebd82850953",
+          "db8b1d21-610b-4a9d-bc84-d9ed6afdf0a0"
+        ],
+        "imageListOrder": [
+          "d55b2828-d643-4584-9a48-8ebd82850953",
+          "db8b1d21-610b-4a9d-bc84-d9ed6afdf0a0"
+        ],
+        "imageListNodeIds": [
+          "d55b2828-d643-4584-9a48-8ebd82850953",
+          "db8b1d21-610b-4a9d-bc84-d9ed6afdf0a0"
+        ],
+        "orderExactMatch": true,
+        "createWithoutRun": true,
+        "taskInfoPresentBeforePaid": false,
+        "rawReadOnlyReceiptSha256": "5f5f99b198c3a2cb07fa67f965edf28eec9e4dd97561e20cf74bf68d1a7b18b0",
+        "rawReceiptRetainedPrivately": true,
+        "noRawProviderUrlsPublished": true
+      },
+      "originalGeneratedVideo": {
+        "bytes": 2217505,
+        "sha256": "e3073fd989c501f74f24a0c648eb2a6939f38bddb685ea5a5db0f8e53c5a9300",
+        "retained": true,
+        "location": "private generation staging; excluded from repository",
+        "durationSeconds": 4.041667
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1",
+            "nb_frames": "194"
+          }
+        ],
+        "format": {
+          "duration": "8.083008",
+          "size": "165174"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 0.125,
+        "frames": 64,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0356-contact-8fps.jpg",
+        "contactSha256": "b87bb51a516b0988dea3f37ee6320a6d6ab260b4a247434727782aee79e4f5fa",
+        "reviewed": true,
+        "producerAccepted": true,
+        "rootAccepted": true,
+        "rootReviewPending": false,
+        "observation": "One working dumbbell travels sideways to shoulder height with a soft elbow, then returns by exact reversed frames. The other paw keeps the same wall contact; pelvis, feet and upright torso stay stable. No curl, front raise, shrug, side lean or second dumbbell. Producer actually viewed 16 forward and 64 final samples. Root review pending. Full one-way and final frames decoded without errors. Root actually viewed both16-sample forward and64-sample final contact sheets and accepted the observed movement; no extra endpoint-detail view is claimed.",
+        "oneWay": {
+          "intervalSeconds": 0.25,
+          "frames": 16,
+          "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0356-one-way-contact-4fps.jpg",
+          "contactSha256": "ee05bfb40418fdb271a60b724585d4797d517acfb1be449f03bb04b00e439e05",
+          "reviewed": true,
+          "producerAccepted": true,
+          "rootAccepted": true,
+          "rootReviewPending": false,
+          "rootActuallyViewed": true
+        },
+        "rootActuallyViewed": true
+      },
+      "processing": "Seedance 2.5 generated one requested 4-second forward phase of dumbbell one arm lateral raise with support from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083008 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. One reversible movement preview; return will only be exact reversal after forward-phase review. Stretch timing and one-side examples do not claim a full prescribed hold or both sides.",
+      "kind": "mascot"
+    },
+    {
+      "name": "exp-0271",
+      "canonicalExerciseId": "0271",
+      "englishName": "crunch (on stability ball)",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0271.mp4",
+        "bytes": 210118,
+        "sha256": "e551e69d7075cafd0ed87674c81ffeb1e110d7cf2c26f117ebcdc1d89c81a5e9"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0271-poster.webp",
+        "bytes": 29856,
+        "sha256": "26ff9def4853d13fd70e0dd8e83c6a8090c2e8d9fe92143e2a121059a018eb5e"
+      },
+      "originalGeneratedReference": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0271-reference.png",
+        "bytes": 1869683,
+        "sha256": "f0c3fafd684ef2fad4f0aefe8046d31e1f3d11b69b5ac3ec6e2d95f735b01703"
+      },
+      "originalGeneratedEndpoint": {
+        "file": "apps/app/art-source/fitness/expansion-1000/exp-0271-endpoint.png",
+        "bytes": 1821513,
+        "sha256": "b6982708366b129b7f43b32227272c6570ff807f4908fd97aaea77271ca15fb8"
+      },
+      "referenceFrames": [
+        {
+          "role": "start",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0271-reference.png",
+          "bytes": 1869683,
+          "sha256": "f0c3fafd684ef2fad4f0aefe8046d31e1f3d11b69b5ac3ec6e2d95f735b01703",
+          "nodeId": "25d060fd-c08c-4b68-9f77-fb15c1c1fed7"
+        },
+        {
+          "role": "end",
+          "file": "apps/app/art-source/fitness/expansion-1000/exp-0271-endpoint.png",
+          "bytes": 1821513,
+          "sha256": "b6982708366b129b7f43b32227272c6570ff807f4908fd97aaea77271ca15fb8",
+          "nodeId": "dfe13526-d6eb-4971-b8b4-94021609a7d8"
+        }
+      ],
+      "referenceOrderProof": {
+        "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+        "nodeId": "7734d9a2-fdc7-45c9-b621-cdfe5c93389e",
+        "expectedReferenceNodeIds": [
+          "25d060fd-c08c-4b68-9f77-fb15c1c1fed7",
+          "dfe13526-d6eb-4971-b8b4-94021609a7d8"
+        ],
+        "imageListOrder": [
+          "25d060fd-c08c-4b68-9f77-fb15c1c1fed7",
+          "dfe13526-d6eb-4971-b8b4-94021609a7d8"
+        ],
+        "imageListNodeIds": [
+          "25d060fd-c08c-4b68-9f77-fb15c1c1fed7",
+          "dfe13526-d6eb-4971-b8b4-94021609a7d8"
+        ],
+        "orderExactMatch": true,
+        "createWithoutRun": true,
+        "taskInfoPresentBeforePaid": false,
+        "rawReadOnlyReceiptSha256": "c3354fdccb014f6687ed8fbf5a232a098e114fdd4e7e6032e84ab1fdeaf06d0d",
+        "rawReceiptRetainedPrivately": true,
+        "noRawProviderUrlsPublished": true
+      },
+      "originalGeneratedVideo": {
+        "bytes": 2995419,
+        "sha256": "52b023ebacf717cc8275fdc479363ff0e81e1b4dbfb421e8bee384b6251f6fd2",
+        "retained": true,
+        "location": "private generation staging; excluded from repository",
+        "durationSeconds": 4.041667
+      },
+      "format": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1024,
+            "height": 576,
+            "r_frame_rate": "24/1",
+            "nb_frames": "194"
+          }
+        ],
+        "format": {
+          "duration": "8.083008",
+          "size": "210118"
+        }
+      },
+      "manualFrameReview": {
+        "intervalSeconds": 0.125,
+        "frames": 64,
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0271-contact-8fps.jpg",
+        "contactSha256": "49a2220033807e35cdd67c9c16f3afec4ee5e34712a142c904186a569dd57283",
+        "reviewed": true,
+        "producerAccepted": true,
+        "rootAccepted": true,
+        "rootReviewPending": false,
+        "observation": "Root actually viewed 16 forward and 64 final contact samples. Stable ball supports lower back throughout, hips stay supported, feet and heels remain planted. Upper chest and shoulders curl moderately toward knees while paws stay crossed at chest, without sitting upright or a leg raise. The reversed return remains consistent; camera and props stay fixed. Producer actually viewed 16 forward and 64 final samples. Root actually viewed 16 forward and 64 final contact samples and accepted. Full one-way and final frames decoded without errors.",
+        "oneWay": {
+          "intervalSeconds": 0.25,
+          "frames": 16,
+          "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0271-one-way-contact-4fps.jpg",
+          "contactSha256": "8f145d9dadcdd000d2441d0a74cd42c30c2cc55b5e9410dd1f37f0951bf30888",
+          "reviewed": true,
+          "producerAccepted": true,
+          "rootAccepted": true,
+          "rootReviewPending": false,
+          "rootActuallyViewedFrames": 16
+        },
+        "rootActuallyViewedFrames": 64
+      },
+      "processing": "Seedance 2.5 generated one requested 4-second forward phase of crunch (on stability ball) from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083008 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. One requested four-second controlled ball-crunch contraction is reviewed before the exact reversed frames are used for the return preview; no separately generated return phase is claimed.",
+      "kind": "mascot",
+      "renderingAssumption": "Source explicitly permits hands at the chest, used to avoid pulling the neck. Mascot proportions mean no exact measured hip/knee angle is claimed.",
+      "manualReviewPending": false
     }
   ]
 }

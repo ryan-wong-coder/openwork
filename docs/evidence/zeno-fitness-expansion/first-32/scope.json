@@ -1,0 +1,9 @@
+{
+  "scope": "Actual production PWA snapshot with 32 added and 32 baseline demonstrations; local disposable API and headless Chrome. Does not claim native installer validation or live deployment.",
+  "additionalSnapshot": 32,
+  "totalSnapshot": 64,
+  "browserChecks": 18,
+  "screenshots": 15,
+  "complete1000": false,
+  "livePublished": false
+}

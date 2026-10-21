@@ -1,0 +1,157 @@
+{
+  "canonicalExerciseId": "0001",
+  "englishName": "3/4 sit-up",
+  "nodeId": "80e05fa6-166d-411b-bae7-c015f62d9d95",
+  "taskId": "20261021143203497368518",
+  "prompt": "首帧为 {{Node d126d94f-b6b5-4c2d-aebc-25dc9758e3ef}}，尾帧为 {{Node d765b98c-0887-42a5-b8a0-c4ec4671cdf7}}。固定侧面机位和原来的水獭、垫子与所有着地点。4秒内只从仰卧首帧做一次3/4仰卧起坐，双脚和脚跟始终固定贴在地上、膝弯曲角度基本不变，骨盆保持接触垫子。腹部发力缓慢抬起整个躯干和腰背到尾帧斜位，不能只抬头或耸肩。双前爪轻放耳后、肘向外，不拉脖子。尾巴自然贴地，不作为杠杆撑起身体。只向上一次并停在尾帧，不放回、不重复。不移动脚、不举腿、不站起、不坐成完全竖直。画面无推拉缩放剪切，无额外肢体或文字声音，所有身体始终完整入镜。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0001-reference.png",
+      "bytes": 1814298,
+      "sha256": "30724165f6aebac7d7e4b0cbfee3d6d888f6d61a628c25fe8c683fe8b6a800e7",
+      "nodeId": "d126d94f-b6b5-4c2d-aebc-25dc9758e3ef"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0001-endpoint.png",
+      "bytes": 1858262,
+      "sha256": "6d66125450a35974beb8c17c3437a873bb25025b1f91d95b46737bd5245150e4",
+      "nodeId": "d765b98c-0887-42a5-b8a0-c4ec4671cdf7"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "80e05fa6-166d-411b-bae7-c015f62d9d95",
+    "expectedReferenceNodeIds": [
+      "d126d94f-b6b5-4c2d-aebc-25dc9758e3ef",
+      "d765b98c-0887-42a5-b8a0-c4ec4671cdf7"
+    ],
+    "imageListOrder": [
+      "d126d94f-b6b5-4c2d-aebc-25dc9758e3ef",
+      "d765b98c-0887-42a5-b8a0-c4ec4671cdf7"
+    ],
+    "imageListNodeIds": [
+      "d126d94f-b6b5-4c2d-aebc-25dc9758e3ef",
+      "d765b98c-0887-42a5-b8a0-c4ec4671cdf7"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "1f92e90df4e2fe8d8e832103f40916658636e490a86b3ff6f9c9a308661a73a6",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "165198"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "3302645"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "85917"
+    }
+  },
+  "originalSha256": "413261ed4d086e228f199999e46c5cddbe9486681569284236f367edbae31a0c",
+  "originalBytes": 3302645,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "2e8b7faefbfbce713a7b37ad4a559d315cb7576e6df825b504f438dbe5a15ba5",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of 3/4 sit-up from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083333 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. A requested four-second partial sit-up forward phase is reviewed before an exact reversed lowering return preview is added; no claim of a separately generated return or exact measured torso angle.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0001-contact-8fps.jpg",
+    "contactSha256": "ed518e5e7be932697d1c8b4556147dab9bf0744ba880133228568f80720510b3",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Root actually viewed all 16 forward and 64 final contact samples. Both heels and feet remain fixed, knees stay bent and pelvis stays on mat. Upper and lower back progressively lift into a partial sit-up; paws stay beside head, with no leg raise, standing or extra limbs. Exact reversed lowering remains consistent. No exact measured torso angle is asserted. Producer actually viewed 16 forward and 64 final samples. Root actually viewed 16 forward and 64 final contact samples and accepted. Full one-way and final frames decoded without errors.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0001-one-way-contact-4fps.jpg",
+      "contactSha256": "7fe487b461fb254ad2cd378782eeab720f84f00c5241c5e0c5e8149ae7abd162",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootActuallyViewedFrames": 64
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "c358abb6b81ff5acd3ad6cd92b38ac4a1500c8b2908decd9a79edb09b93a570c",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "renderingAssumption": "Only one controlled partial sit-up is previewed. Knees stay bent and both feet remain fixed; no leg raise or standing."
+}

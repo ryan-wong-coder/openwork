@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "0271",
+  "englishName": "crunch (on stability ball)",
+  "chineseName": "卷腹(稳定球)",
+  "sourceDescriptorSha256": "79d83614554d4482b60b22f2549eccdc987e15b7af0f1431dbfc3dc427bbe685",
+  "sourceSteps": [
+    "坐在稳定球上，双脚平放在地面上，膝盖弯曲成 90 度角。",
+    "仰卧在球上，直到下背部得到支撑并且上半身与地板平行。",
+    "将双手放在脑后或放在胸前。",
+    "收紧腹肌，将上身抬向膝盖，躯干向前卷曲。",
+    "在动作的最高点暂停片刻，然后慢慢将上半身放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "sourceTechniqueReviewedForProduction": true,
+  "clinicalCertification": false,
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0271-reference.png",
+      "bytes": 1869683,
+      "sha256": "f0c3fafd684ef2fad4f0aefe8046d31e1f3d11b69b5ac3ec6e2d95f735b01703"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0271-endpoint.png",
+      "bytes": 1821513,
+      "sha256": "b6982708366b129b7f43b32227272c6570ff807f4908fd97aaea77271ca15fb8"
+    }
+  ],
+  "referenceTool": "built-in image_gen.imagegen",
+  "producerActuallyViewedBothReferences": true,
+  "acceptedReferenceObservation": "Feet and heels flat, knees bent, lower back supported on a stability ball. Endpoint shows a moderate upper-torso crunch toward knees with paws crossed at chest; ball/feet/lower-back support unchanged.",
+  "renderingAssumption": "Source explicitly permits hands at the chest, used to avoid pulling the neck. Mascot proportions mean no exact measured hip/knee angle is claimed.",
+  "videoAccepted": false,
+  "readyMedia": false
+}

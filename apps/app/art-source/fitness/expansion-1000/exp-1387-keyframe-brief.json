@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "kind": "two-keyframe-illustration-plan",
+  "exerciseId": "1387",
+  "englishName": "one leg floor calf raise",
+  "descriptorSha256": "1f59600fbc020cb79d985b7d1cd42c05e12fcbc4cb53f12e7d03bc2479f10c3e",
+  "movementBrief": "exp-1387-movement-brief.json",
+  "startImage": {
+    "file": "exp-1387-reference.png",
+    "sha256": "5b33adfc1748cf1ccb3e410eb0388560fcaadf08cc6a9f68816db03daa8fa251",
+    "bytes": 1622398,
+    "width": 1672,
+    "height": 941
+  },
+  "endpointImage": {
+    "file": "exp-1387-endpoint.png",
+    "sha256": "88fe456fab88f7628cf11d9d2372457ad1c29ab81fa8d87e44e73b2a5fcf8085",
+    "bytes": 1599406,
+    "width": 1672,
+    "height": 941
+  },
+  "startPrompt": {
+    "file": "exp-1387-poster-prompt-v2.txt",
+    "sha256": "bcc66d3267e8789a8a131cc9934027f8afd91f9c0050c7622e0b94a9c125cd7b",
+    "bytes": 849
+  },
+  "endpointPrompt": {
+    "file": "exp-1387-endpoint-prompt.txt",
+    "sha256": "7dd6df9b3c610e798f123b16e08bf0ae48c2a20deb05b5d9958dc2a972bc3eae",
+    "bytes": 1058
+  },
+  "startTool": "built-in ImageGen",
+  "startImageAttempts": 2,
+  "endpointTool": "built-in ImageGen edit of accepted start",
+  "endpointEditAttempts": 1,
+  "fixedContactsAndScene": [
+    "双掌墙面辅助稳定，承重足从全脚掌到前脚掌；非工作足不落地。",
+    "无器械，两掌墙面，肘自然微屈。",
+    "fixed camera, ivory studio and original identity"
+  ],
+  "motion": "承重踝跖屈抬足跟，膝近伸直，另一腿持续离地；上身随足跟轻升。 只支持侧足跟上升，前脚掌仍同一点接地，回程降足跟；不是台阶双脚提踵。",
+  "review": {
+    "startAndEndpointActuallyViewed": true,
+    "endpointDecision": "accepted-reference-for-parent-review",
+    "notes": [
+      "全程只一脚地面承重，另一脚抬起，不把双侧提踵当单腿。",
+      "明确floor而非阶梯/配重片；近侧前脚掌不换位。",
+      "掌墙轻扶，不把身体用手拉起或脚尖漂浮。",
+      "First start rejected for headroom; selected second widens framing for full heel-rise head travel."
+    ],
+    "wholeVideoViewed": false,
+    "readyMedia": false
+  },
+  "plannedVideo": {
+    "inputMode": "native first-and-last-frame",
+    "oneWaySeconds": 4,
+    "direction": "start-to-end",
+    "returnPlan": "Only after one-way actual visual acceptance, forward segment plus exact reversed frames for nominal8second illustration.",
+    "assemblyPerformed": false,
+    "videoGeneratedByThisAgent": false,
+    "originalEightSecondGeneration": false,
+    "existingEightSecondAttemptReused": false
+  }
+}

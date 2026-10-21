@@ -1,0 +1,39 @@
+{
+  "order": 797,
+  "exerciseId": "1587",
+  "englishName": "seated wide angle pose sequence",
+  "chineseName": "坐姿广角式序列",
+  "equipmentId": "body weight",
+  "descriptorSha256": "a62174398785cad3fcdf4ffe9f8fdf95cf92dc2b2749ae801fe1eebd5532d088",
+  "sourceSteps": [
+    "坐在地上，双腿大角度伸展。",
+    "弯曲你的脚并锻炼你的股四头肌。",
+    "将双手放在身后的地面上以获得支撑。",
+    "保持背部挺直，从臀部向前倾。",
+    "继续向前倾斜，直到感觉到腿筋被拉伸。",
+    "保持这个姿势几个呼吸。",
+    "慢慢释放拉伸并返回到起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "startPose": "地面坐姿双腿较宽分开、膝伸直脚尖朝上，脊柱直立，双掌身后地面。",
+  "support": "坐骨、双腿后侧与脚跟地面；双掌身后地面辅助稳定。",
+  "grip": "无器械，掌轻按地面，不抓脚/压膝。",
+  "jointMotion": "脊柱保持延长，从髋部温和向前倾，维持直膝大角度分腿。",
+  "path": "躯干从近直立到温和前倾约15–20度，手掌仍地面后侧，骨盆转动不卷背。",
+  "camera": "固定前侧30度，宽景能读两条伸直分腿、脚尖向上和双掌后方地面接触。",
+  "criticalChecks": [
+    "不是蝴蝶式脚底相对，膝必须近直。",
+    "不要把双手移到前方或强压膝；source明确身后支撑。",
+    "仅温和髋折，不弯背强行头触地。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceIssues": [],
+  "sourceStepsActuallyRead": true,
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "generationSeconds": 4,
+    "oneWay": "start-to-end controlled single movement",
+    "return": "Only after one-way visual acceptance, exact frame reversal; not an original8second generation."
+  }
+}

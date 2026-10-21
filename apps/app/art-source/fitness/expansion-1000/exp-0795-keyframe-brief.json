@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "0795",
+  "englishName": "standing single leg curl",
+  "sourceDescriptorSha256": "076192bf94d39042a2dff10b94b89872d1bf82fb20fff08b1fc4fadb5db837f0",
+  "sourceSteps": [
+    "站立，双脚分开与臀部同宽，双手放在臀部。",
+    "将体重转移到左腿上，将右脚抬离地面，弯曲膝盖。",
+    "慢慢地将右脚跟卷向臀部，挤压腿筋。",
+    "在顶部暂停片刻，然后慢慢将右脚放回起始位置。",
+    "重复所需的重复次数，然后换腿。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/zeno-site/public/assets/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "references": [
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0795-reference-v2.png",
+      "bytes": 1672560,
+      "sha256": "2b413b2cd8d5ef183f6934e7f0d9a189a2c49a36f6eef5cc17c9124cc5468749"
+    },
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0795-endpoint-v2.png",
+      "bytes": 1648252,
+      "sha256": "669114c310c18509da59c8c2e96ef66d67ed7d73e043c042df37f9940d8ee1d0"
+    }
+  ],
+  "prompts": [
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0795-poster-prompt.txt",
+      "bytes": 1515,
+      "sha256": "67a626a28a2c54a171774bb3f366d220a26a4045a1826e033975645e7c84939e"
+    },
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0795-poster-v2-prompt.txt",
+      "bytes": 1042,
+      "sha256": "bcaef728e85df247faa37b00cd2031174a4fbd265bca8886a5926581beaadf10"
+    },
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0795-endpoint-prompt.txt",
+      "bytes": 1267,
+      "sha256": "89d78accb2e6a1d546fff5eec7a09b20b529c2a175fff0ad765650d97f1b2cd7"
+    },
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0795-endpoint-v2-prompt.txt",
+      "bytes": 1114,
+      "sha256": "11a7e8fd6dbd6fda555c9e0a59887b5504f13545e116268316194c7f0d5e3b33"
+    }
+  ],
+  "referencePoseReviewed": true,
+  "imageAttempts": {
+    "start": 2,
+    "endpoint": 2,
+    "rejectedOriginals": "retained privately; no rejected image registered as ready"
+  },
+  "reviewObservation": "Far/anatomical-left support foot stays planted. Near/anatomical-right foot starts just off floor then its knee bends backward to curl the heel toward the rear of the hip. Both paws stay on hips; torso, support foot, tail and camera remain unchanged. Working thigh stays broadly downward, with small pose variation; no high forward knee raise. No exact anatomical angle or maximal flexion claim. Both legs and working calf remain distinct from passive tail.",
+  "scope": "One right-leg example and an exact reversed return if generated transition is accepted; not both alternating sides.",
+  "plannedVideo": "One slow backward knee curl from ordered start/end frames; only after actual video review may exact reversed extension be joined.",
+  "readyMedia": false
+}

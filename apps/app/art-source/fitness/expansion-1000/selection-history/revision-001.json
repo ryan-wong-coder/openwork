@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "kind": "selection-source-metadata-only-revision",
+  "original": {
+    "path": "apps/app/art-source/fitness/expansion-1000/selection-history/original.json",
+    "sha256": "b7f5b1d654468d04031560ffc2552d49fab53f2ebb24030cabe4ad247395f0e6",
+    "bytes": 1584961,
+    "sourceCheckpoint": "34947d7ea"
+  },
+  "active": {
+    "path": "apps/app/art-source/fitness/expansion-1000/selection.json",
+    "sha256": "d6a8a384fbbf4bb99b48a1b652a286847ba0958fed9f0d4402e3ae8ffe2141da",
+    "bytes": 1585160
+  },
+  "reason": "User-visible0407 side-bend direction and0446 close-grip width were corrected after original movement review. Freeze planning instructions to pinned upstream Chinese text plus the original0313 neutral-grip correction so runtime fixes cannot reshuffle or relabel the production plan.",
+  "planningInstructionBaseline": "packages/zeno-fitness/tools/expansion-instruction-baseline.json",
+  "generatorCommand": "PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false pnpm exec bun packages/zeno-fitness/tools/expansion-selection.ts",
+  "verification": {
+    "allNonSourceFieldsDeepEqual": true,
+    "exactSelectedEntriesUnchanged": 1000,
+    "exactReserveEntriesUnchanged": 175,
+    "idOrOrderChanges": 0,
+    "descriptorSha256Changes": 0,
+    "sourceStepsChanges": 0,
+    "readyMediaCountBefore": 0,
+    "readyMediaCountAfter": 0
+  },
+  "briefSource": {
+    "path": "apps/app/art-source/fitness/expansion-1000/briefs.json",
+    "selectionSha256Retained": "b7f5b1d654468d04031560ffc2552d49fab53f2ebb24030cabe4ad247395f0e6",
+    "selectionSnapshotPath": "apps/app/art-source/fitness/expansion-1000/selection-history/original.json",
+    "oldExerciseRowsChanged": false
+  },
+  "runtimeCorrectionSources": [
+    "https://www.strengthlog.com/dumbbell-side-bend/",
+    "https://tigerfitness.com/blogs/exercise-database/close-grip-ez-curl-ez-bar-curl"
+  ],
+  "limits": [
+    "This preserves a planning snapshot, not proof that all1000 movements or media have passed technique review.",
+    "Later runtime correction source hashes are intentionally excluded from planning sources; current canonical metadata and original plan identity still fail closed on drift.",
+    "No media generated, admitted as ready or published by this metadata revision."
+  ]
+}

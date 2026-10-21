@@ -1,0 +1,157 @@
+{
+  "canonicalExerciseId": "0271",
+  "englishName": "crunch (on stability ball)",
+  "nodeId": "7734d9a2-fdc7-45c9-b621-cdfe5c93389e",
+  "taskId": "20261021143903675018518",
+  "prompt": "首帧为 {{Node 25d060fd-c08c-4b68-9f77-fb15c1c1fed7}}，尾帧为 {{Node dfe13526-d6eb-4971-b8b4-94021609a7d8}}。保持原来的水獭和所有器材、固定侧面镜头和光线。4秒内只做一次稳定球卷腹的向上收缩：腰背/骨盆仍被球支撑，腹部发力使胸肩缓慢朝膝盖方向抬高卷起到尾帧。不是仅点头抬脖子，头部随胸廓前移而不过度屈颈。前爪一直轻交叉在胸前。两足和两脚跟始终固定平贴地面，膝位置不变；球完全固定不能滚动、缩放、塌陷或弹跳，臀部不能坐离球。尾巴自然放松不承重。只做一次向上收缩并停留，不放回、不重复、不站起。身体和球始终完整入镜，无文字、水印、声音、额外肢体、运镜或剪辑。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0271-reference.png",
+      "bytes": 1869683,
+      "sha256": "f0c3fafd684ef2fad4f0aefe8046d31e1f3d11b69b5ac3ec6e2d95f735b01703",
+      "nodeId": "25d060fd-c08c-4b68-9f77-fb15c1c1fed7"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0271-endpoint.png",
+      "bytes": 1821513,
+      "sha256": "b6982708366b129b7f43b32227272c6570ff807f4908fd97aaea77271ca15fb8",
+      "nodeId": "dfe13526-d6eb-4971-b8b4-94021609a7d8"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "7734d9a2-fdc7-45c9-b621-cdfe5c93389e",
+    "expectedReferenceNodeIds": [
+      "25d060fd-c08c-4b68-9f77-fb15c1c1fed7",
+      "dfe13526-d6eb-4971-b8b4-94021609a7d8"
+    ],
+    "imageListOrder": [
+      "25d060fd-c08c-4b68-9f77-fb15c1c1fed7",
+      "dfe13526-d6eb-4971-b8b4-94021609a7d8"
+    ],
+    "imageListNodeIds": [
+      "25d060fd-c08c-4b68-9f77-fb15c1c1fed7",
+      "dfe13526-d6eb-4971-b8b4-94021609a7d8"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "c3354fdccb014f6687ed8fbf5a232a098e114fdd4e7e6032e84ab1fdeaf06d0d",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083008",
+      "size": "210118"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2995419"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "110274"
+    }
+  },
+  "originalSha256": "52b023ebacf717cc8275fdc479363ff0e81e1b4dbfb421e8bee384b6251f6fd2",
+  "originalBytes": 2995419,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083008,
+  "oneWayEncodedSha256": "01ec4f3ee4be6dbce5285bf6788ac4cc353df812b1fbd8c001722ebd25f50a36",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of crunch (on stability ball) from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083008 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. One requested four-second controlled ball-crunch contraction is reviewed before the exact reversed frames are used for the return preview; no separately generated return phase is claimed.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0271-contact-8fps.jpg",
+    "contactSha256": "49a2220033807e35cdd67c9c16f3afec4ee5e34712a142c904186a569dd57283",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Root actually viewed 16 forward and 64 final contact samples. Stable ball supports lower back throughout, hips stay supported, feet and heels remain planted. Upper chest and shoulders curl moderately toward knees while paws stay crossed at chest, without sitting upright or a leg raise. The reversed return remains consistent; camera and props stay fixed. Producer actually viewed 16 forward and 64 final samples. Root actually viewed 16 forward and 64 final contact samples and accepted. Full one-way and final frames decoded without errors.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0271-one-way-contact-4fps.jpg",
+      "contactSha256": "8f145d9dadcdd000d2441d0a74cd42c30c2cc55b5e9410dd1f37f0951bf30888",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootActuallyViewedFrames": 64
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "79d83614554d4482b60b22f2549eccdc987e15b7af0f1431dbfc3dc427bbe685",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "renderingAssumption": "Source explicitly permits hands at the chest, used to avoid pulling the neck. Mascot proportions mean no exact measured hip/knee angle is claimed."
+}

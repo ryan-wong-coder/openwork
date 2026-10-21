@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "kind": "two-keyframe-illustration-plan",
+  "exerciseId": "1587",
+  "englishName": "seated wide angle pose sequence",
+  "descriptorSha256": "a62174398785cad3fcdf4ffe9f8fdf95cf92dc2b2749ae801fe1eebd5532d088",
+  "movementBrief": "exp-1587-movement-brief.json",
+  "startImage": {
+    "file": "exp-1587-reference.png",
+    "sha256": "9417e221ea4d9ae3cadd9ca65cbec4677975a4715243dbfd2ca54db9c1c1440a",
+    "bytes": 1889084,
+    "width": 1672,
+    "height": 941
+  },
+  "endpointImage": {
+    "file": "exp-1587-endpoint.png",
+    "sha256": "f947408785d55b84419bd052b48a79cd20b7d561547e683cee66b2fdcc7fd141",
+    "bytes": 1823708,
+    "width": 1672,
+    "height": 941
+  },
+  "startPrompt": {
+    "file": "exp-1587-poster-prompt.txt",
+    "sha256": "710fd8364aa79239518ee9bc9ae7cb05f08363803fb899613c416b8a41c51878",
+    "bytes": 1353
+  },
+  "endpointPrompt": {
+    "file": "exp-1587-endpoint-prompt.txt",
+    "sha256": "3fbbad75d2d46bf102ed3001ac91da9b7b75ec4e17f13a4a758b2f52a73d38bb",
+    "bytes": 944
+  },
+  "startTool": "built-in ImageGen",
+  "startImageAttempts": 1,
+  "endpointTool": "built-in ImageGen edit of accepted start",
+  "endpointEditAttempts": 1,
+  "fixedContactsAndScene": [
+    "坐骨、双腿后侧与脚跟地面；双掌身后地面辅助稳定。",
+    "无器械，掌轻按地面，不抓脚/压膝。",
+    "fixed camera, ivory studio and original identity"
+  ],
+  "motion": "脊柱保持延长，从髋部温和向前倾，维持直膝大角度分腿。 躯干从近直立到温和前倾约15–20度，手掌仍地面后侧，骨盆转动不卷背。",
+  "review": {
+    "startAndEndpointActuallyViewed": true,
+    "endpointDecision": "accepted-reference-for-parent-review",
+    "notes": [
+      "不是蝴蝶式脚底相对，膝必须近直。",
+      "不要把双手移到前方或强压膝；source明确身后支撑。",
+      "仅温和髋折，不弯背强行头触地。"
+    ],
+    "wholeVideoViewed": false,
+    "readyMedia": false
+  },
+  "plannedVideo": {
+    "inputMode": "native first-and-last-frame",
+    "oneWaySeconds": 4,
+    "direction": "start-to-end",
+    "returnPlan": "Only after one-way actual visual acceptance, forward segment plus exact reversed frames for nominal8second illustration.",
+    "assemblyPerformed": false,
+    "videoGeneratedByThisAgent": false,
+    "originalEightSecondGeneration": false,
+    "existingEightSecondAttemptReused": false
+  }
+}

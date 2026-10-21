@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "kind": "source-identity-hold",
+  "exerciseId": "0500",
+  "englishName": "isometric wipers",
+  "descriptorSha256": "521c6e4c3441eff83da523a41985f18b907d267ac3e3ee8488fd36081e5840d1",
+  "reviewStatus": "hold",
+  "reason": "Name is isometric wipers with chest/pectorals metadata, but both pinned English and Chinese steps describe supine straight-leg windshield-wiper core movement. Cannot attach a leg-wiper clip to chest action or silently reclassify identity.",
+  "rawEnglishSource": {
+    "url": "https://github.com/DuarteSantos8/openGym/blob/464355ef43d4c8f8a4e0bb6db9c2af7f240593b5/catalogue/exercises/0500.json",
+    "data": {
+      "bodyPart": "chest",
+      "equipment": "body weight",
+      "id": "0500",
+      "instructions": [
+        "Start by lying flat on your back on a mat or bench.",
+        "Extend your arms straight out to the sides, perpendicular to your body.",
+        "Engage your core and lift both legs off the ground, keeping them together and straight.",
+        "Slowly lower your legs to one side, aiming to touch the ground with your feet while maintaining control.",
+        "Pause for a moment, then use your core to lift your legs back to the starting position.",
+        "Repeat the movement, this time lowering your legs to the opposite side.",
+        "Continue alternating sides for the desired number of repetitions."
+      ],
+      "name": "isometric wipers",
+      "target": "pectorals"
+    }
+  },
+  "translationIntroducedIssue": false,
+  "noImagesGenerated": true,
+  "noVideoRun": true,
+  "readyMedia": false,
+  "runtimeChanged": false
+}

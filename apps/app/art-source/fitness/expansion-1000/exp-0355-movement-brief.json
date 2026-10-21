@@ -1,0 +1,37 @@
+{
+  "order": 570,
+  "exerciseId": "0355",
+  "englishName": "dumbbell one arm lateral raise",
+  "chineseName": "哑铃单臂侧平举",
+  "equipmentId": "dumbbell",
+  "descriptorSha256": "df95350563154a8520ba8ffc6c2f2e731752ecee9586ecd41f1e71eb5e3afdc5",
+  "sourceSteps": [
+    "双脚分开与肩同宽站立，一手握住哑铃，手掌朝向身体。",
+    "在整个练习过程中保持背部挺直，核心肌群参与其中。",
+    "将哑铃举至一侧，保持手臂伸直，手掌朝下。",
+    "继续抬起，直到手臂与地面平行。",
+    "在最高点暂停片刻，然后慢慢将哑铃放回起始位置。",
+    "重复所需的重复次数，然后换到另一只手臂。"
+  ],
+  "startPose": "站立单手握哑铃身侧下垂，另一手空手轻扶髋，双足固定。",
+  "support": "双足全脚掌，骨盆躯干中立，尾巴地面被动。",
+  "grip": "右/画左爪握一只DB，低位掌向躯干，高位掌朝地；空手不握重物。",
+  "jointMotion": "负重侧肩外展，近直臂从身侧抬到肩高；肘轻微弯曲角度不变。",
+  "path": "同一DB以肩为中心在额状面外侧画弧，非前举/推举/弯举。",
+  "camera": "固定前方轻15度，全身宽景，负重侧手臂水平终点两侧留足空间。",
+  "criticalChecks": [
+    "只一只DB，只一侧臂运动。",
+    "负重臂在身体外侧而非身前，不能先屈肘。",
+    "肩高即止，不过头，不耸肩或侧弯借力。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceIssues": [],
+  "sourceStepsActuallyRead": true,
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "generationSeconds": 4,
+    "oneWay": "start-to-end controlled single movement",
+    "return": "Only after one-way visual acceptance, exact frame reversal; not an original8second generation."
+  }
+}

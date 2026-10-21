@@ -5,6 +5,9 @@ The frozen 1.1.2 baseline covers **32 mainstream exact catalogue exercises** wit
 Additional independently generated mascot posters and videos are recorded under
 `expansion-1000/`. Its `selection.json` is a 1,000-item production plan, while
 `progress.json` and the runtime/provenance manifests report only accepted media.
+The planning inputs preserve their original text; reviewed instruction corrections in
+the app do not reshuffle that queue. `selection-history/` preserves the original
+selection bytes and the subsequent source-metadata revision.
 The identity reference is Zeno's established otter mascot; no openGym/Gym visual exercise
 image, animation, video, screenshot or prompt reference was used.
 
@@ -19,6 +22,11 @@ prompts, official LibTV CLI task/model/prompt records, eight-frame contact sheet
 attempt records and encoding provenance. All accepted final app files are fully hashed in
 `provenance.json`. Accepted mascot clips use local silent H.264/yuv420p with fast-start
 metadata, and the matching posters are local WebP. No generation runs in the product.
+Some reversible movements use an independently generated start/end pair to guide a
+four-second forward video, followed by the same frames in reverse for the return.
+Their records distinguish the generated duration from the final loop duration and
+retain 16-frame forward and 64-frame final-loop review sheets. These loops are short
+movement previews; stretch holds do not claim to cover the full prescribed duration.
 
 `0612` lunge and `3094` jumping jack use original SVG/Canvas poses recorded to MP4 after
 the bounded generated-video attempts failed review. Their UI is labelled “动作图解”; they

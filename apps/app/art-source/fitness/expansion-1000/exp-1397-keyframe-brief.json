@@ -1,0 +1,53 @@
+{
+  "canonicalExerciseId": "1397",
+  "englishName": "standing calves",
+  "sourceDescriptorSha256": "644a7ac77c91520453cc247e1cc74a6d734c50a6698178a60124717c2a90cf20",
+  "sourceSteps": [
+    "双脚分开与肩同宽站立，脚趾指向前方。",
+    "将脚后跟抬离地面，尽可能高，用脚趾站立。",
+    "保持该姿势片刻，然后慢慢降低脚跟回到起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "sourceStepsTechniqueReviewed": true,
+  "posterTool": "built-in image_gen.imagegen",
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1397-reference.png",
+      "bytes": 1674583,
+      "sha256": "add9095abb5d1571e52c5a39adebfe10ccac9ecc9a9047e216b0c69a6b31e7f6"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1397-endpoint.png",
+      "bytes": 1671788,
+      "sha256": "6343445339c26173b835e2158e87824a65a88199139cb744f7699f0f02d4c3c3"
+    }
+  ],
+  "producerActuallyViewedStartAndEnd": true,
+  "observation": "Flat-foot unsupported stance to bilateral heel rise; both forefeet stay grounded and knees remain nearly straight; no wall or equipment.",
+  "scope": "One reversible movement preview; lowering will only be synthesized by exact reversal after forward-phase review.",
+  "readyMedia": false,
+  "notRegisteredByProducer": true,
+  "semanticRelationship": {
+    "relatedCanonicalExerciseId": "1373",
+    "relationship": "Both are bilateral plantarflexion. This exact1397 source has no hand support: paws stay free at hips and balance is unsupported. Exact1373 explicitly uses hands against a wall for balance; its reviewed media retains fixed wall contacts. The distinction is supported versus unsupported balance, not a renamed view of the same wall-assisted clip.",
+    "differentBalanceRequirement": true,
+    "noWallOrEquipmentFor1397": true
+  },
+  "sourcePromptFiles": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1397-poster-prompt.txt"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1397-endpoint-prompt.txt"
+    }
+  ],
+  "identityReference": {
+    "file": "apps/zeno-site/public/assets/mascot.webp",
+    "role": "original identity only for start image; endpoint edited accepted start"
+  },
+  "restrictedUpstreamMediaUsed": false
+}

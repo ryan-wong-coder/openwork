@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "3299",
+  "englishName": "full planche",
+  "sourceDescriptorSha256": "c19941ab569ab20f0f17f6c44a28e920851c8681ebf95b0bae06dbcb803dac41",
+  "sourceSteps": [
+    "从俯卧撑位置开始，双手与肩同宽，手指指向前方。",
+    "启动你的核心并缓慢地将你的重心向前移动，将你的脚抬离地面。",
+    "继续向前移动体重，直到身体与地面平行，并用双手保持平衡。",
+    "尽可能长时间地保持这个姿势，保持身体线条笔直。",
+    "慢慢地将双脚放回地面，然后回到起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/app/src/assets/zeno/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "referencePoseReviewed": true,
+  "referenceApproval": "producer-self-review-authorized-by-root",
+  "reviewObservation": "Full planche supported only by both flat palms, straight elbows with shoulders forward of wrists. Face and belly down, torso and straight together legs horizontal with both feet and knees visibly off floor; tail suspended and not supporting.",
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "generationAttempts": [
+    {
+      "attempt": 1,
+      "selected": true,
+      "sha256": "43bb3a25cfab4d9483a668e0f57b046dc293157429c6edd1c18f31e72d0744bc",
+      "retainedInRepository": true
+    }
+  ],
+  "references": [
+    {
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-3299-reference.png",
+      "bytes": 1974196,
+      "sha256": "43bb3a25cfab4d9483a668e0f57b046dc293157429c6edd1c18f31e72d0744bc"
+    }
+  ]
+}

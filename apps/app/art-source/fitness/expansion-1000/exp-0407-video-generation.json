@@ -1,0 +1,163 @@
+{
+  "canonicalExerciseId": "0407",
+  "englishName": "dumbbell side bend",
+  "nodeId": "3fb68998-98d4-445a-811a-a755a83de3f1",
+  "taskId": "20261021115203394478518",
+  "prompt": "首帧为 {{Node 3868b5bf-d050-4311-917c-12a4c1499f91}}，尾帧为 {{Node 00d312a5-33d9-4f78-a589-3196a39fcda2}}。保持同一原创Zeno青色毛绒水獭、奶油脸腹、青柠斜肩带、固定正面机位和象牙色摄影棚。4秒内仅做一次单哑铃站姿侧屈：右爪也就是画面左手始终握住同一只哑铃，负重臂自然接近伸直向下；另一只左爪始终轻扶髋部且没有重量。从首帧直立开始，躯干缓慢向持重的一侧也就是画面左侧温和侧屈，让同一哑铃沿画面左侧外大腿下降，到达尾帧。必须向哑铃所在侧侧屈并让重量降低，不能反向弯却把哑铃抬高。头随脊柱自然同向倾斜，肩线向持重侧降低，不只是歪脖子。骨盆保持居中近水平，双腿和双脚原处全脚掌贴地，不从踝关节整人倒向一侧，不侧跨，不屈膝蹲起，不前屈、后仰或转胸。握爪和哑铃始终连在一起，哑铃两端与短柄外形不变，只有一只哑铃，不能变成两只，不屈肘做弯举或耸肩。只向持重侧弯一次，到舒适浅终点停住；生成中不要回直立、不要重复或换手。尾巴自然保持原处，不撑地发力。全身、双脚、尾巴与整只哑铃始终在画面内；镜头固定不推近缩放裁边，无文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0407-reference.png",
+      "bytes": 1755335,
+      "sha256": "70d4933920f9c27b6b1a0e0a41de5ad93d62ecb2252f7fc9f93b919046a1efb1",
+      "role": "start",
+      "nodeId": "3868b5bf-d050-4311-917c-12a4c1499f91"
+    },
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0407-endpoint.png",
+      "bytes": 1697298,
+      "sha256": "97a167784884c7aead35929c2f0d09a5633994f15f30d460dc5f7a68190526a4",
+      "role": "end",
+      "nodeId": "00d312a5-33d9-4f78-a589-3196a39fcda2"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "3fb68998-98d4-445a-811a-a755a83de3f1",
+    "expectedReferenceNodeIds": [
+      "3868b5bf-d050-4311-917c-12a4c1499f91",
+      "00d312a5-33d9-4f78-a589-3196a39fcda2"
+    ],
+    "imageListOrder": [
+      "3868b5bf-d050-4311-917c-12a4c1499f91",
+      "00d312a5-33d9-4f78-a589-3196a39fcda2"
+    ],
+    "imageListNodeIds": [
+      "3868b5bf-d050-4311-917c-12a4c1499f91",
+      "00d312a5-33d9-4f78-a589-3196a39fcda2"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "56a15ff71ed7267f60bec3f4ca0b566a48bfd2925379bb77161d645132d7988e",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "192480"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2340690"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "96570"
+    }
+  },
+  "originalSha256": "b987ab671b1b199f5b9dacb514250b57a000b5405080fa1ee707ce022cf75ad0",
+  "originalBytes": 2340690,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "31fe0f4967883f2d6ba27b3a15b370979346957d32f8df99a35cc1d2b081c879",
+  "processing": "Seedance 2.5 generated one 4-second single-dumbbell loaded-side bending segment from ordered original start/end images (actual source 4.041667 seconds). This follows the named reviewed correction: bend toward the loaded side while lowering the dumbbell, rather than the contradictory original opposite-side wording. Only this one loaded side is illustrated. After producer visual acceptance, the whole movement was encoded forward then in exact reversed frame order to return upright, producing an 8.083333-second loop. Return is synthesized by reversal, not separately AI-generated or an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, silent, faststart; original-start WebP poster at quality86.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0407-contact-8fps.jpg",
+    "contactSha256": "35d9a2d6d912134b660f3aee11a07103538c0f5c7d211695e6aee18cec36bb19",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Actual 16 samples at 4fps over the generated segment and 64 samples at 8fps over the loop show the torso bending toward the same single dumbbell/loaded image-left side while the dumbbell lowers along that outer thigh. Feet and pelvis remain centered and planted, head follows trunk, free paw remains on hip, and loaded arm stays long without curl, shrug, twist or added weight. The same path reverses to upright. Producer actually viewed and accepted both contact sheets. Root actually viewed and accepted both the 16-frame one-way and 64-frame final contact sheets, confirming loaded-side lowering with stable feet/pelvis, free paw on hip and no rotation. All frames of both H.264 files decoded without errors.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0407-one-way-contact-4fps.jpg",
+      "contactSha256": "7c7b6dc766fb89633c86cf0cfe4d8f449b4827c1ee213072a26835754339fbfb",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false
+    }
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "885b95a2f26bc901461da24425a7d874cb1bc2d31dfdfc12707e25eb643eb6b8",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "reviewedSourceClarification": {
+    "file": "apps/app/art-source/fitness/expansion-1000/exp-0407-source-review.json",
+    "sha256": "31b225e459823dff24b619e26f8fd7d410fe5b9e9746d5bb52c6826b989ab8b0",
+    "reviewedInterpretation": "单手单哑铃，站姿向持重侧温和侧屈，使哑铃沿同侧大腿下移，再回直立；足与骨盆稳定，无旋转/前后俯仰。",
+    "runtimeInstructionCorrectionFile": "packages/zeno-fitness/src/instruction-corrections.ts",
+    "runtimeInstructionCorrectionPresent": true,
+    "originalRawSourceRetained": true,
+    "scope": "Single loaded-side example only."
+  }
+}

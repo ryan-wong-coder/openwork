@@ -1,0 +1,36 @@
+{
+  "order": 232,
+  "exerciseId": "0369",
+  "englishName": "dumbbell over bench wrist curl",
+  "chineseName": "哑铃凳外腕弯举",
+  "equipmentId": "dumbbell",
+  "descriptorSha256": "c460a970892e2886bb73d5b6e714294248dfcc7f900d02a51c598a5efaa13aef",
+  "sourceSteps": [
+    "坐在长凳上，前臂放在长凳上，手掌朝上，每只手各握一个哑铃。",
+    "让手腕悬在长凳边缘。",
+    "慢慢向上弯曲手腕，在动作的最高点挤压前臂。",
+    "暂停片刻，然后慢慢将手腕放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "startPose": "坐凳，双掌向上各握一DB，两前臂放在同一平凳上，腕与手超过凳缘低垂。",
+  "support": "臀与前臂由平凳支撑，双足地面；腕超过凳缘有自由活动间隙。",
+  "grip": "双手旋后握两DB，手腕独立屈曲；前臂掌面始终朝上。",
+  "jointMotion": "仅双腕屈曲，把拳与DB卷向前臂；肘/肩/躯干不抬。",
+  "path": "两只小DB围绕腕轴走小弧；不能整条前臂举起或将握法改为掌朝下。",
+  "camera": "固定侧前约30度，完整坐姿与两前臂在凳面接触可读，手腕和DB无遮挡。",
+  "criticalChecks": [
+    "两前臂支撑平凳面，不替换大腿支撑。",
+    "双掌朝上，腕在凳边外，手中每只DB真实抓握。",
+    "肘与前臂不离凳，唯腕屈曲，不能肘弯举。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceIssues": [],
+  "sourceStepsActuallyRead": true,
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "generationSeconds": 4,
+    "oneWay": "start-to-end controlled single movement",
+    "return": "Only after one-way visual acceptance, exact frame reversal; not an original8second generation."
+  }
+}

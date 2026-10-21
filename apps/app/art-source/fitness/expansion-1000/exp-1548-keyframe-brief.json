@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "1548",
+  "englishName": "chair leg extended stretch",
+  "sourceDescriptorSha256": "6c84cda969f0ca314b0618a7258bdf9d3f900bf79c7c15eca1699953a76b3b5b",
+  "sourceSteps": [
+    "坐在椅子边缘，背部挺直，双脚平放在地面上。",
+    "将一只腿伸直在身前，脚跟保持在地面上。",
+    "稍微向前倾，感受股四头肌的拉伸。",
+    "保持这个姿势20-30秒。",
+    "换腿并重复拉伸。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/app/src/assets/zeno/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "referencePoseReviewed": true,
+  "referenceApproval": "producer-self-review-authorized-by-root",
+  "reviewObservation": "Seated on chair front edge, one straight leg with heel grounded and toes raised, other foot flat below bent knee. Paws remain on thighs, torso slightly forward with long back; full chair and contacts readable.",
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "generationAttempts": [
+    {
+      "attempt": 1,
+      "selected": true,
+      "sha256": "3a56e88d2ccc813f34ff56eca4191fd7e062d77fe92f59b763f5a25905a0a3f2",
+      "retainedInRepository": true
+    }
+  ],
+  "references": [
+    {
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-1548-reference.png",
+      "bytes": 1799851,
+      "sha256": "3a56e88d2ccc813f34ff56eca4191fd7e062d77fe92f59b763f5a25905a0a3f2"
+    }
+  ]
+}

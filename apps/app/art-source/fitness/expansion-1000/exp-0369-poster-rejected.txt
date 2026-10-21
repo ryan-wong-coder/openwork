@@ -1,0 +1,3 @@
+exp-0369-start-attempt1.png SHA256 22eb375c5eee0b628fb5f6a24f96add6cbaec3a13ef6f25c4ece09370adef28b
+exp-0369-end-attempt1.png SHA256 4f44821ba1bb5524f495dea435ac2152348e059ce890b89ace0e50fd53c35af6
+Start1 rejected: squat/table-like setup without clear seated hip support. Endpoint1 rejected: wrist hinge location/forearm position drifted; needs exact supported forearm preservation. Rejected PNGs remain private only; neither sent to video.

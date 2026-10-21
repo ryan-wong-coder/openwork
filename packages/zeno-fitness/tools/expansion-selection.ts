@@ -5,10 +5,17 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { fitnessExercises } from "../src/catalogue.ts";
 import type { FitnessExercise } from "../src/types.ts";
+import { record, stringList } from "../src/value.ts";
+import chineseInstructions from "../upstream/instr/zh.js";
+import instructionBaseline from "./expansion-instruction-baseline.json";
 
 /** Internal production planning only. This module never registers or generates media. */
 export const EXPANSION_TARGET = 1000;
 export const FIRST_BRIEF_IDS = ["0042", "0375", "0044", "0297", "1160"];
+export const ORIGINAL_SELECTION_PATH = "apps/app/art-source/fitness/expansion-1000/selection-history/original.json";
+export const ORIGINAL_SELECTION_SHA256 = "b7f5b1d654468d04031560ffc2552d49fab53f2ebb24030cabe4ad247395f0e6";
+const instructionBaselinePath = "packages/zeno-fitness/tools/expansion-instruction-baseline.json";
+const textLicense = "Retain packages/zeno-fitness/NOTICE.md, UPSTREAM-NOTICE.md and corresponding AGPL/MIT source notices. No restricted upstream media is input or output.";
 const presentationOnly = /\b(?:pov|camera|view|male|female)\b|\bv\.?\s*\d+\b|\bversion\s*\d+\b/i;
 const deferredCategories = new Set(["olympic", "rehab", "combat"]);
 const bodyOrder = ["chest", "back", "upper legs", "shoulders", "waist", "upper arms", "lower legs", "lower arms", "cardio", "full body"];
@@ -24,6 +31,22 @@ export function englishMeaningKey(exercise: FitnessExercise): string {
   return [name, exercise.equipmentId, exercise.bodyPartId].join("|");
 }
 export const instructionKey = (exercise: FitnessExercise) => exercise.equipmentId + "|" + exercise.instructions.map(normalizeText).join("\n");
+
+/** Freeze text used to select/deduplicate the plan; live instructions remain corrected in the app. */
+export function createPlanningCatalogue(exercises: readonly FitnessExercise[] = fitnessExercises): FitnessExercise[] {
+  const source = record(chineseInstructions);
+  const corrections = new Map(instructionBaseline.corrections.map(entry => [entry.exerciseId, entry]));
+  assert.equal(corrections.size, instructionBaseline.corrections.length);
+  for (const correction of corrections.values()) {
+    const row = exercises.find(exercise => exercise.id === correction.exerciseId);
+    assert.ok(row && row.englishName === correction.englishName && row.equipmentId === correction.equipmentId,
+      "Frozen planning corrections must match the current exact canonical identity and equipment.");
+  }
+  return exercises.map(row => {
+    const steps = [...(corrections.get(row.id)?.steps ?? stringList(source[row.id]))];
+    return { ...row, instructions: steps, description: steps[0] ?? "" };
+  });
+}
 
 interface CompletedExercise { exerciseId: string; englishName: string }
 interface DuplicateExclusion { exerciseId: string; reason: string; duplicateOf: string }
@@ -161,6 +184,13 @@ function readCompleted(text: string): CompletedExercise[] {
   });
 }
 
+/** A text correction must never quietly select different actions or change an old brief's descriptor. */
+export function assertFrozenExpansionEntries(plan: ReturnType<typeof buildExpansionSelection>, original: unknown): void {
+  const { sources: _sources, textLicense: originalLicense, ...originalPlan } = record(original);
+  assert.equal(originalLicense, textLicense);
+  assert.deepEqual(plan, originalPlan, "The original expansion entries and all non-source plan metadata must remain unchanged.");
+}
+
 export function createRepositorySelection(repo: string) {
   // The production plan freezes its original baseline. New runtime admissions
   // must not silently reshuffle the remaining 1000 planned identities.
@@ -170,12 +200,20 @@ export function createRepositorySelection(repo: string) {
   const runtime = new Map(readCompleted(readFileSync(resolve(repo, "apps/app/src/react-app/domains/zeno/mascot-demos.json"), "utf8"))
     .map(row => [row.exerciseId, row.englishName]));
   assert.ok(completed.every(row => runtime.get(row.exerciseId) === row.englishName), "The frozen completed baseline must remain available in the runtime map.");
-  const plan = buildExpansionSelection(fitnessExercises, completed, EXPANSION_TARGET, FIRST_BRIEF_IDS);
-  const paths = ["packages/zeno-fitness/tools/expansion-selection.ts", "packages/zeno-fitness/src/catalogue.ts", "packages/zeno-fitness/src/instruction-corrections.ts",
+  assert.equal(instructionBaseline.upstream.revision, "464355ef43d4c8f8a4e0bb6db9c2af7f240593b5");
+  assert.equal(instructionBaseline.upstream.path, "packages/zeno-fitness/upstream/instr/zh.js");
+  assert.equal(sha256(readFileSync(resolve(repo, instructionBaseline.upstream.path), "utf8")), instructionBaseline.upstream.sha256,
+    "Planning must use the pinned upstream Chinese instructions, not an updated or runtime-corrected source.");
+  const originalText = readFileSync(resolve(repo, ORIGINAL_SELECTION_PATH), "utf8");
+  assert.equal(sha256(originalText), ORIGINAL_SELECTION_SHA256, "Original selection history must retain its exact bytes.");
+  const original: unknown = JSON.parse(originalText);
+  const plan = buildExpansionSelection(createPlanningCatalogue(), completed, EXPANSION_TARGET, FIRST_BRIEF_IDS);
+  assertFrozenExpansionEntries(plan, original);
+  const paths = ["packages/zeno-fitness/tools/expansion-selection.ts", instructionBaselinePath, ORIGINAL_SELECTION_PATH, "packages/zeno-fitness/src/catalogue.ts",
     "packages/zeno-fitness/upstream/lib/exercises-data.js", "packages/zeno-fitness/upstream/exercise-names/zh.js",
     "packages/zeno-fitness/upstream/instr/zh.js", completedPath];
   return { ...plan, sources: paths.map(path => ({ path, sha256: sha256(readFileSync(resolve(repo, path), "utf8")) })),
-    textLicense: "Retain packages/zeno-fitness/NOTICE.md, UPSTREAM-NOTICE.md and corresponding AGPL/MIT source notices. No restricted upstream media is input or output." };
+    textLicense };
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

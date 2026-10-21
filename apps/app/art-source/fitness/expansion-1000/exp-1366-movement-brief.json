@@ -1,0 +1,37 @@
+{
+  "order": 718,
+  "exerciseId": "1366",
+  "englishName": "upward facing dog",
+  "chineseName": "上犬式",
+  "equipmentId": "body weight",
+  "descriptorSha256": "2d87325baef42a84b92baddde2a64255b0677dd8138cf4f6c72fd3f4220d16cc",
+  "sourceSteps": [
+    "脸朝下躺在地板上，双腿伸到身后。",
+    "将双手放在下肋骨旁边的地板上，手指指向前方。",
+    "双手用力按在地板上，伸直手臂，将躯干和大腿抬离地面。",
+    "向后和向下转动肩膀，打开胸部，将目光转向天花板。",
+    "保持这个姿势几次呼吸，然后慢慢将身体放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "startPose": "俯卧双腿向后伸直，脚背地面，双掌下肋旁地面，肘屈曲贴体。",
+  "support": "起点胸腹大腿地面；终点仅双掌和脚背承重，双膝大腿均离地。",
+  "grip": "双掌压地、指向前，位置在下肋旁；无器械。",
+  "jointMotion": "肘伸展与脊柱温和伸展打开胸部，髋腿抬离地面，不把肩耸到耳。",
+  "path": "保持掌和脚背不滑，胸前上升，腿伸直被带离地面形成上犬。",
+  "camera": "固定近侧面略3/4全身，可见掌/肘/大腿与地面关系，头脚尾完整。",
+  "criticalChecks": [
+    "和sphinx区别明确：终点直臂，膝大腿离地，不前臂撑地。",
+    "手掌和脚背是支持，尾巴不能垫腹代撑。",
+    "不把膝留地画成低眼镜蛇，不过度折颈。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceIssues": [],
+  "sourceStepsActuallyRead": true,
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "generationSeconds": 4,
+    "oneWay": "start-to-end controlled single movement",
+    "return": "Only after one-way visual acceptance, exact frame reversal; not an original8second generation."
+  }
+}

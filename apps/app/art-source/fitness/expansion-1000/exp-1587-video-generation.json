@@ -1,0 +1,147 @@
+{
+  "canonicalExerciseId": "1587",
+  "englishName": "seated wide angle pose sequence",
+  "nodeId": "fff75160-2592-44a1-8ac0-c77d6e13c669",
+  "taskId": "20261021131703312338518",
+  "prompt": "首帧为 {{Node a8c5e64e-c9db-4f60-b58b-08d60ea6cacc}}，尾帧为 {{Node bea4b5e2-9efd-45e4-8b5a-0cc950942734}}。保持同一原创Zeno水獭、青柠肩带、双直腿大角度V形分开、脚跟接地脚尖朝上、双手在身后地面支撑、尾巴与固定前侧机位和象牙色背景。4秒只做一次轻柔前屈：从首帧坐骨接地直立，沿髋关节缓慢把延长的脊柱和胸部向双腿之间温和前倾约15–20度，到尾帧后停住。脊柱保持长直，头随胸椎中立，不是单独低头，不弓背、不扭腰或强压到地。两膝全程伸直、双腿位置脚跟不滑，不能变成蝴蝶式膝弯脚底相对。双掌全程在身后原地贴地，不移到前方抓脚，不靠手拉膝。只一次前倾不回程不重复；全身手脚尾巴完整、镜头固定无缩放、无文字和声音。\n",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1587-reference.png",
+      "sha256": "9417e221ea4d9ae3cadd9ca65cbec4677975a4715243dbfd2ca54db9c1c1440a",
+      "bytes": 1889084,
+      "nodeId": "a8c5e64e-c9db-4f60-b58b-08d60ea6cacc"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1587-endpoint.png",
+      "sha256": "f947408785d55b84419bd052b48a79cd20b7d561547e683cee66b2fdcc7fd141",
+      "bytes": 1823708,
+      "nodeId": "bea4b5e2-9efd-45e4-8b5a-0cc950942734"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "Official CLI read-only node response after create without run and before the single paid run",
+    "nodeId": "fff75160-2592-44a1-8ac0-c77d6e13c669",
+    "expectedReferenceNodeIds": [
+      "a8c5e64e-c9db-4f60-b58b-08d60ea6cacc",
+      "bea4b5e2-9efd-45e4-8b5a-0cc950942734"
+    ],
+    "imageListOrder": [
+      "a8c5e64e-c9db-4f60-b58b-08d60ea6cacc",
+      "bea4b5e2-9efd-45e4-8b5a-0cc950942734"
+    ],
+    "imageListNodeIds": [
+      "a8c5e64e-c9db-4f60-b58b-08d60ea6cacc",
+      "bea4b5e2-9efd-45e4-8b5a-0cc950942734"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "795a803c96da6dae5e3cf5d615c57887bba31f8f6f3af12c08fd5b463835e41b",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083008",
+      "size": "196196"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2833540"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "101645"
+    }
+  },
+  "originalSha256": "4d251d8b31aad010b0f5f882932b94d7444535f4c805a9f241a459edd5cba8df",
+  "originalBytes": 2833540,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083008,
+  "oneWayEncodedSha256": "c33664f3a76743373db88e1a9e6a3ef8bf41ee37cbdcec6cb78aa2e9b148c8e0",
+  "processing": "Seedance2.5 generated one ordered start/end4second one-way segment (actual 4.041667s). After actual16sample visual approval, encoded whole segment forward then exact reversed frame order to illustrate return, final 8.083008s. Return synthesized by reversal, not separately AI-generated; not an original8second continuous generation. H.264 CRF26,1024px,yuv420p,silent,faststart. WebP q86 poster extracted from actual first video frame.",
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1587-contact-8fps.jpg",
+    "contactSha256": "f27566772b56a403e967de0a4434ddfb2dcf738465ec3b7453d4327e52699e6b",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "observation": "Actual16 and64 contacts show a shallow forward hip hinge and exact reversed return. Straight V-straddle knees and grounded heels remain apart, toes up, palms behind hips. This is a small comfortable movement, not a deep forward fold; no hands to feet, butterfly knees, twist or camera crop. All frames fully decode.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1587-one-way-contact-4fps.jpg",
+      "contactSha256": "91951bfec6cd09df218736b30e8c8eb3d1b49a219d1b094a57d9d63fb6f5baf5",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true
+    }
+  },
+  "posterTool": "ffmpeg first generated video frame then cwebp q86; original ordered image references by built-in ImageGen",
+  "sourceDescriptorSha256": "a62174398785cad3fcdf4ffe9f8fdf95cf92dc2b2749ae801fe1eebd5532d088",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "parentAdmissionPending": false,
+  "additionalProducerDetailReview": {
+    "frames": 4,
+    "producerViewed": true,
+    "rootViewed": false,
+    "note": "Root reviewed only the required16one-way and64final samples, not the additional larger4frame producer comparison."
+  }
+}

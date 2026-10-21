@@ -18,6 +18,7 @@ import {
 } from "../src/index.ts";
 import { nextPrescription } from "../upstream/lib/progression.js";
 import { zipStore } from "../upstream/lib/zip.js";
+import { exerciseFromUpstream } from "../src/catalogue.ts";
 import type { FitnessBackup, FitnessExercise, IdentifiedWorkout, TrainingRoutine } from "../src/index.ts";
 
 const NOW = Date.UTC(2026, 0, 10, 12);
@@ -54,6 +55,32 @@ describe("fixed text-only Chinese catalogue", () => {
     expect(hammer?.instructions.join(" ")).not.toContain("直到手掌朝前");
     expect(findExercise("2239")?.instructions).toEqual(hammer?.instructions);
     expect(findExercise("0294")?.instructions.join(" ")).not.toContain("全程保持中立握法");
+  });
+  test("side bend lowers toward the held weight and EZ close-grip curl keeps genuinely narrow hands", () => {
+    const sideBend = findExercise("0407");
+    expect(sideBend?.englishName).toBe("dumbbell side bend");
+    expect(sideBend?.instructions.join(" ")).toContain("向持哑铃的一侧侧屈");
+    expect(sideBend?.instructions.join(" ")).toContain("沿同侧大腿外侧下降");
+    expect(sideBend?.instructions.join(" ")).not.toContain("另一侧侧弯");
+    expect(findExercise("2597")?.instructions).toEqual(sideBend?.instructions);
+    const curl = findExercise("0446");
+    expect(curl?.englishName).toBe("ez barbell close-grip curl");
+    expect(curl?.instructions[0]).toContain("内侧倾斜握段");
+    expect(curl?.instructions[0]).toContain("双手间距窄于肩宽");
+    expect(curl?.instructions.join(" ")).toContain("上臂保持固定");
+    expect(curl?.instructions.join(" ")).not.toContain("双手分开与肩同宽");
+    expect(findExercise("2499")?.instructions).toEqual(curl?.instructions);
+  });
+  test("new instruction corrections require both canonical ID and exact English name, including alias input", () => {
+    for (const [id, alias, englishName] of [["0407", "2597", "dumbbell side bend"], ["0446", "2499", "ez barbell close-grip curl"]]) {
+      const exact = findExercise(id);
+      expect(exerciseFromUpstream({ id: alias, n: englishName }).instructions).toEqual(exact?.instructions);
+      expect(exerciseFromUpstream({ id, n: `${englishName} modified` }).instructions).not.toEqual(exact?.instructions);
+      expect(exerciseFromUpstream({ id: alias, n: "different exercise" }).instructions).not.toEqual(exact?.instructions);
+      expect(exerciseFromUpstream({ id: "0405", n: englishName }).instructions).not.toEqual(exact?.instructions);
+    }
+    expect(findExercise("0405")?.instructions.join(" ")).not.toContain("窄握");
+    expect(findExercise("0294")?.instructions.join(" ")).not.toContain("内侧倾斜握段");
   });
 });
 describe("upstream numerical regressions and own-data lifecycle", () => {

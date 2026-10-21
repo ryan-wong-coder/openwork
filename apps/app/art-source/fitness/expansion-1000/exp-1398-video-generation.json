@@ -1,0 +1,164 @@
+{
+  "canonicalExerciseId": "1398",
+  "englishName": "standing calves calf stretch",
+  "nodeId": "12fac178-6ef3-430f-881a-216741452994",
+  "taskId": "20261021141403525608518",
+  "prompt": "首帧为 {{Node 65d50f97-cfd2-44e1-9e5e-2b2a5f38b357}}，尾帧为 {{Node 6b9a252b-6e43-4a5a-9dc4-06b12a148c35}}。固定同一机位、墙面与双爪接触点、两只脚的原地落点。4秒内只做一次温和的手扶墙小腿拉伸进入：前腿膝盖缓慢再弯一点，骨盆与中立直背躯干轻微向墙靠近；后腿膝保持伸直，后脚全部脚底尤其脚跟持续压地。双脚不能滑步或抬跟，不能变俯卧撑屈伸双臂、不能深蹲、转体或抬头。保持单侧原腿配对，到尾帧停住，不生成中回位或换腿。此4秒只展示进入姿态，不是20至30秒保持时长。 保持同一原创青色奶油水獭、青柠肩带、固定象牙棚景，镜头无推拉缩放剪切，所有身体和器械完整入镜，无额外肢体、文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1398-reference.png",
+      "bytes": 1764101,
+      "sha256": "0a2cb5c53d80b99483b9c115085d1a2c46671d18318c37fccbd40ba2542b2436",
+      "nodeId": "65d50f97-cfd2-44e1-9e5e-2b2a5f38b357"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1398-endpoint.png",
+      "bytes": 1722147,
+      "sha256": "446c4efe18347b4e5f3155ebb8ae7c98d3ca2005d69596022db06b94f578b8ad",
+      "nodeId": "6b9a252b-6e43-4a5a-9dc4-06b12a148c35"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "12fac178-6ef3-430f-881a-216741452994",
+    "expectedReferenceNodeIds": [
+      "65d50f97-cfd2-44e1-9e5e-2b2a5f38b357",
+      "6b9a252b-6e43-4a5a-9dc4-06b12a148c35"
+    ],
+    "imageListOrder": [
+      "65d50f97-cfd2-44e1-9e5e-2b2a5f38b357",
+      "6b9a252b-6e43-4a5a-9dc4-06b12a148c35"
+    ],
+    "imageListNodeIds": [
+      "65d50f97-cfd2-44e1-9e5e-2b2a5f38b357",
+      "6b9a252b-6e43-4a5a-9dc4-06b12a148c35"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "dcba998f666eb8e821a5bd3235facf5ebb59d0a475670cf5c66ac81d84a0f64d",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083008",
+      "size": "166862"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2429381"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "87020"
+    }
+  },
+  "originalSha256": "b61144c428f21336148af71bf51d4a6bfb187487bcaef2a7cbc482bfd67414c7",
+  "originalBytes": 2429381,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083008,
+  "oneWayEncodedSha256": "d3fbfd929dc46ac60b5c6e772a79872b98deeb5e90e37b31440504331b5cd708",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of standing calves calf stretch from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083008 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. One reversible movement preview; return will only be exact reversal after forward-phase review. Stretch timing and one-side examples do not claim a full prescribed hold or both sides.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1398-contact-8fps.jpg",
+    "contactSha256": "e740b4bbad419c6dd17df805e5bb8a2a15215cbf232fa4e28417f569e90bfdda",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Small forward lean and gentle front-knee bend enter the wall calf stretch while the rear heel and long rear knee remain down and two fixed paws contact wall. Both foot placements persist; no stepping, toe rise, push-up or turn. Return is exact reverse of a single-side short entry, not a prescribed20-30s hold, and this overlaps1377 technique so cannot be counted twice. Producer actually viewed 16 forward and 64 final samples. Root review pending. Full one-way and final frames decoded without errors. Root actually viewed both16-sample forward and64-sample final contact sheets and accepted the observed movement; no extra endpoint-detail view is claimed.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1398-one-way-contact-4fps.jpg",
+      "contactSha256": "09eb5605791160583b5d045e4623dfb1170d69ec239328d3e1a0655c13496fce",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewed": true
+    },
+    "rootActuallyViewed": true
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "4f556bd15609551810513b64d83042b95bc42f4778cb0d2b0c52004b255506c4",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "semanticRelationship": {
+    "relatedCanonicalExerciseId": "1377",
+    "relationship": "Same hands-on-wall rear-calf stretch technique; this candidate must not be counted alongside a second equivalent ready1377 as another distinct new movement.",
+    "noDoubleCounting": true,
+    "currentRelatedReady": false,
+    "relatedSourceDescriptorSha256": "6932a65c0059d01165650d49b707f3aebedcdb523b9ea428f22cfa5806248caa",
+    "relatedSourceStepsActuallyRead": true
+  }
+}

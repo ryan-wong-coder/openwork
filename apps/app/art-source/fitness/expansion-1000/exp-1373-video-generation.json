@@ -1,0 +1,164 @@
+{
+  "canonicalExerciseId": "1373",
+  "englishName": "bodyweight standing calf raise",
+  "nodeId": "a6fa5d62-9a41-4dc4-8597-f3c545c90b37",
+  "taskId": "20261021111403596808518",
+  "prompt": "首帧为 {{Node c0ab509c-5b3a-42cc-8044-2cd90a19a0ea}}，尾帧为 {{Node 7a40b941-34fc-4d5c-bc79-c41a492b2705}}。保持同一原创Zeno青色毛绒水獭、奶油色脸腹、青柠斜肩带、固定侧面机位、右侧同一象牙墙和地面。4秒内仅做一次扶墙徒手站姿提踵：双脚前掌和脚趾保持在首帧同一地面接触点，缓慢把两只脚的后跟同时从地面抬起，体重转到前掌，身体只随脚跟向上小幅升高，到达尾帧。双膝全程近直，不蹲起、不屈膝发力，不跳跃或全脚掌离地。双脚不向前滑、不侧跨、不转脚，只有踝关节让后跟上升，两前掌始终贴地。双前爪轻扶同一墙面同一位置保持平衡，肘可自然适应身体小升，不能推倒墙或离墙挥手。躯干保持首帧的自然方向，不前后摇摆或旋转；尾巴可以随身体微小抬升但不承重、不变成支架。只升起一次，到尾帧停住；生成中不要下放，不重复，不加脚下台阶或哑铃。镜头严格固定不推近缩放裁边；完整头部、双爪、双脚、尾巴都在画面内，尤其头顶不能越过上边。身份、墙几何与光影稳定，无文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1373-reference.png",
+      "bytes": 1731831,
+      "sha256": "6296c3899a3bcd486685b225bdd473d2a786bf65bd21742898c3b0a2aa7acb0c",
+      "role": "start",
+      "nodeId": "c0ab509c-5b3a-42cc-8044-2cd90a19a0ea"
+    },
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1373-endpoint.png",
+      "bytes": 1707382,
+      "sha256": "c79b7a3bb2e6d497de9225bb9f06352b108cb25af72059d750b789169ffae4ed",
+      "role": "end",
+      "nodeId": "7a40b941-34fc-4d5c-bc79-c41a492b2705"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "a6fa5d62-9a41-4dc4-8597-f3c545c90b37",
+    "expectedReferenceNodeIds": [
+      "c0ab509c-5b3a-42cc-8044-2cd90a19a0ea",
+      "7a40b941-34fc-4d5c-bc79-c41a492b2705"
+    ],
+    "imageListOrder": [
+      "c0ab509c-5b3a-42cc-8044-2cd90a19a0ea",
+      "7a40b941-34fc-4d5c-bc79-c41a492b2705"
+    ],
+    "imageListNodeIds": [
+      "c0ab509c-5b3a-42cc-8044-2cd90a19a0ea",
+      "7a40b941-34fc-4d5c-bc79-c41a492b2705"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "99095511e4bfa7798191503e1a4196d931a5519b27ad49258054407a8e90d4c8",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "172847"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2514183"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "85391"
+    }
+  },
+  "originalSha256": "e163b25b07c532a64cffe55ff67cf0ff48b9a6a9f54886711c912d4087f305ca",
+  "originalBytes": 2514183,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "4a26897ca9f91c3be9c85ddb9636142fce7b33272fbe0d470309a0d2c0ea693b",
+  "processing": "Seedance 2.5 generated one 4-second wall-supported bodyweight heel-raising segment from ordered original start/end images (actual source 4.041667 seconds). After producer visual acceptance, the complete raising segment was encoded forward and followed by the exact same frames in reverse to illustrate controlled heel lowering, producing an 8.083333-second loop. Lowering is synthesized by reversal, not separately AI-generated; this is not an original 8-second continuous generation. Endpoint frames retained at turn and loop boundary. H.264 CRF26, 1024px width, yuv420p, silent, faststart. WebP poster uses the original start reference at quality86.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "loweringPhaseSource": "exact reversed frame order of accepted one-way raising segment",
+    "noGeneratedLoweringClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1373-contact-8fps.jpg",
+    "contactSha256": "5b18c4be2d122e59db2e2f8d947af0c0528a31211c9ed57ad016535c22585939",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Actual 16 samples at 4fps over the generated heel raise, a full 1024px heel endpoint at 3.75s, and 64 samples at 8fps over the composed loop show both heels raising while forefoot pads retain the same floor contacts, then lowering in exact reverse. Both front paws maintain the same wall contacts. Knees stay nearly straight and the body rises modestly, without squat, jump or foot slide. Tail remains passive and does not bear weight; wall, camera, complete head and feet remain stable and in frame. Producer and root both actually viewed and accepted the 16-frame one-way, 3.75-second heel endpoint and 64-frame final contact images. Root confirmed the same wall contacts, fixed forefoot pads, both heels leaving the floor, no squat or jump, and no tail support. All frames of one-way and final H.264 files decoded without errors.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1373-one-way-contact-4fps.jpg",
+      "contactSha256": "ffb9bc527043f945b4e8973defd494abb6d66917c0c1344005161c78d496149a",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false
+    },
+    "endpointDetail": {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1373-heel-end-detail.png",
+      "bytes": 224783,
+      "sha256": "ab28ed7c9d8b3ee94fd23c60e0a96b329d3a4f40a8fed1b294f068ad744bc346",
+      "timestampSeconds": 3.75,
+      "reviewedByProducer": true,
+      "rootReviewPending": false,
+      "rootAccepted": true,
+      "rootActuallyViewed": true
+    }
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "55a13dfa7c261ce2482fdef9f863d1178bc8cb814d7611403ee1961be4a25c36",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true
+}

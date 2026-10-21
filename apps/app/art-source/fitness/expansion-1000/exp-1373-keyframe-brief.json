@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "1373",
+  "englishName": "bodyweight standing calf raise",
+  "sourceDescriptorSha256": "55a13dfa7c261ce2482fdef9f863d1178bc8cb814d7611403ee1961be4a25c36",
+  "sourceSteps": [
+    "双脚分开与肩同宽站立，脚趾指向前方。",
+    "将手放在墙壁或稳定的表面上以保持平衡。",
+    "慢慢地将脚后跟抬离地面，将身体重量转移到脚掌上。",
+    "在顶部停顿片刻，然后慢慢降低脚后跟回到起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/zeno-site/public/assets/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "references": [
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1373-reference.png",
+      "bytes": 1731831,
+      "sha256": "6296c3899a3bcd486685b225bdd473d2a786bf65bd21742898c3b0a2aa7acb0c"
+    },
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1373-endpoint.png",
+      "bytes": 1707382,
+      "sha256": "c79b7a3bb2e6d497de9225bb9f06352b108cb25af72059d750b789169ffae4ed"
+    }
+  ],
+  "prompts": [
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1373-poster-prompt.txt",
+      "bytes": 1375,
+      "sha256": "a6430bc023afbd6407cc636661a800ee06f9e1ab5c1d8a10299c1c7ef89001db"
+    },
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1373-endpoint-prompt.txt",
+      "bytes": 1133,
+      "sha256": "6701282dd6d8ed4c49dd0d58a695c720d28ac30fb14444ef6bf94044456b9ca7"
+    }
+  ],
+  "referencePoseReviewed": true,
+  "reviewObservation": "Both heels start grounded. At endpoint the forefoot pads stay at the same floor positions while both heels lift visibly; torso rises a small amount, knees remain nearly straight and both front paws retain the same wall contacts. Wall and camera remain fixed, head/feet inside frame. Tail rises slightly with body but does not become a supporting prop.",
+  "fixedContacts": [
+    "both forefoot pads on the floor",
+    "both front paws on same wall positions"
+  ],
+  "sourceChoice": "Plain wall selected as the stable balance support allowed by sourceStep2.",
+  "plannedVideo": "One slow heel raise with ordered start/end frames; only after actual video review may an exact reversed lowering be joined.",
+  "readyMedia": false
+}

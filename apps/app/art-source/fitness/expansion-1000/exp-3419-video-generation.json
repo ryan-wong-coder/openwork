@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "3419",
+  "nodeId": "1e9bfbe8-9ea0-473e-9936-0801acd53f0c",
+  "taskId": "20261021123903562098518",
+  "prompt": "Use {{Node 29048870-4179-43b5-a09a-a3fc19a4cc83}} as exact starting frame. Preserve original Zeno teal/cream otter, lime strap/single Z buckle, warm ivory studio and fixed wide side-three-quarter tripod framing; full feet, both hands, body and tail visible. Eight-second calm HELD L-SIT ON FLOOR. BOTH PALMS remain flat on same floor spots beside hips, elbows straight, shoulders pressed down. Pelvis stays hovering the SAME SMALL GAP above floor, supported by hands only. Torso stays UPRIGHT and long; BOTH LEGS stay STRAIGHT TOGETHER and HORIZONTAL, parallel to floor, both feet off floor. Maintain readable right-angle L throughout. Only tiny breathing and blinking. No foot or pelvis lowering, bent knees, backward V-sit lean, bent elbows, repositioning palms, rocking, push-up, tail kickstand/support, extra limbs or equipment. No entry/exit, cuts, zoom, text, watermark or audio. Brief held-pose illustration, not complete exercise duration.\n",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "l-sit on floor",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "201422"
+    }
+  },
+  "originalSha256": "20d395ab765cea1c8ca52052acaa8773459afebf16073ae0aed0e599d94a8246",
+  "originalBytes": 4298345,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3419-contact.jpg",
+    "contactSha256": "d7a2ce5e3cfab54fc3c28554399c9d806f74fd796c21f16b9ec96a3770dc0d15",
+    "reviewed": true,
+    "observation": "Root viewed full 8-frame contact sheet; upright torso and both straight legs held forward horizontally, both palms on floor beside hips with arms supporting lifted pelvis, toes clear of floor. No knee folding, alternating leg action, hand movement or support collapse. Short held L-sit excerpt."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "90c057bb050df050654a21fa99aa14a50e7fcab196e5da0713a316dc36ec519a"
+}

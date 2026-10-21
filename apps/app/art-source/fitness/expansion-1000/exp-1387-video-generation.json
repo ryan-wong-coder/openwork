@@ -1,0 +1,141 @@
+{
+  "canonicalExerciseId": "1387",
+  "englishName": "one leg floor calf raise",
+  "nodeId": "f597f583-f165-49af-9de2-e06f8130e582",
+  "taskId": "20261021135103731598518",
+  "prompt": "首帧为 {{Node c9c5b847-6299-4b4e-b16f-2129363499a4}}，尾帧为 {{Node 2880f12b-0645-471f-861c-11ff010d952d}}。同一原创Zeno水獭面对固定竖直墙面，双掌全程在原位轻扶墙，只有近侧右脚在地面负重，远侧左腿屈膝脚持续离地，尾巴被动，机位象牙色墙地面固定。4秒只做一次单腿平地提踵：从首帧近侧全脚掌接地、脚跟落下，保持近侧前脚掌与脚趾在同一个地面点，缓慢以踝跖屈抬起该脚跟，让膝近伸直的身体头和骨盆自然轻升，直到尾帧脚跟离地。不能全脚浮起或脚趾后退，不能换脚或把远侧脚落地变成双脚提踵。膝不下蹲，双掌不滑不靠手把身体拉起，不加台阶/负重。镜头固定不缩放，完整头脚尾始终有画面边距，只抬跟一次并在尾帧停住、不回落、不重复，无文字或声音。\n",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1387-reference.png",
+      "sha256": "5b33adfc1748cf1ccb3e410eb0388560fcaadf08cc6a9f68816db03daa8fa251",
+      "bytes": 1622398,
+      "nodeId": "c9c5b847-6299-4b4e-b16f-2129363499a4"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1387-endpoint.png",
+      "sha256": "88fe456fab88f7628cf11d9d2372457ad1c29ab81fa8d87e44e73b2a5fcf8085",
+      "bytes": 1599406,
+      "nodeId": "2880f12b-0645-471f-861c-11ff010d952d"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "Official CLI read-only node response after create without run and before the single paid run",
+    "nodeId": "f597f583-f165-49af-9de2-e06f8130e582",
+    "expectedReferenceNodeIds": [
+      "c9c5b847-6299-4b4e-b16f-2129363499a4",
+      "2880f12b-0645-471f-861c-11ff010d952d"
+    ],
+    "imageListOrder": [
+      "c9c5b847-6299-4b4e-b16f-2129363499a4",
+      "2880f12b-0645-471f-861c-11ff010d952d"
+    ],
+    "imageListNodeIds": [
+      "c9c5b847-6299-4b4e-b16f-2129363499a4",
+      "2880f12b-0645-471f-861c-11ff010d952d"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "0e1c8abfe4d8e7bcf8ab808233ee3c133091f136e88675dafe636f570382edfb",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "166772"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2071096"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "83257"
+    }
+  },
+  "originalSha256": "76ba576989bd6ef61331df10dc37fbebeebc272533f038e1106de713d7325d1b",
+  "originalBytes": 2071096,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "25b8cb7dbab04449010c51148d7069eb1e4612fb6549322e94ea8eacc559f2c9",
+  "processing": "Seedance2.5 generated one ordered start/end4second one-way segment (actual 4.041667s). After actual16sample visual approval, encoded whole segment forward then exact reversed frame order to illustrate return, final 8.083333s. Return synthesized by reversal, not separately AI-generated; not an original8second continuous generation. H.264 CRF26,1024px,yuv420p,silent,faststart. WebP q86 poster extracted from actual first video frame.",
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1387-contact-8fps.jpg",
+    "contactSha256": "39ebb6de346bb2e9c20b5d6d9397145c400fc4beca9d7da3e769c0bbc626da26",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "observation": "Actual16 and64 samples show single near-foot heel raise and exact reversed lowering, stable forefoot/toes in original floor spot, far foot remains suspended throughout. Both palms keep wall contact, upright body rises slightly with near ankle extension without squat or hand pull. All head/feet/tail framed and full decode passes.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1387-one-way-contact-4fps.jpg",
+      "contactSha256": "ba82008ecb731eaea40096dd073f2b444d3a0a85d59f82a53ee599dbbdca8eeb",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true
+    }
+  },
+  "posterTool": "ffmpeg first generated video frame then cwebp q86; original ordered image references by built-in ImageGen",
+  "sourceDescriptorSha256": "1f59600fbc020cb79d985b7d1cd42c05e12fcbc4cb53f12e7d03bc2479f10c3e",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "parentAdmissionPending": false
+}

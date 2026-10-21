@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "3296",
+  "nodeId": "88629371-0483-4704-be7d-76542494714a",
+  "taskId": "20261021131603157438518",
+  "prompt": "Use {{Node aee7f9b9-d1a0-4d4e-b4a5-619bdf1c0a8c}} as exact starting frame. Preserve original Zeno teal/cream otter, lime strap/single Z buckle, rigid pull-up bar/uprights and warm ivory studio. Fixed wide side-profile three-quarter camera with full paws/feet/tail/body visible. Eight-second HELD FRONT LEVER only: face and cream chest face UP, head/shoulders/hips/both straight together legs remain one horizontal line parallel to floor. Both paws retain same overhand bar grip, shoulder-width apart, both elbows STRAIGHT. Entire body/feet stay suspended well above floor; hips never sag, knees never tuck. Only tiny breathing/blinking and near-imperceptible muscular stillness, no swinging, pull-up, lowering, piking, rotation, inversion, grip release, moving bar, tail support or extra limbs. No entry/exit, cuts, zoom, text, watermark or sound. A short held-pose illustration, not full training duration or safety instruction.\n",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "front lever",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "207454"
+    }
+  },
+  "originalSha256": "69eaf7305d9d7b6c8fdbf8a260dc6836133020232b8dabe4020527b9dcf7f9b4",
+  "originalBytes": 4670294,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3296-contact.jpg",
+    "contactSha256": "1fc9783287e4aa0587ff55d6e599123f2e3f2d0ff3caf8f75e63bfca7157a84a",
+    "reviewed": true,
+    "observation": "Root viewed full 8-frame contact sheet; two fixed overhand grips on the same horizontal bar, arms nearly straight, chest upward and trunk/straight legs held horizontally suspended with feet off floor. No pull-up, knee tuck, grip change or foot support. Short held front-lever excerpt."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "d746924ec05ad0585e34f67f7b870cc751b12ebee75cf8911afb2f68aac6b65c"
+}

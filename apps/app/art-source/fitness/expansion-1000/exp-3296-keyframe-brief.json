@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "3296",
+  "englishName": "front lever",
+  "sourceDescriptorSha256": "d746924ec05ad0585e34f67f7b870cc751b12ebee75cf8911afb2f68aac6b65c",
+  "sourceSteps": [
+    "首先，用正手握法悬挂在引体向上杆上，双手与肩同宽。",
+    "启动你的核心并将肩胛骨向下拉和向后拉。",
+    "弯曲膝盖并将其向胸部靠拢。",
+    "同时，抬起双腿并将其伸直在您面前，保持身体与地面平行。",
+    "尽可能长时间地保持此位置，以达到完全前杆位置。",
+    "要释放，请慢慢降低双腿并返回到起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/app/src/assets/zeno/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "referencePoseReviewed": true,
+  "referenceApproval": "producer-self-review-authorized-by-root",
+  "reviewObservation": "Front lever: chest and face up, long horizontal torso and straight together legs suspended clear of floor. Both straight arms retain overhand horizontal-bar grip; rigid anchored pull-up structure, no body support or tucked knees.",
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "generationAttempts": [
+    {
+      "attempt": 1,
+      "selected": true,
+      "sha256": "03dbe72c11a3b65ba1dab791487bee623b2e96c286e757573ddbfc142dea0024",
+      "retainedInRepository": true
+    }
+  ],
+  "references": [
+    {
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-3296-reference.png",
+      "bytes": 1708467,
+      "sha256": "03dbe72c11a3b65ba1dab791487bee623b2e96c286e757573ddbfc142dea0024"
+    }
+  ]
+}

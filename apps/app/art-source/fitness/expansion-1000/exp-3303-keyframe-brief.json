@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "3303",
+  "englishName": "flag",
+  "sourceDescriptorSha256": "31d24b721bad4907ff6f326da3eb356417c3cf2a4881c956f4038a991d7b0042",
+  "sourceSteps": [
+    "首先，双手握住一根垂直杆，手掌相对，双臂完全伸展。",
+    "启动你的核心并将双腿抬离地面，保持伸直。",
+    "利用核心和上半身的力量，抬起双腿，直到它们与地面平行。",
+    "尽可能长时间地保持这个姿势，保持身体线条笔直。",
+    "慢慢地将双腿放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/app/src/assets/zeno/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "referencePoseReviewed": true,
+  "referenceApproval": "producer-self-review-authorized-by-root",
+  "reviewObservation": "Human flag: both hands grip one vertical pole at different heights, elbows nearly straight. Body and straight together legs extend horizontally sideways, both feet clearly off floor, tail free; no harness or other support.",
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "generationAttempts": [
+    {
+      "attempt": 1,
+      "selected": true,
+      "sha256": "e088d8be728bbb27ad34e531c506c54ecb5c06941cfd9f04dffd4b1b42e23fe7",
+      "retainedInRepository": true
+    }
+  ],
+  "references": [
+    {
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-3303-reference.png",
+      "bytes": 1783629,
+      "sha256": "e088d8be728bbb27ad34e531c506c54ecb5c06941cfd9f04dffd4b1b42e23fe7"
+    }
+  ]
+}

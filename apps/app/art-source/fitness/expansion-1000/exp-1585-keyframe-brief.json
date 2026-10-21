@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "1585",
+  "englishName": "runners stretch",
+  "sourceDescriptorSha256": "9a9dffa4aec0034854738e2e52a63670fb2c524529d4513f768913c64c9d9bc2",
+  "sourceSteps": [
+    "双脚分开与臀部同宽站立。",
+    "右脚向前迈出一步，保持左脚踩地。",
+    "弯曲右膝，降低身体，保持左腿伸直。",
+    "将双手放在右大腿上以获得支撑。",
+    "保持拉伸 20-30 秒，然后换边重复。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/app/src/assets/zeno/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "referencePoseReviewed": true,
+  "referenceApproval": "producer-self-review-authorized-by-root",
+  "reviewObservation": "Corrected true side profile clearly shows forward front-foot/knee and backward extended rear leg, both feet directed same way, shoulder/pelvis facing front leg, hands resting front thigh. No lateral split or frontal pelvis.",
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "generationAttempts": [
+    {
+      "attempt": 1,
+      "selected": false,
+      "outcome": "tool-connection-failure",
+      "outputReturned": false,
+      "nonSelectedReason": "Builtin image attempt1 ended in tool connection failure and returned no image; no video was submitted for it.",
+      "retainedInRepository": false
+    },
+    {
+      "attempt": 2,
+      "selected": false,
+      "sha256": "23ad22d47b4a5315e09d9f72641043297a002afdfe75b59d518e47d9cb9bc39d",
+      "retainedInRepository": false,
+      "nonSelectedReason": "Root rejected frontal pelvis and lateral-lunge appearance; original PNG and exact prior brief retained privately."
+    },
+    {
+      "attempt": 3,
+      "selected": true,
+      "sha256": "0ee8247e833caede012f7d14eedb318f60b7a9e64d3af49b56bd44eae2ba53ff",
+      "retainedInRepository": true,
+      "authorization": "root-specific-extra-edit-after-one-no-output-transport-failure"
+    }
+  ],
+  "references": [
+    {
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-1585-reference-v2.png",
+      "bytes": 1819470,
+      "sha256": "0ee8247e833caede012f7d14eedb318f60b7a9e64d3af49b56bd44eae2ba53ff"
+    }
+  ],
+  "rootRejectedOriginalReference": true,
+  "extraImageCallAuthorization": "Root authorized one extra edit because call1 was a transport failure with no output; three builtin calls produced only two actual images.",
+  "posterPromptPath": "apps/app/art-source/fitness/expansion-1000/exp-1585-poster-prompt-v2.txt"
+}

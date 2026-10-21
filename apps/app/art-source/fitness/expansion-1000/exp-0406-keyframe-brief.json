@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "kind": "two-keyframe-illustration-plan",
+  "exerciseId": "0406",
+  "englishName": "dumbbell shrug",
+  "descriptorSha256": "44691fcfda0aa922c830742632d339adca805136e4448a01d96c80a55ff2f506",
+  "movementBrief": "exp-0406-movement-brief.json",
+  "startImage": {
+    "file": "exp-0406-reference.png",
+    "sha256": "7f1e17edf7419f55bfa4440fa0df206e022836a3531bb4fd339a062e1aa90adf",
+    "bytes": 1726875,
+    "width": 1672,
+    "height": 941
+  },
+  "endpointImage": {
+    "file": "exp-0406-endpoint.png",
+    "sha256": "c0f28a27a4689de35512a3c459ea06d8442e39d0fd6004f490f2a1719169ac2c",
+    "bytes": 1695741,
+    "width": 1672,
+    "height": 941
+  },
+  "startPrompt": {
+    "file": "exp-0406-poster-prompt.txt",
+    "sha256": "30e1ceba2c714af7aa7892bc641b6638399a51d077355f81ed4b94ff0023590e",
+    "bytes": 1165
+  },
+  "endpointPrompt": {
+    "file": "exp-0406-endpoint-prompt.txt",
+    "sha256": "a4d937e9ce5471bc09622fb008879e9345d86e6a0469627a719167ceae278664",
+    "bytes": 873
+  },
+  "startTool": "built-in ImageGen",
+  "startImageAttempts": 1,
+  "endpointTool": "built-in ImageGen edit of accepted start",
+  "endpointEditAttempts": 1,
+  "fixedContactsAndScene": [
+    "双足全脚掌与地面；骨盆头躯干稳定，尾巴在身后。",
+    "每爪独立握一只哑铃，掌面向躯干、腕中立。",
+    "fixed camera, ivory studio and original identity"
+  ],
+  "motion": "双侧肩胛上提再下沉，肘角近伸直不变，不屈肘弯举。 肩与手中哑铃随肩胛上提略升，躯干头不随耸肩整体起伏。",
+  "review": {
+    "startAndEndpointActuallyViewed": true,
+    "endpointDecision": "accepted-reference-for-parent-review",
+    "notes": [
+      "两只DB与两臂持续独立。",
+      "上提来自肩胛，不把哑铃屈肘弯到胸前。",
+      "头不缩放/上抬，足跟不离地，无后仰。"
+    ],
+    "wholeVideoViewed": false,
+    "readyMedia": false
+  },
+  "plannedVideo": {
+    "inputMode": "native first-and-last-frame",
+    "oneWaySeconds": 4,
+    "direction": "start-to-end",
+    "returnPlan": "Only after one-way actual visual acceptance, forward segment plus exact reversed frames for nominal8second illustration.",
+    "assemblyPerformed": false,
+    "videoGeneratedByThisAgent": false,
+    "originalEightSecondGeneration": false,
+    "existingEightSecondAttemptReused": false
+  }
+}

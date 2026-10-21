@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "1548",
+  "nodeId": "06777b5a-3eee-4d07-8db5-3022623c308f",
+  "taskId": "20261021112203488218518",
+  "prompt": "Use {{Node d6d6e390-507b-4220-a727-e87a32a50222}} as exact starting frame. Preserve exact original Zeno teal/cream otter, lime diagonal strap and one Z buckle, rigid wooden chair, warm ivory studio. Fixed wide side-three-quarter tripod camera with full chair, both feet, tail and body visible; no cuts, zoom, reframing, text, watermark or audio. An eight-second held CHAIR LEG EXTENDED STRETCH. Hips stay on front edge of seat. The extended leg remains KNEE STRAIGHT with its HEEL resting on FLOOR and toes gently raised. The opposite leg remains bent near ninety degrees with entire foot planted under knee. Maintain the same gentle forward hip hinge, long neutral back and neutral head. Paws rest lightly on thighs, no forceful knee pressure. Only tiny natural breathing and blinking, no entry/exit, leg change, rocking or chair motion. No lifting heel or foot, knee bending on straight leg, standing, deep folding or rounding back, chair deformation, extra limbs or disappearing contacts. Tail stays to side and clear of chair legs. This short pose illustration is not the full twenty-to-thirty-second stretch hold.\n",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "chair leg extended stretch",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "169408"
+    }
+  },
+  "originalSha256": "1248c3fc8593d90f841c468edce490d87d1062da21ea5d7a93217061f5f12470",
+  "originalBytes": 2997775,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1548-contact.jpg",
+    "contactSha256": "6dba1909fa8c13dc2aa4881cc2fb8af2fcff0dda8dc30aa7a2c64bf6d17a18d2",
+    "reviewed": true,
+    "observation": "Root viewed full 8-frame contact sheet; seated at chair front edge with one straight leg and grounded heel, toes raised, opposite foot flat, paws on thighs and gently forward torso held with a long back. Chair/pelvis/feet remain stable. Short held-position excerpt, not a claimed full 20-30-second hold or complete side switch."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "6c84cda969f0ca314b0618a7258bdf9d3f900bf79c7c15eca1699953a76b3b5b"
+}

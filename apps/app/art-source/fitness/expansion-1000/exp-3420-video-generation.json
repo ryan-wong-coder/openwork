@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "3420",
+  "nodeId": "8fba790f-e570-4d7b-9915-93ad91151695",
+  "taskId": "20261021105903449238518",
+  "prompt": "Use {{Node 8b91052c-8b08-4523-84cb-224e4d7e28db}} as exact starting frame. Preserve this exact original Zeno teal and cream otter, one lime diagonal strap and single Z buckle, warm ivory studio floor and background. Fixed wide side-three-quarter tripod camera with no cuts, zoom, reframing or angle change; whole body, both feet, both paws and tail remain visible. Demonstrate an eight-second calm HELD V-SIT ON FLOOR, not a repetition sequence. Keep the SIT BONES AND LOWEST PELVIS firmly on the floor throughout. BOTH LEGS remain lifted together in the exact forward/upward starting angle with BOTH KNEES STRAIGHT and feet completely off the floor. The long torso retains its comfortable backward lean and neutral head/back. Both arms stay extended forward toward the legs, elbows almost straight, both paws floating without touching legs or floor. Only very small natural breathing and occasional blinking, with no rocking or position changes. Preserve the readable open V at the hips and a clear gap beneath both legs. Tail remains relaxed to the rear side and does not brace or lift the torso. No bent-knee tuck, ball curl, leg lowering, heel-floor contact, crossing legs, hands behind hips, paw support, tail kickstand, floating pelvis, sit-up, strong shaking, extra limbs, text, watermark or audio. This brief held-pose illustration does not claim a full training duration or entry and exit.",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "v-sit on floor",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "214450"
+    }
+  },
+  "originalSha256": "8bf31aeefebf97a813b9f49ddcad9a5cdfb9bb00b0780544dbf557e9c9deb088",
+  "originalBytes": 4834872,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3420-contact.jpg",
+    "contactSha256": "ee311ac9c7ae2609353f6d07bff8c95f0fad12731defb19a4075cb2d15cf5b2d",
+    "reviewed": true,
+    "observation": "Root viewed full 8-frame contact sheet; sitting-bone contact maintained with torso reclined and both straight legs hovering, arms reaching forward without hand support. Tail remains relaxed behind rather than a vertical support. No leg cycling, knee folding, hand bracing or posture collapse. Short held V-sit excerpt."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "a0acb2d8dbfa51b8263f6a2836b79184330918f499e46fd8003103902307fcd6"
+}

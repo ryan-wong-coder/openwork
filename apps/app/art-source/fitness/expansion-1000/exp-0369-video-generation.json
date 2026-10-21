@@ -1,0 +1,141 @@
+{
+  "canonicalExerciseId": "0369",
+  "englishName": "dumbbell over bench wrist curl",
+  "nodeId": "e2ed1625-6fb9-499e-872a-39e4c1aae187",
+  "taskId": "20261021133003475158518",
+  "prompt": "首帧为 {{Node 677aa663-f27d-4df7-abde-11155415e70a}}，尾帧为 {{Node a81fd701-9a70-4787-ae3a-9f6717a7ec44}}。同一原创Zeno水獭坐在同一水平平凳后端、双足着地，两前臂始终贴住前方同一凳垫，双腕超过凳前短缘、两掌朝上各稳握一只轻哑铃。4秒只做一次小幅腕屈：仅在原手腕关节处缓慢向上卷起两只手爪和哑铃，从首帧低位到尾帧轻度屈腕高位。腕轴的位置固定，两条前臂和肘绝不能离开凳面或滑动，上臂肩膀躯干都不能抬起。不是二头弯举，不能以肘为轴抬起整条前臂；不能变成掌朝下反向腕屈。两哑铃始终由原爪握紧，不释放滚落、不穿入凳垫，器械形状数量固定。头躯干髋脚、凳脚与尾巴不动，镜头固定不缩放。只腕屈一次停在尾帧，不回放或重复，无文字无声。\n",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0369-reference.png",
+      "sha256": "1889c83f62e8cefefec4f3bc026fa92e12599ece53fb143f3493666a62cefcaa",
+      "bytes": 1815584,
+      "nodeId": "677aa663-f27d-4df7-abde-11155415e70a"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0369-endpoint.png",
+      "sha256": "5d3fd7f5f772aec46648d89721f173f1c99710aff97a34a2ead358b63a6d2785",
+      "bytes": 1745260,
+      "nodeId": "a81fd701-9a70-4787-ae3a-9f6717a7ec44"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "Official CLI read-only node response after create without run and before the single paid run",
+    "nodeId": "e2ed1625-6fb9-499e-872a-39e4c1aae187",
+    "expectedReferenceNodeIds": [
+      "677aa663-f27d-4df7-abde-11155415e70a",
+      "a81fd701-9a70-4787-ae3a-9f6717a7ec44"
+    ],
+    "imageListOrder": [
+      "677aa663-f27d-4df7-abde-11155415e70a",
+      "a81fd701-9a70-4787-ae3a-9f6717a7ec44"
+    ],
+    "imageListNodeIds": [
+      "677aa663-f27d-4df7-abde-11155415e70a",
+      "a81fd701-9a70-4787-ae3a-9f6717a7ec44"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "86ef49275dae4cf24ecbe923a58b3d35a1404738a79d8d518b8bb7407417db7e",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083008",
+      "size": "159081"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2365656"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "84635"
+    }
+  },
+  "originalSha256": "73b63ce0383f61c7beb1ad646413a7c358297bcf372c1fc8f253465900050ad1",
+  "originalBytes": 2365656,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083008,
+  "oneWayEncodedSha256": "66a561f55cc2383cf4851a42fb727bceb725938455444f9f068a079d24403c34",
+  "processing": "Seedance2.5 generated one ordered start/end4second one-way segment (actual 4.041667s). After actual16sample visual approval, encoded whole segment forward then exact reversed frame order to illustrate return, final 8.083008s. Return synthesized by reversal, not separately AI-generated; not an original8second continuous generation. H.264 CRF26,1024px,yuv420p,silent,faststart. WebP q86 poster extracted from actual first video frame.",
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0369-contact-8fps.jpg",
+    "contactSha256": "ea393ef86bdbd239d52d0ea70c84977814a28159d504e1a27c9cacc750f47d10",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "observation": "Actual16 and64 samples show small simultaneous palm-up wrist flexion and reverse return with two weights, while elbows/forearms remain on same flat bench, hips seated and feet grounded. No lifting whole forearms into biceps curl, no pronation/reverse wrist curl, no weight release/bench collision. Full decode passed.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0369-one-way-contact-4fps.jpg",
+      "contactSha256": "e0cbc84ec653c09e234909718bf9cc219c04734e17b4c9549281327ba955bf01",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true
+    }
+  },
+  "posterTool": "ffmpeg first generated video frame then cwebp q86; original ordered image references by built-in ImageGen",
+  "sourceDescriptorSha256": "c460a970892e2886bb73d5b6e714294248dfcc7f900d02a51c598a5efaa13aef",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "parentAdmissionPending": false
+}

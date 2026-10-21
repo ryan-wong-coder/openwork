@@ -1,0 +1,36 @@
+{
+  "order": 414,
+  "exerciseId": "1387",
+  "englishName": "one leg floor calf raise",
+  "chineseName": "单腿地面提踵",
+  "equipmentId": "body weight",
+  "descriptorSha256": "1f59600fbc020cb79d985b7d1cd42c05e12fcbc4cb53f12e7d03bc2479f10c3e",
+  "sourceSteps": [
+    "双脚分开与臀部同宽站立，双手放在墙壁或坚固的物体上以保持平衡。",
+    "将一只脚抬离地面并用另一只脚保持平衡。",
+    "慢慢地将脚跟抬离地面，将身体抬起到脚掌上。",
+    "在顶部暂停片刻，然后慢慢将脚跟放回起始位置。",
+    "重复所需的重复次数，然后换腿并重复。"
+  ],
+  "startPose": "面对墙，双掌肩高轻扶，一侧脚全掌承重，另一侧屈膝抬脚离地。",
+  "support": "双掌墙面辅助稳定，承重足从全脚掌到前脚掌；非工作足不落地。",
+  "grip": "无器械，两掌墙面，肘自然微屈。",
+  "jointMotion": "承重踝跖屈抬足跟，膝近伸直，另一腿持续离地；上身随足跟轻升。",
+  "path": "只支持侧足跟上升，前脚掌仍同一点接地，回程降足跟；不是台阶双脚提踵。",
+  "camera": "固定侧前30度，墙明确垂直，双掌接触墙，近侧承重足跟和远侧悬空足清楚。",
+  "criticalChecks": [
+    "全程只一脚地面承重，另一脚抬起，不把双侧提踵当单腿。",
+    "明确floor而非阶梯/配重片；近侧前脚掌不换位。",
+    "掌墙轻扶，不把身体用手拉起或脚尖漂浮。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceIssues": [],
+  "sourceStepsActuallyRead": true,
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "generationSeconds": 4,
+    "oneWay": "start-to-end controlled single movement",
+    "return": "Only after one-way visual acceptance, exact frame reversal; not an original8second generation."
+  }
+}

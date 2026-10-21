@@ -1,0 +1,36 @@
+{
+  "order": 472,
+  "exerciseId": "0406",
+  "englishName": "dumbbell shrug",
+  "chineseName": "哑铃耸肩",
+  "equipmentId": "dumbbell",
+  "descriptorSha256": "44691fcfda0aa922c830742632d339adca805136e4448a01d96c80a55ff2f506",
+  "sourceSteps": [
+    "双脚分开与肩同宽站立，双手各握一个哑铃，手掌朝向身体。",
+    "保持手臂伸直，让哑铃垂在身体两侧。",
+    "尽可能高地抬高肩膀，就像试图用肩膀触碰耳朵一样。",
+    "保持收缩一秒钟，然后慢慢将肩膀放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "startPose": "站立双足着地，双手各持轻哑铃自然低垂，肩胛自然下沉中立。",
+  "support": "双足全脚掌与地面；骨盆头躯干稳定，尾巴在身后。",
+  "grip": "每爪独立握一只哑铃，掌面向躯干、腕中立。",
+  "jointMotion": "双侧肩胛上提再下沉，肘角近伸直不变，不屈肘弯举。",
+  "path": "肩与手中哑铃随肩胛上提略升，躯干头不随耸肩整体起伏。",
+  "camera": "正面轻15度三分之四全身，肩线、颈侧和近伸直肘均清楚。",
+  "criticalChecks": [
+    "两只DB与两臂持续独立。",
+    "上提来自肩胛，不把哑铃屈肘弯到胸前。",
+    "头不缩放/上抬，足跟不离地，无后仰。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceIssues": [],
+  "sourceStepsActuallyRead": true,
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "generationSeconds": 4,
+    "oneWay": "start-to-end controlled single movement",
+    "return": "Only after one-way visual acceptance, exact frame reversal; not an original8second generation."
+  }
+}

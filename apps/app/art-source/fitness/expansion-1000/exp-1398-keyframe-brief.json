@@ -1,0 +1,58 @@
+{
+  "canonicalExerciseId": "1398",
+  "englishName": "standing calves calf stretch",
+  "sourceDescriptorSha256": "4f556bd15609551810513b64d83042b95bc42f4778cb0d2b0c52004b255506c4",
+  "sourceSteps": [
+    "面朝墙壁或坚固物体站立，距离大约一臂远。",
+    "将手放在与肩同高的墙壁或物体上。",
+    "一只脚向后退一步，保持脚跟平放在地面上。",
+    "稍微弯曲前膝盖并向前倾斜，保持后腿伸直。",
+    "您应该感觉到小腿肌肉有拉伸感。",
+    "保持拉伸 20-30 秒。",
+    "在另一条腿上重复。"
+  ],
+  "sourceStepsTechniqueReviewed": true,
+  "posterTool": "built-in image_gen.imagegen",
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1398-reference.png",
+      "bytes": 1764101,
+      "sha256": "0a2cb5c53d80b99483b9c115085d1a2c46671d18318c37fccbd40ba2542b2436"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1398-endpoint.png",
+      "bytes": 1722147,
+      "sha256": "446c4efe18347b4e5f3155ebb8ae7c98d3ca2005d69596022db06b94f578b8ad"
+    }
+  ],
+  "producerActuallyViewedStartAndEnd": true,
+  "observation": "Fixed wall-paw contact and split stance, rear heel planted and rear knee straight; gentle front-knee flexion/forward lean. Single-side short preview, not a 20-30 second prescribed hold.",
+  "scope": "One reversible movement preview; return will only be exact reversal after forward-phase review. Stretch timing and one-side examples do not claim a full prescribed hold or both sides.",
+  "readyMedia": false,
+  "notRegisteredByProducer": true,
+  "semanticRelationship": {
+    "relatedCanonicalExerciseId": "1377",
+    "relationship": "Same hands-on-wall rear-calf stretch technique; this candidate must not be counted alongside a second equivalent ready1377 as another distinct new movement.",
+    "noDoubleCounting": true,
+    "currentRelatedReady": false,
+    "relatedSourceDescriptorSha256": "6932a65c0059d01165650d49b707f3aebedcdb523b9ea428f22cfa5806248caa",
+    "relatedSourceStepsActuallyRead": true
+  },
+  "sourcePromptFiles": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1398-poster-prompt.txt"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1398-endpoint-prompt.txt"
+    }
+  ],
+  "identityReference": {
+    "file": "apps/zeno-site/public/assets/mascot.webp",
+    "role": "original identity only for start image; endpoint edited accepted start"
+  },
+  "restrictedUpstreamMediaUsed": false
+}

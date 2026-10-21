@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "0001",
+  "englishName": "3/4 sit-up",
+  "chineseName": "3/4仰卧起坐",
+  "sourceDescriptorSha256": "c358abb6b81ff5acd3ad6cd92b38ac4a1500c8b2908decd9a79edb09b93a570c",
+  "sourceSteps": [
+    "平躺，膝盖弯曲，双脚平放在地上。",
+    "将双手放在脑后，肘部朝外。",
+    "收紧腹肌，慢慢将上半身抬离地面，向前卷曲，直到躯干呈 45 度角。",
+    "在顶部停顿片刻，然后慢慢将上半身放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "sourceTechniqueReviewedForProduction": true,
+  "clinicalCertification": false,
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0001-reference.png",
+      "bytes": 1814298,
+      "sha256": "30724165f6aebac7d7e4b0cbfee3d6d888f6d61a628c25fe8c683fe8b6a800e7"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0001-endpoint.png",
+      "bytes": 1858262,
+      "sha256": "6d66125450a35974beb8c17c3437a873bb25025b1f91d95b46737bd5245150e4"
+    }
+  ],
+  "referenceTool": "built-in image_gen.imagegen",
+  "producerActuallyViewedBothReferences": true,
+  "acceptedReferenceObservation": "Supine bent-knee start with heels flat and paws beside head. Revised endpoint lifts lower and upper back above mat into a partial sit-up; pelvis and feet remain planted. Exact 45-degree goniometric measurement is not claimed.",
+  "renderingAssumption": "Only one controlled partial sit-up is previewed. Knees stay bent and both feet remain fixed; no leg raise or standing.",
+  "videoAccepted": false,
+  "readyMedia": false
+}

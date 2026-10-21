@@ -313,6 +313,64 @@
       "candidateSha256": "27d8fbf7c14d4db4e9c0b35a014cd35e1ae459865270106a82cb08fe1e3c1c40",
       "fullDecodePassed": true,
       "originalRetained": "private production staging; not shipped"
+    },
+    {
+      "canonicalExerciseId": "1297",
+      "nodeId": "25f62a68-f031-439d-b5f3-235432ccd1f6",
+      "taskId": "20261021112903821308518",
+      "prompt": "Use {{Node 30d81483-ace9-4c31-bf26-0d21a879e5aa}} as exact starting frame. Preserve the exact original Zeno teal/cream otter, lime diagonal strap and single Z buckle, warm ivory studio. Fixed front-three-quarter tripod camera; no cuts, zoom, reframing, text, watermark or audio. Whole body, feet, tail and both paws stay visible. An eight-second HELD STANDING ISOMETRIC CHEST SQUEEZE: both arms remain extended forward horizontally at shoulder height with elbows nearly STRAIGHT; palms remain flat pressed against each other at full arm length in front of the chest. Feet stay flat shoulder-width apart, knees soft, torso upright and shoulders down. Only tiny calm breathing and blinking with a gentle sustained palm-to-palm squeeze. Keep elbows straight and hands well away from sternum for the entire clip. No bent-elbow prayer pose, clapping, arm raising or lowering, shoulder shrug, foot movement, body sway, palm separation, extra limbs or equipment. Tail rests to one rear side and is not a support. A brief held-pose illustration, not a full repetition sequence or training duration.\n",
+      "model": "Seedance 2.0 VIP",
+      "settings": {
+        "modeType": "singleImage2video",
+        "ratio": "16:9",
+        "resolution": "720p",
+        "duration": 8,
+        "enableSound": "off",
+        "count": 1
+      },
+      "attempt": 1,
+      "accepted": false,
+      "reason": "Palms separate after about one second and arms open outward instead of retaining straight-arm isometric chest squeeze.",
+      "review": {
+        "contactSheetActuallyViewed": true,
+        "density": 1,
+        "reviewer": "production-agent actual 8-frame and detail review; rejection accepted by coordinator"
+      },
+      "originalBytes": 3625649,
+      "originalSha256": "6c3fe4a03b43fca526259ece13bd747f19290da88dd41e696535c2e7b1031d7c",
+      "candidateBytes": 197072,
+      "candidateSha256": "f4ce45f1363e22defa5b48ee516370970b6c8b6bd24a58e7b191c017c3cab781",
+      "fullDecodePassed": true,
+      "originalRetained": "private production staging; not shipped"
+    },
+    {
+      "canonicalExerciseId": "1585",
+      "nodeId": "b45a8697-2aa5-46db-a997-a8d9bcfd3ba2",
+      "taskId": "20261021113103472098518",
+      "prompt": "Use {{Node f0517834-36b8-41a2-8e35-40fbf83dd943}} as exact starting frame. Preserve exact original Zeno teal/cream otter, lime diagonal strap and one Z buckle, warm ivory studio, fixed wide side-three-quarter tripod and complete full-body framing including both feet, paws and tail. No cuts, zoom, reframing, text, watermark or audio. An eight-second calm held RUNNER'S STRETCH on the SAME side. FRONT foot flat on floor with front knee comfortably bent and aligned over ankle; REAR leg remains straight with its heel grounded and toes facing forward. Both paws stay gently on FRONT THIGH just above knee. Maintain the same split stance, gentle hip-forward/down stretch and long neutral back/head. Only tiny breathing and blinking, no switching sides, no knee dropping to floor, no rear-knee bend or rear-heel lift, no stepping, jumping, running, forceful pushing on knee, floor/wall hand support, extra limbs or tail support. Keep all contacts and proportions stable. This eight-second held-pose illustration is not the full twenty-to-thirty-second prescribed stretch duration.\n",
+      "model": "Seedance 2.0 VIP",
+      "settings": {
+        "modeType": "singleImage2video",
+        "ratio": "16:9",
+        "resolution": "720p",
+        "duration": 8,
+        "enableSound": "off",
+        "count": 1
+      },
+      "attempt": 1,
+      "accepted": false,
+      "reason": "Front-three-quarter pose reads as lateral lunge; torso/pelvis and laterally separated feet do not clearly demonstrate a forward/back split stance.",
+      "review": {
+        "contactSheetActuallyViewed": true,
+        "density": 1,
+        "reviewer": "coordinator actual 8-frame contact sheet and 3-second full-size detail review"
+      },
+      "originalBytes": 4827032,
+      "originalSha256": "94a0f45492709c122ae3e3571a79eb24fde13c1238feee84a6fefbb0faa56955",
+      "candidateBytes": 225562,
+      "candidateSha256": "cba5f0bf91c2888cc7095c7afa727bfc5727b0fdf7a79091e41e65fbcb55b7d8",
+      "fullDecodePassed": true,
+      "originalRetained": "private production staging; not shipped"
     }
   ]
 }

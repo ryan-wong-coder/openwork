@@ -1,0 +1,46 @@
+{
+  "canonicalExerciseId": "3302",
+  "nodeId": "38004f26-6e25-49a9-b011-b8f3f37209e8",
+  "taskId": "20261021115903234388518",
+  "prompt": "Use {{Node b1dcc6e5-41e5-4e2b-b69f-81100694de50}} as exact starting frame. Preserve original Zeno teal/cream otter, lime strap/single Z buckle, same rigid plain wall and ivory floor. Fixed wide side-three-quarter camera, complete inverted body/both hands/feet/tail visible, no cuts/zoom/audio/text/watermark. Eight-second HELD WALL-SUPPORTED HANDSTAND only. Both palms remain flat at same floor spots, elbows straight, shoulders stacked over wrists, hips/knees/feet above shoulders in long neutral line. Both heels stay gently against wall. Head remains CLEAR OF FLOOR between upper arms for every frame, no head or forearm support. Both knees stay straight, feet together, torso calm. Only tiny breathing and blinking; no kicking, entry/exit, walking hands, elbow bend, back arch, foot release, sliding wall, falling, tail support or extra limbs. This brief pose illustration does not show or claim full entry, descent, training duration or safety instruction.\n",
+  "model": "Seedance 2.0 VIP",
+  "settings": {
+    "modeType": "singleImage2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 8,
+    "enableSound": "off",
+    "count": 1
+  },
+  "englishName": "handstand",
+  "project": "2bfb4e137f7e4ee293c240dba482feca",
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576
+      }
+    ],
+    "format": {
+      "duration": "8.041667",
+      "size": "132981"
+    }
+  },
+  "originalSha256": "0710fba2aff937b96b5df2abaa56402a7f69704bab103c1fd025b9f5e7cfb59d",
+  "originalBytes": 3032152,
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 1,
+    "frames": 8,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3302-contact.jpg",
+    "contactSha256": "5ff1fe3e39b5868c8c594f5d2eadd6871ad093fcd31c393c375999fc4eae4b39",
+    "reviewed": true,
+    "observation": "Root viewed full 8-frame contact sheet; both palms support with straight arms and head remains visibly off floor, straight legs together lightly against wall, stable feet/wall contact without hand stepping or support collapse. Tail hangs behind, not acting as a head or hand support. Short wall-assisted handstand held-position excerpt."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "3c89a4fee96cb96f17cd4126e7b33942d54ffca7929828be7f2bc9f9757201e9"
+}

@@ -48443,15 +48443,19 @@
   "sources": [
     {
       "path": "packages/zeno-fitness/tools/expansion-selection.ts",
-      "sha256": "1db6e6c127d2b95ca5c73bdaf23fe2b6daa0424e3def27b87707a0ffba2b1435"
+      "sha256": "9f943710529d1230a81576af8b749c4c45b2e40ddff281c1dc87c049c9d12638"
+    },
+    {
+      "path": "packages/zeno-fitness/tools/expansion-instruction-baseline.json",
+      "sha256": "fea188a77376e4c9d3ed973e3823d1cae1b86f10efac90feb3ae0ebfe1f205d7"
+    },
+    {
+      "path": "apps/app/art-source/fitness/expansion-1000/selection-history/original.json",
+      "sha256": "b7f5b1d654468d04031560ffc2552d49fab53f2ebb24030cabe4ad247395f0e6"
     },
     {
       "path": "packages/zeno-fitness/src/catalogue.ts",
       "sha256": "89ae9d83718b1589e143101b73d9f2a91c620f81fbe6c517cf3dc09311dc9b9a"
-    },
-    {
-      "path": "packages/zeno-fitness/src/instruction-corrections.ts",
-      "sha256": "7b707e129ffe1db7dae63a8127577d39bac2d0ee4e6e2dfb3d6c715f1293a760"
     },
     {
       "path": "packages/zeno-fitness/upstream/lib/exercises-data.js",

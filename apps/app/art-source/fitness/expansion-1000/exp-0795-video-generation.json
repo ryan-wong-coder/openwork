@@ -1,0 +1,183 @@
+{
+  "canonicalExerciseId": "0795",
+  "englishName": "standing single leg curl",
+  "nodeId": "7b4034e1-6059-4187-a6e3-ea33f437432e",
+  "taskId": "20261021113703504128518",
+  "prompt": "首帧为 {{Node 53956651-4344-473b-b1b3-28bbcc5cb40a}}，尾帧为 {{Node bd29be4d-17ba-4a8d-a5d7-aa1562f6c6f8}}。保持同一原创Zeno青色毛绒水獭、奶油脸腹、青柠斜肩带、固定机位和象牙色摄影棚。4秒内只做一次站姿单腿弯举：远离镜头的解剖学左腿是支撑腿，整只左脚在首帧原位置全脚掌贴地、左腿自然伸直；靠近镜头的解剖学右腿是工作腿，右脚从首帧刚离地的低位开始，缓慢只弯曲右膝，让右脚跟朝身体后方也就是画面左侧向臀后卷起，连续到达尾帧。右大腿大致向下保持在髋旁，不能把膝盖向前抬成高抬腿，不能向前踢腿或向侧面抬腿。工作小腿绕右膝向后弯，右脚必须到膝盖后方，不能向身前卷起；两腿不能换边。双前爪全程留在髋部，头、胸、骨盆保持直立方向，不侧倾或前后摆动。左支撑脚绝对不移动、不转脚、不屈膝蹲跳；身体不能跳起换脚。尾巴保持首帧原处被动姿态，不与右小腿或脚融合，不变成第三腿或支架。全程恰好两条腿、两条手臂，工作脚在镜头近侧清楚可见。只向后屈膝一次，到尾帧停住；生成中不要伸回低位，不重复，不换另一腿。镜头固定不推近缩放裁边，完整头、双手、两脚和尾巴都在画面内；身份比例稳定，无器械、文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0795-reference-v2.png",
+      "bytes": 1672560,
+      "sha256": "2b413b2cd8d5ef183f6934e7f0d9a189a2c49a36f6eef5cc17c9124cc5468749",
+      "role": "start",
+      "nodeId": "53956651-4344-473b-b1b3-28bbcc5cb40a"
+    },
+    {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0795-endpoint-v2.png",
+      "bytes": 1648252,
+      "sha256": "669114c310c18509da59c8c2e96ef66d67ed7d73e043c042df37f9940d8ee1d0",
+      "role": "end",
+      "nodeId": "bd29be4d-17ba-4a8d-a5d7-aa1562f6c6f8"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "7b4034e1-6059-4187-a6e3-ea33f437432e",
+    "expectedReferenceNodeIds": [
+      "53956651-4344-473b-b1b3-28bbcc5cb40a",
+      "bd29be4d-17ba-4a8d-a5d7-aa1562f6c6f8"
+    ],
+    "imageListOrder": [
+      "53956651-4344-473b-b1b3-28bbcc5cb40a",
+      "bd29be4d-17ba-4a8d-a5d7-aa1562f6c6f8"
+    ],
+    "imageListNodeIds": [
+      "53956651-4344-473b-b1b3-28bbcc5cb40a",
+      "bd29be4d-17ba-4a8d-a5d7-aa1562f6c6f8"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "9024cfeb81bf10f80de62a0489b38e36574942f2f7f7643eb456faa891f1bbbb",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "143664"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "1858285"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "76669"
+    }
+  },
+  "originalSha256": "46c2a3e47e497a4f3e6cbf52b1c9359053670cccdbe1e153e38a62d4f0be9cee",
+  "originalBytes": 1858285,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "37b060855c38513a37de6375734820a9fd34361e0e13ad35a39b8b5d614fb4e3",
+  "processing": "Seedance 2.5 generated one 4-second standing right-knee curl from ordered original start/end-v2 images (actual source 4.041667 seconds). Only one near/right-leg example is illustrated, not both alternating legs or an exact clinical knee-angle range. After producer visual acceptance, the complete backward curl was encoded forward and followed by the exact same frames in reverse to illustrate controlled knee extension to the low hover, producing an 8.083333-second loop. The return phase is synthesized by reversal, not separately AI-generated; this is not an original 8-second continuous generation. Endpoint frames retained at turn and loop boundary. H.264 CRF26, 1024px width, yuv420p, silent, faststart. WebP poster uses the original start-v2 reference at quality86.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way right-knee curl",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0795-contact-8fps.jpg",
+    "contactSha256": "fe04cc7f32156351c323557d15497f2eef54acfe8fe9f5808385d6e3e1341095",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Actual 16 samples at 4fps over the generated curl, a full 1024px endpoint at 3.75s, and 64 samples at 8fps over the composed loop show the near/right knee flexing backward to bring the heel toward the rear of the hip, while the far/left support foot stays planted. Both paws remain on hips and the torso remains upright. No high forward knee raise, forward kick, jumping side switch, squat or second generated repetition seen. Working calf and foot remain distinct in front of the passive tail; camera, identity and full framing stay stable. Only one right-leg example and its reversed return are shown. Producer actually viewed the 16-frame one-way, 3.75-second endpoint detail and 64-frame final images. Root actually viewed and accepted both the 16-frame one-way and 64-frame final contact sheets, confirming backward near/right-knee curl, heel moving toward the rear hip, stationary far/left support foot, stable hands/torso and no kick, side switch or squat/jump. Root did not personally view the endpoint detail; that detail was reviewed only by producer. All frames of one-way and final H.264 decoded without errors.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0795-one-way-contact-4fps.jpg",
+      "contactSha256": "6e0cd49b801bbd8a130d1010a68da5bd48125bc0492dc2be94d308887112510f",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewed": true
+    },
+    "endpointDetail": {
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0795-curl-end-detail.png",
+      "bytes": 209258,
+      "sha256": "2c0fead284f87071f278083737ca7a1cac85634027ea9094e02fcb1e885c101c",
+      "timestampSeconds": 3.75,
+      "reviewedByProducer": true,
+      "rootReviewPending": false,
+      "rootAccepted": false,
+      "rootActuallyViewed": false,
+      "reviewedBy": "producer"
+    },
+    "rootActuallyViewed": true
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "076192bf94d39042a2dff10b94b89872d1bf82fb20fff08b1fc4fadb5db837f0",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "rootAccepted": true,
+  "rootAcceptanceBasis": {
+    "rootActuallyViewed": [
+      "one-way16frames4fps",
+      "final64frames8fps"
+    ],
+    "rootDidNotPersonallyView": [
+      "endpoint-detail3.75seconds"
+    ],
+    "producerActuallyViewed": [
+      "one-way16frames4fps",
+      "endpoint-detail3.75seconds",
+      "final64frames8fps"
+    ],
+    "rootAcceptanceBasis": "Root accepted after personally viewing both contact sheets; endpoint detail was reviewed only by producer."
+  }
+}

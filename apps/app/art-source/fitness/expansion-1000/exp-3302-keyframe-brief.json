@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "3302",
+  "englishName": "handstand",
+  "sourceDescriptorSha256": "3c89a4fee96cb96f17cd4126e7b33942d54ffca7929828be7f2bc9f9757201e9",
+  "sourceSteps": [
+    "找到一个有足够空间的空地来进行倒立。",
+    "将双手放在地上，与肩同宽，手指指向前方。",
+    "将双腿向上踢向墙壁，用核心和肩膀保持平衡。",
+    "处于倒立位置后，用三头肌来支撑体重。",
+    "只要能保持平衡，就保持倒立。",
+    "下降时，慢慢将双腿放回地面。",
+    "重复所需的重复次数。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/app/src/assets/zeno/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "referencePoseReviewed": true,
+  "referenceApproval": "producer-self-review-authorized-by-root",
+  "reviewObservation": "Full inverted handstand with both palms on floor, elbows straight, legs together straight above hips and heels against wall. Unambiguous air gap below head; tail hangs freely without floor support.",
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "generationAttempts": [
+    {
+      "attempt": 1,
+      "selected": true,
+      "sha256": "425e3942dc936c3ce32f6f73c74a161abc27267849f08892b0917fe1721909b2",
+      "retainedInRepository": true
+    }
+  ],
+  "references": [
+    {
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-3302-reference.png",
+      "bytes": 1700204,
+      "sha256": "425e3942dc936c3ce32f6f73c74a161abc27267849f08892b0917fe1721909b2"
+    }
+  ]
+}

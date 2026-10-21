@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "0380",
+  "englishName": "dumbbell rear lateral raise",
+  "sourceDescriptorSha256": "6d874cf239e4f1696d6887147d34a01cc1b896f510f9c2385488a630c3dc26c5",
+  "sourceSteps": [
+    "双脚分开与肩同宽站立，双手各握一个哑铃，手掌朝向身体。",
+    "稍微弯曲膝盖，髋部向前转动，保持背部挺直，核心参与。",
+    "将手臂向两侧举起，肘部保持轻微弯曲，直到与地板平行。",
+    "在顶部暂停片刻，然后慢慢将手臂放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/zeno-site/public/assets/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "referencePoseReviewed": true,
+  "reviewObservation": "Hip-hinge back nearly horizontal, knees softly bent, feet and pelvis fixed; both dumbbells below chest at start, both arms open laterally into shoulder-level wide T at end, slight elbow bend retained, no elbow curl. Head/neck and tail remain stable. First start was too upright and rejected privately.",
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "references": [
+    {
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-0380-reference.png",
+      "bytes": 1801622,
+      "sha256": "3f107bf30e8c0917d1cfa9d8cf5e5fce8a5206571f6245c7277f6a6780825b13"
+    },
+    {
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-0380-endpoint.png",
+      "bytes": 1762024,
+      "sha256": "a3b1655ccced3b11984595dc7239d970fd65bfab830efae1cc7e379624733b84"
+    }
+  ],
+  "rejectedStart": {
+    "sha256": "b4bc8ce41d047eb71b424702681b03b0e9b8f13da06344a97696e17a5e181501",
+    "reason": "Torso too upright, neck looking forward instead of hip-hinge neutral neck."
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "1297",
+  "englishName": "isometric chest squeeze",
+  "sourceDescriptorSha256": "cfef5ba23389a076f94da1fa76d737c28d806d1c78607b240db8054ff20c8c1d",
+  "sourceSteps": [
+    "双脚分开与肩同宽站立，膝盖稍微弯曲。",
+    "将双臂伸直在身前，与地面平行，手掌相对。",
+    "尽可能用力挤压胸部肌肉，同时保持手臂伸直。",
+    "保持这个姿势几秒钟，专注于收缩胸部肌肉。",
+    "释放挤压并放松胸部肌肉。",
+    "重复所需的重复次数。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/app/src/assets/zeno/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "referencePoseReviewed": true,
+  "referenceApproval": "producer-self-review-authorized-by-root",
+  "reviewObservation": "Side-three-quarter clearly shows both long arms straight forward at shoulder height, palms pressed at full arm length, feet grounded and torso upright; no bent-elbow prayer silhouette.",
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "generationAttempts": [
+    {
+      "attempt": 1,
+      "selected": false,
+      "sha256": "18c44786eb0bc2634d065763afa4ec353c4d234922ab8c06ba523709b32e0bc4",
+      "nonSelectedReason": "First frontal draft had ambiguous foreshortening and prayer-like bent-arm silhouette.",
+      "retainedInRepository": false
+    },
+    {
+      "attempt": 2,
+      "selected": true,
+      "sha256": "8235bc213f549746898df09140119a94d8fa98ed06f83e5227a5d4246972e747",
+      "retainedInRepository": true
+    }
+  ],
+  "references": [
+    {
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-1297-reference.png",
+      "bytes": 1743942,
+      "sha256": "8235bc213f549746898df09140119a94d8fa98ed06f83e5227a5d4246972e747"
+    }
+  ]
+}
