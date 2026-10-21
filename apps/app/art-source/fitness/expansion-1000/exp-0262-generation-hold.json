@@ -1,0 +1,22 @@
+{
+  "exerciseId": "0262",
+  "englishName": "cross body crunch",
+  "status": "hold-endpoint-direction-not-readable",
+  "startAccepted": true,
+  "startAttempts": 2,
+  "endpointAccepted": false,
+  "endpointAttempts": [
+    {
+      "attempt": 1,
+      "sha256": "1e1e8f0ec087e86ecc65bb8b64ef532d1f9f459cd9116b887863a24ad5eaffa0",
+      "reason": "Symmetric shoulder crunch without reliably visible contralateral ribcage rotation or elbow-to-opposite-knee direction."
+    },
+    {
+      "attempt": 2,
+      "sha256": "91309da4749137378b519f617ff779abc96121c7f7266873270378f635ff501c",
+      "reason": "Symmetric shoulder crunch without reliably visible contralateral ribcage rotation or elbow-to-opposite-knee direction."
+    }
+  ],
+  "videoRun": false,
+  "readyMedia": false
+}

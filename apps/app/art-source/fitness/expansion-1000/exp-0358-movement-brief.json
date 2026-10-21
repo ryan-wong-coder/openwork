@@ -1,0 +1,46 @@
+{
+  "order": 157,
+  "exerciseId": "0358",
+  "englishName": "dumbbell one arm reverse wrist curl",
+  "chineseName": "哑铃单臂反握腕弯举",
+  "equipmentId": "dumbbell",
+  "bodyPartId": "lower arms",
+  "muscles": {
+    "primaryIds": [
+      "forearm"
+    ],
+    "primaryLabels": [
+      "前臂"
+    ],
+    "secondaryIds": [],
+    "secondaryLabels": []
+  },
+  "descriptorSha256": "6af76f6a9e9699cdbea465b30b6d9522afff1f65c4f4dddd3851b764f817455b",
+  "sourceSteps": [
+    "坐在长凳或椅子上，双脚平放在地面上。",
+    "一只手握住哑铃，正手握住，手掌朝下。",
+    "将前臂放在大腿上，手腕悬在边缘。",
+    "弯曲手腕，慢慢地将哑铃降低到地面。",
+    "在底部停顿片刻，然后慢慢地将手腕向上卷向身体。",
+    "重复所需的重复次数，然后换到另一只手臂。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceStepsActuallyRead": true,
+  "sourceIssues": [],
+  "startPose": "坐姿单臂反向腕弯举，右前臂旋前贴右大腿，腕在膝外低垂单DB。",
+  "support": "臀坐凳、双足地面、右前臂大腿支撑；左空爪轻放左大腿。",
+  "grip": "正握掌朝下，右爪稳握一只小DB，腕轴固定。",
+  "jointMotion": "仅右腕伸展把低垂拳与DB抬回向前臂，肘肩不动。",
+  "path": "围绕固定腕轴的小弧，不抬整条前臂，不旋后。",
+  "camera": "固定侧前30度，右前臂与膝边手腕无遮挡。",
+  "criticalChecks": [
+    "单爪一DB，掌朝下的腕伸不同于掌朝上的腕屈。",
+    "前臂仍接触大腿，不能借肘弯举。"
+  ],
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "oneWayGenerationSeconds": 4,
+    "return": "Only after actual one-way review, use exact reversed frame order; not an original8second continuous generation."
+  }
+}

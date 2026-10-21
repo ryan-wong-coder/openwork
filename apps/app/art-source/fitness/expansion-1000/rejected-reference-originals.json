@@ -48,6 +48,30 @@
       "selected": false,
       "reason": "Endpoint showed only a shallow upper-back curl rather than the source partial sit-up. No video was run from it; revised endpoint lifts lower and upper back while keeping feet and pelvis planted.",
       "retained": "private production staging; not shipped"
+    },
+    {
+      "sourceName": "exp-0108-reference-attempt1.png",
+      "originalBytes": 1749022,
+      "originalSha256": "3c0cebd6d70f34e808a3714e3537b68f61474fea05027c7faf16a105e000e977",
+      "selected": false,
+      "reason": "Accurate start pose was superseded by a wider composition to retain headroom through the loaded calf-raise endpoint. No video was dispatched from this composition.",
+      "retained": "private production staging; not shipped"
+    },
+    {
+      "sourceName": "exp-0108-endpoint-attempt1.png",
+      "originalBytes": 1719600,
+      "originalSha256": "7145fb802deda2a6ec5260cd870468416acb4a9003cee127dcb4079e05c11a5e",
+      "selected": false,
+      "reason": "Heel-rise endpoint cropped the head at the top edge. Rejected before any paid video.",
+      "retained": "private production staging; not shipped"
+    },
+    {
+      "sourceName": "exp-1314-reference-attempt1.png",
+      "originalBytes": 1820975,
+      "originalSha256": "94ee8f6c0d71a20657f54f908e476c8cf8dc1287965f4747e1446b8e691706d9",
+      "selected": false,
+      "reason": "Superseded by a wider composition with clearer lowered torso at the hip pivot and enough room for the raised endpoint. No video was dispatched from it.",
+      "retained": "private production staging; not shipped"
     }
   ]
 }

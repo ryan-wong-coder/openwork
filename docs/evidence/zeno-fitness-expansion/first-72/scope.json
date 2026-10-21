@@ -1,0 +1,15 @@
+{
+  "scope": "Frozen PWA evidence at 72 credited additional techniques, two supplemental duplicate-label pairs, and 32 original entries. Later production progress is separate.",
+  "acceptedAdditional": 72,
+  "supplementalCoverage": 2,
+  "additionalCanonicalCoverage": 74,
+  "totalReady": 106,
+  "browserChecks": 19,
+  "browserScreenshots": 16,
+  "productionPwaBuildPassed": true,
+  "nativeInstallerTestedHere": false,
+  "livePublished": false,
+  "complete1000": false,
+  "modelRequests": 0,
+  "desktopWindowsOpened": 0
+}

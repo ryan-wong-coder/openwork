@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "0293",
+  "englishName": "dumbbell bent over row",
+  "sourceDescriptorSha256": "4b4f7d5f06233da4ef24f78b22ac26f66b37aaf4572d642564af5e73fe257877",
+  "sourceSteps": [
+    "双脚分开与肩同宽站立，膝盖稍微弯曲，双手各握一个哑铃，手掌朝向身体。",
+    "臀部向前弯曲，保持背部挺直，核心肌群参与。",
+    "让你的手臂垂直垂向地板，肘部稍微弯曲。",
+    "将哑铃拉向胸部，将肩胛骨挤压在一起。",
+    "在顶部停顿片刻，然后慢慢将哑铃放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/app/src/assets/zeno/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "strategy": "paired start/end for one-way four-second generation, then only after actual visual approval forward/reverse composition",
+  "referencePoseReviewed": true,
+  "referenceApproval": "producer-self-review-authorized-by-root",
+  "reviewObservations": {
+    "start": "Neutral long hip-hinged back and softly bent knees with two planted feet; both arms hang vertically holding one dumbbell each in neutral grip.",
+    "end": "Both elbows pulled behind ribs, dumbbells beside lower chest, with same hinge/knees/feet/camera and neutral wrists."
+  },
+  "notes": [],
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "generationAttempts": [
+    {
+      "role": "start",
+      "attempt": 1,
+      "selected": true,
+      "sha256": "f9a0e8a183d7d8cb3d74e5a9c3373dd15bf9db863b12fb44a248cef806fc3eda",
+      "retainedInRepository": true
+    },
+    {
+      "role": "end",
+      "attempt": 1,
+      "selected": true,
+      "sha256": "16c2513793830e3802a3d74168c412ffab55ba09ed09d026a7b6e31c3c263692",
+      "retainedInRepository": true
+    }
+  ],
+  "references": [
+    {
+      "role": "start",
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-0293-reference.png",
+      "bytes": 1852048,
+      "sha256": "f9a0e8a183d7d8cb3d74e5a9c3373dd15bf9db863b12fb44a248cef806fc3eda"
+    },
+    {
+      "role": "end",
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-0293-endpoint.png",
+      "bytes": 1767534,
+      "sha256": "16c2513793830e3802a3d74168c412ffab55ba09ed09d026a7b6e31c3c263692"
+    }
+  ]
+}

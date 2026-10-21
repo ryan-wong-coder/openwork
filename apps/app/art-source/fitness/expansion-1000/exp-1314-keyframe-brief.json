@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "1314",
+  "englishName": "back extension on exercise ball",
+  "chineseName": "稳定球背部伸展",
+  "sourceDescriptorSha256": "e9ef6829ccc81355a01f94ede7fc8f7fcb23efbbfba47596c42859790b94de43",
+  "sourceSteps": [
+    "将稳定球放在地面上，面朝下躺在上面，臀部放在球上，双脚靠在墙壁或其他稳定的表面上。",
+    "将双手放在脑后或交叉在胸前。",
+    "启动你的核心，慢慢地将你的上半身抬离球，伸展你的背部，直到你的身体从头部到脚后跟形成一条直线。",
+    "在顶部停顿片刻，然后慢慢将上半身放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "sourceTechniqueReviewedForProduction": true,
+  "clinicalCertification": false,
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1314-reference-v2.png",
+      "bytes": 1605375,
+      "sha256": "87a7f941be4660b55c91157b934d0e30aa64edc59f4a3c79ce3f79e780b4ddb2"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1314-endpoint.png",
+      "bytes": 1634963,
+      "sha256": "36ca7edd7b6bd359beec1c87140c94d56595fe7926324f9e2453cf51011a2002"
+    }
+  ],
+  "referenceTool": "built-in image_gen.imagegen",
+  "producerActuallyViewedBothReferences": true,
+  "acceptedReferenceObservation": "Prone hips supported on fixed ball, straight legs extend to floor and wall-braced feet. Paws crossed at chest. Endpoint raises the upper torso into a near-straight continuation of legs without exaggerated lumbar arch; same foot and hip support.",
+  "renderingAssumption": "Source permits crossed chest paws. Warm ivory wall is the source-described stable foot support; no exact body/hip angle is asserted.",
+  "videoAccepted": false,
+  "readyMedia": false
+}

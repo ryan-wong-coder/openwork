@@ -1,0 +1,167 @@
+{
+  "canonicalExerciseId": "0030",
+  "englishName": "barbell close-grip bench press",
+  "nodeId": "234591ac-5122-42a1-837d-c8a22f3ca726",
+  "taskId": "20261021163703930928518",
+  "prompt": "首帧是 {{Node db1d49f0-a5bd-40a9-92b6-4714c7d0fd6c}}，尾帧是 {{Node 2d52e48d-21bb-4932-8636-8cd068d20e2e}}。保持同一水獭、黑色水平平凳、单青柠斜带、同一水平直杠铃和两侧片、相机和背景固定。4秒内只做一次窄握平凳卧推的向上推段：从胸前屈肘首帧开始，双手保持比肩略窄的正握和同一手距，双肘沿身体两侧慢慢伸展，将杠铃推离胸部到直臂尾帧。杠铃不能滑向颈部、头脸，不能变成肩推或宽握，不能更换握法或片数。头一直枕在凳垫、眼向上，背和臀留在凳上，两脚全掌/脚跟原地固定贴地，躯干不坐起、凳不倾斜。只缓慢推高一次并停在尾帧，不降低、不重复、不运镜。全身体、脚、尾和所有杠铃片完整入镜，无额外肢体、文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0030-reference-v2.png",
+      "bytes": 1748351,
+      "sha256": "3013fece9ab3c6538bec13a51cfdc8cc4d1a2df7d6d9dbe2d3c4c9fb91ae06d3",
+      "nodeId": "db1d49f0-a5bd-40a9-92b6-4714c7d0fd6c"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0030-endpoint.png",
+      "bytes": 1750257,
+      "sha256": "3b3b755de097b31fefa55452416892586653b2edb518b4c75fe426ae38c94b82",
+      "nodeId": "2d52e48d-21bb-4932-8636-8cd068d20e2e"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "234591ac-5122-42a1-837d-c8a22f3ca726",
+    "expectedReferenceNodeIds": [
+      "db1d49f0-a5bd-40a9-92b6-4714c7d0fd6c",
+      "2d52e48d-21bb-4932-8636-8cd068d20e2e"
+    ],
+    "imageListOrder": [
+      "db1d49f0-a5bd-40a9-92b6-4714c7d0fd6c",
+      "2d52e48d-21bb-4932-8636-8cd068d20e2e"
+    ],
+    "imageListNodeIds": [
+      "db1d49f0-a5bd-40a9-92b6-4714c7d0fd6c",
+      "2d52e48d-21bb-4932-8636-8cd068d20e2e"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "853702c86f5758527901a02cdb6a68677b76131eb786289251fa04782933166d",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true,
+    "actualReadOnlyPromptExactMatch": true,
+    "promptSha256": "6ad83874bdd352199b9bf0f6ba495b0724b0981f2ac30e096648805ee0f5cb04",
+    "promptReferenceNodeIdsInOrder": [
+      "db1d49f0-a5bd-40a9-92b6-4714c7d0fd6c",
+      "2d52e48d-21bb-4932-8636-8cd068d20e2e"
+    ],
+    "unexpandedPlaceholders": false
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "199698"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2521408"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "106297"
+    }
+  },
+  "originalSha256": "61e4d67ecda6bf01bef7da4fae6c8ec4ae5806f819ba4633385445dbbd13c575",
+  "originalBytes": 2521408,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "9688c7f6f0ba06601dcc08d8c21e48e7e1743b8e2892e1b70e7c07626f5a621d",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of barbell close-grip bench press from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, the complete forward frames were concatenated with the exact reversed frames, yielding 8.083333 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. Illustrates one controlled repetition, not a complete training set or prescribed training duration.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0030-contact-8fps.jpg",
+    "contactSha256": "e041e1200cfc6a4d249f123d6fe368bce27fd9060b239c0f8f0559b9fe5c4c80",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Root actually inspected the 16 forward and 64 final contact frames. Supine mascot keeps head, upper back and hips on the bench and feet planted. Both paws retain the narrow barbell grip while elbows extend to press above the chest, then the disclosed reversed footage returns to the start. The bar remains above the chest region rather than being lowered onto the neck; bench and plates stay fixed.",
+    "producerDetailFramesReviewedSeconds": [],
+    "rootDetailFramesReviewedSeconds": [],
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0030-one-way-contact-4fps.jpg",
+      "contactSha256": "ffd3a3f05932d10dc6a6d2207b419cf64bcefe3f20da5962d43a89ed6e54891a",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually inspected the 16 forward and 64 final contact frames. Supine mascot keeps head, upper back and hips on the bench and feet planted. Both paws retain the narrow barbell grip while elbows extend to press above the chest, then the disclosed reversed footage returns to the start. The bar remains above the chest region rather than being lowered onto the neck; bench and plates stay fixed.",
+    "producerObservationAtHandoff": "Actually viewed16 forward and64 final samples: same slightly-narrower-than-shoulder overhand grip extends both elbows in a flat-bench chest press.; Head, upper back and hips remain supported and feet planted, without body sit-up or widening grip; bar path stays above chest instead of touching neck.; Entire generated forward segment and its exact reversed return retained; no claim of independent generated return or rack/unrack sequence. Producer actually viewed 16 forward and 64 final samples; one-way and final full decodes passed."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "fac28dd83e39514594a4050a75bb3bdd4674a726e88b96ae72339aba0b2cb811",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true
+}

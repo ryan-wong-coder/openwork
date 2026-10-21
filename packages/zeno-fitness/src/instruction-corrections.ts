@@ -3,6 +3,19 @@
  * https://www.acefitness.org/resources/everyone/exercise-library/10/hammer-curl/
  */
 export const instructionCorrections: Readonly<Record<string, { englishName: string; steps: readonly string[] }>> = {
+  // The pinned barbell entry's second Chinese step incorrectly says dumbbell.
+  // Keep its existing movement sequence and correct only that equipment noun.
+  "0031": {
+    englishName: "barbell curl",
+    steps: [
+      "站直，双脚分开与肩同宽，反手握住杠铃，手掌朝前。",
+      "保持肘部靠近躯干，在弯举杠铃时呼气，同时收缩二头肌。",
+      "继续抬高杠铃，直到二头肌完全收缩并且杠铃与肩部齐平。",
+      "挤压二头肌时，保持收缩位置短暂停顿。",
+      "吸气，慢慢开始将杠铃放回起始位置。",
+      "重复所需的重复次数。",
+    ],
+  },
   "0313": {
     englishName: "dumbbell hammer curl",
     steps: [

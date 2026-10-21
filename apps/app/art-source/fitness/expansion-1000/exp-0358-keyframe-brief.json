@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "kind": "two-keyframe-illustration-plan",
+  "exerciseId": "0358",
+  "englishName": "dumbbell one arm reverse wrist curl",
+  "descriptorSha256": "6af76f6a9e9699cdbea465b30b6d9522afff1f65c4f4dddd3851b764f817455b",
+  "movementBrief": "exp-0358-movement-brief.json",
+  "startImage": {
+    "file": "exp-0358-reference.png",
+    "sha256": "8bfa7ae38a1b9f86d78baa44a9035e1e9a8d100dc29fa93cf44de63cecd0f8af",
+    "bytes": 1791558,
+    "width": 1672,
+    "height": 941
+  },
+  "endpointImage": {
+    "file": "exp-0358-endpoint.png",
+    "sha256": "12ac031b27eef11d5f60800a9b980e9dedeb26039d138786c29aefe347e0d68c",
+    "bytes": 1742657,
+    "width": 1672,
+    "height": 941
+  },
+  "startPrompt": {
+    "file": "exp-0358-poster-prompt.txt",
+    "sha256": "e7942fc5eadca12ec136e30f6f1199f0bc48ee52bbe1a4a8d9ec3e82a48db9ff",
+    "bytes": 1145
+  },
+  "endpointPrompt": {
+    "file": "exp-0358-endpoint-prompt-v2.txt",
+    "sha256": "1c509cc1f1f35f59e5a524648dbdfb33a7d1c6a5af2425b7a1357e83ccf6cff5",
+    "bytes": 898
+  },
+  "startTool": "built-in ImageGen",
+  "startImageAttempts": 1,
+  "endpointTool": "built-in ImageGen edit of accepted start",
+  "endpointEditAttempts": 2,
+  "fixedContactsAndScene": [
+    "臀坐凳、双足地面、右前臂大腿支撑；左空爪轻放左大腿。",
+    "正握掌朝下，右爪稳握一只小DB，腕轴固定。",
+    "fixed camera, ivory studio and original identity"
+  ],
+  "motion": "仅右腕伸展把低垂拳与DB抬回向前臂，肘肩不动。 围绕固定腕轴的小弧，不抬整条前臂，不旋后。",
+  "review": {
+    "startAndEndpointActuallyViewed": true,
+    "endpointDecision": "accepted-reference-for-parent-review",
+    "notes": [
+      "单爪一DB，掌朝下的腕伸不同于掌朝上的腕屈。",
+      "前臂仍接触大腿，不能借肘弯举。",
+      "Selected second endpoint uses a deliberately shallow wrist-extension arc with thigh-supported forearm preserved; first larger forearm drift rejected."
+    ],
+    "wholeVideoViewed": false,
+    "readyMedia": false
+  },
+  "plannedVideo": {
+    "inputMode": "native first-and-last-frame",
+    "oneWaySeconds": 4,
+    "direction": "start-to-end",
+    "returnPlan": "Only after one-way actual visual acceptance, forward segment plus exact reversed frames for nominal8second illustration.",
+    "assemblyPerformed": false,
+    "videoGeneratedByThisAgent": false,
+    "originalEightSecondGeneration": false,
+    "existingEightSecondAttemptReused": false
+  }
+}

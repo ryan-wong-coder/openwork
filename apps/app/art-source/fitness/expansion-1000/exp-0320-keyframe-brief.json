@@ -1,0 +1,51 @@
+{
+  "canonicalExerciseId": "0320",
+  "englishName": "dumbbell incline hammer curl",
+  "sourceDescriptorSha256": "b145344f422403ba94bb58748df2b312dc39ad3a67a2ea8839b86d6fb6b35371",
+  "sourceSteps": [
+    "坐在上斜凳上，每只手各握一个哑铃，手掌朝向躯干，手臂完全伸展。",
+    "背部靠在长凳上，双脚平放在地板上。",
+    "保持上臂静止，呼气并弯举哑铃，同时收缩二头肌。",
+    "继续举重，直到二头肌完全收缩并且哑铃与肩部齐平。",
+    "挤压二头肌时，保持收缩位置短暂停顿。",
+    "吸气并慢慢开始将哑铃放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "sourceStepsTechniqueReviewed": true,
+  "posterTool": "built-in image_gen.imagegen",
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0320-reference.png",
+      "bytes": 1774414,
+      "sha256": "b043268b460f64590eacca642e8d8237f24e0b1df0f8c6fc2959ba7ddef79e95"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0320-endpoint.png",
+      "bytes": 1756559,
+      "sha256": "3d29cbc47e6dfd14aa20db2fe4ec87e6dca258898fc44c627c4f37fe833a12c1"
+    }
+  ],
+  "producerActuallyViewedStartAndEnd": true,
+  "observation": "Incline bench bilateral neutral-grip hammer curl; actual rendered inclined back support retained without claiming exact angle; upper arms stay low, elbows flex, palms inward and dumbbells vertical at top.",
+  "scope": "One reversible movement preview; return will only be exact reversal after forward-phase review. Stretch timing and one-side examples do not claim a full prescribed hold or both sides.",
+  "readyMedia": false,
+  "notRegisteredByProducer": true,
+  "renderingAssumption": "An inclined supported adjustable bench is illustrated; exact back-pad angle was not prescribed by source and no numerical angle is claimed.",
+  "sourcePromptFiles": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0320-poster-prompt.txt"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0320-endpoint-prompt.txt"
+    }
+  ],
+  "identityReference": {
+    "file": "apps/zeno-site/public/assets/mascot.webp",
+    "role": "original identity only for start image; endpoint edited accepted start"
+  },
+  "restrictedUpstreamMediaUsed": false
+}

@@ -1,0 +1,147 @@
+{
+  "canonicalExerciseId": "0364",
+  "englishName": "dumbbell one arm wrist curl",
+  "nodeId": "7be5f7b5-80bf-492d-9ad2-8e5f092f2a1c",
+  "taskId": "20261021153403240998518",
+  "prompt": "首帧为 {{Node 0691c88f-c6a9-40ce-bd7f-9cba37e58620}}，尾帧为 {{Node 5bb682c4-ecf4-4667-8754-5885a59a0031}}。严格首尾帧固定镜头。泽诺坐平凳、双足地面、右前臂始终贴靠大腿，掌心朝上握住单哑铃。仅收拢手指并轻缓屈右手腕，从手指受控低位小幅卷向前臂到尾帧。哑铃始终真实握持，不能松手或漂浮；肘前臂根部固定，不能整个前臂抬起变二头弯举，不能翻掌变反腕伸。另一手放另一腿，身体凳子双脚尾巴均不动。4秒，无声无字。\n",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0364-reference.png",
+      "sha256": "413d78e20678d64a3eed0a021e047f8f7bccb870d711b6ce30d1074c4df0a9df",
+      "bytes": 1872158,
+      "nodeId": "0691c88f-c6a9-40ce-bd7f-9cba37e58620"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0364-endpoint.png",
+      "sha256": "619d26093e7ea532f9296e38dd367b2cbb3254a84019cd71fffec38be0264eb5",
+      "bytes": 1775094,
+      "nodeId": "5bb682c4-ecf4-4667-8754-5885a59a0031"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "Official CLI read-only node response after create without run and before the single paid run",
+    "nodeId": "7be5f7b5-80bf-492d-9ad2-8e5f092f2a1c",
+    "expectedReferenceNodeIds": [
+      "0691c88f-c6a9-40ce-bd7f-9cba37e58620",
+      "5bb682c4-ecf4-4667-8754-5885a59a0031"
+    ],
+    "imageListOrder": [
+      "0691c88f-c6a9-40ce-bd7f-9cba37e58620",
+      "5bb682c4-ecf4-4667-8754-5885a59a0031"
+    ],
+    "imageListNodeIds": [
+      "0691c88f-c6a9-40ce-bd7f-9cba37e58620",
+      "5bb682c4-ecf4-4667-8754-5885a59a0031"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "5ca19949b77cef4af3998d21ba22d3450007198055f3030ac0edb65bd83b6c42",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083008",
+      "size": "146166"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "1905907"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "81783"
+    }
+  },
+  "originalSha256": "b311502aee7a1d9b3d4a3f1be81c869bf77519c3005ce219842ab62e94526517",
+  "originalBytes": 1905907,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083008,
+  "oneWayEncodedSha256": "60553fdd848dda439abe9bf78d59179f37c90f0edb9c23e69a23dbf00c36a0c5",
+  "processing": "Seedance2.5 generated one ordered start/end4second one-way segment (actual 4.041667s). After actual16sample visual approval, encoded whole segment forward then exact reversed frame order to illustrate return, final 8.083008s. Return synthesized by reversal, not separately AI-generated; not an original8second continuous generation. H.264 CRF26,1024px,yuv420p,silent,faststart. WebP q86 poster extracted from actual first video frame.",
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0364-contact-8fps.jpg",
+    "contactSha256": "775cb830816e877660785dcd3acd05d3daa2a865c761573380129f763ed250a2",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "observation": "Root actually viewed 16 forward and 64 final contact samples: the supinated working paw closes its grip and curls the wrist a small distance with its forearm supported on the thigh; the opposite paw, seated body and feet remain steady, without a whole-arm elbow curl.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0364-one-way-contact-4fps.jpg",
+      "contactSha256": "c67952a8b0508af047ebe84ff5a14f70624345529060f470ddd48dfe92f39f31",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootReviewPending": false,
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually viewed 16 forward and 64 final contact samples: the supinated working paw closes its grip and curls the wrist a small distance with its forearm supported on the thigh; the opposite paw, seated body and feet remain steady, without a whole-arm elbow curl.",
+    "producerObservationAtHandoff": "Supinated single wrist curl, small finger-grip closing and distal wrist flexion to forearm. Forearm supported on thigh, other hand empty and still, no full elbow curl. Actual16and64contacts viewed; forward/reverse full8.083333s decoded."
+  },
+  "posterTool": "ffmpeg first generated video frame then cwebp q86; original ordered image references by built-in ImageGen",
+  "sourceDescriptorSha256": "7ae6e3328625c1fa7aed04988800f5048ad7f436d5a1ea35f78fd0922e3d1419",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "parentAdmissionPending": true
+}

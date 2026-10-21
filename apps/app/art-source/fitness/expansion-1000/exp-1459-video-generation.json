@@ -1,0 +1,158 @@
+{
+  "canonicalExerciseId": "1459",
+  "englishName": "dumbbell romanian deadlift",
+  "nodeId": "9a93f11a-c07e-44e4-97cd-ac0dad5c3add",
+  "taskId": "20261021151203431708518",
+  "prompt": "首帧为 {{Node f46fd4ff-4683-42e7-84fe-d13989616860}}，尾帧为 {{Node 18a7d5d6-ac72-445e-b2c3-3cb36d8ae722}}。4秒内只做一次双哑铃罗马尼亚硬拉的受控下降：双足在原位置平地固定，双膝仅轻微柔和弯曲，膝盖不大幅前移。以髋为铰链慢慢把臀向后推、长直中立背向前倾至尾帧舒适深度；头颈与脊柱同向自然低头，不抬头仰颈或弓背。双臂始终长直下垂，两哑铃保持原正握及形状，紧贴各自大腿前侧向膝附近下降，不远离身体、不弯举、不划船。臀保持相对高位，不能变成深蹲，脚跟不能抬起，尾巴不撑地。只下降到尾帧停住，生成中不站回不重复。 同一原创青色奶油水獭与青柠斜肩带、象牙摄影棚，固定镜头不缩放推拉或裁边，完整身体和全部器械可见，无额外肢体、文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1459-reference.png",
+      "bytes": 1741508,
+      "sha256": "12b2917e3825310242f69645e484c70bf987f64972d4e2faad67e65880a80dfe",
+      "nodeId": "f46fd4ff-4683-42e7-84fe-d13989616860"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1459-endpoint.png",
+      "bytes": 1759654,
+      "sha256": "886eb0c81c697c430660c0d2ab441abcce9c94b257ffa4994d32945e6fd22f24",
+      "nodeId": "18a7d5d6-ac72-445e-b2c3-3cb36d8ae722"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "9a93f11a-c07e-44e4-97cd-ac0dad5c3add",
+    "expectedReferenceNodeIds": [
+      "f46fd4ff-4683-42e7-84fe-d13989616860",
+      "18a7d5d6-ac72-445e-b2c3-3cb36d8ae722"
+    ],
+    "imageListOrder": [
+      "f46fd4ff-4683-42e7-84fe-d13989616860",
+      "18a7d5d6-ac72-445e-b2c3-3cb36d8ae722"
+    ],
+    "imageListNodeIds": [
+      "f46fd4ff-4683-42e7-84fe-d13989616860",
+      "18a7d5d6-ac72-445e-b2c3-3cb36d8ae722"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "dd36468aaf02b8012ee15ab5dce82eefe98c294404874eb946d3805b5f532a4e",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "212993"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2649571"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "110701"
+    }
+  },
+  "originalSha256": "7823590cbf4507a6e67663401240a1a04b64214f4a707ecb87139b577f86b55e",
+  "originalBytes": 2649571,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "c822455ee88712a26e61c9cd76ba82c448fa2b68d8cfdc3ef2b9f564a6958a76",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of dumbbell romanian deadlift from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083333 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. One reversible forward movement preview; return only exact reversal after actual forward review.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1459-contact-8fps.jpg",
+    "contactSha256": "8aebffda97fe7c06944ca1076f47b1ff5bb936e71fb73d6a6b6482fa94ec582d",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Root actually viewed 16 forward and 64 final samples. A mild fixed knee bend and backward hip hinge lower the torso with long arms and dumbbells near the legs to a comfortable knee-height range; no deep squat, floor-touch requirement or exact angle is asserted.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1459-one-way-contact-4fps.jpg",
+      "contactSha256": "9e737866c6116ed12fc5d8313fd4b332901343f98ae5a69942f8ecd379ee2258",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually viewed 16 forward and 64 final samples. A mild fixed knee bend and backward hip hinge lower the torso with long arms and dumbbells near the legs to a comfortable knee-height range; no deep squat, floor-touch requirement or exact angle is asserted.",
+    "producerObservationAtHandoff": "Hips hinge back while long neutral torso inclines with small knee flexion, both long arms lower two dumbbells close to legs toward a comfortable knee-level depth. Feet remain grounded, no deep squat, curl, row or rounding. Reversed return follows same path; no numerical angle, maximal range or floor-touch claim. Producer actually viewed 16 forward and 64 final samples. Root review pending. Full one-way and final frames decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "ca7a47a6f54b2e5cddfdf808a14893989b165aeb26d3f4906582cc59f1fe6aa7",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true
+}

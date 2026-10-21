@@ -1,0 +1,167 @@
+{
+  "canonicalExerciseId": "0091",
+  "englishName": "barbell seated overhead press",
+  "nodeId": "3a9a5b4c-e879-48b8-bf1c-a8e9cf95583b",
+  "taskId": "20261021161503414288518",
+  "prompt": "首帧是 {{Node feb1c46e-f1e6-4c87-9c7d-ba974e56d620}}，尾帧是 {{Node 21ca9afb-78c3-44c6-91bc-9e869232a371}}。保持原水獭、象牙背景、单青柠斜带、同一水平杠铃和两侧杠铃片、黑色平凳、双足位置和相机完全固定。4秒内从前肩高度首帧，只做一次坐姿杠铃过头推举的上推：双前爪保持同一正握和手距，双肘缓慢伸展，把完整杠铃向上推到头顶上方直臂尾帧。杠铃始终水平、双手同步，不把杆或重量穿过头脸，不做颈后推举、不只耸肩、不站起。背和躯干保持直立、不后仰，臀一直在凳上，两脚全掌和脚跟原地贴地。只上推一次并轻停，不下放、不重复。完整身体、双脚、尾和杠铃片全程入镜，无缩放、剪辑、额外肢体、声音、文字或水印。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0091-reference.png",
+      "bytes": 1631762,
+      "sha256": "e91f9706d7b2c4fc5c1dab7dcff3ca4eaa799442cc8761a9ea6416cfe6503695",
+      "nodeId": "feb1c46e-f1e6-4c87-9c7d-ba974e56d620"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0091-endpoint.png",
+      "bytes": 1599967,
+      "sha256": "dbf1b73c28b0309072bfdc9fb20de300c319d79f8f680ae180171a422d888d67",
+      "nodeId": "21ca9afb-78c3-44c6-91bc-9e869232a371"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "3a9a5b4c-e879-48b8-bf1c-a8e9cf95583b",
+    "expectedReferenceNodeIds": [
+      "feb1c46e-f1e6-4c87-9c7d-ba974e56d620",
+      "21ca9afb-78c3-44c6-91bc-9e869232a371"
+    ],
+    "imageListOrder": [
+      "feb1c46e-f1e6-4c87-9c7d-ba974e56d620",
+      "21ca9afb-78c3-44c6-91bc-9e869232a371"
+    ],
+    "imageListNodeIds": [
+      "feb1c46e-f1e6-4c87-9c7d-ba974e56d620",
+      "21ca9afb-78c3-44c6-91bc-9e869232a371"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "f43304ac7fb0a245d71524544253ba7fcf7191f981871f3ec5a6aea2b05018ca",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true,
+    "actualReadOnlyPromptExactMatch": true,
+    "promptSha256": "f0cea6db85b9196b8eb1bdb3ea4b73050e5ca4ec114a47181df468ac3bde4fce",
+    "promptReferenceNodeIdsInOrder": [
+      "feb1c46e-f1e6-4c87-9c7d-ba974e56d620",
+      "21ca9afb-78c3-44c6-91bc-9e869232a371"
+    ],
+    "unexpandedPlaceholders": false
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083008",
+      "size": "180125"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2063523"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "93422"
+    }
+  },
+  "originalSha256": "c021c0373e871a194cc5ad96a43a1f38a18425b7d34588724f9534dbf1d73af2",
+  "originalBytes": 2063523,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083008,
+  "oneWayEncodedSha256": "968e4c79e751f1c0ea9e2fc7e193f16f7248de6622621caaa8fc6a514e03423d",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of barbell seated overhead press from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, the complete forward frames were concatenated with the exact reversed frames, yielding 8.083008 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. Illustrates one controlled repetition, not a complete training set or prescribed training duration.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0091-contact-8fps.jpg",
+    "contactSha256": "e1776c83a2e32cbf4e7fd27fc06560b09bd7822963d1679fafe91460907d49d6",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Root actually inspected the 16 forward and 64 final contact frames. The seated mascot presses one unchanged barbell from shoulder height to overhead, maintaining the pronated grip width, fixed bench and grounded feet. Torso remains upright without a standing assist or backward arch. Plate count remains consistent and the return uses the disclosed reversed forward footage.",
+    "producerDetailFramesReviewedSeconds": [],
+    "rootDetailFramesReviewedSeconds": [],
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0091-one-way-contact-4fps.jpg",
+      "contactSha256": "59dc68d4ab9e41f93f396e968014e0787d7945effe82d5c7c5119dfaa0d160e8",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually inspected the 16 forward and 64 final contact frames. The seated mascot presses one unchanged barbell from shoulder height to overhead, maintaining the pronated grip width, fixed bench and grounded feet. Torso remains upright without a standing assist or backward arch. Plate count remains consistent and the return uses the disclosed reversed forward footage.",
+    "producerObservationAtHandoff": "Actual16 forward and64 final samples viewed: both elbows extend in a seated front-shoulder barbell overhead press, same grip and plate count throughout.; Bar fully clears head at endpoint; hips stay on flat bench and feet/heels remain planted, without standing, torso lean or changing bench.; One generated upward phase and exact reversed lowering preview; no independently generated return claim. Producer actually viewed 16 forward and 64 final samples; one-way and final full decodes passed."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "78df99f183e4d8af7e7b21e806e61ca7524d47180aac041dc1ea9b92972215a9",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true
+}

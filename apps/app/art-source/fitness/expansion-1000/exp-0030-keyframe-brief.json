@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "0030",
+  "englishName": "barbell close-grip bench press",
+  "sourceDescriptorSha256": "fac28dd83e39514594a4050a75bb3bdd4674a726e88b96ae72339aba0b2cb811",
+  "sourceSteps": [
+    "平躺在长凳上，双脚平放在地上，背部紧贴长凳。",
+    "紧紧握住杠铃，握距略窄于肩宽。",
+    "松开杠铃并将其缓慢降低至胸部，保持肘部靠近身体。",
+    "当杠铃触及胸部时暂停片刻。",
+    "将杠铃推回到起始位置，完全伸展双臂。",
+    "重复所需的重复次数。"
+  ],
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0030-reference-v2.png",
+      "bytes": 1748351,
+      "sha256": "3013fece9ab3c6538bec13a51cfdc8cc4d1a2df7d6d9dbe2d3c4c9fb91ae06d3"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0030-endpoint.png",
+      "bytes": 1750257,
+      "sha256": "3b3b755de097b31fefa55452416892586653b2edb518b4c75fe426ae38c94b82"
+    }
+  ],
+  "sourceTechniqueReviewedForProduction": true,
+  "clinicalCertification": false,
+  "producerActuallyViewedBothReferences": true,
+  "referenceTool": "built-in image_gen.imagegen",
+  "acceptedReferenceObservation": "Supine flat-bench bottom press with head/back/hips supported, gaze upward, both feet planted, elbows tucked and slightly-narrower-than-shoulder grip. Endpoint extends both arms above chest without moving head, feet, hips or bench; grip/plate count stay unchanged.",
+  "renderingAssumption": "Preview begins at the bottom of the press after unracking; no rack/unrack procedure or exact bar mass is asserted.",
+  "selectedStartAttempt": 2,
+  "selectedEndAttempt": 1,
+  "videoAccepted": false,
+  "readyMedia": false
+}

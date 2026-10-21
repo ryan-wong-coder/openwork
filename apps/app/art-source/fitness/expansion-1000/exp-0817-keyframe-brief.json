@@ -1,0 +1,48 @@
+{
+  "canonicalExerciseId": "0817",
+  "englishName": "triceps stretch",
+  "sourceDescriptorSha256": "d01199e45793992a3fef39facd61e3e51f13cd10c9c1e871a0c7a44476f0b325",
+  "sourceSteps": [
+    "站立或坐直，背部挺直。",
+    "将一只手臂伸过头顶，肘部弯曲。",
+    "将另一只手放在弯曲的肘部上，然后轻轻地将其拉向头部。",
+    "保持拉伸 15-30 秒，感受三头肌的轻微拉伸。",
+    "松开拉伸并在另一只手臂上重复。"
+  ],
+  "sourceStepsTechniqueReviewed": true,
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0817-reference.png",
+      "bytes": 1687275,
+      "sha256": "d657c1d301163de81ea5d39e39dfcc7dfa59e510a32fee45f89af147be5588c3"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0817-endpoint.png",
+      "bytes": 1650303,
+      "sha256": "eb6aadde1feec44e4239e8af39736eb93abf6d562ee5e32bef89f7c10c1f0621"
+    }
+  ],
+  "sourcePromptFiles": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0817-poster-prompt.txt"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0817-endpoint-prompt.txt"
+    }
+  ],
+  "posterTool": "built-in image_gen.imagegen",
+  "identityReference": {
+    "file": "apps/zeno-site/public/assets/mascot.webp",
+    "role": "identity only for start; endpoint edited accepted start"
+  },
+  "producerActuallyViewedStartAndEnd": true,
+  "observation": "Overhead triceps stretch: bent right elbow stays overhead, other paw moves from upper arm to gently support elbow, neutral upright torso and feet fixed. Short single-side entry example, not15-30s hold.",
+  "scope": "One reversible forward movement preview, with any return synthesized by exact reversed frames after actual one-way review. Single-side short stretch entry; not the prescribed15-30 second hold or demonstration of both sides.",
+  "restrictedUpstreamMediaUsed": false,
+  "readyMedia": false,
+  "notRegisteredByProducer": true
+}

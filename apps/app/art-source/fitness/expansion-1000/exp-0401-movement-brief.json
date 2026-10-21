@@ -1,0 +1,52 @@
+{
+  "order": 256,
+  "exerciseId": "0401",
+  "englishName": "dumbbell seated palms up wrist curl",
+  "chineseName": "哑铃坐姿掌心向上腕弯举",
+  "equipmentId": "dumbbell",
+  "bodyPartId": "lower arms",
+  "muscles": {
+    "primaryIds": [
+      "forearm"
+    ],
+    "primaryLabels": [
+      "前臂"
+    ],
+    "secondaryIds": [
+      "biceps",
+      "deltoids"
+    ],
+    "secondaryLabels": [
+      "肱二头肌",
+      "三角肌"
+    ]
+  },
+  "sourceSteps": [
+    "坐在长凳上，双脚平放在地上，双手各握一个哑铃，掌心朝上。",
+    "将前臂放在大腿上，让手腕悬在边缘。",
+    "慢慢向上弯曲手腕，在动作的最高点挤压前臂。",
+    "暂停片刻，然后将手腕放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "descriptorSha256": "63241859bb5f9628d03efff53297bbc7858041355b71d693a8906af11c5b3398",
+  "startPose": "坐平凳双手掌上腕屈低位，双前臂各自贴同侧大腿。",
+  "support": "臀凳、双足地面、两前臂大腿；双腕越过膝缘。",
+  "grip": "双手各一小哑铃，掌心朝上旋后，握杆不断开。",
+  "jointMotion": "仅双腕同步屈曲向前臂靠近，肘和前臂不抬。",
+  "path": "小范围低位伸腕到上屈，双腕轴位置固定。",
+  "camera": "固定前方略侧30度，看清两掌面与两膝缘的支撑。",
+  "criticalChecks": [
+    "两前臂支撑于大腿而非长凳前缘。",
+    "掌心朝上，区别旋前腕伸0385。",
+    "两独立哑铃不断握，避免肘弯举。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceStepsActuallyRead": true,
+  "sourceIssues": [],
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "oneWayGenerationSeconds": 4,
+    "return": "Only after actual one-way review, exact reversed frame order for return; not original8second continuous generation."
+  }
+}

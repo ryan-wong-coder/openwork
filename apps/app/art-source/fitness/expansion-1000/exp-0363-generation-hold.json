@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "exerciseId": "0363",
+  "englishName": "dumbbell one arm upright row",
+  "descriptorSha256": "a4e712e624b454fd49fcc9546c60c4906dec00d7819f46ffa97b0e45525c74ca",
+  "status": "hold-reference-geometry",
+  "startImageAccepted": true,
+  "endpointAttempts": 2,
+  "endpointAccepted": false,
+  "reason": "First endpoint turned dumbbell vertical with wrist kink; second restored horizontal equipment but elbow is still below wrist rather than leading outside/above hand in a clear upright row. Do not submit ambiguous elbow-curl-like endpoints.",
+  "rejectedEndpoints": [
+    {
+      "attempt": 1,
+      "sha256": "81a61ac74a0c6e2b63ae45ca3e6f2b534623944648050c9c28cd079e96ec6254",
+      "privateOnly": true
+    },
+    {
+      "attempt": 2,
+      "sha256": "69efa031f38bbe62d811da1c02563d7fbc790af79642f3947608fa433b130613",
+      "privateOnly": true
+    }
+  ],
+  "videoRun": false,
+  "readyMedia": false
+}

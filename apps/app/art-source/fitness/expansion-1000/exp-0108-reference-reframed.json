@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "exerciseId": "0108",
+  "supersededReferenceSha256": "3c0cebd6d70f34e808a3714e3537b68f61474fea05027c7faf16a105e000e977",
+  "supersededReferenceBytes": 1749022,
+  "reason": "Start pose itself was accurate but headroom was insufficient for the heel-rise endpoint. Selected reference v2 uses a wider fixed composition for both frames.",
+  "privateOriginalRetained": true,
+  "noPaidRunFromSupersededComposition": true
+}

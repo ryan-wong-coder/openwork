@@ -1,0 +1,158 @@
+{
+  "canonicalExerciseId": "0320",
+  "englishName": "dumbbell incline hammer curl",
+  "nodeId": "5b73e6b5-0047-40dd-987e-1c7257dd631f",
+  "taskId": "20261021142603260048518",
+  "prompt": "首帧为 {{Node 4efd795a-41b1-4a1c-9fec-bd5be9268b35}}，尾帧为 {{Node 09a953e5-4ce0-477a-9518-bd9f37a40fce}}。4秒内只做一次上斜凳双哑铃锤式弯举：同一上斜凳的倾角、座位与所有支架结构完全保持，头背和臀始终贴靠原靠垫座面，双脚在原处平地。双上臂自然下垂在身体两侧、双肘低位固定，只通过双肘缓慢屈曲，把各自哑铃向对应肩前移至尾帧。全程中立锤式握法：两掌相向/朝向躯干，不转成掌心朝上的普通弯举；上举时哑铃长轴逐渐接近垂直，上下两端各在握爪上方与下方。不能把肘向前抬成前平举、不能离开靠垫坐直、拱背或站起。两只独立哑铃一直握牢形状不变，到尾帧停住，不下放不重复。 保持同一原创青色奶油水獭、青柠肩带、固定象牙棚景，镜头无推拉缩放剪切，所有身体和器械完整入镜，无额外肢体、文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0320-reference.png",
+      "bytes": 1774414,
+      "sha256": "b043268b460f64590eacca642e8d8237f24e0b1df0f8c6fc2959ba7ddef79e95",
+      "nodeId": "4efd795a-41b1-4a1c-9fec-bd5be9268b35"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0320-endpoint.png",
+      "bytes": 1756559,
+      "sha256": "3d29cbc47e6dfd14aa20db2fe4ec87e6dca258898fc44c627c4f37fe833a12c1",
+      "nodeId": "09a953e5-4ce0-477a-9518-bd9f37a40fce"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "5b73e6b5-0047-40dd-987e-1c7257dd631f",
+    "expectedReferenceNodeIds": [
+      "4efd795a-41b1-4a1c-9fec-bd5be9268b35",
+      "09a953e5-4ce0-477a-9518-bd9f37a40fce"
+    ],
+    "imageListOrder": [
+      "4efd795a-41b1-4a1c-9fec-bd5be9268b35",
+      "09a953e5-4ce0-477a-9518-bd9f37a40fce"
+    ],
+    "imageListNodeIds": [
+      "4efd795a-41b1-4a1c-9fec-bd5be9268b35",
+      "09a953e5-4ce0-477a-9518-bd9f37a40fce"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "a0956edb1c6ad10313ff605e3d676866e45cdc2633ab7464ec644f9e93c56462",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083008",
+      "size": "185847"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2347511"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "100762"
+    }
+  },
+  "originalSha256": "4835ff641f46ce37684afc7d9e8896f623b5abd838d9b7eb4419ec67eadba63f",
+  "originalBytes": 2347511,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083008,
+  "oneWayEncodedSha256": "016a8faaecff76b1b869e752c838d4f8b831afa1d3c1381f8631081eef4fe848",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of dumbbell incline hammer curl from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083008 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. One reversible movement preview; return will only be exact reversal after forward-phase review. Stretch timing and one-side examples do not claim a full prescribed hold or both sides.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0320-contact-8fps.jpg",
+    "contactSha256": "ff89dc33dfb9c1617762602bf6b3d5eeff2f59548cfaf9a61362334eda2093c4",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Both elbows flex while upper arms remain low, with neutral inward-facing hammer grips and dumbbells vertical near top. Return uses exact reversed frames. Head/back/hips keep the inclined support, feet remain grounded and the same bench geometry persists. No palm-up rotation, front raise, back arch or sitting upright away from pad; no numerical incline angle claimed. Producer actually viewed 16 forward and 64 final samples. Root actually viewed 16 forward and 64 final samples; accepted. Full one-way and final frames decoded without errors.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0320-one-way-contact-4fps.jpg",
+      "contactSha256": "c378302a4ff1a9d02d389f3eb6cc5d8fcd082b40582aa868fcbddfd1dbf3e213",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually viewed 16 forward and 64 final frames: low upper arms flex at elbows in a neutral hammer grip, dumbbells reach shoulders, and head, back and hips remain supported by the unchanged incline bench."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "b145344f422403ba94bb58748df2b312dc39ad3a67a2ea8839b86d6fb6b35371",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "renderingAssumption": "An inclined supported adjustable bench is illustrated; exact back-pad angle was not prescribed by source and no numerical angle is claimed."
+}

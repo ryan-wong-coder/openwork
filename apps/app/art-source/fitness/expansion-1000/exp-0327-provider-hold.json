@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "0327",
+  "englishName": "dumbbell incline row",
+  "attempt": 1,
+  "nodeId": "dc5dfae7-aeff-4ebf-b2e4-f5f6a98cc8a8",
+  "taskId": "20261021155303165838518",
+  "officialTerminalStatus": 3,
+  "providerResult": "Video generation rejected by provider safety review. No video output was delivered.",
+  "reportedRefund": "The official CLI message says credits will be returned within two hours; refund not independently confirmed.",
+  "notQuotaFailure": true,
+  "noResubmission": true,
+  "readyMedia": false,
+  "decision": "hold this candidate; do not attempt to bypass provider moderation",
+  "rawTerminalReceiptSha256": "263e7c0d75b7e10ce63cf5faf73e7f65a30e005706ead95e99bde4d12b648350",
+  "rawReadOnlyReceiptSha256": "289eb6041935bf525ab00ad76da8606208406f7898dacc3b8407da1dd4f0db33",
+  "rawReceiptsRetainedPrivately": true
+}

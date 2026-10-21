@@ -1,0 +1,53 @@
+{
+  "canonicalExerciseId": "0351",
+  "englishName": "dumbbell lying triceps extension",
+  "sourceDescriptorSha256": "942366de728376d03facabd61d2d0b9649cc0bc51aa397ef3de256666881ac88",
+  "sourceSteps": [
+    "平躺在长凳上，双手各握一个哑铃，手掌相对。",
+    "将手臂伸直越过胸部，保持肘部靠近身体。",
+    "将哑铃向前额方向降低，弯曲肘部。",
+    "暂停片刻，然后将手臂伸回到起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "sourceStepsTechniqueReviewed": true,
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0351-reference.png",
+      "bytes": 1888959,
+      "sha256": "d38b1a0876f596f5d3387d679f2f59758f6226d7243f2693ee668654d52f77a2"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0351-endpoint.png",
+      "bytes": 1827215,
+      "sha256": "bb8bc399ffcbfd59536a8159219150402fb026b443ae22ca1611b9a7082fa3c5"
+    }
+  ],
+  "sourcePromptFiles": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0351-poster-prompt.txt"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0351-endpoint-prompt.txt"
+    }
+  ],
+  "posterTool": "built-in image_gen.imagegen",
+  "identityReference": {
+    "file": "apps/zeno-site/public/assets/mascot.webp",
+    "role": "identity only for start; endpoint edited accepted start"
+  },
+  "producerActuallyViewedStartAndEnd": true,
+  "observation": "Flat bench bilateral triceps extension: upper arms remain above chest, only elbows flex to bring two distinct neutral-grip dumbbells toward forehead; no chest press or pullover.",
+  "scope": "One reversible forward movement preview, with any return synthesized by exact reversed frames after actual one-way review.",
+  "restrictedUpstreamMediaUsed": false,
+  "readyMedia": false,
+  "notRegisteredByProducer": true,
+  "semanticRelationship": {
+    "relatedCanonicalExerciseId": "0340",
+    "relationship": "Same general flat-bench setup but different movement:0340 lowers elbows beside chest for a press;0351 keeps upper arms raised while only elbows flex toward forehead for triceps extension. Distinct exact-source technique, not a reused clip.",
+    "distinctMovement": true
+  }
+}

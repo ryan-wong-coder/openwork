@@ -5,6 +5,12 @@ The frozen 1.1.2 baseline covers **32 mainstream exact catalogue exercises** wit
 Additional independently generated mascot posters and videos are recorded under
 `expansion-1000/`. Its `selection.json` is a 1,000-item production plan, while
 `progress.json` and the runtime/provenance manifests report only accepted media.
+`acceptedAdditional` counts distinct reviewed techniques toward the 1,000-item target.
+`supplementalCoverage` records independent accepted media for catalogue labels that
+describe an already covered technique; those labels improve catalogue coverage but
+do not receive a second target credit. `totalReady` includes the baseline and both
+types of accepted coverage. Every label still requires its own exact identity,
+independent files, full decoding and actual frame review.
 The planning inputs preserve their original text; reviewed instruction corrections in
 the app do not reshuffle that queue. `selection-history/` preserves the original
 selection bytes and the subsequent source-metadata revision.

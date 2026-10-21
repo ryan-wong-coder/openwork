@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "0315",
+  "englishName": "dumbbell incline biceps curl",
+  "sourceDescriptorSha256": "196ef7642034bdd7e58d5bb4f844379ece0877ce16c91e900771838a24e699ee",
+  "sourceSteps": [
+    "坐在上斜凳上，双手各握一个哑铃，手掌朝前，双臂完全伸展。",
+    "保持上臂静止，呼气并弯举哑铃，同时收缩二头肌。",
+    "继续举起哑铃，直到二头肌完全收缩并且哑铃与肩部齐平。",
+    "挤压二头肌时，保持收缩位置短暂停顿。",
+    "吸气并慢慢开始将哑铃放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/app/src/assets/zeno/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "strategy": "paired start/end for one-way four-second generation, then only after actual visual approval forward/reverse composition",
+  "referencePoseReviewed": true,
+  "referenceApproval": "producer-self-review-authorized-by-root",
+  "reviewObservations": {
+    "start": "Clearly inclined supported backrest and seat, head/back/hips supported and both feet planted. Two distinct matching dumbbells held low beside hips with nearly straight arms and underhand grasp.",
+    "end": "Same bench/head/back/hip/feet/camera contacts retained, forearms curl matching dumbbells toward same-side shoulders. Upper arms stay down beside torso, no overhead press or torso lift."
+  },
+  "notes": [],
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "generationAttempts": [
+    {
+      "role": "start",
+      "attempt": 1,
+      "selected": true,
+      "sha256": "a0129c87671418da52afa71ae71d0847764097db6129928005a97d7e6967335a",
+      "retainedInRepository": true
+    },
+    {
+      "role": "end",
+      "attempt": 1,
+      "selected": true,
+      "sha256": "34b93c65558acf61fccf1f85cd5f49278bf1190b08e68e9c0f2d6e6de137fb4c",
+      "retainedInRepository": true
+    }
+  ],
+  "references": [
+    {
+      "role": "start",
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-0315-reference.png",
+      "bytes": 1812339,
+      "sha256": "a0129c87671418da52afa71ae71d0847764097db6129928005a97d7e6967335a"
+    },
+    {
+      "role": "end",
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-0315-endpoint.png",
+      "bytes": 1793885,
+      "sha256": "34b93c65558acf61fccf1f85cd5f49278bf1190b08e68e9c0f2d6e6de137fb4c"
+    }
+  ]
+}

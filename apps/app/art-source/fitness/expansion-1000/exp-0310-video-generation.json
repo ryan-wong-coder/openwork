@@ -1,0 +1,152 @@
+{
+  "canonicalExerciseId": "0310",
+  "englishName": "dumbbell front raise",
+  "nodeId": "bc32d16c-16ef-400e-b069-051fd5357292",
+  "taskId": "20261021155503099478518",
+  "prompt": "首帧为 {{Node 76824bc1-254e-44dc-a63a-480f6112b14b}}，尾帧为 {{Node d8600c13-72d6-438f-9124-a50bc95247db}}。严格首尾帧4秒固定镜头。泽诺双足稳地，双手各握一个分离哑铃，双臂近直从大腿前同时向身体正前方缓慢抬高至肩高。主要是肩前屈，肘微屈角度保持不变，绝不能先屈肘做curl或把手臂向两侧张开。双DB全程握紧、间距固定，肩不耸、腰背不后仰、头脚躯干尾巴背景都固定，无字无声。\n",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0310-reference.png",
+      "sha256": "df90f15601bdb5b4162f95272f549a1904b6c574860a4a3401de445160a5d440",
+      "bytes": 1703455,
+      "nodeId": "76824bc1-254e-44dc-a63a-480f6112b14b"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0310-endpoint.png",
+      "sha256": "6b6e8b1b3907bf43782b15c20956a91d00e76fd3a1ff81d473eadb5cfbf642a6",
+      "bytes": 1666842,
+      "nodeId": "d8600c13-72d6-438f-9124-a50bc95247db"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "Official CLI read-only node response after create without run and before the single paid run",
+    "nodeId": "bc32d16c-16ef-400e-b069-051fd5357292",
+    "expectedReferenceNodeIds": [
+      "76824bc1-254e-44dc-a63a-480f6112b14b",
+      "d8600c13-72d6-438f-9124-a50bc95247db"
+    ],
+    "imageListOrder": [
+      "76824bc1-254e-44dc-a63a-480f6112b14b",
+      "d8600c13-72d6-438f-9124-a50bc95247db"
+    ],
+    "imageListNodeIds": [
+      "76824bc1-254e-44dc-a63a-480f6112b14b",
+      "d8600c13-72d6-438f-9124-a50bc95247db"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "8a4de0bdad4e602fc180da02427eb6e0cb8d71c6f0c5a3dcc3f1a3e48e428e34",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "202206"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2457291"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "104609"
+    }
+  },
+  "originalSha256": "91b36df4437fc3940d8187fcb9c876f260133499a38be4d004da2d8080cfb767",
+  "originalBytes": 2457291,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "7f13de6fbe84c184e3ffd7329a092a5e16c47041f3cbb931f7ab87e874d6e739",
+  "processing": "Seedance2.5 generated one ordered start/end4second one-way segment (actual 4.041667s). After actual16sample visual approval, encoded whole segment forward then exact reversed frame order to illustrate return, final 8.083333s. Return synthesized by reversal, not separately AI-generated; not an original8second continuous generation. H.264 CRF26,1024px,yuv420p,silent,faststart. WebP q86 poster extracted from actual first video frame.",
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0310-contact-8fps.jpg",
+    "contactSha256": "b8c3f8ee2023db27dd77a8aaa156f02772171d425857badf12cd24157b6e53a4",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "observation": "Root actually inspected the 16 forward and 64 final contact frames. Two dumbbells travel forward from the thighs to about shoulder height with nearly straight elbows, fixed feet and a stable torso. The return is disclosed reversed forward footage. The frozen source steps match already-covered 0834, so this independent pair covers its own canonical entry without earning another technique toward the target.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0310-one-way-contact-4fps.jpg",
+      "contactSha256": "3ab8454dfcdbe8ef3514977748e6b8954622049c9a338d808423928c45376b7b",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootReviewPending": false,
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually inspected the 16 forward and 64 final contact frames. Two dumbbells travel forward from the thighs to about shoulder height with nearly straight elbows, fixed feet and a stable torso. The return is disclosed reversed forward footage. The frozen source steps match already-covered 0834, so this independent pair covers its own canonical entry without earning another technique toward the target.",
+    "producerObservationAtHandoff": "16and64contacts actually viewed, near-straight bilateral shoulder front raise to shoulder height, no elbow curl/lateral spreading. Two separate held DBs, feet/trunk fixed. Additional original-size mid-frame reviewed by producer only. Full decoded forward/reverse illustration."
+  },
+  "posterTool": "ffmpeg first generated video frame then cwebp q86; original ordered image references by built-in ImageGen",
+  "sourceDescriptorSha256": "4d825f6af4e5fa7960b9f825459936126f174eb1aadbf246699d12e9822cbe52",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "parentAdmissionPending": true,
+  "productionCredit": {
+    "creditedTowardTarget": false,
+    "sameTechniqueAs": "0834",
+    "reason": "The complete source steps are identical and both demonstrations use two separate dumbbells raised forward together to shoulder height; the weighted versus dumbbell label does not create a different technique."
+  }
+}

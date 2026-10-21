@@ -1,0 +1,48 @@
+{
+  "canonicalExerciseId": "0396",
+  "englishName": "dumbbell seated lateral raise",
+  "sourceDescriptorSha256": "b475583b79fef8a5fbfc547114dbdea589a197c3aaaff573caf4d2cd8525e204",
+  "sourceSteps": [
+    "坐在长凳上，双脚平放在地上，每只手各拿一个哑铃，放在大腿上。",
+    "保持背部挺直，核心参与。",
+    "将哑铃举至身体两侧，肘部稍微弯曲，直到手臂与地面平行。",
+    "在顶部停顿片刻，然后慢慢将哑铃放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "sourceStepsTechniqueReviewed": true,
+  "posterTool": "built-in image_gen.imagegen",
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0396-reference.png",
+      "bytes": 1747829,
+      "sha256": "5805f320b9e135b3ac6e36485343344786de8b05aac5171b419e9b5eae4b9588"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0396-endpoint.png",
+      "bytes": 1696078,
+      "sha256": "b00c97d76bfa51a8dee6bba6c7e8002eafecad3819583a7dd613d4732592ef50"
+    }
+  ],
+  "producerActuallyViewedStartAndEnd": true,
+  "observation": "Seated bilateral dumbbell lateral raise from thigh-rest to shoulder-level wide T; hips, knees, feet and actual flat bench geometry fixed.",
+  "scope": "One reversible movement preview; return will only be exact reversal after forward-phase review. Stretch timing and one-side examples do not claim a full prescribed hold or both sides.",
+  "readyMedia": false,
+  "notRegisteredByProducer": true,
+  "sourcePromptFiles": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0396-poster-prompt.txt"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0396-endpoint-prompt.txt"
+    }
+  ],
+  "identityReference": {
+    "file": "apps/zeno-site/public/assets/mascot.webp",
+    "role": "original identity only for start image; endpoint edited accepted start"
+  },
+  "restrictedUpstreamMediaUsed": false
+}

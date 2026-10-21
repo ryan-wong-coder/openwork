@@ -1,0 +1,21 @@
+{
+  "exerciseId": "0345",
+  "englishName": "dumbbell lying one arm rear lateral raise",
+  "status": "hold-endpoint-anatomy-and-direction",
+  "startAccepted": true,
+  "endpointAccepted": false,
+  "attempts": [
+    {
+      "attempt": 1,
+      "sha256": "dadd8f10b4af2323d0421525199559f3283ae163d7de330a0fc0e161c9e57ad4",
+      "reason": "Third arm plus forward projection toward head rather than near-side horizontal abduction."
+    },
+    {
+      "attempt": 2,
+      "sha256": "e389a0cfda9f36a113773e2bce02b653667d29423e193d2ad41da3d45abd634d",
+      "reason": "Extra limb fixed, but loaded arm still projects toward head across body; intended near-side rear lateral abduction not convincingly represented."
+    }
+  ],
+  "videoRun": false,
+  "readyMedia": false
+}

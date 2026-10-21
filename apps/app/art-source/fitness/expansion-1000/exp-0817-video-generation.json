@@ -1,0 +1,163 @@
+{
+  "canonicalExerciseId": "0817",
+  "englishName": "triceps stretch",
+  "nodeId": "4ae34547-59ce-440a-b2e6-c0f5732e993a",
+  "taskId": "20261021153803265168518",
+  "prompt": "首帧为 {{Node 283cd253-168b-48f6-9b06-9589a13f9c73}}，尾帧为 {{Node bad048dd-5129-4575-96c2-e4e771080d6d}}。4秒内只演示一次温和进入头上肱三头肌拉伸：右上臂始终在耳旁朝上，右肘弯曲在头上、右前臂向头后，右爪保持上背部。左支撑爪从右上臂外侧沿上臂向上移动到右肘的上外侧，轻柔托扶该肘，稍向头部靠近到尾帧，左前臂绕到头上而不是抓住脖子。只做温和小幅支撑，不强拉、不抖动、不反复；头、颈、躯干直立，不能侧弯或弓背，双脚不动。始终只有两臂两爪，不多出肢体。到尾帧停住，不松开换侧，短预览不是15至30秒处方保持时长。 同一原创青色奶油水獭与青柠斜肩带、象牙摄影棚，镜头固定不推拉缩放裁边，全部身体与器械完整入镜，无文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0817-reference.png",
+      "bytes": 1687275,
+      "sha256": "d657c1d301163de81ea5d39e39dfcc7dfa59e510a32fee45f89af147be5588c3",
+      "nodeId": "283cd253-168b-48f6-9b06-9589a13f9c73"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0817-endpoint.png",
+      "bytes": 1650303,
+      "sha256": "eb6aadde1feec44e4239e8af39736eb93abf6d562ee5e32bef89f7c10c1f0621",
+      "nodeId": "bad048dd-5129-4575-96c2-e4e771080d6d"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "4ae34547-59ce-440a-b2e6-c0f5732e993a",
+    "expectedReferenceNodeIds": [
+      "283cd253-168b-48f6-9b06-9589a13f9c73",
+      "bad048dd-5129-4575-96c2-e4e771080d6d"
+    ],
+    "imageListOrder": [
+      "283cd253-168b-48f6-9b06-9589a13f9c73",
+      "bad048dd-5129-4575-96c2-e4e771080d6d"
+    ],
+    "imageListNodeIds": [
+      "283cd253-168b-48f6-9b06-9589a13f9c73",
+      "bad048dd-5129-4575-96c2-e4e771080d6d"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "4ca72bf2771735fb107f345a23ef73026ae53ca9018e28cd1a68d64533ef9152",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "158120"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2187603"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "82059"
+    }
+  },
+  "originalSha256": "7ea9b841c08f9fc153245a09ac6442a33ddc7172024d2ea6ac739e6dc1bbda79",
+  "originalBytes": 2187603,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "ba02df99dea2da5760903d1c30ef60d5073ff1eed1c19a8b3a9da7f4df41ae09",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of triceps stretch from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083333 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. One reversible forward movement preview, with any return synthesized by exact reversed frames after actual one-way review. Single-side short stretch entry; not the prescribed15-30 second hold or demonstration of both sides.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0817-contact-8fps.jpg",
+    "contactSha256": "3aaea05754d59a07424c492c1a549055622236756aa98e705691f3f19210a4ab",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Root actually inspected the 16 forward and 64 final contact frames. The free paw travels to the opposite overhead elbow, the stretching elbow stays bent with its forearm behind the head, and feet and torso remain stable. The return is the disclosed reversed forward footage. This is the same assisted overhead triceps stretch as 0643 and is independent canonical coverage without additional technique credit.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0817-one-way-contact-4fps.jpg",
+      "contactSha256": "55e9a70f5a1aecf59c9226a765928b0ed1940d644457e062b78bb79828f1bd2e",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually inspected the 16 forward and 64 final contact frames. The free paw travels to the opposite overhead elbow, the stretching elbow stays bent with its forearm behind the head, and feet and torso remain stable. The return is the disclosed reversed forward footage. This is the same assisted overhead triceps stretch as 0643 and is independent canonical coverage without additional technique credit.",
+    "producerObservationAtHandoff": "Support paw moves to gently cup opposite overhead elbow while the working forearm stays bent behind head, then reverses its path. Two arms retained; no neck grabbing, forceful pull, side bend, torso sway or foot movement. Single-side short entry/release preview, not prescribed15-30s hold. Producer actually viewed 16 forward and 64 final samples. Root review pending. Full one-way and final frames decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "d01199e45793992a3fef39facd61e3e51f13cd10c9c1e871a0c7a44476f0b325",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "productionCredit": {
+    "creditedTowardTarget": false,
+    "sameTechniqueAs": "0643",
+    "reason": "Both source descriptions specify the same standing or seated overhead bent-elbow triceps stretch assisted by the opposite hand. The generic versus overhead title does not create another technique."
+  }
+}

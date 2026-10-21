@@ -1,0 +1,167 @@
+{
+  "canonicalExerciseId": "0293",
+  "englishName": "dumbbell bent over row",
+  "nodeId": "bc8ad4a7-6373-400d-9e8f-de686ef184f8",
+  "taskId": "20261021155203733798518",
+  "prompt": "首帧是 {{Node ccbeb206-f21c-4664-bd62-9eec5f3738e5}}，尾帧是 {{Node ff7b629d-5ec2-4da3-9b5f-fad99a6608bc}}。严格连续连接两张同一原创Zeno水獭的姿态，固定相机、暖象牙背景、青奶油毛色、单青柠斜带/单Z扣、同一双灰六角哑铃、双足位置、尾巴、器材尺寸不变。\n4秒内只演示一次站姿屈髋俯身哑铃划船的向上拉段：从双臂垂直向地面近伸直开始，肩胛轻向后收，双肘沿身体两侧朝身后拉，持续缓慢屈肘，将两哑铃带到尾帧下胸/下肋两侧。肘向后上方移动，前臂和哑铃随肘上升，不把肘钉在原位做二头弯举，不耸肩不前平举不肩推。双爪始终中立握、掌心朝身体/相对，手腕不折、哑铃不换手/变形/增减。髋折叠角度/膝微屈/中立长背/头颈不变，上身绝不站起或上下摆动，双脚全掌原地落地。缓慢连续拉至尾帧并轻停，不下放、不重复、不切镜头。完整双足/双臂/双哑铃/尾巴和器械持续可见，无额外肢体、文字水印、镜头运动或音频。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0293-reference.png",
+      "bytes": 1852048,
+      "sha256": "f9a0e8a183d7d8cb3d74e5a9c3373dd15bf9db863b12fb44a248cef806fc3eda",
+      "nodeId": "ccbeb206-f21c-4664-bd62-9eec5f3738e5"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0293-endpoint.png",
+      "bytes": 1767534,
+      "sha256": "16c2513793830e3802a3d74168c412ffab55ba09ed09d026a7b6e31c3c263692",
+      "nodeId": "ff7b629d-5ec2-4da3-9b5f-fad99a6608bc"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "bc8ad4a7-6373-400d-9e8f-de686ef184f8",
+    "expectedReferenceNodeIds": [
+      "ccbeb206-f21c-4664-bd62-9eec5f3738e5",
+      "ff7b629d-5ec2-4da3-9b5f-fad99a6608bc"
+    ],
+    "imageListOrder": [
+      "ccbeb206-f21c-4664-bd62-9eec5f3738e5",
+      "ff7b629d-5ec2-4da3-9b5f-fad99a6608bc"
+    ],
+    "imageListNodeIds": [
+      "ccbeb206-f21c-4664-bd62-9eec5f3738e5",
+      "ff7b629d-5ec2-4da3-9b5f-fad99a6608bc"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "a57a100305ed55d6056d4499dbe96b0b3b5855058ce74ea4d1ebe968d35b4561",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true,
+    "actualReadOnlyPromptExactMatch": true,
+    "promptSha256": "7b70956d7b667be56e57d4aa0171b4e9e522de9f5d460227877f75641dad14e9",
+    "promptReferenceNodeIdsInOrder": [
+      "ccbeb206-f21c-4664-bd62-9eec5f3738e5",
+      "ff7b629d-5ec2-4da3-9b5f-fad99a6608bc"
+    ],
+    "unexpandedPlaceholders": false
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "181510"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2451080"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "96697"
+    }
+  },
+  "originalSha256": "355c05e82f51b878bc52803db67e8b8c65bc11f583ae50b358074e65f0c74085",
+  "originalBytes": 2451080,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "2b137cd15f5d440ae55b792b773c2b1aef1e089f21e9d9ef7a0b1b6080536266",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of dumbbell bent over row from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, the complete forward frames were concatenated with the exact reversed frames, yielding 8.083333 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. Illustrates one controlled repetition, not a complete training set or prescribed training duration.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0293-contact-8fps.jpg",
+    "contactSha256": "e9a02c3cbdae589a92657a502ca43ba340db8ce410bd8f5bcbbf5d460b63b213",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Root actually inspected the 16 forward and 64 final contact frames. After a small initial stance settling, both elbows travel back and the two neutral-grip dumbbells rise toward the lower ribs while the torso remains hinged. Both feet remain planted and no elbow-only biceps curl replaces the row. The return uses the disclosed reversed forward footage; the initial settling remains visible.",
+    "producerDetailFramesReviewedSeconds": [],
+    "rootDetailFramesReviewedSeconds": [],
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0293-one-way-contact-4fps.jpg",
+      "contactSha256": "aae11b66e56fe8e09b782a37e09b9d107cbcd574938abe5dc60ac6a35961a2e0",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually inspected the 16 forward and 64 final contact frames. After a small initial stance settling, both elbows travel back and the two neutral-grip dumbbells rise toward the lower ribs while the torso remains hinged. Both feet remain planted and no elbow-only biceps curl replaces the row. The return uses the disclosed reversed forward footage; the initial settling remains visible.",
+    "producerObservationAtHandoff": "Actual16 forward and64 final samples viewed: both elbows move rearward in a hip-hinged bent-over row, dumbbells remain neutral-gripped and rise toward lower ribs.; Torso/hip hinge and planted feet remain steady, without biceps-only curl, shoulder press, extra arms or camera movement.; Short initial settling/hold is retained; accepted generated segment is followed by exact reversed frames, not a separately generated return. Producer actually viewed 16 forward and 64 final samples; one-way and final full decodes passed."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "4b4f7d5f06233da4ef24f78b22ac26f66b37aaf4572d642564af5e73fe257877",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true
+}

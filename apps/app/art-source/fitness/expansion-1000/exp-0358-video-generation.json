@@ -1,0 +1,147 @@
+{
+  "canonicalExerciseId": "0358",
+  "englishName": "dumbbell one arm reverse wrist curl",
+  "nodeId": "bc73fa87-b055-40a7-a55b-e5240c63303d",
+  "taskId": "20261021151103019128518",
+  "prompt": "首帧为 {{Node 7b360984-b277-4ea0-ac88-610b79d87143}}，尾帧为 {{Node 3c66d6b4-b87a-4ca8-863c-6835d914c011}}。同一原创Zeno水獭坐在原水平凳上，右前臂旋前掌心朝下、固定贴在原右大腿，手腕刚超过膝缘，单爪稳握同一只小哑铃，另一空爪原左大腿、双足地面和机位背景完全固定。4秒只进行一次浅幅反向腕弯举：以不移动的腕根为轴，把首帧下垂的手背缓慢往上提到尾帧较中立轻伸的位置，哑铃只随手掌走很小的腕部圆弧。前臂和肘绝不能从大腿抬起或滑动，肩上臂躯干不动，不能变成整个前臂二头弯举；手掌始终朝下不能翻成朝上握法，手指闭合持重不释放。只这一次小腕伸并停住尾帧，不回程重复；无镜头缩放、裁切、肢体增生、文字或声音。\n",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0358-reference.png",
+      "sha256": "8bfa7ae38a1b9f86d78baa44a9035e1e9a8d100dc29fa93cf44de63cecd0f8af",
+      "bytes": 1791558,
+      "nodeId": "7b360984-b277-4ea0-ac88-610b79d87143"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0358-endpoint.png",
+      "sha256": "12ac031b27eef11d5f60800a9b980e9dedeb26039d138786c29aefe347e0d68c",
+      "bytes": 1742657,
+      "nodeId": "3c66d6b4-b87a-4ca8-863c-6835d914c011"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "Official CLI read-only node response after create without run and before the single paid run",
+    "nodeId": "bc73fa87-b055-40a7-a55b-e5240c63303d",
+    "expectedReferenceNodeIds": [
+      "7b360984-b277-4ea0-ac88-610b79d87143",
+      "3c66d6b4-b87a-4ca8-863c-6835d914c011"
+    ],
+    "imageListOrder": [
+      "7b360984-b277-4ea0-ac88-610b79d87143",
+      "3c66d6b4-b87a-4ca8-863c-6835d914c011"
+    ],
+    "imageListNodeIds": [
+      "7b360984-b277-4ea0-ac88-610b79d87143",
+      "3c66d6b4-b87a-4ca8-863c-6835d914c011"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "7a92a698b76b68a1c1572951fbe4b486d458d10ae20f01b19f3d55079b2383ef",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083008",
+      "size": "174325"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2389165"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "90815"
+    }
+  },
+  "originalSha256": "949032d2bca6f435e2479bdc608d14624541361a2c0ffe10dc43db125c0e5101",
+  "originalBytes": 2389165,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083008,
+  "oneWayEncodedSha256": "9ac5ba59aece6bba551746be81d676b0acf73e6fe0eff06fcc2456f3230b2b8c",
+  "processing": "Seedance2.5 generated one ordered start/end4second one-way segment (actual 4.041667s). After actual16sample visual approval, encoded whole segment forward then exact reversed frame order to illustrate return, final 8.083008s. Return synthesized by reversal, not separately AI-generated; not an original8second continuous generation. H.264 CRF26,1024px,yuv420p,silent,faststart. WebP q86 poster extracted from actual first video frame.",
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0358-contact-8fps.jpg",
+    "contactSha256": "eec61d0dbddc3557fb433b7c9135ebcb2000463cf81a2db7c268c8748263cfbb",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "observation": "Root actually viewed 16 forward and 64 final samples plus the four-panel wrist detail image. The pronated wrist makes a small extension while the forearm stays supported on the thigh; no whole-arm elbow curl. Minor settling and small wrist repeats remain visible, so this is a short movement preview, not a strictly monotonic single repetition.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0358-one-way-contact-4fps.jpg",
+      "contactSha256": "db7d18c3422c5bc3b51d097481c4c96d829a4264dd306ee05771bdfa051bc203",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootReviewPending": false,
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually viewed 16 forward and 64 final samples plus the four-panel wrist detail image. The pronated wrist makes a small extension while the forearm stays supported on the thigh; no whole-arm elbow curl. Minor settling and small wrist repeats remain visible, so this is a short movement preview, not a strictly monotonic single repetition.",
+    "producerObservationAtHandoff": "Small distal wrist extension in pronated right-hand grip, supported forearm, no elbow curl. Original4s segment includes minor settling/repetitions rather than claiming strict monotonicity; full8s encoded forward/reverse and64sample contact actually viewed. Left hand/feet/trunk stable. Additional4 enlarged wrist frames viewed by producer only; parent not yet reviewed."
+  },
+  "posterTool": "ffmpeg first generated video frame then cwebp q86; original ordered image references by built-in ImageGen",
+  "sourceDescriptorSha256": "6af76f6a9e9699cdbea465b30b6d9522afff1f65c4f4dddd3851b764f817455b",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "parentAdmissionPending": true
+}

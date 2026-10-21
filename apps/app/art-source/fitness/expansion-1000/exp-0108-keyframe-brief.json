@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "0108",
+  "englishName": "barbell standing leg calf raise",
+  "chineseName": "杠铃站姿提踵",
+  "sourceDescriptorSha256": "d1dc11d96d991c86daa72d08975c5a5c4dc4c74c71f3b77001ad2ab4e9aa8287",
+  "sourceSteps": [
+    "双脚分开与肩同宽站立，将杠铃放在上背部。",
+    "用小腿将脚跟抬离地面，尽可能高。",
+    "在顶部停顿片刻，然后慢慢降低脚后跟回到起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "sourceTechniqueReviewedForProduction": true,
+  "clinicalCertification": false,
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0108-reference-v2.png",
+      "bytes": 1573153,
+      "sha256": "bb32c0e1cd59224865ccef5c5f6562e8abf26b1a6982220d0c7f84846523f03d"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0108-endpoint.png",
+      "bytes": 1577239,
+      "sha256": "e121cd9418f82202553353023f3ee741b97d21571ed9fa67c4cce35a3b3f2cbb"
+    }
+  ],
+  "referenceTool": "built-in image_gen.imagegen",
+  "producerActuallyViewedBothReferences": true,
+  "acceptedReferenceObservation": "Wider fixed composition retains head and both plate ends during loaded calf raise. Start heels flat; endpoint raises heels while forefeet remain planted. Bar remains across upper back, both paws keep their grip, knees/hips stay almost straight and tail does not bear weight.",
+  "renderingAssumption": "The illustrated barbell uses modest identical black plates; no physical mass or exact heel-rise height is claimed.",
+  "videoAccepted": false,
+  "readyMedia": false
+}

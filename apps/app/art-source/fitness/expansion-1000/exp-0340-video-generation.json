@@ -1,0 +1,163 @@
+{
+  "canonicalExerciseId": "0340",
+  "englishName": "dumbbell lying hammer press",
+  "nodeId": "33abc617-4900-4495-8e4d-4db04821e4fe",
+  "taskId": "20261021155803610838518",
+  "prompt": "首帧为 {{Node f2c99b3e-41ce-4f7d-822c-675813b5c364}}，尾帧为 {{Node af35082a-f34a-4905-86fc-c4b471b113e0}}。4秒内只做一次平凳中立握双哑铃卧推的下降：头背臀持续靠同一水平凳垫，双脚在原落点平地，凳体不变。两掌全程相向，两个哑铃保持各自平行的中立握方向，从胸上方垂直伸臂位置缓慢下降到胸部两侧；双肘逐渐放低靠肋侧并弯到约90度，前臂大致竖直、双爪始终在各自肘上方，到尾帧停住。肘不可死锁在头上而把前臂向额头折成臂屈伸，不能变飞鸟或向头后pullover，不能旋腕变正握、合并两哑铃或改成杠铃。头颈不抬、腰不拱、臀不离凳。只下降一次，不推回不重复。 同一原创青色奶油水獭与青柠斜肩带、象牙摄影棚，镜头固定不推拉缩放裁边，全部身体与器械完整入镜，无文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0340-reference.png",
+      "bytes": 1843903,
+      "sha256": "9974416348b05a34441ae6f2653f8f6a949c18cb1dcd581fce9a8ab0ade8f959",
+      "nodeId": "f2c99b3e-41ce-4f7d-822c-675813b5c364"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0340-endpoint.png",
+      "bytes": 1750329,
+      "sha256": "0a2da8a9b7c1a87f277077af5f2d1854656fa16e60bafc9ba827ab2974847a7d",
+      "nodeId": "af35082a-f34a-4905-86fc-c4b471b113e0"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "33abc617-4900-4495-8e4d-4db04821e4fe",
+    "expectedReferenceNodeIds": [
+      "f2c99b3e-41ce-4f7d-822c-675813b5c364",
+      "af35082a-f34a-4905-86fc-c4b471b113e0"
+    ],
+    "imageListOrder": [
+      "f2c99b3e-41ce-4f7d-822c-675813b5c364",
+      "af35082a-f34a-4905-86fc-c4b471b113e0"
+    ],
+    "imageListNodeIds": [
+      "f2c99b3e-41ce-4f7d-822c-675813b5c364",
+      "af35082a-f34a-4905-86fc-c4b471b113e0"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "9ef217c96b9d9a53410954873b8ef4195f4192dbdd3f14c4b16ce792a8d6ae0c",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "149752"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2059119"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "83184"
+    }
+  },
+  "originalSha256": "336d4aa6a75a8aea528d9cffef4bd9036c2799aadd662a644c97ab6692ade9b0",
+  "originalBytes": 2059119,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "0b1ad1a3f32ed8b3d0038cf5a10bfa87071e0ebca6113d3bc4d9fef28a8a9474",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of dumbbell lying hammer press from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083333 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. One reversible forward movement preview, with any return synthesized by exact reversed frames after actual one-way review.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0340-contact-8fps.jpg",
+    "contactSha256": "b5e13a0d889e5b80448536691382cbbcf10aa838f7930d2357c12d5d34eee242",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Root actually inspected the 16 forward and 64 final contact frames. Supine mascot keeps a neutral grip while lowering two dumbbells to the sides of the chest, with the elbows bending rather than the arms opening as a fly. Head, back and hips remain supported by the bench and both feet remain planted. The return is the disclosed reversed forward footage.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0340-one-way-contact-4fps.jpg",
+      "contactSha256": "46f39412318a7cc1a4ac8a2d5d0f604b971e478cae8a09d071279bb2dfa8b59e",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually inspected the 16 forward and 64 final contact frames. Supine mascot keeps a neutral grip while lowering two dumbbells to the sides of the chest, with the elbows bending rather than the arms opening as a fly. Head, back and hips remain supported by the bench and both feet remain planted. The return is the disclosed reversed forward footage.",
+    "producerObservationAtHandoff": "Actually inspected all 16 one-way samples at 4 fps: mascot remains supine on the flat bench with feet on floor; both dumbbells lower from above chest to chest sides, elbows bend and upper arms descend. Neutral parallel grip persists; no fly, pullover, skullcrusher or bench deformation. Actually inspected all 64 final samples at 8 fps: continuous controlled return follows the accepted forward phase, with endpoint frames retained and no new prop or body discontinuity. Return is exact frame reversal, not a separately generated phase. Producer actually viewed 16 forward and 64 final samples. Root review pending. Full one-way and final frames decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "7b93610c2f5a64763d15ce8f9c41219984a4f5590878e49933f828c16623c99c",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "semanticRelationship": {
+    "relatedCanonicalExerciseId": "0351",
+    "relationship": "Same general flat-bench setup but different movement:0340 lowers elbows beside chest for a press;0351 keeps upper arms raised while only elbows flex toward forehead for triceps extension. Distinct exact-source technique, not a reused clip.",
+    "distinctMovement": true
+  }
+}

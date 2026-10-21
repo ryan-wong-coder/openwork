@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "kind": "two-keyframe-illustration-plan",
+  "exerciseId": "0385",
+  "englishName": "dumbbell reverse wrist curl",
+  "descriptorSha256": "ef90af8ed0498f09b8abf4729ba645e05c74715604dd74dab44a14df7a50fea2",
+  "movementBrief": "exp-0385-movement-brief.json",
+  "startImage": {
+    "file": "exp-0385-reference.png",
+    "sha256": "77c45fbe80ae7bed8dc55cffe3fd4ad934bc6a99f62a4c62f74b2cac7be65700",
+    "bytes": 1852193,
+    "width": 1672,
+    "height": 941
+  },
+  "endpointImage": {
+    "file": "exp-0385-endpoint.png",
+    "sha256": "742559e61b30a73e54995f49ba7b30eba8cb7992a5c30cf4f2449671ac746c73",
+    "bytes": 1777878,
+    "width": 1672,
+    "height": 941
+  },
+  "startPrompt": {
+    "file": "exp-0385-poster-prompt.txt",
+    "sha256": "361b1303651a58a1d0d521d15af1796a5b1b587bb1c994834fb7a746123b0a24",
+    "bytes": 1124
+  },
+  "endpointPrompt": {
+    "file": "exp-0385-endpoint-prompt.txt",
+    "sha256": "36350283274432e38ae2f9eea6baac7faf2ed319e7a31642d0718e7cd930ec2d",
+    "bytes": 657
+  },
+  "startTool": "built-in ImageGen",
+  "startImageAttempts": 1,
+  "endpointTool": "built-in ImageGen edit of accepted start",
+  "endpointEditAttempts": 1,
+  "fixedContactsAndScene": [
+    "臀凳、双足地面，两前臂各贴大腿，手腕略过膝缘。",
+    "双手各握一小哑铃正握，掌向下、手背向上。",
+    "fixed camera, ivory studio and original identity"
+  ],
+  "motion": "双腕同步伸展向上，肘前臂大腿接触保持。 从低垂腕绕固定腕根向上翘至轻度伸展，不旋掌。",
+  "review": {
+    "startAndEndpointActuallyViewed": true,
+    "endpointDecision": "accepted-reference-for-parent-review",
+    "notes": [
+      "大腿支撑而非0368凳前缘支撑。",
+      "全程掌下，不能变成0401掌上腕屈。",
+      "仅腕部小幅运动，前臂不离腿。"
+    ],
+    "wholeVideoViewed": false,
+    "readyMedia": false
+  },
+  "plannedVideo": {
+    "inputMode": "native first-and-last-frame",
+    "oneWaySeconds": 4,
+    "direction": "start-to-end",
+    "returnPlan": "Only after one-way actual visual acceptance, forward segment plus exact reversed frames for nominal8second illustration.",
+    "assemblyPerformed": false,
+    "videoGeneratedByThisAgent": false,
+    "originalEightSecondGeneration": false,
+    "existingEightSecondAttemptReused": false
+  }
+}

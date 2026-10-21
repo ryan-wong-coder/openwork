@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "0031",
+  "englishName": "barbell curl",
+  "sourceDescriptorSha256": "ee6f2313489da400983749dc5e1af5a122935a7ebdc42c795ea2c04e2c36f5e4",
+  "sourceSteps": [
+    "站直，双脚分开与肩同宽，反手握住杠铃，手掌朝前。",
+    "保持肘部靠近躯干，在弯举哑铃时呼气，同时收缩二头肌。",
+    "继续抬高杠铃，直到二头肌完全收缩并且杠铃与肩部齐平。",
+    "挤压二头肌时，保持收缩位置短暂停顿。",
+    "吸气，慢慢开始将杠铃放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "imageGeneration": "builtin image_gen",
+  "originalMascotReference": "apps/app/src/assets/zeno/mascot.webp",
+  "sourceImageLicense": "Original Zeno artwork; no upstream exercise media used.",
+  "strategy": "paired start/end for one-way four-second generation, then only after actual visual approval forward/reverse composition",
+  "referencePoseReviewed": true,
+  "referenceApproval": "producer-self-review-authorized-by-root",
+  "reviewObservations": {
+    "start": "Upright feet planted, both arms nearly straight down with upper arms beside ribs. One rigid straight bar with two plates held in shoulder-width underhand grasp below waist.",
+    "end": "Same camera, feet, torso, bar and plate dimensions. Both elbows flexed with upper arms down beside ribs, rigid bar at upper chest below chin, underhand grip retained."
+  },
+  "notes": [
+    "Frozen source step2 contains an isolated dumbbell noun; exact English identity and source steps1,3,5 specify one barbell. Original source text is preserved, artwork uses one straight barbell consistently."
+  ],
+  "clinicalValidation": false,
+  "readyMedia": false,
+  "generationAttempts": [
+    {
+      "role": "start",
+      "attempt": 1,
+      "selected": true,
+      "sha256": "34e25c5c7246e2239b5e39774910381bf40480a34a8dc89e355f669c021f5e68",
+      "retainedInRepository": true
+    },
+    {
+      "role": "end",
+      "attempt": 1,
+      "selected": true,
+      "sha256": "d62dba9bca334a1254bfc47941db769246b0e7e1cee003d84cddb3167334086e",
+      "retainedInRepository": true
+    }
+  ],
+  "references": [
+    {
+      "role": "start",
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-0031-reference.png",
+      "bytes": 1698535,
+      "sha256": "34e25c5c7246e2239b5e39774910381bf40480a34a8dc89e355f669c021f5e68"
+    },
+    {
+      "role": "end",
+      "path": "apps/app/art-source/fitness/expansion-1000/exp-0031-endpoint.png",
+      "bytes": 1648816,
+      "sha256": "d62dba9bca334a1254bfc47941db769246b0e7e1cee003d84cddb3167334086e"
+    }
+  ]
+}

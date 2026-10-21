@@ -4,6 +4,12 @@
 
 只使用原创 Zeno 角色与原创绘制的动作场景，不复制受限上游动作媒体。先读 canonical ID 对应的完整 `sourceSteps`，不能只凭动作中文名选择常见变式。文字步骤矛盾、器械不清或姿态配对有疑问时先 hold，交由动作审核处理。
 
+## 动作去重与完成计数
+
+领取动作、每次生成图片及付费提交前，复核共享额度停止标记、归属、既有任务和 source 审核状态。完整步骤相同、仅名称或器械分类不同的条目先进入人工变式审核；`cross-label-source-review.json` 记录冻结清单中的跨分类疑点，不自行改写清单。
+
+`progress.json` 的 `acceptedAdditional` 与 `accepted` 只统计向新增 1,000 个目标计数的动作。`technique-credits.json` 明确识别的同技术条目如已有独立合格素材，可在负责人实际审核后以 `supplementalCoverage` 接入自己的 canonical ID，但 `creditedTowardTarget` 必须为 `false`，且记录已覆盖的 `sameTechniqueAs`、判断理由。不得重命名旧素材、借用视频或重复计算目标进度。`additionalCanonicalCoverage` 为两类新增目录覆盖之和，`totalReady` 再加原有 32 项。计划数量、生成中、拒稿和未知状态均不计入任一已完成计数。
+
 ## 工具与制作边界
 
 - 姿态图使用已批准的原创角色参考，通过内置 ImageGen 生成或编辑；生成后必须实际查看。

@@ -1,0 +1,158 @@
+{
+  "canonicalExerciseId": "0413",
+  "englishName": "dumbbell squat",
+  "nodeId": "147c6895-bb18-4e9f-bcf2-afe28c86a2af",
+  "taskId": "20261021155803789568518",
+  "prompt": "首帧为 {{Node 8aabd838-9794-4fe6-bc9b-0bb7b71c806b}}，尾帧为 {{Node 087328c2-d5b2-4a14-b6ea-3a4f436335c5}}。4秒内只做一次双哑铃体侧深蹲的下降：双足在原处平地，脚跟持续压地、脚尖方向不变，双膝顺着脚尖方向弯曲，髋部向后向下，躯干保持长直中立背和挺胸，到尾帧舒适接近大腿平行地面的深度。双臂始终自然长直垂在双膝外侧，两个哑铃各在原握爪并随身体下移，不弯举到胸、不改前架或放到两腿之间，不碰地面。尾巴不能撑地、不能出现凳子或椅子，不能抬脚跟、走步、双膝向内塌陷或过分弯腰变硬拉。只下降一次到尾帧停住，生成中不起立不重复。 同一原创青色奶油水獭与青柠斜肩带、象牙摄影棚，镜头固定不推拉缩放裁边，全部身体与器械完整入镜，无文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0413-reference.png",
+      "bytes": 1651116,
+      "sha256": "b26522aa4a693fed996cc7314c0492645bd46fe443bfa4598b8e0b4f21952a15",
+      "nodeId": "8aabd838-9794-4fe6-bc9b-0bb7b71c806b"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0413-endpoint.png",
+      "bytes": 1626152,
+      "sha256": "12bd12ae8213caba2477b934fcf1881d9b0e36f68c0d2b41414a956f0a89ce46",
+      "nodeId": "087328c2-d5b2-4a14-b6ea-3a4f436335c5"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "147c6895-bb18-4e9f-bcf2-afe28c86a2af",
+    "expectedReferenceNodeIds": [
+      "8aabd838-9794-4fe6-bc9b-0bb7b71c806b",
+      "087328c2-d5b2-4a14-b6ea-3a4f436335c5"
+    ],
+    "imageListOrder": [
+      "8aabd838-9794-4fe6-bc9b-0bb7b71c806b",
+      "087328c2-d5b2-4a14-b6ea-3a4f436335c5"
+    ],
+    "imageListNodeIds": [
+      "8aabd838-9794-4fe6-bc9b-0bb7b71c806b",
+      "087328c2-d5b2-4a14-b6ea-3a4f436335c5"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "0d168745e51276e4a19aecd7216af5a91c301add8f70de11e1d82b8f57d75ee9",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083008",
+      "size": "138488"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "1867317"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "70459"
+    }
+  },
+  "originalSha256": "68396e125fb3c0c73dfde9804078c27104539f3580f1b3971b29ed15a660afc8",
+  "originalBytes": 1867317,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083008,
+  "oneWayEncodedSha256": "e9fb993e2071f004ef7e30ac1e7080111f48625e8b3a614f2dae4983c474dfef",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of dumbbell squat from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083008 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. One reversible forward movement preview, with any return synthesized by exact reversed frames after actual one-way review.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0413-contact-8fps.jpg",
+    "contactSha256": "0bce535c7f4780a57f6ff1d4553613c4fd9e8067591a86f21602af16e0e31a60",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Root actually inspected the 16 forward and 64 final contact frames. Mascot bends knees and hips into a squat with both dumbbells hanging beside the thighs. Feet remain planted, torso faces forward and the two weights are neither curled nor pressed. The stylized body visibly lowers without an exact squat-depth claim. Return is the disclosed reversed forward footage.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0413-one-way-contact-4fps.jpg",
+      "contactSha256": "685a364db7b818187c8aeb36f17c0ceefcdb420dc7818eae55361377fb063d17",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually inspected the 16 forward and 64 final contact frames. Mascot bends knees and hips into a squat with both dumbbells hanging beside the thighs. Feet remain planted, torso faces forward and the two weights are neither curled nor pressed. The stylized body visibly lowers without an exact squat-depth claim. Return is the disclosed reversed forward footage.",
+    "producerObservationAtHandoff": "Actually inspected all 16 one-way samples at 4 fps: mascot lowers through hips and knees with two dumbbells hanging outside the legs, arms extended rather than curling or front-racking; both feet remain planted and chest stays upright. Bottom position is a comfortable moderate squat; no exact joint-angle or thigh-depth assertion. Actually inspected all 64 final samples at 8 fps: continuous controlled return follows the accepted forward phase, with endpoint frames retained and no new prop or body discontinuity. Return is exact frame reversal, not a separately generated phase. Producer actually viewed 16 forward and 64 final samples. Root review pending. Full one-way and final frames decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "b8ad6897298cfa1c43d41f8efcb05435e0b064dd48a670136ec60a4a442c31cd",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true
+}

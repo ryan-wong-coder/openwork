@@ -1,0 +1,163 @@
+{
+  "canonicalExerciseId": "0351",
+  "englishName": "dumbbell lying triceps extension",
+  "nodeId": "52340a65-eaed-4aa5-8ad9-ff058041395b",
+  "taskId": "20261021153803881088518",
+  "prompt": "首帧为 {{Node 1f443cda-7a0a-4396-96f7-ac64f0278c8c}}，尾帧为 {{Node 243f57cf-ef83-413a-8805-8b1ca172fdac}}。4秒内只做一次平凳仰卧双哑铃臂屈伸的下降：头背臀始终接触原平凳，双脚保持原地平放，凳体结构固定。双上臂保持在肩胸上方近垂直，双肘位置固定不往身体两侧放低，只逐渐弯曲双肘，让前臂绕肘向额头方向转动，两个独立哑铃分别靠近额头两侧并保持安全距离，到尾帧停住。两掌始终相向、中立握法，重量各在原握爪里不能合并。不能整条上臂向头后转成pullover，不能肘下沉到胸两侧变卧推，也不能直臂飞鸟、抬头或拱背。生成中只下放一次，不伸回不重复。 同一原创青色奶油水獭与青柠斜肩带、象牙摄影棚，镜头固定不推拉缩放裁边，全部身体与器械完整入镜，无文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0351-reference.png",
+      "bytes": 1888959,
+      "sha256": "d38b1a0876f596f5d3387d679f2f59758f6226d7243f2693ee668654d52f77a2",
+      "nodeId": "1f443cda-7a0a-4396-96f7-ac64f0278c8c"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0351-endpoint.png",
+      "bytes": 1827215,
+      "sha256": "bb8bc399ffcbfd59536a8159219150402fb026b443ae22ca1611b9a7082fa3c5",
+      "nodeId": "243f57cf-ef83-413a-8805-8b1ca172fdac"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "52340a65-eaed-4aa5-8ad9-ff058041395b",
+    "expectedReferenceNodeIds": [
+      "1f443cda-7a0a-4396-96f7-ac64f0278c8c",
+      "243f57cf-ef83-413a-8805-8b1ca172fdac"
+    ],
+    "imageListOrder": [
+      "1f443cda-7a0a-4396-96f7-ac64f0278c8c",
+      "243f57cf-ef83-413a-8805-8b1ca172fdac"
+    ],
+    "imageListNodeIds": [
+      "1f443cda-7a0a-4396-96f7-ac64f0278c8c",
+      "243f57cf-ef83-413a-8805-8b1ca172fdac"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "d5bd8e623b5051fb89e76be2bfbbd9f4061658acdbf5034b85834352f52cf39c",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083008",
+      "size": "193445"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2424039"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "104435"
+    }
+  },
+  "originalSha256": "be2b5c52654a7d3541d2b446159dc76d68cfc9cdb429d3fe87ee48c3505eb71e",
+  "originalBytes": 2424039,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083008,
+  "oneWayEncodedSha256": "f76f5b5066bd68e59c3585f9f76d3cf76fb236072b5d78b76f1e044ef1278a44",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of dumbbell lying triceps extension from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083008 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. One reversible forward movement preview, with any return synthesized by exact reversed frames after actual one-way review.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0351-contact-8fps.jpg",
+    "contactSha256": "b08141a9e83f6a81da1377fd051c75e9cf5993c887b7a80d7b4cf95cbd030677",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Root actually inspected the 16 forward and 64 final contact frames. Supine mascot keeps both upper arms approximately vertical while bending the elbows to lower the two dumbbells toward the forehead. Bench, head, torso, grounded feet and prop count remain stable. This shows lying elbow extension rather than a chest press or pullover; the return is disclosed reversed forward footage.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0351-one-way-contact-4fps.jpg",
+      "contactSha256": "d722bf6b8f455255e5064f6d1a798d54489dc53d54d0910dc0b632174e104a88",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually inspected the 16 forward and 64 final contact frames. Supine mascot keeps both upper arms approximately vertical while bending the elbows to lower the two dumbbells toward the forehead. Bench, head, torso, grounded feet and prop count remain stable. This shows lying elbow extension rather than a chest press or pullover; the return is disclosed reversed forward footage.",
+    "producerObservationAtHandoff": "Upper arms stay raised over chest while both elbows flex and lower the distinct held dumbbells toward forehead, then the same elbow path reverses. Head/back/hips keep flat pad support and feet remain planted; no chest-side elbow drop, pullover, fly, extra weight or bench deformation. Producer actually viewed 16 forward and 64 final samples. Root review pending. Full one-way and final frames decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "942366de728376d03facabd61d2d0b9649cc0bc51aa397ef3de256666881ac88",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "semanticRelationship": {
+    "relatedCanonicalExerciseId": "0340",
+    "relationship": "Same general flat-bench setup but different movement:0340 lowers elbows beside chest for a press;0351 keeps upper arms raised while only elbows flex toward forehead for triceps extension. Distinct exact-source technique, not a reused clip.",
+    "distinctMovement": true
+  }
+}

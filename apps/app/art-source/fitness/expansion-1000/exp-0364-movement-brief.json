@@ -1,0 +1,50 @@
+{
+  "order": 184,
+  "exerciseId": "0364",
+  "englishName": "dumbbell one arm wrist curl",
+  "chineseName": "哑铃单臂腕弯举",
+  "equipmentId": "dumbbell",
+  "bodyPartId": "lower arms",
+  "muscles": {
+    "primaryIds": [
+      "forearm"
+    ],
+    "primaryLabels": [
+      "前臂"
+    ],
+    "secondaryIds": [
+      "biceps"
+    ],
+    "secondaryLabels": [
+      "肱二头肌"
+    ]
+  },
+  "descriptorSha256": "7ae6e3328625c1fa7aed04988800f5048ad7f436d5a1ea35f78fd0922e3d1419",
+  "sourceSteps": [
+    "坐在长凳或椅子上，双脚平放在地面上。",
+    "一只手握住哑铃，反握，将前臂放在大腿上。",
+    "让你的手腕伸展，让哑铃向你的手指方向滚动。",
+    "慢慢地向后弯曲手腕，将哑铃拉向前臂。",
+    "重复所需的重复次数，然后换另一只手。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceStepsActuallyRead": true,
+  "sourceIssues": [],
+  "startPose": "坐姿单臂掌上腕弯举，右前臂贴大腿，腕超过膝缘轻伸，DB仍由手指受控钩握。",
+  "support": "臀凳、双足地面，右前臂贴大腿，左手空放左大腿。",
+  "grip": "右掌朝上反握单DB，低位手指轻度展开仍稳钩杆，不释放重量。",
+  "jointMotion": "收拢手指并右腕屈曲，把DB卷向前臂；肘前臂不抬。",
+  "path": "从轻伸腕受控低位绕固定腕轴卷回，非肘弯举。",
+  "camera": "固定近侧前30度，能辨掌上、腕过膝及手指握杆。",
+  "criticalChecks": [
+    "低位指握仍有真实接触，DB不能悬浮/落下。",
+    "旋后掌向上与0358旋前腕伸不同。",
+    "保持前臂大腿接触，不能把整条前臂举起。"
+  ],
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "oneWayGenerationSeconds": 4,
+    "return": "Only after actual one-way review, use exact reversed frame order; not an original8second continuous generation."
+  }
+}

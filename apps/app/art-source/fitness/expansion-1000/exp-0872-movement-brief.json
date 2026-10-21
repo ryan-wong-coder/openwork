@@ -1,0 +1,50 @@
+{
+  "order": 876,
+  "exerciseId": "0872",
+  "englishName": "reverse crunch",
+  "chineseName": "反向卷腹",
+  "equipmentId": "body weight",
+  "bodyPartId": "waist",
+  "muscles": {
+    "primaryIds": [
+      "abs"
+    ],
+    "primaryLabels": [
+      "腹肌"
+    ],
+    "secondaryIds": [
+      "hip-flexors"
+    ],
+    "secondaryLabels": [
+      "髋屈肌"
+    ]
+  },
+  "sourceSteps": [
+    "平躺，双臂沿着身体两侧伸展。",
+    "弯曲膝盖，将脚抬离地面，使大腿垂直于地板。",
+    "收缩腹肌，将臀部卷离地板，使膝盖靠近胸部。",
+    "在顶部暂停片刻，然后慢慢将臀部放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "descriptorSha256": "eae398386c59c389fa5febec04c8fcbfc8d1c8c4a5f7dbccda99ade9ec58593f",
+  "startPose": "仰卧手臂体侧，髋膝约90度，大腿垂直、小腿水平、双足离地。",
+  "support": "头肩背骨盆初始贴地，双臂掌地，尾巴旁置不垫腰。",
+  "grip": "无器械，两掌自然压地辅助，非握腿。",
+  "jointMotion": "腹肌收缩使骨盆后倾、臀部小幅卷离地面，双膝靠向胸部，头肩不卷起。",
+  "path": "从桌面腿低位向胸方向卷骨盆，小范围非全倒立。",
+  "camera": "固定侧前30度、头画面左脚画面右，清楚腰臀地面间隙。",
+  "criticalChecks": [
+    "初始臀在地、足离地，末端骨盆卷起而非仅抬腿。",
+    "头肩手臂稳定，不能摆腿借力或倒立。",
+    "双腿保留屈膝，不拉膝、不压颈，尾巴不作垫。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceStepsActuallyRead": true,
+  "sourceIssues": [],
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "oneWayGenerationSeconds": 4,
+    "return": "Only after actual one-way review, exact reversed frame order for return; not original8second continuous generation."
+  }
+}

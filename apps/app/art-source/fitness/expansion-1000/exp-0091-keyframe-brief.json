@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "0091",
+  "englishName": "barbell seated overhead press",
+  "sourceDescriptorSha256": "78df99f183e4d8af7e7b21e806e61ca7524d47180aac041dc1ea9b92972215a9",
+  "sourceSteps": [
+    "坐在长凳上，背部挺直，双脚平放在地上。",
+    "正手握住杠铃，杠铃间距略宽于肩宽。",
+    "将杠铃从架子上提起，并将其置于与肩同高的位置，肘部弯曲，手掌朝前。",
+    "充分伸展双臂，将杠铃压过头顶。",
+    "在顶部停顿片刻，然后慢慢将杠铃放回肩部水平。",
+    "重复所需的重复次数。"
+  ],
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0091-reference.png",
+      "bytes": 1631762,
+      "sha256": "e91f9706d7b2c4fc5c1dab7dcff3ca4eaa799442cc8761a9ea6416cfe6503695"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0091-endpoint.png",
+      "bytes": 1599967,
+      "sha256": "dbf1b73c28b0309072bfdc9fb20de300c319d79f8f680ae180171a422d888d67"
+    }
+  ],
+  "sourceTechniqueReviewedForProduction": true,
+  "clinicalCertification": false,
+  "producerActuallyViewedBothReferences": true,
+  "referenceTool": "built-in image_gen.imagegen",
+  "acceptedReferenceObservation": "Seated flat-bench upright torso; both feet/heels planted, bar in front of shoulders with overhand slightly-wider grip. Endpoint extends both elbows overhead with same grip, head/plates fully inside frame, hips/bench/feet unchanged.",
+  "renderingAssumption": "Illustration begins after bar unracking. No rack/unrack demonstration or exact load is asserted.",
+  "videoAccepted": false,
+  "readyMedia": false
+}

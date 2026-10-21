@@ -1,0 +1,52 @@
+{
+  "canonicalExerciseId": "1379",
+  "englishName": "dumbbell seated calf raise",
+  "sourceDescriptorSha256": "a37f8bbcb82d01904da870614dbf57ad09a559421791b764c0054742e9f24016",
+  "sourceSteps": [
+    "坐在长凳或椅子上，双脚平放在地面上，并将哑铃放在大腿上。",
+    "将脚掌放在升高的表面（例如台阶或木块）上，脚跟悬在边缘外。",
+    "握住哑铃以保持稳定。",
+    "尽可能高地抬高脚后跟，将身体重量转移到脚掌上。",
+    "在顶部停顿片刻，然后慢慢降低脚后跟回到起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "sourceStepsTechniqueReviewed": true,
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1379-reference-v2.png",
+      "bytes": 1772626,
+      "sha256": "37d4d465202616e4f89b908b9af9938328d5ff770ddc091bbee7c9c929d1d639"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1379-endpoint.png",
+      "bytes": 1683509,
+      "sha256": "29118bec8c54f6598032241b9e0c02010b619801963474ad6374fbf93a952f30"
+    }
+  ],
+  "posterTool": "built-in image_gen.imagegen",
+  "identityReference": {
+    "file": "apps/zeno-site/public/assets/mascot.webp",
+    "role": "identity only for start; endpoint edited approved start"
+  },
+  "producerActuallyViewedStartAndEnd": true,
+  "observation": "Seated weighted calf raise on a forefoot block; both heels clearly hang beyond rear edge in side view and rise while forefeet stay planted, hips keep seat.",
+  "scope": "One reversible forward movement preview; return only exact reversal after actual forward review.",
+  "restrictedUpstreamMediaUsed": false,
+  "readyMedia": false,
+  "notRegisteredByProducer": true,
+  "renderingAssumption": "Source does not prescribe dumbbell count. The illustration concretizes it as one small dumbbell per lower thigh, steadied by each paw. Source forefoot-block and hanging heel instructions take precedence over preliminary flat-floor setup.",
+  "startAttempts": 2,
+  "rejectedStartReason": "First image placed whole feet on broad block; excluded privately before any video.",
+  "sourcePromptFiles": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1379-poster-v2-prompt.txt"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1379-endpoint-prompt.txt"
+    }
+  ]
+}

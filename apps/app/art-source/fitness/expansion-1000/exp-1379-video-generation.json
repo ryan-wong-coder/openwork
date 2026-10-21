@@ -1,0 +1,159 @@
+{
+  "canonicalExerciseId": "1379",
+  "englishName": "dumbbell seated calf raise",
+  "nodeId": "7e29e77c-03a1-492d-91ad-74b809e91c9d",
+  "taskId": "20261021151203724198518",
+  "prompt": "首帧为 {{Node e1f12621-ce58-4bc3-a51f-7c110cf4d3a3}}，尾帧为 {{Node 6f1c8a2a-ad43-41fe-b1fa-a861b39e190c}}。保持同一纯侧面机位、平凳木块、坐姿和两只放在大腿上的哑铃。4秒内只做一次坐姿提踵：双前掌和脚趾始终在原木块顶部同一点固定接触，双脚跟从木块后缘外的悬空低位缓慢向上抬起到尾帧高于木块顶面。只有踝关节跖屈，膝和大腿上的重量随脚跟自然上升少许，臀始终接触凳面不站起，双爪持续稳定两只大腿上哑铃，不单独提哑铃。木块和凳子不能移动，脚不能滑动、伸膝蹬腿或整脚离开垫块。只抬起一次，尾帧停住，生成中不降跟不重复。 同一原创青色奶油水獭与青柠斜肩带、象牙摄影棚，固定镜头不缩放推拉或裁边，完整身体和全部器械可见，无额外肢体、文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1379-reference-v2.png",
+      "bytes": 1772626,
+      "sha256": "37d4d465202616e4f89b908b9af9938328d5ff770ddc091bbee7c9c929d1d639",
+      "nodeId": "e1f12621-ce58-4bc3-a51f-7c110cf4d3a3"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1379-endpoint.png",
+      "bytes": 1683509,
+      "sha256": "29118bec8c54f6598032241b9e0c02010b619801963474ad6374fbf93a952f30",
+      "nodeId": "6f1c8a2a-ad43-41fe-b1fa-a861b39e190c"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "7e29e77c-03a1-492d-91ad-74b809e91c9d",
+    "expectedReferenceNodeIds": [
+      "e1f12621-ce58-4bc3-a51f-7c110cf4d3a3",
+      "6f1c8a2a-ad43-41fe-b1fa-a861b39e190c"
+    ],
+    "imageListOrder": [
+      "e1f12621-ce58-4bc3-a51f-7c110cf4d3a3",
+      "6f1c8a2a-ad43-41fe-b1fa-a861b39e190c"
+    ],
+    "imageListNodeIds": [
+      "e1f12621-ce58-4bc3-a51f-7c110cf4d3a3",
+      "6f1c8a2a-ad43-41fe-b1fa-a861b39e190c"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "e6e8aba956a5a05a5a90ed81fb826aca9716950045f49c7fa8f93651f6f81aa7",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083008",
+      "size": "122361"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "1675056"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "68371"
+    }
+  },
+  "originalSha256": "5044efb2ddc1d42c1e01e1cd0bb09b48199eea86f2228049849fe9a3c3e8c70b",
+  "originalBytes": 1675056,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083008,
+  "oneWayEncodedSha256": "8f2adc004863e8658e88de6303df2db4660bd35885e78eb17cbf81626c81e9ba",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of dumbbell seated calf raise from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083008 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. One reversible forward movement preview; return only exact reversal after actual forward review.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1379-contact-8fps.jpg",
+    "contactSha256": "e136c26fd7ae6e197efdfbc688485884dc6c0f466048a5a05850ebbd42d2d33f",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Root actually viewed 16 forward and 64 final samples plus the enlarged endpoint heel detail. Forefeet remain on the block edge, heels hang beyond the edge and lift, while seated hips stay on the bench and the dumbbells remain on the thighs.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1379-one-way-contact-4fps.jpg",
+      "contactSha256": "383c914d43dc1ff0a19be9ca242b6a4a2e1d353c1561e39e87677e6a45bc0754",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually viewed 16 forward and 64 final samples plus the enlarged endpoint heel detail. Forefeet remain on the block edge, heels hang beyond the edge and lift, while seated hips stay on the bench and the dumbbells remain on the thighs.",
+    "producerObservationAtHandoff": "Forefeet stay on block while both hanging heels rotate upward and return through reversed frames. Hips stay seated and both paw-held dumbbells remain on lower thighs; knee load rises slightly with ankles, without standing, straightening whole legs or moving block/bench. Producer also viewed3.75s heel detail to verify heel clearance; root view is not claimed. Producer actually viewed 16 forward and 64 final samples. Root review pending. Full one-way and final frames decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "a37f8bbcb82d01904da870614dbf57ad09a559421791b764c0054742e9f24016",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "renderingAssumption": "Source does not prescribe dumbbell count. The illustration concretizes it as one small dumbbell per lower thigh, steadied by each paw. Source forefoot-block and hanging heel instructions take precedence over preliminary flat-floor setup."
+}

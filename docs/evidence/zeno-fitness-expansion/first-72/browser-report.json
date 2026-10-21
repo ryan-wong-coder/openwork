@@ -1,0 +1,177 @@
+{
+  "verdict": "Passed",
+  "scope": "Actual production PWA, real disposable loopback API, synthetic account; no native shell or remote account",
+  "startedAt": "2026-10-21T09:09:24.552Z",
+  "finishedAt": "2026-10-21T09:09:42.884Z",
+  "productionIndexSha256": "cff080677d4fd1efb8d97eca5e2faffe8cb66fe7720479591d8b6ace4713ff77",
+  "browserVersion": "Chrome/155.0.8059.85",
+  "checks": [
+    {
+      "name": "real-local-api-login-production-pwa",
+      "passed": true
+    },
+    {
+      "name": "completed-demonstrations-first-in-bounded-unfiltered-catalogue",
+      "passed": true,
+      "ready": 106,
+      "visible": 100
+    },
+    {
+      "name": "catalogue-specific-figure-and-primary-secondary-front-back-map",
+      "passed": true
+    },
+    {
+      "name": "static-default-play-pause-keyboard-scrub",
+      "passed": true
+    },
+    {
+      "name": "real-tab-visibility-pauses-svg-without-auto-resume",
+      "passed": true
+    },
+    {
+      "name": "reduced-motion-stops-and-disables-svg-playback",
+      "passed": true
+    },
+    {
+      "name": "mobile-dark-detail-no-horizontal-overflow",
+      "passed": true
+    },
+    {
+      "name": "uncovered-variant-never-receives-generic-animation",
+      "passed": true,
+      "exerciseId": "0033"
+    },
+    {
+      "name": "native-video-controls-real-tab-and-reduced-motion-pause-without-auto-resume",
+      "passed": true
+    },
+    {
+      "name": "exact-mascot-video-decodes-and-switches-0294",
+      "passed": true
+    },
+    {
+      "name": "exact-mascot-video-decodes-and-switches-1197",
+      "passed": true
+    },
+    {
+      "name": "exact-mascot-video-decodes-and-switches-0405",
+      "passed": true
+    },
+    {
+      "name": "exact-mascot-video-decodes-and-switches-0289",
+      "passed": true
+    },
+    {
+      "name": "exact-diagram-video-decodes-and-switches-3094",
+      "passed": true
+    },
+    {
+      "name": "exact-mascot-video-decodes-and-switches-0385",
+      "passed": true
+    },
+    {
+      "name": "exact-mascot-video-decodes-and-switches-0401",
+      "passed": true
+    },
+    {
+      "name": "exact-mascot-video-decodes-and-switches-0310",
+      "passed": true
+    },
+    {
+      "name": "exact-mascot-video-decodes-and-switches-0817",
+      "passed": true
+    },
+    {
+      "name": "workout-title-opens-detail-without-changing-record",
+      "passed": true
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "screenshots/desktop-mainstream-catalogue.png",
+      "bytes": 81886,
+      "sha256": "bf30b747fdb4e044a58c826706ba8821348ea6d3808497c80578e34e56f3adde"
+    },
+    {
+      "file": "screenshots/desktop-catalogue-bench-light.png",
+      "bytes": 99610,
+      "sha256": "d0abff39688f149dd3234a5c151e2d64e84e35c116e4d48795765c78a137ffdd"
+    },
+    {
+      "file": "screenshots/desktop-bench-dark-reduced-motion.png",
+      "bytes": 101266,
+      "sha256": "689aab9b932a9d732e8e6c491f8c80507346e5f21f91e3dfb7029b877570c58c"
+    },
+    {
+      "file": "screenshots/mobile-bench-dark-reduced-motion.png",
+      "bytes": 36429,
+      "sha256": "44baf9905239e69302d30a22acfbcac8f6f52946aa5f8abf02944ec9b7b954bf"
+    },
+    {
+      "file": "screenshots/mobile-uncovered-exercise.png",
+      "bytes": 38199,
+      "sha256": "6129d3b598f30d70051cd32590e24d3b5a9b3b9fa633c80632dcbdde11dd5bd7"
+    },
+    {
+      "file": "screenshots/mobile-mascot-curl.png",
+      "bytes": 72502,
+      "sha256": "b74baf45f423cb91723a8057f52ece2afc94b8954646c034403374c9624a1ea4"
+    },
+    {
+      "file": "screenshots/mobile-mascot-squat.png",
+      "bytes": 78733,
+      "sha256": "c48c2be6a45adb499eb649b0d91f9d01257fb4d958ade4e764948a0ee7fe293b"
+    },
+    {
+      "file": "screenshots/mobile-mascot-shoulder-press.png",
+      "bytes": 82483,
+      "sha256": "880d177af845120a9edfd009ace0860d48f2ed6237028f0d166b31fcc7adb281"
+    },
+    {
+      "file": "screenshots/mobile-mascot-dumbbell-bench-press.png",
+      "bytes": 85758,
+      "sha256": "a2efefc7f873d219264cdec469adae92773f570cef19b439cfd155d1aafdaa58"
+    },
+    {
+      "file": "screenshots/mobile-video-only-starting-pose-dark.png",
+      "bytes": 86054,
+      "sha256": "853a9d4d896aafc03132a03f17451890f9928d0e113a4db11fb2aef99dfc76a4"
+    },
+    {
+      "file": "screenshots/mobile-mascot-jumping-jack.png",
+      "bytes": 45115,
+      "sha256": "023b10d72f496a5fe840962f40c365727e39e7d774bab951d6cc67c11bf4424c"
+    },
+    {
+      "file": "screenshots/mobile-mascot-exp-0385.png",
+      "bytes": 76188,
+      "sha256": "3bd133bc3b2b45d12c4100067b36f4fc2b8debcc401bcb5853750d975f5f8b3e"
+    },
+    {
+      "file": "screenshots/mobile-mascot-exp-0401.png",
+      "bytes": 75543,
+      "sha256": "f83cfb4223307c918bb7038e96872ef41fa350d19b35dee6f37377d4b715cc06"
+    },
+    {
+      "file": "screenshots/mobile-mascot-exp-0310.png",
+      "bytes": 66777,
+      "sha256": "02b58e14a3cd72e2d6c37a8d2fb306c85e51ed1b4de13f3500ec0235608ab6d4"
+    },
+    {
+      "file": "screenshots/mobile-mascot-exp-0817.png",
+      "bytes": 63492,
+      "sha256": "257013a59db5952b73ec65315d2c9bfe508b19768acb3bb2177c941a4743c7f1"
+    },
+    {
+      "file": "screenshots/desktop-workout-entry.png",
+      "bytes": 159097,
+      "sha256": "257d63ef06e5f74ca0495eec218ae7a6d8dc39f76cc865532b635128ecb8c16a"
+    }
+  ],
+  "rendererExceptions": 0,
+  "rendererConsoleErrors": 0,
+  "enforcedCspViolations": 0,
+  "externalOrigins": 0,
+  "modelCalls": 0,
+  "visibleWindows": 0
+}

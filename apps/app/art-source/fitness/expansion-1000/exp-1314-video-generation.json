@@ -1,0 +1,159 @@
+{
+  "canonicalExerciseId": "1314",
+  "englishName": "back extension on exercise ball",
+  "nodeId": "4d788fae-4e7b-4ee7-a70f-f3989c38affa",
+  "taskId": "20261021155003308578518",
+  "prompt": "首帧为 {{Node 6e650810-2b42-40aa-83ce-1fcd86528e3f}}，尾帧为 {{Node 708fac68-8151-45ce-9c3a-e823d2ec54ba}}。保持固定侧面机位、同一水獭、稳定球、墙、所有着地点和光线。4秒内只做一次稳定球背部伸展的向上阶段：骨盆/髋部始终被球顶部支撑，两脚原地踩地抵住右边墙，腿保持伸直，球完全固定不能滚动或弹跳。以前端躯干从首帧较低位缓慢向上抬高，使躯干/头颈与后腿在尾帧接近同一直线即停止，不要腰部继续过伸或昂头。双前爪始终轻交叉胸前，头颈随胸廓移动不能只点头，尾巴不能发力撑地。只抬一次到尾帧、不放回、不重复，不能抬腿、蹬脚、起立或翻身，不能改变球和墙形状，身体全程完整入镜。无文字、水印、声音、额外肢体、运镜或剪辑。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1314-reference-v2.png",
+      "bytes": 1605375,
+      "sha256": "87a7f941be4660b55c91157b934d0e30aa64edc59f4a3c79ce3f79e780b4ddb2",
+      "nodeId": "6e650810-2b42-40aa-83ce-1fcd86528e3f"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1314-endpoint.png",
+      "bytes": 1634963,
+      "sha256": "36ca7edd7b6bd359beec1c87140c94d56595fe7926324f9e2453cf51011a2002",
+      "nodeId": "708fac68-8151-45ce-9c3a-e823d2ec54ba"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "4d788fae-4e7b-4ee7-a70f-f3989c38affa",
+    "expectedReferenceNodeIds": [
+      "6e650810-2b42-40aa-83ce-1fcd86528e3f",
+      "708fac68-8151-45ce-9c3a-e823d2ec54ba"
+    ],
+    "imageListOrder": [
+      "6e650810-2b42-40aa-83ce-1fcd86528e3f",
+      "708fac68-8151-45ce-9c3a-e823d2ec54ba"
+    ],
+    "imageListNodeIds": [
+      "6e650810-2b42-40aa-83ce-1fcd86528e3f",
+      "708fac68-8151-45ce-9c3a-e823d2ec54ba"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "4fcb48bff8626983b245005520d04d2d38700ca5b5335a9c08ac973d8a6a3993",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "171763"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2802819"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "85081"
+    }
+  },
+  "originalSha256": "e0100d421d1de9ba4f4ef86ed5d395fc32d38e61658fe6fd1efaba9aec8b8ddc",
+  "originalBytes": 2802819,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "95f80c667e607981c9ff73e0c08499d74476dcc79269af3f59196b54cb983812",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of back extension on exercise ball from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083333 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. One requested four-second supported back-extension upward phase is reviewed before adding the exact reversed lowering frames; no separately AI-generated return, measured spine angle or clinical certification is claimed.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1314-contact-8fps.jpg",
+    "contactSha256": "ca6ac0d0d226d26e62544f67b77cbac383e73678dcbdb16704c387d295294076",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Root actually viewed 16 forward and 64 final samples. Upper torso and head or neck rise together into a near-straight continuation of the fixed rear legs, while hips remain on the stationary ball and feet stay braced at the wall. Paws stay crossed at chest, without leg lifting, ball rolling or exaggerated lumbar arch.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1314-one-way-contact-4fps.jpg",
+      "contactSha256": "e519dd0058dafda1d2110f070bea326eca6bf2559c891e4610f9d27329fe6fe8",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually viewed 16 forward and 64 final samples. Upper torso and head or neck rise together into a near-straight continuation of the fixed rear legs, while hips remain on the stationary ball and feet stay braced at the wall. Paws stay crossed at chest, without leg lifting, ball rolling or exaggerated lumbar arch.",
+    "producerObservationAtHandoff": "Root actually viewed 16 forward and 64 final samples. Head/neck and entire upper torso lift together into a near-straight continuation of straight legs; hips remain supported on stationary ball, feet remain braced at wall, paws stay crossed at chest, with no leg lift or exaggerated back arch. Exact reversed return preserves those supports. Producer actually viewed 16 forward and 64 final samples. Root review pending. Full one-way and final frames decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "e9ef6829ccc81355a01f94ede7fc8f7fcb23efbbfba47596c42859790b94de43",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "renderingAssumption": "Source permits crossed chest paws. Warm ivory wall is the source-described stable foot support; no exact body/hip angle is asserted."
+}

@@ -1,0 +1,147 @@
+{
+  "canonicalExerciseId": "0401",
+  "englishName": "dumbbell seated palms up wrist curl",
+  "nodeId": "46261ce6-15d6-4390-98a9-f9cfef40fe4c",
+  "taskId": "20261021163303695158518",
+  "prompt": "首帧为 {{Node ab52d6e5-dafa-4a3d-a270-572fd20b7274}}，尾帧为 {{Node 50ebd903-8516-4162-91df-12d3912f8004}}。严格按首尾帧4秒，固定相机。泽诺坐平凳双足地面，两前臂始终各自贴靠同侧大腿，肘和前臂不能抬起或滑动。双手掌心朝上旋后，两手各真实握一个独立哑铃。仅两腕同步轻缓屈腕向前臂卷起，小幅从低位抬到尾帧，手腕根部位置固定；不是肘弯举，不旋转手掌，不能变为相反握法。双脚臀躯干头尾巴凳子不动，无文字无声音。\n",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0401-reference.png",
+      "sha256": "d06f5b5b6fa7a10a21f2041d8884f00364ad38525645c09a2d25d18b0f7173ae",
+      "bytes": 1794600,
+      "nodeId": "ab52d6e5-dafa-4a3d-a270-572fd20b7274"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0401-endpoint.png",
+      "sha256": "c74cfb8a6f37a7783ca2046a81dcff18137fd4c47ebd3acf753ffe37212de76d",
+      "bytes": 1738946,
+      "nodeId": "50ebd903-8516-4162-91df-12d3912f8004"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "Official CLI read-only node response after create without run and before the single paid run",
+    "nodeId": "46261ce6-15d6-4390-98a9-f9cfef40fe4c",
+    "expectedReferenceNodeIds": [
+      "ab52d6e5-dafa-4a3d-a270-572fd20b7274",
+      "50ebd903-8516-4162-91df-12d3912f8004"
+    ],
+    "imageListOrder": [
+      "ab52d6e5-dafa-4a3d-a270-572fd20b7274",
+      "50ebd903-8516-4162-91df-12d3912f8004"
+    ],
+    "imageListNodeIds": [
+      "ab52d6e5-dafa-4a3d-a270-572fd20b7274",
+      "50ebd903-8516-4162-91df-12d3912f8004"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "ee257c5a2742ec444b75080566349108138e1b4edbf527a7f59c3d63329cd2d5",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083008",
+      "size": "146656"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2027029"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "79119"
+    }
+  },
+  "originalSha256": "a1f7d43462ba1504e24644966819e71bcc6a20c6f9b638e246c6a4bc4c998767",
+  "originalBytes": 2027029,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083008,
+  "oneWayEncodedSha256": "4ea1e8197f788f244de1014ad5ca9067339becf6d8bf0c5ff91db05ee3c5aef6",
+  "processing": "Seedance2.5 generated one ordered start/end4second one-way segment (actual 4.041667s). After actual16sample visual approval, encoded whole segment forward then exact reversed frame order to illustrate return, final 8.083008s. Return synthesized by reversal, not separately AI-generated; not an original8second continuous generation. H.264 CRF26,1024px,yuv420p,silent,faststart. WebP q86 poster extracted from actual first video frame.",
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0401-contact-8fps.jpg",
+    "contactSha256": "eeb1bcec5d34a77c61919745ff9629683aa995bd3be521b7408457db95cffbb1",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "observation": "Root actually inspected the 16 forward and 64 final contact frames. The seated mascot keeps both forearms supported on the thighs and both palms facing upward. The two small dumbbells move through wrist flexion with small visible settling rather than lifting the forearms into an elbow curl. Feet, torso and bench remain stable. The return is disclosed reversed forward footage.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0401-one-way-contact-4fps.jpg",
+      "contactSha256": "9cb5825db7c0b6edbaeb9f4551ec055b0a7f4a72393e2cfdb6beb645e5574072",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootReviewPending": false,
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually inspected the 16 forward and 64 final contact frames. The seated mascot keeps both forearms supported on the thighs and both palms facing upward. The two small dumbbells move through wrist flexion with small visible settling rather than lifting the forearms into an elbow curl. Feet, torso and bench remain stable. The return is disclosed reversed forward footage.",
+    "producerObservationAtHandoff": "Both supinated cream palms stay up; two held DBs move through small bilateral wrist flexion, forearms supported on own thighs. No elbow curl or hand roll to pronation.16and64sample contacts actually viewed, stable whole body, final full decode passed."
+  },
+  "posterTool": "ffmpeg first generated video frame then cwebp q86; original ordered image references by built-in ImageGen",
+  "sourceDescriptorSha256": "63241859bb5f9628d03efff53297bbc7858041355b71d693a8906af11c5b3398",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "parentAdmissionPending": true
+}

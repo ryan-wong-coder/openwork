@@ -7,6 +7,10 @@ import { readFileSync, readdirSync } from "node:fs";
 import mascotDemos from "../src/react-app/domains/zeno/mascot-demos.json";
 import selection from "../art-source/fitness/mainstream/selection.json";
 import provenance from "../art-source/fitness/provenance.json";
+import expansionProgress from "../art-source/fitness/expansion-1000/progress.json";
+import expansionSelection from "../art-source/fitness/expansion-1000/selection.json";
+import techniqueCredits from "../art-source/fitness/expansion-1000/technique-credits.json";
+import { z } from "zod";
 import { searchExercisesForPicker } from "../src/react-app/domains/zeno/exercise-search";
 
 const digest = (bytes: string | Uint8Array) => createHash("sha256").update(bytes).digest("hex");
@@ -53,6 +57,47 @@ test("the original mainstream baseline keeps its identities, equipment and froze
     return [selected.exerciseId, item.englishName, item.stem, item.kind, asset.name, asset.kind, asset.video.file, asset.video.bytes, asset.video.sha256, asset.poster.file, asset.poster.bytes, asset.poster.sha256];
   });
   expect(digest(JSON.stringify(baseline))).toBe("279a1a561e8bdc19ce8e1d3fdae00c5655bccbcfd2d375c228e5744dd1c475ad");
+});
+test("expansion progress credits reviewed techniques without counting supplemental catalogue labels twice", () => {
+  const baselineIds = new Set(selection.exercises.map(item => item.exerciseId));
+  const additions = mascotDemos.filter(item => !baselineIds.has(item.exerciseId));
+  const creditedIds = new Set(expansionProgress.accepted.map(item => item.exerciseId));
+  const supplementalIds = new Set(expansionProgress.supplementalCoverage.map(item => item.exerciseId));
+  expect(creditedIds.size).toBe(expansionProgress.accepted.length);
+  expect(supplementalIds.size).toBe(expansionProgress.supplementalCoverage.length);
+  expect([...creditedIds].every(id => !supplementalIds.has(id))).toBe(true);
+  expect([...creditedIds, ...supplementalIds].sort()).toEqual(additions.map(item => item.exerciseId).sort());
+  expect(expansionProgress.baselineReady).toBe(baselineIds.size);
+  expect(expansionProgress.acceptedAdditional).toBe(creditedIds.size);
+  expect(expansionProgress.additionalCanonicalCoverage).toBe(additions.length);
+  expect(expansionProgress.totalReady).toBe(mascotDemos.length);
+  expect(expansionProgress.remainingTarget).toBe(expansionProgress.targetAdditional - creditedIds.size);
+  expect(creditedIds.size).toBeLessThanOrEqual(expansionProgress.targetAdditional);
+  expect(provenance.scope.creditedExpansionMovements).toBe(creditedIds.size);
+  expect(provenance.scope.supplementalExpansionCoverage).toBe(supplementalIds.size);
+  expect(provenance.scope.completedExpansionVideos).toBe(additions.length);
+  for (const item of expansionProgress.supplementalCoverage) {
+    const policy = techniqueCredits.supplementalCandidates.find(candidate => candidate.exerciseId === item.exerciseId);
+    const asset = provenance.assets.find(candidate => candidate.canonicalExerciseId === item.exerciseId);
+    const peer = provenance.assets.find(candidate => candidate.canonicalExerciseId === item.sameTechniqueAs);
+    if (!policy || !asset || !peer) throw new Error("Supplemental coverage requires an accepted independent pair and reviewed original technique");
+    expect(item.englishName).toBe(policy.englishName);
+    expect(item.sameTechniqueAs).toBe(policy.sameTechniqueAs);
+    expect(item.creditedTowardTarget).toBe(false);
+    expect(baselineIds.has(item.sameTechniqueAs) || creditedIds.has(item.sameTechniqueAs)).toBe(true);
+    expect(asset.video.sha256).not.toBe(peer.video.sha256);
+    expect(asset.poster.sha256).not.toBe(peer.poster.sha256);
+    const credit = z.object({ productionCredit: z.object({ creditedTowardTarget: z.literal(false), sameTechniqueAs: z.string(), reason: z.string().min(1) }) }).parse(asset);
+    expect(credit.productionCredit.sameTechniqueAs).toBe(item.sameTechniqueAs);
+    expect(credit.productionCredit.reason).toBe(policy.reason);
+  }
+  const readySteps = new Map<string, string>();
+  for (const row of [...expansionSelection.exercises, ...expansionSelection.reserves]) {
+    if (!creditedIds.has(row.exerciseId)) continue;
+    const steps = JSON.stringify(row.sourceSteps);
+    expect(readySteps.has(steps)).toBe(false);
+    readySteps.set(steps, row.exerciseId);
+  }
 });
 test("every ready local media pair matches its complete recorded provenance hashes", () => {
   const folder = new URL("../public/zeno/fitness/", import.meta.url);

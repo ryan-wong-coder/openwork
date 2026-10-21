@@ -99,6 +99,7 @@ try {
   check('real-local-api-login-production-pwa');
   stage = 'catalogue'; await button('动作库');
   const demonstrations = JSON.parse(await readFile(resolve(repository, 'apps/app/src/react-app/domains/zeno/mascot-demos.json'), 'utf8'));
+  const expansion = JSON.parse(await readFile(resolve(repository, 'apps/app/art-source/fitness/expansion-1000/selection.json'), 'utf8'));
   assert.ok(demonstrations.length >= 32);
   const visibleReadyCount = Math.min(100, demonstrations.length);
   const firstOptions = await evaluate(`[...document.querySelectorAll("[data-exercise-option]")].slice(0,${visibleReadyCount}).map(element=>element.dataset.exerciseOption)`);
@@ -135,12 +136,24 @@ try {
   await screenshot('desktop-bench-dark-reduced-motion'); check('reduced-motion-stops-and-disables-svg-playback');
   await page.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
   await screenshot('mobile-bench-dark-reduced-motion'); check('mobile-dark-detail-no-horizontal-overflow');
-  await closeDialog(); await field('搜索动作', '杠铃窄握卧推', 'input[aria-label=搜索动作]'); await button('杠铃窄握卧推'); await waitText('暂无动作演示');
-  assert.equal(await evaluate('document.querySelectorAll("[data-movement-figure],video").length'), 0); await screenshot('mobile-uncovered-exercise'); check('uncovered-variant-never-receives-generic-animation');
+  const planned = [...expansion.exercises, ...expansion.reserves];
+  const unready = planned.filter(row => !demonstrations.some(item => item.exerciseId === row.exerciseId) && planned.filter(other => other.chineseName === row.chineseName).length === 1);
+  const uncovered = unready.find(row => row.equipmentId === 'barbell' && row.englishName.includes('bench press')) ?? unready[0];
+  assert.ok(uncovered, 'uncovered canonical exercise required for negative coverage check');
+  await closeDialog(); await field('搜索动作', uncovered.chineseName, 'input[aria-label=搜索动作]'); await button(uncovered.chineseName); await waitText('暂无动作演示');
+  assert.ok(await evaluate(`document.querySelector('[data-exercise-detail="${uncovered.exerciseId}"]')!==null`));
+  assert.equal(await evaluate('document.querySelectorAll("[data-movement-figure],video").length'), 0); await screenshot('mobile-uncovered-exercise'); check('uncovered-variant-never-receives-generic-animation', { exerciseId: uncovered.exerciseId });
   await closeDialog(); await page.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'light' }, { name: 'prefers-reduced-motion', value: 'no-preference' }] });
   stage = 'mascot-videos';
-  const expansion = JSON.parse(await readFile(resolve(repository, 'apps/app/art-source/fitness/expansion-1000/selection.json'), 'utf8'));
-  const expansionExamples = demonstrations.filter(item => item.stem.startsWith('exp-')).slice(0,3).map(item => {
+  const requestedExpansionIds = (process.env.ZENO_FITNESS_QA_EXERCISES ?? '').split(',').map(id => id.trim()).filter(Boolean);
+  assert.equal(new Set(requestedExpansionIds).size, requestedExpansionIds.length);
+  const selectedExpansion = requestedExpansionIds.length ? requestedExpansionIds.map(id => {
+    assert.match(id, /^\d{4}$/);
+    const item = demonstrations.find(row => row.exerciseId === id && row.stem.startsWith('exp-'));
+    assert.ok(item, 'requested expansion must have completed exact media');
+    return item;
+  }) : demonstrations.filter(item => item.stem.startsWith('exp-')).slice(0,3);
+  const expansionExamples = selectedExpansion.map(item => {
     const source = [...expansion.exercises, ...expansion.reserves].find(row => row.exerciseId === item.exerciseId);
     assert.ok(source && source.englishName === item.englishName);
     return [source.chineseName, item.exerciseId, item.stem, item.kind, false];

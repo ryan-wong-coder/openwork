@@ -1,0 +1,147 @@
+{
+  "canonicalExerciseId": "0872",
+  "englishName": "reverse crunch",
+  "nodeId": "15c9a28d-7fe4-4fe5-9360-41c86a69463d",
+  "taskId": "20261021160203005268518",
+  "prompt": "首帧为 {{Node fb037550-fe9d-4a33-ac5c-5178b96e0d42}}，尾帧为 {{Node c1087649-704e-48fe-8929-7da6872f33c7}}。严格首尾帧4秒固定镜头。泽诺仰卧，两手臂掌、头肩上背始终贴地；双腿屈膝约90度悬空。仅缓慢收腹骨盆后倾，把臀部轻微卷离地面3至5厘米、双膝向胸部靠近到尾帧，双腿一起移动且保持屈膝，不摆腿不伸踢、不抬头肩、不倒立、不用尾巴垫腰顶起身体。头肩脚手及躯干身份不变，无新增动作、无字无声。\n",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0872-reference.png",
+      "sha256": "6cd33a5e227177b77fcc74b716e0f2a5875fa4806b490af50d9dd88ca4065854",
+      "bytes": 1863815,
+      "nodeId": "fb037550-fe9d-4a33-ac5c-5178b96e0d42"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0872-endpoint.png",
+      "sha256": "df7450f9e80185bf30e8573d11c545cfcdb6752d4ec965ca313e37f03c6c878b",
+      "bytes": 1805440,
+      "nodeId": "c1087649-704e-48fe-8929-7da6872f33c7"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "Official CLI read-only node response after create without run and before the single paid run",
+    "nodeId": "15c9a28d-7fe4-4fe5-9360-41c86a69463d",
+    "expectedReferenceNodeIds": [
+      "fb037550-fe9d-4a33-ac5c-5178b96e0d42",
+      "c1087649-704e-48fe-8929-7da6872f33c7"
+    ],
+    "imageListOrder": [
+      "fb037550-fe9d-4a33-ac5c-5178b96e0d42",
+      "c1087649-704e-48fe-8929-7da6872f33c7"
+    ],
+    "imageListNodeIds": [
+      "fb037550-fe9d-4a33-ac5c-5178b96e0d42",
+      "c1087649-704e-48fe-8929-7da6872f33c7"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "719823fb375bfee912a6ab743138011fc9da866a84737484a74851100c4da4fc",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083008",
+      "size": "189822"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2827740"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "97694"
+    }
+  },
+  "originalSha256": "e5b1e1e8bb7cdf5018cf0fed7bb0c3ba9036990aff460465134b74e8ff1a936a",
+  "originalBytes": 2827740,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083008,
+  "oneWayEncodedSha256": "185cdb9d9b5d6f86357ebf7be0e8e0a7caec9a4d041ce2f783fcc198076faddd",
+  "processing": "Seedance2.5 generated one ordered start/end4second one-way segment (actual 4.041667s). After actual16sample visual approval, encoded whole segment forward then exact reversed frame order to illustrate return, final 8.083008s. Return synthesized by reversal, not separately AI-generated; not an original8second continuous generation. H.264 CRF26,1024px,yuv420p,silent,faststart. WebP q86 poster extracted from actual first video frame.",
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0872-contact-8fps.jpg",
+    "contactSha256": "3520d9ac856f2eb2c8236aa851d591a9a0c11b771f85273949ab955a95a1429f",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "observation": "Root actually inspected the 16 forward and 64 final contact frames and the full-sized peak frame. Bent knees draw toward the chest with a small posterior pelvic curl; head, shoulders and paws remain grounded and the tail remains on the far floor. It does not become a sit-up or straight-leg raise. The return uses disclosed reversed forward footage; no exact hip-lift height is claimed.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0872-one-way-contact-4fps.jpg",
+      "contactSha256": "5fea79b06bb930ab65e96828ac687da89ec842eedb2fc4dc553b8d2f1817f3d0",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootReviewPending": false,
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually inspected the 16 forward and 64 final contact frames and the full-sized peak frame. Bent knees draw toward the chest with a small posterior pelvic curl; head, shoulders and paws remain grounded and the tail remains on the far floor. It does not become a sit-up or straight-leg raise. The return uses disclosed reversed forward footage; no exact hip-lift height is claimed.",
+    "producerObservationAtHandoff": "Actually viewed16sample one-way and64sample final contact, plus original-size peak frame producer-only. Bent knees travel toward chest as sacrum/pelvis curls a small distance off floor; head/shoulders/palms fixed. No sit-up, leg extension or roll onto neck. Tail remains far-side floor extension; not under lumbar region. Full8.083s decoded forward/reverse."
+  },
+  "posterTool": "ffmpeg first generated video frame then cwebp q86; original ordered image references by built-in ImageGen",
+  "sourceDescriptorSha256": "eae398386c59c389fa5febec04c8fcbfc8d1c8c4a5f7dbccda99ade9ec58593f",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "parentAdmissionPending": true
+}

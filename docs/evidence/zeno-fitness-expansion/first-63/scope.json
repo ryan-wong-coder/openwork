@@ -1,0 +1,19 @@
+{
+  "scope": "Actual production PWA snapshot after 63 credited additions and 32 unchanged baseline demonstrations. No supplemental duplicate labels had been admitted at this snapshot. Local disposable API and headless Chrome; no native installer or live deployment claim.",
+  "additionalSnapshot": 63,
+  "totalSnapshot": 95,
+  "browserChecks": 18,
+  "screenshots": 15,
+  "exactExpansionVideosExercised": [
+    "0031",
+    "0108",
+    "1314"
+  ],
+  "complete1000": false,
+  "livePublished": false,
+  "tests": {
+    "passed": 62,
+    "failed": 0,
+    "expectations": 44163
+  }
+}

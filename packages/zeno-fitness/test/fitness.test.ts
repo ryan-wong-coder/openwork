@@ -72,7 +72,7 @@ describe("fixed text-only Chinese catalogue", () => {
     expect(findExercise("2499")?.instructions).toEqual(curl?.instructions);
   });
   test("new instruction corrections require both canonical ID and exact English name, including alias input", () => {
-    for (const [id, alias, englishName] of [["0407", "2597", "dumbbell side bend"], ["0446", "2499", "ez barbell close-grip curl"]]) {
+    for (const [id, alias, englishName] of [["0031", "3592", "barbell curl"], ["0407", "2597", "dumbbell side bend"], ["0446", "2499", "ez barbell close-grip curl"]]) {
       const exact = findExercise(id);
       expect(exerciseFromUpstream({ id: alias, n: englishName }).instructions).toEqual(exact?.instructions);
       expect(exerciseFromUpstream({ id, n: `${englishName} modified` }).instructions).not.toEqual(exact?.instructions);
@@ -81,6 +81,9 @@ describe("fixed text-only Chinese catalogue", () => {
     }
     expect(findExercise("0405")?.instructions.join(" ")).not.toContain("窄握");
     expect(findExercise("0294")?.instructions.join(" ")).not.toContain("内侧倾斜握段");
+    expect(findExercise("0031")?.instructions[1]).toContain("弯举杠铃");
+    expect(findExercise("0031")?.instructions.join(" ")).not.toContain("哑铃");
+    expect(findExercise("0294")?.instructions[1]).toContain("弯举哑铃");
   });
 });
 describe("upstream numerical regressions and own-data lifecycle", () => {

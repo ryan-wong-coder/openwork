@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "scope": "Independent exact-catalogue media may also cover a duplicate catalogue label, but the same demonstrated technique is credited only once toward the 1000 additional movements. Supplemental candidates require actual media review and independent files before runtime admission. All frozen selection entries remain unchanged.",
+  "supplementalCandidates": [
+    {
+      "exerciseId": "0310",
+      "englishName": "dumbbell front raise",
+      "sameTechniqueAs": "0834",
+      "creditedTowardTarget": false,
+      "reason": "The complete source steps are identical and both demonstrations use two separate dumbbells raised forward together to shoulder height; the weighted versus dumbbell label does not create a different technique."
+    },
+    {
+      "exerciseId": "0817",
+      "englishName": "triceps stretch",
+      "sameTechniqueAs": "0643",
+      "creditedTowardTarget": false,
+      "reason": "Both source descriptions specify the same standing or seated overhead bent-elbow triceps stretch assisted by the opposite hand. The generic versus overhead title does not create another technique."
+    }
+  ]
+}

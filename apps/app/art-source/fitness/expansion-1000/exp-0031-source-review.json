@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "canonicalExerciseId": "0031",
+  "englishName": "barbell curl",
+  "sourceDescriptorSha256": "ee6f2313489da400983749dc5e1af5a122935a7ebdc42c795ea2c04e2c36f5e4",
+  "finding": "The pinned Chinese second step says dumbbell, while the canonical English name, equipmentId, first step and third step all consistently identify a barbell curl.",
+  "rawSecondStep": "保持肘部靠近躯干，在弯举哑铃时呼气，同时收缩二头肌。",
+  "runtimeCorrection": "保持肘部靠近躯干，在弯举杠铃时呼气，同时收缩二头肌。",
+  "correctionScope": "Equipment noun only; the existing sequence and technique are unchanged. Applies only to exact canonical ID plus full English name; alias 3592 resolves to that same identity.",
+  "frozenPlanningTextUnchanged": true,
+  "restrictedVisualMediaUsed": false
+}

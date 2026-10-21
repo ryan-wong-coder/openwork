@@ -1,0 +1,48 @@
+{
+  "canonicalExerciseId": "0413",
+  "englishName": "dumbbell squat",
+  "sourceDescriptorSha256": "b8ad6897298cfa1c43d41f8efcb05435e0b064dd48a670136ec60a4a442c31cd",
+  "sourceSteps": [
+    "双脚分开与肩同宽站立，双手各握一个哑铃放在身体两侧。",
+    "保持胸部挺直，核心收紧，弯曲膝盖和臀部，降低身体，就像坐回椅子上一样。",
+    "继续降低，直到大腿与地面平行，或者尽可能低。",
+    "在底部停顿片刻，然后推动脚后跟回到起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "sourceStepsTechniqueReviewed": true,
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0413-reference.png",
+      "bytes": 1651116,
+      "sha256": "b26522aa4a693fed996cc7314c0492645bd46fe443bfa4598b8e0b4f21952a15"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0413-endpoint.png",
+      "bytes": 1626152,
+      "sha256": "12bd12ae8213caba2477b934fcf1881d9b0e36f68c0d2b41414a956f0a89ce46"
+    }
+  ],
+  "sourcePromptFiles": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0413-poster-prompt.txt"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0413-endpoint-prompt.txt"
+    }
+  ],
+  "posterTool": "built-in image_gen.imagegen",
+  "identityReference": {
+    "file": "apps/zeno-site/public/assets/mascot.webp",
+    "role": "identity only for start; endpoint edited accepted start"
+  },
+  "producerActuallyViewedStartAndEnd": true,
+  "observation": "Dumbbell squat with two weights at outer sides: stable flat-foot stance and long arms, hip/knee flexion to comfortable near-parallel squat, upright neutral spine.",
+  "scope": "One reversible forward movement preview, with any return synthesized by exact reversed frames after actual one-way review.",
+  "restrictedUpstreamMediaUsed": false,
+  "readyMedia": false,
+  "notRegisteredByProducer": true
+}

@@ -1,0 +1,51 @@
+{
+  "order": 252,
+  "exerciseId": "0310",
+  "englishName": "dumbbell front raise",
+  "chineseName": "哑铃前平举",
+  "equipmentId": "dumbbell",
+  "bodyPartId": "shoulders",
+  "muscles": {
+    "primaryIds": [
+      "deltoids"
+    ],
+    "primaryLabels": [
+      "三角肌"
+    ],
+    "secondaryIds": [
+      "biceps",
+      "trapezius"
+    ],
+    "secondaryLabels": [
+      "肱二头肌",
+      "斜方肌"
+    ]
+  },
+  "sourceSteps": [
+    "双脚分开与肩同宽站立，双手各握一个哑铃，手掌朝向大腿。",
+    "保持双臂伸直，呼气并将哑铃举至身前，直至与肩齐平。",
+    "在顶部停顿片刻，然后吸气，慢慢将哑铃放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "descriptorSha256": "4d825f6af4e5fa7960b9f825459936126f174eb1aadbf246699d12e9822cbe52",
+  "startPose": "站姿双哑铃前平举低位，双臂近直在大腿前，掌朝大腿。",
+  "support": "双足平稳地面、骨盆躯干中立，不使用凳或借力摆动。",
+  "grip": "双手各握一独立小哑铃，正握掌朝大腿，末端掌向地面。",
+  "jointMotion": "双肩同步前屈至肩高，肘微屈角度恒定，非肘屈弯举。",
+  "path": "两哑铃从大腿前沿矢状面前方弧升至肩高，间距不变。",
+  "camera": "固定前侧45度，人物面向画面左侧前方，前方留足伸臂空间。",
+  "criticalChecks": [
+    "双臂向前而非侧向，明确两只分离哑铃。",
+    "肘保持近直，不能借躯干摆动或变弯举。",
+    "双足全程地面，肩高端不超头顶，手和重量不裁切。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceStepsActuallyRead": true,
+  "sourceIssues": [],
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "oneWayGenerationSeconds": 4,
+    "return": "Only after actual one-way review, exact reversed frame order for return; not original8second continuous generation."
+  }
+}

@@ -2,10 +2,29 @@
   "schemaVersion": 1,
   "status": "producing",
   "targetAdditional": 1000,
-  "acceptedAdditional": 52,
+  "acceptedAdditional": 72,
   "baselineReady": 32,
-  "totalReady": 84,
-  "remainingTarget": 948,
+  "totalReady": 106,
+  "additionalCanonicalCoverage": 74,
+  "supplementalCoverage": [
+    {
+      "exerciseId": "0817",
+      "englishName": "triceps stretch",
+      "assetStem": "exp-0817",
+      "sameTechniqueAs": "0643",
+      "creditedTowardTarget": false,
+      "reason": "Both source descriptions specify the same standing or seated overhead bent-elbow triceps stretch assisted by the opposite hand. The generic versus overhead title does not create another technique."
+    },
+    {
+      "exerciseId": "0310",
+      "englishName": "dumbbell front raise",
+      "assetStem": "exp-0310",
+      "sameTechniqueAs": "0834",
+      "creditedTowardTarget": false,
+      "reason": "The complete source steps are identical and both demonstrations use two separate dumbbells raised forward together to shoulder height; the weighted versus dumbbell label does not create a different technique."
+    }
+  ],
+  "remainingTarget": 928,
   "budgetScope": "Existing current-account credits only; no recharge or account switching. Paid dispatch stops on explicit insufficient-credit terminal output.",
   "creditsRemaining": null,
   "creditsRemainingKnown": false,
@@ -270,6 +289,106 @@
       "exerciseId": "0271",
       "englishName": "crunch (on stability ball)",
       "assetStem": "exp-0271"
+    },
+    {
+      "exerciseId": "0396",
+      "englishName": "dumbbell seated lateral raise",
+      "assetStem": "exp-0396"
+    },
+    {
+      "exerciseId": "0320",
+      "englishName": "dumbbell incline hammer curl",
+      "assetStem": "exp-0320"
+    },
+    {
+      "exerciseId": "0031",
+      "englishName": "barbell curl",
+      "assetStem": "exp-0031"
+    },
+    {
+      "exerciseId": "0358",
+      "englishName": "dumbbell one arm reverse wrist curl",
+      "assetStem": "exp-0358"
+    },
+    {
+      "exerciseId": "0315",
+      "englishName": "dumbbell incline biceps curl",
+      "assetStem": "exp-0315"
+    },
+    {
+      "exerciseId": "1379",
+      "englishName": "dumbbell seated calf raise",
+      "assetStem": "exp-1379"
+    },
+    {
+      "exerciseId": "1459",
+      "englishName": "dumbbell romanian deadlift",
+      "assetStem": "exp-1459"
+    },
+    {
+      "exerciseId": "0368",
+      "englishName": "dumbbell over bench revers wrist curl",
+      "assetStem": "exp-0368"
+    },
+    {
+      "exerciseId": "0108",
+      "englishName": "barbell standing leg calf raise",
+      "assetStem": "exp-0108"
+    },
+    {
+      "exerciseId": "0364",
+      "englishName": "dumbbell one arm wrist curl",
+      "assetStem": "exp-0364"
+    },
+    {
+      "exerciseId": "1314",
+      "englishName": "back extension on exercise ball",
+      "assetStem": "exp-1314"
+    },
+    {
+      "exerciseId": "0351",
+      "englishName": "dumbbell lying triceps extension",
+      "assetStem": "exp-0351"
+    },
+    {
+      "exerciseId": "0293",
+      "englishName": "dumbbell bent over row",
+      "assetStem": "exp-0293"
+    },
+    {
+      "exerciseId": "0091",
+      "englishName": "barbell seated overhead press",
+      "assetStem": "exp-0091"
+    },
+    {
+      "exerciseId": "0030",
+      "englishName": "barbell close-grip bench press",
+      "assetStem": "exp-0030"
+    },
+    {
+      "exerciseId": "0413",
+      "englishName": "dumbbell squat",
+      "assetStem": "exp-0413"
+    },
+    {
+      "exerciseId": "0340",
+      "englishName": "dumbbell lying hammer press",
+      "assetStem": "exp-0340"
+    },
+    {
+      "exerciseId": "0872",
+      "englishName": "reverse crunch",
+      "assetStem": "exp-0872"
+    },
+    {
+      "exerciseId": "0385",
+      "englishName": "dumbbell reverse wrist curl",
+      "assetStem": "exp-0385"
+    },
+    {
+      "exerciseId": "0401",
+      "englishName": "dumbbell seated palms up wrist curl",
+      "assetStem": "exp-0401"
     }
   ]
 }

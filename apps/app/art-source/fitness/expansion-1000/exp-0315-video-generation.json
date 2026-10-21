@@ -1,0 +1,163 @@
+{
+  "canonicalExerciseId": "0315",
+  "englishName": "dumbbell incline biceps curl",
+  "nodeId": "36f68d4e-143a-4425-8c18-b5deca30f97b",
+  "taskId": "20261021145803089348518",
+  "prompt": "首帧是 {{Node 2b702c49-b6de-4c4f-b908-775fa8d258b4}}，尾帧是 {{Node 759a5957-fa5a-4d62-9277-7dd6ac4ac25b}}。同一原创青奶油Zeno水獭、单青柠斜带/单Z扣、两只相同刚性灰色六角哑铃、同一上斜凳/靠背角度、固定前侧三分之四镜头、脚地面接触/头背臀凳面接触、尾巴和暖象牙背景均严格不变。\n4秒内只演示一次双侧同步上斜哑铃二头弯举的上举段：从首帧两臂自然下垂、肘接近伸直开始，仅屈双肘让前臂带动哑铃沿自然弧线连续缓慢上卷，到尾帧同侧肩/上胸前的位置轻停。双上臂保持首帧下垂位置不前摆不抬起，双肘始终在下肋/髋旁同一点；头、背、肩、臀持续贴同一靠背和座面，双脚持续原地全掌落地，肩不耸/躯干不摆/不借力。双爪保持同一反手掌心向前到向肩的握法，不变锤式，不松哑铃；握点、手腕对齐和哑铃数量形状尺寸不变。不要肩推、前平举、划船或把肘举离身体；只上举，不下放、不重复、不改变凳角度。完整身体、双哑铃和双足全程可见，无镜头运动/剪切/变形/额外肢体/文字水印或音频。Continuous elbow-flexion motion between the exact supplied poses, not a still hold or jump cut.\n",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0315-reference.png",
+      "bytes": 1812339,
+      "sha256": "a0129c87671418da52afa71ae71d0847764097db6129928005a97d7e6967335a",
+      "nodeId": "2b702c49-b6de-4c4f-b908-775fa8d258b4"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0315-endpoint.png",
+      "bytes": 1793885,
+      "sha256": "34b93c65558acf61fccf1f85cd5f49278bf1190b08e68e9c0f2d6e6de137fb4c",
+      "nodeId": "759a5957-fa5a-4d62-9277-7dd6ac4ac25b"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "36f68d4e-143a-4425-8c18-b5deca30f97b",
+    "expectedReferenceNodeIds": [
+      "2b702c49-b6de-4c4f-b908-775fa8d258b4",
+      "759a5957-fa5a-4d62-9277-7dd6ac4ac25b"
+    ],
+    "imageListOrder": [
+      "2b702c49-b6de-4c4f-b908-775fa8d258b4",
+      "759a5957-fa5a-4d62-9277-7dd6ac4ac25b"
+    ],
+    "imageListNodeIds": [
+      "2b702c49-b6de-4c4f-b908-775fa8d258b4",
+      "759a5957-fa5a-4d62-9277-7dd6ac4ac25b"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "eb372aea3b90f0c4024af60078e8568a53cbdbdab4c59bcca73783f040e23838",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083008",
+      "size": "181357"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2884706"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "95975"
+    }
+  },
+  "originalSha256": "8e589b58fbe709d399e7f7cf0774e78dc70a4d3afa0acaf95c8710f9906b7b18",
+  "originalBytes": 2884706,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083008,
+  "oneWayEncodedSha256": "774e80a1c6da1dcd0a342ee1b8315bce47bd0f0151993f76837cecdb6d3b69b2",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of dumbbell incline biceps curl from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, the complete forward frames were concatenated with the exact reversed frames, yielding 8.083008 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. Illustrates one controlled repetition, not a complete training set or prescribed training duration.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0315-contact-8fps.jpg",
+    "contactSha256": "4bf51850035adac0a55be46ad6ad1eea14aab2e7d2f977739afc4530c51093ab",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Synchronized incline dumbbell curl with supported head/back/hips and stationary planted feet.; Upper arms remain down while elbows flex; the two rigid dumbbells do not morph or change grip.; Final return is the exact reverse of the accepted four-second generation, not an independently generated eight-second take. Producer actually viewed 16 forward and 64 final samples; one-way and final full decodes passed.",
+    "producerDetailFramesReviewedSeconds": [
+      0,
+      2,
+      3.9
+    ],
+    "rootDetailFramesReviewedSeconds": [],
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0315-one-way-contact-4fps.jpg",
+      "contactSha256": "2a55687fa33db2d07cc61227feb72be92295724c5e8e486eb576842d7bcc9bf8",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually viewed 16 forward and 64 final contact samples: both dumbbells curl together toward the shoulders with supinated wrists and low upper arms, while head, back, hips and planted feet remain supported by the unchanged incline bench. No shoulder press or neutral-grip hammer substitution."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "196ef7642034bdd7e58d5bb4f844379ece0877ce16c91e900771838a24e699ee",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true
+}

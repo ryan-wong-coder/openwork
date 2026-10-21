@@ -1,0 +1,147 @@
+{
+  "canonicalExerciseId": "0368",
+  "englishName": "dumbbell over bench revers wrist curl",
+  "nodeId": "4945b049-8f5f-400e-a351-f384059ecf0d",
+  "taskId": "20261021152603558868518",
+  "prompt": "首帧为 {{Node 319ceea9-67af-4bc6-9663-64506309b9bb}}，尾帧为 {{Node a1598bfc-db12-4ab1-9abf-4002361b3956}}。严格按首尾帧，固定镜头。泽诺跨坐水平长凳，两前臂一直贴靠凳垫，两手掌朝下反握各一哑铃。仅两腕同步轻缓伸展上翘，把哑铃从垂低位置小幅抬高到尾帧；肘、前臂和肩不抬不移，不能变掌心向上腕屈或肱二头弯举。两腕在凳前缘之外转动，握杆保持，双足稳地、臀坐凳、另一切构图器械与尾巴不动。不要新增重复次数或转镜头。时长4秒，无声音、无字。\n",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0368-reference.png",
+      "sha256": "8847dbe112bc4bc13bea7fdea6287ca20f80f691bc90df9710c037c3de058d57",
+      "bytes": 1877100,
+      "nodeId": "319ceea9-67af-4bc6-9663-64506309b9bb"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0368-endpoint.png",
+      "sha256": "447d9714ad99602caa8066b1e5b315d48a485dd34ddae1363f533baa1b8b517e",
+      "bytes": 1792325,
+      "nodeId": "a1598bfc-db12-4ab1-9abf-4002361b3956"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "Official CLI read-only node response after create without run and before the single paid run",
+    "nodeId": "4945b049-8f5f-400e-a351-f384059ecf0d",
+    "expectedReferenceNodeIds": [
+      "319ceea9-67af-4bc6-9663-64506309b9bb",
+      "a1598bfc-db12-4ab1-9abf-4002361b3956"
+    ],
+    "imageListOrder": [
+      "319ceea9-67af-4bc6-9663-64506309b9bb",
+      "a1598bfc-db12-4ab1-9abf-4002361b3956"
+    ],
+    "imageListNodeIds": [
+      "319ceea9-67af-4bc6-9663-64506309b9bb",
+      "a1598bfc-db12-4ab1-9abf-4002361b3956"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "f1acb9c665e607c36df234cb2afb7d885422b2c3956ff25997e5a4dbe2b26bb2",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "143051"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2136735"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "78901"
+    }
+  },
+  "originalSha256": "f8c79f9b17abd0bd9e1876c5927c289b71dc7c3f3ce7eaf1d89223a0ed3961ff",
+  "originalBytes": 2136735,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "5df724bac66523592feb6116fc9d3d0aa2e35ea446aa4dc6a867365d2bee2b0a",
+  "processing": "Seedance2.5 generated one ordered start/end4second one-way segment (actual 4.041667s). After actual16sample visual approval, encoded whole segment forward then exact reversed frame order to illustrate return, final 8.083333s. Return synthesized by reversal, not separately AI-generated; not an original8second continuous generation. H.264 CRF26,1024px,yuv420p,silent,faststart. WebP q86 poster extracted from actual first video frame.",
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0368-contact-8fps.jpg",
+    "contactSha256": "695840fd70eafd544d8a3489c7abeecd9a1c4cdfaa60b801d729c47aa5513388",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "observation": "Root actually viewed 16 forward and 64 final samples: both pronated wrists extend a small distance while forearms stay supported on the bench, each dumbbell stays in its paw, and seated body and feet remain steady. No elbow curl or whole forearm lift.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0368-one-way-contact-4fps.jpg",
+      "contactSha256": "904e21e947a246cb6cbc1e0300a92801015b25fdd4d4c2fa2cc2687c4d2444d0",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootReviewPending": false,
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually viewed 16 forward and 64 final samples: both pronated wrists extend a small distance while forearms stay supported on the bench, each dumbbell stays in its paw, and seated body and feet remain steady. No elbow curl or whole forearm lift.",
+    "producerObservationAtHandoff": "Actual16and64contacts show simultaneous small pronated reverse-wrist extension at bench edge, forearms remain cushion-supported, fixed hips/feet/trunk, two continuously gripped dumbbells. Full decoded8.083s forward/reverse illustration; not a biceps curl."
+  },
+  "posterTool": "ffmpeg first generated video frame then cwebp q86; original ordered image references by built-in ImageGen",
+  "sourceDescriptorSha256": "45b54f11da14073b2bbfd904e959aa97496b186e8db0620ae2aac743e0bfd7e2",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "parentAdmissionPending": true
+}

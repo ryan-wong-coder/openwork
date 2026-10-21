@@ -1,0 +1,24 @@
+{
+  "exerciseId": "0409",
+  "englishName": "dumbbell single leg calf raise",
+  "status": "hold-start-contact-failure",
+  "sourceRead": true,
+  "attempts": [
+    {
+      "attempt": 1,
+      "sha256": "cf489591ce15c83c256dfd9591ff256cd650dbaba78e5de23ee32c05aa648e6f",
+      "accepted": false,
+      "reason": "Full loaded foot remains on step; free heel below/outside edge not demonstrated. Also inadequate headroom for heel rise."
+    },
+    {
+      "attempt": 2,
+      "sha256": "737ae46f1b7b9255cdc96a12b0870c0795b814b9ff23575e3a76063fc1a9620f",
+      "accepted": false,
+      "reason": "Full loaded foot remains on step; free heel below/outside edge not demonstrated. Headroom corrected in attempt2, but contact still incorrect."
+    }
+  ],
+  "startAccepted": false,
+  "endpointGenerated": false,
+  "videoRun": false,
+  "readyMedia": false
+}

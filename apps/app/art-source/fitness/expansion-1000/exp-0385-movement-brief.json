@@ -1,0 +1,51 @@
+{
+  "order": 240,
+  "exerciseId": "0385",
+  "englishName": "dumbbell reverse wrist curl",
+  "chineseName": "哑铃反握腕弯举",
+  "equipmentId": "dumbbell",
+  "bodyPartId": "lower arms",
+  "muscles": {
+    "primaryIds": [
+      "forearm"
+    ],
+    "primaryLabels": [
+      "前臂"
+    ],
+    "secondaryIds": [
+      "biceps"
+    ],
+    "secondaryLabels": [
+      "肱二头肌"
+    ]
+  },
+  "sourceSteps": [
+    "坐在长凳或椅子上，双脚平放在地面上。",
+    "双手各握一个哑铃，正手握握，手掌朝下。",
+    "将前臂放在大腿上，让手腕悬在边缘。",
+    "慢慢向上弯曲手腕，将哑铃拉向身体。",
+    "在顶部停顿片刻，然后慢慢将哑铃放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "descriptorSha256": "ef90af8ed0498f09b8abf4729ba645e05c74715604dd74dab44a14df7a50fea2",
+  "startPose": "坐平凳双手掌下反腕伸低位，双前臂贴大腿。",
+  "support": "臀凳、双足地面，两前臂各贴大腿，手腕略过膝缘。",
+  "grip": "双手各握一小哑铃正握，掌向下、手背向上。",
+  "jointMotion": "双腕同步伸展向上，肘前臂大腿接触保持。",
+  "path": "从低垂腕绕固定腕根向上翘至轻度伸展，不旋掌。",
+  "camera": "固定前侧30度，能辨两手背和双腕越膝的结构。",
+  "criticalChecks": [
+    "大腿支撑而非0368凳前缘支撑。",
+    "全程掌下，不能变成0401掌上腕屈。",
+    "仅腕部小幅运动，前臂不离腿。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceStepsActuallyRead": true,
+  "sourceIssues": [],
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "oneWayGenerationSeconds": 4,
+    "return": "Only after actual one-way review, exact reversed frame order for return; not original8second continuous generation."
+  }
+}

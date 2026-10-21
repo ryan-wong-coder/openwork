@@ -1,0 +1,159 @@
+{
+  "canonicalExerciseId": "0108",
+  "englishName": "barbell standing leg calf raise",
+  "nodeId": "0ef4df15-750d-4260-93a9-5a472f133e4d",
+  "taskId": "20261021153103149618518",
+  "prompt": "首帧为 {{Node cc8ca8ef-8106-49d3-be1a-0ae1003f0713}}，尾帧为 {{Node eb393627-a9d9-47b2-ae3b-ca3699e3398b}}。保持完全相同的水獭、宽画面固定镜头、所有器材和光线。4秒内只做一次背杠铃站姿提踵的抬起阶段：双脚前脚掌/脚趾一直原地固定贴地，两侧脚跟同时缓慢抬高到尾帧，整个身体和杠铃自然垂直升高。膝和髋保持几乎伸直，躯干直立，不能屈膝蹲起，不能跳、移动脚、滑步或把整只脚举离地。双前爪一直握在原位置，杠铃稳定横放上背/颈后，不能推过头或变成前举。尾巴不能撑地。只升高一次并停在尾帧，不降低、不重复。身体、头、双足、尾、杠杆和所有杠铃片全程完整入镜，无额外肢体、字幕、水印、声音、运镜或剪辑。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0108-reference-v2.png",
+      "bytes": 1573153,
+      "sha256": "bb32c0e1cd59224865ccef5c5f6562e8abf26b1a6982220d0c7f84846523f03d",
+      "nodeId": "cc8ca8ef-8106-49d3-be1a-0ae1003f0713"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0108-endpoint.png",
+      "bytes": 1577239,
+      "sha256": "e121cd9418f82202553353023f3ee741b97d21571ed9fa67c4cce35a3b3f2cbb",
+      "nodeId": "eb393627-a9d9-47b2-ae3b-ca3699e3398b"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "0ef4df15-750d-4260-93a9-5a472f133e4d",
+    "expectedReferenceNodeIds": [
+      "cc8ca8ef-8106-49d3-be1a-0ae1003f0713",
+      "eb393627-a9d9-47b2-ae3b-ca3699e3398b"
+    ],
+    "imageListOrder": [
+      "cc8ca8ef-8106-49d3-be1a-0ae1003f0713",
+      "eb393627-a9d9-47b2-ae3b-ca3699e3398b"
+    ],
+    "imageListNodeIds": [
+      "cc8ca8ef-8106-49d3-be1a-0ae1003f0713",
+      "eb393627-a9d9-47b2-ae3b-ca3699e3398b"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "7077ee4347a18bd82441b8143cfd0377dba3930f89f1174234cf3ba5e373cf76",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083333",
+      "size": "135360"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2118875"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "69528"
+    }
+  },
+  "originalSha256": "9a91d9f40af0953f79e21679509b5722d894cf711e0df5c02e82b8ae0ef57000",
+  "originalBytes": 2118875,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083333,
+  "oneWayEncodedSha256": "6b7b1a9aec845142bc28a941180e280e585b265ed823f60f4de2bfa260699059",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of barbell standing leg calf raise from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083333 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. Only the requested four-second heel-rise phase is generated; after actual review the same frames are reversed for a lowering return preview. No exact centimetre height or separately generated lowering phase is asserted.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0108-contact-8fps.jpg",
+    "contactSha256": "08d7101ffbbcb84d908a62dded8761a7e39b1a549610dbf76036cb813b0b2ce5",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Root actually viewed 16 forward and 64 final samples plus enlarged 3.75-second foot detail: both forefeet stay planted, heels rise with the upright body and upper-back barbell, paws keep their grip, knees and hips remain almost straight and the tail does not bear weight. No stepping, jumping, cropped head or bar ends.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0108-one-way-contact-4fps.jpg",
+      "contactSha256": "cdb107c50007e2a00f811d43785c43d90b83b8d756912b3a35c01c91461bb80f",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually viewed 16 forward and 64 final samples plus enlarged 3.75-second foot detail: both forefeet stay planted, heels rise with the upright body and upper-back barbell, paws keep their grip, knees and hips remain almost straight and the tail does not bear weight. No stepping, jumping, cropped head or bar ends.",
+    "producerObservationAtHandoff": "Root actually viewed 16 forward and 64 final samples plus an enlarged 3.75-second foot detail. Both forefeet stay planted, heels raise with body and barbell, knees and hips do not squat, and paws maintain the upper-back barbell grip. All body parts and plates remain fully in frame; the exact reversed lowering remains consistent. Producer actually viewed 16 forward and 64 final samples. Root review pending. Full one-way and final frames decoded without errors."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "d1dc11d96d991c86daa72d08975c5a5c4dc4c74c71f3b77001ad2ab4e9aa8287",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true,
+  "renderingAssumption": "The illustrated barbell uses modest identical black plates; no physical mass or exact heel-rise height is claimed."
+}

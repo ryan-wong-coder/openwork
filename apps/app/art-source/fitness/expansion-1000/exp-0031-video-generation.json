@@ -1,0 +1,160 @@
+{
+  "canonicalExerciseId": "0031",
+  "englishName": "barbell curl",
+  "nodeId": "45d13fa2-fa81-484f-b16d-ceb3a774d2dc",
+  "taskId": "20261021142103046188518",
+  "prompt": "首帧为 {{Node 186b8aec-e544-44b5-b45b-752442cb3dde}}，尾帧为 {{Node c15bf63d-2334-4188-b297-bb4fef00b814}}。严格保持同一原创Zeno青色奶油色毛绒水獭、单条青柠斜挎带/单Z扣、同一根刚性直杠铃和两端同样的小圆片、固定正面三分之四机位、双脚/尾巴/象牙摄影棚。\n4秒内仅做一次缓慢向上的杠铃二头弯举：从首帧双臂接近伸直、杠在大腿前的位置开始，双侧肘关节同步屈曲，前臂带动杠铃连续沿自然向上圆弧到尾帧肩/上胸前的位置，最后轻停。双上臂始终下垂贴近肋部，双肘维持身体旁原位置，绝对不抬肘、不前摆上臂、不做前平举或划船。双爪从始至终保持同一反手/掌心朝上握法和同一肩宽握距，不松手不滚杆。杠铃保持刚直、板片形状尺寸数量不变，不穿过身体或脸。躯干、肩、膝、双脚位置固定，肩不耸，背不后仰，头尾不摆。只上举到尾帧，生成过程中不要下放或重复。全身和两端杠铃全程在画面里，无剪切、镜头运动、额外肢体、文字、水印或声音。This is ONE elbow-driven curl raising phase, not a static hold or jump between end poses.\n",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0031-reference.png",
+      "bytes": 1698535,
+      "sha256": "34e25c5c7246e2239b5e39774910381bf40480a34a8dc89e355f669c021f5e68",
+      "nodeId": "186b8aec-e544-44b5-b45b-752442cb3dde"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0031-endpoint.png",
+      "bytes": 1648816,
+      "sha256": "d62dba9bca334a1254bfc47941db769246b0e7e1cee003d84cddb3167334086e",
+      "nodeId": "c15bf63d-2334-4188-b297-bb4fef00b814"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "45d13fa2-fa81-484f-b16d-ceb3a774d2dc",
+    "expectedReferenceNodeIds": [
+      "186b8aec-e544-44b5-b45b-752442cb3dde",
+      "c15bf63d-2334-4188-b297-bb4fef00b814"
+    ],
+    "imageListOrder": [
+      "186b8aec-e544-44b5-b45b-752442cb3dde",
+      "c15bf63d-2334-4188-b297-bb4fef00b814"
+    ],
+    "imageListNodeIds": [
+      "186b8aec-e544-44b5-b45b-752442cb3dde",
+      "c15bf63d-2334-4188-b297-bb4fef00b814"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "efc3940d875df51772df68b151cedba017fdcf8d2b3ddc05e01bf29791ad2371",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083008",
+      "size": "174466"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "3309682"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "88530"
+    }
+  },
+  "originalSha256": "4a8252196c6726a9d715cf6080e77739fa93ffaf92e5fdd205d51be584e04dc4",
+  "originalBytes": 3309682,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083008,
+  "oneWayEncodedSha256": "6cad005750ffaf3a74e0ff06b9625d1cf20b08633167c893b96dc0d4d93f2340",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of barbell curl from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, the complete forward frames were concatenated with the exact reversed frames, yielding 8.083008 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. Illustrates one controlled repetition, not a complete training set or prescribed training duration.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0031-contact-8fps.jpg",
+    "contactSha256": "f0264721fc24805ed5a395c397764ccc8ed5f51ca06dbf3510eb3924000fb04b",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "One continuous standing elbow-only barbell curl up and controlled return, upper arms near ribs and feet/torso stable.; Rigid straight bar and plate contacts remain coherent throughout, no cuts or extra limbs.; Final return is exact frame reversal of reviewed generated raising phase; not a separate AI generation or original eight-second continuous take. Producer actually viewed 16 forward and 64 final samples; one-way and final full decodes passed.",
+    "producerDetailFramesReviewedSeconds": [
+      0,
+      2,
+      3.9
+    ],
+    "rootDetailFramesReviewedSeconds": [],
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0031-one-way-contact-4fps.jpg",
+      "contactSha256": "5621c38193b6171047b731d3299e029eb58b670f229f9343b9610bc8195d47b9",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false
+    }
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "ee6f2313489da400983749dc5e1af5a122935a7ebdc42c795ea2c04e2c36f5e4",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true
+}

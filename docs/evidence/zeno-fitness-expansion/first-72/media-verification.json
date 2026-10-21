@@ -1,0 +1,2147 @@
+{
+  "schemaVersion": 1,
+  "scope": "Point-in-time repository and production PWA file verification after 72 credited additional techniques plus two independently reviewed supplemental catalogue labels. No native installer, live publication, credit exhaustion or completion of 1000 is claimed.",
+  "acceptedAdditional": 72,
+  "supplementalCoverage": 2,
+  "additionalCanonicalCoverage": 74,
+  "baselineReady": 32,
+  "totalReady": 106,
+  "mediaFilesVerified": 212,
+  "checks": {
+    "allCompleteFileBytesAndSha256Match": true,
+    "allBuiltFilesMatch": true,
+    "noDuplicateVideoOrPosterHashes": true,
+    "everyExpansionHasActuallyReviewedContactSheet": true,
+    "tests": {
+      "passed": 63,
+      "failed": 0,
+      "expectations": 44484
+    },
+    "productionPwaBuild": "Passed; existing chunk size advisory retained."
+  },
+  "runtimeManifestSha256": "f5ee28b4313545d75eda2f86a6e146b77ed366db4dce115f81fddf6cdd7b0271",
+  "assets": [
+    {
+      "name": "bench-press",
+      "canonicalExerciseId": "0025",
+      "englishName": "barbell bench press",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/bench-press.mp4",
+        "bytes": 201460,
+        "sha256": "bd56c120ed0818d2b49c184069762f79296743c5871f4d8a7c533da38b16d70c"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/bench-press-poster.webp",
+        "bytes": 25778,
+        "sha256": "58cc9caf32624ce7fb51e8ca11ca8f3be392bd2dc4dbaf5df4933409a83d5590"
+      }
+    },
+    {
+      "name": "dumbbell-bench-press",
+      "canonicalExerciseId": "0289",
+      "englishName": "dumbbell bench press",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/dumbbell-bench-press.mp4",
+        "bytes": 171906,
+        "sha256": "346a580a4c0091d2c98546b7e58c438d2de26bc0442b50e1ec022f2236d9cb85"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/dumbbell-bench-press-poster.webp",
+        "bytes": 26512,
+        "sha256": "88f6b100a4e0c240e818d0e209d8e4d6c833f5f567edc10df1e3b9ca8a5901b5"
+      }
+    },
+    {
+      "name": "incline-dumbbell-press",
+      "canonicalExerciseId": "0314",
+      "englishName": "dumbbell incline bench press",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/incline-dumbbell-press.mp4",
+        "bytes": 157029,
+        "sha256": "552bc6f26be39d3fddb81945c5bc682f0f030d575b28dbc6ce583290d7289925"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/incline-dumbbell-press-poster.webp",
+        "bytes": 26752,
+        "sha256": "f19376238d0f39dbd24c65ed42de02ceaadbf3dc62544cae10e57fc298ec8b06"
+      }
+    },
+    {
+      "name": "dumbbell-fly",
+      "canonicalExerciseId": "0308",
+      "englishName": "dumbbell fly",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/dumbbell-fly.mp4",
+        "bytes": 193891,
+        "sha256": "069be175f3afa7e0c79f94907c19542234251ddd45823ee8572089b93148010a"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/dumbbell-fly-poster.webp",
+        "bytes": 21616,
+        "sha256": "e40ecd116622da0b34ba6f20d38ee4c56eed19bef1bc5598f7d2822ee16be69d"
+      }
+    },
+    {
+      "name": "push-up",
+      "canonicalExerciseId": "0662",
+      "englishName": "push-up",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/push-up.mp4",
+        "bytes": 285500,
+        "sha256": "53620da9b2333313b3532428a5ac90fbd1be278b773cf04a8017526dcaf1261a"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/push-up-poster.webp",
+        "bytes": 30628,
+        "sha256": "a30735cbb9291964dd340093fbb28db72a23297d6c63bd09cc9662240f2c089e"
+      }
+    },
+    {
+      "name": "pull-up",
+      "canonicalExerciseId": "0652",
+      "englishName": "pull-up",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/pull-up.mp4",
+        "bytes": 113057,
+        "sha256": "9d13787b6e6007ee165a5ee697b8e9717cb30bfc50a2265418a896a9dffebd1f"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/pull-up-poster.webp",
+        "bytes": 9678,
+        "sha256": "ea3a139098bc4b1494ee6831458abe56709fedd8d4f380974e9d4cb7346189b2"
+      }
+    },
+    {
+      "name": "lat-pulldown",
+      "canonicalExerciseId": "2330",
+      "englishName": "cable lat pulldown full range of motion",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/lat-pulldown.mp4",
+        "bytes": 163435,
+        "sha256": "f68b5c8aeee8a507203810c1dcbb049922bd0e8b1048f3f66a5abee177e1a6e4"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/lat-pulldown-poster.webp",
+        "bytes": 20164,
+        "sha256": "baf333af382587ac2253089c407616571c41196621874dbe02fee7a406299b38"
+      }
+    },
+    {
+      "name": "seated-row",
+      "canonicalExerciseId": "0861",
+      "englishName": "cable seated row",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/seated-row.mp4",
+        "bytes": 223195,
+        "sha256": "57b73dfc4f74e4df622bbd07dcea12962e496e051ee7d271799256708beb0693"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/seated-row-poster.webp",
+        "bytes": 29104,
+        "sha256": "5cb58d202513b0ed8c8fb7b6a3e485a02e1239251b761373b6b4981bfafd52b6"
+      }
+    },
+    {
+      "name": "bent-over-row",
+      "canonicalExerciseId": "0027",
+      "englishName": "barbell bent over row",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/bent-over-row.mp4",
+        "bytes": 225305,
+        "sha256": "51a461cbf5dbcd0c6d1240bff5dcee5f89645dc4975aa1e1f6ecd9d65059cda6"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/bent-over-row-poster.webp",
+        "bytes": 25088,
+        "sha256": "b8bc990eb7791d0213b54f18ff4a5ddc34360ad1c31468571a350f7686e1f720"
+      }
+    },
+    {
+      "name": "barbell-squat",
+      "canonicalExerciseId": "3593",
+      "englishName": "barbell squat",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/barbell-squat.mp4",
+        "bytes": 251867,
+        "sha256": "c915f5b91ff3163678ce1937214e696d9833da181a74fa13ec2ad2fd759b627b"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/barbell-squat-poster.webp",
+        "bytes": 22584,
+        "sha256": "a6732f5616e70603a94b8bb601e3d9789ef84e1549a2e4615273270499f99e43"
+      }
+    },
+    {
+      "name": "squat",
+      "canonicalExerciseId": "1197",
+      "englishName": "squat",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/squat.mp4",
+        "bytes": 212931,
+        "sha256": "0c6bee9d3ae7158b5e2e98f606043029b1aaed84349480899cbbedb72f6e1693"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/squat-poster.webp",
+        "bytes": 17112,
+        "sha256": "9bd7ac0969be0d9f87abb8556c001493acac3da9acc8f0560114b215a5cdbc04"
+      }
+    },
+    {
+      "name": "deadlift",
+      "canonicalExerciseId": "0032",
+      "englishName": "barbell deadlift",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/deadlift.mp4",
+        "bytes": 180718,
+        "sha256": "7754eff9f0524e3f2c5b6be0368b7cbde884eb52544c2b78f8d1ddc1323af10a"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/deadlift-poster.webp",
+        "bytes": 12648,
+        "sha256": "13611af7e4dc6166b9f859637d75bc71357022d09cf0955ada95c4aadd0c15ef"
+      }
+    },
+    {
+      "name": "romanian-deadlift",
+      "canonicalExerciseId": "0085",
+      "englishName": "barbell romanian deadlift",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/romanian-deadlift.mp4",
+        "bytes": 186203,
+        "sha256": "5e44c0df6cde28adea4ebe14d3e03aab1f312576bdcdf279d8b04a5fe7b7a6fa"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/romanian-deadlift-poster.webp",
+        "bytes": 12292,
+        "sha256": "789c8a0af421db37595cfabb6a1226a9437595a6f09b710727aeee2f5654cdd8"
+      }
+    },
+    {
+      "name": "goblet-squat",
+      "canonicalExerciseId": "1760",
+      "englishName": "dumbbell goblet squat",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/goblet-squat.mp4",
+        "bytes": 182341,
+        "sha256": "c77066cceb65c240ec86378c64aad5df3bde0d2f074dcdb6a9db3c66a7cefbae"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/goblet-squat-poster.webp",
+        "bytes": 16376,
+        "sha256": "568fa69967cef5aafa11cbfd8128535981f8014d69da3f2656d90b75fa4cc270"
+      }
+    },
+    {
+      "name": "lunge",
+      "canonicalExerciseId": "0612",
+      "englishName": "lunge",
+      "kind": "diagram",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/lunge.mp4",
+        "bytes": 73686,
+        "sha256": "4f86ae0294db6ba6b7d82cd83cef736fc2669bc219388d5d38c25233f11a7d3d"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/lunge-poster.webp",
+        "bytes": 5492,
+        "sha256": "a942da30eb82a5e0986d48177c84609bbeeedc4f2de4966274d3182a4f0b3f2c"
+      }
+    },
+    {
+      "name": "leg-extension",
+      "canonicalExerciseId": "0585",
+      "englishName": "lever leg extension",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/leg-extension.mp4",
+        "bytes": 235919,
+        "sha256": "bb4e3224491ce77fda6a162b798a71e381798d3ab7b77d6768f4ebcd25e7de41"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/leg-extension-poster.webp",
+        "bytes": 22178,
+        "sha256": "0184cb787c400f61826b960ce53045a5702391ae85432bb998d7d6b600709cdf"
+      }
+    },
+    {
+      "name": "lying-leg-curl",
+      "canonicalExerciseId": "0586",
+      "englishName": "lever lying leg curl",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/lying-leg-curl.mp4",
+        "bytes": 202306,
+        "sha256": "89180366e066189296ae72e2002c365ae356f29b01b01fbb77d2a97fca6b5141"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/lying-leg-curl-poster.webp",
+        "bytes": 29360,
+        "sha256": "813eb2755862db735abdade6e31f1d7f75b2a89fa7f36cf4c6f5b85924ebd26c"
+      }
+    },
+    {
+      "name": "calf-raise",
+      "canonicalExerciseId": "0417",
+      "englishName": "dumbbell standing calf raise",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/calf-raise.mp4",
+        "bytes": 147287,
+        "sha256": "d4ea9d42bc3a9cd5eba0775a3e6710494386063dc96d0ab3edf27d68d6efe62f"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/calf-raise-poster.webp",
+        "bytes": 11642,
+        "sha256": "3f9a1b8b0f4de9e85e041d83c5bd5cb05af6200ee8b18f005724c7b32fb35c59"
+      }
+    },
+    {
+      "name": "hip-thrust",
+      "canonicalExerciseId": "1060",
+      "englishName": "barbell hip thrust",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/hip-thrust.mp4",
+        "bytes": 214045,
+        "sha256": "f06f5ed0dcc5e55fd823d8df1c1b1adbfebfc46402533d1a08293b2096cd7353"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/hip-thrust-poster.webp",
+        "bytes": 21042,
+        "sha256": "8a94d7c66a5a2a72f619672cef8b5b1d3b1e4409b7f67741c08cb6fc9f34983d"
+      }
+    },
+    {
+      "name": "lateral-raise",
+      "canonicalExerciseId": "0334",
+      "englishName": "dumbbell lateral raise",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/lateral-raise.mp4",
+        "bytes": 213368,
+        "sha256": "16686704653ff413274d7f0c592b5b14bf5c97893fa9a0da3c6fd3a4e086077b"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/lateral-raise-poster.webp",
+        "bytes": 19198,
+        "sha256": "199f9bd12cb7eb6120e20d2ada6280b9d907f898555065aa3b936f1adaac38ab"
+      }
+    },
+    {
+      "name": "shoulder-press",
+      "canonicalExerciseId": "0405",
+      "englishName": "dumbbell seated shoulder press",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/shoulder-press.mp4",
+        "bytes": 178474,
+        "sha256": "ba27d9ecff1cdc2e635264dfc80f6e3a859a4fe290f017eff35bb76b093859f3"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/shoulder-press-poster.webp",
+        "bytes": 19898,
+        "sha256": "368bab89da2d80e37e681136e605906e8d67730a29f445b04818439df802b15f"
+      }
+    },
+    {
+      "name": "rear-delt-fly",
+      "canonicalExerciseId": "2487",
+      "englishName": "dumbbell rear delt fly",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/rear-delt-fly.mp4",
+        "bytes": 271162,
+        "sha256": "a0e4a276c03553b56bbc0f534b0ac549ad165fc69ac08fa58f7d62288ce192fe"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/rear-delt-fly-poster.webp",
+        "bytes": 20852,
+        "sha256": "2ca790834fd6544c96e6496de17574ef6fa60aa5d3ad3a158984679618d62fae"
+      }
+    },
+    {
+      "name": "curl",
+      "canonicalExerciseId": "0294",
+      "englishName": "dumbbell biceps curl",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/curl.mp4",
+        "bytes": 172313,
+        "sha256": "6ae62c9fedd4cd8f2df21c620a1b437808963b78a8c5fc67fac4a30c32677cf8"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/curl-poster.webp",
+        "bytes": 18782,
+        "sha256": "059b8d7b33ea805fafb7c110b2bd59c201a76bcb63a2faaa005bbde8f6476fb5"
+      }
+    },
+    {
+      "name": "hammer-curl",
+      "canonicalExerciseId": "0313",
+      "englishName": "dumbbell hammer curl",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/hammer-curl.mp4",
+        "bytes": 176858,
+        "sha256": "49702874da728508739123fc6ef2cf8cc78e08dbc6c456e0d92a496c7f541f34"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/hammer-curl-poster.webp",
+        "bytes": 17042,
+        "sha256": "b43aa086665a23ec7359645a6a0573ed08ebdedfa35a4d7f6b4ebb7ec34a939b"
+      }
+    },
+    {
+      "name": "triceps-pushdown",
+      "canonicalExerciseId": "0200",
+      "englishName": "cable pushdown (with rope attachment)",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/triceps-pushdown.mp4",
+        "bytes": 150875,
+        "sha256": "bd625cc05d687d891cafa23fe0e46221e9085394ccaf01305d9034b13bad6ef5"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/triceps-pushdown-poster.webp",
+        "bytes": 22242,
+        "sha256": "d73f3f6d40f42b8c9446f7b4a2e23995d639ecd5cbf98fc1dc781e4c0d18ecb6"
+      }
+    },
+    {
+      "name": "plank",
+      "canonicalExerciseId": "0463",
+      "englishName": "front plank",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/plank.mp4",
+        "bytes": 176687,
+        "sha256": "86829abbcf08bf89f5c7d947d32d5b68f754b1ff8c23a41ef2de970b9ad5cfd2"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/plank-poster.webp",
+        "bytes": 25990,
+        "sha256": "cf6542757d05f654ad430a576c53aa55e458642fb09aeda913dd11996f678206"
+      }
+    },
+    {
+      "name": "crunch",
+      "canonicalExerciseId": "0274",
+      "englishName": "crunch floor",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/crunch.mp4",
+        "bytes": 155834,
+        "sha256": "4cc24b57f3de62039149678a36b31bad03ef4d47f92016b18d140de2eaa81d87"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/crunch-poster.webp",
+        "bytes": 19820,
+        "sha256": "8c204e27b75f9634fb730fc7e9ba331fc7d40260300af89a4351c8f031aa0df9"
+      }
+    },
+    {
+      "name": "leg-raise",
+      "canonicalExerciseId": "1163",
+      "englishName": "lying leg raise",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/leg-raise.mp4",
+        "bytes": 173501,
+        "sha256": "0844bfb2733eb1aa015e5b406539cd7b8152b8ea90fd175680ee760e10e0fe95"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/leg-raise-poster.webp",
+        "bytes": 16288,
+        "sha256": "9fcb2895c9aa06ac70e8270b09f098d585bbdc31a140fc5d1b114703c373ff38"
+      }
+    },
+    {
+      "name": "russian-twist",
+      "canonicalExerciseId": "0687",
+      "englishName": "russian twist",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/russian-twist.mp4",
+        "bytes": 265735,
+        "sha256": "87584234bc3a5ffc12751b4e60806974f0d5e3da8f7198cea7cf45e9bcff36c4"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/russian-twist-poster.webp",
+        "bytes": 21810,
+        "sha256": "8a357b268a50ebc380e4ec509af202551a79bfb1ceae8175fb9ee2dbb8c2d128"
+      }
+    },
+    {
+      "name": "run",
+      "canonicalExerciseId": "0685",
+      "englishName": "run",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/run.mp4",
+        "bytes": 462948,
+        "sha256": "83de7d2a53c843707f80170ec6cb9645b3b966996e78d695a4a06997c965b08c"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/run-poster.webp",
+        "bytes": 17774,
+        "sha256": "8d85573f8cac8857ff22909cb10f70e934a45caf8669ea94ab35c08892a1568e"
+      }
+    },
+    {
+      "name": "jumping-jack",
+      "canonicalExerciseId": "3094",
+      "englishName": "jumping jack",
+      "kind": "diagram",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/jumping-jack.mp4",
+        "bytes": 194535,
+        "sha256": "cd89ee731f90a4b95236ca429845c64ed928c4da2ff7acbe85783cb6fae6b54a"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/jumping-jack-poster.webp",
+        "bytes": 8318,
+        "sha256": "816466a9012bc580dc867dc5c5a3a48acbc8563b82e13b1ccb94ddd2513d72cf"
+      }
+    },
+    {
+      "name": "stationary-bike",
+      "canonicalExerciseId": "2138",
+      "englishName": "stationary bike run v. 3",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/stationary-bike.mp4",
+        "bytes": 276756,
+        "sha256": "d1c115ec0f7f584327b788767e1b292e1dc4485484d85d944a2c95393252e820"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/stationary-bike-poster.webp",
+        "bytes": 20754,
+        "sha256": "3761414fa90ee9c18fbe7ac7304310f1ee60d683b583c6942dd672ad2c7bfdea"
+      }
+    },
+    {
+      "name": "exp-0297",
+      "canonicalExerciseId": "0297",
+      "englishName": "dumbbell concentration curl",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0297.mp4",
+        "bytes": 181641,
+        "sha256": "4c42f3e07829c329f735fb6943b7d3b39392b48482f38b083dc6690e1e82e663"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0297-poster.webp",
+        "bytes": 78026,
+        "sha256": "85a0f6b1627715ae2e7e600742ca0c2af0385d2b3ad3f08ace9103abf4e8ec75"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0297-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-0375",
+      "canonicalExerciseId": "0375",
+      "englishName": "dumbbell pullover",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0375.mp4",
+        "bytes": 198896,
+        "sha256": "4ac9bad625fe4e67536ba9eaa1abc52304be444a0165c4bfcb604cc4c91b0a36"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0375-poster.webp",
+        "bytes": 73656,
+        "sha256": "79390beb566eae286afedadedcb4bc3fc414c20b6162008b3305ef2e78968084"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0375-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-0044",
+      "canonicalExerciseId": "0044",
+      "englishName": "barbell good morning",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0044.mp4",
+        "bytes": 255383,
+        "sha256": "f18d8864aaae885385233f5534b869ad20527badda1d0f79306826e5143264e1"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0044-poster.webp",
+        "bytes": 58382,
+        "sha256": "f630ab8504a5e0634917c90e860e7e93fe7c6463cabdddaa98ddc3fb379b6e45"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0044-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-0285",
+      "canonicalExerciseId": "0285",
+      "englishName": "dumbbell alternate biceps curl",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0285.mp4",
+        "bytes": 193746,
+        "sha256": "8387175f813ccd0e41baaafdd54f7f49762ad3620652f35476a3cc001be99a0a"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0285-poster.webp",
+        "bytes": 45508,
+        "sha256": "89bf535db984553597e5879c5e28450c652577d082753ff15f4cc10d459e399e"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0285-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-0669",
+      "canonicalExerciseId": "0669",
+      "englishName": "rear deltoid stretch",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0669.mp4",
+        "bytes": 179045,
+        "sha256": "1264844d188b9ef9130bcbcf030db6ec62066522fc978aba2d5f0993746d6afc"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0669-poster.webp",
+        "bytes": 53144,
+        "sha256": "d6169dde5520154eb668220cd7d94452f5ffca04d05dc83fbe714c7529cde963"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0669-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-0088",
+      "canonicalExerciseId": "0088",
+      "englishName": "barbell seated calf raise",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0088.mp4",
+        "bytes": 159220,
+        "sha256": "210c28310dadadabe9e6ad98918f03e8e51c6420497b5d868ac0f07e71bc7020"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0088-poster.webp",
+        "bytes": 52270,
+        "sha256": "e0acc53a9c6bbe5c9330f95ae1b6b6f3ab159ca8187fd19d21edc29587a5afe8"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0088-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-2612",
+      "canonicalExerciseId": "2612",
+      "englishName": "jump rope",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-2612.mp4",
+        "bytes": 507438,
+        "sha256": "40b2f49413e45d538258df920cc86d2439855768173e73e54882a1fac21e3b46"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-2612-poster.webp",
+        "bytes": 47804,
+        "sha256": "f39b9a86e84e69b65aed7dd8568ad3fdabf55edff01598c4d41c16be13f6364f"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-2612-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-3123",
+      "canonicalExerciseId": "3123",
+      "englishName": "resistance band seated biceps curl",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-3123.mp4",
+        "bytes": 185002,
+        "sha256": "7a75925531060fbeb7652b6df4e83819f291252e1d4775fc839b4c66a7a3ec93"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-3123-poster.webp",
+        "bytes": 64684,
+        "sha256": "6a973cae7102f893afef697dbe55f5ec70225b55c3eab646a2d5e6af371c38cd"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3123-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-1259",
+      "canonicalExerciseId": "1259",
+      "englishName": "behind head chest stretch",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1259.mp4",
+        "bytes": 145904,
+        "sha256": "fabb5b5c18457159c836151c003e8405d1b0fb393b8c386dcfbeb5d961579162"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1259-poster.webp",
+        "bytes": 46766,
+        "sha256": "6e72fee566d789b8f5613eeb07b666e37b0045a5d7c9137185ed739c860d9576"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1259-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-0834",
+      "canonicalExerciseId": "0834",
+      "englishName": "weighted front raise",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0834.mp4",
+        "bytes": 180920,
+        "sha256": "f4b9092d38fd8eb5b8e0e9567b5a4235c5aa41d8fd634951e3d1bbbad6804a58"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0834-poster.webp",
+        "bytes": 14668,
+        "sha256": "7d3a43051110e65393cd98a4606af64deb40e836a283c4c8123f0055c547da6c"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0834-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0643",
+      "canonicalExerciseId": "0643",
+      "englishName": "overhead triceps stretch",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0643.mp4",
+        "bytes": 162582,
+        "sha256": "c5083810b281c875238d0f64c23cc2bc0b71f77e93e9f94e72bcf4854f3da23e"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0643-poster.webp",
+        "bytes": 46768,
+        "sha256": "d88cb90945a11e445085ae637af4341643e0d56d1a83cb16966f0c1ee850bef5"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0643-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-1494",
+      "canonicalExerciseId": "1494",
+      "englishName": "butterfly yoga pose",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1494.mp4",
+        "bytes": 203644,
+        "sha256": "be2b132b3e5072335381f54f51d139900ff5b61b7904adad47af9dc805c96d26"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1494-poster.webp",
+        "bytes": 56826,
+        "sha256": "e9d7e0eba24dbfd38101c7516ece5fda9710088d6dce44b80903b790483a0282"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1494-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-0794",
+      "canonicalExerciseId": "0794",
+      "englishName": "standing lateral stretch",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0794.mp4",
+        "bytes": 177775,
+        "sha256": "434e48f29238e3369b72585a418ab4b9436a85cf20712080d85adae6ab1ff120"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0794-poster.webp",
+        "bytes": 18792,
+        "sha256": "6a79951377986dfd15e08cbc412db33b37aa3093fb607790ed4f11ede9ff914e"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0794-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-1362",
+      "canonicalExerciseId": "1362",
+      "englishName": "sphinx",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1362.mp4",
+        "bytes": 222813,
+        "sha256": "1d22f3afaf402fba10f55879c453e4429ff4c8f90b9d8249b5195922572faf37"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1362-poster.webp",
+        "bytes": 75166,
+        "sha256": "050b8f0fc0ccd64e91e1926f96e5f1e90f5443610fcad0f45a5abbcaa0f9f731"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1362-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-1582",
+      "canonicalExerciseId": "1582",
+      "englishName": "reclining big toe pose with rope",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1582.mp4",
+        "bytes": 179241,
+        "sha256": "bc7d1fc695b8b86d418a28eabd5ec283d4c55d652b65c8c8f36830cf63694332"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1582-poster.webp",
+        "bytes": 85142,
+        "sha256": "b491e21efcf702529e6c336c424438b577291194a0511f9313ef6daf2a89d2e2"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1582-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-1422",
+      "canonicalExerciseId": "1422",
+      "englishName": "pelvic tilt into bridge",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1422.mp4",
+        "bytes": 190681,
+        "sha256": "81cac4651298ade8ead6981a7797bd20b688f8896f9747c2b0df1f98c34f0814"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1422-poster.webp",
+        "bytes": 23506,
+        "sha256": "e3f145d90d2c6f102ba123a9c75fb10e843700211a3c418a1132d32c48da8e48"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1422-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0979",
+      "canonicalExerciseId": "0979",
+      "englishName": "band horizontal pallof press",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0979.mp4",
+        "bytes": 171915,
+        "sha256": "cd35d3e405b09e5ca0ed203d990c3505ed2089e6c5aab79a3d0317fce9a82641"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0979-poster.webp",
+        "bytes": 19086,
+        "sha256": "fda22c2c0d2e588a3140b84f01252dd5d40b996b9cff4d34418c23d191b9cdbc"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0979-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0613",
+      "canonicalExerciseId": "0613",
+      "englishName": "lying (side) quads stretch",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0613.mp4",
+        "bytes": 182887,
+        "sha256": "960a4fb22bbb0ab7bf750ce12f941801286ecad9b1e78b7ae336b3820140eb9d"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0613-poster.webp",
+        "bytes": 77044,
+        "sha256": "91a16b3bac3209aaf281a1853f7c86e1277efed49998be4932912af4c6be40a8"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0613-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-1713",
+      "canonicalExerciseId": "1713",
+      "englishName": "assisted prone lying quads stretch",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1713.mp4",
+        "bytes": 196068,
+        "sha256": "0d5fe4c29eb6c3b2f4b1faf6b5a25ded2f9535966abc3c60d20620f79b1b3ee2"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1713-poster.webp",
+        "bytes": 90352,
+        "sha256": "fab6d61461cf379b498dd25c9b1d8465f835953d1c0cd34bf49cc9c850320fc3"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1713-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-0276",
+      "canonicalExerciseId": "0276",
+      "englishName": "dead bug",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0276.mp4",
+        "bytes": 240336,
+        "sha256": "70714b7a5f1b72ee5861b20b7d8b15db68eebd3b9484447adf8cfee0dc08a361"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0276-poster.webp",
+        "bytes": 28294,
+        "sha256": "c35143419b8493fd943feb57451e0607260a3919bdd2699078b9474f18710392"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0276-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-1346",
+      "canonicalExerciseId": "1346",
+      "englishName": "kneeling lat stretch",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1346.mp4",
+        "bytes": 152371,
+        "sha256": "3aae2e7018da6555b567e7a48b0594b379c4f5d568a6920c94d656fac7443a80"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1346-poster.webp",
+        "bytes": 65786,
+        "sha256": "6a0354e78bd313d684a87ee69dd2865c71be425bd2baa3265e82020e98c4e21b"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1346-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-0690",
+      "canonicalExerciseId": "0690",
+      "englishName": "seated lower back stretch",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0690.mp4",
+        "bytes": 183471,
+        "sha256": "2d83901cecae25ff3661f8967db1286a6c12e4bc2dc7908ae92af06166d7e96e"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0690-poster.webp",
+        "bytes": 18414,
+        "sha256": "83c6f074a8aec7c6c70933600c9dc1a935936a3140fa622d9c69b414498f07a8"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0690-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-1424",
+      "canonicalExerciseId": "1424",
+      "englishName": "seated glute stretch",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1424.mp4",
+        "bytes": 141148,
+        "sha256": "af5452842af8cc281f94646c773b5127cd36ce4f7b3b3b90b4389b70a0d2672f"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1424-poster.webp",
+        "bytes": 87696,
+        "sha256": "9d14ea570212d01c2e156e07911a4382b08117fb490e073b3a29ab1ea7ef7331"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1424-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-1709",
+      "canonicalExerciseId": "1709",
+      "englishName": "assisted lying glutes stretch",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1709.mp4",
+        "bytes": 212370,
+        "sha256": "9ce72524416dfb3dc1abecaac555c20f027f568a8a0f2d748e776d75d032f6aa"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1709-poster.webp",
+        "bytes": 75098,
+        "sha256": "7a4b9ab3617c03ba71e0d7ea471273ac50c7a8ba8e37bb5d7d49b26125d4d664"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1709-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-0620",
+      "canonicalExerciseId": "0620",
+      "englishName": "lying leg raise flat bench",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0620.mp4",
+        "bytes": 170592,
+        "sha256": "716c1471a3a8359696ef8b22a35f90fe103cf22c8de1852e04d7ba8a7618a998"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0620-poster.webp",
+        "bytes": 20324,
+        "sha256": "b6c9e750c20a2f3eac9efac7c2da8e40cf96c5f9fdad9b7c9c7373c3a34a6a81"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0620-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-1355",
+      "canonicalExerciseId": "1355",
+      "englishName": "one arm against wall",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1355.mp4",
+        "bytes": 153587,
+        "sha256": "38801d88a5e0d2815a7f8a7b5566345decb11ee672c1c8d9685c47c8597f4952"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1355-poster.webp",
+        "bytes": 50548,
+        "sha256": "fd4f46966e0950e76797f14a8d3523bdff75bac801bc05ac288397d9696bfc96"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1355-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-3420",
+      "canonicalExerciseId": "3420",
+      "englishName": "v-sit on floor",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-3420.mp4",
+        "bytes": 214450,
+        "sha256": "0de9dcb3682a4ed5751956a2a9403d5533778cdcc48b243e5bc7adbea914817d"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-3420-poster.webp",
+        "bytes": 74298,
+        "sha256": "b3477270a610784b5ee7c30b9461a3032de73282f70a220dd986479cd1d86b81"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3420-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-1373",
+      "canonicalExerciseId": "1373",
+      "englishName": "bodyweight standing calf raise",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1373.mp4",
+        "bytes": 172847,
+        "sha256": "a85358a58882f8362fcdad2242d4f4e79c2c94dd809c3ab6eb1eea66768f08cf"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1373-poster.webp",
+        "bytes": 19772,
+        "sha256": "672c4ff937251c507006e8722aa0e04e61477ade13da42ab3ee9533283beb5bc"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1373-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-1548",
+      "canonicalExerciseId": "1548",
+      "englishName": "chair leg extended stretch",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1548.mp4",
+        "bytes": 169408,
+        "sha256": "70881635483dbda3d5fc23a23ad53b9d896b73726d052a1f333b10c5793ea97f"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1548-poster.webp",
+        "bytes": 62796,
+        "sha256": "6e4bd84804ef5f4d35b094f69641f93773d510a239d6f6e1e06be6174bceb071"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1548-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-1297",
+      "canonicalExerciseId": "1297",
+      "englishName": "isometric chest squeeze",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1297.mp4",
+        "bytes": 152448,
+        "sha256": "4a6fed120e993b7b05a4fd70a4972987c0f54128ddc2f86df01c65ca415d23fd"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1297-poster.webp",
+        "bytes": 51226,
+        "sha256": "d3bf89fcec6540c482a2f0fef9a4d0c144926b2c4c8cb6fa7da2b995ce61a20f"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1297-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-0795",
+      "canonicalExerciseId": "0795",
+      "englishName": "standing single leg curl",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0795.mp4",
+        "bytes": 143664,
+        "sha256": "bb5e8f8046823ad082102540fff5e2ab2bb9e86db4109e6c1cdbe94a15a04ee2"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0795-poster.webp",
+        "bytes": 17402,
+        "sha256": "21bd4a5bbf00d31f75501758877345a2765944b956d071273454435e57aa2b8d"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0795-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-3302",
+      "canonicalExerciseId": "3302",
+      "englishName": "handstand",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-3302.mp4",
+        "bytes": 132981,
+        "sha256": "6c14584268bdecd90236786dc2d1f8686c7c093941c202f7b45cc55f093095c8"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-3302-poster.webp",
+        "bytes": 39812,
+        "sha256": "973d90b49353e5bcc46037b40e76f8c362280ff9a1f0335b51ea0d36051ce649"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3302-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-1585",
+      "canonicalExerciseId": "1585",
+      "englishName": "runners stretch",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1585.mp4",
+        "bytes": 199487,
+        "sha256": "ed1e6947141a61f5e64f636af260bf7f7e153225ee75d10c06047996bf148d44"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1585-poster.webp",
+        "bytes": 67136,
+        "sha256": "a1b6fad196cd600bc570ec9ebace120f45da12565912d031765d8198fc98ccd5"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1585-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-3419",
+      "canonicalExerciseId": "3419",
+      "englishName": "l-sit on floor",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-3419.mp4",
+        "bytes": 201422,
+        "sha256": "87345820a1c3f0a910b1b0d4f350c61d2cbb2d5fa5788355976eb08f8d31fbd6"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-3419-poster.webp",
+        "bytes": 76630,
+        "sha256": "bd736cc1ba75696d3bc306bf398d7c60ce5ba9fba4e2c5f9886d05f3215f8626"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3419-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-3299",
+      "canonicalExerciseId": "3299",
+      "englishName": "full planche",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-3299.mp4",
+        "bytes": 271823,
+        "sha256": "826f7e411d38d1967e4e3a4380a242eed30f8074b561288e36e0f48d9cec444e"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-3299-poster.webp",
+        "bytes": 98106,
+        "sha256": "474e30b4c958291b7398119ea02ac89173dd666dbebd897f07b9b9890a0bacfd"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3299-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-0407",
+      "canonicalExerciseId": "0407",
+      "englishName": "dumbbell side bend",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0407.mp4",
+        "bytes": 192480,
+        "sha256": "4564146f09a7bf768280548760a04b457c6f6cc27ffd7a27d609e632c6dba521"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0407-poster.webp",
+        "bytes": 18610,
+        "sha256": "c8a828f19723c534f1662dd8695ce8ec1773739394c91e30067ca3c949b76307"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0407-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0446",
+      "canonicalExerciseId": "0446",
+      "englishName": "ez barbell close-grip curl",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0446.mp4",
+        "bytes": 226346,
+        "sha256": "6d29cad3ab6c622c180db5c0ec34c3fb99bc87af3a5617ca2b25e1641bab7fa0"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0446-poster.webp",
+        "bytes": 20114,
+        "sha256": "3c641ae73835293447c92df1f939a7278c9f8be460f9ba1b4abab10f8d0ed600"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0446-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-3296",
+      "canonicalExerciseId": "3296",
+      "englishName": "front lever",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-3296.mp4",
+        "bytes": 207454,
+        "sha256": "3e71634f1183d89ae0af617e77e89b0e70cc83dcce62ae038422710162e4b929"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-3296-poster.webp",
+        "bytes": 77120,
+        "sha256": "be0cfd2cf0a835cb8c5944aff69eedd8117b0f3a96198b44eb97d4b8261e3720"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3296-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-3303",
+      "canonicalExerciseId": "3303",
+      "englishName": "flag",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-3303.mp4",
+        "bytes": 189824,
+        "sha256": "606ba2c52320d4510c94390ac1938731de219247bc6888ce60b1d441387ebb2b"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-3303-poster.webp",
+        "bytes": 68714,
+        "sha256": "25f42193e38b4776b7e4d67f5e1431ef28179d875b673eca25464093ed3f5173"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-3303-contact.jpg",
+        "frames": 8,
+        "reviewed": true
+      }
+    },
+    {
+      "name": "exp-0406",
+      "canonicalExerciseId": "0406",
+      "englishName": "dumbbell shrug",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0406.mp4",
+        "bytes": 145264,
+        "sha256": "35ac1a8c6f3d647338807dd29da5d0db5037ae7acd4780d8efc789024674aaf3"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0406-poster.webp",
+        "bytes": 14676,
+        "sha256": "c75ed9de73b82d4f9c70cf5e54fe1ede77900ab4014fc22bfa8e35542199c33b"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0406-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0355",
+      "canonicalExerciseId": "0355",
+      "englishName": "dumbbell one arm lateral raise",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0355.mp4",
+        "bytes": 149112,
+        "sha256": "49ebc20410116b8de253bf300854c023144888d17f8550fd414cc5de589c72be"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0355-poster.webp",
+        "bytes": 14314,
+        "sha256": "5d4c6386eb0f7a2fe9448de7bb22d2499003e1d633c9afcd57bc5be209c2fdc2"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0355-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0380",
+      "canonicalExerciseId": "0380",
+      "englishName": "dumbbell rear lateral raise",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0380.mp4",
+        "bytes": 220474,
+        "sha256": "2064e7a0683bb7a277229e37a479a616bad1b22d4f417bb4857ccaaead9e6fd6"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0380-poster.webp",
+        "bytes": 24762,
+        "sha256": "78b6b41c1baa255521d2c89f959b9fb401e396df98d05145d1a6997c940cd98c"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0380-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-1587",
+      "canonicalExerciseId": "1587",
+      "englishName": "seated wide angle pose sequence",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1587.mp4",
+        "bytes": 196196,
+        "sha256": "971ff86df46a9ae035a3d3fb74efce6099413216ad2aec8736651888b753121e"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1587-poster.webp",
+        "bytes": 16788,
+        "sha256": "f60a2a8cae2ccdcea3c0986e19670f189a4f175445a70b2534ed0396d463577d"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1587-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0369",
+      "canonicalExerciseId": "0369",
+      "englishName": "dumbbell over bench wrist curl",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0369.mp4",
+        "bytes": 159081,
+        "sha256": "9f707c261ea560bbd1cf69ccf9843e62883aff8e8593711ec1cb43166aa1bcac"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0369-poster.webp",
+        "bytes": 18890,
+        "sha256": "d01616b07dd79ea6c768a33d256dfbbffab889048eb78b47967321ffbd1b4b47"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0369-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-1366",
+      "canonicalExerciseId": "1366",
+      "englishName": "upward facing dog",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1366.mp4",
+        "bytes": 194872,
+        "sha256": "4a453722bfd713ee4bd3718a27734271f5c0294d21d4b470dc15cce6804f1a02"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1366-poster.webp",
+        "bytes": 17334,
+        "sha256": "7123d4b46027a1daa393b306cffb7d34163221e9f932ca11e16904ced2082ca5"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1366-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-1397",
+      "canonicalExerciseId": "1397",
+      "englishName": "standing calves",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1397.mp4",
+        "bytes": 150087,
+        "sha256": "3b0e2f3a54f1b32fb78b51fb5f3417eb54532a2744ce87ecc976c7f5d6dbdfa2"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1397-poster.webp",
+        "bytes": 16790,
+        "sha256": "d27ef440ba87734c95260d81eb81c16877bf1177fc41133e5cf7d5c531bee46d"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1397-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0333",
+      "canonicalExerciseId": "0333",
+      "englishName": "dumbbell kickback",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0333.mp4",
+        "bytes": 145395,
+        "sha256": "c78b27988f1bc1dd1b1ce36e45e5179530d598f10689246d5f7e14569305364d"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0333-poster.webp",
+        "bytes": 21052,
+        "sha256": "edd3d428d1be2f48c24d15b00f2e693fca461ec99002d56ef39823dd29ed5683"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0333-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-1387",
+      "canonicalExerciseId": "1387",
+      "englishName": "one leg floor calf raise",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1387.mp4",
+        "bytes": 166772,
+        "sha256": "ac5b063d4d09949b90b51304c8613489c4857f177d3f37eacf79dd07f62ae0f8"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1387-poster.webp",
+        "bytes": 10754,
+        "sha256": "1ac27a23030a009ed75c409e46fa9154d40f0c8cef4e71c253dbc87ede2b132e"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1387-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0001",
+      "canonicalExerciseId": "0001",
+      "englishName": "3/4 sit-up",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0001.mp4",
+        "bytes": 165198,
+        "sha256": "dd88de2ff803e3950ae5f1b35b68b6bd50439a61149ae2cc3d533aa5235f0a6c"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0001-poster.webp",
+        "bytes": 23306,
+        "sha256": "d97b861822ea6994cbcb5f5987fb3c70b65ec5a52fbecb77994c32509e1a8710"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0001-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-1398",
+      "canonicalExerciseId": "1398",
+      "englishName": "standing calves calf stretch",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1398.mp4",
+        "bytes": 166862,
+        "sha256": "bbf2bbcafd5fbd2626ab73de4e01f03e631da268affcd06eb5b5f24f805e786f"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1398-poster.webp",
+        "bytes": 18930,
+        "sha256": "07b9d2d8ce24a1c4991ff8bd4d6291b8a6d9decbf188db46f5079b23a000a4a0"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1398-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0356",
+      "canonicalExerciseId": "0356",
+      "englishName": "dumbbell one arm lateral raise with support",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0356.mp4",
+        "bytes": 165174,
+        "sha256": "a68b21fe5a8e9fd206091e2b0f99450f08a933bc4cfc106d25c64f251dabe406"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0356-poster.webp",
+        "bytes": 15906,
+        "sha256": "9952fc6022001cff0b2bc0550bc14f74027ee69093cc20e70c7677797d104c1c"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0356-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0271",
+      "canonicalExerciseId": "0271",
+      "englishName": "crunch (on stability ball)",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0271.mp4",
+        "bytes": 210118,
+        "sha256": "e551e69d7075cafd0ed87674c81ffeb1e110d7cf2c26f117ebcdc1d89c81a5e9"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0271-poster.webp",
+        "bytes": 29856,
+        "sha256": "26ff9def4853d13fd70e0dd8e83c6a8090c2e8d9fe92143e2a121059a018eb5e"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0271-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0396",
+      "canonicalExerciseId": "0396",
+      "englishName": "dumbbell seated lateral raise",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0396.mp4",
+        "bytes": 191673,
+        "sha256": "408c1f022463e92d152a980312c816ae4d886913030403785e8b3ccb07aff6fb"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0396-poster.webp",
+        "bytes": 19130,
+        "sha256": "b723aeede27c497d87377ac981c66b7b1016b58610cac388064d056bb770b9ad"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0396-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0320",
+      "canonicalExerciseId": "0320",
+      "englishName": "dumbbell incline hammer curl",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0320.mp4",
+        "bytes": 185847,
+        "sha256": "21e89073a44cb08fb764f2eaa183c99d339de3538b6a7e66b669fb7c38fc932e"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0320-poster.webp",
+        "bytes": 23254,
+        "sha256": "245ae599033bec09e98c93cb898aae74078c04f7a05103c7ea0f40f6606ead2d"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0320-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0031",
+      "canonicalExerciseId": "0031",
+      "englishName": "barbell curl",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0031.mp4",
+        "bytes": 174466,
+        "sha256": "db7106cb2945a195d65a2ee074280d0654faae69355ebb3f1da7afbb23e3d91a"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0031-poster.webp",
+        "bytes": 18840,
+        "sha256": "9f33d75770658e1ba7c30070d3317dc9eddb852e39b09dba6dc853979adbd8b8"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0031-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0358",
+      "canonicalExerciseId": "0358",
+      "englishName": "dumbbell one arm reverse wrist curl",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0358.mp4",
+        "bytes": 174325,
+        "sha256": "6f67858bc460643c83a8609bea2650c24409630f581d2223e0971970cce87ac6"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0358-poster.webp",
+        "bytes": 17328,
+        "sha256": "69b37d850fe67a1f79e92e9b0ab2a813c7be561437c18d5dc2a0035f5052e867"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0358-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0315",
+      "canonicalExerciseId": "0315",
+      "englishName": "dumbbell incline biceps curl",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0315.mp4",
+        "bytes": 181357,
+        "sha256": "1ad00cc197c3362cd28ecedab87f1c8d0786daf9ac64360ff278a289390f20a8"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0315-poster.webp",
+        "bytes": 24104,
+        "sha256": "6483cc37e62005ea54c9f4a1330f3e6c41e62c97100d7d0efaf4163a2158c920"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0315-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-1379",
+      "canonicalExerciseId": "1379",
+      "englishName": "dumbbell seated calf raise",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1379.mp4",
+        "bytes": 122361,
+        "sha256": "ee3283fbd7598b686a10c9338c34a9c6d6af606de0567a191de044ac175fa3de"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1379-poster.webp",
+        "bytes": 21212,
+        "sha256": "66d6e52dc012f99ce41a0be4083a05c6750263b615abe646532db6dfc27aa8fa"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1379-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-1459",
+      "canonicalExerciseId": "1459",
+      "englishName": "dumbbell romanian deadlift",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1459.mp4",
+        "bytes": 212993,
+        "sha256": "6f35078b993270f5175ae9c6ba82db822fe6e9d8e4d7c53289a94129c0086459"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1459-poster.webp",
+        "bytes": 19912,
+        "sha256": "b1572ffdd3230376a0a8e39517cfdba5e15c96e3faf3d37a05bbf51d7851bac6"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1459-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0368",
+      "canonicalExerciseId": "0368",
+      "englishName": "dumbbell over bench revers wrist curl",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0368.mp4",
+        "bytes": 143051,
+        "sha256": "f52076e3a26a1c651ad6e76d52f17e406f7d700b260b5a10a86f97ecf7de3f1b"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0368-poster.webp",
+        "bytes": 21920,
+        "sha256": "cce4e89ebcd84e5b3cd9495319b0af5cdde63ac75c503659cf5a5274f6402b8e"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0368-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0108",
+      "canonicalExerciseId": "0108",
+      "englishName": "barbell standing leg calf raise",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0108.mp4",
+        "bytes": 135360,
+        "sha256": "6498bba55f4f77fcce2823269819d65bfcc97df9b8099c262c6649d6095d01ac"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0108-poster.webp",
+        "bytes": 13250,
+        "sha256": "64d7b5d49853fed9670fcae6d41d11ce9013a9b498e2dec3e8131171ceab6bd9"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0108-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0364",
+      "canonicalExerciseId": "0364",
+      "englishName": "dumbbell one arm wrist curl",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0364.mp4",
+        "bytes": 146166,
+        "sha256": "01b00aacd99105d09ce1876b8462b96896bdd2a065c42d5222998fec87616071"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0364-poster.webp",
+        "bytes": 20412,
+        "sha256": "3538eb96be62a2a853d28991c20800177a2a830316b5fdf18594e0b2730c8db7"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0364-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-1314",
+      "canonicalExerciseId": "1314",
+      "englishName": "back extension on exercise ball",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-1314.mp4",
+        "bytes": 171763,
+        "sha256": "714e6dc8fc1ec1b0901bfb423d9bfa75fd3c6226e32190178c03fb90573002c9"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-1314-poster.webp",
+        "bytes": 16750,
+        "sha256": "bf3e06c38ea9991cd0e7e5ee85a637a3a3c941292c5f0f107619cebcf3a47d21"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-1314-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0817",
+      "canonicalExerciseId": "0817",
+      "englishName": "triceps stretch",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0817.mp4",
+        "bytes": 158120,
+        "sha256": "e415acc9deba6eb2b65e8b26a5fc63a310428f7b0de3130c4991b12f756d0932"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0817-poster.webp",
+        "bytes": 14914,
+        "sha256": "bbd14e83a419fb900f5a7eb35cbc2776531383a56b767cb77328f108f50d9f3e"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0817-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      },
+      "productionCredit": {
+        "creditedTowardTarget": false,
+        "sameTechniqueAs": "0643",
+        "reason": "Both source descriptions specify the same standing or seated overhead bent-elbow triceps stretch assisted by the opposite hand. The generic versus overhead title does not create another technique."
+      }
+    },
+    {
+      "name": "exp-0351",
+      "canonicalExerciseId": "0351",
+      "englishName": "dumbbell lying triceps extension",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0351.mp4",
+        "bytes": 193445,
+        "sha256": "4abf17145da41f12e13e9a161991ebd063e6eeef1350619ad9f8cdd8b52c7d30"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0351-poster.webp",
+        "bytes": 28648,
+        "sha256": "f7c71536d8609b5764e7a8bdffe6135153ec9794a09ee1e59012100168ad53d3"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0351-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0293",
+      "canonicalExerciseId": "0293",
+      "englishName": "dumbbell bent over row",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0293.mp4",
+        "bytes": 181510,
+        "sha256": "4bd2ab7a97b0aad97c4f530a5b9451baef54d7e66202811920b92399b2f96811"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0293-poster.webp",
+        "bytes": 27948,
+        "sha256": "4af77b87df62b08455576e7745806c182a940df83eb7bcc872e8e5a732093300"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0293-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0091",
+      "canonicalExerciseId": "0091",
+      "englishName": "barbell seated overhead press",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0091.mp4",
+        "bytes": 180125,
+        "sha256": "e5291d80be6cc1794b55023ce8162a407a03b46005de5d9cbf046eef2a1ae70a"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0091-poster.webp",
+        "bytes": 17444,
+        "sha256": "efa8fce8eac693414fa3fa2ae12d02ab891ce268ae7c5701c057d06cf62b8d29"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0091-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0030",
+      "canonicalExerciseId": "0030",
+      "englishName": "barbell close-grip bench press",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0030.mp4",
+        "bytes": 199698,
+        "sha256": "a7a551d19d5877091a7ced3bcf3705ce4cfa3adfa70b8856e14410b40bed7de7"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0030-poster.webp",
+        "bytes": 23358,
+        "sha256": "b5c7c92de204cf2195c91214624e199d50585cc035f92e4a0265c19e3a600413"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0030-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0413",
+      "canonicalExerciseId": "0413",
+      "englishName": "dumbbell squat",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0413.mp4",
+        "bytes": 138488,
+        "sha256": "cc3f311c3dbb45c1ae1fff54519826edaf6194a7d3f669ad0f25717c92a1636a"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0413-poster.webp",
+        "bytes": 13808,
+        "sha256": "d8643d4a5fad13a5eeeba582a543de61c3a10ddc4744817ff30cd17af994505b"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0413-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0340",
+      "canonicalExerciseId": "0340",
+      "englishName": "dumbbell lying hammer press",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0340.mp4",
+        "bytes": 149752,
+        "sha256": "3427106530a8dcb24f56b4790571ba42e2c973fbf2ee2e5dc07159e8b92a7e41"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0340-poster.webp",
+        "bytes": 24526,
+        "sha256": "2ee780d146a899260329f9fb009f7213d9924bc3e2ea0d09c53c11f190dfb849"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0340-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0310",
+      "canonicalExerciseId": "0310",
+      "englishName": "dumbbell front raise",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0310.mp4",
+        "bytes": 202206,
+        "sha256": "798900166cb7774f0364cf436e0623df900f140db9130712e8dbce040165cbaf"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0310-poster.webp",
+        "bytes": 12918,
+        "sha256": "3fca53f13034348497c383c0d3ce034d1a51cd87fa6b718befa0e453efe5d849"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0310-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      },
+      "productionCredit": {
+        "creditedTowardTarget": false,
+        "sameTechniqueAs": "0834",
+        "reason": "The complete source steps are identical and both demonstrations use two separate dumbbells raised forward together to shoulder height; the weighted versus dumbbell label does not create a different technique."
+      }
+    },
+    {
+      "name": "exp-0872",
+      "canonicalExerciseId": "0872",
+      "englishName": "reverse crunch",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0872.mp4",
+        "bytes": 189822,
+        "sha256": "864f6baee895d2d1ae656d78ba0dfaeab3b7073ca1c43a11542ddb6ec9ff58a5"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0872-poster.webp",
+        "bytes": 16104,
+        "sha256": "ddbd3a2c27b55e68084cd36e91788d72752b90922fedba8d58ca97a13df9e8b3"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0872-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0385",
+      "canonicalExerciseId": "0385",
+      "englishName": "dumbbell reverse wrist curl",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0385.mp4",
+        "bytes": 146757,
+        "sha256": "19f77ce7fabe98bc56c148dbd705c06edbfb2a2ffb15fb9c0df6495b5ca70542"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0385-poster.webp",
+        "bytes": 18306,
+        "sha256": "c514fe55f14592ea7dd13e814d7c305d5f0cdbf28be69fc85bf9618fef0387c2"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0385-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    },
+    {
+      "name": "exp-0401",
+      "canonicalExerciseId": "0401",
+      "englishName": "dumbbell seated palms up wrist curl",
+      "kind": "mascot",
+      "video": {
+        "file": "apps/app/public/zeno/fitness/exp-0401.mp4",
+        "bytes": 146656,
+        "sha256": "e1abb25a8ae9d2bfc228ae994b084fa2657502507d665e217d20ad5f78a936f9"
+      },
+      "poster": {
+        "file": "apps/app/public/zeno/fitness/exp-0401-poster.webp",
+        "bytes": 17744,
+        "sha256": "9446728170eaf3fb53e4c2b295a492caf87cd8d0576c8c9fe20e2d8cb039ae4d"
+      },
+      "review": {
+        "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0401-contact-8fps.jpg",
+        "frames": 64,
+        "reviewed": true,
+        "rootAccepted": true
+      }
+    }
+  ]
+}

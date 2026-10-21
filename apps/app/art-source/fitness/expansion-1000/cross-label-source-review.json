@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "scope": "Supplemental production review of exact duplicate step sequences across catalogue labels. This does not alter the frozen selection or automatically prove two different named exercises equivalent. Matches require manual identity review before generation; a second identical demonstrated technique is not credited toward the 1000 target.",
+  "frozenSelectionUnchanged": true,
+  "readySnapshot": 63,
+  "alreadyAcceptedDuplicateGroups": 0,
+  "groups": [
+    {
+      "sourceStepsSha256": "393430ba678501b4656caddeeb0653676667f25a0799be2a95301c4d583780f0",
+      "exercises": [
+        {
+          "exerciseId": "0641",
+          "englishName": "otis up",
+          "equipmentId": "weighted",
+          "currentlyAccepted": false
+        },
+        {
+          "exerciseId": "0001",
+          "englishName": "3/4 sit-up",
+          "equipmentId": "body weight",
+          "currentlyAccepted": true
+        }
+      ]
+    },
+    {
+      "sourceStepsSha256": "ab16fbd2353183c71624830d6d78d00e8f22a64e01c293b37fc0e7fb3d4349b5",
+      "exercises": [
+        {
+          "exerciseId": "0834",
+          "englishName": "weighted front raise",
+          "equipmentId": "weighted",
+          "currentlyAccepted": true
+        },
+        {
+          "exerciseId": "0310",
+          "englishName": "dumbbell front raise",
+          "equipmentId": "dumbbell",
+          "currentlyAccepted": false
+        }
+      ]
+    },
+    {
+      "sourceStepsSha256": "4890235c7b1386f09e85c6c4c461225199b31bbe0e438c265991d411093ffbb0",
+      "exercises": [
+        {
+          "exerciseId": "0841",
+          "englishName": "weighted pull-up",
+          "equipmentId": "weighted",
+          "currentlyAccepted": false
+        },
+        {
+          "exerciseId": "0670",
+          "englishName": "rear pull-up",
+          "equipmentId": "body weight",
+          "currentlyAccepted": false
+        }
+      ]
+    },
+    {
+      "sourceStepsSha256": "45d1062a3e564addf05ff1d15db1a6e5a439805b52020d291c1350e30bf39cc1",
+      "exercises": [
+        {
+          "exerciseId": "0450",
+          "englishName": "ez barbell jm bench press",
+          "equipmentId": "ez barbell",
+          "currentlyAccepted": false
+        },
+        {
+          "exerciseId": "0052",
+          "englishName": "barbell jm bench press",
+          "equipmentId": "barbell",
+          "currentlyAccepted": false
+        }
+      ]
+    }
+  ]
+}

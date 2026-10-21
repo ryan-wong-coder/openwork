@@ -502,5 +502,137 @@
     "englishName": "crunch (on stability ball)",
     "stem": "exp-0271",
     "kind": "mascot"
+  },
+  {
+    "exerciseId": "0396",
+    "englishName": "dumbbell seated lateral raise",
+    "stem": "exp-0396",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0320",
+    "englishName": "dumbbell incline hammer curl",
+    "stem": "exp-0320",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0031",
+    "englishName": "barbell curl",
+    "stem": "exp-0031",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0358",
+    "englishName": "dumbbell one arm reverse wrist curl",
+    "stem": "exp-0358",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0315",
+    "englishName": "dumbbell incline biceps curl",
+    "stem": "exp-0315",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1379",
+    "englishName": "dumbbell seated calf raise",
+    "stem": "exp-1379",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1459",
+    "englishName": "dumbbell romanian deadlift",
+    "stem": "exp-1459",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0368",
+    "englishName": "dumbbell over bench revers wrist curl",
+    "stem": "exp-0368",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0108",
+    "englishName": "barbell standing leg calf raise",
+    "stem": "exp-0108",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0364",
+    "englishName": "dumbbell one arm wrist curl",
+    "stem": "exp-0364",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "1314",
+    "englishName": "back extension on exercise ball",
+    "stem": "exp-1314",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0817",
+    "englishName": "triceps stretch",
+    "stem": "exp-0817",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0351",
+    "englishName": "dumbbell lying triceps extension",
+    "stem": "exp-0351",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0293",
+    "englishName": "dumbbell bent over row",
+    "stem": "exp-0293",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0091",
+    "englishName": "barbell seated overhead press",
+    "stem": "exp-0091",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0030",
+    "englishName": "barbell close-grip bench press",
+    "stem": "exp-0030",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0413",
+    "englishName": "dumbbell squat",
+    "stem": "exp-0413",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0340",
+    "englishName": "dumbbell lying hammer press",
+    "stem": "exp-0340",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0310",
+    "englishName": "dumbbell front raise",
+    "stem": "exp-0310",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0872",
+    "englishName": "reverse crunch",
+    "stem": "exp-0872",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0385",
+    "englishName": "dumbbell reverse wrist curl",
+    "stem": "exp-0385",
+    "kind": "mascot"
+  },
+  {
+    "exerciseId": "0401",
+    "englishName": "dumbbell seated palms up wrist curl",
+    "stem": "exp-0401",
+    "kind": "mascot"
   }
 ]

@@ -1,0 +1,49 @@
+{
+  "order": 216,
+  "exerciseId": "0368",
+  "englishName": "dumbbell over bench revers wrist curl",
+  "chineseName": "哑铃凳外反握腕弯举",
+  "equipmentId": "dumbbell",
+  "bodyPartId": "lower arms",
+  "muscles": {
+    "primaryIds": [
+      "forearm"
+    ],
+    "primaryLabels": [
+      "前臂"
+    ],
+    "secondaryIds": [
+      "biceps"
+    ],
+    "secondaryLabels": [
+      "肱二头肌"
+    ]
+  },
+  "descriptorSha256": "45b54f11da14073b2bbfd904e959aa97496b186e8db0620ae2aac743e0bfd7e2",
+  "sourceSteps": [
+    "坐在长凳上，双脚平放在地上，双手各握一个哑铃，掌心朝下。",
+    "将前臂放在长凳上，让手腕悬在长凳边缘。",
+    "慢慢向上弯曲手腕，将哑铃拉向身体。",
+    "在顶部停顿片刻，然后慢慢将哑铃放回起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "briefStatus": "draft-source-read",
+  "sourceStepsActuallyRead": true,
+  "sourceIssues": [],
+  "startPose": "坐姿双前臂凳上、双掌朝下握DB，腕在凳前短缘外下垂。",
+  "support": "臀跨坐同一平凳后端，两前臂贴同凳前段，双足两侧着地。",
+  "grip": "每爪一轻DB、旋前掌朝下，手背朝上，腕轴固定。",
+  "jointMotion": "仅双腕伸展，拳与DB从低垂抬起；两前臂肘保持凳面。",
+  "path": "围绕腕轴小弧回中立略伸位，不能旋成掌上或抬前臂。",
+  "camera": "固定凳前侧30度可看清臀坐支撑与双腕越过短缘。",
+  "criticalChecks": [
+    "真掌朝下反向腕屈，不能和0369掌朝上同稿。",
+    "双肘/前臂凳面接触固定，不能双臂弯举。"
+  ],
+  "readyMedia": false,
+  "wholeVideoReviewed": false,
+  "phaseTiming": {
+    "oneWayGenerationSeconds": 4,
+    "return": "Only after actual one-way review, use exact reversed frame order; not an original8second continuous generation."
+  }
+}

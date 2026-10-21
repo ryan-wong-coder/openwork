@@ -1,0 +1,47 @@
+{
+  "canonicalExerciseId": "1459",
+  "englishName": "dumbbell romanian deadlift",
+  "sourceDescriptorSha256": "ca7a47a6f54b2e5cddfdf808a14893989b165aeb26d3f4906582cc59f1fe6aa7",
+  "sourceSteps": [
+    "双脚分开与肩同宽站立，双手各握一个哑铃，正握。",
+    "保持背部挺直，核心收紧，以臀部为铰链，将哑铃向地面降低，让膝盖稍微弯曲。",
+    "降低哑铃，直到感觉到腿筋拉伸，然后推动脚后跟并收紧臀肌，回到起始位置。",
+    "重复所需的重复次数。"
+  ],
+  "sourceStepsTechniqueReviewed": true,
+  "references": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1459-reference.png",
+      "bytes": 1741508,
+      "sha256": "12b2917e3825310242f69645e484c70bf987f64972d4e2faad67e65880a80dfe"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1459-endpoint.png",
+      "bytes": 1759654,
+      "sha256": "886eb0c81c697c430660c0d2ab441abcce9c94b257ffa4994d32945e6fd22f24"
+    }
+  ],
+  "posterTool": "built-in image_gen.imagegen",
+  "identityReference": {
+    "file": "apps/zeno-site/public/assets/mascot.webp",
+    "role": "identity only for start; endpoint edited approved start"
+  },
+  "producerActuallyViewedStartAndEnd": true,
+  "observation": "Dumbbell Romanian deadlift: upright start to comfortable long-back hip hinge with slight knee bend; arms long and two dumbbells close to legs. No claim of a numerical hinge angle or floor touch.",
+  "scope": "One reversible forward movement preview; return only exact reversal after actual forward review.",
+  "restrictedUpstreamMediaUsed": false,
+  "readyMedia": false,
+  "notRegisteredByProducer": true,
+  "sourcePromptFiles": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1459-poster-prompt.txt"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-1459-endpoint-prompt.txt"
+    }
+  ]
+}

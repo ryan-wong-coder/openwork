@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "kind": "two-keyframe-illustration-plan",
+  "exerciseId": "0364",
+  "englishName": "dumbbell one arm wrist curl",
+  "descriptorSha256": "7ae6e3328625c1fa7aed04988800f5048ad7f436d5a1ea35f78fd0922e3d1419",
+  "movementBrief": "exp-0364-movement-brief.json",
+  "startImage": {
+    "file": "exp-0364-reference.png",
+    "sha256": "413d78e20678d64a3eed0a021e047f8f7bccb870d711b6ce30d1074c4df0a9df",
+    "bytes": 1872158,
+    "width": 1672,
+    "height": 941
+  },
+  "endpointImage": {
+    "file": "exp-0364-endpoint.png",
+    "sha256": "619d26093e7ea532f9296e38dd367b2cbb3254a84019cd71fffec38be0264eb5",
+    "bytes": 1775094,
+    "width": 1672,
+    "height": 941
+  },
+  "startPrompt": {
+    "file": "exp-0364-poster-prompt.txt",
+    "sha256": "3b4ff913b2d10fb30f012ba7cebe3bca72e92c2cfd1a8cbb9d5eed590aa12b07",
+    "bytes": 1270
+  },
+  "endpointPrompt": {
+    "file": "exp-0364-endpoint-prompt.txt",
+    "sha256": "7b86cb01079feb53d94859b92193e5ebbe1665d4386caa224937d3ad402b0e8c",
+    "bytes": 739
+  },
+  "startTool": "built-in ImageGen",
+  "startImageAttempts": 1,
+  "endpointTool": "built-in ImageGen edit of accepted start",
+  "endpointEditAttempts": 1,
+  "fixedContactsAndScene": [
+    "臀凳、双足地面，右前臂贴大腿，左手空放左大腿。",
+    "右掌朝上反握单DB，低位手指轻度展开仍稳钩杆，不释放重量。",
+    "fixed camera, ivory studio and original identity"
+  ],
+  "motion": "收拢手指并右腕屈曲，把DB卷向前臂；肘前臂不抬。 从轻伸腕受控低位绕固定腕轴卷回，非肘弯举。",
+  "review": {
+    "startAndEndpointActuallyViewed": true,
+    "endpointDecision": "accepted-reference-for-parent-review",
+    "notes": [
+      "低位指握仍有真实接触，DB不能悬浮/落下。",
+      "旋后掌向上与0358旋前腕伸不同。",
+      "保持前臂大腿接触，不能把整条前臂举起。"
+    ],
+    "wholeVideoViewed": false,
+    "readyMedia": false
+  },
+  "plannedVideo": {
+    "inputMode": "native first-and-last-frame",
+    "oneWaySeconds": 4,
+    "direction": "start-to-end",
+    "returnPlan": "Only after one-way actual visual acceptance, forward segment plus exact reversed frames for nominal8second illustration.",
+    "assemblyPerformed": false,
+    "videoGeneratedByThisAgent": false,
+    "originalEightSecondGeneration": false,
+    "existingEightSecondAttemptReused": false
+  }
+}

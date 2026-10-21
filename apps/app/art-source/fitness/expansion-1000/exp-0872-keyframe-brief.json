@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "kind": "two-keyframe-illustration-plan",
+  "exerciseId": "0872",
+  "englishName": "reverse crunch",
+  "descriptorSha256": "eae398386c59c389fa5febec04c8fcbfc8d1c8c4a5f7dbccda99ade9ec58593f",
+  "movementBrief": "exp-0872-movement-brief.json",
+  "startImage": {
+    "file": "exp-0872-reference.png",
+    "sha256": "6cd33a5e227177b77fcc74b716e0f2a5875fa4806b490af50d9dd88ca4065854",
+    "bytes": 1863815,
+    "width": 1672,
+    "height": 941
+  },
+  "endpointImage": {
+    "file": "exp-0872-endpoint.png",
+    "sha256": "df7450f9e80185bf30e8573d11c545cfcdb6752d4ec965ca313e37f03c6c878b",
+    "bytes": 1805440,
+    "width": 1672,
+    "height": 941
+  },
+  "startPrompt": {
+    "file": "exp-0872-poster-prompt.txt",
+    "sha256": "d5611f62efc5c423658c0e4467158c52532bb177f0dce5d4a32189501f66a447",
+    "bytes": 1209
+  },
+  "endpointPrompt": {
+    "file": "exp-0872-endpoint-prompt.txt",
+    "sha256": "20bc56fbab5602bb087a420e02dbc7511b2a43917bf20e64b036645a6da1ed39",
+    "bytes": 834
+  },
+  "startTool": "built-in ImageGen",
+  "startImageAttempts": 1,
+  "endpointTool": "built-in ImageGen edit of accepted start",
+  "endpointEditAttempts": 1,
+  "fixedContactsAndScene": [
+    "头肩背骨盆初始贴地，双臂掌地，尾巴旁置不垫腰。",
+    "无器械，两掌自然压地辅助，非握腿。",
+    "fixed camera, ivory studio and original identity"
+  ],
+  "motion": "腹肌收缩使骨盆后倾、臀部小幅卷离地面，双膝靠向胸部，头肩不卷起。 从桌面腿低位向胸方向卷骨盆，小范围非全倒立。",
+  "review": {
+    "startAndEndpointActuallyViewed": true,
+    "endpointDecision": "accepted-reference-for-parent-review",
+    "notes": [
+      "初始臀在地、足离地，末端骨盆卷起而非仅抬腿。",
+      "头肩手臂稳定，不能摆腿借力或倒立。",
+      "双腿保留屈膝，不拉膝、不压颈，尾巴不作垫。"
+    ],
+    "wholeVideoViewed": false,
+    "readyMedia": false
+  },
+  "plannedVideo": {
+    "inputMode": "native first-and-last-frame",
+    "oneWaySeconds": 4,
+    "direction": "start-to-end",
+    "returnPlan": "Only after one-way actual visual acceptance, forward segment plus exact reversed frames for nominal8second illustration.",
+    "assemblyPerformed": false,
+    "videoGeneratedByThisAgent": false,
+    "originalEightSecondGeneration": false,
+    "existingEightSecondAttemptReused": false
+  }
+}

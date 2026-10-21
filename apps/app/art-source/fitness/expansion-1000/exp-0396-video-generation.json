@@ -1,0 +1,157 @@
+{
+  "canonicalExerciseId": "0396",
+  "englishName": "dumbbell seated lateral raise",
+  "nodeId": "71d46400-a354-4c44-8608-840103817a98",
+  "taskId": "20261021142603553728518",
+  "prompt": "首帧为 {{Node b678038e-186a-4998-afa1-4ad3523a0333}}，尾帧为 {{Node 3a0fa1b8-40b8-4232-8cf9-cb02233a1a73}}。4秒内只做一次坐姿双哑铃侧平举：臀始终坐在同一平凳位置，背部保持直立、双脚膝盖和全部凳结构稳定不动。双爪各握原来的一只哑铃，从大腿外缘离开向左右两侧宽弧抬起，整条长臂到尾帧肩高接近T形。肘维持柔和微弯而不加深屈肘，不能把哑铃弯举到胸脸或向头顶推举，不能起身或摇摆借力，肩不耸起。两只哑铃形状数量恒定，到尾帧停住，生成中不放下不重复。 保持同一原创青色奶油水獭、青柠肩带、固定象牙棚景，镜头无推拉缩放剪切，所有身体和器械完整入镜，无额外肢体、文字、水印或声音。",
+  "model": "Seedance 2.5",
+  "modelKey": "star-video2.5",
+  "settings": {
+    "modeType": "frames2video",
+    "ratio": "16:9",
+    "resolution": "720p",
+    "duration": 4,
+    "enableSound": "off",
+    "count": 1
+  },
+  "sourceReferences": [
+    {
+      "role": "start",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0396-reference.png",
+      "bytes": 1747829,
+      "sha256": "5805f320b9e135b3ac6e36485343344786de8b05aac5171b419e9b5eae4b9588",
+      "nodeId": "b678038e-186a-4998-afa1-4ad3523a0333"
+    },
+    {
+      "role": "end",
+      "file": "apps/app/art-source/fitness/expansion-1000/exp-0396-endpoint.png",
+      "bytes": 1696078,
+      "sha256": "b00c97d76bfa51a8dee6bba6c7e8002eafecad3819583a7dd613d4732592ef50",
+      "nodeId": "3a0fa1b8-40b8-4232-8cf9-cb02233a1a73"
+    }
+  ],
+  "referenceOrderProof": {
+    "verificationMethod": "official CLI read-only node response after create without run, before the single paid run",
+    "nodeId": "71d46400-a354-4c44-8608-840103817a98",
+    "expectedReferenceNodeIds": [
+      "b678038e-186a-4998-afa1-4ad3523a0333",
+      "3a0fa1b8-40b8-4232-8cf9-cb02233a1a73"
+    ],
+    "imageListOrder": [
+      "b678038e-186a-4998-afa1-4ad3523a0333",
+      "3a0fa1b8-40b8-4232-8cf9-cb02233a1a73"
+    ],
+    "imageListNodeIds": [
+      "b678038e-186a-4998-afa1-4ad3523a0333",
+      "3a0fa1b8-40b8-4232-8cf9-cb02233a1a73"
+    ],
+    "orderExactMatch": true,
+    "createWithoutRun": true,
+    "taskInfoPresentBeforePaid": false,
+    "rawReadOnlyReceiptSha256": "202ba7985368640cf52a360bc64c9272791441f399de36cb2773c8cc0f80ad89",
+    "rawReceiptRetainedPrivately": true,
+    "noRawProviderUrlsPublished": true
+  },
+  "format": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "194"
+      }
+    ],
+    "format": {
+      "duration": "8.083008",
+      "size": "191673"
+    }
+  },
+  "sourceFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "2416784"
+    }
+  },
+  "oneWayEncodedFormat": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1024,
+        "height": 576,
+        "r_frame_rate": "24/1",
+        "nb_frames": "97"
+      }
+    ],
+    "format": {
+      "duration": "4.041667",
+      "size": "100007"
+    }
+  },
+  "originalSha256": "0b29d51dc765dc53c9d587bcb889c1d3c6eea8ca6716b6b890337b69ba1a4346",
+  "originalBytes": 2416784,
+  "requestedGenerationDurationSeconds": 4,
+  "actualGeneratedDurationSeconds": 4.041667,
+  "finalDurationSeconds": 8.083008,
+  "oneWayEncodedSha256": "9d95605a16ce586f5129751d6ff0cb3580799250cd4132c27f2f1e7ad701eca2",
+  "processing": "Seedance 2.5 generated one requested 4-second forward phase of dumbbell seated lateral raise from two ordered original pose images (actual source 4.041667 seconds). After actual producer review, those complete forward frames were concatenated with the exact reversed frames, yielding 8.083008 seconds. The return phase is synthesized by reversal, not separately AI-generated and not an original 8-second continuous generation. Endpoint frames retained. H.264 CRF26, 1024px width, yuv420p, no audio, faststart. Original accepted start image encoded as quality86 WebP poster. One reversible movement preview; return will only be exact reversal after forward-phase review. Stretch timing and one-side examples do not claim a full prescribed hold or both sides.",
+  "processingRecipe": {
+    "videoFilter": "[0:v]split=2[forward][reverseinput];[reverseinput]reverse[backward];[forward][backward]concat=n=2:v=1:a=0[v]",
+    "videoEncoding": {
+      "codec": "libx264",
+      "crf": 26,
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "audio": false
+    },
+    "returnPhaseSource": "exact reversed frame order of accepted one-way reviewed movement",
+    "noGeneratedReturnClaim": true
+  },
+  "manualReviewPending": false,
+  "manualFrameReview": {
+    "intervalSeconds": 0.125,
+    "frames": 64,
+    "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0396-contact-8fps.jpg",
+    "contactSha256": "947a084f15fe503b82b78c90e4d9d7d6a201762415cb44201f61ca04a0717737",
+    "reviewed": true,
+    "producerAccepted": true,
+    "rootAccepted": true,
+    "rootReviewPending": false,
+    "observation": "Two held dumbbells travel laterally from the outer thighs to a wide shoulder-level T with softly bent elbows, then follow same path in exact reverse. Hips stay on flat bench, upright torso, knees, feet and bench hardware remain stable, without curl, front raise, shrug or overhead press. Producer actually viewed 16 forward and 64 final samples. Root actually viewed 16 forward and 64 final samples; accepted. Full one-way and final frames decoded without errors.",
+    "oneWay": {
+      "intervalSeconds": 0.25,
+      "frames": 16,
+      "contactSheet": "apps/app/art-source/fitness/expansion-1000/exp-0396-one-way-contact-4fps.jpg",
+      "contactSha256": "c464dfc91a30ad45d1701ab8798e7589320c77f619d53021fe0a9eec9e3d5aa7",
+      "reviewed": true,
+      "producerAccepted": true,
+      "rootAccepted": true,
+      "rootReviewPending": false,
+      "rootActuallyViewedFrames": 16
+    },
+    "rootActuallyViewedFrames": 64,
+    "rootObservation": "Root actually viewed 16 forward and 64 final frames: both dumbbells rise laterally into a shoulder-height T, elbows remain slightly bent, and seated hips, bench and feet stay fixed."
+  },
+  "posterTool": "built-in image_gen.imagegen",
+  "sourceDescriptorSha256": "b475583b79fef8a5fbfc547114dbdea589a197c3aaaff573caf4d2cd8525e204",
+  "fullOneWayDecodePassed": true,
+  "fullFinalDecodePassed": true
+}
