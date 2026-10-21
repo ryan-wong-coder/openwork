@@ -6,15 +6,76 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { assertPwaCsp } from './qa-public-personal.mjs';
+import { assertPwaCsp, publicQaTarget } from './qa-public-personal.mjs';
 
 const ROOT = fileURLToPath(new URL('../../../', import.meta.url));
 const ORIGIN = 'https://www.zeno.ryan-wong.cn';
-const OUTPUT = resolve(ROOT, 'docs/evidence/zeno-1.1.2/mainstream/public-media');
-const DEPLOYMENT = resolve(ROOT, 'docs/evidence/zeno-1.1.2/mainstream/deployment.json');
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');
 const pause = ms => new Promise(done => setTimeout(done, ms));
+
+// A release version selects a separate evidence directory. Origin, account,
+// browser profile and output overrides remain unavailable.
+export function publicMediaQaTarget(args = []) {
+  const { version } = publicQaTarget(args, { ZENO_PUBLIC_QA_VERSION: '1.1.2' });
+  const directory = resolve(ROOT, 'docs/evidence', 'zeno-' + version, 'mainstream');
+  return { version, output: join(directory, 'public-media'), deployment: join(directory, 'deployment.json') };
+}
+
+export function completedPublicMedia({ selection, provenance, demonstrations }) {
+  assert.equal(selection.selectedCanonicalCount, 32); assert.equal(selection.exercises.length, 32);
+  assert.ok(Array.isArray(demonstrations) && demonstrations.length >= 32, 'Completed runtime mapping is required.');
+  assert.equal(provenance.assets.length, demonstrations.length, 'Provenance must cover the entire runtime mapping.');
+  assert.equal(new Set(demonstrations.map(item => item.exerciseId)).size, demonstrations.length);
+  assert.equal(new Set(demonstrations.map(item => item.stem)).size, demonstrations.length);
+  assert.deepEqual(provenance.assets.map(item => [item.canonicalExerciseId, item.englishName, item.name, item.kind]).sort(), demonstrations.map(item => [item.exerciseId, item.englishName, item.stem, item.kind]).sort());
+  for (const baseline of selection.exercises) {
+    const item = demonstrations.find(item => item.exerciseId === baseline.exerciseId);
+    assert.ok(item, 'Original baseline exercise must remain covered.');
+    assert.equal(item.englishName, baseline.englishName); assert.equal(item.stem, baseline.stem);
+  }
+  for (const item of demonstrations) {
+    assert.match(item.exerciseId, /^\d{4,5}$/); assert.ok(typeof item.englishName === 'string' && item.englishName.trim());
+    assert.match(item.stem, /^[a-z\d][a-z\d-]*$/); assert.ok(['mascot', 'diagram'].includes(item.kind));
+  }
+  for (const asset of provenance.assets) {
+    // The frozen first three receipts predate the reviewed boolean. Keep their
+    // original metadata; every later receipt must carry its actual review flag.
+    const review = asset.manualFrameReview;
+    assert.ok(Number.isInteger(review.frames) && review.frames > 0);
+    assert.equal(typeof review.contactSheet, 'string');
+    if (Object.hasOwn(review, 'reviewed') || !['curl', 'squat', 'shoulder-press'].includes(asset.name)) assert.equal(review.reviewed, true, 'Only actually reviewed media may enter public acceptance.');
+    if (asset.manualFrameReview.frames === 64) assert.equal(asset.manualFrameReview.rootAccepted, true);
+    assert.ok(Number.isInteger(asset.format.streams[0].width) && asset.format.streams[0].width > 0);
+    assert.ok(Number.isInteger(asset.format.streams[0].height) && asset.format.streams[0].height > 0);
+    assert.ok(Number.isFinite(Number(asset.format.format.duration)) && Number(asset.format.format.duration) > 0);
+  }
+  const media = provenance.assets.flatMap(asset => ['video', 'poster'].map(kind => {
+    const part = asset[kind]; const suffix = kind === 'video' ? '.mp4' : '-poster.webp';
+    assert.equal(part.file, 'apps/app/public/zeno/fitness/' + asset.name + suffix);
+    assert.ok(Number.isSafeInteger(part.bytes) && part.bytes > 0); assert.match(part.sha256, /^[a-f\d]{64}$/);
+    return { ...part, kind, id: asset.canonicalExerciseId, name: asset.name, format: asset.format, path: '/app/' + part.file.slice('apps/app/public/'.length) };
+  }));
+  assert.equal(new Set(media.map(asset => asset.path)).size, media.length);
+  for (const kind of ['video', 'poster']) assert.equal(new Set(media.filter(asset => asset.kind === kind).map(asset => asset.sha256)).size, demonstrations.length, 'Every accepted demonstration requires independent media.');
+  return media;
+}
+
+export function assertPublicMediaBytes(asset, { response, bytes }, local) {
+  assert.equal(local.length, asset.bytes); assert.equal(digest(local), asset.sha256);
+  assert.equal(response.status, 200); assert.equal(bytes.length, asset.bytes); assert.equal(digest(bytes), asset.sha256);
+  const mime = response.headers.get('content-type') ?? '';
+  assert.match(mime, asset.kind === 'video' ? /^video\/mp4(?:;|$)/i : /^image\/webp(?:;|$)/i);
+  return { path: asset.path, id: asset.id, bytes: bytes.length, sha256: digest(bytes), contentType: mime };
+}
+
+export function assertPublicVideoRange(asset, { response, bytes }, local) {
+  assert.equal(response.status, 206); assert.equal(bytes.length, 1024);
+  assert.equal(response.headers.get('content-range'), `bytes 0-1023/${asset.bytes}`);
+  assert.equal(bytes.equals(local.subarray(0, 1024)), true);
+  assert.match(response.headers.get('content-type') ?? '', /^video\/mp4(?:;|$)/i);
+  return { status: 206, start: 0, end: 1023, total: asset.bytes, bytesMatched: true };
+}
 
 async function until(read, name, milliseconds = 30000) {
   const deadline = Date.now() + milliseconds;
@@ -44,22 +105,25 @@ async function fetchBytes(path, { range, limit = 1024 * 1024 } = {}) {
 }
 
 async function main() {
-  assert.equal(process.argv.length, 2, 'No origin, credentials, profile or output overrides are accepted.');
+  const { version: expectedVersion, output: OUTPUT, deployment: DEPLOYMENT } = publicMediaQaTarget(process.argv.slice(2));
+  assert.equal(JSON.parse(await readFile(join(ROOT, 'apps/desktop/package.json'), 'utf8')).version, expectedVersion, 'The expected public version must match the checked-out desktop version.');
   try { await readFile(join(OUTPUT, 'report.json')); throw new Error('existing_report'); } catch (error) { if (error.code !== 'ENOENT') throw error; }
   const deployed = JSON.parse(await readFile(DEPLOYMENT, 'utf8'));
   assert.equal(deployed.passed, true);
+  if (Object.hasOwn(deployed, 'version')) assert.equal(deployed.version, expectedVersion);
   assert.match(deployed.sourceCommit, /^[a-f\d]{40}$/);
   const INDEX_SHA256 = deployed.indexSha256; assert.match(INDEX_SHA256, /^[a-f\d]{64}$/);
   const selection = JSON.parse(await readFile(join(ROOT, 'apps/app/art-source/fitness/mainstream/selection.json'), 'utf8'));
-  const provenance = JSON.parse(await readFile(join(ROOT, 'apps/app/art-source/fitness/provenance.json'), 'utf8'));
-  assert.equal(selection.selectedCanonicalCount, 32); assert.equal(selection.exercises.length, 32); assert.equal(provenance.assets.length, 32);
-  assert.deepEqual(provenance.assets.map(asset => [asset.canonicalExerciseId, asset.name]).sort(), selection.exercises.map(asset => [asset.exerciseId, asset.stem]).sort());
-  assert.equal(new Set(provenance.assets.map(asset => asset.name)).size, 32);
-  const media = provenance.assets.flatMap(asset => ['video', 'poster'].map(kind => ({ ...asset[kind], kind, id: asset.canonicalExerciseId, name: asset.name, format: asset.format, path: '/app/' + asset[kind].file.slice('apps/app/public/'.length) })));
+  const provenanceBytes = await readFile(join(ROOT, 'apps/app/art-source/fitness/provenance.json'));
+  const runtimeBytes = await readFile(join(ROOT, 'apps/app/src/react-app/domains/zeno/mascot-demos.json'));
+  const provenance = JSON.parse(provenanceBytes.toString('utf8')); const demonstrations = JSON.parse(runtimeBytes.toString('utf8'));
+  const media = completedPublicMedia({ selection, provenance, demonstrations });
+  const videoCount = demonstrations.length;
+  if (Object.hasOwn(deployed, 'selectedExercises')) assert.equal(deployed.selectedExercises, videoCount);
   for (const asset of media) assert.match(asset.path, /^\/app\/zeno\/fitness\/[a-z\d][a-z\d-]*(?:-poster\.webp|\.mp4)$/);
   const allowedPaths = new Set(['/app/', '/app/device', '/app/personal-sw.js', '/app/personal.webmanifest', '/app/zeno-personal.svg', '/app/apple-touch-icon.png', '/favicon.ico', '/api/zeno/v1/me', ...media.map(asset => asset.path)]);
   const allowed = (raw, method) => { try { const url = new URL(raw); return ['GET', 'HEAD'].includes(method) && url.origin === ORIGIN && !url.username && !url.password && !url.search && !url.hash && (allowedPaths.has(url.pathname) || /^\/app\/assets\/[A-Za-z\d_.-]+\.(?:js|css)$/.test(url.pathname)); } catch { return false; } };
-  const report = { passed: false, checkedAt: new Date().toISOString(), origin: ORIGIN, sourceCommit: deployed.sourceCommit, expectedIndexSha256: INDEX_SHA256, checks: [], assets: [], decodedVideos: [], screenshots: [], scope: { publicHttps: true, anonymousFreshHeadlessProfile: false, productExerciseUiTested: false, temporarySameOriginVideoElements: true, authenticatedAccountTested: false, mutationsAllowed: false, installersDownloaded: false, modelCallsAllowed: false, nativeDesktopTested: false } };
+  const report = { passed: false, version: expectedVersion, checkedAt: new Date().toISOString(), origin: ORIGIN, sourceCommit: deployed.sourceCommit, expectedIndexSha256: INDEX_SHA256, runtimeManifestSha256: digest(runtimeBytes), provenanceSha256: digest(provenanceBytes), expectedDemonstrations: videoCount, expectedMediaFiles: media.length, checks: [], assets: [], decodedVideos: [], screenshots: [], scope: { publicHttps: true, anonymousFreshHeadlessProfile: false, productExerciseUiTested: false, temporarySameOriginVideoElements: true, authenticatedAccountTested: false, mutationsAllowed: false, installersDownloaded: false, modelCallsAllowed: false, nativeDesktopTested: false } };
   const sockets = []; const violations = []; const exceptions = []; const consoleErrors = []; const seenOrigins = new Set();
   let temporary, child, browser, page, stage = 'public-pwa', externalRequests = 0, blockedRequests = 0, mutationAttempts = 0, modelAttempts = 0, unexpectedHttpFailures = 0;
   const check = name => { report.checks.push({ name, passed: true }); console.log('[zeno-public-media] ' + name); };
@@ -72,17 +136,15 @@ async function main() {
     report.pwa = { path: '/app/device', bytes: index.bytes.length, sha256: digest(index.bytes), strictCsp: true, cacheControl: index.response.headers.get('cache-control') }; check('device-route-exact-deployed-pwa-and-strict-headers');
     stage = 'public-assets';
     for (const asset of media) {
-      const local = await readFile(join(ROOT, asset.file)); assert.equal(local.length, asset.bytes); assert.equal(digest(local), asset.sha256);
-      const value = await fetchBytes(asset.path); assert.equal(value.response.status, 200); assert.equal(value.bytes.length, asset.bytes); assert.equal(digest(value.bytes), asset.sha256);
-      const mime = value.response.headers.get('content-type') ?? ''; assert.match(mime, asset.kind === 'video' ? /^video\/mp4(?:;|$)/i : /^image\/webp(?:;|$)/i);
-      const record = { path: asset.path, id: asset.id, bytes: value.bytes.length, sha256: digest(value.bytes), contentType: mime };
+      const local = await readFile(join(ROOT, asset.file));
+      const value = await fetchBytes(asset.path); const record = assertPublicMediaBytes(asset, value, local);
       if (asset.kind === 'video') {
-        const range = await fetchBytes(asset.path, { range: 'bytes=0-1023', limit: 1024 }); assert.equal(range.response.status, 206); assert.equal(range.bytes.length, 1024); assert.equal(range.response.headers.get('content-range'), `bytes 0-1023/${asset.bytes}`); assert.equal(range.bytes.equals(local.subarray(0, 1024)), true); assert.match(range.response.headers.get('content-type') ?? '', /^video\/mp4(?:;|$)/i);
-        record.range = { status: 206, start: 0, end: 1023, total: asset.bytes, bytesMatched: true };
+        const range = await fetchBytes(asset.path, { range: 'bytes=0-1023', limit: 1024 }); record.range = assertPublicVideoRange(asset, range, local);
       }
       report.assets.push(record);
     }
-    check('all-64-complete-media-digests-mime-and-32-video-ranges');
+    assert.equal(report.assets.length, media.length);
+    check(`all-${media.length}-complete-media-digests-mime-and-${videoCount}-video-ranges`);
     stage = 'headless-start'; temporary = await mkdtemp(join(tmpdir(), 'zeno-public-fitness-media-')); const profile = join(temporary, 'chrome');
     child = spawn(CHROME, ['--headless=new', '--no-first-run', '--no-default-browser-check', '--disable-background-networking', '--disable-component-update', '--disable-sync', '--disable-extensions', '--metrics-recording-only', '--no-pings', '--remote-debugging-port=0', '--remote-debugging-address=127.0.0.1', '--user-data-dir=' + profile, '--host-resolver-rules=MAP * ~NOTFOUND, EXCLUDE www.zeno.ryan-wong.cn, EXCLUDE 127.0.0.1', 'about:blank'], { detached: true, stdio: 'ignore' }); child.on('error', () => {});
     const port = await until(async () => { try { return (await readFile(join(profile, 'DevToolsActivePort'), 'utf8')).split('\n')[0]; } catch { return null; } }, 'chrome_start'); assert.match(port, /^\d+$/);
@@ -108,7 +170,8 @@ async function main() {
       assert.equal(result.passed, true); const expected = asset.format.streams[0]; assert.equal(result.width, expected.width); assert.equal(result.height, expected.height); assert.equal(result.frameWidth, expected.width); assert.equal(result.frameHeight, expected.height); assert.ok(Math.abs(result.duration - Number(asset.format.format.duration)) < .1); assert.equal(result.errorCode, null);
       report.decodedVideos.push({ path: asset.path, ...result });
     }
-    check('all-32-real-public-videos-decoded-played-and-paused');
+    assert.equal(report.decodedVideos.length, videoCount);
+    check(`all-${videoCount}-real-public-videos-decoded-played-and-paused`);
     assert.equal(exceptions.length, 0); assert.equal(consoleErrors.length, 0); assert.equal(violations.length, 0); assert.equal(externalRequests, 0); assert.equal(blockedRequests, 0); assert.equal(mutationAttempts, 0); assert.equal(modelAttempts, 0); assert.equal(unexpectedHttpFailures, 0); check('no-csp-renderer-external-mutation-or-model-attempts'); report.passed = true;
   } catch (error) { report.failedStage = stage; report.errorKind = ['AssertionError', 'TypeError', 'Error', 'TimeoutError'].includes(error.name) ? error.name : 'Error'; process.exitCode = 1; }
   finally {
@@ -117,7 +180,7 @@ async function main() {
     if (child) { try { await until(() => child.exitCode !== null || child.signalCode !== null, 'chrome_exit', 5000); } catch { try { process.kill(-child.pid, 'SIGTERM'); } catch {} await pause(300); } }
     if (temporary) { await rm(temporary, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 }); report.ownedProfileRemoved = true; }
     report.network = { externalRequests, blockedRequests, mutationAttempts, modelAttempts, unexpectedHttpFailures, runtimeExceptions: exceptions.length, consoleErrors: consoleErrors.length, cspViolations: violations.length, observedOrigins: [...seenOrigins], scope: 'owned page CDP, request allowlist, CSP and external DNS denial; not system packet capture' };
-    await mkdir(OUTPUT, { recursive: true }); await writeFile(join(OUTPUT, 'report.json'), JSON.stringify(report, null, 2) + '\n'); console.log('[zeno-public-media] ' + (report.passed ? 'passed' : 'failed') + '; sanitized report saved.');
+    await mkdir(OUTPUT, { recursive: true }); await writeFile(join(OUTPUT, 'report.json'), JSON.stringify(report, null, 2) + '\n', { flag: 'wx' }); console.log('[zeno-public-media] ' + (report.passed ? 'passed' : 'failed') + '; sanitized report saved.');
   }
 }
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) await main();

@@ -1,0 +1,123 @@
+{
+  "scope": "Actual original 1.0.0 public updater acceptance on disposable native GitHub-hosted runners; dispatch is not a passing verdict.",
+  "baseline": {
+    "version": "1.0.0",
+    "runId": 38883434626,
+    "productCommit": "92688046400df5d1e2807d63dce986431bc7623a"
+  },
+  "target": {
+    "version": "1.1.3",
+    "runId": 39595241854,
+    "tag": "zeno-v1.1.3",
+    "productCommit": "b17c3574e6ed9c5e7a3334511e3eb4fe7871e225"
+  },
+  "publicActivationGatesPassedBeforeDispatch": true,
+  "runs": [
+    {
+      "lane": "macos",
+      "workflow": "zeno-update-smoke.yml",
+      "ref": "personal",
+      "expectedCheckoutCommit": "b17c3574e6ed9c5e7a3334511e3eb4fe7871e225",
+      "inputs": {
+        "baseline_run_id": "38883434626",
+        "target_run_id": "39595241854",
+        "architecture": "both",
+        "arm_image": "xcode-27"
+      },
+      "requestedAt": "2026-10-21T12:43:56.743174+00:00",
+      "dispatchAccepted": true,
+      "runId": 39601958955,
+      "workflowId": 386584037,
+      "checkoutCommit": "b17c3574e6ed9c5e7a3334511e3eb4fe7871e225",
+      "createdAt": "2026-10-21T12:44:00Z",
+      "url": "https://github.com/ryan-wong-coder/openwork/actions/runs/39601958955"
+    },
+    {
+      "lane": "linux",
+      "workflow": "zeno-update-portable-smoke.yml",
+      "ref": "personal",
+      "expectedCheckoutCommit": "b17c3574e6ed9c5e7a3334511e3eb4fe7871e225",
+      "inputs": {
+        "baseline_run_id": "38883434626",
+        "target_run_id": "39595241854",
+        "platform": "linux",
+        "windows_download_retries": "0",
+        "windows_profile_mode": "isolated"
+      },
+      "requestedAt": "2026-10-21T12:44:03.350692+00:00",
+      "dispatchAccepted": true,
+      "runId": 39601974548,
+      "workflowId": 390119143,
+      "checkoutCommit": "b17c3574e6ed9c5e7a3334511e3eb4fe7871e225",
+      "createdAt": "2026-10-21T12:44:07Z",
+      "url": "https://github.com/ryan-wong-coder/openwork/actions/runs/39601974548"
+    },
+    {
+      "lane": "windows",
+      "workflow": "zeno-update-portable-smoke.yml",
+      "ref": "personal",
+      "expectedCheckoutCommit": "b17c3574e6ed9c5e7a3334511e3eb4fe7871e225",
+      "inputs": {
+        "baseline_run_id": "38883434626",
+        "target_run_id": "39595241854",
+        "platform": "win32",
+        "windows_download_retries": "2",
+        "windows_profile_mode": "native-defaults"
+      },
+      "requestedAt": "2026-10-21T12:44:17.826069+00:00",
+      "dispatchAccepted": true,
+      "runId": 39602006394,
+      "workflowId": 390119143,
+      "checkoutCommit": "b17c3574e6ed9c5e7a3334511e3eb4fe7871e225",
+      "createdAt": "2026-10-21T12:44:21Z",
+      "url": "https://github.com/ryan-wong-coder/openwork/actions/runs/39602006394"
+    },
+    {
+      "lane": "linux",
+      "attempt": 2,
+      "workflow": "zeno-update-portable-smoke.yml",
+      "ref": "personal",
+      "runId": 39603011382,
+      "workflowId": 390119143,
+      "checkoutCommit": "b17c3574e6ed9c5e7a3334511e3eb4fe7871e225",
+      "createdAt": "2026-10-21T12:51:39Z",
+      "url": "https://github.com/ryan-wong-coder/openwork/actions/runs/39603011382",
+      "dispatchAccepted": true,
+      "inputs": {
+        "baseline_run_id": "38883434626",
+        "target_run_id": "39595241854",
+        "platform": "linux",
+        "windows_download_retries": "0",
+        "windows_profile_mode": "isolated"
+      },
+      "reason": "Original native download observed ERR_CONNECTION_RESET at 28000238/342026541 bytes; installation and restart were never reached. One fresh-host repetition at the identical checkout, frozen artifacts, original assertions and zero in-session retries.",
+      "priorReceipt": "linux-x64.json",
+      "evidencePrefix": "attempt02-",
+      "productAndValidationCodeUnchanged": true,
+      "manualTargetLaunch": false
+    },
+    {
+      "lane": "macos-arm64",
+      "attempt": 2,
+      "workflow": "zeno-update-smoke.yml",
+      "ref": "personal",
+      "runId": 39603618377,
+      "workflowId": 386584037,
+      "checkoutCommit": "b17c3574e6ed9c5e7a3334511e3eb4fe7871e225",
+      "createdAt": "2026-10-21T12:56:02Z",
+      "url": "https://github.com/ryan-wong-coder/openwork/actions/runs/39603618377",
+      "dispatchAccepted": true,
+      "inputs": {
+        "baseline_run_id": "38883434626",
+        "target_run_id": "39595241854",
+        "architecture": "arm64",
+        "arm_image": "xcode-27"
+      },
+      "reason": "Original native download returned download-failed at 6455296/461145642 bytes. Same-run sanitized log scan includes network-changed and DNS-failure signals; no specific endpoint root cause inferred. Original package and signing-continuity phases passed independently. One fresh-host repetition keeps identical checkout, runner image, frozen artifacts and every native assertion.",
+      "priorReceipt": "macos-arm64.json",
+      "evidencePrefix": "attempt02-",
+      "productAndValidationCodeUnchanged": true,
+      "manualTargetLaunch": false
+    }
+  ]
+}

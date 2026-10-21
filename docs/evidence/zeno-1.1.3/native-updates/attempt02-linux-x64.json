@@ -1,0 +1,179 @@
+{
+  "passed": true,
+  "baseline": "1.0.0",
+  "target": "1.1.3",
+  "platform": "linux",
+  "arch": "x64",
+  "phases": [
+    {
+      "name": "original-installers-verified",
+      "at": "2026-10-21T12:55:08.922Z",
+      "baselineSha256": "c31e75122f9ffcd04d051a2f94e9788a723e752c171f0f54d4200911e6f18d70",
+      "targetSha256": "2a572653bca07a540d470b5bdffa0cc85b42b4fc0e90afaafe92271afbc4d93e",
+      "baselineBytes": 312187633,
+      "targetBytes": 342026541
+    },
+    {
+      "name": "original-appimage-installed",
+      "at": "2026-10-21T12:55:12.490Z",
+      "privateDirectory": true,
+      "unchangedExecutableBytes": true
+    },
+    {
+      "name": "baseline-native-history-created",
+      "at": "2026-10-21T12:55:29.133Z",
+      "installedVersion": "1.0.0",
+      "workspace": true,
+      "serverRegistryIdentity": true,
+      "storedSession": true,
+      "storedMessage": true,
+      "noModelCall": true
+    },
+    {
+      "name": "native-public-download-started",
+      "at": "2026-10-21T12:55:30.240Z",
+      "bytes": 342026541,
+      "installer": "AppImage"
+    },
+    {
+      "name": "native-public-download-completed",
+      "at": "2026-10-21T13:02:22.076Z",
+      "version": "1.1.3",
+      "successfulAttempt": 1
+    },
+    {
+      "name": "original-target-installed-and-automatically-relaunched",
+      "at": "2026-10-21T13:02:28.356Z",
+      "installedVersion": "1.1.3",
+      "publishedAsar": true,
+      "actualProcessChanged": true
+    },
+    {
+      "name": "real-native-upgrade-and-preservation-verified",
+      "at": "2026-10-21T13:02:30.388Z",
+      "installedVersion": "1.1.3",
+      "successfulDownloadAttempt": 1,
+      "publishedAsar": true,
+      "actualProcessChanged": true,
+      "chromiumProfile": true,
+      "workspaceIdentity": true,
+      "serverRegistryIdentity": true,
+      "workspaceFile": true,
+      "historicalSession": true,
+      "historicalMessage": true,
+      "embeddedServer": true
+    },
+    {
+      "name": "installed-target-four-personal-sidebar-routes-verified",
+      "at": "2026-10-21T13:02:36.234Z",
+      "realClicks": 4,
+      "stablePersonalRoutes": true,
+      "unpairedAccountGate": true,
+      "noNewChat": true,
+      "historicalMessageRetained": true
+    }
+  ],
+  "nativeUpdateExecuted": true,
+  "downloadPolicy": {
+    "additionalRetries": 0,
+    "mode": "whole-file; same baseline session; no resume; reset-only retry"
+  },
+  "downloadAttempts": [
+    {
+      "attempt": 1,
+      "startedAt": "2026-10-21T12:55:30.242Z",
+      "finishedAt": "2026-10-21T13:02:22.074Z",
+      "elapsedMs": 411832,
+      "outcome": "downloaded",
+      "reason": "download-completed",
+      "signal": "not-inspected",
+      "progress": {
+        "transferred": 342026541,
+        "total": 342026541,
+        "percent": 100,
+        "bytesPerSecond": 831829
+      },
+      "retryRequested": false
+    }
+  ],
+  "scope": {
+    "originalBaseline": true,
+    "originalTarget": true,
+    "realPublicFeed": true,
+    "installedUpgrade": true,
+    "automaticRelaunch": true,
+    "historicalChatPreservation": true,
+    "accountPairingTested": false,
+    "osCredentialStorageTested": false,
+    "aiRequested": false
+  },
+  "windowsProfileMode": "isolated",
+  "isolation": "ephemeral GitHub-hosted VM; private installation, Electron profile, workspace, XDG data and temporary runtime",
+  "publicOrigin": "https://www.zeno.ryan-wong.cn",
+  "downloadProgress": {
+    "subscriptionSupported": true
+  },
+  "navigation": {
+    "passed": true,
+    "scope": "Actual installed AppSidebar clicks in the original upgraded, unpaired profile; account connection gate only, not authenticated personal forms",
+    "input": "CDP mouse press/release on visible sidebar buttons; no direct route mutation",
+    "noAccountPairing": true,
+    "noModelCalls": true,
+    "destinations": [
+      {
+        "section": "calendar",
+        "route": "/personal/calendar",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      },
+      {
+        "section": "fitness",
+        "route": "/personal/fitness",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      },
+      {
+        "section": "tasks",
+        "route": "/personal/tasks",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      },
+      {
+        "section": "account",
+        "route": "/personal/account",
+        "active": true,
+        "connectGate": true,
+        "chatVisible": false,
+        "errorVisible": false,
+        "intact": true,
+        "stableForMs": 1200,
+        "passed": true
+      }
+    ],
+    "hostBridgeRootAndProfileMarkerRetained": true,
+    "workspaceSessionSetUnchanged": true,
+    "historicalMessageRetained": true,
+    "rendererExceptions": 0
+  },
+  "cleanup": "verified private installation/profile removed",
+  "rendererNetworkScope": {
+    "observedOrigins": 1,
+    "upstreamObserved": false,
+    "monitoring": "renderer CDP only; not a system network audit"
+  }
+}

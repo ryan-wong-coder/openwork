@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "mediaFiles": 220,
+  "allPathsBytesAndSha256Unchanged": true,
+  "originalProductCommit": "b17c3574e6ed9c5e7a3334511e3eb4fe7871e225",
+  "webHotfixCommit": "974795834e387455f6490dfaaa70d142e79075eb",
+  "scope": "Exact manifest comparison; independent public media decoding remains in the original point-in-time receipt."
+}

@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "lane": "macos-arm64",
+  "acceptedAttempt": 2,
+  "reviewer": "primary agent",
+  "method": "Actually opened and visually inspected every listed original screenshot.",
+  "findings": [
+    "Chinese text readable; credential field empty.",
+    "Interactive canvas, SVG and bundled Ant charts rendered visibly.",
+    "Account sidebar opens expected unpaired connection gate."
+  ],
+  "files": [
+    {
+      "file": "attempt02-macos-arm64.png",
+      "sha256": "a4ad7a7169a6a7f676be675052af6b1561c87e53a71cafcc629cfd3fd7027521"
+    },
+    {
+      "file": "attempt02-macos-arm64-canvas.png",
+      "sha256": "6facc8e997556ca5309bf8c4668a072f3b780895018ed860f63b45123fcf7baa"
+    },
+    {
+      "file": "attempt02-macos-arm64-navigation.png",
+      "sha256": "7d688f56fa02516f3a9734cfd7a921f17e68b8c1f035d082579a03af2831fa95"
+    }
+  ],
+  "scope": "Appearance only; native update, stored-history and signing claims require original native reports."
+}

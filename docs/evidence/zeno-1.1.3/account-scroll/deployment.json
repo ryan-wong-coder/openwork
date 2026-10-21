@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-21T13:15:47.068706+00:00",
+  "version": "1.1.3",
+  "scope": "PWA viewport-height hotfix only; existing immutable desktop artifacts, landing page and update feeds unchanged.",
+  "sourceCommit": "974795834e387455f6490dfaaa70d142e79075eb",
+  "installerProductCommit": "b17c3574e6ed9c5e7a3334511e3eb4fe7871e225",
+  "priorPwaIndexSha256": "e407b1b9d857ff33e604122be56254b9c3500aa87299923cd2426534a8a8e71b",
+  "indexSha256": "b3d17abd7d1444b844ac02785dbff5395a56d860c602b0dd040e73d74bf4da20",
+  "verifiedFiles": 323,
+  "selectedExercises": 110,
+  "mediaFiles": 220,
+  "publicRoutes": 8,
+  "publicEntryAssetsAndWorkerVerified": 4,
+  "retainedPriorHashedAssets": 16,
+  "atomicSwitch": true,
+  "priorDirectoryRetained": true,
+  "accountDatabaseAndMediaUntouched": true,
+  "apiCodeAndProcessUnchanged": true,
+  "installerAndLandingPointersUnchanged": true,
+  "sameStrictCsp": true
+}

@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "lane": "win32-x64",
+  "acceptedAttempt": 1,
+  "reviewer": "independent collaborating agent",
+  "method": "Actually opened and visually inspected every listed original screenshot.",
+  "findings": [
+    "Chinese labels readable; no crash/error view.",
+    "Credential field empty; no private account information visible.",
+    "Account route displays expected unpaired connection gate."
+  ],
+  "files": [
+    {
+      "file": "win32-x64.png",
+      "sha256": "4abdb033fa257077fdb1f4a964d719e28084b88bee9b8e4ae39ba7bcdaa4d670"
+    },
+    {
+      "file": "win32-x64-navigation.png",
+      "sha256": "9ca25cb7e5b9d316c08421dccf7f53b0afa84c7ec2791e5c438fbfd608174c56"
+    }
+  ],
+  "scope": "Appearance only; native update, stored-history and signing claims require original native reports."
+}

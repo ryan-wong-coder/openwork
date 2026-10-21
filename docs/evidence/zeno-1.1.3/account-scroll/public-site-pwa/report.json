@@ -1,0 +1,115 @@
+{
+  "passed": true,
+  "version": "1.1.3",
+  "checkedAt": "2026-10-21T13:16:58.269Z",
+  "origin": "https://www.zeno.ryan-wong.cn",
+  "checks": [
+    {
+      "name": "public-release-version-and-ten-installers",
+      "passed": true,
+      "installers": 10
+    },
+    {
+      "name": "public-deep-links-html-csp-and-exact-build",
+      "passed": true,
+      "routes": [
+        "/app/",
+        "/app/calendar",
+        "/app/fitness",
+        "/app/tasks",
+        "/app/account",
+        "/app/invite",
+        "/app/reset",
+        "/app/device"
+      ]
+    },
+    {
+      "name": "public-static-assets-manifest-worker-and-anonymous-boundary",
+      "passed": true,
+      "entryAssets": 4,
+      "anonymousMeStatus": 401,
+      "workerSha256": "11a7c953f572f252a04d05cbde06c6aff3ddcba8d6a308b8dff48fd9466a6529"
+    },
+    {
+      "name": "public-website-video-download-selection-and-personal-entry",
+      "passed": true,
+      "architectures": 6
+    },
+    {
+      "name": "public-pwa-deep-link-login-mobile-and-service-worker",
+      "passed": true,
+      "registeredWorker": true,
+      "publicShellCacheOnly": true
+    }
+  ],
+  "assets": [
+    {
+      "path": "/app/assets/personal-Ce6nStUR.js",
+      "bytes": 4984875,
+      "sha256": "59d054cd08034c791b0b97599b4a2ff5c4a0e5c297f7aea73c0822e810de4e26"
+    },
+    {
+      "path": "/app/assets/personal-B0EWkGHU.css",
+      "bytes": 450882,
+      "sha256": "ae061abdfb899cf2a29bea43c3180b697d062ab68e3074421236604a566401b7"
+    },
+    {
+      "path": "/app/zeno-personal.svg",
+      "bytes": 2169,
+      "sha256": "292ea5016e18949ea8258b99ab24ee110a0475a4454efea4369c82d426b18341"
+    },
+    {
+      "path": "/app/apple-touch-icon.png",
+      "bytes": 14650,
+      "sha256": "5648944f82eb402fecdc7b6a26ef49a42de010699f3ad3f66beff94bebecb48d"
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "website-desktop.png",
+      "bytes": 1057746,
+      "sha256": "9c75cb8b672c372ec27da25e91c139ed71d8e1f7f24e530f8801ad85e3d6b6b6"
+    },
+    {
+      "file": "website-mobile.png",
+      "bytes": 256953,
+      "sha256": "af2abc65d58ad5623f8801d7615bb7f3bdcaa8dd082408c2dae3b8b07bde69dd"
+    },
+    {
+      "file": "pwa-login-desktop.png",
+      "bytes": 19923,
+      "sha256": "3290962bfbe2a06ac6c86d5dd082e3d067c24dc6b73c0d2637830f9a780cd650"
+    },
+    {
+      "file": "pwa-login-mobile.png",
+      "bytes": 15248,
+      "sha256": "48f89e052a63221d0039c6496e8e8d6baadb34b42183b10bea134f1d45260d9f"
+    }
+  ],
+  "scope": {
+    "realPublicHttps": true,
+    "freshHeadlessProfile": true,
+    "authenticatedAccountTested": false,
+    "mutationsAllowed": false,
+    "installersDownloaded": false,
+    "modelsInvoked": false,
+    "mobileDeviceInstallationTested": false
+  },
+  "pwaIndexSha256": "b3d17abd7d1444b844ac02785dbff5395a56d860c602b0dd040e73d74bf4da20",
+  "browserVersion": "Chrome/155.0.8059.85",
+  "network": {
+    "pageExternalRequests": 0,
+    "blockedExternalRequests": 0,
+    "blockedMutations": 0,
+    "blockedInstallerRequests": 0,
+    "blockedOtherReads": 0,
+    "pageOrigins": [
+      "https://www.zeno.ryan-wong.cn"
+    ],
+    "pageHttpFailures": 0,
+    "runtimeExceptions": 0,
+    "cspViolations": 0,
+    "actualModelRequests": 0,
+    "scope": "owned page CDP plus same-origin CSP and external DNS denial; not system packet capture"
+  }
+}

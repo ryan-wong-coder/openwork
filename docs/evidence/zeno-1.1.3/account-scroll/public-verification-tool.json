@@ -1,0 +1,10 @@
+{
+  "scope": "Same public PWA verification assertions and permissions; private copy adjusts only repository discovery and the separate hotfix evidence directory to preserve prior receipts.",
+  "originalTool": "apps/zeno-site/scripts/qa-public-personal.mjs",
+  "originalToolSha256": "f1b9c01fc3c10ee4aec9aeb58042fbfbbbe996449ec0099df9904a3bd05faad9",
+  "executedCopySha256": "06ccf47b9f886b248a09044ac52de97ae173c660b1e07490a71e83cc4351822d",
+  "assertionsChanged": false,
+  "originChanged": false,
+  "permissionsChanged": false,
+  "separateEvidenceDirectory": "docs/evidence/zeno-1.1.3/account-scroll/public-site-pwa"
+}

@@ -1,0 +1,31 @@
+{
+  "scope": "Exact local verification sources; not a product source modification or native result.",
+  "version": "1.1.3",
+  "tools": [
+    {
+      "file": "apps/zeno-site/scripts/qa-public-mainstream-media.mjs",
+      "bytes": 20493,
+      "sha256": "25db27f005082be705b671cf244e6594e431f7b6b38ab5258e3a9a7d376fea67"
+    },
+    {
+      "file": "apps/zeno-site/tests/qa-public-mainstream-media.test.mjs",
+      "bytes": 6708,
+      "sha256": "833482aa5e48d952caabaaf4493f57b52712289df19cdf104d36b43c5577a96c"
+    },
+    {
+      "file": "apps/zeno-site/scripts/qa-public-personal.mjs",
+      "bytes": 20873,
+      "sha256": "f1b9c01fc3c10ee4aec9aeb58042fbfbbbe996449ec0099df9904a3bd05faad9"
+    },
+    {
+      "file": "apps/zeno-site/scripts/qa-live.mjs",
+      "bytes": 6554,
+      "sha256": "6812e74bbef7b134d93dc9bbe5d31cfbe35e43cdaf1e5cd1077d79ecbfa152c1"
+    },
+    {
+      "file": "infra/zeno-release/verify-live.mjs",
+      "bytes": 4198,
+      "sha256": "09dd44a0bb3a6c72b26857fbaa4c367420286a45e92c3762e786f7844ca477ed"
+    }
+  ]
+}

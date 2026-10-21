@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-21T13:24:55.827783+00:00",
+  "version": "1.1.3",
+  "productCommit": "b17c3574e6ed9c5e7a3334511e3eb4fe7871e225",
+  "releaseId": 419523921,
+  "releaseTag": "zeno-v1.1.3",
+  "url": "https://github.com/ryan-wong-coder/openwork/releases/tag/zeno-v1.1.3",
+  "publishedAt": "2026-10-21T13:24:55Z",
+  "draft": false,
+  "prerelease": false,
+  "publishedExistingDraftOnce": true,
+  "allAssetsUnchanged": true,
+  "assetCount": 24,
+  "assetBytes": 4190703006,
+  "nativeUpgradeLanesAccepted": 4,
+  "tagUnchanged": true,
+  "scope": "Authenticated publication result; unauthenticated public latest verification recorded separately."
+}

@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-21T13:27:38.124382+00:00",
+  "lane": "macos-x64",
+  "acceptedAttempt": 1,
+  "reviewer": "primary agent",
+  "method": "Opened all three original screenshot pixel files.",
+  "findings": [
+    "Readable Chinese labels and empty ModelHelm credential field.",
+    "Canvas/SVG and bundled Ant charts render visibly.",
+    "Account sidebar selects the expected unpaired connection gate without error."
+  ],
+  "files": [
+    {
+      "file": "macos-x64.png",
+      "sha256": "1d921da62de82ae640432aa0ece271cebe9a070f9948d8d806321fd7e1d83bcd"
+    },
+    {
+      "file": "macos-x64-canvas.png",
+      "sha256": "e732a0ba6c3a4d92b0c139fd0a838743a9a1a388059d20ba6cb946bb55f27ef9"
+    },
+    {
+      "file": "macos-x64-navigation.png",
+      "sha256": "fb24390ee7bb8413f576456f16e781f84e05a41558324146bca0292154a42836"
+    }
+  ],
+  "scope": "Appearance only; original native report establishes signing, automatic install/restart and history preservation."
+}

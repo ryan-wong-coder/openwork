@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-21T13:30:19.450146+00:00",
+  "removedOwnedTransferDirectories": 2,
+  "removedOwnedTransferFiles": 27,
+  "ownSshControlMasterClosed": true,
+  "longTermSigningMaterialTouched": false,
+  "historicalPublicDownloadFilesDeleted": false,
+  "temporaryRepositoryCredentialsCreated": false,
+  "sanitizedNativeEvidenceAndHashesRetained": true,
+  "scope": "Only this release task private local transfer caches/archives and its SSH session; repository source media, quota-stop records, long-term keys and old public releases retained."
+}

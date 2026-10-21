@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-21T13:29:16.968403+00:00",
+  "removedPrivateMirrorFiles": 24,
+  "removedPrivateMirrorBytes": 4190703006,
+  "removedPrivateStaticArchives": 3,
+  "historicalPublicDownloadFilesRetained": 128,
+  "currentPublicPackageAndBlockmapFilesRetained": 16,
+  "longTermSigningMaterialTouched": false,
+  "accountDatabaseOrMediaTouched": false,
+  "temporaryRepositoryCredentialsCreated": false,
+  "scope": "Task-private detached mirrors and archives removed after publication/native acceptance; published versioned downloads and historical release directories retained."
+}

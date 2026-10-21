@@ -1,0 +1,38 @@
+{
+  "lane": "macos-x64",
+  "attempt": 1,
+  "passed": true,
+  "checkedAt": "2026-10-21T13:23:00.033648+00:00",
+  "runId": 39601958955,
+  "jobId": 119228466776,
+  "jobConclusion": "success",
+  "checkoutCommit": "b17c3574e6ed9c5e7a3334511e3eb4fe7871e225",
+  "artifactId": 12349415535,
+  "artifactName": "zeno-real-update-x64",
+  "artifactZipBytes": 107083,
+  "githubArtifactSize": 107083,
+  "githubDigest": "sha256:1585b68c0963dd2199cd4699949984c5a85e7781ab9ea5d4d00528762465c21d",
+  "independentlyVerifiedZipSha256": "1585b68c0963dd2199cd4699949984c5a85e7781ab9ea5d4d00528762465c21d",
+  "files": [
+    {
+      "file": "macos-x64.json",
+      "bytes": 5558,
+      "sha256": "8c829aff14afb0c29c3708180558797e67ea6d5f7c99355db3b80b14fc91b7de"
+    },
+    {
+      "file": "macos-x64.png",
+      "bytes": 41481,
+      "sha256": "1d921da62de82ae640432aa0ece271cebe9a070f9948d8d806321fd7e1d83bcd"
+    },
+    {
+      "file": "macos-x64-canvas.png",
+      "bytes": 39398,
+      "sha256": "e732a0ba6c3a4d92b0c139fd0a838743a9a1a388059d20ba6cb946bb55f27ef9"
+    },
+    {
+      "file": "macos-x64-navigation.png",
+      "bytes": 36347,
+      "sha256": "fb24390ee7bb8413f576456f16e781f84e05a41558324146bca0292154a42836"
+    }
+  ]
+}

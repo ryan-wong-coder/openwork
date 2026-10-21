@@ -1,0 +1,143 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-21T13:26:14.285815+00:00",
+  "authentication": "none; no Authorization or Cookie header",
+  "version": "1.1.3",
+  "releaseId": 419523921,
+  "releaseTag": "zeno-v1.1.3",
+  "productCommit": "b17c3574e6ed9c5e7a3334511e3eb4fe7871e225",
+  "publicLatestStable": true,
+  "draft": false,
+  "prerelease": false,
+  "publishedAt": "2026-10-21T13:24:55Z",
+  "url": "https://github.com/ryan-wong-coder/openwork/releases/tag/zeno-v1.1.3",
+  "tagType": "commit",
+  "all24AssetsNameSizeAndDigestMatchFrozenMetadata": true,
+  "assetBytes": 4190703006,
+  "websiteVersion": "1.1.3",
+  "websiteInstallers": 10,
+  "transportRetries": [],
+  "assets": [
+    {
+      "name": "RELEASE-NOTES.md",
+      "bytes": 557,
+      "digest": "sha256:cf7ebcdaa8c4dc5a03853450c6ce5310b0c3630cd3b464aa5f25242f166cd3f3"
+    },
+    {
+      "name": "zeno-darwin-arm64-latest-mac.yml",
+      "bytes": 498,
+      "digest": "sha256:3edbb1ebe9601eb7af6109ac43fe308188ca3fd865d45f1852d32e491e109fb1"
+    },
+    {
+      "name": "zeno-darwin-x64-latest-mac.yml",
+      "bytes": 492,
+      "digest": "sha256:71dbc3ffc8c4aeee09ba8318d37267f233293bfca4ee47174a0f58fff1ee4e80"
+    },
+    {
+      "name": "zeno-linux-arm64-1.1.3.AppImage",
+      "bytes": 339906811,
+      "digest": "sha256:64ba9647b6bdc81d6040ccf62fcbce39b504c89a6ab7856f77c93ba4659379e9"
+    },
+    {
+      "name": "zeno-linux-arm64-1.1.3.deb",
+      "bytes": 403264096,
+      "digest": "sha256:1c20e6928e6970a58b7eb780ca4c1d238e8a991d12574a2fda4ec683b7dd2bff"
+    },
+    {
+      "name": "zeno-linux-arm64-latest-linux-arm64.yml",
+      "bytes": 539,
+      "digest": "sha256:3683e7717c92fa1888f9203d2273a4b7795a76bc8b75464a3d199a267245f925"
+    },
+    {
+      "name": "zeno-linux-x64-1.1.3.AppImage",
+      "bytes": 342026541,
+      "digest": "sha256:2a572653bca07a540d470b5bdffa0cc85b42b4fc0e90afaafe92271afbc4d93e"
+    },
+    {
+      "name": "zeno-linux-x64-1.1.3.deb",
+      "bytes": 419192808,
+      "digest": "sha256:e73f68c042b555498da1c4daca938a8130735854ffffda6e5794e35e60dfac65"
+    },
+    {
+      "name": "zeno-linux-x64-latest-linux.yml",
+      "bytes": 533,
+      "digest": "sha256:dd4ed98d7f23ae33d1ff4731ed2e3695be897b9620418f1db839075165272b6b"
+    },
+    {
+      "name": "zeno-mac-arm64-1.1.3.dmg",
+      "bytes": 463292319,
+      "digest": "sha256:3c62b754b7cc76258fdf04a1cc0ba3a3377faa5f84e07f129cd3a14df7071da5"
+    },
+    {
+      "name": "zeno-mac-arm64-1.1.3.dmg.blockmap",
+      "bytes": 478701,
+      "digest": "sha256:ecd01b6976e8898a9156b45553a334dd6533d803e0a5dc7824864df478a2f9e1"
+    },
+    {
+      "name": "zeno-mac-arm64-1.1.3.zip",
+      "bytes": 461145642,
+      "digest": "sha256:dd362886b126552e60740ff26b5cd605639e03f2ec9dbfd127844b0b284b3845"
+    },
+    {
+      "name": "zeno-mac-arm64-1.1.3.zip.blockmap",
+      "bytes": 474615,
+      "digest": "sha256:86c9b6694eded41101fffc37b9eaf76aabe591d27c39dd2b0ea28718ef3791be"
+    },
+    {
+      "name": "zeno-mac-x64-1.1.3.dmg",
+      "bytes": 482443033,
+      "digest": "sha256:fba84eef220c35ebb7d856bd03589d89588cae1911b90d0345dabb2b458586d5"
+    },
+    {
+      "name": "zeno-mac-x64-1.1.3.dmg.blockmap",
+      "bytes": 497269,
+      "digest": "sha256:e37d007051fdd13aa1c85a1534a4fafa52b5f9866303347d693abb3eab19025f"
+    },
+    {
+      "name": "zeno-mac-x64-1.1.3.zip",
+      "bytes": 480530886,
+      "digest": "sha256:36ac5b6162f904eb5dcdaa975bf85e0362d158288fd2e2a2fa4474d5a612d183"
+    },
+    {
+      "name": "zeno-mac-x64-1.1.3.zip.blockmap",
+      "bytes": 498299,
+      "digest": "sha256:ca7079d99c20db5b657eac0784a36d5f09ba88a8125e6aefaff184f200a97ed6"
+    },
+    {
+      "name": "zeno-release.json",
+      "bytes": 10775,
+      "digest": "sha256:d832c591f05f7498802d42eebdbf2f1b63edb2d5b8c05cdfa6522188dead69f1"
+    },
+    {
+      "name": "zeno-win-arm64-1.1.3.exe",
+      "bytes": 388350522,
+      "digest": "sha256:e730b63895881db8815ad905cbfa6b2585dd0f4f20d70b3f337188b0e20e5f79"
+    },
+    {
+      "name": "zeno-win-arm64-1.1.3.exe.blockmap",
+      "bytes": 394211,
+      "digest": "sha256:23cbf39ed14be240be4522e51d56c7b04d719452828c2616f60a133b11a2e419"
+    },
+    {
+      "name": "zeno-win-x64-1.1.3.exe",
+      "bytes": 407780578,
+      "digest": "sha256:9a21bb79b694a0945f3e8e14be8b7d3afb2db329851ed3c5912f09ebce09793b"
+    },
+    {
+      "name": "zeno-win-x64-1.1.3.exe.blockmap",
+      "bytes": 412599,
+      "digest": "sha256:7942829e779236213db0821bfa48d0a22059df72ccae172e14fdab61d9ebb7ad"
+    },
+    {
+      "name": "zeno-win32-arm64-latest.yml",
+      "bytes": 343,
+      "digest": "sha256:7a54090a9cb695c0ab1ed1497df53e72685ba0299c4002429d9118ae3aa114c1"
+    },
+    {
+      "name": "zeno-win32-x64-latest.yml",
+      "bytes": 339,
+      "digest": "sha256:b7b52860ba8e45ad141fefd044d016741d673f01b38ec0d918122dd643e72298"
+    }
+  ],
+  "scope": "Unauthenticated public stable latest, tagged release, direct tag commit and website metadata. Installer bodies and native upgrades have separate full-hash and actual execution receipts."
+}

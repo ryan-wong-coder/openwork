@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-21T13:23:39.364608+00:00",
+  "version": "1.1.3",
+  "baseline": "1.0.0",
+  "productCommit": "b17c3574e6ed9c5e7a3334511e3eb4fe7871e225",
+  "lanes": [
+    {
+      "lane": "macos-x64",
+      "acceptedAttempt": 1,
+      "runId": 39601958955,
+      "jobId": 119228466776,
+      "checkoutCommit": "b17c3574e6ed9c5e7a3334511e3eb4fe7871e225",
+      "report": "macos-x64.json",
+      "artifactReceipt": "macos-x64-artifact.json",
+      "automaticDownloadInstallRestart": true,
+      "publishedCodeAndHistoricalStatePreserved": true,
+      "personalSidebarDestinations": 4
+    },
+    {
+      "lane": "macos-arm64",
+      "acceptedAttempt": 2,
+      "runId": 39603618377,
+      "jobId": 119234140766,
+      "checkoutCommit": "b17c3574e6ed9c5e7a3334511e3eb4fe7871e225",
+      "report": "attempt02-macos-arm64.json",
+      "artifactReceipt": "attempt02-macos-arm64-artifact.json",
+      "automaticDownloadInstallRestart": true,
+      "publishedCodeAndHistoricalStatePreserved": true,
+      "personalSidebarDestinations": 4
+    },
+    {
+      "lane": "linux-x64",
+      "acceptedAttempt": 2,
+      "runId": 39603011382,
+      "jobId": 119232077341,
+      "checkoutCommit": "b17c3574e6ed9c5e7a3334511e3eb4fe7871e225",
+      "report": "attempt02-linux-x64.json",
+      "artifactReceipt": "attempt02-linux-x64-artifact.json",
+      "automaticDownloadInstallRestart": true,
+      "publishedCodeAndHistoricalStatePreserved": true,
+      "personalSidebarDestinations": 4
+    },
+    {
+      "lane": "win32-x64",
+      "acceptedAttempt": 1,
+      "runId": 39602006394,
+      "jobId": 119228633862,
+      "checkoutCommit": "b17c3574e6ed9c5e7a3334511e3eb4fe7871e225",
+      "report": "win32-x64.json",
+      "artifactReceipt": "win32-x64-artifact.json",
+      "automaticDownloadInstallRestart": true,
+      "publishedCodeAndHistoricalStatePreserved": true,
+      "personalSidebarDestinations": 4
+    }
+  ],
+  "scope": "Four real native upgrades on disposable GitHub-hosted runners. Windows uses real saved V1 settings before history. Account gates are unpaired; no authenticated account forms, new OS safeStorage proof, ARM Windows/Linux full upgrade, AI calls or system packet capture are claimed.",
+  "originalFailuresPreserved": [
+    "linux-x64.json",
+    "macos-arm64.json"
+  ],
+  "manualTargetLaunch": false,
+  "immutableReleaseAssetsRebuiltOrReplaced": false,
+  "allTenAcceptedScreenshotsActuallyViewed": true,
+  "independentOriginalReportAndArtifactReviewPassed": true
+}

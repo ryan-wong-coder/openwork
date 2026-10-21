@@ -1,0 +1,136 @@
+{
+  "passed": false,
+  "baseline": "1.0.0",
+  "target": "1.1.3",
+  "platform": "linux",
+  "arch": "x64",
+  "phases": [
+    {
+      "name": "original-installers-verified",
+      "at": "2026-10-21T12:46:16.076Z",
+      "baselineSha256": "c31e75122f9ffcd04d051a2f94e9788a723e752c171f0f54d4200911e6f18d70",
+      "targetSha256": "2a572653bca07a540d470b5bdffa0cc85b42b4fc0e90afaafe92271afbc4d93e",
+      "baselineBytes": 312187633,
+      "targetBytes": 342026541
+    },
+    {
+      "name": "original-appimage-installed",
+      "at": "2026-10-21T12:46:19.655Z",
+      "privateDirectory": true,
+      "unchangedExecutableBytes": true
+    },
+    {
+      "name": "baseline-native-history-created",
+      "at": "2026-10-21T12:46:35.172Z",
+      "installedVersion": "1.0.0",
+      "workspace": true,
+      "serverRegistryIdentity": true,
+      "storedSession": true,
+      "storedMessage": true,
+      "noModelCall": true
+    },
+    {
+      "name": "native-public-download-started",
+      "at": "2026-10-21T12:46:36.525Z",
+      "bytes": 342026541,
+      "installer": "AppImage"
+    }
+  ],
+  "nativeUpdateExecuted": false,
+  "downloadPolicy": {
+    "additionalRetries": 0,
+    "mode": "whole-file; same baseline session; no resume; reset-only retry"
+  },
+  "downloadAttempts": [
+    {
+      "attempt": 1,
+      "startedAt": "2026-10-21T12:46:36.527Z",
+      "finishedAt": "2026-10-21T12:48:41.405Z",
+      "elapsedMs": 124878,
+      "outcome": "failed",
+      "reason": "download-failed",
+      "signal": "connection-reset",
+      "progress": {
+        "transferred": 28000238,
+        "total": 342026541,
+        "percent": 8.186568772743282,
+        "bytesPerSecond": 225679
+      },
+      "retryRequested": false
+    }
+  ],
+  "scope": {
+    "originalBaseline": true,
+    "originalTarget": true,
+    "realPublicFeed": true,
+    "installedUpgrade": false,
+    "automaticRelaunch": false,
+    "historicalChatPreservation": false,
+    "accountPairingTested": false,
+    "osCredentialStorageTested": false,
+    "aiRequested": false
+  },
+  "windowsProfileMode": "isolated",
+  "isolation": "ephemeral GitHub-hosted VM; private installation, Electron profile, workspace, XDG data and temporary runtime",
+  "publicOrigin": "https://www.zeno.ryan-wong.cn",
+  "downloadProgress": {
+    "subscriptionSupported": true,
+    "transferred": 28000238,
+    "total": 342026541,
+    "percent": 8.186568772743282,
+    "bytesPerSecond": 225679
+  },
+  "failure": {
+    "classification": "native-update-validation-failed",
+    "lastPhase": "native-public-download-started",
+    "activeCheck": "update-download",
+    "errorKind": "AssertionError",
+    "code": "ERR_ASSERTION",
+    "lastHttp": {
+      "endpoint": "workspace-message-read",
+      "status": 200
+    }
+  },
+  "failureState": {
+    "collected": true,
+    "diskReadSucceeded": true,
+    "publishedAppImageOnDisk": false,
+    "oldPidKnown": true,
+    "oldBrowserPidAbsent": false,
+    "spawnedBaselineProcessExited": false,
+    "processScanCompleted": true,
+    "mainHasExpectedDebugArgument": false,
+    "mainHasExpectedProfileArgument": false,
+    "mainHasExpectedDebugEnvironment": true,
+    "mainHasExpectedProfileEnvironment": true,
+    "mainHasExpectedAppImageEnvironment": true,
+    "observedBrowserPidKnown": true,
+    "observedBrowserPrivateExecutableMatches": true,
+    "observedBrowserDetailsReadable": true,
+    "observedBrowserDebugEnvironmentMatches": true,
+    "observedBrowserProfileEnvironmentMatches": true,
+    "observedBrowserAppImageEnvironmentMatches": true,
+    "observedBrowserDebugArgumentMatches": false,
+    "observedBrowserProfileArgumentMatches": false,
+    "observedBrowserEffectiveProfileMatches": true,
+    "samePrivateMainProcessCount": 7
+  },
+  "failureDiagnostics": {
+    "collectedBeforeCleanup": true,
+    "filesScanned": 2,
+    "bytesScanned": 10019,
+    "readFailures": 0,
+    "signals": [
+      {
+        "code": "ERR_CONNECTION_RESET",
+        "classification": "connection-reset"
+      }
+    ]
+  },
+  "cleanup": "failed attempt private files retained for hosted runner disposal",
+  "rendererNetworkScope": {
+    "observedOrigins": 1,
+    "upstreamObserved": false,
+    "monitoring": "renderer CDP only; not a system network audit"
+  }
+}

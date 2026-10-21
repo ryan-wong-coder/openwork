@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-21T13:06:56.212445+00:00",
+  "lane": "linux-x64",
+  "acceptedAttempt": 2,
+  "reviewer": "primary agent",
+  "method": "Opened both original screenshot pixel files.",
+  "findings": [
+    "Readable Chinese labels without missing-glyph boxes.",
+    "Expected empty ModelHelm credential field; no private account information.",
+    "Account sidebar selection opens the unpaired account connection screen without error."
+  ],
+  "files": [
+    {
+      "file": "attempt02-linux-x64.png",
+      "sha256": "6936f9b050904873f0f66e9b0f339bbd6c4baa8ca1e655118c36babeb1bf424c"
+    },
+    {
+      "file": "attempt02-linux-x64-navigation.png",
+      "sha256": "1ae6c411044a4286a0b252dad18a4d9a854104d924b64af8bf5c734397c59cf9"
+    }
+  ],
+  "scope": "Appearance only; actual automatic installation/restart and stored-history preservation are established by the independent native report."
+}
