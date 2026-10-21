@@ -1,0 +1,146 @@
+{
+  "verdict": "Bug reproduced",
+  "phase": "before",
+  "scope": "production PWA + real private loopback Bun API, synthetic accounts only; local regression, not live administrator or native desktop acceptance",
+  "startedAt": "2026-10-21T13:09:43.958Z",
+  "finishedAt": "2026-10-21T13:09:54.781Z",
+  "productionIndexSha256": "e407b1b9d857ff33e604122be56254b9c3500aa87299923cd2426534a8a8e71b",
+  "browserVersion": "Chrome/155.0.8059.85",
+  "fixture": {
+    "synthetic": true,
+    "users": 21,
+    "invites": 44
+  },
+  "checks": [
+    {
+      "name": "real-local-api-synthetic-admin-login",
+      "passed": true,
+      "users": 21,
+      "invites": 44
+    },
+    {
+      "name": "desktop-original-build-scroll-failure-reproduced",
+      "passed": true
+    },
+    {
+      "name": "mobile-original-build-scroll-failure-reproduced",
+      "passed": true
+    }
+  ],
+  "measurements": [
+    {
+      "device": "desktop",
+      "input": "CDP mouse wheel",
+      "initial": {
+        "viewportHeight": 1000,
+        "shellHeight": 2586.625,
+        "rootHeight": 1000,
+        "clientHeight": 2523,
+        "scrollHeight": 2523,
+        "scrollTop": 0,
+        "documentScrollTop": 0,
+        "top": 64,
+        "bottom": 2586.625,
+        "overflowY": "auto"
+      },
+      "after": {
+        "viewportHeight": 1000,
+        "shellHeight": 2586.625,
+        "rootHeight": 1000,
+        "clientHeight": 2523,
+        "scrollHeight": 2523,
+        "scrollTop": 0,
+        "documentScrollTop": 0,
+        "top": 64,
+        "bottom": 2586.625,
+        "overflowY": "auto"
+      }
+    },
+    {
+      "device": "mobile",
+      "input": "CDP touch scroll gesture",
+      "initial": {
+        "viewportHeight": 844,
+        "shellHeight": 2725.1875,
+        "rootHeight": 844,
+        "clientHeight": 2597,
+        "scrollHeight": 2597,
+        "scrollTop": 0,
+        "documentScrollTop": 0,
+        "top": 64,
+        "bottom": 2661.1875,
+        "overflowY": "auto"
+      },
+      "after": {
+        "viewportHeight": 844,
+        "shellHeight": 2725.1875,
+        "rootHeight": 844,
+        "clientHeight": 2597,
+        "scrollHeight": 2597,
+        "scrollTop": 0,
+        "documentScrollTop": 0,
+        "top": 64,
+        "bottom": 2661.1875,
+        "overflowY": "auto"
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "screenshots/desktop-cannot-scroll-light.png",
+      "bytes": 48471,
+      "sha256": "d31324f1aebc8fe59c1c8f76f8d49c61b1a20dfe1b34d8c2c4e54f53f0b088fc",
+      "width": 1440,
+      "height": 1000,
+      "scrollWidth": 1440,
+      "theme": "light"
+    },
+    {
+      "file": "screenshots/desktop-cannot-scroll-dark.png",
+      "bytes": 48052,
+      "sha256": "b5a7d8e22fd103fd742889ddeb262439a920d5224d52476c007134020df9f580",
+      "width": 1440,
+      "height": 1000,
+      "scrollWidth": 1440,
+      "theme": "dark"
+    },
+    {
+      "file": "screenshots/mobile-cannot-scroll-light.png",
+      "bytes": 29823,
+      "sha256": "771bbe1e757a0a944d38470c1ef24113838244e191fbf07845e085affdacaea8",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "theme": "light"
+    },
+    {
+      "file": "screenshots/mobile-cannot-scroll-dark.png",
+      "bytes": 29626,
+      "sha256": "cec3abced1fe814df925b957fe0d33b8c77665c3d456af24344eab48f10cfa65",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "theme": "dark"
+    }
+  ],
+  "rendererExceptions": 0,
+  "rendererConsoleErrors": 0,
+  "enforcedCspViolations": 0,
+  "observedCspPolicySha256": [
+    "fd85d75e5c5a88a9baabaf4ced8edf789c664069e3471c0d37321ad94314d9f4"
+  ],
+  "externalRequests": 0,
+  "blockedRequests": 0,
+  "realModelCalls": 0,
+  "productWrites": [
+    {
+      "method": "POST",
+      "path": "/api/zeno/v1/auth/sign-in/email"
+    }
+  ],
+  "publicServerTested": false,
+  "nativeDesktopTested": false,
+  "installerTested": false,
+  "realInvitationsSent": false,
+  "ownedProfileRemoved": true
+}

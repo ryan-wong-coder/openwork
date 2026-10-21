@@ -8,7 +8,7 @@ import { syncRecords } from "../../zeno-api/src/records";
 import { challenge, secret } from "../../zeno-api/src/crypto";
 import { createMutation, dateTimeInZone, eventDataSchema, localDateKey, mutationResultSchema, routineDataSchema, workoutDataSchema, syncResultSchema, taskDataSchema } from "../../../packages/zeno-core/src/index";
 
-const env = z.object({ ZENO_QA_ROOT: z.string().min(1), ZENO_QA_DIST: z.string().min(1), ZENO_QA_PASSWORD: z.string().min(16), ZENO_QA_CONTROL: z.string().min(32) }).parse(process.env);
+const env = z.object({ ZENO_QA_ROOT: z.string().min(1), ZENO_QA_DIST: z.string().min(1), ZENO_QA_PASSWORD: z.string().min(16), ZENO_QA_CONTROL: z.string().min(32), ZENO_QA_ACCOUNT_SCROLL: z.literal("1").optional() }).parse(process.env);
 const root = await realpath(env.ZENO_QA_ROOT); const dist = await realpath(env.ZENO_QA_DIST);
 const nginx = await readFile(new URL("../../../infra/zeno-release/zeno-api/nginx-locations.conf", import.meta.url), "utf8");
 function nginxCsp(location: string): string {
@@ -21,13 +21,19 @@ const prefix = "/api/zeno/v1"; let app: ReturnType<typeof createApp> | undefined
 const accounts = new Map<string, { userId: string; cookie: string }>();
 const featureOverrides = new Map<string, boolean>();
 const counts = { apiRequests: 0, realModelCalls: 0 };
+let failDeviceList = false;
 const server = Bun.serve({ hostname: "127.0.0.1", port: 0, maxRequestBodySize: 52 * 1024 * 1024, async fetch(request): Promise<Response> {
   const url = new URL(request.url);
-  if (url.pathname.startsWith(prefix + "/")) { counts.apiRequests++; return app ? app.fetch(request, "127.0.0.1") : new Response(null, { status: 503 }); }
+  if (url.pathname.startsWith(prefix + "/")) { counts.apiRequests++; if (failDeviceList && request.method === "GET" && url.pathname === prefix + "/devices") return Response.json({ code: "synthetic_device_failure", message: "合成连接故障，请重试。" }, { status: 503 }); return app ? app.fetch(request, "127.0.0.1") : new Response(null, { status: 503 }); }
   if (url.pathname.startsWith("/__qa/")) {
     if (request.headers.get("x-zeno-qa") !== env.ZENO_QA_CONTROL) return new Response(null, { status: 403 });
     try {
       const account = accounts.get(url.searchParams.get("account") ?? "a"); if (!account) throw new Error("account unavailable");
+      if (env.ZENO_QA_ACCOUNT_SCROLL && url.pathname === "/__qa/scroll-error" && request.method === "POST") {
+        failDeviceList = z.object({ enabled: z.boolean() }).strict().parse(await request.json()).enabled;
+        return Response.json({ failDeviceList });
+      }
+      if (env.ZENO_QA_ACCOUNT_SCROLL && url.pathname === "/__qa/scroll-fixture" && request.method === "GET") return Response.json({ users: app?.database.sqlite.query("SELECT COUNT(*) AS count FROM user").get(), invites: app?.database.sqlite.query("SELECT COUNT(*) AS count FROM invite").get(), ...counts });
       if (url.pathname === "/__qa/state") {
         if (!app) throw new Error("fixture unavailable");
         const result = syncResultSchema.parse(syncRecords(app.database, account.userId, 0, 500));
@@ -85,8 +91,9 @@ async function call(path: string, method = "GET", body?: unknown, account?: { co
   if (!app) throw new Error("fixture unavailable");
   return app.fetch(new Request(origin + prefix + path, { method, headers: { Origin: origin, ...(body === undefined ? {} : { "Content-Type": "application/json" }), ...(bearer ? { Authorization: "Bearer " + bearer } : account ? { Cookie: account.cookie, "X-Zeno-Account": account.userId } : {}) }, body: body === undefined ? undefined : JSON.stringify(body) }), "127.0.0.2");
 }
-const admin = await bootstrapAdmin(app.database, { email: "qa-admin@example.test", name: "测试管理员", password: env.ZENO_QA_PASSWORD });
-const adminLogin = await call("/auth/sign-in/email", "POST", { email: "qa-admin@example.test", password: env.ZENO_QA_PASSWORD });
+const adminEmail = env.ZENO_QA_ACCOUNT_SCROLL ? "qa@example.test" : "qa-admin@example.test";
+const admin = await bootstrapAdmin(app.database, { email: adminEmail, name: "测试管理员", password: env.ZENO_QA_PASSWORD });
+const adminLogin = await call("/auth/sign-in/email", "POST", { email: adminEmail, password: env.ZENO_QA_PASSWORD });
 if (!adminLogin.ok) throw new Error("synthetic admin login failed");
 accounts.set("admin", { userId: admin, cookie: adminLogin.headers.getSetCookie().map(value => value.split(";")[0]).join("; ") });
 for (const key of ["a", "b"]) {
@@ -116,6 +123,14 @@ if (!(await call("/devices/approve", "POST", { userCode: grant.userCode }, a)).o
 const device = z.object({ deviceId: z.string(), accessToken: z.string() }).parse(await (await call("/devices/token", "POST", { deviceCode: grant.deviceCode, codeVerifier: verifier })).json());
 if (!(await call("/devices/heartbeat", "POST", { inventory: { workspaces: [{ id: "qa-workspace", name: "测试工作区" }], models: [{ providerId: "synthetic", modelId: "no-live-model", label: "测试模型" }], appliedCursor: 0, windowOpen: false } }, a, device.accessToken)).ok) throw new Error("fixture heartbeat failed");
 await save(a, createMutation("task", taskDataSchema.parse({ title: "每周回顾", instructions: "整理本周日程", deviceId: device.deviceId, workspaceId: "qa-workspace", model: { providerId: "synthetic", modelId: "no-live-model" }, schedule: { frequency: "weekly", startAt: start, timeZone: zone, weekdays: [1] } }), { id: "qa-task" }));
+if (env.ZENO_QA_ACCOUNT_SCROLL) {
+  for (let index = 1; index <= 18; index++) {
+    const email = `scroll-member-${String(index).padStart(2, "0")}@example.test`;
+    const invite = issueInvite(app.database, admin, email);
+    await redeemInvite(app.database, { token: invite.token, email, name: `合成成员 ${String(index).padStart(2, "0")}`, password: env.ZENO_QA_PASSWORD });
+  }
+  for (let index = 1; index <= 24; index++) issueInvite(app.database, admin, `scroll-invite-${String(index).padStart(2, "0")}@example.test`);
+}
 console.info(JSON.stringify({ ready: true, origin, synthetic: true }));
 let stopped = false;
 const stop = async () => { if (stopped) return; stopped = true; await server.stop(true); app?.close(); };

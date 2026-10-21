@@ -1,0 +1,266 @@
+{
+  "verdict": "Passed",
+  "phase": "after",
+  "scope": "production PWA + real private loopback Bun API, synthetic accounts only; local regression, not live administrator or native desktop acceptance",
+  "startedAt": "2026-10-21T13:10:34.547Z",
+  "finishedAt": "2026-10-21T13:11:05.144Z",
+  "productionIndexSha256": "b3d17abd7d1444b844ac02785dbff5395a56d860c602b0dd040e73d74bf4da20",
+  "browserVersion": "Chrome/155.0.8059.85",
+  "fixture": {
+    "synthetic": true,
+    "users": 21,
+    "invites": 44
+  },
+  "checks": [
+    {
+      "name": "real-local-api-synthetic-admin-login",
+      "passed": true,
+      "users": 21,
+      "invites": 44
+    },
+    {
+      "name": "desktop-invite-button-reached-and-clicked-without-submission",
+      "passed": true
+    },
+    {
+      "name": "desktop-long-user-and-invite-lists-bottom-reachable",
+      "passed": true
+    },
+    {
+      "name": "desktop-other-personal-pages-navigation",
+      "passed": true
+    },
+    {
+      "name": "desktop-error-and-offline-states-scroll",
+      "passed": true
+    },
+    {
+      "name": "mobile-invite-button-reached-and-clicked-without-submission",
+      "passed": true
+    },
+    {
+      "name": "mobile-long-user-and-invite-lists-bottom-reachable",
+      "passed": true
+    },
+    {
+      "name": "mobile-other-personal-pages-navigation",
+      "passed": true
+    },
+    {
+      "name": "mobile-error-and-offline-states-scroll",
+      "passed": true
+    }
+  ],
+  "measurements": [
+    {
+      "device": "desktop",
+      "input": "CDP mouse wheel",
+      "top": {
+        "viewportHeight": 1000,
+        "shellHeight": 1000,
+        "rootHeight": 1000,
+        "clientHeight": 936,
+        "scrollHeight": 2523,
+        "scrollTop": 0,
+        "documentScrollTop": 0,
+        "top": 64,
+        "bottom": 1000,
+        "overflowY": "auto"
+      },
+      "advanced": {
+        "viewportHeight": 1000,
+        "shellHeight": 1000,
+        "rootHeight": 1000,
+        "clientHeight": 936,
+        "scrollHeight": 2523,
+        "scrollTop": 600,
+        "documentScrollTop": 0,
+        "top": 64,
+        "bottom": 1000,
+        "overflowY": "auto"
+      },
+      "bottom": {
+        "viewportHeight": 1000,
+        "shellHeight": 1000,
+        "rootHeight": 1000,
+        "clientHeight": 936,
+        "scrollHeight": 5330,
+        "scrollTop": 4394,
+        "documentScrollTop": 0,
+        "top": 64,
+        "bottom": 1000,
+        "overflowY": "auto"
+      }
+    },
+    {
+      "device": "mobile",
+      "input": "CDP touch scroll gesture",
+      "top": {
+        "viewportHeight": 844,
+        "shellHeight": 844,
+        "rootHeight": 844,
+        "clientHeight": 716,
+        "scrollHeight": 2597,
+        "scrollTop": 0,
+        "documentScrollTop": 0,
+        "top": 64,
+        "bottom": 780,
+        "overflowY": "auto"
+      },
+      "advanced": {
+        "viewportHeight": 844,
+        "shellHeight": 844,
+        "rootHeight": 844,
+        "clientHeight": 716,
+        "scrollHeight": 2597,
+        "scrollTop": 444,
+        "documentScrollTop": 0,
+        "top": 64,
+        "bottom": 780,
+        "overflowY": "auto"
+      },
+      "bottom": {
+        "viewportHeight": 844,
+        "shellHeight": 844,
+        "rootHeight": 844,
+        "clientHeight": 716,
+        "scrollHeight": 5405,
+        "scrollTop": 4689,
+        "documentScrollTop": 0,
+        "top": 64,
+        "bottom": 780,
+        "overflowY": "auto"
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "screenshots/desktop-invite-reachable-light.png",
+      "bytes": 80453,
+      "sha256": "4387486da59586b235056aeabe1e19d2cc9396f3975c9ec02949320d9887afe5",
+      "width": 1440,
+      "height": 1000,
+      "scrollWidth": 1440,
+      "theme": "light"
+    },
+    {
+      "file": "screenshots/desktop-long-invites-light.png",
+      "bytes": 63973,
+      "sha256": "3440f0e49de1c9b620dfe7555bc6a0d01c028c90f90002cb2db7136c57103890",
+      "width": 1440,
+      "height": 1000,
+      "scrollWidth": 1440,
+      "theme": "light"
+    },
+    {
+      "file": "screenshots/desktop-bottom-light.png",
+      "bytes": 63982,
+      "sha256": "ef70d60c9ad7fcf72a3ff4ded6426be03f290079708bcb11b2e120eb52e9170d",
+      "width": 1440,
+      "height": 1000,
+      "scrollWidth": 1440,
+      "theme": "light"
+    },
+    {
+      "file": "screenshots/desktop-bottom-dark.png",
+      "bytes": 64599,
+      "sha256": "bc25b707f9da4155579c806701337b92ca633388f11e9080dafe35ed25550731",
+      "width": 1440,
+      "height": 1000,
+      "scrollWidth": 1440,
+      "theme": "dark"
+    },
+    {
+      "file": "screenshots/desktop-error-light.png",
+      "bytes": 50785,
+      "sha256": "be446b7849e03d4da224dc7d028bd2c662329217dd2f72b0cdd898a92e15ea87",
+      "width": 1440,
+      "height": 1000,
+      "scrollWidth": 1440,
+      "theme": "light"
+    },
+    {
+      "file": "screenshots/desktop-offline-light.png",
+      "bytes": 50955,
+      "sha256": "2a81ec9e82c0e1689f3d26f869c810f4d449261bee0a54ec731ada23c75b726b",
+      "width": 1440,
+      "height": 1000,
+      "scrollWidth": 1440,
+      "theme": "light"
+    },
+    {
+      "file": "screenshots/mobile-invite-reachable-light.png",
+      "bytes": 57856,
+      "sha256": "9c321e67f564a67b428014091c619fc426dc866d049f453766ef231814937b3c",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "theme": "light"
+    },
+    {
+      "file": "screenshots/mobile-long-invites-light.png",
+      "bytes": 42034,
+      "sha256": "ca3d0c70506e9e6b67e23274136fbc3c48014a7ff292241b8a05d3c6aa39a82f",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "theme": "light"
+    },
+    {
+      "file": "screenshots/mobile-bottom-light.png",
+      "bytes": 42031,
+      "sha256": "c34ea26b8e4cca4f28810e6f3f163eda4084405ecac93902ec0cdecf483e3278",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "theme": "light"
+    },
+    {
+      "file": "screenshots/mobile-bottom-dark.png",
+      "bytes": 42910,
+      "sha256": "b04f14a6f48a88101930ee8f2c86d849ae62bcdfcb685126f3236f30d13ebd77",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "theme": "dark"
+    },
+    {
+      "file": "screenshots/mobile-error-light.png",
+      "bytes": 32659,
+      "sha256": "5e6bdf8d961b95c688e34bd1a21c91b261941226b4f39491a40ab4d5cf649c5f",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "theme": "light"
+    },
+    {
+      "file": "screenshots/mobile-offline-light.png",
+      "bytes": 32576,
+      "sha256": "bb6ce09686ae86c73cc8cbaab275e9fad21500dbf7076a5a6e9b69017c4a1994",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "theme": "light"
+    }
+  ],
+  "rendererExceptions": 0,
+  "rendererConsoleErrors": 0,
+  "enforcedCspViolations": 0,
+  "observedCspPolicySha256": [
+    "fd85d75e5c5a88a9baabaf4ced8edf789c664069e3471c0d37321ad94314d9f4"
+  ],
+  "externalRequests": 0,
+  "blockedRequests": 0,
+  "realModelCalls": 0,
+  "productWrites": [
+    {
+      "method": "POST",
+      "path": "/api/zeno/v1/auth/sign-in/email"
+    }
+  ],
+  "publicServerTested": false,
+  "nativeDesktopTested": false,
+  "installerTested": false,
+  "realInvitationsSent": false,
+  "ownedProfileRemoved": true
+}

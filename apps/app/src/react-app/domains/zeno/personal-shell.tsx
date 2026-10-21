@@ -16,7 +16,7 @@ export function PersonalShell({ section, onSection, embedded = false, offline, s
   section: ZenoSection; onSection: (section: ZenoSection) => void; embedded?: boolean;
   offline: boolean; syncing: boolean; pending?: number; children: ReactNode;
 }) {
-  return <div className={cn("flex min-h-0 min-w-0 bg-background text-foreground", embedded ? "h-full" : "min-h-[100svh]")} data-zeno-personal>
+  return <div className={cn("flex min-h-0 min-w-0 bg-background text-foreground", embedded ? "h-full" : "h-dvh")} data-zeno-personal>
     {!embedded ? <aside className="hidden w-48 shrink-0 flex-col border-r border-border bg-muted/15 p-3 md:flex">
       <div className="flex h-14 items-center gap-2.5 px-3"><ZenoMark className="size-6" /><span className="font-semibold tracking-tight">泽诺</span></div>
       <nav aria-label="个人空间" className="mt-5 grid gap-1">{destinations.map(item => <Button key={item.id} variant="ghost" aria-current={section === item.id ? "page" : undefined} onClick={() => onSection(item.id)} className={cn("h-11 justify-start gap-3 px-3", section === item.id && "bg-muted font-semibold")}><item.icon className="size-4" strokeWidth={1.5} />{item.label}</Button>)}</nav>
