@@ -1,0 +1,1175 @@
+{
+  "schemaVersion": 1,
+  "auditStatus": "passed-ci-and-six-native-package-smoke",
+  "checkedAt": "2026-10-22T09:12:52.136Z",
+  "version": "1.1.4",
+  "frozenCommit": "ec55654e5b6d78deebeca35bb4c4e133a91ea1ac",
+  "tag": "zeno-v1.1.4",
+  "run": {
+    "id": 39749400834,
+    "head_sha": "ec55654e5b6d78deebeca35bb4c4e133a91ea1ac",
+    "head_branch": "zeno-v1.1.4",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "path": ".github/workflows/zeno-release.yml",
+    "run_attempt": 1,
+    "html_url": "https://github.com/ryan-wong-coder/openwork/actions/runs/39749400834",
+    "created_at": "2026-10-22T08:39:42Z",
+    "updated_at": "2026-10-22T09:08:39Z"
+  },
+  "uniqueMatchingPushRuns": 1,
+  "tagPeelsToExpectedCommit": true,
+  "jobs": [
+    {
+      "id": 119725863419,
+      "name": "validate",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-22T08:39:45Z",
+      "completedAt": "2026-10-22T08:40:07Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Validate the explicit Zeno tag and version",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 119726041071,
+      "name": "Verify personal data and local execution",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-22T08:40:11Z",
+      "completedAt": "2026-10-22T08:42:57Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run oven-sh/setup-bun@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install shared contract, application and local task dependencies",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build the exact shared contracts and native thread adapters",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify accounts, synchronization, calendar and fitness semantics",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify local execution recovery and desktop account boundaries",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify native personal tools, catalogue and V1/V2 discovery against disposable data",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build the desktop UI and independent mobile application",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run oven-sh/setup-bun@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 119727247328,
+      "name": "Build darwin/arm64",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-22T08:43:01Z",
+      "completedAt": "2026-10-22T08:51:19Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run oven-sh/setup-bun@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install Linux packaging tools",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Install desktop build dependencies, including optional native modules",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Stamp the matching renderer and server version for this build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare optional Apple notarization credential",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Build and package this Zeno target without automatic publishing",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify packaged identity, runtime dependencies and native-host server startup",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify packages and stage complete architecture-specific update feeds",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Remove the temporary notarization key",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run oven-sh/setup-bun@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 119727247359,
+      "name": "Build darwin/x64",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-22T08:43:02Z",
+      "completedAt": "2026-10-22T09:05:21Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run oven-sh/setup-bun@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install Linux packaging tools",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Install desktop build dependencies, including optional native modules",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Stamp the matching renderer and server version for this build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare optional Apple notarization credential",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Build and package this Zeno target without automatic publishing",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify packaged identity, runtime dependencies and native-host server startup",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify packages and stage complete architecture-specific update feeds",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Remove the temporary notarization key",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run oven-sh/setup-bun@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 119727247387,
+      "name": "Build win32/x64",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-22T08:43:02Z",
+      "completedAt": "2026-10-22T08:53:02Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run oven-sh/setup-bun@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install Linux packaging tools",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Install desktop build dependencies, including optional native modules",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Stamp the matching renderer and server version for this build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare optional Apple notarization credential",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Build and package this Zeno target without automatic publishing",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify packaged identity, runtime dependencies and native-host server startup",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify packages and stage complete architecture-specific update feeds",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Remove the temporary notarization key",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run oven-sh/setup-bun@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 119727247423,
+      "name": "Build linux/arm64",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-22T08:43:03Z",
+      "completedAt": "2026-10-22T08:51:43Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run oven-sh/setup-bun@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install Linux packaging tools",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install desktop build dependencies, including optional native modules",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Stamp the matching renderer and server version for this build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare optional Apple notarization credential",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Build and package this Zeno target without automatic publishing",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify packaged identity, runtime dependencies and native-host server startup",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify packages and stage complete architecture-specific update feeds",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Remove the temporary notarization key",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run oven-sh/setup-bun@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 119727247680,
+      "name": "Build linux/x64",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-22T08:43:01Z",
+      "completedAt": "2026-10-22T08:52:58Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run oven-sh/setup-bun@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install Linux packaging tools",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install desktop build dependencies, including optional native modules",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Stamp the matching renderer and server version for this build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare optional Apple notarization credential",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Build and package this Zeno target without automatic publishing",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify packaged identity, runtime dependencies and native-host server startup",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify packages and stage complete architecture-specific update feeds",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Remove the temporary notarization key",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run oven-sh/setup-bun@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 119727247706,
+      "name": "Build win32/arm64",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-22T08:43:01Z",
+      "completedAt": "2026-10-22T09:00:05Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run oven-sh/setup-bun@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install Linux packaging tools",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Install desktop build dependencies, including optional native modules",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Stamp the matching renderer and server version for this build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare optional Apple notarization credential",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Build and package this Zeno target without automatic publishing",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify packaged identity, runtime dependencies and native-host server startup",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify packages and stage complete architecture-specific update feeds",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Remove the temporary notarization key",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run oven-sh/setup-bun@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 119736929497,
+      "name": "Publish verified Zeno assets",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-22T09:05:25Z",
+      "completedAt": "2026-10-22T09:08:38Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/download-artifact@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify all six lanes and assemble release metadata",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Publish only to this repository's explicit Zeno tag",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "actionsArtifacts": [
+    {
+      "id": 12414665424,
+      "name": "zeno-win32-arm64",
+      "sizeInBytes": 389440391,
+      "githubDigest": "sha256:9d82e09e29ffeb7e857455042776f17ce582cc83eb8d54ed1f773cf7164374ea",
+      "expired": false
+    },
+    {
+      "id": 12413973390,
+      "name": "zeno-darwin-x64",
+      "sizeInBytes": 966144122,
+      "githubDigest": "sha256:7184d13a6dcb593abd9d5481422df70759fdbceebff7467147bfd783fecc0ae4",
+      "expired": false
+    },
+    {
+      "id": 12413781203,
+      "name": "zeno-darwin-arm64",
+      "sizeInBytes": 927546344,
+      "githubDigest": "sha256:969b8b3d6c086d45570ad63a4efffab489ce7f3895edf9c81ce95be9d00da145",
+      "expired": false
+    },
+    {
+      "id": 12413765780,
+      "name": "zeno-linux-arm64",
+      "sizeInBytes": 745115941,
+      "githubDigest": "sha256:b73b598d8289e0ddc0ced960257ab58ebd22311257f61395b7de06ce2d1d431b",
+      "expired": false
+    },
+    {
+      "id": 12413586385,
+      "name": "zeno-linux-x64",
+      "sizeInBytes": 763262729,
+      "githubDigest": "sha256:e6a138a7df8e6df6f2ad116e6936e18f1884fe2d410532674b8d182fc5ac03a3",
+      "expired": false
+    },
+    {
+      "id": 12413079492,
+      "name": "zeno-win32-x64",
+      "sizeInBytes": 408888708,
+      "githubDigest": "sha256:c30ef9f41dddf5c0e63a9e5450f1dc06750547f0ea247586e5f77e22605a0cb9",
+      "expired": false
+    }
+  ],
+  "allNineJobsPassed": true,
+  "allSixNativeReceiptsVerified": true,
+  "runtimeReceiptSource": {
+    "method": "Parsed original gh run view --job --log JSON receipts in memory; exactly one packaged-server, packaged-personal and bundle-summary receipt for each lane.",
+    "receiptsVerified": 18,
+    "rawLogsSaved": false,
+    "rawSigningOutputSaved": false
+  },
+  "nativeLanes": [
+    {
+      "jobId": 119727247328,
+      "platform": "darwin",
+      "arch": "arm64",
+      "version": "1.1.4",
+      "runtimeSmoke": "passed",
+      "signing": "self-signed",
+      "updatesEnabled": true,
+      "feed": "https://www.zeno.ryan-wong.cn/updates/darwin/arm64/",
+      "nativeServer": {
+        "packagedServer": true,
+        "nativeModules": true,
+        "clientStatus": true,
+        "hostBoundary": true
+      },
+      "personal": {
+        "compiledCore": true,
+        "compiledFitnessCatalogue": true,
+        "nativeRequestGuard": true,
+        "syntheticTools": true,
+        "syntheticScheduler": true,
+        "durableReceipt": true,
+        "restartNoReplay": true,
+        "safeStorageScope": "synthetic-only-not-os-validation"
+      },
+      "packagedPresence": {
+        "canvasShell": true,
+        "canvasNativeBridge": true,
+        "canvasPromptV1V2": true,
+        "sharedCanvasFeature": true,
+        "offlineAntBytes": 2548222,
+        "offlineAntSha256": "2f6e7eccdb30041e3d198f6881e690a0a255785c6951acee4a4e7c9a431f8cee",
+        "personalMainIpcBoundary": true,
+        "personalAccountBinding": true,
+        "licensesAndNotices": true
+      },
+      "fitnessResources": {
+        "passed": true,
+        "demonstrations": 110,
+        "files": 220
+      },
+      "receiptChecksPassed": true
+    },
+    {
+      "jobId": 119727247359,
+      "platform": "darwin",
+      "arch": "x64",
+      "version": "1.1.4",
+      "runtimeSmoke": "passed",
+      "signing": "self-signed",
+      "updatesEnabled": true,
+      "feed": "https://www.zeno.ryan-wong.cn/updates/darwin/x64/",
+      "nativeServer": {
+        "packagedServer": true,
+        "nativeModules": true,
+        "clientStatus": true,
+        "hostBoundary": true
+      },
+      "personal": {
+        "compiledCore": true,
+        "compiledFitnessCatalogue": true,
+        "nativeRequestGuard": true,
+        "syntheticTools": true,
+        "syntheticScheduler": true,
+        "durableReceipt": true,
+        "restartNoReplay": true,
+        "safeStorageScope": "synthetic-only-not-os-validation"
+      },
+      "packagedPresence": {
+        "canvasShell": true,
+        "canvasNativeBridge": true,
+        "canvasPromptV1V2": true,
+        "sharedCanvasFeature": true,
+        "offlineAntBytes": 2548222,
+        "offlineAntSha256": "2f6e7eccdb30041e3d198f6881e690a0a255785c6951acee4a4e7c9a431f8cee",
+        "personalMainIpcBoundary": true,
+        "personalAccountBinding": true,
+        "licensesAndNotices": true
+      },
+      "fitnessResources": {
+        "passed": true,
+        "demonstrations": 110,
+        "files": 220
+      },
+      "receiptChecksPassed": true
+    },
+    {
+      "jobId": 119727247387,
+      "platform": "win32",
+      "arch": "x64",
+      "version": "1.1.4",
+      "runtimeSmoke": "passed",
+      "signing": "unsigned",
+      "updatesEnabled": true,
+      "feed": "https://www.zeno.ryan-wong.cn/updates/win32/x64/",
+      "nativeServer": {
+        "packagedServer": true,
+        "nativeModules": true,
+        "clientStatus": true,
+        "hostBoundary": true
+      },
+      "personal": {
+        "compiledCore": true,
+        "compiledFitnessCatalogue": true,
+        "nativeRequestGuard": true,
+        "syntheticTools": true,
+        "syntheticScheduler": true,
+        "durableReceipt": true,
+        "restartNoReplay": true,
+        "safeStorageScope": "synthetic-only-not-os-validation"
+      },
+      "packagedPresence": {
+        "canvasShell": true,
+        "canvasNativeBridge": true,
+        "canvasPromptV1V2": true,
+        "sharedCanvasFeature": true,
+        "offlineAntBytes": 2548222,
+        "offlineAntSha256": "2f6e7eccdb30041e3d198f6881e690a0a255785c6951acee4a4e7c9a431f8cee",
+        "personalMainIpcBoundary": true,
+        "personalAccountBinding": true,
+        "licensesAndNotices": true
+      },
+      "fitnessResources": {
+        "passed": true,
+        "demonstrations": 110,
+        "files": 220
+      },
+      "receiptChecksPassed": true
+    },
+    {
+      "jobId": 119727247423,
+      "platform": "linux",
+      "arch": "arm64",
+      "version": "1.1.4",
+      "runtimeSmoke": "passed",
+      "signing": "none",
+      "updatesEnabled": true,
+      "feed": "https://www.zeno.ryan-wong.cn/updates/linux/arm64/",
+      "nativeServer": {
+        "packagedServer": true,
+        "nativeModules": true,
+        "clientStatus": true,
+        "hostBoundary": true
+      },
+      "personal": {
+        "compiledCore": true,
+        "compiledFitnessCatalogue": true,
+        "nativeRequestGuard": true,
+        "syntheticTools": true,
+        "syntheticScheduler": true,
+        "durableReceipt": true,
+        "restartNoReplay": true,
+        "safeStorageScope": "synthetic-only-not-os-validation"
+      },
+      "packagedPresence": {
+        "canvasShell": true,
+        "canvasNativeBridge": true,
+        "canvasPromptV1V2": true,
+        "sharedCanvasFeature": true,
+        "offlineAntBytes": 2548222,
+        "offlineAntSha256": "2f6e7eccdb30041e3d198f6881e690a0a255785c6951acee4a4e7c9a431f8cee",
+        "personalMainIpcBoundary": true,
+        "personalAccountBinding": true,
+        "licensesAndNotices": true
+      },
+      "fitnessResources": {
+        "passed": true,
+        "demonstrations": 110,
+        "files": 220
+      },
+      "receiptChecksPassed": true
+    },
+    {
+      "jobId": 119727247680,
+      "platform": "linux",
+      "arch": "x64",
+      "version": "1.1.4",
+      "runtimeSmoke": "passed",
+      "signing": "none",
+      "updatesEnabled": true,
+      "feed": "https://www.zeno.ryan-wong.cn/updates/linux/x64/",
+      "nativeServer": {
+        "packagedServer": true,
+        "nativeModules": true,
+        "clientStatus": true,
+        "hostBoundary": true
+      },
+      "personal": {
+        "compiledCore": true,
+        "compiledFitnessCatalogue": true,
+        "nativeRequestGuard": true,
+        "syntheticTools": true,
+        "syntheticScheduler": true,
+        "durableReceipt": true,
+        "restartNoReplay": true,
+        "safeStorageScope": "synthetic-only-not-os-validation"
+      },
+      "packagedPresence": {
+        "canvasShell": true,
+        "canvasNativeBridge": true,
+        "canvasPromptV1V2": true,
+        "sharedCanvasFeature": true,
+        "offlineAntBytes": 2548222,
+        "offlineAntSha256": "2f6e7eccdb30041e3d198f6881e690a0a255785c6951acee4a4e7c9a431f8cee",
+        "personalMainIpcBoundary": true,
+        "personalAccountBinding": true,
+        "licensesAndNotices": true
+      },
+      "fitnessResources": {
+        "passed": true,
+        "demonstrations": 110,
+        "files": 220
+      },
+      "receiptChecksPassed": true
+    },
+    {
+      "jobId": 119727247706,
+      "platform": "win32",
+      "arch": "arm64",
+      "version": "1.1.4",
+      "runtimeSmoke": "passed",
+      "signing": "unsigned",
+      "updatesEnabled": true,
+      "feed": "https://www.zeno.ryan-wong.cn/updates/win32/arm64/",
+      "nativeServer": {
+        "packagedServer": true,
+        "nativeModules": true,
+        "clientStatus": true,
+        "hostBoundary": true
+      },
+      "personal": {
+        "compiledCore": true,
+        "compiledFitnessCatalogue": true,
+        "nativeRequestGuard": true,
+        "syntheticTools": true,
+        "syntheticScheduler": true,
+        "durableReceipt": true,
+        "restartNoReplay": true,
+        "safeStorageScope": "synthetic-only-not-os-validation"
+      },
+      "packagedPresence": {
+        "canvasShell": true,
+        "canvasNativeBridge": true,
+        "canvasPromptV1V2": true,
+        "sharedCanvasFeature": true,
+        "offlineAntBytes": 2548222,
+        "offlineAntSha256": "2f6e7eccdb30041e3d198f6881e690a0a255785c6951acee4a4e7c9a431f8cee",
+        "personalMainIpcBoundary": true,
+        "personalAccountBinding": true,
+        "licensesAndNotices": true
+      },
+      "fitnessResources": {
+        "passed": true,
+        "demonstrations": 110,
+        "files": 220
+      },
+      "receiptChecksPassed": true
+    }
+  ],
+  "boundaries": {
+    "actionsArtifactMetadataOnly": true,
+    "actionsArtifactBodiesDownloadedByAuditor": false,
+    "actionsArtifactBodyHashesVerifiedByAuditor": false,
+    "githubDraftAssetJobPassed": true,
+    "publicGitHubPublicationVerified": false,
+    "websiteDistributionVerified": false,
+    "actualInstalledUpgradeVerified": false,
+    "nativeUpdaterUpgradeExecuted": false,
+    "originalBaselineSigningContinuityVerified": false,
+    "osCredentialStorageVerified": false,
+    "actualInstalledAppUIVerified": false,
+    "interactiveCanvasVerified": false,
+    "personalAccountsAndScheduler": "Synthetic packaged Electron Node fixture only; no real account, production business data, AI/model call or OS keychain validation.",
+    "packageRuntimeVersusUpdater": "Native packaged runtime smoke passed on six matching CPU/OS runners; this does not establish download/install/restart upgrades from an earlier release."
+  },
+  "repositoryMutationsPerformed": false,
+  "ciDispatchOrRerunPerformed": false
+}

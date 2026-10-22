@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "lane": "win32-x64",
+  "acceptedAttempt": 1,
+  "reviewer": "root",
+  "method": "Actually viewed both original native Windows PNGs using view_image; reviewed Chinese text, setup form, preserved workspace list, and selected account destination.",
+  "checkedAt": "2026-10-22T12:55:24.699072+00:00",
+  "files": [
+    {
+      "file": "win32-x64.png",
+      "sha256": "d813bb375dd9dfca4a2a38b160c1795bd728df808f8233b266c6eae7438fba87"
+    },
+    {
+      "file": "win32-x64-navigation.png",
+      "sha256": "854b992ce8c9745bc6a1daa7f97d9f938e3d89a5fbd45d872db276107fbaee54"
+    }
+  ],
+  "observations": [
+    "Chinese labels, ModelHelm key form, sidebar and window controls render legibly.",
+    "Both original default workspace and update fixture workspace remain visible.",
+    "Account destination is selected and shows the expected unpaired connection gate, without chat content or a renderer error overlay."
+  ],
+  "scope": "Visual inspection only; native-defaults/V1/profile/history and installed version are checked by the original JSON report."
+}

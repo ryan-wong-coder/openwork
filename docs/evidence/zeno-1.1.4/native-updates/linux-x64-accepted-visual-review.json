@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "lane": "linux-x64",
+  "acceptedAttempt": 1,
+  "reviewer": "root",
+  "method": "Actually opened every listed original native PNG using view_image; reviewed Chinese labels, layout, sidebar/account destination, and macOS canvas rendering.",
+  "checkedAt": "2026-10-22T12:49:04.721114+00:00",
+  "files": [
+    {
+      "file": "linux-x64.png",
+      "sha256": "62e403977b8e1cb7985c72dc98f40fe1399a0a3ef916456c512575b9b7e19c12"
+    },
+    {
+      "file": "linux-x64-navigation.png",
+      "sha256": "a131f8a9c452c200dcd078d9e653967818c66db4ae4b41c1276d2e169026f94c"
+    }
+  ],
+  "observations": [
+    "Main renderer shows the Chinese ModelHelm setup form and four personal sidebar entries with readable labels.",
+    "Navigation capture shows the account destination selected with the expected unpaired connection gate, without chat content or an error overlay.",
+    "Linux Chinese glyphs render legibly with the recorded CJK font prerequisites."
+  ],
+  "scope": "Screenshots reviewed as visual evidence; installed version/history and all four navigation transitions are independently asserted in the original native JSON report."
+}

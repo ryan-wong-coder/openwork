@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "version": "1.1.4",
+  "productCommit": "ec55654e5b6d78deebeca35bb4c4e133a91ea1ac",
+  "runId": 39749400834,
+  "releaseId": 420508455,
+  "checkedAt": "2026-10-22T12:26:46.935579+00:00",
+  "originalTransportFailuresRetainedPrivately": true,
+  "failureClasses": [
+    "Original parallel rsync per-file timeout with leftover SSH channels",
+    "Later SSH transport connection loss before completing all files"
+  ],
+  "recovery": [
+    "Stopped only task-owned transfer processes; retained private partial files.",
+    "Reduced concurrency to3; bounded per-file timeout2400seconds and process-group cleanup self-test.",
+    "Re-established pinned SSH master with keepalives, resumed private partial files and skipped fully verified existing files."
+  ],
+  "completedFiles": 24,
+  "completedBytes": 4200394104,
+  "finalSourceAndDestinationSha256Verified": true,
+  "secondFullServerRead": "distribution-integrity.json",
+  "publishedHistoricalFilesUsedAsReadOnlyCopyBasis": true,
+  "publishedHistoricalFilesOverwritten": false,
+  "releaseTagMovedOrAssetsRebuilt": false
+}

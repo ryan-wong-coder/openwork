@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "lane": "macos-arm64",
+  "acceptedAttempt": 2,
+  "reviewer": "root",
+  "method": "Actually opened all three original ARM follow-up PNGs with view_image; reviewed setup, Chinese sidebar/account gate and Canvas/SVG/Ant chart output.",
+  "checkedAt": "2026-10-22T13:04:12.258636+00:00",
+  "files": [
+    {
+      "file": "attempt02-macos-arm64.png",
+      "sha256": "a7d13ca251b193273bc8c73ecb15deba001efde972b46af131dcd573256a7e00"
+    },
+    {
+      "file": "attempt02-macos-arm64-navigation.png",
+      "sha256": "efc8efc9ba6587a4d79f32398f2cef96c00f42773536b434c65451af70d4ca85"
+    },
+    {
+      "file": "attempt02-macos-arm64-canvas.png",
+      "sha256": "6facc8e997556ca5309bf8c4668a072f3b780895018ed860f63b45123fcf7baa"
+    }
+  ],
+  "observations": [
+    "Main renderer has legible Chinese labels, the ModelHelm setup form and the update fixture workspace.",
+    "Navigation screenshot selects the account destination and shows the expected unpaired connection gate.",
+    "Canvas/SVG shapes, Ant line plot and three-node flow graph visibly render without missing Chinese text."
+  ],
+  "scope": "Visual inspection of fresh ARM host attempt2; first attempt network failure retained separately. Installed version/history and all sidebar transitions are checked by the original JSON report."
+}

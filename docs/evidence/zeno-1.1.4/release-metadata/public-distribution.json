@@ -1,0 +1,287 @@
+{
+  "passed": true,
+  "startedAt": "2026-10-22T12:22:39.938664+00:00",
+  "version": "1.1.4",
+  "productCommit": "ec55654e5b6d78deebeca35bb4c4e133a91ea1ac",
+  "releaseTag": "zeno-v1.1.4",
+  "origin": "https://www.zeno.ryan-wong.cn",
+  "authentication": "none",
+  "phase": "complete",
+  "nativeFeeds": [
+    {
+      "platform": "darwin",
+      "arch": "x64",
+      "manifest": "latest-mac.yml",
+      "size": 492,
+      "sha256": "765e1276afadb663a932ae76e895e25ca5aae1b4fb90a99dddc4ba99d13a9c18",
+      "sha512": "ylpfB4BrT9qvE+9bCWzvgtbHzul8vEUiam02uErbIuZELwmEZlw0xDEmAxYsw0LIv5vXOTaXt4siNFbHYY6V6Q==",
+      "completePublicFeedBytesMatched": true,
+      "versionFieldMatched": true
+    },
+    {
+      "platform": "darwin",
+      "arch": "arm64",
+      "manifest": "latest-mac.yml",
+      "size": 498,
+      "sha256": "bcd2ca6e5408ee20feb1b3d61cdd49fb427765d31666d3812339fc408e4d1c85",
+      "sha512": "UxA2lKn7S1pmxlgQ0rO/OcXP05nHS7G7jay66SkOBaiD8fLiqfxWgo5+ZHfpd6KSXNARpjyqPcayFXCMQblS8g==",
+      "completePublicFeedBytesMatched": true,
+      "versionFieldMatched": true
+    },
+    {
+      "platform": "win32",
+      "arch": "x64",
+      "manifest": "latest.yml",
+      "size": 339,
+      "sha256": "3addb713b4100173a695a1c4c15e49a67d97a501bcb6a9c45e40adc1d74fcbcf",
+      "sha512": "bKLO76jJ62yc2DSbDwDY6OjqDQrnYnds5B1w4K+F549MzmPzj0ym4Jv1Lh4r9REFPEituKfkyEGlOStuzPA7ww==",
+      "completePublicFeedBytesMatched": true,
+      "versionFieldMatched": true
+    },
+    {
+      "platform": "win32",
+      "arch": "arm64",
+      "manifest": "latest.yml",
+      "size": 343,
+      "sha256": "d33ef30106f01457390efeffa2f738da0f7c118193eb8384358e740ddf71d063",
+      "sha512": "+QYqbv6jUBfdACNNgi4nGs5/5N2hakm3q/88PuYrqebtQGzUqU6xqkGMA8KGR5VM9BGKkppZLZ3QeUkVJPENQg==",
+      "completePublicFeedBytesMatched": true,
+      "versionFieldMatched": true
+    },
+    {
+      "platform": "linux",
+      "arch": "x64",
+      "manifest": "latest-linux.yml",
+      "size": 533,
+      "sha256": "c8a7dfe51ff2d318ece6ab842f8339efd8a59ad09f46895f733f922697cdb834",
+      "sha512": "8iliiKkjaezOcV8p7Oi7De6n8Cg/mcVcMEwGFnrkIrOibMwKDQBmiclfAiscbpUAyCxSYgZJIXWagAZ1EBKRsQ==",
+      "completePublicFeedBytesMatched": true,
+      "versionFieldMatched": true
+    },
+    {
+      "platform": "linux",
+      "arch": "arm64",
+      "manifest": "latest-linux-arm64.yml",
+      "size": 539,
+      "sha256": "6e86b7d00b60563999ad63021972a793b621ad64d151a244c81a61388474c802",
+      "sha512": "nXjOX0YhzL3WGXFRKsvDOGEe17pBYe8hHwsONMgkLjzio7UUzHqT0pQIMDaHWDfdbdyktusC/ukqVsoXHMo5sw==",
+      "completePublicFeedBytesMatched": true,
+      "versionFieldMatched": true
+    }
+  ],
+  "packages": [
+    {
+      "lane": "darwin/x64",
+      "name": "zeno-mac-x64-1.1.4.dmg",
+      "size": 483462975,
+      "twoPublicPathsHeadAndFirst64BytesMatch": true,
+      "prefixSha256": "8d0460abce4365c4ed724f8f2cb60ed8ed0247378dc85a257cb44e176a1a3567",
+      "observedContentTypes": [
+        "application/octet-stream",
+        "application/octet-stream"
+      ],
+      "fullPublicFileHashed": false
+    },
+    {
+      "lane": "darwin/x64",
+      "name": "zeno-mac-x64-1.1.4.dmg.blockmap",
+      "size": 501684,
+      "twoPublicPathsHeadAndFirst64BytesMatch": true,
+      "prefixSha256": "2ad08a11544e218fe2db12b04720d0d56300ccef6149b94224b0d3b174a91550",
+      "observedContentTypes": [
+        "application/octet-stream",
+        "application/octet-stream"
+      ],
+      "fullPublicFileHashed": false
+    },
+    {
+      "lane": "darwin/x64",
+      "name": "zeno-mac-x64-1.1.4.zip",
+      "size": 481675949,
+      "twoPublicPathsHeadAndFirst64BytesMatch": true,
+      "prefixSha256": "090c8238f01886e6095156353dc57540e6c1f964a2a00d442d102f9d9a6e8b25",
+      "observedContentTypes": [
+        "application/zip",
+        "application/zip"
+      ],
+      "fullPublicFileHashed": false
+    },
+    {
+      "lane": "darwin/x64",
+      "name": "zeno-mac-x64-1.1.4.zip.blockmap",
+      "size": 499579,
+      "twoPublicPathsHeadAndFirst64BytesMatch": true,
+      "prefixSha256": "953729137fedf560342241d4bc2bd5ea22e6464586ad0425664949700bb4f7da",
+      "observedContentTypes": [
+        "application/octet-stream",
+        "application/octet-stream"
+      ],
+      "fullPublicFileHashed": false
+    },
+    {
+      "lane": "darwin/arm64",
+      "name": "zeno-mac-arm64-1.1.4.dmg",
+      "size": 464298835,
+      "twoPublicPathsHeadAndFirst64BytesMatch": true,
+      "prefixSha256": "0ccdda8cc890dc2f991ccaef0f79e1bd9563fe920d4b55a60f8dbfb344cbd84d",
+      "observedContentTypes": [
+        "application/octet-stream",
+        "application/octet-stream"
+      ],
+      "fullPublicFileHashed": false
+    },
+    {
+      "lane": "darwin/arm64",
+      "name": "zeno-mac-arm64-1.1.4.dmg.blockmap",
+      "size": 476457,
+      "twoPublicPathsHeadAndFirst64BytesMatch": true,
+      "prefixSha256": "3355aeee9ba63b1dc5a0a35f5f7a76b5488359b86c41a52d58bdb558e252d381",
+      "observedContentTypes": [
+        "application/octet-stream",
+        "application/octet-stream"
+      ],
+      "fullPublicFileHashed": false
+    },
+    {
+      "lane": "darwin/arm64",
+      "name": "zeno-mac-arm64-1.1.4.zip",
+      "size": 462290667,
+      "twoPublicPathsHeadAndFirst64BytesMatch": true,
+      "prefixSha256": "d7fb1267edfa0b527764a43a78049130cd4baa92c5ba13bd875f7b9568f87398",
+      "observedContentTypes": [
+        "application/zip",
+        "application/zip"
+      ],
+      "fullPublicFileHashed": false
+    },
+    {
+      "lane": "darwin/arm64",
+      "name": "zeno-mac-arm64-1.1.4.zip.blockmap",
+      "size": 476390,
+      "twoPublicPathsHeadAndFirst64BytesMatch": true,
+      "prefixSha256": "ac13fd8bc60f482356d0fc71146aa017fd005719f57dc301dba265868f17b71c",
+      "observedContentTypes": [
+        "application/octet-stream",
+        "application/octet-stream"
+      ],
+      "fullPublicFileHashed": false
+    },
+    {
+      "lane": "win32/x64",
+      "name": "zeno-win-x64-1.1.4.exe",
+      "size": 408472982,
+      "twoPublicPathsHeadAndFirst64BytesMatch": true,
+      "prefixSha256": "720facc4408fc9406eb3c06f41676fe828405dc69d1b16dcf492f3aa6fea6287",
+      "observedContentTypes": [
+        "application/octet-stream",
+        "application/octet-stream"
+      ],
+      "fullPublicFileHashed": false
+    },
+    {
+      "lane": "win32/x64",
+      "name": "zeno-win-x64-1.1.4.exe.blockmap",
+      "size": 413182,
+      "twoPublicPathsHeadAndFirst64BytesMatch": true,
+      "prefixSha256": "5788b8937dcd4494ea42750c445e20c715ea20ad7509e0abacf63f539b50d3a3",
+      "observedContentTypes": [
+        "application/octet-stream",
+        "application/octet-stream"
+      ],
+      "fullPublicFileHashed": false
+    },
+    {
+      "lane": "win32/arm64",
+      "name": "zeno-win-arm64-1.1.4.exe",
+      "size": 389042845,
+      "twoPublicPathsHeadAndFirst64BytesMatch": true,
+      "prefixSha256": "720facc4408fc9406eb3c06f41676fe828405dc69d1b16dcf492f3aa6fea6287",
+      "observedContentTypes": [
+        "application/octet-stream",
+        "application/octet-stream"
+      ],
+      "fullPublicFileHashed": false
+    },
+    {
+      "lane": "win32/arm64",
+      "name": "zeno-win-arm64-1.1.4.exe.blockmap",
+      "size": 394968,
+      "twoPublicPathsHeadAndFirst64BytesMatch": true,
+      "prefixSha256": "d241afc3ca6743e369d9781b8c5df8f73e7bacb83774d5e84ad41cb98f652533",
+      "observedContentTypes": [
+        "application/octet-stream",
+        "application/octet-stream"
+      ],
+      "fullPublicFileHashed": false
+    },
+    {
+      "lane": "linux/x64",
+      "name": "zeno-linux-x64-1.1.4.AppImage",
+      "size": 343170868,
+      "twoPublicPathsHeadAndFirst64BytesMatch": true,
+      "prefixSha256": "76ce835ec4bacbb391ebdab9b26a56397f09989403bae11d3eed71cc22262290",
+      "observedContentTypes": [
+        "application/octet-stream",
+        "application/octet-stream"
+      ],
+      "fullPublicFileHashed": false
+    },
+    {
+      "lane": "linux/x64",
+      "name": "zeno-linux-x64-1.1.4.deb",
+      "size": 420089088,
+      "twoPublicPathsHeadAndFirst64BytesMatch": true,
+      "prefixSha256": "606395a32da02ca38a8a78ca536fffd4e5dc88563fcc42323777046a23446511",
+      "observedContentTypes": [
+        "application/octet-stream",
+        "application/octet-stream"
+      ],
+      "fullPublicFileHashed": false
+    },
+    {
+      "lane": "linux/arm64",
+      "name": "zeno-linux-arm64-1.1.4.AppImage",
+      "size": 341051328,
+      "twoPublicPathsHeadAndFirst64BytesMatch": true,
+      "prefixSha256": "8451ad57c6c5b6a271b73eff0e227c1980e81eefbed6535bfbb8b6e933eff2c8",
+      "observedContentTypes": [
+        "application/octet-stream",
+        "application/octet-stream"
+      ],
+      "fullPublicFileHashed": false
+    },
+    {
+      "lane": "linux/arm64",
+      "name": "zeno-linux-arm64-1.1.4.deb",
+      "size": 404061768,
+      "twoPublicPathsHeadAndFirst64BytesMatch": true,
+      "prefixSha256": "606395a32da02ca38a8a78ca536fffd4e5dc88563fcc42323777046a23446511",
+      "observedContentTypes": [
+        "application/octet-stream",
+        "application/octet-stream"
+      ],
+      "fullPublicFileHashed": false
+    }
+  ],
+  "scope": "Complete anonymous public API and six small native feed bodies compared with frozen release metadata. HEAD and exact first-64-byte Range on both public paths for all 16 versioned packages/blockmaps. No full installer/blockmap download or public full-file hash, native installation, upgrade, signing continuity, or deployment is implied.",
+  "fullPublicInstallerOrBlockmapHashes": false,
+  "runId": 39749400834,
+  "releaseId": 420508455,
+  "inputDigests": {
+    "stateSha256": "7c25c98f8d611ce6a3f8704e28cc8f060730568820218a8f602e4f54ea514168",
+    "expectedAssetsSha256": "cbd06f3533b4730f2dcd8fbfc8cc10e4744cb83fc51758a743741f28bd03263c",
+    "releaseIndexSha256": "e701bcb44d2c10ee02fbc9058c6dcf4b6b58c26434d67595e74ddfb4e1e06d80"
+  },
+  "publicApi": {
+    "version": "1.1.4",
+    "publishedAt": "2026-10-22T12:21:56.149567+00:00",
+    "completeBytes": 4902,
+    "sha256": "647ecaddb5e7637b7f9e1e137c5ce68ff46a095e3c7de67751b708071eb5ad6d",
+    "notesMatchedFrozenIndex": true,
+    "installers": 10
+  },
+  "publicIndexInstallers": 10,
+  "completePublicNativeFeeds": 6,
+  "versionedPackagesAndBlockmaps": 16,
+  "checkedAt": "2026-10-22T12:22:47.525376+00:00"
+}

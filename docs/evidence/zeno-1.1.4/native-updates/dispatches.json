@@ -1,0 +1,123 @@
+{
+  "scope": "Actual original 1.0.0 public updater acceptance on disposable native GitHub-hosted runners; dispatch is not a passing verdict.",
+  "baseline": {
+    "version": "1.0.0",
+    "runId": 38883434626,
+    "productCommit": "92688046400df5d1e2807d63dce986431bc7623a"
+  },
+  "target": {
+    "version": "1.1.4",
+    "runId": 39749400834,
+    "tag": "zeno-v1.1.4",
+    "productCommit": "ec55654e5b6d78deebeca35bb4c4e133a91ea1ac"
+  },
+  "publicActivationGatesPassedBeforeDispatch": true,
+  "runs": [
+    {
+      "lane": "macos-x64",
+      "workflow": "zeno-update-smoke.yml",
+      "ref": "personal",
+      "expectedCheckoutCommit": "ec55654e5b6d78deebeca35bb4c4e133a91ea1ac",
+      "inputs": {
+        "baseline_run_id": "38883434626",
+        "target_run_id": "39749400834",
+        "architecture": "x64",
+        "arm_image": "xcode-27"
+      },
+      "requestedAt": "2026-10-22T12:25:01.681960+00:00",
+      "dispatchAccepted": true,
+      "runId": 39778160905,
+      "workflowId": 386584037,
+      "checkoutCommit": "ec55654e5b6d78deebeca35bb4c4e133a91ea1ac",
+      "createdAt": "2026-10-22T12:25:04Z",
+      "url": "https://github.com/ryan-wong-coder/openwork/actions/runs/39778160905"
+    },
+    {
+      "lane": "macos-arm64",
+      "workflow": "zeno-update-smoke.yml",
+      "ref": "personal",
+      "expectedCheckoutCommit": "ec55654e5b6d78deebeca35bb4c4e133a91ea1ac",
+      "inputs": {
+        "baseline_run_id": "38883434626",
+        "target_run_id": "39749400834",
+        "architecture": "arm64",
+        "arm_image": "xcode-27"
+      },
+      "requestedAt": "2026-10-22T12:25:10.643971+00:00",
+      "dispatchAccepted": true,
+      "runId": 39778181533,
+      "workflowId": 386584037,
+      "checkoutCommit": "ec55654e5b6d78deebeca35bb4c4e133a91ea1ac",
+      "createdAt": "2026-10-22T12:25:12Z",
+      "url": "https://github.com/ryan-wong-coder/openwork/actions/runs/39778181533"
+    },
+    {
+      "lane": "linux",
+      "workflow": "zeno-update-portable-smoke.yml",
+      "ref": "personal",
+      "expectedCheckoutCommit": "ec55654e5b6d78deebeca35bb4c4e133a91ea1ac",
+      "inputs": {
+        "baseline_run_id": "38883434626",
+        "target_run_id": "39749400834",
+        "platform": "linux",
+        "windows_download_retries": "0",
+        "windows_profile_mode": "isolated"
+      },
+      "requestedAt": "2026-10-22T12:25:19.651354+00:00",
+      "dispatchAccepted": true,
+      "runId": 39778201799,
+      "workflowId": 390119143,
+      "checkoutCommit": "ec55654e5b6d78deebeca35bb4c4e133a91ea1ac",
+      "createdAt": "2026-10-22T12:25:21Z",
+      "url": "https://github.com/ryan-wong-coder/openwork/actions/runs/39778201799"
+    },
+    {
+      "lane": "windows",
+      "workflow": "zeno-update-portable-smoke.yml",
+      "ref": "personal",
+      "expectedCheckoutCommit": "ec55654e5b6d78deebeca35bb4c4e133a91ea1ac",
+      "inputs": {
+        "baseline_run_id": "38883434626",
+        "target_run_id": "39749400834",
+        "platform": "win32",
+        "windows_download_retries": "2",
+        "windows_profile_mode": "native-defaults"
+      },
+      "requestedAt": "2026-10-22T12:25:28.247344+00:00",
+      "dispatchAccepted": true,
+      "runId": 39778220825,
+      "workflowId": 390119143,
+      "checkoutCommit": "ec55654e5b6d78deebeca35bb4c4e133a91ea1ac",
+      "createdAt": "2026-10-22T12:25:30Z",
+      "url": "https://github.com/ryan-wong-coder/openwork/actions/runs/39778220825"
+    },
+    {
+      "lane": "macos-arm64",
+      "workflow": "zeno-update-smoke.yml",
+      "ref": "personal",
+      "attempt": 2,
+      "expectedCheckoutCommit": "ec55654e5b6d78deebeca35bb4c4e133a91ea1ac",
+      "inputs": {
+        "baseline_run_id": "38883434626",
+        "target_run_id": "39749400834",
+        "architecture": "arm64",
+        "arm_image": "xcode-27"
+      },
+      "requestedAt": "2026-10-22T12:52:22.835364+00:00",
+      "dispatchAccepted": true,
+      "originalFailedRunId": 39778181533,
+      "originalFailedJobId": 119822423624,
+      "originalFailedArtifactId": 12427565429,
+      "originalFailedZipSha256": "89bca2d7ec4a6d00e0ec8f22cac806d87cfb23f2fa754c38143cbff4b25d8af3",
+      "reason": "network-download-failure",
+      "reasonScope": "Operator-selected reason with collected pre-install download-phase signals; no failing endpoint is inferred.",
+      "freshWorkflowRunRequired": true,
+      "runId": 39781961589,
+      "workflowId": 386584037,
+      "checkoutCommit": "ec55654e5b6d78deebeca35bb4c4e133a91ea1ac",
+      "createdAt": "2026-10-22T12:52:28Z",
+      "url": "https://github.com/ryan-wong-coder/openwork/actions/runs/39781961589",
+      "runAttempt": 1
+    }
+  ]
+}

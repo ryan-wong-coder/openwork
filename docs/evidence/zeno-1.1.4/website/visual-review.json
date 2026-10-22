@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "version": "1.1.4",
+  "reviewer": "root",
+  "method": "Actually viewed all three original headless public-site screenshots with view_image.",
+  "checkedAt": "2026-10-22T12:23:12.989562+00:00",
+  "files": [
+    {
+      "file": "site-live-desktop.png",
+      "sha256": "1329b8c10d75e2f16fdfdb612a17b952832b3c74bd156235b88aa16e1c24f6dd"
+    },
+    {
+      "file": "site-live-mobile-dark.png",
+      "sha256": "04cc731158edb8279dea3fdbc991b979fb851b044c9eeba076be9446bde10df7"
+    },
+    {
+      "file": "site-live-mobile.png",
+      "sha256": "8cdcb81f70db53ec16d319089fa82403fd0eabd1458dd2c168b1bf51f43944e5"
+    }
+  ],
+  "observations": [
+    "Desktop and mobile show version1.1.4 and working architecture selectors/download link.",
+    "Hero mascot video frame is decoded, Chinese headings and controls are legible, no visible horizontal overflow or overlapping primary controls.",
+    "Mobile light and dark media settings retain the intended dark hero treatment."
+  ],
+  "scope": "Visual review of recorded public website frames; no native installation implied."
+}

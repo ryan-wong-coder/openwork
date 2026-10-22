@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "version": "1.1.4",
+  "productCommit": "ec55654e5b6d78deebeca35bb4c4e133a91ea1ac",
+  "targetReleaseRun": 39749400834,
+  "checkedAt": "2026-10-22T13:06:48.243741+00:00",
+  "reviewer": "release_audit",
+  "method": "Independent read-only subagent directly checked current GitHub run/job/artifact metadata, original cached ZIP bytes and all collected file hashes; read native execution and preservation fields; actually opened all ten accepted PNGs; recomputed final summary from all five explicit attempts without writing it.",
+  "lanes": [
+    {
+      "lane": "macos-x64",
+      "acceptedAttempt": 1,
+      "runId": 39778160905,
+      "jobId": 119822362708,
+      "artifactReceiptSha256": "1071ec9be4c035d255e3b754019430b95ad0c3b6d21c03461c5912730d67431c",
+      "reportSha256": "8877464c3fc9159d45cc3c5f3d5eb8a98f8ee04034d19129a715accdd2a27427"
+    },
+    {
+      "lane": "macos-arm64",
+      "acceptedAttempt": 2,
+      "runId": 39781961589,
+      "jobId": 119835259434,
+      "artifactReceiptSha256": "a8abba8c9b29476c5ad031add94adcaaabfe92dc4f60f663be08ab32c7e52663",
+      "reportSha256": "cc91876cbef7a23ae50a4659c81b1b34c2c20f81836a3b96072d82642a669f16"
+    },
+    {
+      "lane": "linux-x64",
+      "acceptedAttempt": 1,
+      "runId": 39778201799,
+      "jobId": 119822496806,
+      "artifactReceiptSha256": "e9f33ab3b654d26407d2af6d1263ebd7316907a1008787d4c507221f26eb9817",
+      "reportSha256": "2db1192df1ab539ccba5e315ac368127cd2472174faa36c52f2bed565f111514"
+    },
+    {
+      "lane": "win32-x64",
+      "acceptedAttempt": 1,
+      "runId": 39778220825,
+      "jobId": 119822549306,
+      "artifactReceiptSha256": "e11c98398077e9407d06e18299f94bd7dd1aa24d40ca5de3937d283a19c0961c",
+      "reportSha256": "0c3ef6886402f6ce6c618149ac6f13e48d62d2f43585f58fa4cf98a892e5db36"
+    }
+  ],
+  "acceptedScreenshotsActuallyViewed": 10,
+  "allRunsFirstWorkflowAttempt": true,
+  "originalArmDownloadFailureRetained": true,
+  "finalSummarySha256": "b0fcae2a581244e06d6ecc884a9e2642e05fc96e2b86fd0d11a96d197a4e9830",
+  "scope": "Four real original 1.0.0 to 1.1.4 native upgrades on disposable GitHub-hosted runners. Windows uses real saved V1 settings before history. Account gates are unpaired; authenticated personal forms, OS safeStorage, ARM Windows/Linux installed upgrades, 1.1.3-to-1.1.4 installed upgrades, AI calls and system packet capture are not claimed."
+}

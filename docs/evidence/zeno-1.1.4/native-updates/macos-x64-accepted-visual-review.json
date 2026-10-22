@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "lane": "macos-x64",
+  "acceptedAttempt": 1,
+  "reviewer": "root",
+  "method": "Actually opened every listed original native PNG using view_image; reviewed Chinese labels, layout, sidebar/account destination, and macOS canvas rendering.",
+  "checkedAt": "2026-10-22T12:49:04.720310+00:00",
+  "files": [
+    {
+      "file": "macos-x64.png",
+      "sha256": "74acf33555dccf2ab57ae5778bb5a41b625d6637e323f0305def5db59069efa8"
+    },
+    {
+      "file": "macos-x64-navigation.png",
+      "sha256": "d5edd4b0f069d0a9595e724328f3eea0af9fce04587099fbcf9e438a6a31eb25"
+    },
+    {
+      "file": "macos-x64-canvas.png",
+      "sha256": "e732a0ba6c3a4d92b0c139fd0a838743a9a1a388059d20ba6cb946bb55f27ef9"
+    }
+  ],
+  "observations": [
+    "Main renderer shows the Chinese ModelHelm setup form and four personal sidebar entries with readable labels.",
+    "Navigation capture shows the account destination selected with the expected unpaired connection gate, without chat content or an error overlay.",
+    "Canvas capture visibly renders the changed Canvas/SVG shapes, Ant line chart and three-node flow graph."
+  ],
+  "scope": "Screenshots reviewed as visual evidence; installed version/history and all four navigation transitions are independently asserted in the original native JSON report."
+}
