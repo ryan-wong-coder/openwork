@@ -95,6 +95,8 @@ jobs:
       - name: Build the exact shared contracts and native thread adapters
         run: |
           pnpm --filter @openwork/types build
+          pnpm --filter @openwork/free-auto build
+          pnpm --filter @openwork/enterprise-mcp-client build
           pnpm --filter @zeno/core build
           pnpm --filter @zeno/fitness build:catalogue
           pnpm --filter @openwork/remote-sessions build
